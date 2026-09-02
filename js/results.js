@@ -51,25 +51,25 @@ function renderWeakTopicsCallout(titleById) {
   return callout;
 }
 
-function renderBreakdown(result, titleById) {
-  const topicIds = Object.keys(result.topicBreakdown);
-  if (topicIds.length <= 1) {
+function renderBreakdown(heading, breakdown, resolveName) {
+  const keys = Object.keys(breakdown);
+  if (keys.length <= 1) {
     return null;
   }
 
   const section = document.createElement("section");
-  const heading = document.createElement("h2");
-  heading.textContent = "Breakdown by Topic";
-  section.appendChild(heading);
+  const headingEl = document.createElement("h2");
+  headingEl.textContent = heading;
+  section.appendChild(headingEl);
 
   const list = document.createElement("ul");
   list.className = "breakdown-list";
-  topicIds.forEach((topicId) => {
-    const stats = result.topicBreakdown[topicId];
+  keys.forEach((key) => {
+    const stats = breakdown[key];
     const item = document.createElement("li");
 
     const name = document.createElement("span");
-    name.textContent = titleById.get(topicId) ?? topicId;
+    name.textContent = resolveName(key);
     item.appendChild(name);
 
     const score = document.createElement("span");
@@ -114,6 +114,16 @@ function renderReview(result) {
     explanation.className = "review-item__explanation";
     explanation.textContent = question.explanation;
     item.appendChild(explanation);
+
+    if (question.tip) {
+      const tip = document.createElement("p");
+      tip.className = "review-item__tip";
+      const tipLabel = document.createElement("strong");
+      tipLabel.textContent = "Kural: ";
+      tip.appendChild(tipLabel);
+      tip.appendChild(document.createTextNode(question.tip));
+      item.appendChild(tip);
+    }
 
     section.appendChild(item);
   });
@@ -176,9 +186,22 @@ async function init() {
     container.appendChild(weakCallout);
   }
 
-  const breakdown = renderBreakdown(result, titleById);
-  if (breakdown) {
-    container.appendChild(breakdown);
+  const topicBreakdown = renderBreakdown("Breakdown by Topic", result.topicBreakdown, (topicId) =>
+    titleById.get(topicId) ?? topicId
+  );
+  if (topicBreakdown) {
+    container.appendChild(topicBreakdown);
+  }
+
+  if (result.categoryBreakdown) {
+    const categoryBreakdown = renderBreakdown(
+      "Breakdown by Category",
+      result.categoryBreakdown,
+      (category) => category
+    );
+    if (categoryBreakdown) {
+      container.appendChild(categoryBreakdown);
+    }
   }
 
   container.appendChild(renderReview(result));

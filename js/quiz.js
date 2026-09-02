@@ -27,6 +27,13 @@ function showMessage(text, { withHomeLink = true } = {}) {
   }
 }
 
+function renderCategoryLabel(category) {
+  const label = document.createElement("p");
+  label.className = "question-card__category";
+  label.textContent = category;
+  return label;
+}
+
 function renderPrompt(promptText) {
   const paragraph = document.createElement("p");
   paragraph.className = "question-card__prompt";
@@ -83,6 +90,16 @@ function renderFeedback(question, correct) {
   explanation.className = "feedback__explanation";
   explanation.textContent = question.explanation;
   feedback.appendChild(explanation);
+
+  if (question.tip) {
+    const tip = document.createElement("p");
+    tip.className = "feedback__tip";
+    const tipLabel = document.createElement("strong");
+    tipLabel.textContent = "Kural: ";
+    tip.appendChild(tipLabel);
+    tip.appendChild(document.createTextNode(question.tip));
+    feedback.appendChild(tip);
+  }
 
   document.getElementById("question-card").appendChild(feedback);
 }
@@ -151,6 +168,9 @@ function renderQuestion() {
   card.className = "question-card";
 
   const question = state.session[state.currentIndex];
+  if (question.category) {
+    card.appendChild(renderCategoryLabel(question.category));
+  }
   card.appendChild(renderPrompt(question.prompt));
 
   const optionsWrap = document.createElement("div");

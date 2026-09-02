@@ -1,0 +1,344 @@
+{
+  "topicId": "tenses",
+  "title": "Tenses",
+  "level": "B2-C1",
+  "note": "Her soru YTU IYS Cloze Test formatinda: kisa paragraf + tek bosluk + 4 secenek. Aciklamalar ve tuyolar Turkce, ogrenme materyali Ingilizce.",
+  "questions": [
+    {
+      "id": "tenses-t1",
+      "category": "Present Simple vs Present Continuous",
+      "paragraph": "Every morning, Elif ____ to the university library before her first class starts. She says the quiet hours right after opening are the only time she can truly concentrate.",
+      "options": [
+        "goes",
+        "is going",
+        "has gone",
+        "went"
+      ],
+      "correctIndex": 0,
+      "explanation": "'Every morning' alışkanlık/rutin bildiren bir zaman ifadesi, bu yüzden Present Simple kullanılır. 'is going' anlık bir eylem için kullanılırdı, ama burada tekrar eden bir alışkanlıktan bahsediliyor.",
+      "tip": "Alışkanlık bildiren zaman zarfları (every day, usually, often) Present Simple'ı tetikler."
+    },
+    {
+      "id": "tenses-t2",
+      "category": "Present Simple vs Present Continuous",
+      "paragraph": "Please don't interrupt him right now — he ____ on a very tight deadline and can't afford to lose his focus.",
+      "options": [
+        "works",
+        "is working",
+        "has worked",
+        "worked"
+      ],
+      "correctIndex": 1,
+      "explanation": "'Right now' şu an devam eden bir eylemi işaret ediyor, bu yüzden Present Continuous kullanılır.",
+      "tip": "'Right now', 'at the moment', 'currently' gibi ifadeler genelde Present Continuous'u işaret eder."
+    },
+    {
+      "id": "tenses-t3",
+      "category": "Present Simple vs Present Continuous",
+      "paragraph": "Water ____ at 100 degrees Celsius at sea level, a fact every chemistry student memorizes early on.",
+      "options": [
+        "is boiling",
+        "boils",
+        "boiled",
+        "has boiled"
+      ],
+      "correctIndex": 1,
+      "explanation": "Genel geçer bilimsel gerçekler her zaman Present Simple ile ifade edilir, zamana bağlı değildir.",
+      "tip": "Bilimsel gerçekler, genellemeler ve değişmeyen doğrular için her zaman Present Simple kullan."
+    },
+    {
+      "id": "tenses-t4",
+      "category": "Present Simple vs Present Continuous",
+      "paragraph": "I ____ that the new library extension is a good idea, even though some students disagree with the extra noise it might bring.",
+      "options": [
+        "am thinking",
+        "think",
+        "have thought",
+        "thought"
+      ],
+      "correctIndex": 1,
+      "explanation": "'Think' burada bir düşünce/fikir bildiren durum fiili (stative verb) olarak kullanılıyor, bu yüzden Continuous formu alamaz.",
+      "tip": "Düşünce, duygu ve sahiplik bildiren fiiller (think, believe, own, love) normalde Continuous formda kullanılmaz."
+    },
+    {
+      "id": "tenses-t5",
+      "category": "Present Perfect vs Past Simple",
+      "paragraph": "She ____ three internships since she started university, and each one taught her something different about the industry.",
+      "options": [
+        "did",
+        "has done",
+        "was doing",
+        "does"
+      ],
+      "correctIndex": 1,
+      "explanation": "'Since she started university' geçmişten bugüne uzanan bir süreci gösteriyor, bu yüzden Present Perfect gerekir.",
+      "tip": "'Since + geçmiş bir nokta' her zaman Present Perfect ile kullanılır."
+    },
+    {
+      "id": "tenses-t6",
+      "category": "Present Perfect vs Past Simple",
+      "paragraph": "I ____ him at a conference in Izmir two years ago, but we haven't kept in touch since then.",
+      "options": [
+        "have met",
+        "met",
+        "meet",
+        "was meeting"
+      ],
+      "correctIndex": 1,
+      "explanation": "'Two years ago' belirli, tamamlanmış bir geçmiş zaman noktası bildiriyor, bu yüzden Past Simple kullanılır.",
+      "tip": "Belirli bir zaman ifadesi varsa (yesterday, last year, two years ago) Present Perfect değil Past Simple kullanılır."
+    },
+    {
+      "id": "tenses-t7",
+      "category": "Present Perfect vs Past Simple",
+      "paragraph": "Look at this mess! Someone ____ the coffee machine and left it broken for the whole office.",
+      "options": [
+        "broke",
+        "has broken",
+        "breaks",
+        "was breaking"
+      ],
+      "correctIndex": 1,
+      "explanation": "Geçmişteki bir eylemin şu anki sonucu vurgulanıyor (kahve makinesi hâlâ bozuk), bu yüzden Present Perfect kullanılır, tam zamanı belirtilmiyor.",
+      "tip": "Present Perfect, geçmişteki bir eylemin şimdiki zamana etkisini/sonucunu vurgular."
+    },
+    {
+      "id": "tenses-t8",
+      "category": "Present Perfect vs Past Simple",
+      "paragraph": "Turkey ____ several major earthquakes over the past century, which is why building codes have become much stricter.",
+      "options": [
+        "experienced",
+        "has experienced",
+        "experiences",
+        "was experiencing"
+      ],
+      "correctIndex": 1,
+      "explanation": "'Over the past century' geçmişten bugüne uzanan bir dönemi kapsıyor, bu yüzden Present Perfect kullanılır.",
+      "tip": "'Over the last/past + süre' ifadesi genelde Present Perfect'i tetikler."
+    },
+    {
+      "id": "tenses-t9",
+      "category": "Past Simple vs Past Continuous vs Past Perfect",
+      "paragraph": "While she ____ for the bus, she noticed a familiar face across the street and almost missed her stop thinking about it.",
+      "options": [
+        "waited",
+        "was waiting",
+        "has waited",
+        "waits"
+      ],
+      "correctIndex": 1,
+      "explanation": "'While' devam eden bir geçmiş eylemi gösterir, bu yüzden Past Continuous kullanılır; 'noticed' ise bu sırada gerçekleşen kısa eylemdir.",
+      "tip": "'While' genelde Past Continuous ile, 'when' genelde Past Simple ile eşleşir."
+    },
+    {
+      "id": "tenses-t10",
+      "category": "Past Simple vs Past Continuous vs Past Perfect",
+      "paragraph": "By the time the professor arrived, most of the students ____ already and only a few remained to ask questions.",
+      "options": [
+        "left",
+        "had left",
+        "have left",
+        "were leaving"
+      ],
+      "correctIndex": 1,
+      "explanation": "'By the time' bir geçmiş olaydan önce tamamlanmış başka bir olayı gösterir, bu yüzden Past Perfect kullanılır.",
+      "tip": "'By the time + geçmiş cümle' yapısında genelde Past Perfect kullanılır."
+    },
+    {
+      "id": "tenses-t11",
+      "category": "Past Simple vs Past Continuous vs Past Perfect",
+      "paragraph": "He ____ dinner when the power suddenly went out, leaving the kitchen in complete darkness.",
+      "options": [
+        "cooked",
+        "was cooking",
+        "has cooked",
+        "cooks"
+      ],
+      "correctIndex": 1,
+      "explanation": "Devam eden bir eylem (yemek pişirme) başka bir kısa eylem (elektriklerin gitmesi) tarafından kesiliyor, bu yüzden Past Continuous kullanılır.",
+      "tip": "Devam eden bir eylemi kesen ani bir olay varsa, devam eden eylem Past Continuous olur."
+    },
+    {
+      "id": "tenses-t12",
+      "category": "Past Simple vs Past Continuous vs Past Perfect",
+      "paragraph": "I didn't recognize the campus at first because they ____ the whole entrance since my last visit.",
+      "options": [
+        "rebuilt",
+        "had rebuilt",
+        "have rebuilt",
+        "were rebuilding"
+      ],
+      "correctIndex": 1,
+      "explanation": "Cümledeki 'tanıyamadım' (didn't recognize) geçmişteki bir referans nokta; ondan önce gerçekleşen 'yeniden inşa etme' eylemi bu yüzden Past Perfect ile ifade edilir.",
+      "tip": "İki geçmiş olay varsa ve biri diğerinden önce olduysa, önce olan Past Perfect alır."
+    },
+    {
+      "id": "tenses-t13",
+      "category": "Future Forms",
+      "paragraph": "Look at those clouds — it ____ any minute now, so we should head back before we get soaked.",
+      "options": [
+        "will rain",
+        "is going to rain",
+        "rains",
+        "is raining"
+      ],
+      "correctIndex": 1,
+      "explanation": "Şu anki somut kanıta (bulutlara) dayanarak yapılan bir tahmin, bu yüzden 'be going to' kullanılır.",
+      "tip": "Elde somut bir kanıt varsa (bulutlar, şu anki durum) 'be going to' kullan; spontane tahminlerde 'will' kullanılır."
+    },
+    {
+      "id": "tenses-t14",
+      "category": "Future Forms",
+      "paragraph": "Don't worry about picking me up — I ____ a taxi from the airport, so just relax at home.",
+      "options": [
+        "am taking",
+        "will take",
+        "take",
+        "have taken"
+      ],
+      "correctIndex": 1,
+      "explanation": "Bu, konuşma anında verilen spontane bir karar/söz, bu yüzden 'will' kullanılır.",
+      "tip": "Konuşma anında alınan ani kararlar ve sözler için 'will' kullanılır, önceden planlanmış değilse."
+    },
+    {
+      "id": "tenses-t15",
+      "category": "Future Forms",
+      "paragraph": "My flight ____ at 7:45 tomorrow morning, according to the confirmation email I received yesterday.",
+      "options": [
+        "leaves",
+        "will leave",
+        "is leaving",
+        "leaved"
+      ],
+      "correctIndex": 0,
+      "explanation": "Sabit bir tarifeye/programa (uçuş saatine) bağlı gelecek olaylar için Present Simple kullanılır.",
+      "tip": "Resmi tarifeler, programlar (tren, uçuş, ders saatleri) için Present Simple kullanılır."
+    },
+    {
+      "id": "tenses-t16",
+      "category": "Future Forms",
+      "paragraph": "We ____ dinner with the Özdemirs on Saturday — it's already in both of our calendars.",
+      "options": [
+        "will have",
+        "are having",
+        "have",
+        "had"
+      ],
+      "correctIndex": 1,
+      "explanation": "Önceden kesin olarak planlanmış, ayarlanmış bir gelecek olay için Present Continuous kullanılır.",
+      "tip": "Kişisel, önceden ayarlanmış planlar için Present Continuous kullanılır."
+    },
+    {
+      "id": "tenses-t17",
+      "category": "Perfect Aspects",
+      "paragraph": "I ____ this report for almost three hours now, and I still have two sections left to finish.",
+      "options": [
+        "wrote",
+        "have written",
+        "have been writing",
+        "am writing"
+      ],
+      "correctIndex": 2,
+      "explanation": "Sürecin kendisi vurgulanıyor ve hâlâ devam ediyor ('still have two sections left'), bu yüzden Present Perfect Continuous kullanılır.",
+      "tip": "Bir eylemin süresini ve devam ettiğini vurgulamak istiyorsan Present Perfect Continuous kullan."
+    },
+    {
+      "id": "tenses-t18",
+      "category": "Perfect Aspects",
+      "paragraph": "She ____ five chapters of the book so far, and she's determined to finish the rest by the weekend.",
+      "options": [
+        "has been reading",
+        "has read",
+        "read",
+        "was reading"
+      ],
+      "correctIndex": 1,
+      "explanation": "Burada tamamlanan miktar (beş bölüm) önemli, süreç değil; bu yüzden Present Perfect (simple) kullanılır.",
+      "tip": "Ne kadar/kaç tane tamamlandığı önemliyse Present Perfect Simple, sürecin kendisi önemliyse Present Perfect Continuous kullan."
+    },
+    {
+      "id": "tenses-t19",
+      "category": "Perfect Aspects",
+      "paragraph": "By the time she turned thirty, she ____ two companies and sold both of them for a considerable profit.",
+      "options": [
+        "founded",
+        "has founded",
+        "had founded",
+        "was founding"
+      ],
+      "correctIndex": 2,
+      "explanation": "'By the time she turned thirty' geçmişteki bir referans noktası; ondan önce tamamlanan eylemler Past Perfect alır.",
+      "tip": "'By the time + past tense' yapısı hemen hemen her zaman Past Perfect ile devam eder."
+    },
+    {
+      "id": "tenses-t20",
+      "category": "Perfect Aspects",
+      "paragraph": "Have you ____ to Japan before, or would this be your first time visiting?",
+      "options": [
+        "gone",
+        "been",
+        "go",
+        "went"
+      ],
+      "correctIndex": 1,
+      "explanation": "'Have been to' bir yere gidip geri dönmüş olma deneyimini anlatır; 'have gone to' ise kişinin hâlâ orada olduğunu ima eder ki bu cümlede uygun değil.",
+      "tip": "'Have been to' = gidip döndü (deneyim); 'have gone to' = hâlâ orada, dönmedi."
+    },
+    {
+      "id": "tenses-t21",
+      "category": "Time Expressions & Signal Words",
+      "paragraph": "I haven't seen my cousin ____ last summer, even though we live in the same city.",
+      "options": [
+        "for",
+        "since",
+        "during",
+        "while"
+      ],
+      "correctIndex": 1,
+      "explanation": "'Since' belirli bir başlangıç noktasıyla kullanılır (last summer); 'for' bir süre miktarıyla kullanılırdı (for six months gibi).",
+      "tip": "'Since + zaman noktası', 'for + süre miktarı' ile kullanılır — ikisini karıştırma."
+    },
+    {
+      "id": "tenses-t22",
+      "category": "Time Expressions & Signal Words",
+      "paragraph": "The meeting had ____ started by the time we arrived, so we missed the introduction entirely.",
+      "options": [
+        "already",
+        "yet",
+        "still",
+        "ago"
+      ],
+      "correctIndex": 0,
+      "explanation": "'Already' olumlu cümlelerde bir şeyin beklenenden önce gerçekleştiğini vurgular ve Past Perfect ile doğal şekilde kullanılır.",
+      "tip": "'Already' olumlu cümlelerde, 'yet' ise soru ve olumsuz cümlelerde kullanılır."
+    },
+    {
+      "id": "tenses-t23",
+      "category": "Time Expressions & Signal Words",
+      "paragraph": "I've ____ finished the assignment, so there's no need to remind me about the deadline anymore.",
+      "options": [
+        "yet",
+        "already",
+        "ago",
+        "since"
+      ],
+      "correctIndex": 1,
+      "explanation": "'Already' burada bir işin beklenenden erken/önceden tamamlandığını belirtiyor, olumlu cümlede doğru kullanım budur.",
+      "tip": "'Yet' sadece soru ve olumsuz cümlelerde kullanılır: 'Have you finished yet?' / 'I haven't finished yet.'"
+    },
+    {
+      "id": "tenses-t24",
+      "category": "Time Expressions & Signal Words",
+      "paragraph": "He moved to Istanbul five years ____, and he still says it was the best decision he ever made.",
+      "options": [
+        "since",
+        "for",
+        "ago",
+        "before"
+      ],
+      "correctIndex": 2,
+      "explanation": "'Ago' belirli bir süre önce gerçekleşmiş, tamamlanmış bir olayı işaret eder ve Past Simple ile kullanılır.",
+      "tip": "'X süre + ago' her zaman Past Simple ile kullanılır, Present Perfect ile değil."
+    }
+  ]
+}

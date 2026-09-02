@@ -1,18 +1,11 @@
 {
   "topics": [
     {
-      "id": "present-simple",
-      "title": "Present Simple",
+      "id": "tenses",
+      "title": "Tenses",
       "tier": "foundations",
-      "file": "data/tenses/present-simple.json",
-      "questionCount": 8
-    },
-    {
-      "id": "past-simple",
-      "title": "Past Simple",
-      "tier": "foundations",
-      "file": "data/tenses/past-simple.json",
-      "questionCount": 8
+      "file": "data/tenses/tenses.json",
+      "questionCount": 24
     }
   ]
 }
