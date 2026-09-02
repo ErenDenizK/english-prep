@@ -81,6 +81,29 @@ Adding a topic never requires touching any JavaScript — it's just data:
    **Topic roadmap** below for the available tiers).
 3. That's it — the topic shows up on the home page automatically.
 
+A manifest entry looks like:
+
+```json
+{
+  "id": "tenses",
+  "title": "Tenses",
+  "tier": "foundations",
+  "file": "data/tenses/tenses.json",
+  "questionCount": 24,
+  "categories": ["Present Simple vs Present Continuous", "..."]
+}
+```
+
+- **`categories`** (optional) — the distinct category names used across the
+  topic's questions, shown as preview chips on its home-page card. Purely
+  cosmetic; keep it in sync with the categories actually used in the
+  topic's question file.
+- **`comingSoon`** (optional, `true`/omit) — marks a topic as a roadmap
+  teaser: it renders a disabled card with a "Coming soon" badge, is
+  excluded from the mixed-test question pool, and needs no `file` or
+  `questionCount` yet. Flip it to a real entry (add `file` +
+  `questionCount`, drop `comingSoon`) once the content is authored.
+
 ### Question schema
 
 Each topic file looks like this:
