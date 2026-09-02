@@ -1,0 +1,62 @@
+{
+  "tenseId": "present-simple",
+  "title": "Present Simple",
+  "questions": [
+    {
+      "id": "present-simple-001",
+      "prompt": "She ____ to school every day.",
+      "options": ["go", "goes", "is going", "went"],
+      "correctAnswer": "goes",
+      "explanation": "\"Goes\" is correct: Present Simple adds -s/-es for third-person singular subjects, and \"every day\" signals a routine. \"Go\" is wrong because it drops the required -s for \"she\". \"Is going\" is Present Continuous, used for an action happening right now, not a habit. \"Went\" is Past Simple, used for a completed past action, not a repeated present-day routine."
+    },
+    {
+      "id": "present-simple-002",
+      "prompt": "Water ____ at 100 degrees Celsius.",
+      "options": ["boil", "boils", "is boiling", "boiled"],
+      "correctAnswer": "boils",
+      "explanation": "\"Boils\" is correct: Present Simple states general truths and scientific facts, and the singular subject \"water\" takes the -s ending. \"Boil\" is wrong because it drops that -s. \"Is boiling\" (Present Continuous) would describe water boiling right now in front of you, not a permanent fact. \"Boiled\" (Past Simple) wrongly frames a timeless fact as a one-off past event."
+    },
+    {
+      "id": "present-simple-003",
+      "prompt": "I ____ coffee every morning, but today I'm having tea instead.",
+      "options": ["drink", "drinks", "am drinking", "drank"],
+      "correctAnswer": "drink",
+      "explanation": "\"Drink\" is correct: \"every morning\" signals a habit, and the subject \"I\" never takes an -s ending. \"Drinks\" wrongly adds the third-person -s to \"I\". \"Am drinking\" (Present Continuous) is already used in the second clause for today's exception, so it can't also describe the general habit. \"Drank\" (Past Simple) would mean the habit is over, contradicted by \"every morning\"."
+    },
+    {
+      "id": "present-simple-004",
+      "prompt": "The 9 AM train ____ every weekday.",
+      "options": ["leave", "leaves", "is leaving", "left"],
+      "correctAnswer": "leaves",
+      "explanation": "\"Leaves\" is correct: Present Simple is used for fixed timetables and schedules, and the singular subject \"train\" needs the -s ending. \"Leave\" is wrong because it drops that -s. \"Is leaving\" (Present Continuous) suggests the action is happening right now or is a one-time near-future plan, not a recurring weekday schedule. \"Left\" (Past Simple) describes a single completed departure, not a repeating timetable."
+    },
+    {
+      "id": "present-simple-005",
+      "prompt": "He never ____ his homework on time.",
+      "options": ["do", "does", "is doing", "did"],
+      "correctAnswer": "does",
+      "explanation": "\"Does\" is correct: frequency adverbs like \"never\" pair with Present Simple to describe habitual behavior, and the third-person subject \"he\" requires the -s form. \"Do\" is wrong because it drops that agreement. \"Is doing\" (Present Continuous) doesn't fit with \"never\", which describes a repeated pattern rather than a single ongoing action. \"Did\" (Past Simple) wrongly places the habit in the past."
+    },
+    {
+      "id": "present-simple-006",
+      "prompt": "My parents ____ in Istanbul; they have lived there for twenty years.",
+      "options": ["lives", "live", "is living", "lived"],
+      "correctAnswer": "live",
+      "explanation": "\"Live\" is correct: the plural subject \"my parents\" takes no -s, and Present Simple describes a permanent, ongoing state, confirmed by \"have lived there for twenty years\". \"Lives\" wrongly adds the third-person singular -s to a plural subject. \"Is living\" (Present Continuous) would imply a temporary arrangement, contradicted by \"for twenty years\". \"Lived\" (Past Simple) would mean they no longer live there, contradicting the sentence."
+    },
+    {
+      "id": "present-simple-007",
+      "prompt": "Does she ____ the piano?",
+      "options": ["play", "plays", "playing", "played"],
+      "correctAnswer": "play",
+      "explanation": "\"Play\" is correct: after the auxiliary \"does\" in a question, the main verb stays in its base form because \"does\" already carries the third-person marking. \"Plays\" wrongly double-marks the subject agreement. \"Playing\" is not a complete verb form here; it would need an auxiliary like \"is\" to form a continuous question instead. \"Played\" wrongly shifts the question into the past, contradicted by the present auxiliary \"does\"."
+    },
+    {
+      "id": "present-simple-008",
+      "prompt": "Cats ____ independent animals.",
+      "options": ["is", "are", "was", "being"],
+      "correctAnswer": "are",
+      "explanation": "\"Are\" is correct: the plural subject \"cats\" pairs with the plural present form of \"be\" to state a general characteristic. \"Is\" is the singular form and doesn't agree with a plural subject. \"Was\" incorrectly places the general truth in the past. \"Being\" is not a finite verb and cannot function as the sentence's main verb without an auxiliary such as \"are\"."
+    }
+  ]
+}

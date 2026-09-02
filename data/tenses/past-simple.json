@@ -1,0 +1,62 @@
+{
+  "tenseId": "past-simple",
+  "title": "Past Simple",
+  "questions": [
+    {
+      "id": "past-simple-001",
+      "prompt": "She ____ to the store yesterday.",
+      "options": ["go", "goes", "went", "going"],
+      "correctAnswer": "went",
+      "explanation": "\"Went\" is correct: \"yesterday\" signals a completed past action, and \"went\" is the irregular Past Simple form of \"go\". \"Go\" and \"goes\" are present-tense forms and directly contradict \"yesterday\". \"Going\" is not a complete verb form on its own here; it would need an auxiliary like \"was\" to work as a continuous form."
+    },
+    {
+      "id": "past-simple-002",
+      "prompt": "They ____ dinner at 7 PM last night.",
+      "options": ["eat", "eats", "ate", "eating"],
+      "correctAnswer": "ate",
+      "explanation": "\"Ate\" is correct: \"last night\" marks a specific, finished point in the past, calling for the irregular Past Simple form of \"eat\". \"Eat\" and \"eats\" are present-tense forms and clash with \"last night\". \"Eating\" cannot stand alone as the main verb; it would need an auxiliary such as \"were\" to form a continuous tense."
+    },
+    {
+      "id": "past-simple-003",
+      "prompt": "I didn't ____ the message until this morning.",
+      "options": ["see", "saw", "seeing", "sees"],
+      "correctAnswer": "see",
+      "explanation": "\"See\" is correct: after the negative auxiliary \"didn't\", the main verb stays in its base form because \"didn't\" already carries the past marking. \"Saw\" wrongly double-marks the past tense. \"Seeing\" would need an auxiliary like \"was\" to form a continuous structure, which isn't used here. \"Sees\" is a present-tense form and doesn't fit after \"didn't\" regardless of tense."
+    },
+    {
+      "id": "past-simple-004",
+      "prompt": "Where ____ you buy that jacket?",
+      "options": ["do", "did", "does", "were"],
+      "correctAnswer": "did",
+      "explanation": "\"Did\" is correct: a Past Simple question uses the auxiliary \"did\" followed by the base verb (\"buy\"). \"Do\" and \"does\" are present-tense auxiliaries and don't match a past-time question. \"Were\" is used with \"-ing\" forms or as a linking verb, not with a base verb like \"buy\" in this structure."
+    },
+    {
+      "id": "past-simple-005",
+      "prompt": "He ____ his keys on the table before he went out.",
+      "options": ["leave", "left", "leaves", "leaving"],
+      "correctAnswer": "left",
+      "explanation": "\"Left\" is correct: this describes a completed past action in a sequence of events (\"before he went out\"), which calls for the irregular Past Simple form of \"leave\". \"Leave\" and \"leaves\" are present-tense forms and don't fit a completed past narrative. \"Leaving\" cannot function as the main verb without an auxiliary like \"was\"."
+    },
+    {
+      "id": "past-simple-006",
+      "prompt": "We ____ to Paris two years ago.",
+      "options": ["go", "went", "have gone", "goes"],
+      "correctAnswer": "went",
+      "explanation": "\"Went\" is correct: \"two years ago\" is a specific, finished past time marker, which calls for Past Simple. \"Go\" and \"goes\" are present-tense forms and contradict \"two years ago\". \"Have gone\" (Present Perfect) is used for an indefinite past time or a present result, not alongside a precise past time expression like \"two years ago\" — a common exam distinction."
+    },
+    {
+      "id": "past-simple-007",
+      "prompt": "____ you finish the report last night?",
+      "options": ["Do", "Did", "Does", "Were"],
+      "correctAnswer": "Did",
+      "explanation": "\"Did\" is correct: \"last night\" places the question in the past, and Past Simple questions use \"did\" plus the base verb (\"finish\"). \"Do\" and \"does\" are present-tense auxiliaries and clash with \"last night\". \"Were\" doesn't pair correctly with a base verb like \"finish\" in this question structure."
+    },
+    {
+      "id": "past-simple-008",
+      "prompt": "The Wright brothers ____ the first successful airplane flight in 1903.",
+      "options": ["make", "made", "makes", "making"],
+      "correctAnswer": "made",
+      "explanation": "\"Made\" is correct: this describes a specific, completed historical event tied to an exact past date (\"in 1903\"), which calls for the irregular Past Simple form of \"make\". \"Make\" and \"makes\" are present-tense forms and contradict the historical date. \"Making\" cannot serve as the main verb without an auxiliary like \"was\"."
+    }
+  ]
+}

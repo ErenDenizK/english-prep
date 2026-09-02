@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>English Prep Practice</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <div>
+        <h1><a href="index.html">English Prep Practice</a></h1>
+        <p>Multiple-choice practice for the university English prep exam</p>
+      </div>
+      <button id="clear-history-btn" class="btn btn--secondary" type="button" hidden>
+        Clear history
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <h2 class="hero__title">Start a mixed test</h2>
+      <p class="hero__description">
+        Questions are pulled at random from every topic below. Good for a
+        general check of where you stand.
+      </p>
+      <div class="hero__controls">
+        <div class="field-row">
+          <label for="mixed-count">Questions</label>
+          <select id="mixed-count" class="select">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="all">All</option>
+          </select>
+        </div>
+        <button id="start-mixed-btn" class="btn" type="button">Start Mixed Test</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Practice by topic</h2>
+      <div id="topics-container" class="topics">
+        <p class="empty-state">Loading topics&hellip;</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>
