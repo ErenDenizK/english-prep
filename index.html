@@ -17,9 +17,6 @@
         <h1>English Prep Practice</h1>
         <p>Üniversite İngilizce hazırlık sınavı için pratik</p>
       </div>
-      <button id="clear-history-btn" class="btn btn--secondary" type="button" hidden>
-        Geçmişi Temizle
-      </button>
     </div>
   </header>
 
@@ -29,6 +26,9 @@
     </button>
     <button class="tab-bar__tab" type="button" role="tab" id="tab-test" data-view="test" aria-selected="true" aria-controls="view-test">
       Test
+    </button>
+    <button class="tab-bar__tab" type="button" role="tab" id="tab-profil" data-view="profil" aria-selected="false" aria-controls="view-profil">
+      Profil
     </button>
   </nav>
 
@@ -62,6 +62,12 @@
             <p class="empty-state">Konular yükleniyor&hellip;</p>
           </div>
         </section>
+      </section>
+
+      <section id="view-profil" class="view" role="tabpanel" aria-labelledby="tab-profil" hidden>
+        <div id="profile-container">
+          <p class="empty-state">Profil yükleniyor&hellip;</p>
+        </div>
       </section>
     </div>
   </main>

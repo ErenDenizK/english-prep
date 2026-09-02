@@ -1,23 +1,15 @@
 import { loadManifest } from "./topics.js";
-import {
-  getLastTopicScore,
-  getWeakTopics,
-  getHistory,
-  clearHistory,
-  getSeenVersion,
-  markTopicSeen,
-} from "./storage.js";
+import { getLastTopicScore, getWeakTopics, getSeenVersion, markTopicSeen } from "./storage.js";
 import { setQuizRequest } from "./session-state.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createDropdown } from "./dropdown.js";
-import { createConfirmModal } from "./modal.js";
 import { initEducationTab } from "./education.js";
+import { initProfileTab } from "./profile.js";
 
 const TOPIC_TEST_DEFAULT_COUNT = 15;
 
 const topicsContainer = document.getElementById("topics-container");
 const startMixedBtn = document.getElementById("start-mixed-btn");
-const clearHistoryBtn = document.getElementById("clear-history-btn");
 
 let mixedCountDropdown;
 
@@ -185,6 +177,7 @@ function initTabs() {
   const views = {
     egitim: document.getElementById("view-egitim"),
     test: document.getElementById("view-test"),
+    profil: document.getElementById("view-profil"),
   };
 
   tabs.forEach((tab) => {
@@ -193,8 +186,13 @@ function initTabs() {
       tabs.forEach((other) => other.setAttribute("aria-selected", String(other === tab)));
       views.egitim.hidden = view !== "egitim";
       views.test.hidden = view !== "test";
+      views.profil.hidden = view !== "profil";
       if (view === "egitim") {
         initEducationTab();
+      } else if (view === "profil") {
+        initProfileTab();
+      } else {
+        render();
       }
     });
   });
@@ -202,19 +200,6 @@ function initTabs() {
 
 async function init() {
   initTabs();
-
-  clearHistoryBtn.hidden = getHistory().length === 0;
-  const confirmModal = createConfirmModal({
-    overlayId: "confirm-modal",
-    confirmId: "confirm-modal-confirm",
-    cancelId: "confirm-modal-cancel",
-    onConfirm: () => {
-      clearHistory();
-      clearHistoryBtn.hidden = true;
-      render();
-    },
-  });
-  clearHistoryBtn.addEventListener("click", () => confirmModal.open());
 
   mixedCountDropdown = createDropdown({
     container: document.getElementById("mixed-count-dropdown"),

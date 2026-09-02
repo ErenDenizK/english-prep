@@ -5,6 +5,32 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.5 — 2026-09-02
+
+New "Profil" tab — a real, visible local profile, replacing the previous
+silent/nameless tracking as the home for anything about *you* rather than
+about a specific test result.
+
+- **New "Profil" tab**: third tab alongside Eğitim/Test. Shows an optional
+  display name (local only, saved on this device, never sent anywhere),
+  overall stats (tests completed, questions answered, overall accuracy),
+  and — once enough data exists — which topics and which grammar
+  categories you're weakest in.
+- **Per-category weak-spot history now persists**: category results were
+  already shown per-test on the results screen, but weren't saved across
+  sessions. `recordAttempt()` now persists `categoryBreakdown` alongside
+  the existing per-topic breakdown, so "Zayıf Olduğun Kategoriler" reflects
+  real history, not just the last test.
+- **"Clear history" moved into Profil**: the old header button is gone;
+  resetting local history (same in-app confirmation modal as before) now
+  lives under Profil's "Ayarlar" section.
+- Content-freshness tracking (the "Yeni sorular eklendi" badge) is
+  unchanged and stays separate from the new profile — it isn't cleared by
+  the history reset.
+- Resolved the open design question on the quiz category eyebrow label:
+  kept, since it's the same taxonomy the Eğitim tab's lessons use, not
+  just decoration.
+
 ## v0.4 — 2026-09-02
 
 Structural UX overhaul, driven by direct feedback on the v0.3 build and

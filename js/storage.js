@@ -1,15 +1,13 @@
 // Persists quiz attempt history in localStorage so results survive across
-// visits on the same device/browser. Shaped so a future profile layer can
-// wrap this under `profiles.<id>.history` without changing this API.
-//
-// Also holds a silent, nameless "seen content" record — no login, no
-// visible profile screen — used only to power "new questions added"
-// badges: a topic whose manifest `contentVersion` is higher than what's
-// recorded here has content the learner hasn't seen yet.
+// visits on the same device/browser, plus a small local profile (optional
+// display name, and a silent "seen content" record used only to power
+// "new questions added" badges). No login, no server — everything here
+// lives entirely in this browser.
 
 const HISTORY_KEY = "englishPrep.history";
 const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
-const MIN_ATTEMPTS_FOR_WEAK_TOPIC = 3;
+const PROFILE_NAME_KEY = "englishPrep.profileName";
+const MIN_ATTEMPTS_FOR_WEAK_ENTRY = 3;
 
 function loadHistory() {
   try {
@@ -32,7 +30,7 @@ function saveHistory(history) {
 
 /**
  * Appends a completed attempt to local history.
- * @param {{date: string, mode: "mixed"|"topic", topicBreakdown: Record<string, {correct: number, total: number}>, questions: Array<{id: string, topicId: string, correct: boolean}>}} attempt
+ * @param {{date: string, mode: "mixed"|"topic", topicBreakdown: Record<string, {correct: number, total: number}>, categoryBreakdown: Record<string, {correct: number, total: number}>, questions: Array<{id: string, topicId: string, correct: boolean}>}} attempt
  */
 export function recordAttempt(attempt) {
   const history = loadHistory();
@@ -44,22 +42,36 @@ export function getHistory() {
   return loadHistory().attempts;
 }
 
+function sumBreakdowns(attempts, breakdownKey) {
+  const totals = {};
+  for (const attempt of attempts) {
+    for (const [key, stats] of Object.entries(attempt[breakdownKey] ?? {})) {
+      if (!totals[key]) {
+        totals[key] = { correct: 0, total: 0 };
+      }
+      totals[key].correct += stats.correct;
+      totals[key].total += stats.total;
+    }
+  }
+  return totals;
+}
+
 /**
  * Aggregates correct/total counts per topic across all recorded attempts.
  * @returns {Record<string, {correct: number, total: number}>}
  */
 export function getTopicTotals() {
-  const totals = {};
-  for (const attempt of getHistory()) {
-    for (const [topicId, stats] of Object.entries(attempt.topicBreakdown)) {
-      if (!totals[topicId]) {
-        totals[topicId] = { correct: 0, total: 0 };
-      }
-      totals[topicId].correct += stats.correct;
-      totals[topicId].total += stats.total;
-    }
-  }
-  return totals;
+  return sumBreakdowns(getHistory(), "topicBreakdown");
+}
+
+/**
+ * Aggregates correct/total counts per grammar category across all
+ * recorded attempts. Attempts recorded before category history existed
+ * simply have no `categoryBreakdown` and are skipped for this one.
+ * @returns {Record<string, {correct: number, total: number}>}
+ */
+export function getCategoryTotals() {
+  return sumBreakdowns(getHistory(), "categoryBreakdown");
 }
 
 /**
@@ -78,6 +90,14 @@ export function getLastTopicScore(topicId) {
   return null;
 }
 
+function weakestEntries(totals, limit) {
+  return Object.entries(totals)
+    .map(([key, stats]) => ({ key, ...stats, accuracy: stats.correct / stats.total }))
+    .filter((entry) => entry.total >= MIN_ATTEMPTS_FOR_WEAK_ENTRY && entry.accuracy < 1)
+    .sort((a, b) => a.accuracy - b.accuracy)
+    .slice(0, limit);
+}
+
 /**
  * Returns the topics the learner is weakest in, based on cumulative
  * accuracy across all attempts. Topics with too little data are excluded
@@ -86,12 +106,36 @@ export function getLastTopicScore(topicId) {
  * @returns {Array<{topicId: string, correct: number, total: number, accuracy: number}>}
  */
 export function getWeakTopics(limit = 3) {
-  const totals = getTopicTotals();
-  return Object.entries(totals)
-    .map(([topicId, stats]) => ({ topicId, ...stats, accuracy: stats.correct / stats.total }))
-    .filter((entry) => entry.total >= MIN_ATTEMPTS_FOR_WEAK_TOPIC && entry.accuracy < 1)
-    .sort((a, b) => a.accuracy - b.accuracy)
-    .slice(0, limit);
+  return weakestEntries(getTopicTotals(), limit).map(({ key, ...rest }) => ({ topicId: key, ...rest }));
+}
+
+/**
+ * Same idea as getWeakTopics, but at the finer grammar-category level
+ * (e.g. "Present Perfect vs Past Simple") rather than whole-topic level.
+ * @param {number} limit
+ * @returns {Array<{category: string, correct: number, total: number, accuracy: number}>}
+ */
+export function getWeakCategories(limit = 5) {
+  return weakestEntries(getCategoryTotals(), limit).map(({ key, ...rest }) => ({ category: key, ...rest }));
+}
+
+/**
+ * @returns {{testsCompleted: number, totalQuestions: number, totalCorrect: number, accuracy: number|null}}
+ */
+export function getOverallStats() {
+  const attempts = getHistory();
+  let totalQuestions = 0;
+  let totalCorrect = 0;
+  for (const attempt of attempts) {
+    totalQuestions += attempt.questions.length;
+    totalCorrect += attempt.questions.filter((q) => q.correct).length;
+  }
+  return {
+    testsCompleted: attempts.length,
+    totalQuestions,
+    totalCorrect,
+    accuracy: totalQuestions === 0 ? null : totalCorrect / totalQuestions,
+  };
 }
 
 export function clearHistory() {
@@ -133,5 +177,31 @@ export function markTopicSeen(topicId, version) {
     localStorage.setItem(SEEN_VERSIONS_KEY, JSON.stringify(seen));
   } catch {
     // Storage may be unavailable; the badge just won't clear this visit.
+  }
+}
+
+/**
+ * @returns {string} the learner's chosen display name, or "" if unset
+ */
+export function getProfileName() {
+  try {
+    return localStorage.getItem(PROFILE_NAME_KEY) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * @param {string} name
+ */
+export function setProfileName(name) {
+  try {
+    if (name) {
+      localStorage.setItem(PROFILE_NAME_KEY, name);
+    } else {
+      localStorage.removeItem(PROFILE_NAME_KEY);
+    }
+  } catch {
+    // Storage may be unavailable; the name just won't persist this visit.
   }
 }

@@ -168,6 +168,7 @@ async function init() {
       date: result.date,
       mode: result.mode,
       topicBreakdown: result.topicBreakdown,
+      categoryBreakdown: result.categoryBreakdown,
       questions: result.questionResults.map((question) => ({
         id: question.id,
         topicId: question.topicId,
