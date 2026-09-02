@@ -302,15 +302,49 @@ plan in this repository's history for the full reasoning.
 
 ## Versioning
 
-Releases use a simple `x.y` scheme (tagged in git), tracked in
-`CHANGELOG.md`:
+`x.y`, tracked in `CHANGELOG.md`. **`x` is fixed at `0` for the entire
+development phase and only the project owner bumps it — not a rule an
+assistant or contributor applies on their own judgment, no matter how big
+a change looks.** `1.0` marks the point the owner explicitly decides the
+app is a real first release, not any particular feature set being
+"finished." Until then:
 
-- **`x` (major)** — big feature updates: a new mode, a major UI revision, a
-  structural change to how the app works.
-- **`y` (minor)** — smaller additions: a new topic going live, the profile
-  system landing, small UI/UX tweaks.
+- **`y` (development build number)** — increments for every round of
+  shipped changes, big or small alike (a new mode is still just the next
+  `0.y`, not a reason to touch `x`). Current: see the latest entry in
+  `CHANGELOG.md`.
 
-## Roadmap beyond v2
+## Roadmap to v1.0
+
+Everything shipped so far (`v0.1`–`v0.4`) is development work toward a
+first real release, not a release itself. Below is the working list of
+what's left, roughly in the order it makes sense to tackle — see
+`CHANGELOG.md` for what's already landed under each `0.y`.
+
+1. **Real-device pass** — everything so far has been verified with
+   Playwright in a headless sandbox plus static screenshots. Before
+   anything is called `1.0`, both the owner and at least one friend should
+   actually use it on their own phones (via the `test` branch's GitHub
+   Pages preview) — real touch targets, real fonts loading, real network.
+2. **Open design thread**: the quiz category eyebrow label (e.g. "PRESENT
+   PERFECT VS PAST SIMPLE") — flagged as "not sure this is necessary" in
+   artifact feedback, deliberately left as-is pending a decision. Revisit
+   once real-device feedback is in — might stay, shrink, or go.
+3. **A second real topic** (Modals is already stubbed as `comingSoon` in
+   the manifest) — both to make Test/Eğitim feel like a real multi-topic
+   app rather than a single-topic demo, and to give the "Yeni sorular
+   eklendi" content-freshness badge a real second data point to prove
+   itself against.
+4. **Promote to `main` once approved** — `main` is still on the very first
+   development build; it only moves forward when the owner has tried a
+   build on `test` and signs off, per the branch model below. Confirm
+   GitHub Pages is actually serving `main` at that point (not left on
+   `test` from earlier testing).
+5. **Owner declares `1.0`** — once the above holds and the owner is happy,
+   they set `x` to `1`; this isn't a technical milestone this project
+   infers on its own.
+
+## Roadmap beyond v1.0
 
 - A visible profile screen (name, settings, reset) if more than one person
   ever regularly shares the same device/browser — today's silent,

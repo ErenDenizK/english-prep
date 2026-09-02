@@ -1,11 +1,14 @@
 # Changelog
 
-Versioning follows a simple `x.y` scheme — see the README for details.
+Versioning: `x.y`, `x` fixed at `0` while the app is in development — see
+the README's **Versioning** section for the exact rule (only the project
+owner bumps `x`; everything below is a `0.y` development build, not a
+release).
 
-## v2.0 — 2026-09-02
+## v0.4 — 2026-09-02
 
-Structural UX overhaul, driven by direct feedback on the v1.2 build and
-preview artifact — a new mode and a rebuilt app shell, hence the major bump.
+Structural UX overhaul, driven by direct feedback on the v0.3 build and
+preview artifact.
 
 - **App shell rewrite**: the app is now a fixed-height column (header/tabs,
   a scrolling content area, a fixed bottom action bar on quiz/results)
@@ -34,7 +37,7 @@ preview artifact — a new mode and a rebuilt app shell, hence the major bump.
   advertised) per direct feedback that both were too loud for the primary
   mobile audience.
 
-## v1.2 — 2026-09-02
+## v0.3 — 2026-09-02
 
 UI/UX polish pass, informed by the roadmap (more topics, more tiers).
 
@@ -53,9 +56,9 @@ UI/UX polish pass, informed by the roadmap (more topics, more tiers).
   temporary test edit — rendered as a disabled "Coming soon" card, excluded
   from the mixed-test question pool.
 
-## v1.1 — 2026-09-02
+## v0.2 — 2026-09-02
 
-Content and visual identity overhaul, replacing v1.0's placeholder content
+Content and visual identity overhaul, replacing v0.1's placeholder content
 and generic look before any real use.
 
 - **Tenses content rewritten**: replaced the 16 isolated, single-sentence
@@ -77,9 +80,9 @@ and generic look before any real use.
 - Manifest simplified to a single "Tenses" topic (was two separate,
   thinner per-tense topics).
 
-## v1.0 — 2026-09-02
+## v0.1 — 2026-09-02
 
-Initial release.
+Initial development build.
 
 - Home, quiz, and results screens for multiple-choice, fill-in-the-blank
   practice questions.
