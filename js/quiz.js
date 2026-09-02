@@ -158,10 +158,29 @@ async function finishQuiz() {
 function renderQuestion() {
   container.innerHTML = "";
 
+  const nav = document.createElement("div");
+  nav.className = "quiz-nav";
+
+  const exitLink = document.createElement("a");
+  exitLink.className = "quiz-nav__exit";
+  exitLink.href = "index.html";
+  exitLink.textContent = "← Back to Home";
+  nav.appendChild(exitLink);
+
   const progress = document.createElement("p");
   progress.className = "quiz-progress";
   progress.textContent = `Question ${state.currentIndex + 1} of ${state.session.length}`;
-  container.appendChild(progress);
+  nav.appendChild(progress);
+  container.appendChild(nav);
+
+  const progressTrack = document.createElement("div");
+  progressTrack.className = "progress-track";
+  const progressFill = document.createElement("div");
+  progressFill.className = "progress-track__fill";
+  const percentComplete = ((state.currentIndex + 1) / state.session.length) * 100;
+  progressFill.style.width = `${percentComplete}%`;
+  progressTrack.appendChild(progressFill);
+  container.appendChild(progressTrack);
 
   const card = document.createElement("div");
   card.id = "question-card";
@@ -197,6 +216,12 @@ function renderQuestion() {
   });
 
   card.appendChild(optionsWrap);
+
+  const hint = document.createElement("p");
+  hint.className = "keyboard-hint";
+  hint.innerHTML = "<kbd>1</kbd>–<kbd>4</kbd> to answer · <kbd>Enter</kbd> to continue";
+  card.appendChild(hint);
+
   container.appendChild(card);
 }
 

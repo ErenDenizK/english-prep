@@ -5,7 +5,21 @@
       "title": "Tenses",
       "tier": "foundations",
       "file": "data/tenses/tenses.json",
-      "questionCount": 24
+      "questionCount": 24,
+      "categories": [
+        "Present Simple vs Present Continuous",
+        "Present Perfect vs Past Simple",
+        "Past Simple vs Past Continuous vs Past Perfect",
+        "Future Forms",
+        "Perfect Aspects",
+        "Time Expressions & Signal Words"
+      ]
+    },
+    {
+      "id": "modals",
+      "title": "Modals",
+      "tier": "core-grammar",
+      "comingSoon": true
     }
   ]
 }
