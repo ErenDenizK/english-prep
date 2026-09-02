@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Results — English Prep Practice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Sonuç — English Prep Practice</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,11 +19,17 @@
     </div>
   </header>
 
-  <main class="page">
-    <div id="results-container">
-      <p class="empty-state">Loading results&hellip;</p>
+  <main class="app-content">
+    <div class="page">
+      <div id="results-container">
+        <p class="empty-state">Sonuçlar yükleniyor&hellip;</p>
+      </div>
     </div>
   </main>
+
+  <div id="results-bottom-bar" class="bottom-bar" hidden>
+    <div class="bottom-bar__inner"></div>
+  </div>
 
   <script type="module" src="js/results.js"></script>
 </body>

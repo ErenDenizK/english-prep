@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>English Prep Practice</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,42 +14,70 @@
   <header class="site-header">
     <div class="site-header__inner">
       <div>
-        <h1><a href="index.html">English Prep Practice</a></h1>
-        <p>Multiple-choice practice for the university English prep exam</p>
+        <h1>English Prep Practice</h1>
+        <p>Üniversite İngilizce hazırlık sınavı için pratik</p>
       </div>
       <button id="clear-history-btn" class="btn btn--secondary" type="button" hidden>
-        Clear history
+        Geçmişi Temizle
       </button>
     </div>
   </header>
 
-  <main class="page">
-    <section class="hero">
-      <h2 class="hero__title">Start a mixed test</h2>
-      <p class="hero__description">
-        Questions are pulled at random from every topic below. Good for a
-        general check of where you stand.
-      </p>
-      <div class="hero__controls">
-        <div class="field-row">
-          <label for="mixed-count">Questions</label>
-          <select id="mixed-count" class="select">
-            <option value="5">5</option>
-            <option value="10" selected>10</option>
-            <option value="all">All</option>
-          </select>
-        </div>
-        <button id="start-mixed-btn" class="btn" type="button">Start Mixed Test</button>
-      </div>
-    </section>
+  <nav class="tab-bar" role="tablist">
+    <button class="tab-bar__tab" type="button" role="tab" id="tab-egitim" data-view="egitim" aria-selected="false" aria-controls="view-egitim">
+      Eğitim
+    </button>
+    <button class="tab-bar__tab" type="button" role="tab" id="tab-test" data-view="test" aria-selected="true" aria-controls="view-test">
+      Test
+    </button>
+  </nav>
 
-    <section>
-      <h2>Practice by topic</h2>
-      <div id="topics-container" class="topics">
-        <p class="empty-state">Loading topics&hellip;</p>
-      </div>
-    </section>
+  <main class="app-content">
+    <div class="page">
+      <section id="view-egitim" class="view" role="tabpanel" aria-labelledby="tab-egitim" hidden>
+        <div id="lesson-container">
+          <p class="empty-state">Dersler yükleniyor&hellip;</p>
+        </div>
+      </section>
+
+      <section id="view-test" class="view" role="tabpanel" aria-labelledby="tab-test">
+        <section class="hero">
+          <h2 class="hero__title">Karışık test başlat</h2>
+          <p class="hero__description">
+            Sorular tüm konulardan rastgele gelir. Genel seviyeni kontrol
+            etmek için iyi bir başlangıç.
+          </p>
+          <div class="hero__controls">
+            <div class="field-row">
+              <label id="mixed-count-label">Soru sayısı</label>
+              <div class="dropdown" id="mixed-count-dropdown"></div>
+            </div>
+            <button id="start-mixed-btn" class="btn" type="button">Karışık Teste Başla</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>Konuya göre pratik</h2>
+          <div id="topics-container" class="topics">
+            <p class="empty-state">Konular yükleniyor&hellip;</p>
+          </div>
+        </section>
+      </section>
+    </div>
   </main>
+
+  <div class="modal-overlay" id="confirm-modal" hidden>
+    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-modal-text">
+      <p id="confirm-modal-text">
+        Kayıtlı tüm skorları silmek istediğine emin misin? Bu işlem geri
+        alınamaz.
+      </p>
+      <div class="modal__actions">
+        <button class="btn btn--secondary" type="button" id="confirm-modal-cancel">İptal</button>
+        <button class="btn btn--danger" type="button" id="confirm-modal-confirm">Sil</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="js/home.js"></script>
 </body>

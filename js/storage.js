@@ -1,8 +1,14 @@
 // Persists quiz attempt history in localStorage so results survive across
 // visits on the same device/browser. Shaped so a future profile layer can
 // wrap this under `profiles.<id>.history` without changing this API.
+//
+// Also holds a silent, nameless "seen content" record — no login, no
+// visible profile screen — used only to power "new questions added"
+// badges: a topic whose manifest `contentVersion` is higher than what's
+// recorded here has content the learner hasn't seen yet.
 
 const HISTORY_KEY = "englishPrep.history";
+const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const MIN_ATTEMPTS_FOR_WEAK_TOPIC = 3;
 
 function loadHistory() {
@@ -93,5 +99,39 @@ export function clearHistory() {
     localStorage.removeItem(HISTORY_KEY);
   } catch {
     // Nothing to do if storage is unavailable.
+  }
+}
+
+function loadSeenVersions() {
+  try {
+    const raw = localStorage.getItem(SEEN_VERSIONS_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * @param {string} topicId
+ * @returns {number} the content version the learner last saw (0 if never)
+ */
+export function getSeenVersion(topicId) {
+  return loadSeenVersions()[topicId] ?? 0;
+}
+
+/**
+ * Records that the learner has now seen a topic's current content
+ * version, clearing its "new questions added" badge.
+ * @param {string} topicId
+ * @param {number} version
+ */
+export function markTopicSeen(topicId, version) {
+  const seen = loadSeenVersions();
+  seen[topicId] = version;
+  try {
+    localStorage.setItem(SEEN_VERSIONS_KEY, JSON.stringify(seen));
+  } catch {
+    // Storage may be unavailable; the badge just won't clear this visit.
   }
 }

@@ -3,6 +3,8 @@ import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.j
 import { getQuizRequest, setQuizResult } from "./session-state.js";
 
 const container = document.getElementById("quiz-container");
+const bottomBar = document.getElementById("quiz-bottom-bar");
+const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
 
 const state = {
   session: [],
@@ -11,7 +13,25 @@ const state = {
   answered: false,
 };
 
+function showBottomBarAction(label, onClick) {
+  bottomBarInner.innerHTML = "";
+  const btn = document.createElement("button");
+  btn.className = "btn";
+  btn.type = "button";
+  btn.textContent = label;
+  btn.addEventListener("click", onClick);
+  bottomBarInner.appendChild(btn);
+  bottomBar.hidden = false;
+  btn.focus();
+}
+
+function hideBottomBar() {
+  bottomBar.hidden = true;
+  bottomBarInner.innerHTML = "";
+}
+
 function showMessage(text, { withHomeLink = true } = {}) {
+  hideBottomBar();
   container.innerHTML = "";
   const message = document.createElement("p");
   message.className = "empty-state";
@@ -22,7 +42,7 @@ function showMessage(text, { withHomeLink = true } = {}) {
     const link = document.createElement("a");
     link.className = "btn";
     link.href = "index.html";
-    link.textContent = "Back to Home";
+    link.textContent = "Ana Sayfa";
     container.appendChild(link);
   }
 }
@@ -30,6 +50,10 @@ function showMessage(text, { withHomeLink = true } = {}) {
 function renderCategoryLabel(category) {
   const label = document.createElement("p");
   label.className = "question-card__category";
+  // English grammar term inside an otherwise-Turkish page: without this,
+  // the CSS uppercase transform follows the page's lang="tr" and turns
+  // "Simple" into "SİMPLE" (Turkish dotted İ), not "SIMPLE".
+  label.lang = "en";
   label.textContent = category;
   return label;
 }
@@ -69,21 +93,17 @@ function handleOptionSelected(question, selectedOption, optionButtons) {
   });
 
   renderFeedback(question, correct);
-  renderNextAction();
+
+  const isLastQuestion = state.currentIndex === state.session.length - 1;
+  showBottomBarAction(isLastQuestion ? "Sonuçları Gör" : "Sonraki Soru", advance);
 }
 
 function renderFeedback(question, correct) {
-  const existing = document.getElementById("feedback");
-  if (existing) {
-    existing.remove();
-  }
-
   const feedback = document.createElement("div");
-  feedback.id = "feedback";
   feedback.className = `feedback ${correct ? "feedback--correct" : "feedback--incorrect"}`;
 
   const heading = document.createElement("strong");
-  heading.textContent = correct ? "Correct!" : `Incorrect — the correct answer is "${question.correctAnswer}".`;
+  heading.textContent = correct ? "Doğru!" : `Yanlış — doğru cevap: "${question.correctAnswer}".`;
   feedback.appendChild(heading);
 
   const explanation = document.createElement("p");
@@ -102,29 +122,6 @@ function renderFeedback(question, correct) {
   }
 
   document.getElementById("question-card").appendChild(feedback);
-}
-
-function renderNextAction() {
-  const existing = document.getElementById("next-action-row");
-  if (existing) {
-    existing.remove();
-  }
-
-  const isLastQuestion = state.currentIndex === state.session.length - 1;
-
-  const row = document.createElement("div");
-  row.id = "next-action-row";
-  row.className = "actions-row";
-
-  const nextBtn = document.createElement("button");
-  nextBtn.className = "btn";
-  nextBtn.type = "button";
-  nextBtn.textContent = isLastQuestion ? "See Results" : "Next Question";
-  nextBtn.addEventListener("click", advance);
-  row.appendChild(nextBtn);
-
-  document.getElementById("question-card").appendChild(row);
-  nextBtn.focus();
 }
 
 function advance() {
@@ -156,20 +153,21 @@ async function finishQuiz() {
 }
 
 function renderQuestion() {
+  hideBottomBar();
   container.innerHTML = "";
 
   const nav = document.createElement("div");
   nav.className = "quiz-nav";
 
-  const exitLink = document.createElement("a");
-  exitLink.className = "quiz-nav__exit";
-  exitLink.href = "index.html";
-  exitLink.textContent = "← Back to Home";
-  nav.appendChild(exitLink);
+  const exitBtn = document.createElement("a");
+  exitBtn.className = "quiz-nav__exit";
+  exitBtn.href = "index.html";
+  exitBtn.textContent = "← Ana Sayfa";
+  nav.appendChild(exitBtn);
 
   const progress = document.createElement("p");
   progress.className = "quiz-progress";
-  progress.textContent = `Question ${state.currentIndex + 1} of ${state.session.length}`;
+  progress.textContent = `Soru ${state.currentIndex + 1} / ${state.session.length}`;
   nav.appendChild(progress);
   container.appendChild(nav);
 
@@ -216,12 +214,6 @@ function renderQuestion() {
   });
 
   card.appendChild(optionsWrap);
-
-  const hint = document.createElement("p");
-  hint.className = "keyboard-hint";
-  hint.innerHTML = "<kbd>1</kbd>–<kbd>4</kbd> to answer · <kbd>Enter</kbd> to continue";
-  card.appendChild(hint);
-
   container.appendChild(card);
 }
 
@@ -238,14 +230,14 @@ function handleKeydown(event) {
   }
 
   if (state.answered && event.key === "Enter") {
-    document.getElementById("next-action-row")?.querySelector("button")?.click();
+    bottomBarInner.querySelector("button")?.click();
   }
 }
 
 async function init() {
   const request = getQuizRequest();
   if (!request) {
-    showMessage("No quiz is in progress. Start one from the home page.");
+    showMessage("Devam eden bir test yok. Ana sayfadan bir test başlat.");
     return;
   }
 
@@ -256,7 +248,7 @@ async function init() {
     const session = buildQuizSession(questions, request.count);
 
     if (session.length === 0) {
-      showMessage("No questions are available for this selection.");
+      showMessage("Bu seçim için soru bulunamadı.");
       return;
     }
 
@@ -266,7 +258,7 @@ async function init() {
     renderQuestion();
   } catch (error) {
     console.error(error);
-    showMessage("Something went wrong loading this quiz. Please try again.");
+    showMessage("Test yüklenirken bir sorun oluştu. Tekrar dene.");
   }
 }
 

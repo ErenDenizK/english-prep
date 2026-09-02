@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Quiz — English Prep Practice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Test — English Prep Practice</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,19 +11,17 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header__inner">
-      <div>
-        <h1><a href="index.html">English Prep Practice</a></h1>
+  <main class="app-content">
+    <div class="page">
+      <div id="quiz-container">
+        <p class="empty-state">Sorular yükleniyor&hellip;</p>
       </div>
     </div>
-  </header>
-
-  <main class="page">
-    <div id="quiz-container">
-      <p class="empty-state">Loading questions&hellip;</p>
-    </div>
   </main>
+
+  <div id="quiz-bottom-bar" class="bottom-bar" hidden>
+    <div class="bottom-bar__inner"></div>
+  </div>
 
   <script type="module" src="js/quiz.js"></script>
 </body>

@@ -340,5 +340,91 @@
       "explanation": "'Ago' belirli bir süre önce gerçekleşmiş, tamamlanmış bir olayı işaret eder ve Past Simple ile kullanılır.",
       "tip": "'X süre + ago' her zaman Past Simple ile kullanılır, Present Perfect ile değil."
     }
+  ],
+  "lessons": [
+    {
+      "category": "Present Simple vs Present Continuous",
+      "rule": "Present Simple; alışkanlıkları, rutinleri ve genel gerçekleri anlatır. Present Continuous ise şu anda veya bu aralar devam eden eylemleri anlatır.",
+      "examples": [
+        {
+          "sentence": "She goes to the gym every morning.",
+          "note": "Alışkanlık → Present Simple"
+        },
+        {
+          "sentence": "She is going to the gym right now.",
+          "note": "Şu an oluyor → Present Continuous"
+        }
+      ]
+    },
+    {
+      "category": "Present Perfect vs Past Simple",
+      "rule": "Past Simple, net bir zaman ifadesiyle (yesterday, in 2020) tamamlanmış bir olayı anlatır. Present Perfect ise net bir zaman belirtmeden, geçmişin bugüne etkisini ya da belirsiz bir zamanda olan bir şeyi anlatır.",
+      "examples": [
+        {
+          "sentence": "I visited Paris last summer.",
+          "note": "Belirli zaman → Past Simple"
+        },
+        {
+          "sentence": "I have visited Paris three times.",
+          "note": "Belirsiz zaman/deneyim → Present Perfect"
+        }
+      ]
+    },
+    {
+      "category": "Past Simple vs Past Continuous vs Past Perfect",
+      "rule": "Past Simple tamamlanmış bir geçmiş eylemi, Past Continuous geçmişte devam eden bir eylemi, Past Perfect ise geçmişteki başka bir olaydan önce tamamlanmış bir eylemi anlatır.",
+      "examples": [
+        {
+          "sentence": "He was watching TV when I called.",
+          "note": "Devam eden eylem → Past Continuous"
+        },
+        {
+          "sentence": "He had already left when I arrived.",
+          "note": "Daha önce tamamlanmış → Past Perfect"
+        }
+      ]
+    },
+    {
+      "category": "Future Forms",
+      "rule": "'Will' anlık kararlar ve tahminler için, 'be going to' somut kanıta dayanan planlar için, Present Continuous ise kesinleşmiş kişisel planlar için kullanılır.",
+      "examples": [
+        {
+          "sentence": "I think I'll have the soup.",
+          "note": "Anlık karar → will"
+        },
+        {
+          "sentence": "We are meeting the dentist on Friday.",
+          "note": "Kesin plan → Present Continuous"
+        }
+      ]
+    },
+    {
+      "category": "Perfect Aspects",
+      "rule": "Present Perfect Simple bir eylemin sonucuna veya ne kadarının tamamlandığına odaklanır; Present Perfect Continuous ise eylemin süresine ve hâlâ devam ettiğine odaklanır.",
+      "examples": [
+        {
+          "sentence": "I have written two chapters.",
+          "note": "Ne kadar tamamlandı → Present Perfect Simple"
+        },
+        {
+          "sentence": "I have been writing for two hours.",
+          "note": "Süreç ve süre → Present Perfect Continuous"
+        }
+      ]
+    },
+    {
+      "category": "Time Expressions & Signal Words",
+      "rule": "'Since' belirli bir başlangıç noktasıyla, 'for' bir süre miktarıyla, 'ago' ise Past Simple ile kullanılan tamamlanmış bir geçmiş zaman noktasıyla kullanılır.",
+      "examples": [
+        {
+          "sentence": "I have lived here since 2019.",
+          "note": "Başlangıç noktası → since"
+        },
+        {
+          "sentence": "I have lived here for five years.",
+          "note": "Süre miktarı → for"
+        }
+      ]
+    }
   ]
 }

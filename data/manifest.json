@@ -6,6 +6,7 @@
       "tier": "foundations",
       "file": "data/tenses/tenses.json",
       "questionCount": 24,
+      "contentVersion": 1,
       "categories": [
         "Present Simple vs Present Continuous",
         "Present Perfect vs Past Simple",

@@ -3,6 +3,8 @@ import { getQuizResult, setQuizResult } from "./session-state.js";
 import { recordAttempt, getWeakTopics } from "./storage.js";
 
 const container = document.getElementById("results-container");
+const bottomBar = document.getElementById("results-bottom-bar");
+const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
 
 function showMessage(text) {
   container.innerHTML = "";
@@ -11,15 +13,17 @@ function showMessage(text) {
   message.textContent = text;
   container.appendChild(message);
 
+  bottomBarInner.innerHTML = "";
   const link = document.createElement("a");
   link.className = "btn";
   link.href = "index.html";
-  link.textContent = "Back to Home";
-  container.appendChild(link);
+  link.textContent = "Ana Sayfa";
+  bottomBarInner.appendChild(link);
+  bottomBar.hidden = false;
 }
 
 function formatPercent(correct, total) {
-  return total === 0 ? "0%" : `${Math.round((correct / total) * 100)}%`;
+  return total === 0 ? "%0" : `%${Math.round((correct / total) * 100)}`;
 }
 
 function renderScoreSummary(result) {
@@ -32,7 +36,7 @@ function renderScoreSummary(result) {
   summary.appendChild(value);
 
   const label = document.createElement("p");
-  label.textContent = `${formatPercent(result.correctCount, result.totalCount)} correct`;
+  label.textContent = `${formatPercent(result.correctCount, result.totalCount)} doğru`;
   summary.appendChild(label);
 
   return summary;
@@ -47,7 +51,7 @@ function renderWeakTopicsCallout(titleById) {
   const names = weakTopics.map((entry) => titleById.get(entry.topicId) ?? entry.topicId).join(", ");
   const callout = document.createElement("div");
   callout.className = "callout";
-  callout.textContent = `Focus on this next: ${names}`;
+  callout.textContent = `Sırada bu konuya odaklan: ${names}`;
   return callout;
 }
 
@@ -86,7 +90,7 @@ function renderBreakdown(heading, breakdown, resolveName) {
 function renderReview(result) {
   const section = document.createElement("section");
   const heading = document.createElement("h2");
-  heading.textContent = "Review";
+  heading.textContent = "İnceleme";
   section.appendChild(heading);
 
   result.questionResults.forEach((question, index) => {
@@ -100,13 +104,13 @@ function renderReview(result) {
 
     const yourAnswer = document.createElement("p");
     yourAnswer.className = `review-item__answer review-item__answer--${question.correct ? "correct" : "incorrect"}`;
-    yourAnswer.textContent = `Your answer: ${question.selectedAnswer}`;
+    yourAnswer.textContent = `Cevabın: ${question.selectedAnswer}`;
     item.appendChild(yourAnswer);
 
     if (!question.correct) {
       const correctAnswer = document.createElement("p");
       correctAnswer.className = "review-item__answer review-item__answer--correct";
-      correctAnswer.textContent = `Correct answer: ${question.correctAnswer}`;
+      correctAnswer.textContent = `Doğru cevap: ${question.correctAnswer}`;
       item.appendChild(correctAnswer);
     }
 
@@ -131,32 +135,31 @@ function renderReview(result) {
   return section;
 }
 
-function renderActions() {
-  const row = document.createElement("div");
-  row.className = "actions-row";
+function renderBottomBarActions() {
+  bottomBarInner.innerHTML = "";
 
   const retryBtn = document.createElement("button");
   retryBtn.className = "btn";
   retryBtn.type = "button";
-  retryBtn.textContent = "Try Again";
+  retryBtn.textContent = "Tekrar Dene";
   retryBtn.addEventListener("click", () => {
     window.location.href = "quiz.html";
   });
-  row.appendChild(retryBtn);
+  bottomBarInner.appendChild(retryBtn);
 
   const homeLink = document.createElement("a");
   homeLink.className = "btn btn--secondary";
   homeLink.href = "index.html";
-  homeLink.textContent = "Back to Home";
-  row.appendChild(homeLink);
+  homeLink.textContent = "Ana Sayfa";
+  bottomBarInner.appendChild(homeLink);
 
-  return row;
+  bottomBar.hidden = false;
 }
 
 async function init() {
   const result = getQuizResult();
   if (!result) {
-    showMessage("No results to show yet. Start a test from the home page.");
+    showMessage("Henüz gösterilecek bir sonuç yok. Ana sayfadan bir test başlat.");
     return;
   }
 
@@ -186,7 +189,7 @@ async function init() {
     container.appendChild(weakCallout);
   }
 
-  const topicBreakdown = renderBreakdown("Breakdown by Topic", result.topicBreakdown, (topicId) =>
+  const topicBreakdown = renderBreakdown("Konuya Göre Dağılım", result.topicBreakdown, (topicId) =>
     titleById.get(topicId) ?? topicId
   );
   if (topicBreakdown) {
@@ -195,7 +198,7 @@ async function init() {
 
   if (result.categoryBreakdown) {
     const categoryBreakdown = renderBreakdown(
-      "Breakdown by Category",
+      "Kategoriye Göre Dağılım",
       result.categoryBreakdown,
       (category) => category
     );
@@ -205,7 +208,7 @@ async function init() {
   }
 
   container.appendChild(renderReview(result));
-  container.appendChild(renderActions());
+  renderBottomBarActions();
 }
 
 init();
