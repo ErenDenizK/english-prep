@@ -12,9 +12,9 @@ export const TIER_ORDER = [
 ];
 
 export const TIER_LABELS = {
-  foundations: "Foundations",
-  "core-grammar": "Core Grammar",
-  "compound-structures": "Compound Structures",
-  advanced: "Advanced",
-  vocabulary: "Vocabulary",
+  foundations: "Temeller",
+  "core-grammar": "Temel Dilbilgisi",
+  "compound-structures": "Bileşik Yapılar",
+  advanced: "İleri Seviye",
+  vocabulary: "Kelime Bilgisi",
 };

@@ -1,14 +1,25 @@
 import { loadManifest } from "./topics.js";
-import { getLastTopicScore, getWeakTopics, getHistory, clearHistory } from "./storage.js";
+import {
+  getLastTopicScore,
+  getWeakTopics,
+  getHistory,
+  clearHistory,
+  getSeenVersion,
+  markTopicSeen,
+} from "./storage.js";
 import { setQuizRequest } from "./session-state.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
+import { createDropdown } from "./dropdown.js";
+import { createConfirmModal } from "./modal.js";
+import { initEducationTab } from "./education.js";
 
 const TOPIC_TEST_DEFAULT_COUNT = 15;
 
 const topicsContainer = document.getElementById("topics-container");
 const startMixedBtn = document.getElementById("start-mixed-btn");
-const mixedCountSelect = document.getElementById("mixed-count");
 const clearHistoryBtn = document.getElementById("clear-history-btn");
+
+let mixedCountDropdown;
 
 function startQuiz(request) {
   setQuizRequest(request);
@@ -17,6 +28,12 @@ function startQuiz(request) {
 
 function parseCount(rawValue) {
   return rawValue === "all" ? "all" : Number(rawValue);
+}
+
+function markSeenIfVersioned(topic) {
+  if (typeof topic.contentVersion === "number") {
+    markTopicSeen(topic.id, topic.contentVersion);
+  }
 }
 
 const MAX_VISIBLE_CATEGORY_CHIPS = 3;
@@ -37,7 +54,7 @@ function buildCategoryChips(categories) {
   if (remaining > 0) {
     const chip = document.createElement("span");
     chip.className = "category-chip category-chip--more";
-    chip.textContent = `+${remaining} more`;
+    chip.textContent = `+${remaining} tane daha`;
     wrap.appendChild(chip);
   }
 
@@ -54,7 +71,7 @@ function buildComingSoonCard(topic) {
 
   const badge = document.createElement("span");
   badge.className = "badge badge--muted";
-  badge.textContent = "Coming soon";
+  badge.textContent = "Yakında";
   card.appendChild(badge);
 
   return card;
@@ -74,34 +91,42 @@ function buildTopicCard(topic, weakTopicIds) {
 
   const meta = document.createElement("p");
   meta.className = "topic-card__meta";
-  meta.textContent = `${topic.questionCount} questions`;
+  meta.textContent = `${topic.questionCount} soru`;
   card.appendChild(meta);
 
   if (topic.categories?.length) {
     card.appendChild(buildCategoryChips(topic.categories));
   }
 
+  if (typeof topic.contentVersion === "number" && getSeenVersion(topic.id) < topic.contentVersion) {
+    const badge = document.createElement("span");
+    badge.className = "badge badge--new";
+    badge.textContent = "Yeni sorular eklendi";
+    card.appendChild(badge);
+  }
+
   const lastScore = getLastTopicScore(topic.id);
   if (lastScore) {
     const badge = document.createElement("span");
     badge.className = "badge";
-    badge.textContent = `Last score: ${lastScore.correct}/${lastScore.total}`;
+    badge.textContent = `Son skor: ${lastScore.correct}/${lastScore.total}`;
     card.appendChild(badge);
   }
 
   if (weakTopicIds.has(topic.id)) {
     const badge = document.createElement("span");
     badge.className = "badge";
-    badge.textContent = "Needs practice";
+    badge.textContent = "Pratik gerekiyor";
     card.appendChild(badge);
   }
 
   const startBtn = document.createElement("button");
   startBtn.className = "btn btn--secondary";
   startBtn.type = "button";
-  startBtn.textContent = "Start Topic Test";
+  startBtn.textContent = "Bu Konudan Başla";
   startBtn.addEventListener("click", () => {
     const count = Math.min(TOPIC_TEST_DEFAULT_COUNT, topic.questionCount);
+    markSeenIfVersioned(topic);
     startQuiz({ mode: "topic", topicIds: [topic.id], count });
   });
   card.appendChild(startBtn);
@@ -124,7 +149,7 @@ function renderTopics(topics, weakTopicIds) {
   if (topics.length === 0) {
     const empty = document.createElement("p");
     empty.className = "empty-state";
-    empty.textContent = "No topics are available yet.";
+    empty.textContent = "Henüz konu eklenmedi.";
     topicsContainer.appendChild(empty);
     return;
   }
@@ -155,22 +180,64 @@ function renderTopics(topics, weakTopicIds) {
   });
 }
 
+function initTabs() {
+  const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
+  const views = {
+    egitim: document.getElementById("view-egitim"),
+    test: document.getElementById("view-test"),
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const view = tab.dataset.view;
+      tabs.forEach((other) => other.setAttribute("aria-selected", String(other === tab)));
+      views.egitim.hidden = view !== "egitim";
+      views.test.hidden = view !== "test";
+      if (view === "egitim") {
+        initEducationTab();
+      }
+    });
+  });
+}
+
 async function init() {
+  initTabs();
+
   clearHistoryBtn.hidden = getHistory().length === 0;
-  clearHistoryBtn.addEventListener("click", () => {
-    const confirmed = window.confirm("Clear all locally saved scores? This cannot be undone.");
-    if (!confirmed) {
-      return;
-    }
-    clearHistory();
-    clearHistoryBtn.hidden = true;
-    render();
+  const confirmModal = createConfirmModal({
+    overlayId: "confirm-modal",
+    confirmId: "confirm-modal-confirm",
+    cancelId: "confirm-modal-cancel",
+    onConfirm: () => {
+      clearHistory();
+      clearHistoryBtn.hidden = true;
+      render();
+    },
+  });
+  clearHistoryBtn.addEventListener("click", () => confirmModal.open());
+
+  mixedCountDropdown = createDropdown({
+    container: document.getElementById("mixed-count-dropdown"),
+    options: [
+      { value: "5", label: "5" },
+      { value: "10", label: "10" },
+      { value: "all", label: "Tümü" },
+    ],
+    value: "10",
+    onChange: () => {},
+    labelledBy: "mixed-count-label",
   });
 
   startMixedBtn.addEventListener("click", async () => {
     const manifest = await loadManifest();
-    const availableTopicIds = manifest.topics.filter((topic) => !topic.comingSoon).map((topic) => topic.id);
-    startQuiz({ mode: "mixed", topicIds: availableTopicIds, count: parseCount(mixedCountSelect.value) });
+    const availableTopics = manifest.topics.filter((topic) => !topic.comingSoon);
+    availableTopics.forEach(markSeenIfVersioned);
+    const availableTopicIds = availableTopics.map((topic) => topic.id);
+    startQuiz({
+      mode: "mixed",
+      topicIds: availableTopicIds,
+      count: parseCount(mixedCountDropdown.getValue()),
+    });
   });
 
   await render();
@@ -185,7 +252,7 @@ async function render() {
     topicsContainer.innerHTML = "";
     const message = document.createElement("p");
     message.className = "empty-state";
-    message.textContent = "Could not load topics. Please refresh the page.";
+    message.textContent = "Konular yüklenemedi. Sayfayı yenile.";
     topicsContainer.appendChild(message);
     console.error(error);
   }

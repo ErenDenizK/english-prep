@@ -7,15 +7,34 @@ no accounts, no backend, no build step.
 
 ## How it works
 
-- Pick a topic (e.g. Tenses) or start a mixed test drawing from every topic
-  at once.
-- Answer multiple-choice, paragraph-based cloze questions with instant
+The interface (buttons, headings, status text) is in Turkish, since that's
+the audience; practice sentences stay in English (that's the exam) and
+explanations/tips stay in Turkish (already were). Grammar category labels
+(e.g. "Present Perfect vs Past Simple") stay in English — students need to
+recognize the English grammar terms.
+
+Two tabs:
+
+- **Eğitim** — a fast, example-driven tour through each topic's grammar
+  categories: a short rule plus simple example sentences, paged with
+  Next/Previous. No scoring, just teaching.
+- **Test** — pick a topic or start a mixed test drawing from every topic at
+  once. Multiple-choice, paragraph-based cloze questions with instant
   feedback: a full explanation plus a short, generalizable rule after every
-  answer.
-- See your score, a breakdown by topic and by grammar category (e.g.
-  "Present Perfect vs Past Simple: 3/4"), and — once you've done a few
-  tests — which topics you're weakest in, based on data saved locally in
-  your browser (`localStorage`). Nothing is sent to a server.
+  answer. See your score, a breakdown by topic and by grammar category
+  (e.g. "Present Perfect vs Past Simple: 3/4"), and — once you've done a
+  few tests — which topics you're weakest in, based on data saved locally
+  in your browser (`localStorage`). Nothing is sent to a server. A topic
+  whose content has grown since your last visit shows a "Yeni sorular
+  eklendi" badge (see **Silent content-freshness tracking** below).
+
+The whole app is a fixed-height "app shell" (header/tabs, a scrolling
+content area with no visible scrollbar, and a fixed bottom action bar on
+the quiz/results screens) rather than an ordinary scrolling web page —
+answering a question never shifts the button you're about to tap next, and
+nothing on any screen ever causes horizontal shift. All interactive
+controls (the question-count picker, the clear-history confirmation) are
+the app's own components, not native browser `<select>`/`confirm()` chrome.
 
 ## Running locally
 
@@ -52,13 +71,19 @@ No GitHub Actions workflow is required since there's nothing to build.
 ## Project structure
 
 ```
-index.html          Home: topic selection + mixed test
+index.html          Home: Eğitim/Test tabs, topic selection, mixed test
 quiz.html            Question-answering screen
 results.html          Score, breakdown, and review
-css/style.css          Single stylesheet (mobile-first, responsive)
+css/style.css          Single stylesheet — the fixed app-shell layout,
+                         custom dropdown/modal components, mobile-first
 js/                     ES modules — see file-level comments for each one's role
-data/manifest.json       Topic index (id, title, tier, file, question count)
-data/tenses/tenses.json    Tenses topic: all questions, grouped by category
+  dropdown.js             Custom dropdown (replaces native <select>)
+  modal.js                Custom confirm modal (replaces window.confirm)
+  education.js             Eğitim tab: paginated lesson viewer
+data/manifest.json       Topic index (id, title, tier, file, question count,
+                            contentVersion, categories)
+data/tenses/tenses.json    Tenses topic: questions (grouped by category) and
+                            lessons (one per category, for the Eğitim tab)
 ```
 
 ## Design
@@ -90,6 +115,7 @@ A manifest entry looks like:
   "tier": "foundations",
   "file": "data/tenses/tenses.json",
   "questionCount": 24,
+  "contentVersion": 1,
   "categories": ["Present Simple vs Present Continuous", "..."]
 }
 ```
@@ -98,11 +124,26 @@ A manifest entry looks like:
   topic's questions, shown as preview chips on its home-page card. Purely
   cosmetic; keep it in sync with the categories actually used in the
   topic's question file.
+- **`contentVersion`** (optional integer, start at `1`) — bump it whenever
+  you add or materially change questions in this topic. The app compares
+  it against what a learner's browser last recorded (a silent, nameless
+  local record — see below) and shows a "Yeni sorular eklendi" badge on
+  the topic card when the manifest's version is higher. Starting a test
+  for that topic marks the new version as seen. Omit the field entirely if
+  you don't want freshness tracking for a topic.
 - **`comingSoon`** (optional, `true`/omit) — marks a topic as a roadmap
   teaser: it renders a disabled card with a "Coming soon" badge, is
   excluded from the mixed-test question pool, and needs no `file` or
   `questionCount` yet. Flip it to a real entry (add `file` +
   `questionCount`, drop `comingSoon`) once the content is authored.
+
+## Silent content-freshness tracking
+
+There's no login and no visible "profile" screen — just a small,
+nameless local record (`localStorage`, same mechanism as the score
+history) of which `contentVersion` a learner has last seen per topic. It
+exists solely to power the "new questions added" badge described above.
+See `getSeenVersion`/`markTopicSeen` in `js/storage.js`.
 
 ### Question schema
 
@@ -187,6 +228,56 @@ the topic, categories, and count):
 > - Vary subjects, contexts, and sentence structure across questions; avoid
 >   repeating the same scenario.
 
+### Lesson schema (Eğitim tab)
+
+Alongside `questions`, a topic file can carry a `lessons` array — one
+entry per category, used by the Eğitim tab's paginated tour. Same category
+taxonomy as the questions, so there's one set of category names per topic,
+not two.
+
+```json
+{
+  "topicId": "tenses",
+  "title": "Tenses",
+  "questions": [ "..." ],
+  "lessons": [
+    {
+      "category": "Present Simple vs Present Continuous",
+      "rule": "Kısa, net bir Türkçe kural açıklaması.",
+      "examples": [
+        { "sentence": "She goes to the gym every morning.", "note": "Alışkanlık → Present Simple" },
+        { "sentence": "She is going to the gym right now.", "note": "Şu an oluyor → Present Continuous" }
+      ]
+    }
+  ]
+}
+```
+
+- **`category`** — must match a category name used in that topic's
+  `questions`.
+- **`rule`** — **in Turkish**, one or two sentences stating the general
+  pattern (not tied to a specific example).
+- **`examples`** — 2–3 entries, each a clean, isolated English sentence
+  (simpler than a test paragraph — teaching, not testing) demonstrating the
+  rule, with a short Turkish `note` naming which form and why.
+
+Prompt template for AI-authored lessons:
+
+> Write a short lesson for the topic "[TOPIC NAME]", category "[CATEGORY
+> NAME]", for a Turkish university English prep-school student. Return
+> JSON matching this exact shape:
+>
+> `{ "category": string, "rule": string, "examples": [{ "sentence": string, "note": string }] }`
+>
+> Rules:
+> - `rule` must be in Turkish, one or two sentences, stating the general
+>   pattern — not tied to any one example.
+> - Provide 2–3 `examples`. Each `sentence` is a clean, simple, isolated
+>   English sentence (much simpler than an exam paragraph — this is
+>   teaching, not testing) that clearly demonstrates the rule.
+> - Each example's `note` is a short Turkish phrase naming the form and
+>   why it applies (e.g. "Alışkanlık → Present Simple").
+
 ## Topic roadmap
 
 The long-term goal is to cover the full prep-school grammar syllabus. New
@@ -219,11 +310,12 @@ Releases use a simple `x.y` scheme (tagged in git), tracked in
 - **`y` (minor)** — smaller additions: a new topic going live, the profile
   system landing, small UI/UX tweaks.
 
-## Roadmap beyond v1
+## Roadmap beyond v2
 
-- A lightweight local profile (name, settings, reset) once more than one
-  person regularly uses the same device/browser.
+- A visible profile screen (name, settings, reset) if more than one person
+  ever regularly shares the same device/browser — today's silent,
+  nameless local record (see above) covers what's needed for now.
 - A guided, sequential "learning path" mode through topics, building on the
-  per-topic weak-spot data already collected in v1.
+  per-topic weak-spot data already collected.
 - A dedicated question format for Vocabulary/Word Formation.
 - Persisting per-category (not just per-topic) weak-spot history.

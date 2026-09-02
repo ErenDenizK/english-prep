@@ -2,6 +2,38 @@
 
 Versioning follows a simple `x.y` scheme — see the README for details.
 
+## v2.0 — 2026-09-02
+
+Structural UX overhaul, driven by direct feedback on the v1.2 build and
+preview artifact — a new mode and a rebuilt app shell, hence the major bump.
+
+- **App shell rewrite**: the app is now a fixed-height column (header/tabs,
+  a scrolling content area, a fixed bottom action bar on quiz/results)
+  instead of an ordinary scrolling page. Answering a question no longer
+  pushes the "Next Question" button around, and no screen ever shifts
+  horizontally (no visible scrollbar anywhere, hidden via CSS while
+  staying scrollable).
+- **New "Eğitim" (teaching) mode**: a segmented Eğitim/Test tab control on
+  the home screen. Eğitim is a fast, paginated tour through each topic's
+  categories — a short rule plus simple examples, no scoring. Ships with 6
+  real lessons for Tenses.
+- **Custom in-app components replace native browser chrome**: the
+  question-count picker is now an app-owned dropdown instead of `<select>`;
+  "Clear history" now opens an in-app confirmation modal instead of
+  `window.confirm()`. Neither can trigger OS-native UI or reflow the page.
+- **Silent content-freshness tracking**: a nameless local record (extending
+  the existing score history, no login, no visible profile screen) tracks
+  which `contentVersion` of a topic a learner has seen, showing a "Yeni
+  sorular eklendi" badge when it's grown since their last visit.
+- **Full Turkish UI copy pass**: every interface string (buttons, headings,
+  status lines, empty states) is now in Turkish. Practice sentences stay
+  English; explanations/tips stay Turkish (already were); grammar category
+  labels stay English.
+- De-emphasized the `____` blank styling and removed the visible
+  keyboard-shortcut hint (the 1–4/Enter shortcuts still work, just aren't
+  advertised) per direct feedback that both were too loud for the primary
+  mobile audience.
+
 ## v1.2 — 2026-09-02
 
 UI/UX polish pass, informed by the roadmap (more topics, more tiers).
