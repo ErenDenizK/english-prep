@@ -19,7 +19,52 @@ function parseCount(rawValue) {
   return rawValue === "all" ? "all" : Number(rawValue);
 }
 
+const MAX_VISIBLE_CATEGORY_CHIPS = 3;
+
+function buildCategoryChips(categories) {
+  const wrap = document.createElement("div");
+  wrap.className = "category-chips";
+
+  const visible = categories.slice(0, MAX_VISIBLE_CATEGORY_CHIPS);
+  visible.forEach((category) => {
+    const chip = document.createElement("span");
+    chip.className = "category-chip";
+    chip.textContent = category;
+    wrap.appendChild(chip);
+  });
+
+  const remaining = categories.length - visible.length;
+  if (remaining > 0) {
+    const chip = document.createElement("span");
+    chip.className = "category-chip category-chip--more";
+    chip.textContent = `+${remaining} more`;
+    wrap.appendChild(chip);
+  }
+
+  return wrap;
+}
+
+function buildComingSoonCard(topic) {
+  const card = document.createElement("div");
+  card.className = "topic-card topic-card--coming-soon";
+
+  const title = document.createElement("h3");
+  title.textContent = topic.title;
+  card.appendChild(title);
+
+  const badge = document.createElement("span");
+  badge.className = "badge badge--muted";
+  badge.textContent = "Coming soon";
+  card.appendChild(badge);
+
+  return card;
+}
+
 function buildTopicCard(topic, weakTopicIds) {
+  if (topic.comingSoon) {
+    return buildComingSoonCard(topic);
+  }
+
   const card = document.createElement("div");
   card.className = "topic-card";
 
@@ -31,6 +76,10 @@ function buildTopicCard(topic, weakTopicIds) {
   meta.className = "topic-card__meta";
   meta.textContent = `${topic.questionCount} questions`;
   card.appendChild(meta);
+
+  if (topic.categories?.length) {
+    card.appendChild(buildCategoryChips(topic.categories));
+  }
 
   const lastScore = getLastTopicScore(topic.id);
   if (lastScore) {
@@ -120,8 +169,8 @@ async function init() {
 
   startMixedBtn.addEventListener("click", async () => {
     const manifest = await loadManifest();
-    const allTopicIds = manifest.topics.map((topic) => topic.id);
-    startQuiz({ mode: "mixed", topicIds: allTopicIds, count: parseCount(mixedCountSelect.value) });
+    const availableTopicIds = manifest.topics.filter((topic) => !topic.comingSoon).map((topic) => topic.id);
+    startQuiz({ mode: "mixed", topicIds: availableTopicIds, count: parseCount(mixedCountSelect.value) });
   });
 
   await render();
