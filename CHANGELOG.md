@@ -2,6 +2,25 @@
 
 Versioning follows a simple `x.y` scheme — see the README for details.
 
+## v1.2 — 2026-09-02
+
+UI/UX polish pass, informed by the roadmap (more topics, more tiers).
+
+- Fixed a box-width inconsistency: the topic grid used `auto-fill` (which
+  reserves empty grid tracks) and its padding wasn't scoped to a bordered
+  container, so topic cards floated narrower than the hero panel with
+  unexplained dead space. Switched to `auto-fit` and moved the grid's
+  padding onto `.topic-tier`, so panels at the same nesting level always
+  match widths.
+- Quiz screen: added a "Back to Home" exit link, an animated progress bar,
+  and a visible keyboard-shortcut hint (the 1-4/Enter shortcuts already
+  worked but were undiscoverable).
+- Topic cards now show a category-preview chip row.
+- Added a real "Modals" (Core Grammar tier) `comingSoon` manifest entry, so
+  the tier accordion groups topics for real today instead of only in a
+  temporary test edit — rendered as a disabled "Coming soon" card, excluded
+  from the mixed-test question pool.
+
 ## v1.1 — 2026-09-02
 
 Content and visual identity overhaul, replacing v1.0's placeholder content
