@@ -1,4 +1,16 @@
-// Loads the topic manifest and question sets from the static data/ folder.
+// Loads the topic manifest and question sets from the static data/ folder,
+// and normalizes the authored question schema into the shape the rest of
+// the app works with.
+//
+// Authored schema (what question files contain, see README for the full
+// spec): { id, category, paragraph, options, correctIndex, explanation, tip }
+// Internal shape (what this module returns): { id, category, prompt,
+// options, correctAnswer, explanation, tip }
+//
+// The split exists so content authors write `correctIndex` against a fixed
+// options list (robust, easy for AI to generate), while the quiz engine
+// scores against a `correctAnswer` string (stable even after options are
+// shuffled for display).
 
 const MANIFEST_URL = "data/manifest.json";
 
@@ -13,9 +25,21 @@ export async function loadManifest() {
   return response.json();
 }
 
+function normalizeQuestion(question) {
+  return {
+    id: question.id,
+    category: question.category,
+    prompt: question.paragraph,
+    options: question.options,
+    correctAnswer: question.options[question.correctIndex],
+    explanation: question.explanation,
+    tip: question.tip,
+  };
+}
+
 /**
  * @param {{id: string, file: string}} topic
- * @returns {Promise<Array<object>>} the topic's questions, unmodified
+ * @returns {Promise<Array<object>>} the topic's questions, normalized
  */
 export async function loadTopicQuestions(topic) {
   const response = await fetch(topic.file);
@@ -23,7 +47,7 @@ export async function loadTopicQuestions(topic) {
     throw new Error(`Failed to load questions for topic "${topic.id}".`);
   }
   const data = await response.json();
-  return data.questions;
+  return data.questions.map(normalizeQuestion);
 }
 
 /**

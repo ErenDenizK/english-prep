@@ -41,15 +41,26 @@ export function isCorrectAnswer(question, selectedOption) {
   return normalizeAnswer(selectedOption) === normalizeAnswer(question.correctAnswer);
 }
 
+function tallyBreakdown(breakdown, key, correct) {
+  if (!breakdown[key]) {
+    breakdown[key] = { correct: 0, total: 0 };
+  }
+  breakdown[key].total += 1;
+  if (correct) {
+    breakdown[key].correct += 1;
+  }
+}
+
 /**
  * Scores a completed session against the answers the learner picked.
  * @param {Array<object>} session - questions as returned by buildQuizSession
  * @param {Array<string>} selectedAnswers - one selected option string per question, same order
- * @returns {{correctCount: number, totalCount: number, topicBreakdown: Record<string, {correct: number, total: number}>, questionResults: Array<object>}}
+ * @returns {{correctCount: number, totalCount: number, topicBreakdown: Record<string, {correct: number, total: number}>, categoryBreakdown: Record<string, {correct: number, total: number}>, questionResults: Array<object>}}
  */
 export function scoreSession(session, selectedAnswers) {
   let correctCount = 0;
   const topicBreakdown = {};
+  const categoryBreakdown = {};
   const questionResults = session.map((question, index) => {
     const selectedAnswer = selectedAnswers[index];
     const correct = isCorrectAnswer(question, selectedAnswer);
@@ -57,20 +68,19 @@ export function scoreSession(session, selectedAnswers) {
       correctCount += 1;
     }
 
-    if (!topicBreakdown[question.topicId]) {
-      topicBreakdown[question.topicId] = { correct: 0, total: 0 };
-    }
-    topicBreakdown[question.topicId].total += 1;
-    if (correct) {
-      topicBreakdown[question.topicId].correct += 1;
+    tallyBreakdown(topicBreakdown, question.topicId, correct);
+    if (question.category) {
+      tallyBreakdown(categoryBreakdown, question.category, correct);
     }
 
     return {
       id: question.id,
       topicId: question.topicId,
+      category: question.category,
       prompt: question.prompt,
       correctAnswer: question.correctAnswer,
       explanation: question.explanation,
+      tip: question.tip,
       selectedAnswer,
       correct,
     };
@@ -80,6 +90,7 @@ export function scoreSession(session, selectedAnswers) {
     correctCount,
     totalCount: session.length,
     topicBreakdown,
+    categoryBreakdown,
     questionResults,
   };
 }
