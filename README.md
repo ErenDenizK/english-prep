@@ -13,7 +13,7 @@ explanations/tips stay in Turkish (already were). Grammar category labels
 (e.g. "Present Perfect vs Past Simple") stay in English — students need to
 recognize the English grammar terms.
 
-Two tabs:
+Three tabs:
 
 - **Eğitim** — a fast, example-driven tour through each topic's grammar
   categories: a short rule plus simple example sentences, paged with
@@ -21,12 +21,15 @@ Two tabs:
 - **Test** — pick a topic or start a mixed test drawing from every topic at
   once. Multiple-choice, paragraph-based cloze questions with instant
   feedback: a full explanation plus a short, generalizable rule after every
-  answer. See your score, a breakdown by topic and by grammar category
-  (e.g. "Present Perfect vs Past Simple: 3/4"), and — once you've done a
-  few tests — which topics you're weakest in, based on data saved locally
-  in your browser (`localStorage`). Nothing is sent to a server. A topic
-  whose content has grown since your last visit shows a "Yeni sorular
-  eklendi" badge (see **Silent content-freshness tracking** below).
+  answer. See your score and a breakdown by topic and by grammar category
+  (e.g. "Present Perfect vs Past Simple: 3/4"). Nothing is sent to a
+  server — all of it is saved locally in your browser (`localStorage`). A
+  topic whose content has grown since your last visit shows a "Yeni
+  sorular eklendi" badge (see **Content-freshness tracking** below).
+- **Profil** — an optional display name (local only, never sent anywhere),
+  overall stats (tests completed, questions answered, accuracy), and —
+  once you've done a few tests — which topics and which grammar categories
+  you're weakest in, plus a reset button for all locally saved history.
 
 The whole app is a fixed-height "app shell" (header/tabs, a scrolling
 content area with no visible scrollbar, and a fixed bottom action bar on
@@ -126,24 +129,25 @@ A manifest entry looks like:
   topic's question file.
 - **`contentVersion`** (optional integer, start at `1`) — bump it whenever
   you add or materially change questions in this topic. The app compares
-  it against what a learner's browser last recorded (a silent, nameless
-  local record — see below) and shows a "Yeni sorular eklendi" badge on
-  the topic card when the manifest's version is higher. Starting a test
-  for that topic marks the new version as seen. Omit the field entirely if
-  you don't want freshness tracking for a topic.
+  it against what a learner's browser last recorded (see **Content-freshness
+  tracking** below) and shows a "Yeni sorular eklendi" badge on the topic
+  card when the manifest's version is higher. Starting a test for that
+  topic marks the new version as seen. Omit the field entirely if you
+  don't want freshness tracking for a topic.
 - **`comingSoon`** (optional, `true`/omit) — marks a topic as a roadmap
   teaser: it renders a disabled card with a "Coming soon" badge, is
   excluded from the mixed-test question pool, and needs no `file` or
   `questionCount` yet. Flip it to a real entry (add `file` +
   `questionCount`, drop `comingSoon`) once the content is authored.
 
-## Silent content-freshness tracking
+## Content-freshness tracking
 
-There's no login and no visible "profile" screen — just a small,
-nameless local record (`localStorage`, same mechanism as the score
-history) of which `contentVersion` a learner has last seen per topic. It
-exists solely to power the "new questions added" badge described above.
-See `getSeenVersion`/`markTopicSeen` in `js/storage.js`.
+There's no login — just a local record (`localStorage`, same mechanism as
+the score history and the Profil tab) of which `contentVersion` a learner
+has last seen per topic. It exists solely to power the "new questions
+added" badge described above; it's separate from the Profil tab's display
+name and stats, and isn't cleared by the "Geçmişi Sıfırla" reset. See
+`getSeenVersion`/`markTopicSeen` in `js/storage.js`.
 
 ### Question schema
 
@@ -316,7 +320,7 @@ app is a real first release, not any particular feature set being
 
 ## Roadmap to v1.0
 
-Everything shipped so far (`v0.1`–`v0.4`) is development work toward a
+Everything shipped so far (`v0.1`–`v0.5`) is development work toward a
 first real release, not a release itself. Below is the working list of
 what's left, roughly in the order it makes sense to tackle — see
 `CHANGELOG.md` for what's already landed under each `0.y`.
@@ -326,10 +330,10 @@ what's left, roughly in the order it makes sense to tackle — see
    anything is called `1.0`, both the owner and at least one friend should
    actually use it on their own phones (via the `test` branch's GitHub
    Pages preview) — real touch targets, real fonts loading, real network.
-2. **Open design thread**: the quiz category eyebrow label (e.g. "PRESENT
-   PERFECT VS PAST SIMPLE") — flagged as "not sure this is necessary" in
-   artifact feedback, deliberately left as-is pending a decision. Revisit
-   once real-device feedback is in — might stay, shrink, or go.
+2. ~~Open design thread: the quiz category eyebrow label~~ — **resolved,
+   kept as-is.** It ties a Test-tab question directly to the matching
+   Eğitim-tab lesson category, which is genuinely useful for a learner
+   moving between the two tabs, not just decoration.
 3. **A second real topic** (Modals is already stubbed as `comingSoon` in
    the manifest) — both to make Test/Eğitim feel like a real multi-topic
    app rather than a single-topic demo, and to give the "Yeni sorular
@@ -346,10 +350,12 @@ what's left, roughly in the order it makes sense to tackle — see
 
 ## Roadmap beyond v1.0
 
-- A visible profile screen (name, settings, reset) if more than one person
-  ever regularly shares the same device/browser — today's silent,
-  nameless local record (see above) covers what's needed for now.
 - A guided, sequential "learning path" mode through topics, building on the
-  per-topic weak-spot data already collected.
-- A dedicated question format for Vocabulary/Word Formation.
-- Persisting per-category (not just per-topic) weak-spot history.
+  per-topic and per-category weak-spot data already collected. Deliberately
+  deferred — it needs its own design pass (what "guided" actually means:
+  a fixed order? adaptive to weak spots? how it interacts with the
+  existing free-form Test/Eğitim tabs) rather than being built on a guess.
+- A dedicated question format for Vocabulary/Word Formation. Also deferred
+  for the same reason — it's a different question shape than the paragraph
+  cloze format everything else is built around, and needs its own schema
+  design before content can be authored for it.
