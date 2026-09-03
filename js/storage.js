@@ -7,6 +7,7 @@
 const HISTORY_KEY = "englishPrep.history";
 const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
+const DEV_NOTE_DISMISSED_KEY = "englishPrep.devNoteDismissed";
 const MIN_ATTEMPTS_FOR_WEAK_ENTRY = 3;
 
 function loadHistory() {
@@ -203,5 +204,26 @@ export function setProfileName(name) {
     }
   } catch {
     // Storage may be unavailable; the name just won't persist this visit.
+  }
+}
+
+/**
+ * @returns {boolean} whether the learner has dismissed the "still in
+ * development" note. Separate from history/profile-name so resetting
+ * history doesn't bring the note back.
+ */
+export function isDevNoteDismissed() {
+  try {
+    return localStorage.getItem(DEV_NOTE_DISMISSED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function dismissDevNote() {
+  try {
+    localStorage.setItem(DEV_NOTE_DISMISSED_KEY, "1");
+  } catch {
+    // Storage may be unavailable; the note will just show again next visit.
   }
 }

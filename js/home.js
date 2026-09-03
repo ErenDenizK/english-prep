@@ -1,5 +1,13 @@
 import { loadManifest } from "./topics.js";
-import { getLastTopicScore, getWeakTopics, getSeenVersion, markTopicSeen, getProfileName } from "./storage.js";
+import {
+  getLastTopicScore,
+  getWeakTopics,
+  getSeenVersion,
+  markTopicSeen,
+  getProfileName,
+  isDevNoteDismissed,
+  dismissDevNote,
+} from "./storage.js";
 import { setQuizRequest } from "./session-state.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createDropdown } from "./dropdown.js";
@@ -13,6 +21,8 @@ const startMixedBtn = document.getElementById("start-mixed-btn");
 const headerSubtitle = document.getElementById("header-subtitle");
 const profileTrigger = document.getElementById("profile-trigger");
 const profileTriggerInitial = document.getElementById("profile-trigger-initial");
+const devNote = document.getElementById("dev-note");
+const devNoteDismissBtn = document.getElementById("dev-note-dismiss");
 
 const DEFAULT_SUBTITLE = headerSubtitle.textContent;
 
@@ -205,6 +215,17 @@ function showView(view) {
   }
 }
 
+function initDevNote() {
+  if (isDevNoteDismissed()) {
+    return;
+  }
+  devNote.hidden = false;
+  devNoteDismissBtn.addEventListener("click", () => {
+    dismissDevNote();
+    devNote.hidden = true;
+  });
+}
+
 function initNavigation() {
   const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
   tabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
@@ -219,6 +240,7 @@ function updateHeaderGreeting() {
 
 async function init() {
   initNavigation();
+  initDevNote();
   updateHeaderGreeting();
   window.addEventListener("englishprep:profilenamechanged", updateHeaderGreeting);
 
