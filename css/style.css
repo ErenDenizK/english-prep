@@ -1,9 +1,12 @@
-/* Design tokens — warm ink-and-amber identity (single committed theme,
-   not a light/dark toggle: see README for the design rationale). */
+/* Design tokens — warm ink-and-amber identity, one committed theme.
+   The rules behind every value here are in docs/design-system.md; the
+   short version: depth comes from lightness (three surface levels), not
+   from outlines. Borders are reserved for shell chrome, state, and a
+   single accent rail. */
 :root {
   --color-bg: #1c1b22;
-  --color-surface: #242229;
-  --color-surface-raised: #2d2b34;
+  --color-surface: #26242d;
+  --color-surface-raised: #302e39;
   --color-border: #3a3742;
   --color-text: #efe9de;
   --color-text-muted: #a39cae;
@@ -20,12 +23,15 @@
   --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --radius: 3px;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-pill: 999px;
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
   --space-4: 2rem;
-  --max-width: 880px;
+  --space-5: 3rem;
+  --max-width: 720px;
 }
 
 * {
@@ -44,10 +50,9 @@ html {
 }
 
 /* ---- App shell ----
-   The whole app is a fixed-height column (header / tab-bar / scrollable
-   content / bottom action bar). Nothing but .app-content ever scrolls, so
-   the frame never grows or loses a scrollbar and never shifts sideways —
-   that instability was the core complaint the app-shell rewrite fixes. */
+   A fixed-height column: header / scrollable content / bottom nav or
+   action bar. Nothing but .app-content ever scrolls, so the frame never
+   grows or loses a scrollbar and never shifts sideways. */
 html,
 body {
   height: 100%;
@@ -72,6 +77,11 @@ h3 {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: 0.01em;
+  margin: 0;
+}
+
+p {
+  margin: 0;
 }
 
 .app-content {
@@ -90,13 +100,56 @@ h3 {
 .page {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: var(--space-3) var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-2) var(--space-5);
 }
 
-/* Header */
+/* ---- Type roles ----
+   .section-heading is the structural signpost between groups of content.
+   .eyebrow is the micro-label above a single piece of content (a question's
+   category, a tier name, "Kontrol sorusu"). Two roles, two treatments. */
+.section-heading {
+  font-size: 1.05rem;
+  margin: 0 0 var(--space-2);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.section-heading__meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-1);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.eyebrow--accent {
+  color: var(--color-accent);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+/* A section is a heading plus space — never a bordered wrapper around
+   its content. Sections separate from each other by space alone. */
+.section + .section {
+  margin-top: var(--space-4);
+}
+
+/* ---- Header ---- */
 .site-header {
   flex: 0 0 auto;
-  padding: var(--space-2);
+  padding: 0.75rem var(--space-2);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -111,7 +164,6 @@ h3 {
 
 .site-header h1 {
   font-size: 1.1rem;
-  margin: 0;
 }
 
 .site-header a {
@@ -119,15 +171,14 @@ h3 {
   text-decoration: none;
 }
 
-/* Profile access lives here, not as a third tab next to Eğitim/Test —
-   it's identity/settings, not a content mode. A small circular button
-   keeps it out of the way while staying reachable from every screen. */
+/* Profile lives here, not as a third tab — identity/settings, not a
+   content mode. */
 .profile-trigger {
   flex: 0 0 auto;
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 50%;
-  border: 1px solid var(--color-border);
+  border: 1px solid transparent;
   background: var(--color-surface);
   color: var(--color-accent);
   font-family: var(--font-mono);
@@ -140,7 +191,10 @@ h3 {
   cursor: pointer;
 }
 
-.profile-trigger:hover,
+.profile-trigger:hover {
+  background: var(--color-surface-raised);
+}
+
 .profile-trigger[aria-current="true"] {
   border-color: var(--color-accent);
 }
@@ -150,10 +204,7 @@ h3 {
   outline-offset: 2px;
 }
 
-/* Primary Eğitim / Test navigation — bottom tab bar, not top tabs.
-   Thumb-reachable and reads as "app chrome" rather than a webpage's inline
-   controls; icons (not just a label color change) give the two modes a
-   visible identity of their own, separate from each other. */
+/* ---- Bottom navigation (Eğitim / Test) ---- */
 .bottom-nav {
   flex: 0 0 auto;
   display: flex;
@@ -184,7 +235,7 @@ h3 {
   justify-content: center;
   width: 2.5rem;
   height: 1.75rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 .bottom-nav__tab[aria-selected="true"] {
@@ -200,14 +251,12 @@ h3 {
   outline-offset: -2px;
 }
 
-/* Fixed bottom action bar — quiz.html and results.html. Its height is
-   part of the flex column, not overlaid, so .app-content shrinks to make
-   room for it; the bar itself never moves regardless of how tall the
-   scrollable content above becomes. */
+/* ---- Fixed bottom action bar (quiz / results) ---- */
 .bottom-bar {
   flex: 0 0 auto;
   border-top: 1px solid var(--color-border);
   padding: var(--space-2);
+  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
 }
 
 .bottom-bar__inner {
@@ -221,35 +270,7 @@ h3 {
   flex: 1;
 }
 
-/* Hero */
-.hero {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-  margin-bottom: var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.hero__title {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.hero__description {
-  margin: 0;
-  color: var(--color-text-muted);
-}
-
-.hero__controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-/* Buttons and inputs */
+/* ---- Buttons ---- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -257,7 +278,7 @@ h3 {
   gap: 0.4rem;
   border: 1px solid var(--color-accent);
   border-radius: var(--radius);
-  padding: 0.7rem 1.2rem;
+  padding: 0.75rem 1.25rem;
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 600;
@@ -265,7 +286,8 @@ h3 {
   cursor: pointer;
   background: var(--color-accent);
   color: var(--color-accent-contrast);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .btn:hover {
@@ -278,27 +300,32 @@ h3 {
   outline-offset: 3px;
 }
 
+/* Secondary: a filled surface, not an outline — the same object language
+   as every other tappable thing in the app. */
 .btn--secondary {
-  background: transparent;
+  background: var(--color-surface);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border-color: transparent;
 }
 
 .btn--secondary:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background: transparent;
+  background: var(--color-surface-raised);
+  border-color: transparent;
+  color: var(--color-text);
 }
 
 .btn--danger {
-  background: var(--color-danger);
-  border-color: var(--color-danger);
-  color: var(--color-accent-contrast);
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-danger);
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .btn--danger:hover {
-  background: #d98a6c;
-  border-color: #d98a6c;
+  background: transparent;
+  border-color: transparent;
+  color: #e09a7c;
 }
 
 .btn:disabled {
@@ -307,14 +334,36 @@ h3 {
 }
 
 .btn--sm {
-  padding: 0.4rem 0.7rem;
-  font-size: 0.82rem;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.85rem;
   flex: 0 0 auto;
 }
 
-/* Custom dropdown (replaces native <select> — an app-owned menu instead
-   of OS chrome, positioned absolutely so opening it never reflows the
-   page). */
+/* Inline text action — an accent-colored verb, for a secondary action
+   that sits inside content and shouldn't weigh as much as a button. */
+.text-action {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.text-action:hover {
+  color: var(--color-accent-hover);
+}
+
+.text-action:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Custom dropdown (replaces native <select>) ---- */
 .dropdown {
   position: relative;
 }
@@ -323,9 +372,9 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.7rem 0.8rem;
+  padding: 0.75rem 0.9rem;
   border-radius: var(--radius);
-  border: 1px solid var(--color-border);
+  border: none;
   background: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-body);
@@ -338,7 +387,12 @@ h3 {
 
 .dropdown__trigger:hover,
 .dropdown__trigger[aria-expanded="true"] {
-  border-color: var(--color-accent);
+  background: var(--color-surface-raised);
+}
+
+.dropdown__trigger:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .dropdown__chevron {
@@ -355,14 +409,14 @@ h3 {
   list-style: none;
   margin: 0;
   padding: 0.3rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--color-surface-raised);
   border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .dropdown__option {
-  padding: 0.5rem 0.6rem;
-  border-radius: var(--radius);
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius-sm);
   font-size: 0.95rem;
   cursor: pointer;
   white-space: nowrap;
@@ -370,12 +424,11 @@ h3 {
 
 .dropdown__option:hover,
 .dropdown__option[aria-selected="true"] {
-  background: var(--color-surface-raised);
+  background: var(--color-accent-bg);
   color: var(--color-accent);
 }
 
-/* Modal overlay (replaces window.confirm — a fixed overlay that never
-   affects document flow or scroll position). */
+/* ---- Modal (replaces window.confirm) ---- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -389,53 +442,157 @@ h3 {
 
 .modal {
   width: 100%;
-  max-width: 320px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  max-width: 340px;
+  background: var(--color-surface-raised);
   border-radius: var(--radius);
   padding: var(--space-3);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+.modal h2 {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-1);
 }
 
 .modal p {
-  margin: 0 0 var(--space-2);
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
 }
 
 .modal__actions {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-1);
 }
 
 .modal__actions .btn {
   flex: 1;
 }
 
-/* Topic groups and cards */
+/* ---- Welcome (first run) ----
+   One screen, seen once. Everything a first-time visitor needs and
+   nothing else: what this is, and one action. */
+.welcome {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+}
+
+.welcome__title {
+  font-size: 2.2rem;
+  line-height: 1.15;
+}
+
+.welcome__lead {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  max-width: 34ch;
+}
+
+.welcome__modes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: var(--space-1) 0;
+}
+
+.welcome__mode {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+
+.welcome__mode-icon {
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius);
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome__mode h3 {
+  font-size: 1rem;
+}
+
+.welcome__mode p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.welcome__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.welcome__note {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* ---- Test home ---- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.hero__title {
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.hero__description {
+  color: var(--color-text-muted);
+  max-width: 40ch;
+}
+
+.hero__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.field-row label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
 .topics {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
-.topic-tier {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
+/* A tier is a labelled group, not a box. */
 .topic-tier > summary {
   cursor: pointer;
-  padding: var(--space-2) var(--space-3);
-  font-weight: 600;
-  font-family: var(--font-display);
   list-style: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid transparent;
-}
-
-.topic-tier[open] > summary {
-  border-bottom-color: var(--color-border);
+  gap: var(--space-2);
+  padding: 0.25rem 0;
+  margin-bottom: var(--space-2);
 }
 
 .topic-tier > summary::-webkit-details-marker {
@@ -444,7 +601,7 @@ h3 {
 
 .topic-tier > summary::after {
   content: "+";
-  font-weight: 400;
+  font-family: var(--font-mono);
   color: var(--color-text-muted);
 }
 
@@ -454,83 +611,91 @@ h3 {
 
 .topic-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: var(--space-2);
 }
 
-/* Inside an accordion tier, inset the grid from the tier's own border —
-   mirrors .hero's bordered-panel-with-inset-content pattern. With only one
-   tier (no accordion), the grid renders directly in .topics with no
-   border to justify an inset, so its cards align edge-to-edge with the
-   hero panel above them instead of floating with unexplained dead space. */
-.topic-tier .topic-grid {
-  padding: 0 var(--space-3) var(--space-3);
-}
-
+/* A topic card is one tappable surface. The whole card starts the test;
+   the "Başla →" text is an affordance, not a second control. */
 .topic-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 0.35rem;
+  width: 100%;
+  text-align: left;
+  background: var(--color-surface);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-2) 0.9rem;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.topic-card:hover {
+  background: var(--color-surface-raised);
+}
+
+.topic-card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .topic-card h3 {
-  margin: 0;
   font-size: 1.1rem;
 }
 
 .topic-card__meta {
   color: var(--color-text-muted);
   font-size: 0.85rem;
-  font-family: var(--font-mono);
 }
 
-.topic-card--coming-soon {
-  opacity: 0.7;
+.topic-card__categories {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 
-.category-chips {
+.topic-card__footer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: 0.5rem;
 }
 
-.category-chip {
-  font-size: 0.72rem;
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 0.15rem 0.5rem;
-}
-
-.category-chip--more {
-  border-style: dashed;
-}
-
-.badge {
-  display: inline-block;
-  font-size: 0.75rem;
+.topic-card__status {
   font-family: var(--font-mono);
-  padding: 0.15rem 0.5rem;
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius);
-  color: var(--color-accent);
-  width: fit-content;
-}
-
-.badge--muted {
-  border-color: var(--color-border);
+  font-size: 0.78rem;
   color: var(--color-text-muted);
 }
 
-.badge--new {
-  border-color: var(--color-success);
+.topic-card__status--new {
   color: var(--color-success);
 }
 
-/* Quiz */
+.topic-card__status--weak {
+  color: var(--color-accent);
+}
+
+.topic-card__cta {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-left: auto;
+}
+
+.topic-card--coming-soon {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.topic-card--coming-soon:hover {
+  background: var(--color-surface);
+}
+
+/* ---- Quiz ---- */
 .quiz-nav {
   display: flex;
   align-items: center;
@@ -547,6 +712,7 @@ h3 {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .quiz-nav__exit:hover {
@@ -556,14 +722,14 @@ h3 {
 .quiz-progress {
   color: var(--color-text-muted);
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .progress-track {
-  height: 4px;
+  height: 3px;
   border-radius: 2px;
   background: var(--color-surface-raised);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-4);
   overflow: hidden;
 }
 
@@ -574,31 +740,22 @@ h3 {
   transition: width 0.2s ease;
 }
 
+/* The question is not in a box: the page is the card. Category eyebrow,
+   the prompt in the display face, then the options as surfaces. */
 .question-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-}
-
-.question-card__category {
-  margin: 0 0 var(--space-1);
-  color: var(--color-accent);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  display: flex;
+  flex-direction: column;
 }
 
 .question-card__prompt {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   line-height: 1.6;
   margin: 0 0 var(--space-3);
 }
 
-/* De-emphasized on purpose (feedback: the bold amber fill was too loud) —
-   just a quiet underline so the blank reads as "fill this in", not as
-   the visual focal point of the sentence. */
+/* Quiet underline so the blank reads as "fill this in", not as the
+   visual focal point of the sentence. */
 .question-card__prompt .blank {
   color: inherit;
   border-bottom: 2px solid var(--color-border);
@@ -613,20 +770,21 @@ h3 {
 
 .option-btn {
   text-align: left;
-  padding: 0.8rem 1rem;
+  padding: 0.85rem 1rem;
   border-radius: var(--radius);
-  border: 1px solid var(--color-border);
-  background: transparent;
+  border: 1px solid transparent;
+  background: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 1rem;
   cursor: pointer;
   display: flex;
-  gap: 0.6rem;
+  gap: 0.7rem;
+  transition: background-color 0.15s ease;
 }
 
 .option-btn:hover:not(:disabled) {
-  border-color: var(--color-accent);
+  background: var(--color-surface-raised);
 }
 
 .option-btn:focus-visible {
@@ -644,6 +802,7 @@ h3 {
   cursor: default;
 }
 
+/* State earns a border. */
 .option-btn--correct {
   background: var(--color-success-bg);
   border-color: var(--color-success);
@@ -654,39 +813,52 @@ h3 {
   border-color: var(--color-danger);
 }
 
+.keyboard-hint {
+  display: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  margin-bottom: var(--space-2);
+}
+
+/* Only a device with a real keyboard needs to know about keys. */
+@media (hover: hover) and (pointer: fine) {
+  .keyboard-hint {
+    display: block;
+  }
+}
+
+/* Feedback: the one accent rail a screen gets. No box. */
 .feedback {
-  border-radius: var(--radius);
-  border: 1px solid var(--color-border);
-  padding: var(--space-2);
+  border-left: 3px solid var(--color-border);
+  padding: 0.25rem 0 0.25rem var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
 }
 
 .feedback--correct {
-  border-color: var(--color-success);
+  border-left-color: var(--color-success);
 }
 
 .feedback--incorrect {
-  border-color: var(--color-danger);
+  border-left-color: var(--color-danger);
 }
 
-.feedback--correct strong {
+.feedback--correct > strong {
   color: var(--color-success);
 }
 
-.feedback--incorrect strong {
+.feedback--incorrect > strong {
   color: var(--color-danger);
 }
 
 .feedback__explanation {
-  color: var(--color-text);
-  margin: var(--space-1) 0 0;
   font-size: 0.95rem;
 }
 
 .feedback__tip {
   color: var(--color-text-muted);
-  margin: var(--space-1) 0 0;
-  padding-top: var(--space-1);
-  border-top: 1px solid var(--color-border);
   font-size: 0.9rem;
 }
 
@@ -694,20 +866,49 @@ h3 {
   color: var(--color-accent);
 }
 
-/* Results */
+/* ---- Results ---- */
 .score-summary {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-  margin-bottom: var(--space-3);
   text-align: center;
+  padding: var(--space-3) 0 var(--space-4);
 }
 
 .score-summary__value {
-  font-family: var(--font-mono);
-  font-size: 2.5rem;
+  font-family: var(--font-display);
+  font-size: 3.25rem;
   font-weight: 600;
+  line-height: 1;
   color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.score-summary__label {
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+.score-summary__message {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.callout {
+  border-left: 3px solid var(--color-accent);
+  padding: 0.25rem 0 0.25rem var(--space-2);
+  margin-bottom: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem var(--space-2);
+}
+
+.callout__text {
+  color: var(--color-text-muted);
+}
+
+.callout__text strong {
+  color: var(--color-text);
+  font-weight: 600;
 }
 
 .breakdown-list {
@@ -723,14 +924,24 @@ h3 {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
-  padding: 0.6rem var(--space-2);
-  border: 1px solid var(--color-border);
+  padding: 0.7rem var(--space-2);
+  background: var(--color-surface);
   border-radius: var(--radius);
 }
 
-/* Groups a row's name+score together so an optional trailing action
-   button (see .breakdown-list__action) has room on the right without
-   the name/score pair drifting apart from each other. */
+/* A level-1 button sitting on a level-1 row is invisible — it has to
+   lift one step further to read as a control at all. Same reason the
+   dropdown trigger lifts inside .hero and options lift inside a story
+   card: adjacent elevations must differ, never repeat. */
+.breakdown-list li .btn--secondary {
+  background: var(--color-surface-raised);
+}
+
+.breakdown-list li .btn--secondary:hover {
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+}
+
 .breakdown-list__info {
   display: flex;
   flex: 1;
@@ -743,79 +954,72 @@ h3 {
   font-family: var(--font-mono);
   color: var(--color-text-muted);
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-.callout {
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius);
-  padding: var(--space-2);
-  color: var(--color-accent);
-  margin-bottom: var(--space-3);
-}
-
-/* Dismissible status note — sits above whichever tab is active (it's a
-   direct child of .page, not inside any one view) so it's seen once
-   regardless of where a learner starts, without needing its own onboarding
-   flow. Muted rather than accent-colored: it's informational, not a nudge
-   to act on like .callout. */
-.dev-note {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-  border-radius: var(--radius);
-  padding: var(--space-2);
-  margin-bottom: var(--space-3);
+/* Segmented filter (Tümü / Yanlışlar) — one pill track, no borders. */
+.segmented {
+  display: inline-flex;
+  padding: 0.2rem;
   background: var(--color-surface);
+  border-radius: var(--radius-pill);
+  gap: 0.15rem;
 }
 
-.dev-note p {
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-.dev-note strong {
-  color: var(--color-text);
-}
-
-.dev-note button {
-  flex: 0 0 auto;
-  background: none;
+.segmented__option {
   border: none;
+  background: none;
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.8rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
   color: var(--color-text-muted);
-  font-size: 1.2rem;
-  line-height: 1;
-  padding: 0;
   cursor: pointer;
 }
 
-.dev-note button:hover {
+.segmented__option[aria-pressed="true"] {
+  background: var(--color-accent-bg);
   color: var(--color-accent);
 }
 
-.dev-note button:focus-visible {
+.segmented__option:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
 .review-item {
-  border: 1px solid var(--color-border);
+  background: var(--color-surface);
   border-radius: var(--radius);
   padding: var(--space-2);
-  margin-bottom: var(--space-2);
+  border-left: 3px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.review-item--correct {
+  border-left-color: var(--color-success);
+}
+
+.review-item--incorrect {
+  border-left-color: var(--color-danger);
 }
 
 .review-item__prompt {
   font-family: var(--font-display);
   font-weight: 600;
-  margin: 0 0 0.4rem;
+  line-height: 1.5;
 }
 
 .review-item__answer {
   font-size: 0.9rem;
-  margin: 0.2rem 0;
 }
 
 .review-item__answer--correct {
@@ -829,29 +1033,112 @@ h3 {
 .review-item__explanation {
   font-size: 0.9rem;
   color: var(--color-text-muted);
-  margin-top: 0.4rem;
+  margin-top: 0.15rem;
 }
 
 .review-item__tip {
   font-size: 0.85rem;
   color: var(--color-text-muted);
-  margin-top: 0.4rem;
-  padding-top: 0.4rem;
-  border-top: 1px solid var(--color-border);
 }
 
 .review-item__tip strong {
   color: var(--color-accent);
 }
 
-/* Eğitim: story-card chapter viewer.
-   A chapter (one lesson category) is a sequence of small full-bleed
-   "beats" -- hook, rule, each example, a couple of check questions, a
-   generated chapter-complete beat. Segmented progress bar on top (like
-   Stories), edge arrows either side of the card to move through them.
-   Not a literal Stories clone: no auto-advance/timer, since grammar
-   needs reading time a story doesn't assume. */
+/* ---- Eğitim ---- */
 
+/* Chapter index: per topic, a heading with a progress count, then rows.
+   Each row shows its read state up front — the sense of momentum is the
+   whole point of the index (see design-system.md, rule 6). */
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.chapter-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  width: 100%;
+  text-align: left;
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.85rem var(--space-2);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.chapter-row:hover {
+  background: var(--color-surface-raised);
+}
+
+.chapter-row:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.chapter-row__marker {
+  flex: 0 0 auto;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface-raised);
+  margin-top: 0.1rem;
+}
+
+.chapter-row--read .chapter-row__marker {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.chapter-row__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.chapter-row__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.chapter-row__preview {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.topic-progress {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-surface-raised);
+  margin: 0 0 var(--space-2);
+  overflow: hidden;
+}
+
+.topic-progress__fill {
+  height: 100%;
+  background: var(--color-success);
+  border-radius: 2px;
+}
+
+/* Story-card chapter view. A chapter is a sequence of small full-bleed
+   beats; segmented progress on top, edge arrows either side. */
 .topic-switcher {
   display: flex;
   flex-wrap: wrap;
@@ -860,10 +1147,10 @@ h3 {
 }
 
 .topic-switcher__pill {
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.35rem 0.85rem;
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.9rem;
   font-family: var(--font-body);
   font-size: 0.82rem;
   font-weight: 600;
@@ -872,14 +1159,13 @@ h3 {
 }
 
 .topic-switcher__pill:hover {
-  border-color: var(--color-accent);
+  background: var(--color-surface-raised);
   color: var(--color-text);
 }
 
 .topic-switcher__pill--active {
-  border-color: var(--color-accent);
+  background: var(--color-accent-bg);
   color: var(--color-accent);
-  background: var(--color-success-bg);
 }
 
 .story-progress {
@@ -890,7 +1176,7 @@ h3 {
 
 .story-progress__segment {
   flex: 1;
-  height: 4px;
+  height: 3px;
   border-radius: 2px;
   background: var(--color-surface-raised);
 }
@@ -901,15 +1187,6 @@ h3 {
 
 .story-progress__segment--current {
   background: var(--color-text-muted);
-}
-
-.story-eyebrow {
-  margin: 0 0 var(--space-2);
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
 .story-row {
@@ -946,63 +1223,12 @@ h3 {
   outline-offset: -2px;
 }
 
-/* An unanswered check card no longer blocks moving on -- the forward
-   control switches to this labeled "skip" state instead of a bare arrow,
-   so skimming past a question you don't want to answer right now is
-   always one honest, visible tap away rather than a dead end. */
 .story-edge--skip {
   width: auto;
   padding: 0 0.6rem;
   font-family: var(--font-body);
   font-size: 0.78rem;
   font-weight: 600;
-}
-
-/* Eğitim chapter index -- a skimmable list so any chapter is reachable
-   directly, instead of only via tapping through the story cards in order. */
-.chapter-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  margin-top: var(--space-2);
-}
-
-.chapter-row {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-2);
-  cursor: pointer;
-}
-
-.chapter-row:hover {
-  border-color: var(--color-accent);
-}
-
-.chapter-row:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.chapter-row__title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.chapter-row__preview {
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .story-card {
@@ -1013,21 +1239,17 @@ h3 {
   flex-direction: column;
   justify-content: center;
   gap: var(--space-2);
-  border: 1px solid var(--color-border);
+  background: var(--color-surface);
   border-radius: var(--radius);
   padding: var(--space-4) var(--space-3);
 }
 
-/* A distinct visual treatment per beat type, so the learner recognizes
-   at a glance what kind of card they're on. */
 .story-card--hook {
   align-items: center;
   text-align: center;
-  background: var(--color-surface);
 }
 
 .story-card__hook {
-  margin: 0;
   font-family: var(--font-display);
   font-size: 1.3rem;
   font-style: italic;
@@ -1036,12 +1258,10 @@ h3 {
 }
 
 .story-card__category {
-  margin: 0;
   font-size: 1.3rem;
 }
 
 .story-card__rule {
-  margin: 0;
   font-size: 1.05rem;
   line-height: 1.6;
 }
@@ -1051,27 +1271,28 @@ h3 {
 }
 
 .story-card__example-sentence {
-  margin: 0;
   font-family: var(--font-display);
   font-size: 1.35rem;
   line-height: 1.5;
 }
 
 .story-card__example-note {
-  margin: 0;
   color: var(--color-accent);
   font-size: 0.9rem;
 }
 
+/* A check card holds options, which are themselves surfaces — so the
+   card itself steps back to the page level, exactly like the quiz screen. */
 .story-card--check {
   justify-content: flex-start;
+  background: none;
+  padding: var(--space-2) 0;
 }
 
 .story-card--complete {
   align-items: center;
   text-align: center;
   background: var(--color-success-bg);
-  border-color: var(--color-success);
 }
 
 .story-card__complete-check {
@@ -1087,100 +1308,83 @@ h3 {
 }
 
 .story-card__complete-title {
-  margin: 0;
   font-size: 1.2rem;
 }
 
 .story-card__complete-next {
-  margin: 0;
   color: var(--color-text-muted);
 }
 
 .story-card__complete-actions {
   margin-top: var(--space-1);
-}
-
-.empty-state {
-  text-align: center;
-  color: var(--color-text-muted);
-  padding: var(--space-4);
-}
-
-.field-row {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
 }
 
-.field-row label {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-}
-
-/* Generic bordered panel — used by the Profil tab's stacked sections.
-   Other screens use their own more specific classes (.hero,
-   .question-card, .score-summary, ...) for the same visual treatment;
-   this is the reusable version for anything new. */
-.panel {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-}
-
-.panel + .panel {
-  margin-top: var(--space-3);
-}
-
-/* Profil tab */
+/* ---- Profil ---- */
 .text-input {
   width: 100%;
-  margin-top: var(--space-2);
-  padding: 0.7rem 0.8rem;
+  margin-top: var(--space-1);
+  padding: 0.8rem 0.9rem;
   border-radius: var(--radius);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
+  border: 1px solid transparent;
+  background: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 1rem;
 }
 
+.text-input::placeholder {
+  color: var(--color-text-muted);
+}
+
 .text-input:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+  outline: none;
   border-color: var(--color-accent);
 }
 
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-2);
-  margin-top: var(--space-1);
+  gap: var(--space-1);
 }
 
 .stat-tile {
-  border: 1px solid var(--color-border);
+  background: var(--color-surface);
   border-radius: var(--radius);
   padding: var(--space-2) var(--space-1);
   text-align: center;
 }
 
 .stat-tile__value {
-  font-family: var(--font-mono);
-  font-size: 1.4rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
   font-weight: 600;
+  line-height: 1.1;
   color: var(--color-accent);
   font-variant-numeric: tabular-nums;
 }
 
 .stat-tile__label {
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
   font-size: 0.75rem;
   color: var(--color-text-muted);
 }
 
-@media (min-width: 640px) {
-  .hero {
-    padding: var(--space-4);
-  }
+/* ---- Shared ---- */
+.empty-state {
+  color: var(--color-text-muted);
+  padding: var(--space-2) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.empty-state--center {
+  align-items: center;
+  text-align: center;
+  padding: var(--space-5) 0;
 }

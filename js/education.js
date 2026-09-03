@@ -1,24 +1,23 @@
-// Eğitim tab: a chapter index (skim/jump to any chapter directly) plus a
-// story-card, chapter-by-chapter walk (hook, rule, each example, a check
-// question, a chapter-complete beat) for whichever chapter you open.
+// Eğitim tab: a chapter index (skim, jump straight to any chapter) plus a
+// story-card walk -- hook, rule, each example, a check question, a
+// chapter-complete beat -- for whichever chapter you open.
 //
-// The index exists because a pure linear "story" format -- the only way
-// in was v0.9's -- is bad for study/reference use: you can't jump to a
-// specific rule without tapping through everything before it. This keeps
-// the story cards (they work well as a "walk me through it" experience)
-// but they're no longer the only entry point, and answering a check
-// question is no longer a hard gate -- the forward control still moves
-// on ("Atla") if you haven't answered yet. See docs/education-notes.md
-// and the plan behind this round for the research this is based on.
+// The index exists because a purely linear "story" format is bad for
+// study and reference use: you can't reach a specific rule without
+// tapping through everything before it. It also carries read-progress,
+// so the list shows what's done rather than being a flat wall of
+// identical rows (docs/design-system.md, rule 6).
 //
-// Every chapter of every live topic is reachable at any time -- nothing
-// is locked. Progression/locking across chapters and topics is a
-// deliberately separate, later piece of work.
+// Read-tracking is passive and never restricts anything: every chapter
+// of every live topic is open at all times. Guided-path progression
+// (unlocking chapter N+1 after N) is a separate, deferred feature.
 
 import { loadManifest, loadTopicContent } from "./topics.js";
 import { isCorrectAnswer } from "./quiz-engine.js";
 import { renderAnswerFeedback } from "./feedback.js";
 import { setQuizRequest } from "./session-state.js";
+import { isChapterRead, markChapterRead, countChaptersRead } from "./storage.js";
+import { navigateTo } from "./navigate.js";
 
 const CHECK_QUESTIONS_PER_CHAPTER = 1;
 
@@ -79,18 +78,19 @@ function buildCards(topic, chapter) {
   return cards;
 }
 
-function loadChapter() {
-  state.cards = buildCards(currentTopic(), currentChapter());
-  state.cardIndex = 0;
-  state.answers = new Map();
-  render();
-}
-
-function openChapter(topicIndex, chapterIndex) {
+function openChapter(topicIndex, chapterIndex, { landOnLastCard = false } = {}) {
   state.topicIndex = topicIndex;
   state.chapterIndex = chapterIndex;
   state.view = "chapter";
-  loadChapter();
+  // Opening a chapter is what marks it read. Requiring someone to reach
+  // the last card first would mean the index stays empty for anyone who
+  // reads a rule and leaves -- which is a perfectly normal way to use a
+  // reference, and shouldn't count as "not read".
+  markChapterRead(currentTopic().id, currentChapter().category);
+  state.cards = buildCards(currentTopic(), currentChapter());
+  state.cardIndex = landOnLastCard ? state.cards.length - 1 : 0;
+  state.answers = new Map();
+  render();
 }
 
 function backToIndex() {
@@ -98,10 +98,10 @@ function backToIndex() {
   render();
 }
 
-// A check card no longer blocks moving on -- answering it is encouraged
-// (it's the natural next tap, and stays visible) but skimming past an
-// unanswered one is always allowed. Only the very last card of the very
-// last chapter has nothing further to move to.
+// A check card doesn't block moving on: answering is encouraged (it's the
+// natural next tap and stays visible) but skimming past an unanswered one
+// is always allowed. Only the very last card of the last chapter has
+// nothing further to move to.
 function isUnansweredCheck() {
   const card = state.cards[state.cardIndex];
   return card.type === "check" && !state.answers.has(state.cardIndex);
@@ -131,12 +131,10 @@ function goNext() {
   }
   const topic = currentTopic();
   if (state.chapterIndex < topic.lessons.length - 1) {
-    state.chapterIndex += 1;
+    openChapter(state.topicIndex, state.chapterIndex + 1);
   } else {
-    state.topicIndex += 1;
-    state.chapterIndex = 0;
+    openChapter(state.topicIndex + 1, 0);
   }
-  loadChapter();
 }
 
 function goPrev() {
@@ -149,19 +147,16 @@ function goPrev() {
     return;
   }
   // At the first card of a chapter -- step back into the previous
-  // chapter/topic, landing on its last card. Re-entering a chapter this
-  // way shows it fresh (no remembered answers) -- there's no persisted
-  // progress yet, this is the presentation layer only (see file header).
-  if (state.chapterIndex > 0) {
-    state.chapterIndex -= 1;
+  // chapter, landing on its last card.
+  let topicIndex = state.topicIndex;
+  let chapterIndex = state.chapterIndex;
+  if (chapterIndex > 0) {
+    chapterIndex -= 1;
   } else {
-    state.topicIndex -= 1;
-    state.chapterIndex = state.topics[state.topicIndex].lessons.length - 1;
+    topicIndex -= 1;
+    chapterIndex = state.topics[topicIndex].lessons.length - 1;
   }
-  state.cards = buildCards(currentTopic(), currentChapter());
-  state.cardIndex = state.cards.length - 1;
-  state.answers = new Map();
-  render();
+  openChapter(topicIndex, chapterIndex, { landOnLastCard: true });
 }
 
 function switchTopic(index) {
@@ -173,32 +168,54 @@ function switchTopic(index) {
 
 function startTopicTest(topicId) {
   setQuizRequest({ mode: "topic", topicIds: [topicId], count: "all" });
-  window.location.href = "quiz.html";
+  navigateTo("quiz.html");
 }
 
 // ---- Rendering: chapter index ----
 
-function renderChapterRow(topicIndex, chapterIndex, chapter) {
-  const row = el("button", "chapter-row");
+function renderChapterRow(topicIndex, chapterIndex, chapter, topicId) {
+  const read = isChapterRead(topicId, chapter.category);
+  const row = el("button", read ? "chapter-row chapter-row--read" : "chapter-row");
   row.type = "button";
+
+  // Same shape in both states, so nothing shifts as the list fills in:
+  // the number becomes a check, the circle stays put.
+  row.appendChild(el("span", "chapter-row__marker", read ? "✓" : String(chapterIndex + 1)));
+
+  const body = el("div", "chapter-row__body");
   const title = el("span", "chapter-row__title", chapter.category);
   title.lang = "en";
-  row.appendChild(title);
-  row.appendChild(el("span", "chapter-row__preview", chapter.rule));
+  body.appendChild(title);
+  body.appendChild(el("span", "chapter-row__preview", chapter.rule));
+  row.appendChild(body);
+
   row.addEventListener("click", () => openChapter(topicIndex, chapterIndex));
   return row;
 }
 
 function renderIndexView() {
   state.topics.forEach((topic, topicIndex) => {
-    const section = el("section", "panel");
-    const heading = el("h3", null, topic.title);
-    heading.lang = "en";
+    const section = el("section", "section");
+
+    const categories = topic.lessons.map((lesson) => lesson.category);
+    const readCount = countChaptersRead(topic.id, categories);
+
+    const heading = el("h2", "section-heading");
+    const title = el("span", null, topic.title);
+    title.lang = "en";
+    heading.appendChild(title);
+    heading.appendChild(el("span", "section-heading__meta", `${readCount}/${categories.length}`));
     section.appendChild(heading);
+
+    const track = el("div", "topic-progress");
+    const fill = el("div", "topic-progress__fill");
+    fill.style.width = `${(readCount / categories.length) * 100}%`;
+    track.appendChild(fill);
+    section.appendChild(track);
 
     const list = el("div", "chapter-list");
     topic.lessons.forEach((chapter, chapterIndex) => {
-      list.appendChild(renderChapterRow(topicIndex, chapterIndex, chapter));
+      list.appendChild(renderChapterRow(topicIndex, chapterIndex, chapter, topic.id));
     });
     section.appendChild(list);
 
@@ -246,8 +263,7 @@ function renderChapterNav() {
   nav.appendChild(backBtn);
 
   const topic = currentTopic();
-  const eyebrow = el("p", "quiz-progress", `${topic.title} · Bölüm ${state.chapterIndex + 1}/${topic.lessons.length}`);
-  eyebrow.lang = "en";
+  const eyebrow = el("p", "quiz-progress", `Bölüm ${state.chapterIndex + 1}/${topic.lessons.length}`);
   nav.appendChild(eyebrow);
   return nav;
 }
@@ -268,7 +284,7 @@ function renderCheckCard(card, index) {
   const wrap = el("div", "story-card story-card--check");
   const { question } = card;
 
-  wrap.appendChild(el("p", "story-eyebrow", "Kontrol Sorusu"));
+  wrap.appendChild(el("p", "eyebrow eyebrow--accent", "Kontrol Sorusu"));
   wrap.appendChild(renderPrompt(question.prompt));
 
   const optionsWrap = el("div", "options");
@@ -321,7 +337,7 @@ function renderCompleteCard(card) {
 
   const actions = el("div", "story-card__complete-actions");
   if (card.isLastChapterInTopic) {
-    const testBtn = el("button", "btn btn--secondary btn--sm", "Bu Konudan Test Et");
+    const testBtn = el("button", "btn btn--sm", "Bu Konudan Test Et");
     testBtn.type = "button";
     testBtn.addEventListener("click", () => startTopicTest(card.topicId));
     actions.appendChild(testBtn);
@@ -395,7 +411,7 @@ function render() {
   container.innerHTML = "";
 
   if (state.topics.length === 0) {
-    container.appendChild(el("p", "empty-state", "Henüz ders eklenmedi."));
+    container.appendChild(el("p", "empty-state empty-state--center", "Henüz ders eklenmedi."));
     return;
   }
 
@@ -424,7 +440,13 @@ function handleKeydown(event) {
 }
 
 export async function initEducationTab() {
+  // Re-entering the tab always lands on the index rather than wherever
+  // the last session stopped. Returning to a mid-chapter card with no
+  // context is disorienting; the index shows where you are and what's
+  // left, and the chapter is one tap away.
   if (state.loaded) {
+    state.view = "index";
+    render();
     return;
   }
   state.loaded = true;
@@ -445,6 +467,6 @@ export async function initEducationTab() {
   } catch (error) {
     console.error(error);
     container.innerHTML = "";
-    container.appendChild(el("p", "empty-state", "Dersler yüklenemedi. Sayfayı yenile."));
+    container.appendChild(el("p", "empty-state empty-state--center", "Dersler yüklenemedi. Sayfayı yenile."));
   }
 }

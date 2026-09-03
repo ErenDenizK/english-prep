@@ -42,21 +42,20 @@ at the same level as "what am I practicing":
   sorular eklendi" badge (see **Content-freshness tracking** below).
 - **Profil** — opened from a small circular button in the header (shows
   the learner's initial once a name is set). An optional display name
-  (local only, never sent anywhere) drives a personalized "Hoş geldin,
-  {name}!" greeting in the header; overall stats (tests completed,
+  (local only, never sent anywhere); overall stats (tests completed,
   questions answered, accuracy); and — once you've done a few tests —
   which topics and which grammar categories you're weakest in, each
   weak category with a "Pratik Yap" button that jumps straight into an
   open, category-scoped test for it; plus a reset button for all locally
   saved history.
 
-A dismissible note above the tabs tells first-time visitors the app is
-still in development (not yet `v1`) and what's usable today. It's shown
-once — dismissing it is remembered locally and survives a "Geçmişi
-Sıfırla" history reset (it's tracked separately from score history), so
-it won't reappear just because someone clears their stats.
+A first visit opens on a single welcome screen — what the app is, and one
+action to take — rather than dropping someone straight into a tab. It's
+shown once; that it's been seen is remembered locally and tracked
+separately from score history, so a "Geçmişi Sıfırla" reset doesn't
+replay the introduction at someone who has been using the app for weeks.
 
-The whole app is a fixed-height "app shell" (header/tabs, a scrolling
+The whole app is a fixed-height "app shell" (header, bottom nav, a scrolling
 content area with no visible scrollbar, and a fixed bottom action bar on
 the quiz/results screens) rather than an ordinary scrolling web page —
 answering a question never shifts the button you're about to tap next, and
@@ -108,21 +107,52 @@ js/                     ES modules — see file-level comments for each one's ro
   dropdown.js             Custom dropdown (replaces native <select>)
   modal.js                Custom confirm modal (replaces window.confirm)
   education.js             Eğitim tab: chapter index + story-card viewer
+  navigate.js             The one place the app moves between its pages
 data/manifest.json       Topic index (id, title, tier, file, question count,
                             contentVersion, categories)
 data/tenses/tenses.json    Tenses topic: questions (grouped by category) and
                             lessons (one per category, for the Eğitim tab)
+docs/design-system.md    Every visual rule and the reason behind it
+scripts/validate-content.js   Checks topic files against the schema
+scripts/build-artifact.js     Generates the single-file shareable preview
 ```
 
 ## Design
 
-The visual identity is a single, deliberate look — not a light/dark toggle:
-a warm, dark ink-and-amber palette, a serif display face (Fraunces) for
-headings paired with IBM Plex Sans for body text and IBM Plex Mono for
-scores and numbers, and hairline borders instead of shadowed "card" panels.
-The goal is to read as an edited, purpose-built study tool rather than a
-generic dashboard template. See `css/style.css` for the token definitions
-(`:root` custom properties) if this direction is extended to new pages.
+**`docs/design-system.md` is the reference.** It states every rule and why
+it exists; a screen that disagrees with it is wrong. The essentials:
+
+The visual identity is a single, deliberate look — not a light/dark
+toggle: a warm, dark ink-and-amber palette, a serif display face
+(Fraunces) for headings paired with IBM Plex Sans for body text and IBM
+Plex Mono for scores and numbers.
+
+Depth comes from **lightness, not outlines**. There are three surface
+levels (page → grouped/interactive content → floating menus and modals),
+and a border is allowed in exactly three roles: shell chrome (the
+header/nav dividers), state (correct, incorrect, selected, focused), and
+a single accent rail. A section is a heading plus space — never a
+bordered box wrapping more boxes. This replaced an earlier approach where
+everything drew the same 1px outline and boxes nested three deep, which
+read as flat and tiring because nothing looked more important than
+anything else.
+
+## The shareable preview
+
+`node scripts/build-artifact.js` produces a single self-contained HTML
+file (`dist/`) with the whole app in it — all three pages, the stylesheet,
+and the topic data inlined — for sharing as a link without deploying.
+
+It is **generated from the real sources**, not maintained alongside them:
+it bundles `index.html`, `quiz.html`, `results.html`, `css/style.css`,
+`js/*.js` and `data/*.json` exactly as they ship, so the preview cannot
+drift from the app. (It used to be a hand-written parallel copy in a
+different set of class names, and drifted almost every round.)
+
+This is not a build step for the site. The site itself stays plain static
+files with nothing to compile — `js/navigate.js` and the embedded-data
+path in `js/topics.js` are the only two seams the bundler needs, and both
+are inert when the app runs normally.
 
 ## Content authoring workflow
 
@@ -378,7 +408,7 @@ app is a real first release, not any particular feature set being
 
 ## Roadmap to v1.0
 
-Everything shipped so far (`v0.1`–`v0.10`) is development work toward a
+Everything shipped so far (`v0.1`–`v0.11`) is development work toward a
 first real release, not a release itself. Below is the working list of
 what's left, roughly in the order it makes sense to tackle — see
 `CHANGELOG.md` for what's already landed under each `0.y`.
@@ -421,7 +451,14 @@ what's left, roughly in the order it makes sense to tackle — see
    destinations), the header dropped to a single slim row, and Eğitim now
    opens on a skimmable chapter index instead of forcing a linear walk —
    the research and reasoning are in `CHANGELOG.md`'s `v0.10` entry.
-8. **Chapter locking / guided-path progression** — the one piece of the
+8. ~~Minimalist visual overhaul + first-run onboarding~~ — **done in
+   `v0.11`**, after feedback that the interface was "kutu içinde kutu"
+   (box inside box) and tiring to read. Depth now comes from surface
+   lightness rather than outlines, sections are headings and space rather
+   than bordered wrappers, a first visit gets a single welcome screen, and
+   Eğitim shows read-progress. The rules are written down in
+   `docs/design-system.md` and enforced by a test.
+9. **Chapter locking / guided-path progression** — the one piece of the
    original interaction-model proposal not yet built: soft-unlocking
    chapter *N+1* only once chapter *N* has been opened and attempted, and
    topic-to-topic progression. Deliberately kept separate from the
@@ -429,12 +466,12 @@ what's left, roughly in the order it makes sense to tackle — see
    schema and is easier to get right now that there are 3 real topics to
    test the topic-to-topic unlock against, rather than just Tenses alone.
    Eğitim stays fully open (no locking) until this lands.
-9. **Promote to `main` once approved** — `main` is still on the very first
+10. **Promote to `main` once approved** — `main` is still on the very first
    development build; it only moves forward when the owner has tried a
    build on `test` and signs off, per the branch model below. Confirm
    GitHub Pages is actually serving `main` at that point (not left on
    `test` from earlier testing).
-10. **Owner declares `1.0`** — once the above holds and the owner is happy,
+11. **Owner declares `1.0`** — once the above holds and the owner is happy,
    they set `x` to `1`; this isn't a technical milestone this project
    infers on its own.
 

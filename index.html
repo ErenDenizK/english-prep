@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>English Prep Practice</title>
+  <title>English Prep</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" id="site-header">
     <div class="site-header__inner">
       <h1>English Prep</h1>
       <button class="profile-trigger" type="button" id="profile-trigger" aria-label="Profilini aç" aria-controls="view-profil">
@@ -22,23 +22,65 @@
 
   <main class="app-content">
     <div class="page">
-      <div class="dev-note" id="dev-note" hidden>
-        <p>
-          <strong>Geliştirme aşamasındayız</strong> — henüz v1 sürümü değil.
-          Şu an yapabilecekleriniz: Eğitim'den konuları öğrenmek, Test'ten
-          pratik yapmak, Profil'den ilerlemeni takip etmek. Yeni konular ve
-          özellikler yakında ekleniyor.
-        </p>
-        <button type="button" id="dev-note-dismiss" aria-label="Notu kapat">×</button>
-      </div>
+      <!-- First run only. One screen: what this is, and one action to
+           take. Dismissed for good once a mode is chosen. -->
+      <section id="view-welcome" class="view" aria-label="Hoş geldin" hidden>
+        <div class="welcome">
+          <div>
+            <h2 class="welcome__title">Hazırlık sınavına<br />hazırlan.</h2>
+            <p class="welcome__lead">
+              Üniversite hazırlık yeterlik sınavları için ücretsiz alıştırma.
+              Kayıt yok, hesap yok — ilerlemen bu cihazda kalır.
+            </p>
+          </div>
 
-      <section id="view-egitim" class="view" role="tabpanel" aria-labelledby="tab-egitim" hidden>
-        <div id="lesson-container">
-          <p class="empty-state">Dersler yükleniyor&hellip;</p>
+          <div class="welcome__modes">
+            <div class="welcome__mode">
+              <span class="welcome__mode-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 6.2c-1.5-1.1-3.4-1.7-5.8-1.7v13.3c2.4 0 4.3.6 5.8 1.7 1.5-1.1 3.4-1.7 5.8-1.7V4.5c-2.4 0-4.3.6-5.8 1.7z" />
+                  <path d="M12 6.2v13.3" />
+                </svg>
+              </span>
+              <div>
+                <h3>Eğitim</h3>
+                <p>Konuları bölüm bölüm öğren. İstediğin bölümden başlayabilirsin.</p>
+              </div>
+            </div>
+
+            <div class="welcome__mode">
+              <span class="welcome__mode-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="5" y="4" width="14" height="17" rx="2" />
+                  <path d="M9 3.3h6v2.2H9z" fill="currentColor" stroke="none" />
+                  <path d="M8.5 12.5l2.2 2.2L15.5 10" />
+                </svg>
+              </span>
+              <div>
+                <h3>Test</h3>
+                <p>Paragraf sorularıyla pratik yap, her soruda açıklama ve kural al.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="welcome__actions">
+            <button class="btn" type="button" id="welcome-start-egitim">Eğitim'den Başla</button>
+            <button class="text-action" type="button" id="welcome-start-test">Doğrudan teste geç →</button>
+          </div>
+
+          <p class="welcome__note">
+            Uygulama geliştirme aşamasında; yeni konular ve özellikler ekleniyor.
+          </p>
         </div>
       </section>
 
-      <section id="view-test" class="view" role="tabpanel" aria-labelledby="tab-test">
+      <section id="view-egitim" class="view" role="tabpanel" aria-labelledby="tab-egitim" hidden>
+        <div id="lesson-container">
+          <p class="empty-state empty-state--center">Dersler yükleniyor&hellip;</p>
+        </div>
+      </section>
+
+      <section id="view-test" class="view" role="tabpanel" aria-labelledby="tab-test" hidden>
         <section class="hero">
           <h2 class="hero__title">Karışık test başlat</h2>
           <p class="hero__description">
@@ -54,23 +96,23 @@
           </div>
         </section>
 
-        <section>
-          <h2>Konuya göre pratik</h2>
+        <section class="section">
+          <h2 class="section-heading">Konuya göre pratik</h2>
           <div id="topics-container" class="topics">
-            <p class="empty-state">Konular yükleniyor&hellip;</p>
+            <p class="empty-state empty-state--center">Konular yükleniyor&hellip;</p>
           </div>
         </section>
       </section>
 
       <section id="view-profil" class="view" aria-label="Profil" hidden>
         <div id="profile-container">
-          <p class="empty-state">Profil yükleniyor&hellip;</p>
+          <p class="empty-state empty-state--center">Profil yükleniyor&hellip;</p>
         </div>
       </section>
     </div>
   </main>
 
-  <nav class="bottom-nav" role="tablist">
+  <nav class="bottom-nav" role="tablist" id="bottom-nav">
     <button class="bottom-nav__tab" type="button" role="tab" id="tab-egitim" data-view="egitim" aria-selected="false" aria-controls="view-egitim">
       <span class="bottom-nav__icon-wrap">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

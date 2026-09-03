@@ -3,6 +3,10 @@
 // grammar category), all read from the same local history storage.js
 // already keeps. No login, no server: everything here lives in this
 // browser only, and "Reset" only ever clears this browser's data.
+//
+// Each block is a section (heading + space), not a bordered panel — see
+// docs/design-system.md rule 2. The old panels wrapped stat tiles and
+// list rows in a second box, which was the worst of the nesting.
 
 import { loadManifest } from "./topics.js";
 import {
@@ -15,6 +19,7 @@ import {
 } from "./storage.js";
 import { createConfirmModal } from "./modal.js";
 import { setQuizRequest } from "./session-state.js";
+import { navigateTo } from "./navigate.js";
 
 const container = document.getElementById("profile-container");
 let resetModal;
@@ -31,75 +36,81 @@ function formatPercent(value) {
   return value === null ? "—" : `%${Math.round(value * 100)}`;
 }
 
+function section(heading) {
+  const node = el("section", "section");
+  if (heading) {
+    node.appendChild(el("h2", "section-heading", heading));
+  }
+  return node;
+}
+
 function renderNameField() {
-  const section = el("section", "panel");
-  section.appendChild(el("h2", null, "İsmin"));
-  section.appendChild(el("p", "hero__description", "İsteğe bağlı — sadece bu cihazda, sadece sana görünür."));
+  const wrap = section("İsmin");
+  wrap.appendChild(el("p", "muted", "İsteğe bağlı — sadece bu cihazda, sadece sana görünür."));
 
   const input = document.createElement("input");
   input.type = "text";
   input.className = "text-input";
-  input.placeholder = "İsmini yaz (isteğe bağlı)";
+  input.placeholder = "İsmini yaz";
   input.value = getProfileName();
   input.maxLength = 40;
   input.addEventListener("change", () => {
     setProfileName(input.value.trim());
     window.dispatchEvent(new CustomEvent("englishprep:profilenamechanged"));
   });
-  section.appendChild(input);
+  wrap.appendChild(input);
 
-  return section;
+  return wrap;
 }
 
 function renderStats(stats) {
-  const section = el("section", "panel");
-  section.appendChild(el("h2", null, "Genel İstatistikler"));
+  const wrap = section("Genel istatistikler");
 
-  const grid = el("div", "stat-grid");
-
-  const tests = el("div", "stat-tile");
-  tests.appendChild(el("div", "stat-tile__value", String(stats.testsCompleted)));
-  tests.appendChild(el("div", "stat-tile__label", "Tamamlanan test"));
-  grid.appendChild(tests);
-
-  const questions = el("div", "stat-tile");
-  questions.appendChild(el("div", "stat-tile__value", String(stats.totalQuestions)));
-  questions.appendChild(el("div", "stat-tile__label", "Çözülen soru"));
-  grid.appendChild(questions);
-
-  const accuracy = el("div", "stat-tile");
-  accuracy.appendChild(el("div", "stat-tile__value", formatPercent(stats.accuracy)));
-  accuracy.appendChild(el("div", "stat-tile__label", "Genel doğruluk"));
-  grid.appendChild(accuracy);
-
-  section.appendChild(grid);
-
+  // With nothing recorded yet, three zeroes say less than one sentence
+  // and an obvious next step — so show that instead of empty tiles.
   if (stats.testsCompleted === 0) {
-    section.appendChild(el("p", "empty-state", "Henüz test çözmedin — bir test tamamlayınca burada görünecek."));
+    const empty = el("div", "empty-state");
+    empty.appendChild(document.createTextNode("Henüz test çözmedin. İlk testini bitirince istatistiklerin burada birikir."));
+    wrap.appendChild(empty);
+    return wrap;
   }
 
-  return section;
+  const grid = el("div", "stat-grid");
+  const tiles = [
+    { value: String(stats.testsCompleted), label: "Tamamlanan test" },
+    { value: String(stats.totalQuestions), label: "Çözülen soru" },
+    { value: formatPercent(stats.accuracy), label: "Genel doğruluk" },
+  ];
+  tiles.forEach(({ value, label }) => {
+    const tile = el("div", "stat-tile");
+    tile.appendChild(el("div", "stat-tile__value", value));
+    tile.appendChild(el("div", "stat-tile__label", label));
+    grid.appendChild(tile);
+  });
+  wrap.appendChild(grid);
+
+  return wrap;
 }
 
-// Entries arrive sorted weakest-first (lowest accuracy first) — the rank
-// number makes that order visible instead of implicit, since without it
-// the list reads as an arbitrary ordering rather than "worst to best".
+// Entries arrive sorted weakest-first. The rank number makes that order
+// visible instead of implicit — without it the list reads as arbitrary.
 // `buildAction`, when given, appends a trailing button per entry (used by
-// the category list's "Pratik Yap" — weak topics already have a start
-// button on their home-page card, so they don't need a second one here).
+// the category list's "Pratik Yap"; weak topics already have their own
+// start control on the Test screen, so they don't need a second one).
 function renderWeakList(heading, entries, resolveName, buildAction) {
   if (entries.length === 0) {
     return null;
   }
 
-  const section = el("section", "panel");
-  section.appendChild(el("h2", null, heading));
+  const wrap = section(heading);
 
   const list = el("ul", "breakdown-list");
   entries.forEach((entry, index) => {
     const item = document.createElement("li");
     const info = el("div", "breakdown-list__info");
-    info.appendChild(el("span", null, `${index + 1}. ${resolveName(entry)}`));
+    const name = el("span", null, `${index + 1}. ${resolveName(entry)}`);
+    name.lang = "en";
+    info.appendChild(name);
     info.appendChild(el("span", "breakdown-list__score", `${entry.correct}/${entry.total}`));
     item.appendChild(info);
     if (buildAction) {
@@ -107,26 +118,25 @@ function renderWeakList(heading, entries, resolveName, buildAction) {
     }
     list.appendChild(item);
   });
-  section.appendChild(list);
+  wrap.appendChild(list);
 
-  return section;
+  return wrap;
 }
 
 function startCategoryPractice(category, allTopicIds) {
   setQuizRequest({ mode: "topic", topicIds: allTopicIds, category, count: "all" });
-  window.location.href = "quiz.html";
+  navigateTo("quiz.html");
 }
 
 function renderSettings() {
-  const section = el("section", "panel");
-  section.appendChild(el("h2", null, "Ayarlar"));
+  const wrap = section("Ayarlar");
 
-  const resetBtn = el("button", "btn btn--danger", "Geçmişi Sıfırla");
+  const resetBtn = el("button", "btn btn--danger btn--sm", "Geçmişi Sıfırla");
   resetBtn.type = "button";
   resetBtn.addEventListener("click", () => resetModal.open());
-  section.appendChild(resetBtn);
+  wrap.appendChild(resetBtn);
 
-  return section;
+  return wrap;
 }
 
 async function render() {
@@ -138,7 +148,7 @@ async function render() {
   container.appendChild(renderNameField());
   container.appendChild(renderStats(getOverallStats()));
 
-  const weakTopics = renderWeakList("Zayıf Olduğun Konular", getWeakTopics(), (entry) =>
+  const weakTopics = renderWeakList("Zayıf olduğun konular", getWeakTopics(), (entry) =>
     titleById.get(entry.topicId) ?? entry.topicId
   );
   if (weakTopics) {
@@ -147,7 +157,7 @@ async function render() {
 
   const allTopicIds = manifest.topics.filter((topic) => !topic.comingSoon).map((topic) => topic.id);
   const weakCategories = renderWeakList(
-    "Zayıf Olduğun Kategoriler",
+    "Zayıf olduğun kategoriler",
     getWeakCategories(),
     (entry) => entry.category,
     (entry) => {

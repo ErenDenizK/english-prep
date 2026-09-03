@@ -5,6 +5,56 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.11 — 2026-09-03
+
+A full visual and interaction overhaul, plus the functional gaps an audit
+of the whole app turned up. Prompted by direct feedback that the UI was
+"kutu içinde kutu, çok göz yoruyor" (box inside box, very tiring) with a
+request for deliberate minimalism rather than another round of patches.
+
+**The design system is now written down.** `docs/design-system.md` states
+every rule and the reason behind it. The core change: in a dark
+interface, depth comes from **lightness, not outlines**. Three surface
+levels replace the old habit of drawing a 1px border around everything,
+and a border is now permitted in exactly three roles — shell chrome,
+state (correct/incorrect/selected/focus), and one accent rail. A section
+is a heading plus space, never a bordered box wrapping more boxes.
+
+- **Every screen rebuilt on that model.** The quiz question no longer
+  sits in a card (the page *is* the card); topic cards are single tappable
+  surfaces instead of outlined cards containing outlined chips, badges and
+  a nested button; Profil's bordered panels are gone; results rows,
+  review items and stat tiles are flat surfaces. Radius moved 3px → 10px
+  so filled surfaces read as objects rather than outlined rectangles.
+  A Playwright check now asserts *no bordered element sits inside another
+  bordered element* on every screen, so this can't quietly regress.
+- **First-run onboarding.** A first visit gets one focused welcome screen
+  — what the app is, and one action — instead of a dismissible "still in
+  development" banner sitting on top of every screen on every visit.
+  Returning visitors go straight in.
+- **Eğitim shows progress.** The chapter index marks what you've read,
+  with a per-topic count and progress bar. Opening a chapter marks it
+  read. Nothing is locked — this is visible progress, not gating (chapter
+  locking remains a separate, deferred feature). Re-entering the tab now
+  lands on the index rather than wherever you last stopped.
+- **Leaving a test asks first.** Exiting mid-quiz silently discarded
+  every answer; it now confirms and says what will be lost.
+- **Results are readable.** The review defaults to *just the wrong
+  answers* with a filter to see all, the score carries a one-line verdict
+  telling you what to do next, and correct/incorrect items are marked by
+  an edge rail rather than a full outline.
+- **Smaller fixes.** The keyboard shortcuts (1–4, Enter) are now
+  discoverable via an on-screen hint that hides itself on touch devices;
+  Profil's empty state says something useful instead of showing three
+  zeroes; one status line per topic card replaces up to three stacked
+  badges.
+- **The preview build is generated, not hand-maintained.**
+  `scripts/build-artifact.js` produces the single-file shareable preview
+  from the real `index.html`/`quiz.html`/`results.html`, `css/style.css`,
+  `js/*.js` and `data/*.json`. It used to be a parallel copy in different
+  class names that drifted from the app nearly every round. The site
+  itself still has no build step — this only builds the preview.
+
 ## v0.10 — 2026-09-03
 
 UI/UX overhaul driven by direct feedback on v0.9 ("Eğitim sistemini hiç

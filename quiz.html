@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Test — English Prep Practice</title>
+  <title>Test — English Prep</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,13 +14,28 @@
   <main class="app-content">
     <div class="page">
       <div id="quiz-container">
-        <p class="empty-state">Sorular yükleniyor&hellip;</p>
+        <p class="empty-state empty-state--center">Sorular yükleniyor&hellip;</p>
       </div>
     </div>
   </main>
 
   <div id="quiz-bottom-bar" class="bottom-bar" hidden>
     <div class="bottom-bar__inner"></div>
+  </div>
+
+  <!-- Leaving mid-test throws away every answer given so far, so it asks
+       first and names what is lost (design-system.md, rule 8). -->
+  <div class="modal-overlay" id="exit-modal" hidden>
+    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="exit-modal-text">
+      <p id="exit-modal-text">
+        Testten çıkarsan bu testteki cevapların kaydedilmez. Çıkmak
+        istediğine emin misin?
+      </p>
+      <div class="modal__actions">
+        <button class="btn btn--secondary" type="button" id="exit-modal-cancel">Teste Dön</button>
+        <button class="btn btn--danger" type="button" id="exit-modal-confirm">Çık</button>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="js/quiz.js"></script>

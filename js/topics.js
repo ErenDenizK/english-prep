@@ -15,14 +15,36 @@
 const MANIFEST_URL = "data/manifest.json";
 
 /**
+ * Reads one of the data/ JSON files.
+ *
+ * Normally that's a fetch. The generated single-file build has no server
+ * to fetch from, so it inlines the same JSON under this global and this
+ * function reads it from there instead — which is what lets the preview
+ * run the real modules rather than a hand-copied imitation of them.
+ * @param {string} url
+ * @returns {Promise<object>}
+ */
+async function loadJson(url) {
+  const embedded = globalThis.__ENGLISH_PREP_DATA__;
+  if (embedded) {
+    if (!embedded[url]) {
+      throw new Error(`No embedded data for "${url}".`);
+    }
+    return embedded[url];
+  }
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to load "${url}".`);
+  }
+  return response.json();
+}
+
+/**
  * @returns {Promise<{topics: Array<{id: string, title: string, tier: string, file: string, questionCount: number}>}>}
  */
 export async function loadManifest() {
-  const response = await fetch(MANIFEST_URL);
-  if (!response.ok) {
-    throw new Error("Failed to load the topic manifest.");
-  }
-  return response.json();
+  return loadJson(MANIFEST_URL);
 }
 
 function normalizeQuestion(question) {
@@ -42,11 +64,7 @@ function normalizeQuestion(question) {
  * @returns {Promise<Array<object>>} the topic's questions, normalized
  */
 export async function loadTopicQuestions(topic) {
-  const response = await fetch(topic.file);
-  if (!response.ok) {
-    throw new Error(`Failed to load questions for topic "${topic.id}".`);
-  }
-  const data = await response.json();
+  const data = await loadJson(topic.file);
   return data.questions.map(normalizeQuestion);
 }
 
@@ -75,11 +93,7 @@ export async function loadQuestionsForTopics(topics) {
  * @returns {Promise<{lessons: Array<object>, questions: Array<object>}>}
  */
 export async function loadTopicContent(topic) {
-  const response = await fetch(topic.file);
-  if (!response.ok) {
-    throw new Error(`Failed to load content for topic "${topic.id}".`);
-  }
-  const data = await response.json();
+  const data = await loadJson(topic.file);
   return {
     lessons: data.lessons ?? [],
     questions: (data.questions ?? []).map(normalizeQuestion),

@@ -2,10 +2,22 @@ import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
 import { getQuizRequest, setQuizResult } from "./session-state.js";
 import { renderAnswerFeedback } from "./feedback.js";
+import { createConfirmModal } from "./modal.js";
+import { navigateTo, registerPage, isBundled } from "./navigate.js";
 
 const container = document.getElementById("quiz-container");
 const bottomBar = document.getElementById("quiz-bottom-bar");
 const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
+const exitOverlay = document.getElementById("exit-modal");
+
+const exitModal = createConfirmModal({
+  overlayId: "exit-modal",
+  confirmId: "exit-modal-confirm",
+  cancelId: "exit-modal-cancel",
+  onConfirm: () => {
+    navigateTo("index.html");
+  },
+});
 
 const state = {
   session: [],
@@ -34,18 +46,20 @@ function hideBottomBar() {
 function showMessage(text, { withHomeLink = true } = {}) {
   hideBottomBar();
   container.innerHTML = "";
-  const message = document.createElement("p");
-  message.className = "empty-state";
-  message.textContent = text;
-  container.appendChild(message);
+
+  const wrap = document.createElement("div");
+  wrap.className = "empty-state empty-state--center";
+  wrap.appendChild(document.createTextNode(text));
 
   if (withHomeLink) {
     const link = document.createElement("a");
     link.className = "btn";
     link.href = "index.html";
     link.textContent = "Ana Sayfa";
-    container.appendChild(link);
+    wrap.appendChild(link);
   }
+
+  container.appendChild(wrap);
 }
 
 function renderCategoryLabel(category) {
@@ -128,7 +142,7 @@ async function finishQuiz() {
     ),
   });
 
-  window.location.href = "results.html";
+  navigateTo("results.html");
 }
 
 function renderQuestion() {
@@ -138,10 +152,13 @@ function renderQuestion() {
   const nav = document.createElement("div");
   nav.className = "quiz-nav";
 
-  const exitBtn = document.createElement("a");
+  // A button, not a link: leaving discards every answer so far, so it
+  // has to be able to ask first.
+  const exitBtn = document.createElement("button");
+  exitBtn.type = "button";
   exitBtn.className = "quiz-nav__exit";
-  exitBtn.href = "index.html";
-  exitBtn.textContent = "← Ana Sayfa";
+  exitBtn.textContent = "← Çık";
+  exitBtn.addEventListener("click", () => exitModal.open());
   nav.appendChild(exitBtn);
 
   const progress = document.createElement("p");
@@ -167,6 +184,15 @@ function renderQuestion() {
   if (question.category) {
     card.appendChild(renderCategoryLabel(question.category));
   }
+
+  // Only shown where there's a real keyboard (CSS hides it on touch) —
+  // the shortcuts exist, so they should be discoverable rather than
+  // something you'd only find by guessing.
+  const hint = document.createElement("p");
+  hint.className = "keyboard-hint";
+  hint.textContent = "1–4 ile cevapla · Enter ile devam et";
+  card.appendChild(hint);
+
   card.appendChild(renderPrompt(question.prompt));
 
   const optionsWrap = document.createElement("div");
@@ -197,7 +223,9 @@ function renderQuestion() {
 }
 
 function handleKeydown(event) {
-  if (!state.session.length) {
+  // While the exit confirm is open it owns the keyboard — otherwise
+  // Enter would answer the question behind the dialog.
+  if (!state.session.length || !exitOverlay.hidden) {
     return;
   }
 
@@ -244,4 +272,10 @@ async function init() {
   }
 }
 
-init();
+// The real site loads this module only on its own page, so it starts
+// immediately. The single-file build loads every module at once and
+// starts each page on navigation instead.
+registerPage("quiz.html", init);
+if (!isBundled()) {
+  init();
+}

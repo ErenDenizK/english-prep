@@ -7,7 +7,8 @@
 const HISTORY_KEY = "englishPrep.history";
 const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
-const DEV_NOTE_DISMISSED_KEY = "englishPrep.devNoteDismissed";
+const ONBOARDED_KEY = "englishPrep.onboarded";
+const READ_CHAPTERS_KEY = "englishPrep.readChapters";
 const MIN_ATTEMPTS_FOR_WEAK_ENTRY = 3;
 
 function loadHistory() {
@@ -208,22 +209,83 @@ export function setProfileName(name) {
 }
 
 /**
- * @returns {boolean} whether the learner has dismissed the "still in
- * development" note. Separate from history/profile-name so resetting
- * history doesn't bring the note back.
+ * Whether the learner has been through the first-run welcome screen.
+ * Kept separate from history so resetting scores doesn't replay the
+ * introduction at someone who has already been using the app.
+ * @returns {boolean}
  */
-export function isDevNoteDismissed() {
+export function hasOnboarded() {
   try {
-    return localStorage.getItem(DEV_NOTE_DISMISSED_KEY) === "1";
+    return localStorage.getItem(ONBOARDED_KEY) === "1";
   } catch {
+    // With storage unavailable the welcome shows every visit. That's a
+    // better failure than never showing it to a genuine first-timer.
     return false;
   }
 }
 
-export function dismissDevNote() {
+export function markOnboarded() {
   try {
-    localStorage.setItem(DEV_NOTE_DISMISSED_KEY, "1");
+    localStorage.setItem(ONBOARDED_KEY, "1");
   } catch {
-    // Storage may be unavailable; the note will just show again next visit.
+    // Storage may be unavailable; the welcome will show again next visit.
   }
+}
+
+/* ---- Eğitim chapter progress ----
+   Passive read-tracking only: opening a chapter marks it read so the
+   index can show what's done. Nothing is ever locked as a result —
+   guided-path progression is a separate, deliberately deferred feature
+   (see the README roadmap and docs/design-system.md rule 6). */
+
+function chapterKey(topicId, category) {
+  return `${topicId}::${category}`;
+}
+
+function loadReadChapters() {
+  try {
+    const raw = localStorage.getItem(READ_CHAPTERS_KEY);
+    const parsed = raw ? JSON.parse(raw) : null;
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * @param {string} topicId
+ * @param {string} category
+ * @returns {boolean}
+ */
+export function isChapterRead(topicId, category) {
+  return loadReadChapters().includes(chapterKey(topicId, category));
+}
+
+/**
+ * @param {string} topicId
+ * @param {string} category
+ */
+export function markChapterRead(topicId, category) {
+  const key = chapterKey(topicId, category);
+  const read = loadReadChapters();
+  if (read.includes(key)) {
+    return;
+  }
+  read.push(key);
+  try {
+    localStorage.setItem(READ_CHAPTERS_KEY, JSON.stringify(read));
+  } catch {
+    // Storage may be unavailable; progress just won't persist this visit.
+  }
+}
+
+/**
+ * How many of a topic's chapters have been read.
+ * @param {string} topicId
+ * @param {string[]} categories - every category in the topic
+ * @returns {number}
+ */
+export function countChaptersRead(topicId, categories) {
+  const read = new Set(loadReadChapters());
+  return categories.filter((category) => read.has(chapterKey(topicId, category))).length;
 }
