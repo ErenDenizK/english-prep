@@ -25,5 +25,12 @@ jobs:
       - name: Validate content
         run: npm run validate
 
+      # Re-measures every colour token against its contrast requirement in
+      # both WCAG 2 and APCA. The first draft of the palette passed WCAG
+      # everywhere and failed APCA everywhere; nobody would have caught
+      # that by looking.
+      - name: Verify the palette
+        run: npm run color
+
       - name: Run unit tests
         run: npm test
