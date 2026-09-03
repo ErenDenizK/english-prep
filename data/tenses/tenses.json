@@ -42,7 +42,7 @@
       "options": ["is boiling", "boils", "boiled", "has boiled"],
       "correctIndex": 1,
       "explanation": "Cümle 'a fact every chemistry student memorizes' diyerek zamana bağlı olmayan, değişmeyen bir gerçekten bahsediyor; değişmeyen gerçekler Present Simple ile ifade edilir, bu yüzden 'boils' doğrudur. 'is boiling' Present Continuous'tur ve suyun tam şu anda, geçici olarak kaynadığını söylerdi — ocaktaki bir tencere için doğru olurdu, her zaman geçerli bir doğa yasası için değil. 'boiled' ise geçmişte olup bitmiş tek bir olayı anlatır ve cümledeki 'a fact' ifadesiyle çelişir.",
-      "tip": "Bilimsel gerçekler, genellemeler ve değişmeyen doğrular için her zaman Present Simple kullan."
+      "tip": "Zamana bağlı olmayan bilimsel gerçekler ve değişmeyen doğrular Present Simple ile ifade edilir."
     },
     {
       "id": "tenses-t4",
@@ -131,7 +131,7 @@
       "paragraph": "Look at those clouds — it ____ any minute now, so we should head back before we get soaked.",
       "options": ["will rain", "is going to rain", "rains", "is raining"],
       "correctIndex": 1,
-      "explanation": "'Look at those clouds' şu anda gözle görülen somut bir kanıt sunuyor; kanıta dayanan tahminler 'be going to' ile kurulur, bu yüzden 'is going to rain' doğrudur. 'will rain' dayanağını içinden verdiğin spontane bir tahmin olurdu ve bulutlara yapılan bu göndermeyi anlamsız bırakırdı. 'is raining' ise yağmurun hâlihazırda yağdığını söyler, oysa 'any minute now' henüz başlamadığını belirtiyor.",
+      "explanation": "'Look at those clouds' şu anda gözle görülen somut bir kanıt sunuyor; kanıta dayanan tahminler 'be going to' ile kurulur, bu yüzden 'is going to rain' doğrudur. 'will rain' dışarıdaki bir kanıta değil, konuşanın kendi öngörüsüne dayanan bir tahmin olurdu ve bulutlara yapılan göndermeyi anlamsız bırakırdı. 'is raining' ise yağmurun hâlihazırda yağdığını söyler, oysa 'any minute now' henüz başlamadığını belirtiyor.",
       "tip": "Elde somut bir kanıt varsa (bulutlar, şu anki durum) 'be going to' kullan; spontane tahminlerde 'will' kullanılır."
     },
     {
@@ -141,7 +141,7 @@
       "options": ["am taking", "will take", "take", "have taken"],
       "correctIndex": 1,
       "explanation": "Karar tam konuşma anında veriliyor: karşı taraf seni almayı teklif ediyor, sen de o anda taksi tutmaya söz veriyorsun; ani kararlar ve sözler 'will' ile kurulur ('will take'). 'am taking' önceden ayarlanmış, kesinleşmiş bir planı bildirir, oysa 'Don't worry about picking me up' bu kararın konuşma sırasında doğduğunu gösteriyor. 'take' Present Simple ise resmî tarifeler içindir (uçuş, tren saati), konuşma anında verilen kişisel bir karar için değil.",
-      "tip": "Konuşma anında alınan ani kararlar ve sözler için 'will' kullanılır, önceden planlanmış değilse."
+      "tip": "Önceden planlanmamış, konuşma anında alınan kararlar ve verilen sözler için 'will' kullanılır."
     },
     {
       "id": "tenses-t15",
@@ -186,7 +186,7 @@
       "options": ["founded", "has founded", "had founded", "was founding"],
       "correctIndex": 2,
       "explanation": "'By the time she turned thirty' geçmişte bir referans anı veriyor; o andan önce tamamlanan eylemler Past Perfect alır, bu yüzden 'had founded' doğrudur. 'founded' Past Simple olsaydı şirket kurmak otuz yaşına basmasından önce bitmiş değil, onunla aynı çizgide olup bitmiş görünürdü — oysa 'by the time' tam da bu öncelik ilişkisini kurmak için var. 'has founded' ise şimdiye bağlanır, oysa cümlenin bağlandığı nokta 'turned thirty', yani geçmişte bir an.",
-      "tip": "'By the time + past tense' yapısı hemen hemen her zaman Past Perfect ile devam eder."
+      "tip": "'By the time' geçmişte bir referans anı verir: o andan önce bitmiş bir eylem Past Perfect alır, o anda ortaya çıkan bir durum ise Past Simple ile kalır."
     },
     {
       "id": "tenses-t20",
@@ -212,7 +212,7 @@
       "paragraph": "The meeting had ____ started by the time we arrived, so we missed the introduction entirely.",
       "options": ["already", "yet", "still", "ago"],
       "correctIndex": 0,
-      "explanation": "Cümle olumlu ve referans noktası geçmişte ('by the time we arrived'); toplantının o andan önce başladığını söyleyen kelime 'already'dir ve Past Perfect ile birlikte doğal durur. 'yet' sadece olumsuz cümlelerde ve sorularda kullanılır, bu olumlu cümlede yer alamaz — 'The meeting hadn't started yet' deseydi doğru olurdu, ama o zaman anlam tersine dönerdi. 'still' ise beklenenden uzun süren bir durumu anlatır ve 'had ____ started' kalıbına oturmaz.",
+      "explanation": "Cümle olumlu ve referans noktası geçmişte ('by the time we arrived'); toplantının o andan önce başladığını söyleyen kelime 'already'dir ve Past Perfect ile birlikte doğal durur. 'yet' bu anlamıyla ('henüz') yalnızca olumsuz cümlelerde ve sorularda çalışır, olumlu bir 'had ____ started' kalıbına giremez — 'The meeting hadn't started yet' deseydi doğru olurdu, ama o zaman anlam tersine dönerdi. 'still' ise beklenenden uzun süren bir durumu anlatır ve bu kalıba oturmaz.",
       "tip": "'Already' olumlu cümlelerde, 'yet' ise soru ve olumsuz cümlelerde kullanılır."
     },
     {
@@ -221,8 +221,8 @@
       "paragraph": "I've ____ finished the assignment, so there's no need to remind me about the deadline anymore.",
       "options": ["yet", "already", "ago", "since"],
       "correctIndex": 1,
-      "explanation": "Cümle olumlu ve işin çoktan bittiğini, hatırlatmaya gerek olmadığını söylüyor; olumlu bir cümlede 'beklenenden önce bitti' anlamını veren kelime 'already'dir. 'yet' sadece olumsuz cümlelerde ve sorularda kullanılır ('I haven't finished yet' / 'Have you finished yet?'), bu yüzden 'I've ____ finished' boşluğuna giremez. 'since' ise arkasına bir başlangıç noktası ister (bir tarih ya da bir olay), oysa boşluktan hemen sonra fiil geliyor.",
-      "tip": "'Yet' sadece soru ve olumsuz cümlelerde kullanılır: 'Have you finished yet?' / 'I haven't finished yet.'"
+      "explanation": "Cümle olumlu ve işin çoktan bittiğini, hatırlatmaya gerek olmadığını söylüyor; olumlu bir cümlede 'beklenenden önce bitti' anlamını veren kelime 'already'dir. 'yet' 'henüz' anlamıyla olumsuz cümlelere ve sorulara aittir ('I haven't finished yet' / 'Have you finished yet?'), bu yüzden 'I've ____ finished' boşluğuna giremez. 'since' ise arkasına bir başlangıç noktası ister (bir tarih ya da bir olay), oysa boşluktan hemen sonra fiil geliyor.",
+      "tip": "'Yet' 'henüz' anlamını yalnızca soru ve olumsuz cümlelerde verir: 'Have you finished yet?' / 'I haven't finished yet.' Olumlu cümlede aynı işi 'already' yapar."
     },
     {
       "id": "tenses-t24",
@@ -230,7 +230,7 @@
       "paragraph": "He moved to Istanbul five years ____, and he still says it was the best decision he ever made.",
       "options": ["since", "for", "ago", "before"],
       "correctIndex": 2,
-      "explanation": "'Five years' bir süre miktarı ve cümlenin fiili Past Simple ('moved'); bir süre miktarından sonra gelip geçmişte belirli bir anı işaret eden kelime 'ago'dur. 'since' bir başlangıç noktası ister ('since 2019', 'since he graduated'), bir süre miktarının arkasına gelmez ve yanında Past Simple değil Present Perfect isterdi. 'for' ise süreyi verirken miktarın önüne geçer ('for five years') ve hâlâ süren bir durumu anlatırdı, oysa taşınma tek seferlik ve bitmiş bir olay.",
+      "explanation": "'Five years' bir süre miktarı ve cümlenin fiili Past Simple ('moved'); bir süre miktarından sonra gelip geçmişte belirli bir anı işaret eden kelime 'ago'dur. 'since' bir başlangıç noktası ister ('since 2019', 'since he graduated'), bir süre miktarının arkasına gelmez ve yanında Past Simple değil Present Perfect isterdi. 'for' ise süre miktarının önüne geçer ('for five years') ve olayın ne kadar sürdüğünü söyler, hangi noktada olduğunu değil; buradaki boşluk ise miktarın arkasında.",
       "tip": "Bir süre miktarı + 'ago' belirli bir geçmiş anı işaret eder: Present Perfect ile kullanılmaz, Past Simple ister."
     }
   ],

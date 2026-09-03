@@ -149,8 +149,8 @@
       "paragraph": "I ____ studied harder for that exam — I only found out yesterday how much material was actually going to be covered.",
       "options": ["should have", "must have", "can't have", "may have"],
       "correctIndex": 0,
-      "explanation": "Konuşmacı \"daha çok çalışmalıydım ama çalışmadım\" diyor; yapılmamış bir eylem için duyulan pişmanlık 'should have + V3' ile kurulur ve 'I only found out yesterday' bu pişmanlığın sebebini veriyor. En yakın çeldirici 'must have' geçmişe dair bir çıkarımdır: \"herhalde çok çalışmışımdır\" anlamına gelirdi, oysa insan kendi ne kadar çalıştığı hakkında çıkarım yapmaz. 'can't have' de çıkarımdır (imkânsızlık) ve cümledeki pişmanlığı hiç karşılamaz.",
-      "tip": "'Should have + V3', geçmişte yapılmayan bir eylem için pişmanlık ya da eleştiri bildirir; çıkarım bildirmez."
+      "explanation": "Konuşmacı \"daha çok çalışmalıydım ama çalışmadım\" diyor; yapılmamış bir eylem için duyulan pişmanlık 'should have + V3' ile kurulur ve 'I only found out yesterday' bu pişmanlığın sebebini veriyor. En yakın çeldirici 'must have' geçmişe dair bir çıkarımdır — \"herhalde çok çalışmışımdır\" demek olurdu, oysa konuşmacı ne kadar çalıştığını tahmin etmiyor, biliyor. 'can't have' de bir çıkarımdır (imkânsızlık) ve cümledeki pişmanlığı hiç karşılamaz.",
+      "tip": "'Should have + V3' yapılmamış bir eylem için pişmanlık ya da eleştiri bildirir; geçmişe dair bir çıkarım için 'must have' kullanılır."
     },
     {
       "id": "modals-t16",

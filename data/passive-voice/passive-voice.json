@@ -32,7 +32,7 @@
       "paragraph": "The bridge ____ in 1973, and it's still considered one of the greatest engineering achievements of that decade.",
       "options": ["was built", "has been built", "is built", "had been built"],
       "correctIndex": 0,
-      "explanation": "'In 1973' belirli ve kapanmış bir geçmiş an veriyor, bu yüzden Past Simple Passive ('was built') kullanılır. En yakın çeldirici 'has been built': Present Perfect Passive olayın ne zaman olduğunu söylemez ve 'in 1973' gibi belirli bir geçmiş zaman ifadesiyle kullanılmaz. 'had been built' de olmaz, çünkü Past Perfect Passive kendisinden sonra gelen ikinci bir geçmiş olay ister; bu paragrafta öyle bir olay yok.",
+      "explanation": "'In 1973' belirli ve kapanmış bir geçmiş an veriyor, bu yüzden Past Simple Passive ('was built') kullanılır. En yakın çeldirici 'has been built': Present Perfect Passive olayın ne zaman olduğunu söylemez ve 'in 1973' gibi belirli bir geçmiş zaman ifadesiyle kullanılmaz. 'had been built' de olmaz, çünkü Past Perfect Passive kendisinden daha sonraki bir geçmiş referans anına ihtiyaç duyar — söylenmiş ya da bağlamdan anlaşılan; bu paragrafta öyle bir an yok.",
       "tip": "Belirli bir geçmiş zaman ifadesi varsa Past Simple Passive kullanılır, Present Perfect Passive değil."
     },
     {
@@ -77,7 +77,7 @@
       "paragraph": "This medication ____ safely alongside most other treatments, though you should still check with your doctor first.",
       "options": ["can be taken", "can take", "can be take", "can taking"],
       "correctIndex": 0,
-      "explanation": "İlacın alınabilir olduğu, kimin alacağı söylenmeden belirtiliyor; imkân bildiren edilgen kalıp 'can be + V3' ('can be taken'). 'can be take' bir kural ihlalidir: 'be'den sonra fiilin V3 (past participle) hâli gelir, yani 'taken'; yalın 'take' oraya giremez. 'can take' ise aktiftir ve ilacın bir şeyi aldığını söyler, oysa alınan şey ilacın kendisi.",
+      "explanation": "İlacın alınabilir olduğu, kimin alacağı söylenmeden belirtiliyor; imkân bildiren edilgen kalıp 'can be + V3' ('can be taken'). 'can be take' bir kural ihlalidir: edilgen yapıda 'be'den sonra fiilin V3 (past participle) hâli gelir, yani 'taken'; yalın 'take' oraya giremez. 'can take' ise aktiftir ve ilacın bir şeyi aldığını söyler, oysa alınan şey ilacın kendisi.",
       "tip": "Bir şeyin yapılabilir olduğunu belirtmek için 'can be + V3' kullanılır."
     },
     {
@@ -104,7 +104,7 @@
       "paragraph": "This mistake ____ caught much earlier — it's frustrating that nobody noticed it until the final review.",
       "options": ["should have been", "should be", "must be", "can have been"],
       "correctIndex": 0,
-      "explanation": "'Nobody noticed it until the final review' hatayı yakalama fırsatının geçtiğini söylüyor; olması gerekirken olmamış bir şeyi eleştirmek 'should have been + V3' ile olur. En yakın çeldirici 'should be': 'should be caught' hâlâ yapılabilecek bir işi anlatır, oysa 'much earlier' olayın geçmişte kaldığını söylüyor. 'can have been' şıkkı ise görür görmez elenebilir: 'can have been' olumlu cümlede hiç kullanılmaz, can'in geçmişe dönük hâli yalnızca olumsuzda ('can't have been') yaşar.",
+      "explanation": "'Nobody noticed it until the final review' hatayı yakalama fırsatının geçtiğini söylüyor; olması gerekirken olmamış bir şeyi eleştirmek 'should have been + V3' ile olur. En yakın çeldirici 'should be': 'should be caught' hâlâ yapılabilecek bir işi anlatır, oysa 'much earlier' olayın geçmişte kaldığını söylüyor. 'can have been' şıkkı ise görür görmez elenebilir: 'can'in geçmişe dönük hâli yalnızca olumsuz cümlelerde ve sorularda görülür ('can't have been', 'Can it have been…?'), düz olumlu bir cümlede değil.",
       "tip": "'Should have been + V3', geçmişte olması gerekirken olmayan bir durumu eleştirmek için kullanılır."
     },
     {
@@ -131,7 +131,7 @@
       "paragraph": "She ____ her hair cut before the wedding, since she wanted to look perfect for the photos.",
       "options": ["had", "did", "made", "took"],
       "correctIndex": 0,
-      "explanation": "Saçını kuaförde kestirdi, kendi kesmedi; bu 'have + nesne + V3' yaptırma kalıbıdır ve 'her hair cut' sırası bunu ele veriyor ('had'). En yakın çeldirici 'made': make yaptırma kalıbına girmez, bir kişiyi zorlar ve yalın fiil alır — 'made the hairdresser cut her hair' olurdu, 'made her hair cut' değil. 'did' ve 'took' ise bu kalıpta hiç kullanılmaz; İngilizcede yaptırma anlamını yalnızca have ve get taşır.",
+      "explanation": "Saçını kuaförde kestirdi, kendi kesmedi; bu 'have + nesne + V3' yaptırma kalıbıdır ve 'her hair cut' sırası bunu ele veriyor ('had'). En yakın çeldirici 'made': make bu kalıba girmez, bir kişiyi zorlar ve yalın fiil alır — 'made the hairdresser cut her hair' olurdu, 'made her hair cut' değil. 'did' ve 'took' ise hiç girmez: 'nesne + V3' sırasını İngilizcede yalnızca 'have' ve 'get' alır.",
       "tip": "'Have + nesne + V3' yapısı, işi bir başkasına yaptırdığımızı anlatır: 'have your hair cut' = saçını kestirmek (kendin kesmiyorsun)."
     },
     {
