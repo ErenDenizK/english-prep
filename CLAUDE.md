@@ -121,6 +121,15 @@ by `npm run color`, which is in CI.
 
 `docs/redesign-plan.md` tracks the staged rebuild against that spec.
 
+## Where the project is going
+
+`docs/v1-plan.md` is the plan of record for v1, and `docs/research/` holds
+the six research arms it was synthesised from. Read the plan before
+proposing work: the round found that the app is preparing for the wrong
+*shape* of exam — there is no discrete grammar section on the paper this
+targets — and that four questions per category is the constraint binding
+everything else. The next thing to build is not a seventh grammar topic.
+
 ## Conventions
 
 **Language.** UI strings, explanations, tips and lesson prose are
