@@ -128,7 +128,7 @@ for `90a67ad`:
 | `passive-voice-t20` tests `be supposed to`, which no lesson taught | both | **blueprint gap** — untaught construct assessed |
 | `tenses-t19` sits in the wrong category | both | **miscoded item** |
 
-Ten defects, four distinct mechanisms. Note what is *not* in the list:
+Ten defects, and note what is *not* among them:
 nothing was ungrammatical, nothing was formatted wrong, nothing failed the
 schema. **The validator caught none of these and could not have.** Every
 one required somebody to hold the item and the claim about it in mind at
@@ -724,3 +724,1127 @@ have. It costs one file and a few lines of assembly per batch, it never
 expires, and it grows for free — every defect the supervisor finds by hand
 gets added to the calibration set, so the review gets harder to fool over
 time rather than easier.
+
+---
+
+## 4 · Batch strategy
+
+### 4.1 The missing artifact: a category spec
+
+The kickoff in `docs/agents/README.md` fixes the taxonomy and the counts,
+and then hands an agent a category name and asks for four questions. The
+distance between "Present Perfect vs Past Simple" and a specific item is
+enormous, and every agent crosses it differently. That gap is where
+between-batch inconsistency comes from, and no amount of reviewing at the
+far end closes it.
+
+Automatic item generation has a name for what belongs in the gap.
+**Reported:** the standard AIG method is three stages — content experts
+build a **cognitive model** describing the knowledge, the sources of
+difficulty and the plausible errors; an **item model** turns that into a
+template with variable elements; an algorithm generates. The claimed
+result is items whose psychometric properties resemble traditionally
+written ones on a high-stakes health-professions exam, and — the part that
+matters here — the distractors are derived *from the cognitive model*
+rather than invented per item, which is what makes them systematically
+plausible. Recent hybrid work uses an LLM to draft the template, reportedly
+cutting template construction from about five hours to under ten minutes.
+
+The full template machinery is wrong for this project: templated items are
+mechanically similar, and this app's items are short prose passages where
+similarity is the thing to avoid. But the **cognitive model is exactly
+right**, it is what is missing, and it is one page of Markdown per
+category. Call it a **category spec**, keep it in `docs/specs/<topic>/`,
+and require it before any authoring session for that category is started.
+
+A spec contains, and I mean these as required headings:
+
+1. **The discrimination.** One sentence: what a learner must decide.
+   *"Whether the period the verb describes is still open at the moment of
+   speaking."*
+2. **The rule, stated so it is right.** Including the cases where the
+   obvious signal word does not decide. This is the same content as the
+   lesson's `decision` block and should be written to agree with it —
+   which is also how the lesson/question contradiction from §1.2 gets
+   caught before it ships rather than after.
+3. **The misconceptions, numbered.** M1, M2, M3… Each is a wrong rule a
+   Turkish-speaking B2 learner actually holds, phrased as the learner
+   would hold it. *"M2: 'for' means Present Perfect."* Five to eight per
+   category. **This is the distractor source**: every distractor in every
+   item must be traceable to a numbered misconception, and the item's
+   review record says which. That single requirement is what converts
+   distractor writing from taste into engineering, and it is the
+   difference the AIG literature attributes its distractor quality to.
+4. **The context bank.** Ten to fifteen one-line scenario seeds in
+   different domains — a lab, a city council, a translation deadline, a
+   glacier, a court, a bakery supply chain — written once by the
+   supervisor. Agents draw from it and mark which they used. This is the
+   cheapest fix for §1.5's mode collapse and it needs no cleverness: the
+   diversity is supplied, not requested.
+5. **The difficulty recipe.** The surface features fixed by fiat, since
+   §1.4 says difficulty cannot be measured: sentence count, whether the
+   deciding evidence sits in the blank's own clause or elsewhere, whether
+   a counter-signal is present. Three bands, and the batch plan says how
+   many of each.
+6. **The coverage plan.** For a batch of 15: which misconceptions get how
+   many items, how many counter-signal items (the learning-design arm's
+   one in four), how many at each difficulty band, and which context seeds
+   are off-limits because an earlier batch used them.
+
+A spec is written by the supervisor with an agent's help and then it is
+**frozen**. It is the fixed input every future batch for that category is
+generated against, which is the only mechanism that makes batch 7
+comparable to batch 1 at all. Changing a spec is a deliberate act with a
+version number, exactly like a taxonomy change.
+
+The honest cost: one page per category, eighteen categories today,
+probably an hour each with an agent drafting and the supervisor
+correcting. Eighteen hours, front-loaded, against a corpus of a thousand
+items. It is the best-value eighteen hours in this document, and it is
+also the thing most likely to be skipped because it produces nothing a
+learner can see.
+
+### 4.2 Twenty for one category, or four across five
+
+**One category, the whole target at once.** Four reasons, in order of
+strength:
+
+**Diversity is a property of a set, and only a set in one context can be
+made diverse.** §1.5's mode collapse is between independent generations.
+An agent writing 15 items for one category with all 15 in view can be told
+"no two items may share a scenario domain, a sentence shape, or a
+misconception pair" and can actually comply, because it can see what it
+has already written. Fifteen items produced by five separate sessions
+cannot be made to satisfy that constraint by any instruction, because no
+session sees the others. The corpus-wide near-duplicate check (C5) then
+catches what leaks *between* batches, which is the residual the set-level
+constraint cannot reach.
+
+**Review is faster per item within a category.** The reviewer holds one
+rule, one misconception list and one spec in mind for the whole batch. A
+mixed batch forces a context switch per item and the marginal item gets a
+worse read. Given that review is the binding constraint, anything that
+raises items-reviewed-per-hour is worth more than it looks.
+
+**A category is a shippable unit.** Twelve items in one category is a
+working practice loop for that category. Four items in each of five
+categories is five broken loops. Since rounds will be abandoned halfway —
+they always are — the unit of work should be the unit of usefulness.
+
+**Coverage is checkable.** "Did this batch cover M1–M6 and include four
+counter-signal items?" is answerable for a single-category batch and
+meaningless for a scattered one.
+
+The counter-argument is real and should be stated: a single-category batch
+tempts the author into fifteen variations of one sentence frame, which is
+the *worst* diversity outcome, and it is the failure mode a scattered
+batch cannot have. The mitigation is the spec's coverage plan and context
+bank — the author is filling a distribution, not free-associating around a
+theme. Without a spec, I would actually reverse this recommendation and
+scatter, because scattering is a crude diversity mechanism and a
+spec-less single-category batch is where fifteen near-duplicates come
+from.
+
+**Size: 12–15 items, and not more.** Three constraints converge on the
+same band. It is the learning-design arm's derived pool size, so a batch
+is exactly one category made whole. It is about what one reviewing pass
+holds without the later items degrading — long generations drift, and the
+fifteenth item of a run is written with a context full of the previous
+fourteen. And it is about what a person can adjudicate in one sitting; a
+batch that cannot be finished in one evening will be finished across two,
+which is where standards slip.
+
+### 4.3 How batch 7 gets worse, and how you would notice
+
+Three distinct mechanisms, three distinct countermeasures. They are worth
+separating because they fail differently.
+
+**Within-run degradation.** Later items in a long generation are worse and
+more similar than earlier ones. *Countermeasure:* cap the batch at 15;
+require the author to state the coverage plan *first* and then fill it,
+so the last items are the ones the plan assigned rather than whatever is
+left in the context.
+
+**Between-run inconsistency.** Two sessions given the same category name
+produce different interpretations of what the category means, different
+distractor conventions, different registers. *Countermeasure:* the frozen
+spec, plus **three fixed exemplar items** in the brief — the same three,
+every time, chosen by the supervisor as the bar. Exemplars anchor register
+far more effectively than adjectives do. They should be real shipped items
+he has verified, and they should be replaced only deliberately.
+
+**Standard drift in the reviewer and the supervisor.** The insidious one:
+the content does not get worse, the gate does. Batch 7 passes because the
+review has quietly relaxed. *Countermeasure:* §3.6's salted calibration
+items, which are a fixed measuring stick, and the batch record below,
+which makes the trend visible.
+
+**How you notice.** Four numbers per batch, in the log, and their trend
+across batches:
+
+| Number | What a rise means |
+| --- | --- |
+| Items flagged by Pass A / Pass B | The content is getting worse, or the spec is not being followed |
+| Items flagged by the rubric pass | Same |
+| Items the supervisor rejected or rewrote | The reality check on the two above |
+| Calibration items the reviewer missed | The *review* is getting worse — and this one invalidates the other three |
+
+If the supervisor's rejection rate rises while the reviewer's flag rate
+falls, the reviewer has drifted. If both rise, the authoring has. If both
+fall while the calibration items are still caught, things are genuinely
+improving — which they should, because the spec accumulates the
+misconceptions found in earlier rounds. That last point is the reason to
+keep the numbers at all: **the pipeline is supposed to get better, and the
+only way to claim that honestly is to have measured it from the
+beginning.**
+
+### 4.4 The batch record
+
+One Markdown file per batch, in `content-log/`, outside `data/`. It is
+short:
+
+```
+Batch:        2026-09-14-tenses-present-perfect-vs-past-simple
+Spec:         docs/specs/tenses/present-perfect-vs-past-simple.md @ v2
+Brief:        docs/agents/question-author.md @ 1a2b3c4
+Author:       Claude Opus 5, one session, 2026-09-14
+Reviewer:     Claude Opus 5, separate session, blind + rubric
+Items:        tenses-t25 … tenses-t39   (15 authored, 13 shipped)
+Salted:       3 calibration items, 3 caught
+Flagged:      Pass A 2 · Pass B 3 · rubric 4 · union 6
+Supervisor:   answered blind, hesitated on t31 t36; rejected t28 t33;
+              rewrote the explanation on t31
+Shipped:      2026-09-15 to branch test, merged to main 2026-09-18
+```
+
+That is the item-bank *item history* the standards ask for, reduced to
+what one person can maintain: what produced these items, what checked
+them, what was found, and what was done. It makes C8 possible, it makes
+§4.3's trend real, and it is the evidence behind the disclosure sentence
+in §6.
+
+---
+
+## 5 · The new item types
+
+Each is harder to author than a single-blank grammar question, and each is
+harder in a *different* way, which is why one brief cannot cover them.
+What follows, per type: the sentences the brief must contain, the spec
+fields the type adds, and the checks the validator can make. The runtime
+shapes are the exam arm's (`docs/research/the-exam.md` §4) and I have not
+changed them.
+
+Two things apply to all five.
+
+**Every new type needs its own reviewer agenda**, not just its own author
+brief. The §3.3 checklist is written for a four-option grammar item; a
+reading item's version has different questions on it, given below.
+
+**Every new type needs three exemplars before the first batch.** Written
+by hand, by the supervisor, and verified. This is the most reliable
+control on register that exists and it costs one evening per type.
+
+### 5.1 Restatement
+
+The cheapest new type and the one closest to what exists. Its danger is
+that it looks like a grammar item and is not one: it is decided by
+*meaning*, and an author who thinks in transformations will write four
+options that differ grammatically and mean the same thing, or four that
+mean different things for reasons the learner can spot without reading the
+stem.
+
+**The brief must contain:**
+
+- *"The keyed option must preserve every proposition of the stem —
+  polarity, modality, time reference, causal direction and scope — and add
+  none. A restatement that is merely compatible with the stem is wrong."*
+- *"Each of the three distractors must come from a different named failure
+  family, and you must say which: polarity flip, modality strength shift
+  (must → should), causal direction reversed, time reference shifted,
+  scope or quantifier changed, or true-but-not-equivalent. Two distractors
+  from the same family waste a slot."*
+- *"Do not build the keyed option out of the stem's own words. A good
+  restatement paraphrases; if the key is the option that shares the most
+  vocabulary with the stem, a learner can answer by matching words and
+  the item tests nothing."*
+- *"The stem must be a single sentence that is worth restating — it needs
+  at least two propositions in a relation. 'The meeting was cancelled' has
+  nothing to transform."*
+
+**Spec additions:** the failure families above become the misconception
+list; the transformation inventory (passive↔active, modal paraphrase,
+conditional restructuring, concession, cause/effect, reported speech)
+becomes the coverage plan.
+
+**Validator:** no `____` in the stem (error). Exactly four options, each
+≥ 6 words and a complete sentence — first character uppercase, final
+character terminal punctuation (warning). Stem ≥ 12 words (warning). C2
+option-length cue and C3 stem-overlap cue from §2.3 both apply, and C3 is
+the important one here.
+
+**Reviewer agenda additions:** "For the keyed option, list the stem's
+propositions and check each survives. For each distractor, name which one
+it breaks." That is a mechanical procedure, it is fast, and it is exactly
+what an author skips.
+
+### 5.2 Paragraph completion
+
+The hardest items in this document to write well, and the exam arm ranks
+them last for that reason. The failure mode is specific: an author writes
+one sentence that fits the topic and three that do not, and the item
+becomes a topic-matching exercise. A real paragraph-completion item is
+decided by **cohesion** — a pronoun that has no antecedent unless this
+sentence is there, a contrastive marker that requires the preceding claim,
+a given-new chain.
+
+**The brief must contain:**
+
+- *"Name, for every item, the single cohesive link that forces the keyed
+  sentence: the referring expression and its antecedent, the discourse
+  marker and the claim it contrasts with, or the given-new chain and where
+  it breaks. If you cannot name one, the item is decided by topic and is
+  not a paragraph-completion item."*
+- *"Every distractor must be on-topic and locally fluent. A distractor
+  that is about something else is not a distractor; it is padding. Each
+  must fail on cohesion — wrong referent, a marker that contradicts the
+  flow, information given twice, or a new topic the following sentence
+  does not pick up — and you must say which."*
+- *"The removed sentence must not be the first sentence of the paragraph.
+  Removing the topic sentence produces an item decided by summarising,
+  which is a reading skill and belongs in a reading set."*
+
+**Validator:** exactly one `____` (which for this type stands for a whole
+sentence, not a word). The paragraph must retain ≥ 3 sentences besides the
+blank (warning under that). Options ≥ 8 words, each ending in terminal
+punctuation. The blank must not be the first sentence — check that a
+sentence-terminal character occurs before the `____` (error). Warn if the
+keyed option is the **only** option containing a pronoun or a discourse
+marker from a small fixed list (*however, therefore, this, these, such,
+instead, moreover*): that is a surface cue and a common one.
+
+### 5.3 Cloze passage
+
+The structural risk is that a cloze passage becomes ten single-blank items
+sharing a background. On the real paper, the blanks are decided by the
+passage's argument, and they are **mixed on purpose** — verb forms,
+prepositions and connectives, and content vocabulary.
+
+**The brief must contain:**
+
+- *"One passage, one argument. A blank that can be answered by reading
+  only the sentence it sits in is a grammar item that has been pasted into
+  a passage — for each blank, name the sentence elsewhere in the passage
+  that decides it."*
+- *"Mix the blank types deliberately: roughly a third verb form, a third
+  connective or preposition, a third content vocabulary. A cloze of ten
+  verb-form blanks is not this exam's cloze."*
+- *"No blank in the first sentence. The reader has no context yet, so a
+  first-sentence blank is guessing."*
+
+**Spec additions:** this type needs a spec per *passage set*, not per
+category, because its unit is the passage. What it inherits from category
+specs is the misconception list for whichever categories its blanks draw
+on.
+
+**Validator:** the count of `____` in `text` must equal `blanks.length`
+(error) — the exam arm's derivation-not-authoring principle makes this
+free. At least six words between consecutive blanks (warning). No blank
+before the first sentence-terminal character (error). Each blank's options:
+four, distinct, and the filled-sentence seam check the validator already
+does, run per blank. Warn if more than 40% of a passage's blanks share one
+category — that is the ten-verb-form cloze. Passage length band, and the
+lexical profile check from §5.4.
+
+### 5.4 Reading passages
+
+The most valuable type and the one where a defect does the most damage:
+the exam arm is right that a reading item with two defensible answers
+teaches a learner to distrust a correct reading, which is worse than
+teaching a wrong rule.
+
+Two separate authoring problems, and the brief has to treat them
+separately. The passage must be *readable* — right level, right register,
+genuinely coherent, original. The questions must be answerable **from the
+text and not from world knowledge**, which is the passage-blind problem
+from §1.3 in its home territory.
+
+**The brief must contain:**
+
+- *"Write the passage first, and write it as prose that would stand on its
+  own. Do not write it around the questions — a passage reverse-engineered
+  from seven items reads like a list and the items become trivially
+  locatable."*
+- *"The passage must be original. Do not reproduce, translate or lightly
+  paraphrase an existing text; if you find yourself recalling a specific
+  article, change the subject."*
+- *"For every question, give the exact span of the passage that answers it:
+  paragraph number and the clause. If you cannot point at a span, the item
+  is not a reading item and must be rewritten or dropped."*
+- *"A learner who has not read the passage must not be able to answer.
+  After writing each item, read the question and its four options with the
+  passage covered. If one option is obviously true of the world, or the
+  other three are obviously false, the item is testing general knowledge."*
+- *"Distractors must be wrong **about the passage**, not wrong about the
+  world: the classic four are a claim the passage does not make, a claim
+  the passage makes about something else, a true statement that does not
+  answer the question, and an over-generalisation of a hedged claim in the
+  text."*
+- *"A `Reference` item must quote a word or phrase that occurs verbatim in
+  the passage, and must name the paragraph it occurs in."*
+
+**Validator:** these are unusually checkable for a "soft" type.
+
+- Passage word count in band (**280–400**; error outside 200–500,
+  warning outside 280–400).
+- Mean sentence length in band 15–25 words; warn outside.
+- 5–8 questions per passage; warn outside. No more than two questions of
+  the same skill category in one set (warning).
+- **Reference-item check:** for an item whose category is `Reference`, the
+  quoted span in the question stem must occur verbatim in the passage, and
+  in the paragraph the stem names (**error** if absent). This is a string
+  search, it is exact, and it catches a real and embarrassing bug class.
+- **Vocabulary-in-context check:** the target word must occur in the
+  passage (error).
+- **Stem grounding:** warn if no content word of a question stem occurs in
+  the passage — a question about something the passage never mentions.
+- **Lexical profile.** This is the one that needs data: ship
+  `tools/wordlists/` with the NGSL and the AWL as JSON, and report the
+  percentage of passage tokens outside both lists. Warn outside a band the
+  supervisor sets after looking at a few real passages (my guess, and it
+  is only a guess without the sample paper: 2–6% off-list is the B2
+  academic range; under 2% is too easy, over 8% is a passage that fails on
+  vocabulary rather than reading). This is a genuine text-difficulty
+  control obtainable with zero dependencies — a set lookup over ~3,400
+  strings. **Check the licences before checking the lists in**; I could
+  not reach either site to confirm terms.
+
+**Reviewer agenda for reading:** answer all seven questions *without* the
+passage (Pass B), then answer them with it, then check every claimed
+answer span actually says what the key needs it to say. The third step is
+where the real defects are, and it is exactly what an author does not do.
+
+### 5.5 Vocabulary
+
+Structurally the existing item shape, so it needs no engine work, but its
+distractors are chosen by a completely different logic: not "which wrong
+rule would a learner apply" but "which word would a learner confuse this
+one with".
+
+**The brief must contain:**
+
+- *"All four options must be the same part of speech and must fit the slot
+  grammatically. If three options are ungrammatical in the sentence, the
+  item tests syntax and the vocabulary is decoration."*
+- *"The context must decide the word by meaning or by collocation, and you
+  must say which. A sentence in which two of the four options would both
+  be reasonable is a failed item even if one is more idiomatic."*
+- *"Draw distractors from the same sublist or the same word family as the
+  target — near neighbours in academic register, not random words."*
+- *"Include the Turkish gloss in bold inside the explanation. The learner
+  gets the contextual reading and the form–meaning link in one item."*
+
+**Validator:** the target word (the keyed option) must not appear
+elsewhere in the paragraph (error — it gives the answer away). All four
+options must be distinct and none a morphological variant of another by a
+crude suffix strip (warning; this catches a word-formation item filed as a
+vocabulary item, which is a different construct). The explanation must
+contain a `**bold**` span (warning) — that is the gloss convention and it
+is otherwise unenforced. And, if the category names a word list —
+`AWL Sublist 1` — **the keyed option must be on that list** (error). That
+last one is exact, free once the word lists are in the repo, and it is the
+check that keeps a vocabulary set on its declared syllabus instead of
+drifting into whatever the agent found interesting.
+
+---
+
+## 6 · Provenance and correctness
+
+### 6.1 The honest standard
+
+State it once, plainly, and let everything else be measured against it:
+
+> **An item is correct when a competent human has confirmed that its key
+> is uniquely defensible.** Not when the validator passes. Not when a
+> reviewing model agrees. Those are filters that decide what the human
+> reads; they are not the standard.
+
+Two consequences the project should accept before it starts writing
+hundreds of items.
+
+**Unreviewed content must not ship.** The exam arm already refuses
+auto-generated reading passages shipped unread, and the argument
+generalises: an item nobody read is not "probably fine", it is unknown,
+and §1's base rates say the prior is roughly a coin flip on at least one
+flaw. If the review budget will not cover a section, ship less of that
+section. A smaller correct app is strictly better than a larger one
+containing an unknown number of items that teach false things to people
+sitting a real exam.
+
+**Correctness is asymmetric, so the review effort should be too.** An item
+that is merely *bad* — too easy, a wasted distractor, a dull scenario —
+costs a learner a minute. An item that is *wrong* — a bad key, a pitfall
+marking correct English as an error, a decision rule that fails on the
+paper — installs an error the learner will act on under exam conditions,
+and it is the app's own confident Turkish explanation that installs it.
+The review agenda in §3.3 leads with "is there exactly one defensible
+answer" for that reason and not by accident.
+
+### 6.2 What to record
+
+The item-bank standards answer this and the answer is proportionate:
+**Reported**, an item bank carries item author, date written, status,
+correct answer, format, links to the blueprint, and *item history* —
+usage, reviews, and changes. Cut to what one person can maintain, that is
+§4.4's batch record plus two fields on the item itself.
+
+The two fields I would put on the item, and only these two:
+
+- **`counterSignal`** (boolean, optional) — from §2.3's C9. It is
+  pedagogical metadata, it is checkable, and it is the one property of an
+  item the author must decide deliberately.
+- **nothing else.** Author, date, model, spec version and review outcome
+  all belong in the batch record, keyed by id range. Putting them on the
+  item would add five fields of bookkeeping to every one of a thousand
+  JSON objects, would double every content diff, and would be exactly the
+  kind of authored bookkeeping the lesson schema deliberately removed by
+  deriving ids. Keep `data/` for what the learner reads.
+
+The connection between the two is C8: the validator asserts every shipped
+question id appears in exactly one batch record. That makes provenance a
+property of the repository rather than a promise, and it is the only way
+to answer "was this item ever actually reviewed?" a year from now.
+
+**The spec version is the important one.** When a misconception turns out
+to be wrong — a distractor family that seemed plausible and isn't — you
+need to find every item built on it. `Spec: … @ v2` plus an id range is
+how. Without it, a bad idea in a spec is unbacked-out and quietly
+contaminates every batch after it.
+
+### 6.3 There is no way to unship a wrong item, and there should be
+
+Not asked, and it belongs here. Suppose §7 finds that `modals-t17` is
+ambiguous — which it is, and it has been for weeks. The repository can
+edit it. What it cannot do is anything about the learner who already
+answered it, and the mechanics are worse than they look:
+
+- history keys on question id, so a fixed item keeps its id and the
+  learner's record now says they got wrong an item that no longer exists;
+- `getWeakCategories()` sums that answer into a weakness the learner is
+  still being sent back to (the learning-design arm's §7.1);
+- a `check` block inside a lesson may have taught the wrong thing, and
+  lesson progress records only that the page was read.
+
+Three cheap moves, in order:
+
+1. **Retire, don't silently rewrite.** A materially wrong item gets a new
+   id and the old id is dropped. `contentVersion` bumps, which the app
+   already surfaces as a badge. History for a dropped id becomes inert
+   rather than misleading, which requires the scoring code to ignore ids
+   it cannot resolve — worth checking that it does.
+2. **An errata line in the batch record.** What was wrong, when it was
+   found, how it was found. Two lines, and it is what makes §4.3's trend
+   honest: the batches that later needed errata are the evidence that the
+   review of the day was not enough.
+3. **Say it once in the app.** Which is the next section.
+
+### 6.4 Should the app tell learners the content is AI-authored?
+
+**Yes — once, in Profil, in a sentence that says what was *checked* as
+well as what was written, and never on the item itself.**
+
+The case against is real and I want to state it fairly. **Reported:**
+labelling content as AI-generated reliably *reduces* perceived
+trustworthiness even when readers judge the same content accurate and
+fair — the "transparency dilemma" — and detailed disclosure lowers
+engagement further than simple disclosure does. A learner who trusts the
+app less will use it less, and an app nobody opens teaches nobody.
+
+I still land on disclosure, for three reasons, the third of which is the
+one that decides it.
+
+**It is true and it is material.** The content makes claims about a
+language, to people who will act on them in an exam that decides a year of
+their lives. §1's base rates say some of those claims will be wrong. A
+learner is entitled to know the provenance of a claim they are being asked
+to memorise. This is the same argument the repo already accepts about the
+exam facts — the exam arm refuses to let its own findings be presented as
+fact about a student's exam until the sample paper is checked.
+
+**The trust research is about persuasion, and this is not a persuasion
+context.** The studies that find AI labels reducing trust are largely
+about news and messaging, where the reader's job is to believe or not.
+This app's job is to be *used and corrected*. Its six users know the owner
+built it with AI; the label is not news to them, and the finding that
+matters more is the one about learners valuing authorship clarity and a
+sense of control.
+
+**The disclosure is what makes the defect channel work.** This is the
+functional argument and it is decisive. A learner who believes the content
+is authoritative and hits `modals-t17` concludes that *he* is wrong, and
+learns something false with extra conviction. A learner who knows the
+content is AI-written and human-checked concludes that the item might be
+broken, and — if you have given him somewhere to say so (§2.2) — tells
+you. **Disclosure converts your six users from consumers into your only
+pretest panel.** That is worth more than the marginal trust it costs, and
+it is the closest this project can get to Cambridge's pretest review
+meeting.
+
+**What it should say**, in Turkish, in Profil, one short paragraph, and
+written to be informative rather than to hedge: that the lessons and
+questions are written with AI and checked by a person before they ship;
+that mistakes get through anyway; that a report link is right there on
+every question; and that the app is not affiliated with the university or
+the exam board. The last clause is not a legal reflex — it is the same
+honesty as the rest of the sentence.
+
+**Not on the item.** A badge on every question is noise, it goes invisible
+within a session, and it lands in the middle of the retrieval moment,
+which is the one place the app should be quiet. One statement in the place
+where identity and settings live is the app's own existing logic about
+where such things belong.
+
+**And the sentence has to stay true.** If a batch ever ships unreviewed,
+the sentence in Profil becomes false, and the cost of the disclosure is
+that you would have to change it. That is a feature: it is the one place
+where the honesty of the pipeline is exposed to the person it is about.
+
+---
+
+## 7 · The supervisor's loop
+
+### 7.1 A round, end to end
+
+A **round is one category**, 12–15 items. Nothing larger is a useful unit,
+because nothing larger is finishable in one evening and nothing larger is
+shippable when abandoned.
+
+| # | Step | Who | Cost |
+| --- | --- | --- | --- |
+| 1 | Write or update the category spec (§4.1) | Supervisor + agent | ~1 h, **once per category, not per round** |
+| 2 | Author the batch against the spec, coverage plan first | Author agent, one session | agent time |
+| 3 | `npm run format`, `npm run validate` | Supervisor | 2 min |
+| 4 | Pass A blind solve ×2 orders, Pass B stripped solve | Reviewer session 1 | agent time |
+| 5 | Rubric pass (§3.3), with salted calibration items | Reviewer session 2 | agent time |
+| 6 | **Take the batch as a test, cold** | Supervisor | 10 min |
+| 7 | Adjudicate the flag list | Supervisor | 30–45 min |
+| 8 | Return rejects for rewrite, or drop them | Supervisor → author agent | 10 min |
+| 9 | Read every Turkish explanation once | Supervisor | 10 min |
+| 10 | Merge, manifest counts, `contentVersion`, batch record | Supervisor | 15 min |
+| 11 | `npm run check`, `npm run serve` + `npm run verify` | Supervisor | 10 min |
+| 12 | Ship to `test`, try on a phone, merge to `main` | Supervisor | 10 min |
+
+**Automated:** 3, 4, 5, 11 — and 4 and 5 are the ones that do the actual
+filtering. **The supervisor personally does:** 6, 7, 9, and the judgement
+inside 8. That is roughly **90 minutes of human attention per 12–15
+items**, plus the one-off hour for the spec.
+
+**What the supervisor must personally read**, stated as a rule because it
+is the rule that decays first: every flagged item in full; every Turkish
+explanation once; nothing else. Not the reviewer's prose on clean items,
+not the distractor rationales that passed. Re-reading what the pass
+already read is how a 90-minute review becomes four hours and then stops
+happening — and, per §1.6, reading a passing item with its key attached is
+close to worthless anyway.
+
+### 7.2 What that arithmetic says about the corpus
+
+At 90 minutes per 12–15 items, one properly reviewed item costs **six to
+eight minutes of the supervisor's attention**. Against the exam arm's
+credible corpus of ~950–1,070 items:
+
+- **~950 items ≈ 100–125 hours.** At four hours a week that is six to
+  eight months. At an evening a week it is a year.
+- **The exam arm's "ship" column** — 40 restatement, 180 vocabulary,
+  70 reading, 80 cloze blanks, 40 paragraph completion, 80 grammar
+  top-up, ≈ 490 items — is **50–65 hours**, or three to four months at
+  four hours a week.
+- **Reading passages are cheaper per item and dearer per unit**: seven
+  items arrive together and share one passage read, so a passage costs
+  maybe 45 minutes of review for seven items. That is the best ratio of
+  any type and it argues, again, for reading first.
+
+These numbers assume the spec exists. Without it, review is slower —
+because every item has to be judged against a standard the reviewer is
+reconstructing from scratch — and the rejection rate is higher. The
+eighteen hours of spec writing pay for themselves inside the first two
+topics.
+
+**The honest conclusion is the same one the exam arm reached from the
+content side: pick fewer sections and finish them.** One category at 13
+items is worth more than five categories at four, and one exam section
+done properly is worth more than five at a quarter depth.
+
+### 7.3 Making the round survivable
+
+Three details that decide whether this is done for six months or
+abandoned in three.
+
+**A round must be abandonable at step 7 and still ship.** If the flag list
+has nine items on it at 22:30, drop the nine and ship four. A category
+with four new items is better than a category with none, the spec and the
+batch record capture what happened, and the rejected items can be
+regenerated later. The alternative — "finish the round properly next
+week" — is how a half-reviewed batch ends up merged by someone who has
+forgotten which items were flagged.
+
+**Step 6 is not optional and should be scheduled first.** It is the
+cheapest step, the highest-yield step, and it is study for the exam the
+supervisor is sitting. If any step gets skipped on a tired evening, it
+must not be this one.
+
+**The order of a round should vary.** Reviewer fatigue is real and the
+last items of a batch get the worst read. Adjudicate the flag list in a
+different order each time — reverse, or shuffled — so that the item that
+gets the tired read is not always the one with the highest id.
+
+---
+
+## 8 · What I was not asked
+
+Seven things. The first is the one I would act on soonest.
+
+### 8.1 The lessons need a blind pass too, and it is the same pass
+
+Four of the ten defects in §1.2 are lesson defects and two more are
+lesson–question mismatches; three of those six are cases where the lesson
+and the questions actually contradict each other: a signal word taught as a trigger that the
+lesson's own example contradicts, a `when` rule that would be wrong on one
+of the topic's own questions, an item testing `be supposed to` that no
+lesson mentioned. Those were found by agents that happened to be looking
+at both. Nothing in the pipeline requires anyone to.
+
+It should, and the check writes itself out of §3.2:
+
+> **The lesson-sufficiency pass.** A reviewing session is given one
+> lesson and that category's questions, and nothing else — no
+> explanations, no tips. It answers every question **using only the
+> lesson**. For each question it reports: answerable from the lesson;
+> answerable but the lesson's stated rule gives the *wrong* answer;
+> or not addressed by the lesson at all.
+
+Three findings, three different actions. "Not addressed" is either a
+lesson gap or a miscategorised question — `passive-voice-t20` exactly.
+"Lesson gives the wrong answer" is the most dangerous defect this app can
+have and there is currently no procedure that looks for it. And the pass
+costs one agent run per lesson, needs no new schema, and is the strongest
+argument I have for keeping the two content agents' outputs coupled rather
+than merely co-located.
+
+It also produces something the app wants anyway: a list of categories
+whose questions are not covered by their lesson, which is the same
+information the results screen's category→lesson link depends on being
+true.
+
+### 8.2 "Category" is about to mean three different things
+
+Today a category is a confusable grammar pair. After the new item types it
+is also a reading *skill* (`Inference`), a word-list slice
+(`AWL Sublist 1`), and a cohesion pattern. Every mechanism in
+`results.js` and `profile.js` keys on the string, so this works
+mechanically — the exam arm is right about that — but three things follow
+that nobody has decided:
+
+- **The kickoff block cannot express it.** `docs/agents/README.md`'s
+  kickoff has a topic, a tier, a category list and a per-category count.
+  It has no item type, no spec reference, and no way to say "this topic's
+  categories are skills, not contrasts". It needs both fields before the
+  first reading batch, or the two agents will disagree about what a
+  category *is*, which is the one failure the kickoff exists to prevent.
+- **The weak-spots list will mix incommensurable things.** A learner's
+  Profil showing "Inference" next to "Modal Perfects" next to "AWL Sublist
+  2" is three different kinds of claim about him in one list. That may be
+  fine; it should be a decision.
+- **`CONTENT_GUIDE.md`'s rule that a category names a confusable pair
+  needs a second clause**, and the validator's category checks need to
+  know which kind they are looking at.
+
+### 8.3 One JSON file per topic will not survive this
+
+A topic today is 24 questions and 6 lessons. At 12–15 per category it is
+~90 questions plus lessons — call it 3,000 lines — and a reading topic
+with 25 passages of 350 words is far worse. Three problems, all of which
+have already happened here in miniature:
+
+- **Parallel sessions collide.** The formatter exists because two sessions
+  round-tripping the same file produced a four-hundred-line diff. More
+  content and more parallel batches make that constant.
+- **Review by reading a 3,000-line file is worse than review by reading a
+  batch.** The unit of review is a batch; the unit of storage should let
+  you see one.
+- **A diff stops being reviewable**, which quietly removes the last
+  human check on what actually landed.
+
+The fix is cheap and does not need a build step: authoring delivers to
+`data/incoming/<batch-id>.json` (the question-author brief nearly says
+this already), the supervisor merges, and if a topic file crosses some
+threshold — 1,500 lines is a reasonable trigger — the topic's questions
+split into per-category files with the manifest naming them. `topics.js`
+already fetches per topic and caches; fetching a handful more static JSON
+files on a topic open is not a meaningful cost, and the alternative is a
+merge conflict every round.
+
+### 8.4 Nine new warnings will kill the warning list
+
+I have proposed nine validator checks and most of them are warnings.
+`npm run validate` already prints warnings that do not fail the build.
+Add nine more across a thousand items and the output becomes a wall
+nobody reads, at which point the checks are worse than useless — they
+create the belief that content was checked.
+
+So the policy has to change with the checks: **warnings must be zero at
+merge, or each surviving warning is named and dismissed in the batch
+record.** One line — "t31 flagged for option length; the long option is
+the correct one and the length is inherent to the form" — is enough. A
+warning that is neither fixed nor explained is a warning that will be
+ignored on every subsequent run.
+
+### 8.5 Originality is a correctness property, not a legal footnote
+
+An agent asked for a 350-word academic passage may reproduce one it has
+memorised, and an agent asked for exam-style items may reproduce items
+from a published past paper. Both are problems for this project even
+setting licensing aside: a passage lifted from somewhere else has not been
+level-controlled, and a copied item comes without the misconception
+analysis the spec requires. The brief line in §5.4 covers the passage; the
+matching rule for items is *"do not reproduce items from past papers or
+prep-school materials; use them only to calibrate the spec"*.
+
+Three related loose ends: the licence terms for the NGSL and the AWL
+before those lists are checked in; whether the app's own content should
+carry a licence at all, which it currently does not; and the fact that
+this app is not affiliated with the university, which §6.4's disclosure
+paragraph should say.
+
+### 8.6 The supervisor burns the pool he is supposed to practise on
+
+Step 6 of every round has the supervisor answering every new item cold.
+Over a year that means he has personally seen every item in the app before
+any of it shipped. **He can never take a meaningful test in his own app.**
+
+There is no fix, only an acknowledgement and a mitigation: his friends
+can, so their results are the only ones that mean anything, and his own
+benefit from the app is the review itself — which is, per the retrieval
+literature the learning-design arm cites, a perfectly good form of study,
+just not a measurable one. Worth knowing before he wonders why his scores
+are so high.
+
+### 8.7 There is no external calibration, and ten real items would fix it
+
+Every standard in this document is internal: the spec says what good is,
+the exemplars anchor it, the reviewer checks against it. Nothing connects
+that loop to the actual exam. If the spec's idea of a B2 cloze blank is
+two levels off, every check in §2 and §3 will pass a thousand items that
+are wrong together.
+
+The only cure is external material, and the exam arm already identified
+where it is: YTÜ's published sample paper. **Ten real items, used as
+exemplars in the briefs and as the calibration reference for the specs,
+are worth more than any check in this document.** Not copied — read, and
+used to fix the register, the length, the distractor style and the
+difficulty band. This makes the exam arm's open question 2 the highest
+priority in this round of research as well, from a completely different
+direction.
+
+---
+
+## What I would build for v1
+
+Ordered by value per hour of the supervisor's time. The first four cost no
+code at all and can be run against the existing 72 questions and 18
+lessons this week, which is the point: **the pipeline should be proven on
+content that already exists before it is pointed at content that does
+not.**
+
+**1 · The reviewer brief and the calibration set.** `docs/agents/item-reviewer.md`
+to §3.3, and `docs/agents/calibration-items.json` seeded with the five
+known-bad items already documented in `docs/education-notes.md` plus five
+verified-good ones. *One evening, no code.* Everything else in this
+document depends on the review pass existing, and the calibration set is
+what makes it checkable rather than reassuring.
+
+**2 · Run Pass A and Pass B over the current 72 questions.** Blind solve
+in both option orders, then context-stripped solve. *One agent run and an
+hour of adjudication.* It will confirm `modals-t17`, and I expect it to
+fail all four *Present Perfect vs Past Simple* items on Pass B. That
+result is the proof the check works, and it is also the first entry in
+the backlog.
+
+**3 · The lesson-sufficiency pass over all 18 lessons** (§8.1). *One agent
+run per topic, an evening of adjudication.* Six of the ten known defects
+are lesson defects and half of those are lesson–question contradictions;
+this is the only procedure that looks for them systematically.
+
+**4 · Validator checks C1, C4, C5, C6.** Explanation names a distractor;
+banned option forms; corpus-wide near-duplicate stems; scenario over-use.
+*Half a day.* All four are string work over data already in the repo, all
+four enforce rules `CONTENT_GUIDE.md` already states and cannot check, and
+C5 is the only defence against between-batch drift that does not depend on
+anyone remembering anything.
+
+**5 · The category spec, as a template plus one worked example.**
+`docs/specs/` with the six required headings from §4.1, and one category
+written properly end to end so the shape is not theoretical. *Two hours
+for the template, one hour per category after that.* Write specs for
+categories as they come up for extension, not all eighteen at once.
+
+**6 · The batch record and check C8.** `content-log/`, the format in
+§4.4, and the validator assertion that every question id appears in
+exactly one record. *Two hours.* This is what makes §6.4's disclosure
+sentence true rather than hopeful.
+
+**7 · The report link and the Profil disclosure.** A "bu soruda bir sorun
+var" affordance on the feedback block that opens a pre-filled `mailto:` or
+GitHub issue with the question id, and one paragraph in Profil saying the
+content is AI-written and human-checked. *Half a day of code, and it is
+the only user-visible item in this list.* It turns six users into the
+pretest panel this project can otherwise never have.
+
+**8 · One think-aloud session, with one friend, on ten items.** *One
+evening.* Response-process evidence is the one validity instrument that
+works better at small *n*, and nothing else available here will tell you
+whether an item measures what it claims.
+
+**9 · The remaining checks as their types arrive** — C2, C3, C7, C9 and
+the per-type checks in §5, each landing with the item type it belongs to.
+**10 · The word lists and the lexical profile**, when reading or
+vocabulary authoring actually starts and not before.
+
+Total before any new content is authored: **roughly three evenings of
+agent-run adjudication and about a day of code.** That is the whole
+apparatus, and it is small because almost all of it is prose and string
+comparison.
+
+---
+
+## What I would defer
+
+**Machine-readable distractor→misconception mapping** and validator-checked
+coverage plans. The spec's numbered misconceptions should be *cited in
+prose* in the review record first. Pick it up once three rounds have run
+against a stable spec and the citations are actually being written —
+formalising a discipline nobody is practising produces a schema and no
+discipline. What would have to be true: specs stable over three rounds,
+and a batch where coverage was actually the thing that went wrong.
+
+**Splitting the topic files** (§8.3). Not yet worth the churn. Trigger: a
+topic file over ~1,500 lines, or the second time two parallel batches
+collide in one file.
+
+**Any item statistic.** *p*-values, point-biserials, distractor take-up,
+discrimination. What would have to be true: a hundred-odd people using the
+app and a way to get their responses back — which means a backend, which
+this project has refused for better reasons than this one would overturn.
+
+**The full 19-criterion item-writing-flaw rubric.** I could not read either
+source paper (§0), so the §3.3 agenda is a reconstruction. Pick it up when
+someone can open Tarrant et al. (2006) or Haladyna, Downing & Rodriguez
+(2002) and check the reconstruction against the original. Until then the
+eight-point agenda is honest about what it is.
+
+**Cross-vendor review** — running the review pass on a model from a
+different family to defeat self-preference bias. Real effect, but a
+different *session* with no access to the author's reasoning already
+removes most of it. Pick it up if defect patterns start clustering in a
+way that looks like the reviewer sharing the author's blind spots.
+
+**Automatic CEFR or readability classification.** The band checks in §5.4
+— word count, mean sentence length, off-list token percentage — get most
+of the value with none of the machinery, and a trained classifier is a
+runtime-shaped dependency in a repo that has none.
+
+**A script that runs the review passes.** Do three rounds by hand first.
+Automating a process before it has been run three times automates
+somebody's guess about it.
+
+---
+
+## What I would refuse
+
+**Any item statistic computed from six learners.** A *p*-value from six
+responses, a point-biserial from six, a distractor "take-up" of 0 out of
+6. These would look like psychometrics and be noise, and — worse — they
+would be *acted on*, because a number on a screen gets used. This is the
+clearest piece of theatre available at this scale and it is the one most
+likely to be proposed, because the statistics are famous.
+
+**Balancing the correct answer's position across a set.** The engine
+shuffles options per attempt. The cue this guards against cannot exist
+here. (§2.6.)
+
+**Asking a model to rate difficulty, or quality, on a numeric scale.**
+Direct LLM difficulty prediction correlates with empirical difficulty at
+Spearman ≈ .05–.35 and with discrimination at ≈ .15 (**Reported**, §1.4).
+A 1–5 "item quality" score from a reviewing agent would be an average of
+things that cannot be averaged, and it would immediately become the number
+people look at instead of the flags. Four verdicts and quoted evidence, or
+nothing.
+
+**Letting the authoring session review its own batch.** Intrinsic
+self-correction does not work and self-enhancement bias is documented.
+This is free to avoid and expensive to get wrong.
+
+**Shipping unreviewed content behind a disclaimer.** A disclaimer is not a
+control. If the review budget will not cover a section, the section ships
+smaller. (§6.1, and it is the same refusal the exam arm made about
+unreviewed reading passages — arrived at from the production side rather
+than the pedagogical one.)
+
+**A per-item "AI-generated" badge.** One honest paragraph in Profil, not a
+label in the middle of every retrieval moment. (§6.4.)
+
+**A single aggregate quality score for a batch.** It hides which check
+failed, it invites optimisation against itself, and the four numbers in
+§4.3 already say everything it would.
+
+**Generating new items from the app's existing items as seed material.**
+That is the loop mode collapse lives in: the corpus's idiosyncrasies get
+amplified and its gaps get permanent. Items come from the spec and the
+context bank, which are written by a person.
+
+**Adding a runtime dependency for any of this.** Every check proposed here
+is string comparison, set arithmetic and JSON. The word lists are data in
+`tools/`, never fetched by the browser. If a check cannot be written that
+way, it belongs in the review pass, not the validator.
+
+---
+
+## Open questions for the owner
+
+**1 · How many hours a week, honestly?** Every number in §7 scales off
+one input: your review capacity. Four hours a week reaches the exam arm's
+"ship" column in three to four months and its "credible" column in six to
+eight. One evening a week reaches the ship column in eight months. Both
+are real answers; neither is "write more content".
+
+**2 · Will you write ten exemplar items from the real sample paper?** §8.7
+argues this is worth more than every automated check in this document,
+because it is the only thing that connects the internal standard to the
+external one. It is also an hour's work if you have the paper, and
+impossible if you don't — which makes the exam arm's open question 2 the
+gate on this arm too.
+
+**3 · Breadth or depth for v1?** The pipeline can produce five sections at
+a quarter depth or one section done properly, and the arithmetic says not
+both. The exam arm's gate argument says reading; the learning-design arm's
+pool argument says depth in what exists. They are compatible only if you
+pick one section and finish it.
+
+**4 · Do the friends agree to be a panel?** One think-aloud each, and a
+willingness to report broken items. It costs them an evening and it is the
+only source of response-process evidence this project will ever have. If
+the answer is no, §2.2 collapses and the review pass is the whole quality
+system.
+
+**5 · Is the Profil disclosure sentence yours to write?** I have taken a
+position (§6.4) and it is a position about your app's relationship with
+your friends, not a technical finding. The wording especially — "yapay
+zekâ ile yazıldı, bir insan tarafından kontrol edildi" says something
+different from "yapay zekâ tarafından üretilmiştir", and the difference is
+the whole point.
+
+**6 · Retire or edit?** When an item turns out to be wrong, does it get a
+new id (clean, but some learner history goes inert) or an edit in place
+(no disruption, but the history now records an answer to a question that
+no longer exists)? §6.3 recommends retiring. It is a decision about what a
+question id *is*, and it should be made once rather than per incident.
+
+**7 · Is there a second Turkish reader?** The supervisor's ten minutes per
+round on the Turkish explanations is the one step that cannot be
+delegated to an agent. If one of the friends would read them, that is ten
+minutes a round back and a second pair of eyes on the register — and it is
+the only place in this pipeline where adding a person actually helps.
+
+**8 · Are you willing to freeze a spec?** A frozen spec means a category's
+items are consistent with each other and with a standard you set once,
+rather than each item being the best that session could do. That is a real
+trade: consistency buys comparability and drift resistance, and it costs
+the occasional item that would have been better if the author had been
+allowed to improvise. I think it is obviously worth it at this volume. It
+is still a choice about what kind of thing this content is.
+
+---
+
+## Sources
+
+**Confidence note, repeated because it matters.** Every direct fetch was
+blocked by this environment's egress proxy — arXiv, PubMed, PMC,
+Frontiers, Springer, ScienceDirect, Wiley, and every publisher PDF I
+tried. What follows are the pages the search index surfaced and
+summarised. **I did not read any of them.** Numbers quoted as *Reported*
+come from those summaries and are consistent across results; the two I
+most wanted to verify directly — the Haladyna/Downing/Rodriguez
+guidelines and the Tarrant item-writing-flaw rubric — are the two the
+§3.3 review agenda reconstructs, and that reconstruction should be checked
+against the originals by anyone who can open them.
+
+**Item-writing guidelines and flaws**
+- [Haladyna, Downing & Rodriguez (2002). A Review of Multiple-Choice Item-Writing Guidelines for Classroom Assessment. *Applied Measurement in Education* 15(3)](https://www.tandfonline.com/doi/abs/10.1207/S15324818AME1503_5)
+- [Tarrant, Knierim, Hayes & Ware (2006). The frequency of item writing flaws in multiple-choice questions used in high stakes nursing assessments](https://www.sciencedirect.com/science/article/abs/pii/S1471595306001065)
+- [Tarrant & Ware (2008). Impact of item-writing flaws on student achievement in high-stakes nursing assessments. *Medical Education*](https://asmepublications.onlinelibrary.wiley.com/doi/10.1111/j.1365-2923.2007.02957.x)
+- [The Impact of Item-Writing Flaws on Difficulty and Discrimination in Item Response Theory (arXiv 2503.10533)](https://arxiv.org/html/2503.10533v1)
+- [Rodriguez (2005). Three Options Are Optimal for Multiple-Choice Items: A Meta-Analysis of 80 Years of Research. *EM:IP*](https://onlinelibrary.wiley.com/doi/10.1111/j.1745-3992.2005.00006.x)
+- [An assessment of functioning and non-functioning distractors in MCQs. *BMC Medical Education*](https://bmcmededuc.biomedcentral.com/articles/10.1186/1472-6920-9-40)
+
+**Automatic item generation**
+- [Gierl, Lai & Turner. Using automatic item generation to create multiple-choice test items. *Medical Education*](https://mcc.ca/wp-content/uploads/AIG-Gierl-Lai-Turner-Medical-Education-Journal.pdf)
+- [Gierl, Lai et al. Using Automatic Item Generation to Improve the Quality of MCQ Distractors](https://pubmed.ncbi.nlm.nih.gov/26849247/)
+- [A suggestive approach for assessing item quality, usability and validity of Automatic Item Generation. *Advances in Health Sciences Education*](https://link.springer.com/article/10.1007/s10459-023-10225-y)
+- [Feasibility assurance: a review of automatic item generation in medical assessment](https://link.springer.com/article/10.1007/s10459-022-10092-z)
+- [Using a Hybrid of AI and Template-Based Method in Automatic Item Generation. *JMIR Formative Research* (2025)](https://formative.jmir.org/2025/1/e65726)
+
+**LLM-generated items: quality and failure modes**
+- [AI-assisted MCQ creation increases item-writing flaws through automation bias. *Frontiers in Computer Science* (2026)](https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2026.1831250/full)
+- [Evaluating the instrumental quality of LLM-generated assessment items. *Frontiers in Education* (2026)](https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2026.1837523/full)
+- [The use of large language models in generating MCQs for health professions education: systematic review and network meta-analysis](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12758716/)
+- [Moore et al. An Automatic Question Usability Evaluation Toolkit (SAQUET) (arXiv 2405.20529)](https://arxiv.org/abs/2405.20529) · [repository](https://github.com/StevenJamesMoore/SAQUET)
+- [Assessing the Quality of Multiple-Choice Questions Using GPT-4 and Rule-Based Methods (arXiv 2307.08161)](https://arxiv.org/pdf/2307.08161)
+- [Ten tips to harnessing generative AI for high-quality MCQs in medical education assessment](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12273594/)
+- [Automated Reading Passage Generation with OpenAI's Large Language Model (arXiv 2304.04616)](https://arxiv.org/pdf/2304.04616)
+
+**Difficulty and discrimination prediction**
+- [Text-Based Approaches to Item Difficulty Modeling in Large-Scale Assessments: A Systematic Review (arXiv 2509.23486)](https://arxiv.org/abs/2509.23486)
+- [LLMs Struggle to Measure What Distinguishes Students of Different Proficiency Levels: Item Discrimination in Reading Comprehension Assessment (arXiv 2606.18709)](https://arxiv.org/html/2606.18709v1)
+- [Estimating Item Difficulty with Large Language Models as Experts (arXiv 2605.18562)](https://arxiv.org/abs/2605.18562)
+
+**Model review, judging and self-correction**
+- [Huang et al. (2024). Large Language Models Cannot Self-Correct Reasoning Yet. ICLR](https://arxiv.org/abs/2310.01798)
+- [Self-Preference Bias in LLM-as-a-Judge (arXiv 2410.21819)](https://arxiv.org/pdf/2410.21819)
+- [Reliability without Validity: A Systematic, Large-Scale Evaluation of LLM-as-a-Judge Models (arXiv 2606.19544)](https://arxiv.org/pdf/2606.19544)
+- [HLE-Verified: Systematic Verification and Structured Revision of Humanity's Last Exam (arXiv 2602.13964)](https://arxiv.org/html/2602.13964v2) — source of the `clean / not_well_posed / gold_incorrect / ambiguous` verdict set
+- [Fantastic Bugs and Where to Find Them in AI Benchmarks (arXiv 2511.16842)](https://arxiv.org/html/2511.16842)
+
+**Passage-blind baselines and reading-item artifacts**
+- [World Knowledge in Multiple Choice Reading Comprehension (arXiv 2211.07040)](https://arxiv.org/pdf/2211.07040)
+- [A Survey on Measuring and Mitigating Reasoning Shortcuts in Machine Reading Comprehension (arXiv 2209.01824)](https://arxiv.org/pdf/2209.01824)
+- [What Makes Reading Comprehension Questions Difficult? (arXiv 2203.06342)](https://arxiv.org/pdf/2203.06342)
+
+**Diversity and mode collapse in generation**
+- [Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity (arXiv 2510.01171)](https://arxiv.org/html/2510.01171)
+- [Multi-Sample Prompting and Actor-Critic Prompt Optimization for Diverse Synthetic Data Generation (arXiv 2506.21138)](https://arxiv.org/pdf/2506.21138)
+
+**Review workflows, item banks and standards**
+- [Item Review Workflow for Exam Development — Assessment Systems](https://assess.com/item-review/)
+- [NBME — Item Co-Creation & Test Development Committees](https://www.nbme.org/about-nbme/our-collaborations/item-co-creation/)
+- [How COMLEX Items are Developed — NBOME](https://www.nbome.org/blog/how-comlex-items-are-developed/)
+- [Cambridge English — Producing exams: pretesting](https://www.cambridgeenglish.org/why-choose-us/producing-exams/pretesting/) · [What is Pretesting?](https://support.cambridgeenglish.org/hc/en-gb/articles/202843216-What-is-Pretesting)
+- [Green & Hawkey (2010). An investigation of the process of writing IELTS Academic Reading test items (PDF)](https://ielts.org/cdn/Research/investigation-of-process-of-writing-academic-reading-test-items-green-et-al-2010.pdf)
+- [Exploring the experiences of content experts with item vetting during item bank development](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11190415/)
+- [AERA, APA & NCME (2014). Standards for Educational and Psychological Testing (PDF)](https://www.testingstandards.net/uploads/7/6/6/4/76643089/standards_2014edition.pdf)
+- [Use of a committee review process to improve the quality of course examinations](https://link.springer.com/article/10.1007/s10459-004-7515-8)
+
+**Small-sample quality evidence**
+- [Classical Test Theory: Item Statistics — Assessment Systems](https://assess.com/item-statistics-classical-test-theory/) · [Point-biserial item discrimination](https://assess.com/the-point-biserial-item-discrimination/)
+- [Koskey (2016). Using the Cognitive Pretesting Method to Gain Insight Into Participants' Experiences](https://journals.sagepub.com/doi/10.1177/1609406915624577)
+- [Cognitive interviewing as a method to inform questionnaire design and validity](https://www.sciencedirect.com/science/article/pii/S2949678023000211)
+- [Evaluating the accuracy of screening by one vs two independent reviewers](https://www.sciencedirect.com/science/article/pii/S089543562600123X)
+- [Belur et al. (2021). Interrater Reliability in Systematic Review Methodology](https://journals.sagepub.com/doi/10.1177/0049124118799372)
+
+**Disclosure and transparency**
+- [In Transparency We Trust? Evaluating the Effectiveness of Watermarking and Labeling AI-Generated Content — Mozilla Foundation](https://www.mozillafoundation.org/en/research/library/in-transparency-we-trust/research-report/)
+- [Full Disclosure, Less Trust? How the Level of Detail about AI Use Affects Readers' Trust (arXiv 2601.09620)](https://arxiv.org/pdf/2601.09620)
+- [1EdTech AI-Generated Content Best Practices v1.0](https://www.imsglobal.org/resource/AI-Generated_Content_Best_Practices/v1p0)
+- [From Prompt to Practice: A Framework for Transparent GenAI Use in Higher Education — EDUCAUSE Review](https://er.educause.edu/articles/2026/3/from-prompt-to-practice-a-framework-for-transparent-genai-use-in-higher-education)
+
+**Word lists, for §5.4's lexical profile**
+- [The New General Service List](https://www.newgeneralservicelist.com/new-general-service-list)
+- [Academic Word List — EAP Foundation](https://www.eapfoundation.com/vocab/academic/awllists/)
