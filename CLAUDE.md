@@ -41,7 +41,7 @@ in their own browser's `localStorage`.
 npm run format      # canonical formatting for the content JSON
 npm run validate    # content schema + manifest/topic-file consistency
 npm run color       # every colour token re-measured (WCAG 2 + APCA)
-npm test            # unit tests (node:test) for quiz-engine and storage
+npm test            # unit tests (node:test): quiz engine, storage, backup, content checks
 npm run check       # all four (format as a --check)
 npm run serve       # static server on :8000 (fetch() needs an HTTP origin)
 npm run verify      # drives the real app in Chromium — needs `serve` running
@@ -85,6 +85,7 @@ js/
   storage.js          localStorage: history, lesson progress, profile name
   topics.js           Loads and caches manifest + topic files
   quiz-launch.js      The one path that starts a test, from any entry point
+  report.js           "Bu soruda bir sorun var" — the text, and the share
   dom.js              Shared node builders (el, appendProse, appendBlanked)
   icons.js            The 14 hand-drawn icons, to the §6 contract
   listbox.js          Select-only combobox (replaces <select>)
@@ -100,6 +101,7 @@ data/manifest.json    Topic index
 data/<topic>/         One JSON file per topic: its lessons and questions
 tools/
   validate-content.mjs  Content schema + cross-file consistency
+  content-checks.mjs    The four checks the schema cannot make (corpus-wide)
   format-content.mjs    Canonical formatting + the manifest's lesson index
   palette.mjs           Re-measures every colour token (WCAG 2 + APCA)
   color.mjs             Zero-dependency OKLCH / contrast maths
@@ -108,6 +110,7 @@ tools/
 tests/                Unit tests
 docs/                 Design system, content schema, dev notes, agent briefs
 docs/components.html  Every primitive on one page, against the real CSS
+docs/content-review.md  What reviewing all 72 questions found
 ```
 
 ## Design
@@ -191,6 +194,27 @@ that's the one thing the two agents must agree on, and the thing the app
 uses to link a wrong answer on the results screen to the lesson that
 teaches it. See `docs/agents/README.md` for the loop.
 
+**Content is reviewed by a session that has not seen the key.** The one
+controlled comparison in the literature found teacher-plus-AI items
+carrying *more* flaws than teacher-only items, because reviewers gave the
+drafts less engagement — so `docs/agents/reviewer.md` is built to stop
+that, and `calibration.md` grades the reviewer against ten items whose
+answer is already known before its findings are believed. This applies to
+your own rewrites too: three of the first six failed their re-review, one
+because the fix traded a defect for a worse one.
+
+**Write the category spec before the content.** `docs/agents/category-spec.md`,
+with a worked example beside it. Every finding worth acting on in the
+first review was invisible inside one item and obvious across four, which
+is what the spec is for.
+
+Two rules that only exist because a review found them, both in
+`docs/agents/question-author.md`: a question must never be built on a
+sentence from its own lesson (`check` blocks draw from the same category,
+so the learner would meet the answer three blocks above the question),
+and an option a competent teacher would accept is a wrong option, not a
+less natural one.
+
 ## Verifying a change
 
 The unit tests cover scoring and storage, not the screens. For anything
@@ -198,7 +222,7 @@ that touches the UI:
 
 ```bash
 npm run serve &     # fetch() needs an HTTP origin
-npm run verify      # ~150 checks, four viewports, one full learner journey
+npm run verify      # ~430 checks, four viewports, one full learner journey
 ```
 
 `tools/verify-ui.mjs` walks Eğitim → a lesson → a check → the Test tab →
