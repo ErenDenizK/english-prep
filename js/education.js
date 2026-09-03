@@ -31,9 +31,10 @@ import {
 } from "./storage.js";
 import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
+import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { startTopicTest } from "./quiz-launch.js";
-import { el, clear, appendProse, appendInline, appendBlanked } from "./dom.js";
+import { el, clear, appendProse, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
 
@@ -404,10 +405,7 @@ function renderCheckBlock(question, blockIndex) {
 
   wrap.appendChild(el("p", "t-label", "Kontrol"));
 
-  const prompt = el("p", "t-lead t-en");
-  prompt.lang = "en";
-  appendBlanked(prompt, question.prompt);
-  wrap.appendChild(prompt);
+  wrap.appendChild(renderPrompt(question));
 
   const answered = state.reader.answers.has(blockIndex);
   const selected = state.reader.answers.get(blockIndex) ?? null;

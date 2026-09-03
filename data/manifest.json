@@ -5,15 +5,15 @@
       "title": "Tenses",
       "tier": "foundations",
       "file": "data/tenses/tenses.json",
-      "questionCount": 24,
+      "questionCount": 25,
       "lessonCount": 6,
-      "contentVersion": 2,
+      "contentVersion": 3,
       "categories": [
         "Present Simple vs Present Continuous",
         "Present Perfect vs Past Simple",
         "Past Simple vs Past Continuous vs Past Perfect",
         "Future Forms",
-        "Perfect Aspects",
+        "Perfect Aspects: Simple vs Continuous vs Been/Gone",
         "Time Expressions & Signal Words"
       ],
       "lessons": [
@@ -21,7 +21,7 @@
         { "category": "Present Perfect vs Past Simple", "summary": "Geçmiş kapandı mı, şimdiye mi uzanıyor?" },
         { "category": "Past Simple vs Past Continuous vs Past Perfect", "summary": "Hangisi önce bitti, hangisi o sırada sürüyordu?" },
         { "category": "Future Forms", "summary": "Kararı ne zaman verdin: şimdi mi, önceden mi?" },
-        { "category": "Perfect Aspects", "summary": "Ne kadarı bitti mi, ne kadar süredir mi?" },
+        { "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone", "summary": "Ne kadarı bitti mi, ne kadar süredir mi?" },
         { "category": "Time Expressions & Signal Words", "summary": "Hangi kelime hangi zamanı çağırır?" }
       ]
     },
@@ -34,18 +34,18 @@
       "lessonCount": 6,
       "contentVersion": 2,
       "categories": [
-        "Must vs Have to vs Don't Have to",
+        "Must vs Have to vs Mustn't vs Don't Have to",
         "Can vs Could vs May vs Might",
         "Must vs Can't vs Might/Could",
-        "Modal Perfects: Must Have vs Can't Have vs Should Have",
+        "Modal Perfects: Must / Can't / Should / Needn't Have",
         "Should vs Ought To vs Had Better",
         "Can vs Could vs Be Able To"
       ],
       "lessons": [
-        { "category": "Must vs Have to vs Don't Have to", "summary": "Kuralı kim koyuyor — ve olumsuzu yasak mı, gereksiz mi?" },
+        { "category": "Must vs Have to vs Mustn't vs Don't Have to", "summary": "Kuralı kim koyuyor — ve olumsuzu yasak mı, gereksiz mi?" },
         { "category": "Can vs Could vs May vs Might", "summary": "İzin mi istiyorsun, yoksa bir ihtimalden mi bahsediyorsun?" },
         { "category": "Must vs Can't vs Might/Could", "summary": "Kanıt ne kadar güçlü: kesin mi, imkânsız mı, belki mi?" },
-        { "category": "Modal Perfects: Must Have vs Can't Have vs Should Have", "summary": "Geçmişe dair tahmin mi, pişmanlık mı, gereksiz çaba mı?" },
+        { "category": "Modal Perfects: Must / Can't / Should / Needn't Have", "summary": "Geçmişe dair tahmin mi, pişmanlık mı, gereksiz çaba mı?" },
         { "category": "Should vs Ought To vs Had Better", "summary": "Sıradan bir tavsiye mi, yoksa uymazsan kötü olur mu?" },
         { "category": "Can vs Could vs Be Able To", "summary": "Genel bir yetenek mi, o gün başarılan tek bir şey mi?" }
       ]

@@ -928,16 +928,26 @@
 
   /* -- Option. An answer row: reading-sized, whole row tappable. -- */
   .option {
+    /* The number belongs to the first line of the option, not to the
+       middle of the block — a restatement's options are whole sentences
+       and run to three or four lines, where a vertically centred "2"
+       floats beside nothing. The padding is derived rather than picked:
+       at one line it makes the row exactly its minimum height, so a
+       short option is still optically centred and nothing about the
+       existing screens moves. */
+    --option-line: 24px;
+    --option-row: 52px;
+
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--s-4);
     width: 100%;
-    min-height: 52px;
-    padding: var(--s-3) var(--gutter);
+    min-height: var(--option-row);
+    padding: calc((var(--option-row) - var(--option-line)) / 2) var(--gutter);
     text-align: left;
     font-family: var(--f-serif);
     font-size: 17px;
-    line-height: 24px;
+    line-height: var(--option-line);
     transition: background-color var(--d-micro) var(--ease-standard);
   }
 
@@ -947,6 +957,10 @@
 
   .option__key {
     flex: none;
+    /* The number shares the option's own line box rather than bringing
+       its own: the meta face is smaller, and a taller box of its own was
+       what made the row 56px instead of 52. */
+    line-height: var(--option-line);
     font-family: var(--f-sans);
     font-size: var(--t-meta);
     font-variant-numeric: tabular-nums;
@@ -960,6 +974,9 @@
 
   .option__mark {
     flex: none;
+    /* A 20px glyph on a 24px line: two pixels puts it on the line rather
+       than above it, now that the row aligns to its first line. */
+    margin-block-start: 2px;
   }
 
   .option--ok { background: var(--c-ok-tint); }

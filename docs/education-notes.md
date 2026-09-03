@@ -312,6 +312,41 @@ rewrite of a question that is currently answerable. None was made.
 
 ---
 
+## Taxonomy changes, approved and made (2026-09-03)
+
+The owner approved all four. Each renames a lesson id, so progress for
+that lesson starts over; that was the accepted cost, and it is cheaper now
+than at any later point.
+
+| was | is |
+| --- | --- |
+| `Modal Perfects: Must Have vs Can't Have vs Should Have` | `Modal Perfects: Must / Can't / Should / Needn't Have` |
+| `Must vs Have to vs Don't Have to` | `Must vs Have to vs Mustn't vs Don't Have to` |
+| `Perfect Aspects` | `Perfect Aspects: Simple vs Continuous vs Been/Gone` |
+
+Each old name failed the same way: it did not contain a form that was the
+**keyed answer** of one of its own questions. `modals-t16` keys `needn't
+have`, `modals-t3` keys `mustn't`, and `Perfect Aspects` named none of
+the three contrasts it carries. The first new name is also two characters
+shorter than the one it replaces.
+
+`tenses-t19` moved from *Perfect Aspects* to *Past Simple vs Past
+Continuous vs Past Perfect*, where the Past-Perfect-for-the-earlier-event
+rule it tests is actually taught.
+
+That left *Perfect Aspects* with three questions, so **`tenses-t25` is
+new** — and written to fill a hole the review had recorded: nothing in the
+corpus keyed `gone`, so the lesson's been/gone pitfall was only ever
+sprung in one direction. It passed blind review first time.
+
+**Still open, and now slightly worse:** *Past Simple vs Past Continuous vs
+Past Perfect* has five questions and still keys Past Simple in none of
+them (`t19` made it three Past Perfects to two Past Continuous). The
+lesson's own pitfall about repeated past habits is untested. That is one
+item for the next authoring round.
+
+---
+
 ## Round 1 content review (2026-09-03)
 
 Six reviewers, none of whom saw another's output, over all 72 questions

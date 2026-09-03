@@ -122,7 +122,7 @@ test("the correct answer appearing in the paragraph is reported", () => {
     })
   );
   assert.equal(r.warnings.length, 1);
-  assert.match(r.text, /also appears in the paragraph/);
+  assert.match(r.text, /also appears in the question's own text/);
 });
 
 test("a single-word answer recurring in the paragraph is not reported", () => {
@@ -274,4 +274,74 @@ test("a report from an unanswered question omits the choice rather than faking o
   );
   assert.doesNotMatch(text, /Benim işaretlediğim/);
   assert.match(text, /Uygulamanın doğru dediği: x/);
+});
+
+/* ---- The checks are about the stem, not about a field name ----
+ *
+ * A restatement keeps its stem in `sentence` rather than `paragraph`.
+ * Every check above works on whichever the item has, so a new item type
+ * costs one helper rather than four scattered branches — and these tests
+ * are what stops that quietly reverting.
+ */
+
+const restatement = (overrides = {}) => ({
+  id: "r-1",
+  type: "restatement",
+  topicId: "r",
+  file: "data/r/r.json",
+  category: "Third Conditional",
+  sentence: "If the shipment had left on Monday, it would already have reached the depot in Ankara.",
+  options: [
+    "The shipment did not leave on Monday, so it has not reached the depot yet.",
+    "The shipment left on Monday and reached the depot as planned.",
+    "The shipment will reach the depot if it leaves on Monday.",
+    "The shipment reached the depot even though it left after Monday.",
+  ],
+  correctIndex: 0,
+  explanation:
+    "Üçüncü tip koşul cümlesi gerçekleşmemiş bir geçmişi anlatır; 'The shipment left on Monday' tam tersini söyler.",
+  tip: "Third conditional gerçekleşmemiş bir geçmişi ve onun gerçekleşmemiş sonucunu anlatır.",
+  ...overrides,
+});
+
+test("two restatements on the same stem are reported", () => {
+  const r = report();
+  checkNearDuplicates(r, [
+    restatement({ id: "r-1" }),
+    restatement({ id: "r-2", sentence: restatement().sentence.replace("Ankara", "Konya") }),
+  ]);
+  assert.match(r.text, /"r-1" and "r-2" share \d+% of their wording/);
+});
+
+test("a restatement's scenario is counted like any other", () => {
+  const r = report();
+  checkScenarioReuse(
+    r,
+    ["Monday", "Tuesday", "Wednesday", "Thursday"].map((day, index) =>
+      restatement({
+        id: `r-${index}`,
+        sentence: `If the shipment had left on ${day}, the depot manager would already have signed for it.`,
+      })
+    )
+  );
+  assert.match(r.text, /builds its questions on one scenario/);
+  assert.match(r.text, /shipment/);
+});
+
+test("a restatement whose answer is lifted from its own stem is reported", () => {
+  const r = report();
+  checkOptionForms(
+    r,
+    "where",
+    restatement({
+      options: [
+        "the shipment had left on Monday",
+        "The shipment left on Monday and reached the depot as planned.",
+        "The shipment will reach the depot if it leaves on Monday.",
+        "The shipment reached the depot even though it left after Monday.",
+      ],
+      correctIndex: 0,
+    })
+  );
+  assert.match(r.text, /also appears in the question's own text/);
 });
