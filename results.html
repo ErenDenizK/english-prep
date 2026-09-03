@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#13100d" />
-  <title>Sonuç — English Prep Practice</title>
+  <title>Sonuç — English Prep</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/source-sans-3-400.woff2" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/source-serif-4-400.woff2" />
@@ -13,25 +13,19 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header__inner">
-      <div>
-        <h1><a href="index.html">English Prep Practice</a></h1>
-      </div>
-    </div>
-  </header>
-
-  <main class="app-content" id="app-content">
-    <div class="page">
-      <div id="results-container">
-        <p class="empty-state">Sonuçlar yükleniyor&hellip;</p>
-      </div>
+  <!-- Still the focused mode the quiz ran in: the way out is the action
+       bar, not a header link that would be a 23px tap target. -->
+  <main class="shell__scroll" id="shell-scroll">
+    <div class="page stack stack--loose" id="results-container">
+      <p class="t-meta">Sonuçlar yükleniyor&hellip;</p>
     </div>
   </main>
 
-  <div id="results-bottom-bar" class="bottom-bar" hidden>
-    <div class="bottom-bar__inner"></div>
+  <div class="shell__bar" id="results-bar" hidden>
+    <div class="shell__bar-inner"></div>
   </div>
+
+  <p class="visually-hidden" id="live-region" role="status"></p>
 
   <script type="module" src="js/results.js"></script>
 </body>

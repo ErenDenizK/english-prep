@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>English Prep Practice</title>
+  <title>Eğitim — English Prep</title>
   <meta name="description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#13100d" />
@@ -14,107 +14,87 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="site-header" id="site-header">
-    <div class="site-header__inner">
-      <h1 id="site-title">English Prep</h1>
-      <button class="profile-trigger" type="button" id="profile-trigger" aria-label="Profilini aç" aria-controls="view-profil">
-        <span id="profile-trigger-initial" aria-hidden="true">?</span>
+  <!-- The shell is a fixed-height column: header, one scrolling region, and
+       either the bottom nav or a focused mode's action bar. Nothing else
+       ever scrolls, so the frame cannot grow and cannot shift sideways. -->
+  <header class="shell__header" id="shell-header">
+    <div class="shell__header-inner">
+      <h1 class="shell__brand t-en">English Prep</h1>
+      <!-- Profil is identity and settings, not a content mode, so it opens
+           from here rather than taking a third slot in the bottom nav. -->
+      <button class="btn btn--secondary btn--icon" type="button" id="profile-trigger" aria-label="Profilini aç">
+        <span id="profile-trigger-face" aria-hidden="true"></span>
       </button>
     </div>
   </header>
 
-  <main class="app-content" id="app-content">
-    <div class="page">
-      <div class="dev-note" id="dev-note" hidden>
+  <main class="shell__scroll" id="shell-scroll">
+    <div class="page stack stack--loose">
+      <div class="note bleed" id="dev-note" hidden>
         <p>
           <strong>Geliştirme aşamasındayız</strong> — henüz v1 değil. Eğitim
           ve Test kullanıma hazır; yeni konular ekleniyor.
         </p>
-        <button type="button" id="dev-note-dismiss" aria-label="Notu kapat">×</button>
+        <button class="btn btn--quiet btn--icon" type="button" id="dev-note-dismiss" aria-label="Notu kapat"></button>
       </div>
 
-      <section id="view-egitim" class="view" role="tabpanel" aria-labelledby="tab-egitim" tabindex="0" hidden>
-        <div id="lesson-index">
-          <p class="empty-state">Dersler yükleniyor&hellip;</p>
+      <section id="view-egitim" class="view stack stack--loose" aria-label="Eğitim" tabindex="-1" hidden>
+        <div id="lesson-index" class="stack stack--loose">
+          <p class="t-meta">Dersler yükleniyor&hellip;</p>
         </div>
         <div id="lesson-reader" hidden></div>
       </section>
 
-      <section id="view-test" class="view" role="tabpanel" aria-labelledby="tab-test" tabindex="0">
-        <section class="hero">
-          <h2 class="hero__title">Karışık test başlat</h2>
-          <p class="hero__description">
-            Sorular tüm konulardan rastgele gelir. Genel seviyeni kontrol
-            etmek için iyi bir başlangıç.
-          </p>
-          <div class="hero__controls">
-            <div class="field-row">
-              <span id="mixed-count-label">Soru sayısı</span>
-              <div class="dropdown" id="mixed-count-dropdown"></div>
-            </div>
-            <button id="start-mixed-btn" class="btn" type="button">Karışık Teste Başla</button>
-          </div>
-        </section>
-
-        <section>
-          <h2>Konuya göre pratik</h2>
-          <div id="topics-container" class="topics">
-            <p class="empty-state">Konular yükleniyor&hellip;</p>
-          </div>
-        </section>
+      <section id="view-test" class="view stack stack--loose" aria-label="Test" tabindex="-1" hidden>
+        <div id="test-panel" class="stack stack--loose">
+          <p class="t-meta">Konular yükleniyor&hellip;</p>
+        </div>
       </section>
 
-      <!-- Profil is identity and settings, not a content mode, so it opens
-           from the header rather than sitting in the bottom nav. -->
-      <section id="view-profil" class="view" aria-label="Profil" tabindex="0" hidden>
-        <div id="profile-container">
-          <p class="empty-state">Profil yükleniyor&hellip;</p>
+      <section id="view-profil" class="view stack stack--loose" aria-label="Profil" tabindex="-1" hidden>
+        <div id="profile-container" class="stack stack--loose">
+          <p class="t-meta">Profil yükleniyor&hellip;</p>
         </div>
       </section>
     </div>
   </main>
 
-  <nav class="bottom-nav" id="bottom-nav" role="tablist" aria-label="Bölümler">
-    <button class="bottom-nav__tab" type="button" role="tab" id="tab-egitim" data-view="egitim" aria-selected="false" aria-controls="view-egitim" tabindex="-1">
-      <span class="bottom-nav__icon-wrap">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 6.2c-1.5-1.1-3.4-1.7-5.8-1.7v13.3c2.4 0 4.3.6 5.8 1.7 1.5-1.1 3.4-1.7 5.8-1.7V4.5c-2.4 0-4.3.6-5.8 1.7z" />
-          <path d="M12 6.2v13.3" />
-        </svg>
-      </span>
-      Eğitim
-    </button>
-    <button class="bottom-nav__tab" type="button" role="tab" id="tab-test" data-view="test" aria-selected="true" aria-controls="view-test" tabindex="0">
-      <span class="bottom-nav__icon-wrap">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="5" y="4" width="14" height="17" rx="2" />
-          <path d="M9 3.3h6v2.2H9z" fill="currentColor" stroke="none" />
-          <path d="M8.5 12.5l2.2 2.2L15.5 10" />
-        </svg>
-      </span>
-      Test
-    </button>
+  <!-- A nav landmark with aria-current, not a tablist: a tablist makes the
+       whole bar one tab stop, implies panels in this document, and fights a
+       hash router. -->
+  <nav class="nav" id="bottom-nav" aria-label="Bölümler">
+    <a class="nav__item" href="#egitim" data-view="egitim"><span data-icon></span><span>Eğitim</span></a>
+    <a class="nav__item" href="#test" data-view="test"><span data-icon></span><span>Test</span></a>
   </nav>
 
-  <!-- Used only by the Eğitim lesson reader, which runs as a focused mode
-       with the header and bottom nav hidden — same shape as the quiz. -->
-  <div id="lesson-bottom-bar" class="bottom-bar" hidden>
-    <div class="bottom-bar__inner"></div>
+  <!-- Shown only by the lesson reader, which runs as a focused mode with
+       the header and the nav stepped out of the way. -->
+  <div class="shell__bar" id="lesson-bar" hidden>
+    <div class="shell__bar-inner"></div>
   </div>
 
-  <div class="modal-overlay" id="confirm-modal" hidden>
-    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-modal-title" aria-describedby="confirm-modal-text">
-      <h2 class="modal__title" id="confirm-modal-title">Geçmişi sıfırla</h2>
-      <p id="confirm-modal-text">
+  <!-- One persistent live region for the whole app. Its text is replaced;
+       it is never created together with its content, because a region that
+       appears already populated is frequently missed. -->
+  <p class="visually-hidden" id="live-region" role="status"></p>
+
+  <dialog class="dialog" id="confirm-dialog" aria-labelledby="confirm-dialog-title">
+    <div class="stack stack--tight">
+      <h2 class="t-title" id="confirm-dialog-title">Geçmişi sıfırla</h2>
+      <p class="t-body">
         Tüm test geçmişin ve ders ilerlemen bu cihazdan silinecek. Bu işlem
         geri alınamaz.
       </p>
-      <div class="modal__actions">
-        <button class="btn btn--secondary" type="button" id="confirm-modal-cancel">İptal</button>
-        <button class="btn btn--danger" type="button" id="confirm-modal-confirm">Sil</button>
-      </div>
     </div>
-  </div>
+    <!-- Equal weight, deliberately. Filling one of them would either dress
+         up a destructive action or make an amber Cancel the loudest thing
+         on screen, and a confirmation is the one place where making the
+         reader actually read is the point. The safe action takes focus. -->
+    <div class="dialog__actions">
+      <button class="btn btn--secondary" type="button" id="confirm-dialog-cancel">Vazgeç</button>
+      <button class="btn btn--secondary" type="button" id="confirm-dialog-confirm">Sil</button>
+    </div>
+  </dialog>
 
   <script type="module" src="js/home.js"></script>
 </body>

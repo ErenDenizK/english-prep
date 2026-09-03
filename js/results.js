@@ -1,11 +1,25 @@
+// The results screen.
+//
+// A score is only worth showing if it tells the learner what to do next,
+// so the hierarchy is: the figure, then where it went wrong, then — the
+// part that actually teaches — a link from each weak category straight to
+// the lesson that covers it. That link is the whole reason lessons and
+// questions share one category taxonomy.
+//
+// The review at the bottom is every question again with its explanation.
+// It is long by nature, so it comes last and is separated by rules rather
+// than boxed: eight cards in a column is the box-in-box failure with extra
+// steps.
+
 import { loadManifest, loadLessonsForTopics } from "./topics.js";
 import { getQuizResult, setQuizResult } from "./session-state.js";
-import { recordAttempt, getWeakTopics } from "./storage.js";
-import { el, clear, appendBlanked } from "./dom.js";
+import { recordAttempt } from "./storage.js";
+import { el, clear, appendInline, appendBlanked } from "./dom.js";
+import { icon } from "./icons.js";
+import { announce, createActionBar } from "./shell.js";
 
 const container = document.getElementById("results-container");
-const bottomBar = document.getElementById("results-bottom-bar");
-const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
+const actionBar = createActionBar("results-bar");
 
 function formatPercent(correct, total) {
   return total === 0 ? "%0" : `%${Math.round((correct / total) * 100)}`;
@@ -13,38 +27,35 @@ function formatPercent(correct, total) {
 
 function showMessage(text) {
   clear(container);
-  container.appendChild(el("p", "empty-state", text));
-
-  clear(bottomBarInner);
-  const link = el("a", "btn", "Ana Sayfa");
-  link.href = "index.html";
-  bottomBarInner.appendChild(link);
-  bottomBar.hidden = false;
+  container.appendChild(el("p", "t-meta", text));
+  actionBar.set([{ label: "Ana sayfa", level: "primary", href: "index.html" }]);
 }
 
-function renderScoreSummary(result) {
-  const summary = el("section", "score-summary");
-  summary.appendChild(el("div", "score-summary__value", `${result.correctCount} / ${result.totalCount}`));
-  summary.appendChild(el("p", null, `${formatPercent(result.correctCount, result.totalCount)} doğru`));
-  return summary;
-}
+function renderScore(result) {
+  const block = el("section", "stack stack--tight");
+  block.appendChild(el("p", "t-label", "Sonuç"));
 
-function renderWeakTopicsCallout(titleById) {
-  const weakTopics = getWeakTopics();
-  if (weakTopics.length === 0) {
-    return null;
-  }
+  const figure = el("p", "t-display t-num", `${result.correctCount} / ${result.totalCount}`);
+  block.appendChild(figure);
 
-  const names = weakTopics.map((entry) => titleById.get(entry.topicId) ?? entry.topicId).join(", ");
-  return el("div", "callout", `Sırada bu konuya odaklan: ${names}`);
+  const track = el("div", "progress");
+  const fill = el("div", "progress__fill");
+  fill.style.width = `${result.totalCount === 0 ? 0 : (result.correctCount / result.totalCount) * 100}%`;
+  track.appendChild(fill);
+  block.appendChild(track);
+
+  block.appendChild(
+    el("p", "t-meta t-num", `${formatPercent(result.correctCount, result.totalCount)} doğru`)
+  );
+  return block;
 }
 
 /**
  * @param {string} heading
  * @param {Record<string, {correct: number, total: number}>} breakdown
  * @param {(key: string) => string} resolveName
- * @param {(key: string) => string|null} [resolveLessonId] - when a row
- *   maps to a lesson, the row becomes a link into the Eğitim tab
+ * @param {(key: string) => string|null} [resolveLessonId] - when a row maps
+ *   to a lesson, the row becomes a link into the Eğitim tab
  */
 function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
   const keys = Object.keys(breakdown);
@@ -53,33 +64,40 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
     return null;
   }
 
-  const section = el("section");
-  section.appendChild(el("h2", null, heading));
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", heading));
 
-  const list = el("ul", "breakdown-list");
-  for (const key of keys) {
+  // Worst first. A breakdown in whatever order the questions happened to
+  // come out is a table; in this order it is a reading list.
+  const ranked = [...keys].sort(
+    (a, b) =>
+      breakdown[a].correct / breakdown[a].total - breakdown[b].correct / breakdown[b].total
+  );
+
+  const list = el("div");
+  for (const key of ranked) {
     const stats = breakdown[key];
-    const item = document.createElement("li");
-    const score = `${stats.correct}/${stats.total}`;
     const lessonId = resolveLessonId?.(key) ?? null;
-
+    const row = el(lessonId ? "a" : "div", "row");
     if (lessonId) {
-      const link = el("a", "breakdown-link");
-      link.href = `index.html#egitim/${lessonId}`;
-      const name = el("span", null, resolveName(key));
-      name.lang = "en";
-      link.appendChild(name);
-      link.appendChild(el("span", "breakdown-link__score", `${score} · Dersi aç →`));
-      item.className = "breakdown-list__item--link";
-      item.appendChild(link);
-    } else {
-      const name = el("span", null, resolveName(key));
-      name.lang = "en";
-      item.appendChild(name);
-      item.appendChild(el("span", "breakdown-list__score", score));
+      row.href = `index.html#egitim/${lessonId}`;
     }
 
-    list.appendChild(item);
+    // No "Dersi aç" line under every row: seven identical secondary lines
+    // say nothing the chevron does not already say.
+    const main = el("span", "row__main");
+    const name = el("span", "row__title t-en", resolveName(key));
+    name.lang = "en";
+    main.appendChild(name);
+    row.appendChild(main);
+
+    const trail = el("span", "row__trail t-num", `${stats.correct}/${stats.total}`);
+    if (lessonId) {
+      trail.appendChild(icon("chevron-right", { size: 20 }));
+    }
+    row.appendChild(trail);
+
+    list.appendChild(row);
   }
   section.appendChild(list);
 
@@ -87,63 +105,57 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
 }
 
 function renderReview(result) {
-  const section = el("section");
-  section.appendChild(el("h2", null, "İnceleme"));
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "İnceleme"));
 
+  const list = el("div", "stack stack--loose");
   result.questionResults.forEach((question, index) => {
-    const item = el("div", "review-item");
+    const item = el("article", "stack stack--tight");
+    if (index > 0) {
+      item.appendChild(el("span", "divider"));
+    }
 
-    const prompt = el("p", "review-item__prompt");
-    prompt.appendChild(document.createTextNode(`${index + 1}. `));
+    const verdict = el("p", "cluster");
+    const mark = el("span", question.correct ? "ink-ok" : "ink-no");
+    mark.appendChild(icon(question.correct ? "check" : "close", { size: 20 }));
+    verdict.appendChild(mark);
+    verdict.appendChild(el("span", "t-meta t-num", `Soru ${index + 1}`));
+    item.appendChild(verdict);
+
+    const prompt = el("p", "t-body t-en");
+    prompt.lang = "en";
     appendBlanked(prompt, question.prompt);
     item.appendChild(prompt);
 
-    item.appendChild(
-      el(
-        "p",
-        `review-item__answer review-item__answer--${question.correct ? "correct" : "incorrect"}`,
-        `Cevabın: ${question.selectedAnswer ?? "—"}`
-      )
-    );
-
+    const answers = el("p", "t-meta");
+    answers.appendChild(document.createTextNode("Cevabın: "));
+    const given = el("span", "t-en", question.selectedAnswer ?? "—");
+    given.lang = "en";
+    answers.appendChild(given);
     if (!question.correct) {
-      item.appendChild(
-        el("p", "review-item__answer review-item__answer--correct", `Doğru cevap: ${question.correctAnswer}`)
-      );
+      answers.appendChild(document.createTextNode(" · Doğrusu: "));
+      const right = el("span", "t-en", question.correctAnswer);
+      right.lang = "en";
+      answers.appendChild(right);
     }
+    item.appendChild(answers);
 
-    item.appendChild(el("p", "review-item__explanation", question.explanation));
+    const explanation = el("p", "t-meta");
+    appendInline(explanation, question.explanation);
+    item.appendChild(explanation);
 
     if (question.tip) {
-      const tip = el("p", "review-item__tip");
+      const tip = el("p", "t-meta");
       tip.appendChild(el("strong", null, "Kural: "));
-      tip.appendChild(document.createTextNode(question.tip));
+      appendInline(tip, question.tip);
       item.appendChild(tip);
     }
 
-    section.appendChild(item);
+    list.appendChild(item);
   });
+  section.appendChild(list);
 
   return section;
-}
-
-function renderBottomBarActions() {
-  clear(bottomBarInner);
-
-  const homeLink = el("a", "btn btn--secondary", "Ana Sayfa");
-  homeLink.href = "index.html";
-  bottomBarInner.appendChild(homeLink);
-
-  // Draws a fresh random set from the same selection rather than
-  // replaying the identical questions, hence "Yeni Test".
-  const retryBtn = el("button", "btn", "Yeni Test");
-  retryBtn.type = "button";
-  retryBtn.addEventListener("click", () => {
-    window.location.href = "quiz.html";
-  });
-  bottomBarInner.appendChild(retryBtn);
-
-  bottomBar.hidden = false;
 }
 
 async function init() {
@@ -180,20 +192,19 @@ async function init() {
     lessonIdByCategory = new Map(lessons.map((lesson) => [lesson.category, lesson.id]));
   } catch (error) {
     // The score itself came through the session handoff, so a failed
-    // content load costs the topic titles and lesson links, not the page.
+    // content load costs the topic titles and the lesson links, not the
+    // page.
     console.error(error);
   }
 
   clear(container);
-  container.appendChild(renderScoreSummary(result));
-
-  const weakCallout = renderWeakTopicsCallout(titleById);
-  if (weakCallout) {
-    container.appendChild(weakCallout);
-  }
+  container.appendChild(renderScore(result));
+  announce(
+    `Test bitti. ${result.totalCount} sorudan ${result.correctCount} doğru.`
+  );
 
   const topicBreakdown = renderBreakdown(
-    "Konuya Göre Dağılım",
+    "Konuya göre",
     result.topicBreakdown,
     (topicId) => titleById.get(topicId) ?? result.topicTitles?.[topicId] ?? topicId
   );
@@ -203,7 +214,7 @@ async function init() {
 
   if (result.categoryBreakdown) {
     const categoryBreakdown = renderBreakdown(
-      "Kategoriye Göre Dağılım",
+      "Kategoriye göre",
       result.categoryBreakdown,
       (category) => category,
       (category) => lessonIdByCategory.get(category) ?? null
@@ -214,7 +225,13 @@ async function init() {
   }
 
   container.appendChild(renderReview(result));
-  renderBottomBarActions();
+
+  actionBar.set([
+    { label: "Ana sayfa", level: "secondary", href: "index.html" },
+    // Draws a fresh random set from the same selection rather than
+    // replaying the identical questions, hence "Yeni test".
+    { label: "Yeni test", level: "primary", icon: "refresh", href: "quiz.html" },
+  ]);
 }
 
 init();

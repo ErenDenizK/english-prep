@@ -1,13 +1,23 @@
+// The Test screen — one question at a time, answered and explained before
+// the next appears.
+//
+// It runs in the shell's focused mode: no header, no nav, and the forward
+// action lives in the shell's own bar rather than in the scrolling content.
+// That is the whole reason the bar exists. Answering reveals a block of
+// feedback above it, and if the button moved with that content it would
+// slide out from under a thumb that is already on its way down.
+
 import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
 import { getQuizRequest, setQuizResult } from "./session-state.js";
-import { renderAnswerFeedback } from "./feedback.js";
+import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
+import { renderOptions } from "./answers.js";
 import { el, clear, appendBlanked } from "./dom.js";
+import { icon } from "./icons.js";
+import { announce, scrollToTop, createActionBar } from "./shell.js";
 
 const container = document.getElementById("quiz-container");
-const appContent = document.getElementById("app-content");
-const bottomBar = document.getElementById("quiz-bottom-bar");
-const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
+const actionBar = createActionBar("quiz-bar");
 
 const state = {
   session: [],
@@ -16,57 +26,39 @@ const state = {
   answered: false,
 };
 
-function showBottomBarAction(label, onClick) {
-  clear(bottomBarInner);
-  const button = el("button", "btn", label);
-  button.type = "button";
-  button.addEventListener("click", onClick);
-  bottomBarInner.appendChild(button);
-  bottomBar.hidden = false;
-  button.focus();
-}
-
-function hideBottomBar() {
-  bottomBar.hidden = true;
-  clear(bottomBarInner);
-}
-
 function showMessage(text, { withHomeLink = true } = {}) {
-  hideBottomBar();
   clear(container);
-  container.appendChild(el("p", "empty-state", text));
-
+  container.appendChild(el("p", "t-meta", text));
   if (withHomeLink) {
-    const link = el("a", "btn", "Ana Sayfa");
-    link.href = "index.html";
-    container.appendChild(link);
+    actionBar.set([{ label: "Ana sayfa", level: "primary", href: "index.html" }]);
+  } else {
+    actionBar.hide();
   }
 }
 
-function renderCategoryLabel(category) {
-  const label = el("p", "question-card__category", category);
-  // English grammar term inside an otherwise-Turkish page: without this,
-  // the CSS uppercase transform follows the page's lang="tr" and turns
-  // "Simple" into "SİMPLE" (Turkish dotted İ) rather than "SIMPLE".
-  label.lang = "en";
-  return label;
+function renderTopStrip() {
+  const strip = el("div", "cluster cluster--spread");
+
+  const exit = el("a", "btn btn--quiet", "Çık");
+  exit.href = "index.html";
+  exit.prepend(icon("close", { size: 20 }));
+  strip.appendChild(exit);
+
+  strip.appendChild(
+    el("p", "t-meta t-num", `${state.currentIndex + 1} / ${state.session.length}`)
+  );
+  return strip;
 }
 
-function renderPrompt(promptText) {
-  const paragraph = el("p", "question-card__prompt");
-  appendBlanked(paragraph, promptText);
-  return paragraph;
+function progressBar() {
+  const track = el("div", "progress");
+  const fill = el("div", "progress__fill");
+  fill.style.width = `${((state.currentIndex + 1) / state.session.length) * 100}%`;
+  track.appendChild(fill);
+  return track;
 }
 
-function renderFeedback(question, correct) {
-  const feedback = renderAnswerFeedback(question, correct);
-  document.getElementById("question-card").appendChild(feedback);
-  // The bottom bar is fixed, so answering doesn't move the next button —
-  // but on a small screen the explanation can still land below the fold.
-  feedback.scrollIntoView({ block: "nearest" });
-}
-
-function handleOptionSelected(question, selectedOption, optionButtons) {
+function handleOptionSelected(question, selectedOption) {
   if (state.answered) {
     return;
   }
@@ -74,20 +66,11 @@ function handleOptionSelected(question, selectedOption, optionButtons) {
   state.selectedAnswers[state.currentIndex] = selectedOption;
 
   const correct = isCorrectAnswer(question, selectedOption);
-
-  for (const button of optionButtons) {
-    button.disabled = true;
-    if (isCorrectAnswer(question, button.dataset.option)) {
-      button.classList.add("option-btn--correct");
-    } else if (button.dataset.option === selectedOption) {
-      button.classList.add("option-btn--incorrect");
-    }
-  }
-
-  renderFeedback(question, correct);
-
-  const isLastQuestion = state.currentIndex === state.session.length - 1;
-  showBottomBarAction(isLastQuestion ? "Sonuçları Gör" : "Sonraki Soru", advance);
+  announce(...answerAnnouncement(question, correct));
+  // 4.1.3 is explicit that a status message arrives "without receiving
+  // focus", and moving focus here would take the learner away from the
+  // button they are about to press.
+  renderQuestion();
 }
 
 function advance() {
@@ -98,6 +81,7 @@ function advance() {
   state.currentIndex += 1;
   state.answered = false;
   renderQuestion();
+  scrollToTop();
 }
 
 async function finishQuiz() {
@@ -121,61 +105,71 @@ async function finishQuiz() {
 }
 
 function renderQuestion() {
-  hideBottomBar();
-  clear(container);
-
-  const nav = el("div", "quiz-nav");
-  const exitLink = el("a", "quiz-nav__exit", "← Ana Sayfa");
-  exitLink.href = "index.html";
-  nav.appendChild(exitLink);
-  nav.appendChild(el("p", "quiz-progress", `Soru ${state.currentIndex + 1} / ${state.session.length}`));
-  container.appendChild(nav);
-
-  const progressTrack = el("div", "progress-track");
-  const progressFill = el("div", "progress-track__fill");
-  progressFill.style.width = `${((state.currentIndex + 1) / state.session.length) * 100}%`;
-  progressTrack.appendChild(progressFill);
-  container.appendChild(progressTrack);
-
-  const card = el("div", "question-card");
-  card.id = "question-card";
-
   const question = state.session[state.currentIndex];
+  const selected = state.selectedAnswers[state.currentIndex] ?? null;
+
+  clear(container);
+  const page = el("div", "stack stack--loose");
+  page.appendChild(renderTopStrip());
+  page.appendChild(progressBar());
+
+  const block = el("div", "stack");
   if (question.category) {
-    card.appendChild(renderCategoryLabel(question.category));
-  }
-  card.appendChild(renderPrompt(question.prompt));
-
-  const optionsWrap = el("div", "options");
-  const optionButtons = question.options.map((option, index) => {
-    const button = el("button", "option-btn");
-    button.type = "button";
-    button.dataset.option = option;
-    button.appendChild(el("span", "option-btn__key", `${index + 1}.`));
-    button.appendChild(document.createTextNode(option));
-    optionsWrap.appendChild(button);
-    return button;
-  });
-
-  for (const button of optionButtons) {
-    button.addEventListener("click", () =>
-      handleOptionSelected(question, button.dataset.option, optionButtons)
-    );
+    const category = el("p", "t-label", question.category);
+    category.lang = "en";
+    block.appendChild(category);
   }
 
-  card.appendChild(optionsWrap);
-  container.appendChild(card);
-  appContent.scrollTo({ top: 0 });
+  const prompt = el("p", "t-lead t-en");
+  prompt.lang = "en";
+  appendBlanked(prompt, question.prompt);
+  block.appendChild(prompt);
+
+  block.appendChild(
+    renderOptions(question, {
+      selected,
+      answered: state.answered,
+      onSelect: (option) => handleOptionSelected(question, option),
+    })
+  );
+
+  const feedback = state.answered
+    ? block.appendChild(renderAnswerFeedback(question, isCorrectAnswer(question, selected)))
+    : null;
+
+  page.appendChild(block);
+  container.appendChild(page);
+
+  // The bar is fixed, so answering never moves the button — but on a short
+  // screen the explanation itself can still land below the fold. "nearest"
+  // scrolls only if it has to.
+  feedback?.scrollIntoView({ block: "nearest" });
+
+  if (state.answered) {
+    const isLast = state.currentIndex === state.session.length - 1;
+    actionBar.set([
+      {
+        label: isLast ? "Sonuçları gör" : "Sonraki soru",
+        level: "primary",
+        onClick: advance,
+        focus: true,
+      },
+    ]);
+  } else {
+    // Not a disabled button: a disabled control is exempt from the
+    // contrast rules, drops out of the tab order, and explains nothing.
+    actionBar.hint("Bir seçenek seç");
+  }
 }
 
 function handleKeydown(event) {
   if (!state.session.length || event.metaKey || event.ctrlKey || event.altKey) {
     return;
   }
-  // The advance button is focused as soon as a question is answered, so
-  // pressing Enter there already activates it natively. Handling it here
-  // too would advance twice and skip a question.
-  if (bottomBar.contains(event.target)) {
+  // The advance button takes focus as soon as a question is answered, so
+  // Enter there already activates it natively; handling it here too would
+  // advance twice and skip a question.
+  if (actionBar.contains(event.target)) {
     return;
   }
 
@@ -183,14 +177,14 @@ function handleKeydown(event) {
     const choice = Number(event.key);
     if (Number.isInteger(choice) && choice >= 1 && choice <= 4) {
       event.preventDefault();
-      document.querySelectorAll(".option-btn")[choice - 1]?.click();
+      document.querySelectorAll(".option")[choice - 1]?.click();
     }
     return;
   }
 
   if (event.key === "Enter") {
     event.preventDefault();
-    bottomBarInner.querySelector("button")?.click();
+    actionBar.buttons()[0]?.click();
   }
 }
 

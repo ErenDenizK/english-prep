@@ -1,17 +1,13 @@
-// Profil tab — the home for anything about *you* rather than about a
-// particular test result: an optional display name, how much you've done
-// overall, and where you're weakest. Everything is read from the same
-// local storage the rest of the app writes to; there is no login and no
-// server, and "Geçmişi Sıfırla" only ever clears this browser's data.
+// Profil — everything about *you* rather than about a particular test: an
+// optional display name, how much you have done overall, and where you are
+// weakest. Everything is read from the same local storage the rest of the
+// app writes to; there is no login and no server, and "Geçmişi sıfırla"
+// only ever clears this browser's data.
 //
-// The weak lists are deliberately actionable rather than a read-out.
-// Each category the learner is struggling with offers both ways out of
-// it: tapping the name opens the Eğitim lesson that teaches it, and
-// "Pratik Yap" starts a test scoped to just that category. Both are only
-// possible because lessons and questions share one category taxonomy.
-//
-// Weak topics get rank numbers but no button — their topic card on the
-// Test tab already has one, and a second would just be noise.
+// The weak lists here lead into the *lessons*, because that is what this
+// screen is for: understanding where you stand and what to study. The same
+// lists on the Test tab start practice instead. One row, one action, and
+// which action it is follows from which screen you are on.
 
 import { loadManifest, loadLessonsForTopics } from "./topics.js";
 import {
@@ -25,8 +21,8 @@ import {
   clearLessonProgress,
 } from "./storage.js";
 import { createConfirmModal } from "./modal.js";
-import { startCategoryPractice } from "./quiz-launch.js";
 import { el, clear } from "./dom.js";
+import { icon } from "./icons.js";
 
 const container = document.getElementById("profile-container");
 let resetModal;
@@ -37,18 +33,19 @@ function formatPercent(value) {
 }
 
 function renderNameField() {
-  const section = el("section", "panel");
-  const heading = el("h2", null, "İsmin");
+  const surface = el("section", "surface stack stack--tight");
+
+  const heading = el("h2", "t-label", "İsmin");
   heading.id = "profile-name-label";
-  section.appendChild(heading);
-  section.appendChild(
-    el("p", "hero__description", "İsteğe bağlı — sadece bu cihazda saklanır, hiçbir yere gönderilmez.")
+  surface.appendChild(heading);
+  surface.appendChild(
+    el("p", "t-meta", "İsteğe bağlı — sadece bu cihazda saklanır, hiçbir yere gönderilmez.")
   );
 
   const input = document.createElement("input");
   input.type = "text";
-  input.className = "text-input";
-  input.placeholder = "İsmini yaz (isteğe bağlı)";
+  input.className = "field";
+  input.placeholder = "İsmini yaz";
   input.value = getProfileName();
   input.maxLength = 40;
   input.autocomplete = "off";
@@ -59,111 +56,81 @@ function renderNameField() {
     // the two modules having to import each other.
     document.dispatchEvent(new CustomEvent("profile:namechange"));
   });
-  section.appendChild(input);
+  surface.appendChild(input);
 
-  return section;
+  return surface;
 }
 
-function statTile(value, label) {
-  const tile = el("div", "stat-tile");
-  tile.appendChild(el("div", "stat-tile__value", value));
-  tile.appendChild(el("div", "stat-tile__label", label));
-  return tile;
+function stat(value, label) {
+  const cell = el("div");
+  cell.appendChild(el("div", "stat__value", value));
+  cell.appendChild(el("div", "stat__label", label));
+  return cell;
 }
 
 function renderStats(stats, lessonsDone, lessonsTotal) {
-  const section = el("section", "panel");
-  section.appendChild(el("h2", null, "Genel Durum"));
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Genel durum"));
 
-  const grid = el("div", "stat-grid");
-  grid.appendChild(statTile(lessonsTotal ? `${lessonsDone}/${lessonsTotal}` : "—", "Tamamlanan ders"));
-  grid.appendChild(statTile(String(stats.testsCompleted), "Tamamlanan test"));
-  grid.appendChild(statTile(String(stats.totalQuestions), "Çözülen soru"));
-  grid.appendChild(statTile(formatPercent(stats.accuracy), "Genel doğruluk"));
+  const grid = el("div", "stats");
+  grid.appendChild(stat(lessonsTotal ? `${lessonsDone}/${lessonsTotal}` : "—", "Tamamlanan ders"));
+  grid.appendChild(stat(String(stats.testsCompleted), "Çözülen test"));
+  grid.appendChild(stat(String(stats.totalQuestions), "Çözülen soru"));
+  grid.appendChild(stat(formatPercent(stats.accuracy), "Doğruluk"));
   section.appendChild(grid);
 
   if (stats.testsCompleted === 0 && lessonsDone === 0) {
     section.appendChild(
-      el("p", "empty-state", "Henüz başlamadın — bir ders okuyunca ya da test çözünce burası dolacak.")
+      el("p", "t-meta", "Henüz başlamadın — bir ders okuyunca ya da test çözünce burası dolacak.")
     );
   }
 
   return section;
 }
 
-function renderWeakTopics(entries, titleById) {
-  if (entries.length === 0) {
+/**
+ * @param {string} heading
+ * @param {string} hint
+ * @param {Array<{name: string, score: string, lessonId?: string|null}>} rows
+ */
+function renderWeakList(heading, hint, rows) {
+  if (rows.length === 0) {
     return null;
   }
 
-  const section = el("section", "panel");
-  section.appendChild(el("h2", null, "Zayıf Olduğun Konular"));
+  const section = el("section", "stack stack--tight");
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("h2", "t-label", heading));
+  head.appendChild(el("p", "t-meta", hint));
+  section.appendChild(head);
 
-  const list = el("ul", "breakdown-list");
-  entries.forEach((entry, index) => {
-    const item = document.createElement("li");
-    const info = el("div", "breakdown-list__info");
-    // Entries already arrive sorted weakest-first; the rank number makes
-    // that order visible instead of leaving it to be inferred.
-    const name = el("span", null, `${index + 1}. ${titleById.get(entry.topicId) ?? entry.topicId}`);
-    name.lang = "en";
-    info.appendChild(name);
-    info.appendChild(el("span", "breakdown-list__score", `${entry.correct}/${entry.total}`));
-    item.appendChild(info);
-    list.appendChild(item);
-  });
-  section.appendChild(list);
-
-  return section;
-}
-
-function renderWeakCategories(entries, lessonIdByCategory) {
-  if (entries.length === 0) {
-    return null;
-  }
-
-  const section = el("section", "panel");
-  section.appendChild(el("h2", null, "Zayıf Olduğun Kategoriler"));
-  section.appendChild(
-    el("p", "hero__description", "Adına dokunup dersi açabilir ya da doğrudan o kategoriden pratik yapabilirsin.")
-  );
-
-  const list = el("ul", "breakdown-list");
-  entries.forEach((entry, index) => {
-    const item = el("li", "breakdown-list__item--action");
-    const lessonId = lessonIdByCategory.get(entry.category);
-    const label = `${index + 1}. ${entry.category}`;
-    const score = `${entry.correct}/${entry.total}`;
-
-    if (lessonId) {
-      const link = el("a", "breakdown-link");
-      link.href = `#egitim/${lessonId}`;
-      const name = el("span", null, label);
-      name.lang = "en";
-      link.appendChild(name);
-      link.appendChild(el("span", "breakdown-link__score", score));
-      item.appendChild(link);
-    } else {
-      const info = el("div", "breakdown-list__info");
-      const name = el("span", null, label);
-      name.lang = "en";
-      info.appendChild(name);
-      info.appendChild(el("span", "breakdown-list__score", score));
-      item.appendChild(info);
+  const list = el("div");
+  rows.forEach((entry, index) => {
+    const row = el(entry.lessonId ? "a" : "div", "row");
+    if (entry.lessonId) {
+      row.href = `#egitim/${entry.lessonId}`;
     }
 
-    const practiceBtn = el("button", "btn btn--secondary btn--sm", "Pratik Yap");
-    practiceBtn.type = "button";
-    practiceBtn.addEventListener("click", () => {
-      practiceBtn.disabled = true;
-      startCategoryPractice(entry.category).catch((error) => {
-        console.error(error);
-        practiceBtn.disabled = false;
-      });
-    });
-    item.appendChild(practiceBtn);
+    // Entries arrive sorted weakest-first; the rank makes that visible
+    // instead of leaving it to be inferred from the scores.
+    row.appendChild(el("span", "row__lead t-num t-meta", String(index + 1)));
 
-    list.appendChild(item);
+    const main = el("span", "row__main");
+    const name = el("span", "row__title t-en", entry.name);
+    name.lang = "en";
+    main.appendChild(name);
+    if (entry.lessonId) {
+      main.appendChild(el("span", "row__sub", "Dersi aç"));
+    }
+    row.appendChild(main);
+
+    const trail = el("span", "row__trail t-num", entry.score);
+    if (entry.lessonId) {
+      trail.appendChild(icon("chevron-right", { size: 20 }));
+    }
+    row.appendChild(trail);
+
+    list.appendChild(row);
   });
   section.appendChild(list);
 
@@ -171,16 +138,14 @@ function renderWeakCategories(entries, lessonIdByCategory) {
 }
 
 function renderSettings() {
-  const section = el("section", "panel");
-  section.appendChild(el("h2", null, "Ayarlar"));
-  section.appendChild(
-    el("p", "hero__description", "Test geçmişini ve ders ilerlemeni bu cihazdan siler.")
-  );
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Ayarlar"));
+  section.appendChild(el("p", "t-meta", "Test geçmişini ve ders ilerlemeni bu cihazdan siler."));
 
-  const resetBtn = el("button", "btn btn--danger", "Geçmişi Sıfırla");
-  resetBtn.type = "button";
-  resetBtn.addEventListener("click", () => resetModal.open());
-  section.appendChild(resetBtn);
+  const reset = el("button", "btn btn--secondary", "Geçmişi sıfırla");
+  reset.type = "button";
+  reset.addEventListener("click", () => resetModal.open());
+  section.appendChild(reset);
 
   return section;
 }
@@ -190,9 +155,8 @@ async function render() {
   let lessons = [];
   try {
     const manifest = await loadManifest();
-    const liveTopics = manifest.topics.filter((topic) => !topic.comingSoon);
     titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
-    lessons = await loadLessonsForTopics(liveTopics);
+    lessons = await loadLessonsForTopics(manifest.topics.filter((topic) => !topic.comingSoon));
   } catch (error) {
     // Stats come from local storage and are still worth showing, so a
     // failed content load degrades the lesson counter and the
@@ -209,14 +173,29 @@ async function render() {
     renderStats(getOverallStats(), countCompletedLessons(lessonIds), lessonIds.length)
   );
 
-  const weakTopics = renderWeakTopics(getWeakTopics(), titleById);
-  if (weakTopics) {
-    container.appendChild(weakTopics);
-  }
-
-  const weakCategories = renderWeakCategories(getWeakCategories(), lessonIdByCategory);
+  const weakCategories = renderWeakList(
+    "Zayıf kategoriler",
+    "Dokunduğunda o kategoriyi anlatan ders açılır.",
+    getWeakCategories().map((entry) => ({
+      name: entry.category,
+      score: `${entry.correct}/${entry.total}`,
+      lessonId: lessonIdByCategory.get(entry.category) ?? null,
+    }))
+  );
   if (weakCategories) {
     container.appendChild(weakCategories);
+  }
+
+  const weakTopics = renderWeakList(
+    "Zayıf konular",
+    "En çok hata yaptığın konular, en zayıftan başlayarak.",
+    getWeakTopics().map((entry) => ({
+      name: titleById.get(entry.topicId) ?? entry.topicId,
+      score: `${entry.correct}/${entry.total}`,
+    }))
+  );
+  if (weakTopics) {
+    container.appendChild(weakTopics);
   }
 
   container.appendChild(renderSettings());
@@ -226,9 +205,9 @@ export async function initProfileTab() {
   if (!initialized) {
     initialized = true;
     resetModal = createConfirmModal({
-      overlayId: "confirm-modal",
-      confirmId: "confirm-modal-confirm",
-      cancelId: "confirm-modal-cancel",
+      dialogId: "confirm-dialog",
+      confirmId: "confirm-dialog-confirm",
+      cancelId: "confirm-dialog-cancel",
       onConfirm: () => {
         clearHistory();
         clearLessonProgress();

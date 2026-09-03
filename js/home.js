@@ -1,172 +1,337 @@
-// Home screen and the app's router.
+// The app's router, and the Test tab.
 //
-// Eğitim and Test are the two content modes and live in the bottom nav —
-// within thumb reach, and visually distinct rather than two mirror-image
-// tabs sharing a bar. Profil is identity and settings, not a mode, so it
-// opens from the header instead of sitting alongside them.
+// Eğitim and Test are the two content modes and live in the bottom nav.
+// Eğitim is the default: someone opening a study app wants to carry on
+// where they left off, not to be handed an exam. Profil is identity and
+// settings rather than a mode, so it opens from the header.
 //
 // Every screen is addressed by URL hash (`#egitim`, `#test`, `#profil`,
 // plus `#egitim/<lessonId>` for an open lesson) rather than by in-memory
 // state, which buys three things for free: the device back button steps
 // back through the app instead of leaving it, a lesson can be linked to,
 // and reloading keeps you where you were.
+//
+// The Test tab's own hierarchy is: the mixed test, because that is what
+// the tab is for; then the categories the learner keeps failing, which is
+// the most valuable thing the app knows about them; then the topic list.
 
-import { loadManifest } from "./topics.js";
+import { loadManifest, loadLessonsForTopics } from "./topics.js";
 import {
   getLastTopicScore,
-  getWeakTopics,
+  getWeakCategories,
   getSeenVersion,
   getProfileName,
   isDevNoteDismissed,
   dismissDevNote,
 } from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
-import { createDropdown } from "./dropdown.js";
+import { createListbox } from "./listbox.js";
 import { showLessonIndex, openLesson, closeReader } from "./education.js";
 import { initProfileTab } from "./profile.js";
-import { startTopicTest, startMixedTest } from "./quiz-launch.js";
+import { startTopicTest, startMixedTest, startCategoryPractice } from "./quiz-launch.js";
 import { el, clear } from "./dom.js";
-import { MAX_VISIBLE_CATEGORY_CHIPS, MIXED_TEST_DEFAULT_COUNT } from "./config.js";
+import { icon } from "./icons.js";
+import { announce, scrollToTop } from "./shell.js";
+import { MIXED_TEST_DEFAULT_COUNT } from "./config.js";
 
 const VIEW_IDS = ["egitim", "test", "profil"];
-const DEFAULT_VIEW = "test";
+const DEFAULT_VIEW = "egitim";
 
-const topicsContainer = document.getElementById("topics-container");
-const startMixedBtn = document.getElementById("start-mixed-btn");
+const VIEW_TITLES = {
+  egitim: "Eğitim",
+  test: "Test",
+  profil: "Profil",
+};
+
+const NAV_ICONS = {
+  egitim: "book",
+  test: "check-square",
+};
+
+const testPanel = document.getElementById("test-panel");
 const profileTrigger = document.getElementById("profile-trigger");
-const profileInitial = document.getElementById("profile-trigger-initial");
+const profileFace = document.getElementById("profile-trigger-face");
 const devNote = document.getElementById("dev-note");
-const tabs = Array.from(document.querySelectorAll(".bottom-nav__tab"));
+const navItems = Array.from(document.querySelectorAll(".nav__item"));
 const views = Object.fromEntries(VIEW_IDS.map((id) => [id, document.getElementById(`view-${id}`)]));
 
-let mixedCountDropdown;
+let mixedCount;
 
-/* ---- Topic cards (Test tab) ---- */
+/* ---- Test tab ---- */
 
-function buildCategoryChips(categories) {
-  const wrap = el("div", "category-chips");
-
-  const visible = categories.slice(0, MAX_VISIBLE_CATEGORY_CHIPS);
-  for (const category of visible) {
-    const chip = el("span", "category-chip", category);
-    chip.lang = "en";
-    wrap.appendChild(chip);
+function sectionHeading(text, hint) {
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("h2", "t-label", text));
+  if (hint) {
+    head.appendChild(el("p", "t-meta", hint));
   }
-
-  const remaining = categories.length - visible.length;
-  if (remaining > 0) {
-    wrap.appendChild(el("span", "category-chip category-chip--more", `+${remaining} tane daha`));
-  }
-
-  return wrap;
+  return head;
 }
 
-function buildComingSoonCard(topic) {
-  const card = el("div", "topic-card topic-card--coming-soon");
-  const title = el("h3", null, topic.title);
-  title.lang = "en";
-  card.appendChild(title);
-  card.appendChild(el("span", "badge badge--muted", "Yakında"));
-  return card;
-}
+function renderMixedTest() {
+  const surface = el("section", "surface stack");
 
-function buildTopicCard(topic, weakTopicIds) {
-  if (topic.comingSoon) {
-    return buildComingSoonCard(topic);
-  }
+  const intro = el("div", "stack stack--tight");
+  intro.appendChild(el("h2", "t-title", "Karışık test"));
+  intro.appendChild(
+    el(
+      "p",
+      "t-body",
+      "Sorular tüm konulardan rastgele gelir. Seviyeni görmenin en hızlı yolu."
+    )
+  );
+  surface.appendChild(intro);
 
-  const card = el("div", "topic-card");
+  const row = el("div", "cluster cluster--spread");
+  const label = el("span", "t-ui", "Soru sayısı");
+  label.id = "mixed-count-label";
+  row.appendChild(label);
+  const listboxHost = el("div");
+  row.appendChild(listboxHost);
+  surface.appendChild(row);
 
-  const title = el("h3", null, topic.title);
-  title.lang = "en";
-  card.appendChild(title);
-
-  const meta = [`${topic.questionCount} soru`];
-  if (topic.lessonCount) {
-    meta.push(`${topic.lessonCount} ders`);
-  }
-  card.appendChild(el("p", "topic-card__meta", meta.join(" · ")));
-
-  if (topic.categories?.length) {
-    card.appendChild(buildCategoryChips(topic.categories));
-  }
-
-  const badges = el("div", "badge-row");
-  if (typeof topic.contentVersion === "number" && getSeenVersion(topic.id) < topic.contentVersion) {
-    badges.appendChild(el("span", "badge badge--new", "Yeni sorular eklendi"));
-  }
-  const lastScore = getLastTopicScore(topic.id);
-  if (lastScore) {
-    badges.appendChild(el("span", "badge", `Son skor: ${lastScore.correct}/${lastScore.total}`));
-  }
-  if (weakTopicIds.has(topic.id)) {
-    badges.appendChild(el("span", "badge", "Pratik gerekiyor"));
-  }
-  if (badges.childElementCount > 0) {
-    card.appendChild(badges);
-  }
-
-  const startBtn = el("button", "btn btn--secondary", "Bu Konudan Başla");
-  startBtn.type = "button";
-  startBtn.addEventListener("click", () => {
-    startBtn.disabled = true;
-    startTopicTest(topic.id).catch((error) => {
-      console.error(error);
-      startBtn.disabled = false;
-    });
+  const start = el("button", "btn btn--primary", "Teste başla");
+  start.type = "button";
+  start.addEventListener("click", () => {
+    const raw = mixedCount.getValue();
+    startMixedTest(raw === "all" ? "all" : Number(raw)).catch(console.error);
   });
-  card.appendChild(startBtn);
+  surface.appendChild(start);
 
-  return card;
+  mixedCount = createListbox({
+    container: listboxHost,
+    options: [
+      { value: "5", label: "5" },
+      { value: "10", label: "10" },
+      { value: "20", label: "20" },
+      { value: "all", label: "Tümü" },
+    ],
+    value: MIXED_TEST_DEFAULT_COUNT,
+    labelledBy: "mixed-count-label",
+  });
+
+  return surface;
 }
 
-function buildTopicGrid(topics, weakTopicIds) {
-  const grid = el("div", "topic-grid");
-  for (const topic of topics) {
-    grid.appendChild(buildTopicCard(topic, weakTopicIds));
+/**
+ * The categories the learner is weakest at, each one a shortcut into
+ * practice scoped to exactly that category. Only here, on the Test tab:
+ * the same list in Profil links to the *lesson* instead, so a row never
+ * has to carry two competing actions.
+ */
+function renderWeakSpots(entries) {
+  if (entries.length === 0) {
+    return null;
   }
-  return grid;
+
+  const section = el("section", "stack stack--tight");
+  section.appendChild(
+    sectionHeading("Zayıf noktaların", "Dokunduğunda sadece o kategoriden pratik başlar.")
+  );
+
+  const list = el("div");
+  for (const entry of entries) {
+    const row = el("button", "row");
+    row.type = "button";
+
+    const lead = el("span", "row__lead");
+    lead.appendChild(icon("target", { size: 20 }));
+    row.appendChild(lead);
+
+    const main = el("span", "row__main");
+    const title = el("span", "row__title t-en", entry.category);
+    title.lang = "en";
+    main.appendChild(title);
+    main.appendChild(el("span", "row__sub", "Bu kategoriden pratik yap"));
+    row.appendChild(main);
+
+    const trail = el("span", "row__trail t-num", `${entry.correct}/${entry.total}`);
+    row.appendChild(trail);
+
+    row.addEventListener("click", () => {
+      startCategoryPractice(entry.category).catch(console.error);
+    });
+    list.appendChild(row);
+  }
+  section.appendChild(list);
+
+  return section;
 }
 
-function renderTopicList(topics, weakTopicIds) {
-  clear(topicsContainer);
+function topicMeta(topic) {
+  const parts = [`${topic.questionCount} soru`];
+  if (topic.lessonCount) {
+    parts.push(`${topic.lessonCount} ders`);
+  }
+  return parts.join(" · ");
+}
 
-  if (topics.length === 0) {
-    topicsContainer.appendChild(el("p", "empty-state", "Henüz konu eklenmedi."));
-    return;
+function renderTopicRow(topic) {
+  const interactive = !topic.comingSoon;
+  const row = el(interactive ? "button" : "div", "row");
+  if (interactive) {
+    row.type = "button";
   }
 
+  const main = el("span", "row__main");
+  const title = el("span", "row__title t-en", topic.title);
+  title.lang = "en";
+  main.appendChild(title);
+  main.appendChild(el("span", "row__sub", topic.comingSoon ? "Hazırlanıyor" : topicMeta(topic)));
+  row.appendChild(main);
+
+  const trail = el("span", "row__trail");
+  if (topic.comingSoon) {
+    trail.appendChild(el("span", "chip", "Yakında"));
+  } else {
+    if (typeof topic.contentVersion === "number" && getSeenVersion(topic.id) < topic.contentVersion) {
+      trail.appendChild(el("span", "chip chip--accent", "Yeni"));
+    }
+    const lastScore = getLastTopicScore(topic.id);
+    if (lastScore) {
+      trail.appendChild(el("span", "t-num", `${lastScore.correct}/${lastScore.total}`));
+    }
+    trail.appendChild(icon("chevron-right", { size: 20 }));
+  }
+  row.appendChild(trail);
+
+  if (interactive) {
+    row.addEventListener("click", () => {
+      startTopicTest(topic.id).catch(console.error);
+    });
+  }
+
+  return row;
+}
+
+/**
+ * Grouped by difficulty tier when there is more than one — and in that case
+ * the tier names *are* the headings. An umbrella "Konular" above them would
+ * put two labels of identical weight one line apart, which reads as a pile
+ * rather than as a hierarchy.
+ */
+function renderTopicList(topics) {
+  const section = el("section", "stack");
   const tiersPresent = TIER_ORDER.filter((tier) => topics.some((topic) => topic.tier === tier));
 
-  // With only one tier populated (the realistic starting point), skip the
-  // accordion entirely and show a flat, uncluttered list of topic cards.
+  const group = (heading, inGroup) => {
+    const block = el("section", "stack stack--tight");
+    block.appendChild(el("h2", "t-label", heading));
+    const list = el("div");
+    inGroup.forEach((topic) => list.appendChild(renderTopicRow(topic)));
+    block.appendChild(list);
+    return block;
+  };
+
   if (tiersPresent.length <= 1) {
-    topicsContainer.appendChild(buildTopicGrid(topics, weakTopicIds));
-    return;
+    section.appendChild(group("Konular", topics));
+    return section;
   }
 
-  tiersPresent.forEach((tier, index) => {
-    const topicsInTier = topics.filter((topic) => topic.tier === tier);
-    const details = el("details", "topic-tier");
-    if (index === 0) {
-      details.open = true;
-    }
-    details.appendChild(el("summary", null, `${TIER_LABELS[tier] ?? tier} (${topicsInTier.length})`));
-    details.appendChild(buildTopicGrid(topicsInTier, weakTopicIds));
-    topicsContainer.appendChild(details);
-  });
+  for (const tier of tiersPresent) {
+    section.appendChild(
+      group(TIER_LABELS[tier] ?? tier, topics.filter((topic) => topic.tier === tier))
+    );
+  }
+
+  return section;
 }
 
 async function renderTestTab() {
+  let manifest;
   try {
-    const manifest = await loadManifest();
-    const weakTopicIds = new Set(getWeakTopics().map((entry) => entry.topicId));
-    renderTopicList(manifest.topics, weakTopicIds);
+    manifest = await loadManifest();
   } catch (error) {
     console.error(error);
-    clear(topicsContainer);
-    topicsContainer.appendChild(el("p", "empty-state", "Konular yüklenemedi. Sayfayı yenile."));
+    clear(testPanel);
+    testPanel.appendChild(el("p", "t-meta", "Konular yüklenemedi. Sayfayı yenile."));
+    return;
   }
+
+  // Weak spots are stored by category, and a category only becomes a link
+  // to practice if some live topic still carries it — a category that was
+  // renamed out of the taxonomy should not strand the learner in an empty
+  // test.
+  let liveCategories = new Set();
+  try {
+    const lessons = await loadLessonsForTopics(manifest.topics.filter((topic) => !topic.comingSoon));
+    liveCategories = new Set(lessons.map((lesson) => lesson.category));
+  } catch (error) {
+    console.error(error);
+  }
+
+  clear(testPanel);
+  testPanel.appendChild(renderMixedTest());
+
+  const weakSpots = renderWeakSpots(
+    getWeakCategories().filter((entry) => liveCategories.size === 0 || liveCategories.has(entry.category))
+  );
+  if (weakSpots) {
+    testPanel.appendChild(weakSpots);
+  }
+
+  if (manifest.topics.length === 0) {
+    testPanel.appendChild(el("p", "t-meta", "Henüz konu eklenmedi."));
+  } else {
+    testPanel.appendChild(renderTopicList(manifest.topics));
+  }
+}
+
+/* ---- Chrome ---- */
+
+function initNav() {
+  for (const item of navItems) {
+    const host = item.querySelector("[data-icon]");
+    host.replaceChildren(icon(NAV_ICONS[item.dataset.view], { size: 24 }));
+  }
+}
+
+function selectTab(view) {
+  for (const item of navItems) {
+    const selected = item.dataset.view === view;
+    // The filled variant, not a recoloured outline: fill changes visual
+    // mass, so the selected destination survives greyscale and
+    // forced-colors mode.
+    const name = NAV_ICONS[item.dataset.view];
+    item.querySelector("[data-icon]").replaceChildren(
+      icon(selected ? `${name}-fill` : name, { size: 24 })
+    );
+    if (selected) {
+      item.setAttribute("aria-current", "page");
+    } else {
+      item.removeAttribute("aria-current");
+    }
+  }
+  profileTrigger.setAttribute("aria-current", view === "profil" ? "page" : "false");
+}
+
+/**
+ * The header button stands in for the learner: their initial once they
+ * have set a name, and the generic figure until then. Turkish casing
+ * matters — "i" upper-cases to "İ", which `toUpperCase()` gets wrong.
+ */
+function refreshProfileTrigger() {
+  const name = getProfileName().trim();
+  if (name) {
+    profileFace.replaceChildren(document.createTextNode(name[0].toLocaleUpperCase("tr")));
+    profileTrigger.setAttribute("aria-label", `Profilini aç (${name})`);
+  } else {
+    profileFace.replaceChildren(icon("user", { size: 22 }));
+    profileTrigger.setAttribute("aria-label", "Profilini aç");
+  }
+}
+
+function initDevNote() {
+  if (isDevNoteDismissed()) {
+    return;
+  }
+  devNote.hidden = false;
+  const dismiss = document.getElementById("dev-note-dismiss");
+  dismiss.appendChild(icon("close", { size: 20 }));
+  dismiss.addEventListener("click", () => {
+    devNote.hidden = true;
+    dismissDevNote();
+  });
 }
 
 /* ---- Routing ---- */
@@ -179,44 +344,7 @@ function parseRoute() {
     : { view: DEFAULT_VIEW, param: null };
 }
 
-function selectTab(view) {
-  const known = tabs.some((tab) => tab.dataset.view === view);
-  tabs.forEach((tab, index) => {
-    const selected = tab.dataset.view === view;
-    tab.setAttribute("aria-selected", String(selected));
-    // Roving tabindex: one stop for the whole nav, arrow keys move within
-    // it (WAI-ARIA tabs pattern). On Profil no tab is selected, so the
-    // first one keeps the tab stop rather than the nav becoming
-    // unreachable by keyboard.
-    tab.tabIndex = selected || (!known && index === 0) ? 0 : -1;
-  });
-  profileTrigger.setAttribute("aria-current", String(view === "profil"));
-}
-
-/**
- * The header button stands in for the learner, so it shows their initial
- * once they've set a name. Turkish casing matters here: "i" upper-cases
- * to "İ", which `toUpperCase()` alone would get wrong.
- */
-function refreshProfileTrigger() {
-  const name = getProfileName().trim();
-  profileInitial.textContent = name ? name[0].toLocaleUpperCase("tr") : "?";
-  profileTrigger.setAttribute(
-    "aria-label",
-    name ? `Profilini aç (${name})` : "Profilini aç"
-  );
-}
-
-function initDevNote() {
-  if (isDevNoteDismissed()) {
-    return;
-  }
-  devNote.hidden = false;
-  document.getElementById("dev-note-dismiss").addEventListener("click", () => {
-    devNote.hidden = true;
-    dismissDevNote();
-  });
-}
+let routed = false;
 
 async function applyRoute() {
   const { view, param } = parseRoute();
@@ -225,14 +353,28 @@ async function applyRoute() {
   for (const id of VIEW_IDS) {
     views[id].hidden = id !== view;
   }
+  // 2.4.2: the title has to say which screen this is, or the back button
+  // walks through a history of identically-named entries.
+  document.title = `${VIEW_TITLES[view]} — English Prep`;
+  announce(VIEW_TITLES[view]);
+  scrollToTop();
+
+  // A hash route is a navigation, so focus has to move with it or the next
+  // Tab resumes from wherever the last screen left it — and the browser's
+  // own Back button strands it entirely. Not on first paint, though: a
+  // focus ring on a page nobody has interacted with is just noise.
+  if (routed) {
+    views[view].focus({ preventScroll: true });
+  }
+  routed = true;
 
   if (view === "egitim") {
     await (param ? openLesson(param) : showLessonIndex());
     return;
   }
 
-  // Leaving Eğitim: make sure the reader's focused mode is torn down, or
-  // the header and tab bar would stay hidden on the next screen.
+  // Leaving Eğitim: tear the reader's focused mode down, or the header
+  // and nav stay hidden on the next screen.
   closeReader();
 
   if (view === "profil") {
@@ -242,72 +384,18 @@ async function applyRoute() {
   }
 }
 
-function navigate(view) {
-  if (window.location.hash === `#${view}`) {
-    return;
-  }
-  window.location.hash = view;
-}
-
-function handleTabKeydown(event) {
-  const currentIndex = tabs.indexOf(event.target);
-  if (currentIndex === -1) {
-    return;
-  }
-
-  const offsets = { ArrowRight: 1, ArrowLeft: -1 };
-  let nextIndex = null;
-  if (event.key in offsets) {
-    nextIndex = (currentIndex + offsets[event.key] + tabs.length) % tabs.length;
-  } else if (event.key === "Home") {
-    nextIndex = 0;
-  } else if (event.key === "End") {
-    nextIndex = tabs.length - 1;
-  }
-  if (nextIndex === null) {
-    return;
-  }
-
-  event.preventDefault();
-  tabs[nextIndex].focus();
-  navigate(tabs[nextIndex].dataset.view);
-}
-
 /* ---- Init ---- */
 
 function init() {
-  for (const tab of tabs) {
-    tab.addEventListener("click", () => navigate(tab.dataset.view));
-    tab.addEventListener("keydown", handleTabKeydown);
-  }
-
-  profileTrigger.addEventListener("click", () => navigate("profil"));
+  initNav();
+  profileTrigger.addEventListener("click", () => {
+    window.location.hash = "profil";
+  });
   // Profil owns the name field; the header shows it. A DOM event keeps
   // that one-way rather than making the two modules import each other.
   document.addEventListener("profile:namechange", refreshProfileTrigger);
   refreshProfileTrigger();
   initDevNote();
-
-  mixedCountDropdown = createDropdown({
-    container: document.getElementById("mixed-count-dropdown"),
-    options: [
-      { value: "5", label: "5" },
-      { value: "10", label: "10" },
-      { value: "20", label: "20" },
-      { value: "all", label: "Tümü" },
-    ],
-    value: MIXED_TEST_DEFAULT_COUNT,
-    labelledBy: "mixed-count-label",
-  });
-
-  startMixedBtn.addEventListener("click", () => {
-    const raw = mixedCountDropdown.getValue();
-    startMixedBtn.disabled = true;
-    startMixedTest(raw === "all" ? "all" : Number(raw)).catch((error) => {
-      console.error(error);
-      startMixedBtn.disabled = false;
-    });
-  });
 
   window.addEventListener("hashchange", () => {
     applyRoute();

@@ -1,88 +1,56 @@
-// Confirm modal — wires up a fixed in-app overlay that is already in the
-// DOM, instead of window.confirm(), so confirming a destructive action
-// never hands the screen to native browser chrome or shifts the page.
+// Confirmation dialog, on a native <dialog> with showModal().
 //
-// Same trade as the custom dropdown: taking over from a native control
-// means taking over its keyboard contract too. Focus moves into the
-// dialog, is trapped there while it is open (Tab can't wander into the
-// page behind it), Escape cancels, and on close focus returns to whatever
-// opened the dialog rather than being dumped at the top of the document.
-
-const FOCUSABLE = 'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+// The hand-rolled version this replaces carried its own focus trap, its
+// own Escape handler and its own focus-restore. All three are things the
+// platform already does correctly, and the fourth — making everything
+// outside the dialog `inert` — it never did at all. <dialog> is Baseline,
+// so the top layer, the ::backdrop, focus containment, Escape-to-close,
+// inertness and focus restoration all come for free and stay correct.
+//
+// What is left is the part that is actually a decision: focus lands on the
+// least destructive action, so the safe option is the one under the cursor
+// when a destructive dialog appears.
 
 /**
- * @param {{ overlayId: string, confirmId: string, cancelId: string, onConfirm: () => void }} config
+ * @param {{ dialogId: string, confirmId: string, cancelId: string, onConfirm: () => void }} config
  * @returns {{ open: () => void, close: () => void }}
  */
-export function createConfirmModal({ overlayId, confirmId, cancelId, onConfirm }) {
-  const overlay = document.getElementById(overlayId);
-  const dialog = overlay.querySelector(".modal");
+export function createConfirmModal({ dialogId, confirmId, cancelId, onConfirm }) {
+  const dialog = document.getElementById(dialogId);
   const confirmBtn = document.getElementById(confirmId);
   const cancelBtn = document.getElementById(cancelId);
 
-  let lastFocused = null;
-
-  function focusableItems() {
-    return Array.from(dialog.querySelectorAll(FOCUSABLE)).filter(
-      (node) => node.offsetParent !== null || node === document.activeElement
-    );
-  }
-
-  function handleKeydown(event) {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      close();
-      return;
-    }
-    if (event.key !== "Tab") {
-      return;
-    }
-
-    const items = focusableItems();
-    if (items.length === 0) {
-      return;
-    }
-    const first = items[0];
-    const last = items[items.length - 1];
-    const active = document.activeElement;
-
-    if (event.shiftKey && (active === first || !dialog.contains(active))) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
-      event.preventDefault();
-      first.focus();
-    }
-  }
-
-  function open() {
-    lastFocused = document.activeElement;
-    overlay.hidden = false;
-    document.addEventListener("keydown", handleKeydown);
-    // Cancel, not confirm: the safe option should be the one under the
-    // cursor when a destructive dialog appears.
-    cancelBtn.focus();
-  }
-
-  function close() {
-    overlay.hidden = true;
-    document.removeEventListener("keydown", handleKeydown);
-    if (lastFocused?.isConnected) {
-      lastFocused.focus();
-    }
-    lastFocused = null;
-  }
-
   confirmBtn.addEventListener("click", () => {
-    close();
-    onConfirm();
+    dialog.close("confirm");
   });
-  cancelBtn.addEventListener("click", close);
-  overlay.addEventListener("click", (event) => {
-    if (event.target === overlay) {
-      close();
+  cancelBtn.addEventListener("click", () => {
+    dialog.close("cancel");
+  });
+
+  // One place to act on the outcome, so dismissing with Escape and
+  // dismissing with the button cannot diverge.
+  dialog.addEventListener("close", () => {
+    if (dialog.returnValue === "confirm") {
+      onConfirm();
     }
   });
 
-  return { open, close };
+  // Clicking the backdrop is a click on the dialog element itself, since
+  // the box's own children cover everything inside it.
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) {
+      dialog.close("cancel");
+    }
+  });
+
+  return {
+    open() {
+      dialog.returnValue = "";
+      dialog.showModal();
+      cancelBtn.focus();
+    },
+    close() {
+      dialog.close("cancel");
+    },
+  };
 }

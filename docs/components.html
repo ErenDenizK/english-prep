@@ -13,11 +13,20 @@
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+<header class="shell__header">
+  <div class="shell__header-inner">
+    <h1 class="shell__brand t-en">English Prep</h1>
+    <button class="btn btn--secondary btn--icon" aria-label="Profilini aç" data-icon="user"></button>
+  </div>
+</header>
 <main class="shell__scroll">
 <div class="page stack--loose stack">
 
   <div class="stack stack--tight">
     <p class="t-label">Yüzeyler</p>
+    <!-- surface-0 is the page's own ground, so its swatch is invisible
+         here on purpose: that is what "depth is surface lightness" costs
+         and what the whole ramp is budgeted against. -->
     <div class="cluster">
       <div style="width:88px;height:56px;background:var(--c-surface-0);border-radius:var(--r-1)"></div>
       <div style="width:88px;height:56px;background:var(--c-surface-1);border-radius:var(--r-1)"></div>
@@ -43,7 +52,19 @@
       <button class="btn btn--primary">Devam</button>
       <button class="btn btn--secondary">Atla</button>
       <button class="btn btn--quiet">Dersler</button>
+      <button class="btn btn--secondary btn--icon" aria-label="Profilini aç" data-icon="user"></button>
+      <button class="btn btn--quiet btn--icon" aria-label="Kapat" data-icon="close"></button>
     </div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">İkonlar</p>
+    <div class="cluster" id="icons"></div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Boşluk</p>
+    <p class="t-lead t-en" lang="en">She <span class="blank"><span class="visually-hidden">boşluk</span></span> here since 2018.</p>
   </div>
 
   <div class="stack stack--tight">
@@ -66,15 +87,10 @@
 
   <div class="stack stack--tight">
     <p class="t-label">Seçenekler ve geri bildirim</p>
-    <div class="bleed">
-      <button class="option"><span class="option__key">1</span>changed<span class="option__mark">✕</span></button>
-      <button class="option option--ok"><span class="option__key">2</span>has changed<span class="option__mark">✓</span></button>
-      <button class="option"><span class="option__key">3</span>was changing</button>
-      <div class="feedback feedback--no bleed">
-        <p class="feedback__verdict">Doğru değil — doğru cevap: <span class="t-en">has changed</span></p>
-        <p class="feedback__body">“since + geçmiş bir nokta” hâlâ açık bir aralık kurar, ve açık aralık Present Perfect ister.</p>
-      </div>
-    </div>
+    <!-- Built by the app's own modules, below, rather than copied here.
+         Hand-copied markup on a component sheet drifts from the real thing
+         within one refactor, and then the sheet is worse than nothing. -->
+    <div class="bleed" id="answers"></div>
   </div>
 
   <div class="stack stack--tight">
@@ -93,9 +109,44 @@
 
 </div>
 </main>
+<div class="shell__bar">
+  <div class="shell__bar-inner">
+    <button class="btn btn--secondary">Geri</button>
+    <button class="btn btn--primary">İleri</button>
+  </div>
+</div>
 <nav class="nav">
-  <a class="nav__item" href="#" aria-current="page">Eğitim</a>
-  <a class="nav__item" href="#">Test</a>
+  <a class="nav__item" href="#" aria-current="page"><span data-icon="book-fill"></span><span>Eğitim</span></a>
+  <a class="nav__item" href="#"><span data-icon="check-square"></span><span>Test</span></a>
 </nav>
+<script type="module">
+  // Icons come from js/icons.js rather than being pasted in, so this page
+  // cannot quietly show a set the app no longer draws.
+  import { icon, ICON_NAMES } from "../js/icons.js";
+  import { renderOptions } from "../js/answers.js";
+  import { renderAnswerFeedback } from "../js/feedback.js";
+
+  const question = {
+    prompt: "The policy ____ twice since the term began.",
+    options: ["changed", "has changed", "was changing", "had changed"],
+    correctAnswer: "has changed",
+    explanation:
+      "\u201csince + geçmişte bir nokta\u201d hâlâ açık bir aralık kurar, ve açık aralık Present Perfect ister.",
+    tip: "since / for + açık aralık → Present Perfect.",
+  };
+  const answers = document.getElementById("answers");
+  answers.append(
+    renderOptions(question, { selected: "changed", answered: true }),
+    renderAnswerFeedback(question, false)
+  );
+
+  for (const host of document.querySelectorAll("[data-icon]")) {
+    host.appendChild(icon(host.dataset.icon, { size: host.closest(".nav") ? 24 : 20 }));
+  }
+  const shelf = document.getElementById("icons");
+  for (const name of ICON_NAMES) {
+    shelf.appendChild(icon(name));
+  }
+</script>
 </body>
 </html>

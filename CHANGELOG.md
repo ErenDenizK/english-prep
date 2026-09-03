@@ -5,6 +5,103 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.12 — 2026-09-03
+
+The redesign, stages 1 and 2 of `docs/redesign-plan.md`. The owner's
+verdict on `v0.11` was that the architecture was right and the interface
+wasn't — specifically the boxes-inside-boxes and the article reader. This
+build replaces the entire visual layer and rebuilds every screen on top of
+it. No content changed; the 72 questions, the taxonomy and the lesson
+files are untouched.
+
+### A design system, rather than a stylesheet
+
+- **`docs/design-system.md`** is now the binding specification: colour,
+  type, space, radius, motion, icons, a twelve-primitive component
+  inventory, and an accessibility contract, each value traced to why it is
+  that value. `css/style.css` was rebuilt from it — **881 lines from 1354,
+  twelve primitives from 45 ad-hoc component roots**, in five cascade
+  layers so nothing in the file ever needs a specificity fight.
+- **The palette is solved, not picked.** Every token is derived from a
+  contrast requirement in two models — WCAG 2 for conformance, APCA for
+  the design, because WCAG 2 overestimates contrast on dark grounds by
+  200–250%. `npm run color` re-measures all of them and fails if one
+  drifts; it runs in CI.
+- **Three rules generate most of the file**: depth is surface lightness,
+  never a border or a shadow; at most one card level; one accent, one job.
+  `css/style.css` now declares a border in exactly three places, none of
+  them decoration — the text field, where 1.4.11 requires a 3:1 boundary
+  no fill in this ramp can provide, and two rules under
+  `forced-colors: active`, where backgrounds are discarded and an outline
+  is all that is left.
+- **Fonts are self-hosted** as three subset woff2 faces with
+  metric-matched fallbacks, so the swap when they arrive shifts nothing.
+  Source Serif 4's semibold was dropped rather than trimming the character
+  set: English takes its hierarchy from size and from the face, never from
+  weight, and the budget came in at **46.9 KB** with Turkish coverage
+  intact. The last Google Fonts request is gone.
+- **Fourteen hand-drawn icons** in `js/icons.js`, built to a written
+  contract — 24 canvas, 20 live area, 2px absolute stroke, round joins,
+  every coordinate inside 2…22. The two nav destinations have filled
+  variants that are the *same drawing* inverted, so the selected state
+  survives greyscale and forced-colors rather than relying on hue.
+
+### Every screen rebuilt, and re-argued
+
+- **Eğitim is now the app's home.** Someone opening a study app wants to
+  carry on, not to be handed an exam. Its index leads with your overall
+  progress, then the lesson you were in the middle of, then the list.
+- **The mixed test moved to the Test tab**, where it is the point of the
+  screen rather than 60% of the first view of a different one.
+- **A weak spot does different things on different screens** — on Test it
+  starts practice scoped to that category, in Profil it opens the lesson
+  that teaches it. That is what let every row keep a single action; the
+  old build had rows carrying a link *and* a button.
+- **The results breakdown is ranked worst-first.** In question order it is
+  a table; in this order it is a reading list.
+- **Lists are scannable again.** A row's secondary line is one line,
+  clipped — the old index put a whole intro sentence under every title and
+  gave each row a different height.
+- **The action bar is part of the shell** and has a fixed minimum height,
+  so answering a question cannot move the button you are already reaching
+  for. Before an answer it shows what is needed rather than a disabled
+  button.
+
+### Accessibility, deliberately rather than incidentally
+
+- **The bottom nav is a `<nav>` landmark with `aria-current`**, not a
+  `role="tablist"` — a tablist makes the whole bar one tab stop, implies
+  panels in the same document, and fights a hash router.
+- **The confirmation dialog is a native `<dialog>`.** That deleted the
+  hand-rolled focus trap and got, for free, the thing it never had:
+  everything outside the dialog is `inert`.
+- **The listbox is a full select-only combobox** — focus stays on the
+  trigger, `aria-activedescendant` tracks the active option, and Down/Up,
+  Enter, Escape, Home/End and type-ahead all work.
+- **A hash route is treated as a navigation**: `document.title` changes,
+  focus moves to the new view, and the view is announced in the one
+  persistent live region. The browser Back button gets the same treatment.
+- **The cloze blank is a rule on the baseline**, with the word supplied to
+  the synthesiser instead of five underscores read out one at a time.
+- **Answer feedback announces the English form wrapped in `lang="en"`** so
+  the synthesiser switches voice, and never takes focus.
+
+### Verification is now a command
+
+`npm run verify` (`tools/verify-ui.mjs`) drives the real app in Chromium
+through one full learner journey — Eğitim, a lesson, a check, the Test
+tab, a whole quiz, results, Profil — at 320 / 390 / 768 / 1280, auditing
+every screen it lands on for horizontal overflow, touch targets under
+44px and console errors, then running the accessibility contract once.
+**149 checks.** This is not extra diligence: WCAG conformance is defined
+per page *and per responsive variation*, so the sweep is the requirement.
+Playwright stays out of `package.json` — the project still has zero
+dependencies — and the script finds a global install instead.
+
+It earned its keep immediately, catching a 48px icon button that a flex
+parent squeezed to 23px at 320 and nowhere else, and nav items that flew
+to opposite corners of a desktop window.
+
 ## v0.11 — 2026-09-03
 
 Two lines of work that had run in parallel are merged here: the content
