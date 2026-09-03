@@ -1,0 +1,182 @@
+[
+  {
+    "id": "closest-meaning-t1",
+    "type": "restatement",
+    "category": "Third Conditional vs Mixed Conditional",
+    "sentence": "If the council had ordered the steel in March, the bridge would have reopened before the summer festival.",
+    "options": [
+      "If the bridge had reopened before the festival, the council would have ordered the steel in March.",
+      "The steel was not ordered in March, and the bridge did not reopen before the summer festival.",
+      "The council ordered the steel in March, so the bridge reopened before the summer festival.",
+      "The bridge will reopen before the festival if the council orders the steel in March."
+    ],
+    "correctIndex": 1,
+    "explanation": "Üçüncü tip koşul gerçekleşmemiş bir geçmişi anlatır: çelik mart ayında sipariş edilmedi, bu yüzden köprü de festivalden önce açılmadı; sonuç geçmişte kalır. \"The council ordered the steel in March, so the bridge reopened before the summer festival.\" seçeneği koşulu olmuş bir olay gibi aktarıp cümlenin anlamını tersine çevirir. Kalan seçeneklerden biri sebeple sonucun yerini değiştirir, diğeri olmamış bir geçmişi açık bir geleceğe taşır.",
+    "tip": "Üçüncü tip koşulda anlatılan şey olmamıştır; doğru yeniden ifade genellikle hem koşulun hem sonucun kutbunu tersine çevirir."
+  },
+  {
+    "id": "closest-meaning-t2",
+    "type": "restatement",
+    "category": "Third Conditional vs Mixed Conditional",
+    "sentence": "If Deniz had trained through the winter, she would be climbing the mountain pass with the leaders today.",
+    "options": [
+      "Deniz did not train through the winter, so she is not with the leaders on the climb today.",
+      "Deniz did not train through the winter, so she rode behind the leaders on the pass last year.",
+      "Deniz trained hard through the winter and is climbing the pass with the leaders today.",
+      "Deniz might have trained through the winter, but she is not with the leaders on the climb today."
+    ],
+    "correctIndex": 0,
+    "explanation": "Koşul geçmişte (had trained), sonuç bugünde (would be climbing ... today): bu bir karışık tip koşuldur. Kışın çalışılmadı ve sonucu bugün görülüyor. \"Deniz did not train through the winter, so she rode behind the leaders on the pass last year.\" seçeneği koşulu doğru okur ama sonucu geçmişe taşır; cümle geçen yılın yarışından değil, bugünkü tırmanıştan söz ediyor. 'Might have trained' diyen seçenek de kesin bir olumsuzluğu ihtimale çevirir.",
+    "tip": "Koşul 'had + V3', sonuç 'would + V1' ise sonuç bugüne aittir; sonucu geçmişe çeken bir yeniden ifade bu yüzden yanlış olur."
+  },
+  {
+    "id": "closest-meaning-t3",
+    "type": "restatement",
+    "category": "Third Conditional vs Mixed Conditional",
+    "sentence": "Had the sky cleared an hour earlier, the astronomer would have photographed the comet before it dropped below the horizon.",
+    "options": [
+      "The sky cleared an hour earlier, so the astronomer was able to photograph the comet before it set.",
+      "Had the sky cleared an hour earlier, the astronomer would be photographing the comet now.",
+      "The sky did not clear in time, so the astronomer got no photograph of the comet.",
+      "The sky stayed cloudy until the comet had set, so no photograph of it exists anywhere."
+    ],
+    "correctIndex": 2,
+    "explanation": "Devrik kuruluş 'Had the sky cleared...' tam olarak 'If the sky had cleared...' demektir: gökyüzü zamanında açılmadı, fotoğraf da çekilemedi ve iş geçmişte kapandı. \"Had the sky cleared an hour earlier, the astronomer would be photographing the comet now.\" seçeneği devrik yapıyı korur ama sonucu bugüne taşır; oysa kuyruklu yıldız çoktan ufkun altına inmiştir. Koşulu olmuş sayan seçenek de 'would have'i 'will'in geçmişi sanmaktan doğar.",
+    "tip": "'Had + özne + V3' ile başlayan cümle 'if ... had + V3' ile aynıdır; sonucu 'would have + V3' ise geçmişte kapanmıştır."
+  },
+  {
+    "id": "closest-meaning-t4",
+    "type": "restatement",
+    "category": "Third Conditional vs Mixed Conditional",
+    "sentence": "The ferry did not sail on Tuesday because of the storm, so the delegation missed the opening ceremony.",
+    "options": [
+      "If the delegation had not missed the ceremony, the ferry would have sailed on Tuesday.",
+      "If the storm had not stopped the ferry, the delegation would be at the ceremony now.",
+      "The storm stopped every sailing that week, so the delegation had no chance of reaching the ceremony.",
+      "If the storm had not stopped the ferry on Tuesday, the delegation would have reached the ceremony."
+    ],
+    "correctIndex": 3,
+    "explanation": "Gerçek bir geçmiş koşul cümlesine çevriliyor: sebep fırtına, sonuç töreni kaçırmak. \"If the delegation had not missed the ceremony, the ferry would have sailed on Tuesday.\" seçeneği sebeple sonucun yerini değiştiriyor — törene yetişmek vapuru kaldırmaz. Sonucu 'would be ... now' ile bugüne taşıyan seçenek de yanlıştır, çünkü tören geçmişte kapandı; bütün seferlerin iptal edildiğini söyleyen seçenek ise cümlede olmayan bir bilgi ekler.",
+    "tip": "Bir geçmiş olayı koşula çevirirken sebep 'if' cümlesinde, sonuç 'would have' cümlesinde kalır; ikisi yer değiştirirse anlam ters döner."
+  },
+  {
+    "id": "closest-meaning-t5",
+    "type": "restatement",
+    "category": "Unless vs If Not vs Otherwise",
+    "sentence": "The tenants must repair the damage to the kitchen floor before they leave; otherwise the landlord will keep their deposit.",
+    "options": [
+      "The landlord will keep the deposit, so the tenants do not need to repair the kitchen floor.",
+      "The tenants will not get their deposit back unless they repair the kitchen floor before they leave.",
+      "The landlord kept the deposit because the tenants had left the kitchen floor damaged.",
+      "The landlord will keep part of the deposit even after the tenants repair the kitchen floor."
+    ],
+    "correctIndex": 1,
+    "explanation": "'Otherwise' koşul yerine getirilmezse ne olacağını söyler; cümle 'unless' ile kurulunca ana cümlenin kutbu da değişir: onarım yapılmazsa depozito geri alınamaz. \"The landlord will keep the deposit, so the tenants do not need to repair the kitchen floor.\" seçeneği 'otherwise'ı koşula bağlıyor ve sonucu gerekçeye çeviriyor. Onarımdan sonra bile bir kesinti yapılacağını söyleyen seçenek ise cümlenin vermediği bir bilgi ekler.",
+    "tip": "'X; otherwise Y' cümlesini 'unless' ile kurarken koşul olduğu gibi kalır, sonucun kutbu ise tersine döner."
+  },
+  {
+    "id": "closest-meaning-t6",
+    "type": "restatement",
+    "category": "Unless vs If Not vs Otherwise",
+    "sentence": "Work on the tram line will not continue past June if the council does not settle the compensation claims.",
+    "options": [
+      "The tram works must stop at the end of June; otherwise the council will not settle the compensation claims.",
+      "Unless the council settles every compensation claim in June, the tram line will be cancelled for good.",
+      "The council must settle the compensation claims; otherwise the tram works will stop at the end of June.",
+      "Work on the tram line stopped in June because the council had not settled the compensation claims."
+    ],
+    "correctIndex": 2,
+    "explanation": "'If ... does not' kuruluşu 'must ...; otherwise ...' ile aynı şeyi söyler: tazminatlar ödenmezse haziran sonunda çalışma duracak. \"The tram works must stop at the end of June; otherwise the council will not settle the compensation claims.\" seçeneği iki yanı ters bağlıyor; koşul tazminatların ödenmesi, sonuç ise işin durmasıdır. Her talebin ödenmesini şart koşup hattın büsbütün iptalinden söz eden seçenek de cümlenin söylemediğini söyler.",
+    "tip": "'If X does not happen, Y' cümlesi 'X must happen; otherwise Y' olur: koşul bir zorunluluğa döner, sonuç 'otherwise'ın ardında kalır."
+  },
+  {
+    "id": "closest-meaning-t7",
+    "type": "restatement",
+    "category": "Unless vs If Not vs Otherwise",
+    "sentence": "Unless the paperwork is stamped at the border, the shipment will not be released from the depot.",
+    "options": [
+      "The shipment will stay in the depot if the paperwork is not stamped at the border.",
+      "If the paperwork is stamped at the border, the shipment will not be released from the depot.",
+      "The shipment might be released from the depot even if the paperwork is not stamped.",
+      "The paperwork has not been stamped, and the depot is refusing to release the shipment."
+    ],
+    "correctIndex": 0,
+    "explanation": "'Unless' zaten bir olumsuzluk taşır, ana cümledeki 'not' ise yerinde kalır: mühür yoksa sevkiyat çıkmaz. \"If the paperwork is stamped at the border, the shipment will not be released from the depot.\" seçeneği koşuldaki olumsuzluğu sessizce silmiş; oysa evrak mühürlenirse sevkiyatın önü açılır. Sevkiyatın mühürsüz de çıkabileceğini söyleyen seçenek ise kesin bir engeli ihtimale çeviriyor.",
+    "tip": "İki olumsuz birbirini götürmez: 'unless' çevrilirken hem koşuldaki hem ana cümledeki olumsuzluk yerinde kalmalıdır."
+  },
+  {
+    "id": "closest-meaning-t8",
+    "type": "restatement",
+    "category": "Unless vs If Not vs Otherwise",
+    "sentence": "The bakery will open its second shop in October if the bank does not delay the loan again.",
+    "options": [
+      "The bank has delayed the loan once already, so the bakery has abandoned its plan for a second shop.",
+      "Unless the bank delays the loan again, the bakery will not open its second shop in October.",
+      "The bakery will open its second shop in October whatever the bank decides about the loan.",
+      "Unless the bank delays the loan again, the bakery will open its second shop in October."
+    ],
+    "correctIndex": 3,
+    "explanation": "'If ... does not' ile 'unless' birbirinin yerine geçer: banka krediyi yine geciktirmezse dükkân ekimde açılır. \"Unless the bank delays the loan again, the bakery will not open its second shop in October.\" seçeneği 'unless' dönüşümünü yapıp ana cümleye ikinci bir olumsuzluk daha ekliyor ve anlamı tersine çeviriyor. Açılışı krediden bağımsız gösteren seçenek de cümledeki koşulu atıyor.",
+    "tip": "'... if X does not ...' cümlesi 'unless X ...' olur; olumsuzluk koşula taşınır, ana cümleye yeni bir 'not' eklenmez."
+  },
+  {
+    "id": "closest-meaning-t9",
+    "type": "restatement",
+    "category": "Despite vs Although vs However",
+    "sentence": "Despite the enthusiasm of its first reviewers, the translated novel sold fewer than three hundred copies.",
+    "options": [
+      "The first reviewers were enthusiastic about the translated novel, but it sold very few copies.",
+      "Although the translated novel sold well, its first reviewers were not enthusiastic about it.",
+      "Although its first reviewers were enthusiastic, the translated novel is unlikely to sell three hundred copies.",
+      "The first reviewers praised the translated novel so warmly that its sales surprised the publisher."
+    ],
+    "correctIndex": 0,
+    "explanation": "'Despite + isim öbeği' beklentiye aykırı olan yanı işaret eder: övgüye rağmen satış düşük kaldı. \"Although the translated novel sold well, its first reviewers were not enthusiastic about it.\" seçeneği iki yanı takas ediyor; hem satışı yüksek, hem eleştirmenleri soğuk göstererek cümlenin tam tersini söylüyor. Gerçekleşmiş bir satışı geleceğe dair bir tahmine çeviren seçenek de yanlıştır.",
+    "tip": "'Despite X, Y' cümlesinde asıl bilgi Y'dir, X ise ona rağmen olan yandır; yeniden ifade ederken bu ikisinin yeri değişmemelidir."
+  },
+  {
+    "id": "closest-meaning-t10",
+    "type": "restatement",
+    "category": "Despite vs Although vs However",
+    "sentence": "The museum has cleaned and re-hung the painting; however, it has not confirmed who actually painted it.",
+    "options": [
+      "The museum will confirm who painted the picture once the cleaning and re-hanging are finished.",
+      "The museum has confirmed who painted the picture, although it has not yet cleaned or re-hung it.",
+      "Although the museum has cleaned and re-hung the painting, it still has not named the artist.",
+      "The museum cleaned and re-hung the painting even though it knows the attribution is false."
+    ],
+    "correctIndex": 2,
+    "explanation": "'However' iki bilgiyi karşıtlık içinde bağlar; 'although' ile kurulan seçenek aynı karşıtlığı korur: tablo temizlendi, ressam ise hâlâ doğrulanmadı. \"The museum will confirm who painted the picture once the cleaning and re-hanging are finished.\" seçeneği bitmiş bir işi geleceğe ait bir söze çeviriyor, üstelik cümlede böyle bir vaat yok. Doğrulananla temizleneni takas eden seçenek ise iki yanı yer değiştiriyor.",
+    "tip": "'X; however, Y' ile 'Although X, Y' aynı karşıtlığı kurar; değişmemesi gereken şey hangi bilginin ana bilgi olduğudur."
+  },
+  {
+    "id": "closest-meaning-t11",
+    "type": "restatement",
+    "category": "Despite vs Although vs However",
+    "sentence": "Although no volunteer reported serious side effects, the sponsor may have halted the trial for financial reasons.",
+    "options": [
+      "No volunteer reported serious side effects, so the sponsor stopped the trial in order to save money.",
+      "Despite the absence of any reported serious side effects, the trial may have been stopped for financial reasons.",
+      "Although the sponsor had financial difficulties, the trial was halted because volunteers reported side effects.",
+      "The vaccine was completely safe, and the trial was stopped purely to protect the sponsor's profits."
+    ],
+    "correctIndex": 1,
+    "explanation": "Cümle iki şey söyler: ciddi yan etki bildirilmedi ve durdurmanın mali nedenli olması bir ihtimaldir. Doğru seçenek 'although' yapısını 'despite + isim öbeği' ile kurar ve bu ihtimali olduğu gibi taşır. \"No volunteer reported serious side effects, so the sponsor stopped the trial in order to save money.\" seçeneği ise 'may have halted' ihtimalini kesin bir gerekçeye çeviriyor; cümle durdurmanın sebebini kesin olarak vermez.",
+    "tip": "Özgün cümledeki 'may / might' belirsizliğini koruyan seçenek aranır; ihtimali kesinliğe çeviren bir yeniden ifade fazla söylemiş olur."
+  },
+  {
+    "id": "closest-meaning-t12",
+    "type": "restatement",
+    "category": "Despite vs Although vs However",
+    "sentence": "Despite losing power for twenty minutes, the stadium finished the match without sending any spectators home.",
+    "options": [
+      "The stadium's back-up generators worked so well that the crowd never noticed the power cut.",
+      "Because the stadium lost power for twenty minutes, the spectators were sent home before the end.",
+      "If the stadium loses power again, the match will be abandoned and the spectators sent home.",
+      "The stadium lost power for twenty minutes, but the match was completed and nobody went home early."
+    ],
+    "correctIndex": 3,
+    "explanation": "'Despite + -ing' bir engeli tanır, onu sebep yapmaz: elektrik kesildi, buna rağmen maç tamamlandı. \"Because the stadium lost power for twenty minutes, the spectators were sent home before the end.\" seçeneği tavizi sebebe çevirip sonucu da tersine döndürüyor. Jeneratörlerden söz eden seçenek ise cümlede hiç geçmeyen bir açıklama ekliyor: dünyada doğru olabilir, ama cümlenin söylediği bu değildir.",
+    "tip": "'Despite / in spite of' bir engeli kabul eder ama onu gerekçeye dönüştürmez; 'because' ile kurulan bir yeniden ifade karşıtlığı yok eder."
+  }
+]
