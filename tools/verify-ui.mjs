@@ -328,6 +328,52 @@ async function runEveryLesson(page) {
 }
 
 /**
+ * "Önce kendin düşün": the setting that hides the options until the
+ * learner has committed to an answer. Checked end to end because it
+ * changes the quiz's control flow, and a setting that silently stops
+ * working is worse than one that was never offered.
+ */
+async function runThinkFirst(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+
+  await page.goto(`${BASE}/index.html#profil`, { waitUntil: "networkidle" });
+  await page.waitForSelector('[role="switch"]');
+  const toggle = page.locator('[role="switch"]').first();
+  ok((await toggle.getAttribute("aria-checked")) === "false", "ayar varsayılan olarak kapalı");
+  await toggle.click();
+  ok((await toggle.getAttribute("aria-checked")) === "true", "ayar açılabiliyor");
+
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .btn--primary");
+  await page.locator("#test-panel .btn--primary").click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".t-lead");
+
+  ok((await page.locator(".option").count()) === 0, "şıklar başta gizli");
+  ok(
+    (await page.locator("#quiz-bar").textContent()).includes("Cevabı düşün"),
+    "bar ne yapılacağını söylüyor"
+  );
+  await auditLayout(page, "şıklar gizliyken", 390);
+
+  await page.locator("button", { hasText: "Şıkları göster" }).click();
+  await page.waitForSelector(".option");
+  ok((await page.locator(".option").count()) === 4, "şıklar istendiğinde geliyor");
+
+  await page.locator(".option").first().click();
+  await page.waitForSelector(".feedback");
+  await page.locator("#quiz-bar button").click();
+  await page.waitForTimeout(150);
+  ok(
+    (await page.locator(".option").count()) === 0,
+    "sonraki soruda yeniden gizleniyor"
+  );
+
+  await context.close();
+}
+
+/**
  * A learner's whole history moving from one browser to another. This is
  * the only operation in the app that can destroy something they cannot get
  * back, so it is checked end to end in two real browser contexts rather
@@ -547,6 +593,9 @@ try {
     await runFlow(page, viewport);
     await context.close();
   }
+
+  console.log("\n=== önce kendin düşün ===");
+  await runThinkFirst(browser);
 
   console.log("\n=== yedekleme ve geri yükleme ===");
   await runBackupRoundTrip(browser);

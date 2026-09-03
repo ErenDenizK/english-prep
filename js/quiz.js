@@ -10,7 +10,8 @@
 import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
 import { getQuizRequest, setQuizResult } from "./session-state.js";
-import { getItemStats } from "./storage.js";
+import { getItemStats, getSetting } from "./storage.js";
+import { SETTINGS } from "./config.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderOptions } from "./answers.js";
 import { el, clear, appendBlanked } from "./dom.js";
@@ -25,6 +26,14 @@ const state = {
   selectedAnswers: [],
   currentIndex: 0,
   answered: false,
+  /**
+   * "Önce kendin düşün": with the options hidden, answering is retrieval
+   * rather than recognition — the learner has to produce the form before
+   * they can see whether it is on the list. It is a setting rather than
+   * the default because it makes every question slower, and someone
+   * revising the night before is entitled to choose speed.
+   */
+  optionsHidden: false,
 };
 
 function showMessage(text, { withHomeLink = true } = {}) {
@@ -81,6 +90,7 @@ function advance() {
   }
   state.currentIndex += 1;
   state.answered = false;
+  state.optionsHidden = getSetting(SETTINGS.THINK_FIRST);
   renderQuestion();
   scrollToTop();
 }
@@ -126,13 +136,27 @@ function renderQuestion() {
   appendBlanked(prompt, question.prompt);
   block.appendChild(prompt);
 
-  block.appendChild(
-    renderOptions(question, {
-      selected,
-      answered: state.answered,
-      onSelect: (option) => handleOptionSelected(question, option),
-    })
-  );
+  if (state.optionsHidden) {
+    const reveal = el("button", "btn btn--secondary", "Şıkları göster");
+    reveal.type = "button";
+    reveal.addEventListener("click", () => {
+      state.optionsHidden = false;
+      announce("Şıklar göründü.");
+      renderQuestion();
+      // The learner asked for the options, so put them under the thumb
+      // rather than making them look for what just appeared.
+      document.querySelector(".option")?.focus({ preventScroll: true });
+    });
+    block.appendChild(reveal);
+  } else {
+    block.appendChild(
+      renderOptions(question, {
+        selected,
+        answered: state.answered,
+        onSelect: (option) => handleOptionSelected(question, option),
+      })
+    );
+  }
 
   const feedback = state.answered
     ? block.appendChild(renderAnswerFeedback(question, isCorrectAnswer(question, selected)))
@@ -159,7 +183,9 @@ function renderQuestion() {
   } else {
     // Not a disabled button: a disabled control is exempt from the
     // contrast rules, drops out of the tab order, and explains nothing.
-    actionBar.hint("Bir seçenek seç");
+    actionBar.hint(
+      state.optionsHidden ? "Cevabı düşün, sonra şıklara bak" : "Bir seçenek seç"
+    );
   }
 }
 
@@ -175,6 +201,12 @@ function handleKeydown(event) {
   }
 
   if (!state.answered) {
+    // With the options hidden there is nothing for a number key to mean,
+    // and guessing "3" before seeing the list is exactly what the setting
+    // exists to prevent.
+    if (state.optionsHidden) {
+      return;
+    }
     const choice = Number(event.key);
     if (Number.isInteger(choice) && choice >= 1 && choice <= 4) {
       event.preventDefault();
@@ -218,6 +250,7 @@ async function init() {
 
     state.session = session;
     state.selectedAnswers = new Array(session.length).fill(null);
+    state.optionsHidden = getSetting(SETTINGS.THINK_FIRST);
     document.addEventListener("keydown", handleKeydown);
     renderQuestion();
   } catch (error) {
