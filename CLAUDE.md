@@ -39,8 +39,9 @@ in their own browser's `localStorage`.
 
 ```bash
 npm run validate    # content schema + manifest/topic-file consistency
+npm run color       # every colour token re-measured (WCAG 2 + APCA)
 npm test            # unit tests (node:test) for quiz-engine and storage
-npm run check       # both
+npm run check       # all three
 npm run serve       # static server on :8000 (fetch() needs an HTTP origin)
 ```
 
@@ -84,6 +85,21 @@ tools/                Content validator
 tests/                Unit tests
 docs/                 Content schema, content/dev notes, agent briefs
 ```
+
+## Design
+
+`docs/design-system.md` is the binding specification — tokens, type scale,
+spacing, icon contract, component inventory, the accessibility contract and
+the mobile-web constraints, each with its reasoning. Read it before
+touching `css/style.css`.
+
+Three rules generate most of the rest: depth comes from surface lightness
+rather than borders or shadows; at most one card level and nothing framed
+inside a framed thing; one accent doing one job. Colour values are not
+chosen by eye — they are solved against a contrast requirement and verified
+by `npm run color`, which is in CI.
+
+`docs/redesign-plan.md` tracks the staged rebuild against that spec.
 
 ## Conventions
 
