@@ -5,6 +5,48 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.17 — 2026-09-04
+
+**Yanlış defteri.** The mode the practice-modes research ranked first on
+value per unit of work and called *"the mode I would ship if I could only
+ship one"*. It needed no new content and no new data: the app has
+recorded which questions you got wrong, in every attempt, since the
+beginning — so every learner's book already has its contents.
+
+The graduation rule is the design, and it is deliberately strict. An item
+enters the moment you get it wrong and leaves only after **two correct
+answers on two separate days**. Answering again ten seconds after reading
+the explanation proves the explanation was on screen; a second one the
+next day is the first evidence of anything durable. Get it wrong again
+and the count starts over.
+
+The empty state is not a congratulation. An empty book in a 73-question
+app means you have cleared your mistakes, not that you know the
+questions, and the card says exactly that. Before you have taken a test
+the card does not appear at all.
+
+**The mixed test now says why it is the better mode**, not the faster
+one. Interleaving is the practice format with the cleanest classroom
+trial behind it, and the reason belongs to the learner: when the topic is
+not announced, choosing the rule becomes part of the question, exactly as
+it is on the paper. That one line was the difference between a shuffle
+and a method.
+
+**Taxonomy.** Three category names did not contain a form that was the
+keyed answer of one of their own questions, and one question sat in the
+wrong category. All four fixed, with the owner's decision, accepting that
+progress for those lessons starts over. `tenses-t25` is new, written to
+fill a hole the review had recorded: nothing in the corpus keyed `gone`.
+
+**Restatement items** — the exam's "closest meaning", fifteen of Session
+I's sixty points — now have a schema, a validator branch, a shared prompt
+component and an option row that aligns to its first line, because four
+whole sentences at 320px wrap to four lines and a vertically centred "2"
+floats beside nothing. The content for it is written and reviewed but
+**held**: see `docs/agents/drafts/closest-meaning/`.
+
+89 unit tests, 455 verification checks.
+
 ## v0.16 — 2026-09-03
 
 **Every wrong answer now tells you why what you chose was wrong.**

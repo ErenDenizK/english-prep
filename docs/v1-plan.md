@@ -171,6 +171,17 @@ manifest already contained. Opening the app went from 328.8 KB and
    answer in your head first, then reveal. Zero content cost, and the
    highest value-per-line in the practice-modes arm.
 
+## Blocked on the owner
+
+- **Bilkent's sample papers.** The link given is a Google Drive folder,
+  and this environment's egress proxy blocks `drive.google.com`. Upload
+  the PDFs into the session the way the YTÜ papers were supplied and they
+  can be read directly. Until then `docs/exam-spec.md` describes one
+  exam, not two, and every "what the paper rewards" claim in this plan is
+  about YTÜ only.
+
+---
+
 ## Decisions the owner has made
 
 - **Taxonomy: fix now.** All four category problems corrected 2026-09-03,
