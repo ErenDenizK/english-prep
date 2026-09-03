@@ -470,3 +470,257 @@ options per attempt, so position carries no information to the learner.
 Checking `correctIndex` distribution would be a real psychometric practice
 applied to a system where it cannot matter — the definition of theatre. It
 goes in the refusals.
+
+---
+
+## 3 · Review architecture
+
+### 3.1 What serious item banks do, and what survives the translation
+
+**Reported**, from exam-board and licensure documentation:
+
+- **Items are reviewed by several people in different roles, not by one
+  person once.** The standard set is another content expert, an editor, a
+  bias/fairness reviewer, and a psychometrician; the review results are
+  themselves recorded as validity documentation.
+- **Content review has a fixed agenda**: the single best answer, the
+  accuracy of each distractor, clarity of wording, fit between stem and
+  options, and *test-wise clues* — hints inside the item as to which
+  options are right or wrong.
+- **Every item carries a supporting reference.** NBME items are prepared
+  with a citation to a current textbook, journal or site. The claim the
+  item makes is traceable to something outside the item.
+- **Items are pretested before they count.** Cambridge runs pretests
+  through ~30,000 candidates a year, and holds a *pretest review meeting*
+  that considers the item statistics **and** candidate and teacher
+  feedback together.
+- **Item writers edit as a team**, led by a chair and a subject officer —
+  not alone, and not by the writer's own judgement.
+
+Three of those five transfer, one transfers in a mutated form, and one
+does not transfer at all.
+
+| Practice | Here |
+| --- | --- |
+| Multiple reviewers in distinct roles | **Transfers.** The roles become agent briefs. Distinctness is what buys the coverage, not headcount. |
+| Fixed content-review agenda | **Transfers, and is the cheapest win.** It is a checklist; §3.3. |
+| A supporting reference per item | **Transfers, mutated.** There is no textbook to cite. The equivalent is the **category spec** (§4.1): the item cites the specific rule and the specific misconception it is built on. |
+| Team editing under a chair | **Transfers as the supervisor.** He is the chair, the subject officer and the fairness reviewer, and his time is the budget. |
+| Pretesting with candidate statistics | **Does not transfer.** §2.1. What survives is the *feedback* half of the pretest review meeting: §2.2's think-aloud and report channel. |
+
+The last row is worth dwelling on. Cambridge's pretest meeting looks at
+statistics *and* candidate feedback. This project gets the second half and
+none of the first, so the second half has to carry more weight than it
+does anywhere else — which is the argument for taking §2.2 seriously
+rather than treating it as a nicety.
+
+### 3.2 The gate: solve it blind, then solve it stripped
+
+This is the part I would build first, and it replaces "the supervisor
+reads the items" as the primary control.
+
+**Pass A — blind solve.** A reviewing session receives, for each item,
+only: the stem (and passage, where the type has one) and the four options,
+in a shuffled order. It receives **no** key, explanation, tip, category
+name, or authoring brief. It returns, per item:
+
+```
+id            the item id
+answer        the option it chose, as text
+confidence    high | medium | low
+verdict       clean | ambiguous | not_well_posed | gold_incorrect
+why           one sentence
+```
+
+Then the same pass runs again with the option order reversed. Three
+outcomes matter:
+
+- **Disagreement with the key** → `gold_incorrect` candidate. Supervisor
+  reads it. This is the `modals-t17` detector.
+- **`ambiguous`, or two runs disagreeing with each other** → the item has
+  more than one defensible answer, or the reviewer is order-sensitive on
+  it, which for a four-option grammar item means the options are too close
+  to call. Either way the supervisor reads it.
+- **Agreement with the key at high confidence** → weak positive evidence,
+  and *only* weak. A capable model answering a B2 grammar item correctly
+  is not news. The value of Pass A is entirely in its failures.
+
+**Pass B — context-stripped solve.** The passage-blind baseline from §1.3,
+adapted per type. The item is presented with the evidence that is supposed
+to decide it removed:
+
+| Type | What is removed |
+| --- | --- |
+| Grammar cloze | Every sentence except the clause containing the blank |
+| Vocabulary | Same |
+| Restatement | Nothing to strip — instead, give only the four options and ask which is the odd one out; a set where the key is identifiable without the stem is broken |
+| Paragraph completion | The paragraph. Only the four candidate sentences remain |
+| Reading | The passage. Only the question and options remain |
+| Cloze passage | Every sentence except the one holding the blank |
+
+**An item answered correctly with the deciding evidence removed is a
+failed item**, and the failure is precisely "tests the surface cue rather
+than the construct". This is the check the learning-design arm's §7.2
+needs and did not have: run it over the four existing *Present Perfect vs
+Past Simple* questions and it should fail all four, which is both a
+validation of the check and a to-do list.
+
+Two honest caveats. A strong model will sometimes answer a *good* item
+from the stripped context by guessing well — so Pass B produces
+candidates, not verdicts, and the threshold should be "correct at high
+confidence", not merely correct. And running Pass B on reading items
+requires the model not to have the passage in context from Pass A, i.e. a
+separate session.
+
+**This pair is the answer to the question in the brief's title.** It is
+mechanical, it runs unattended, it produces a short list, and the
+supervisor's scarce attention goes to the short list rather than to
+everything.
+
+### 3.3 The reviewer's brief, and the sentences it must contain
+
+A third brief in `docs/agents/`, alongside the curriculum and question
+authors: **`item-reviewer.md`**. Its shape follows the existing two, and
+these are the sentences it cannot be written without.
+
+**On what it is given:** *"You are given the items and the category spec.
+You are not given the answer key, the explanations, or anything the author
+wrote about their own items — if you find yourself reasoning about what
+the author intended, stop, because you have been given something you
+should not have."*
+
+**On the standard:** *"You are not judging whether the item is good. You
+are trying to break it. An item survives review by resisting an attempt to
+answer it a different way, not by looking reasonable."*
+
+**On distractors, the half nobody reads:** *"For every wrong option, name
+the specific misconception that would lead a learner to choose it, and the
+specific reason it is wrong here. If you cannot do both for an option, say
+so — that option is doing no work and the item is effectively three
+options wide."*
+
+**On ambiguity, which is the expensive defect:** *"An item where a second
+option is defensible under any reading a B2 learner could reasonably have
+is `ambiguous`, even if the keyed option is better. 'Less natural' is not
+'wrong'."*
+
+**On the construct:** *"State, in one clause, what a learner must know to
+answer this item that they would not need to know to answer it if the
+context were removed. If the honest answer is 'nothing', the item tests a
+keyword."*
+
+**On its own limits:** *"Do not rate difficulty. Do not rate quality on a
+scale. Both are things you are measurably bad at; return the four verdicts
+and the evidence, and let a person weigh it."*
+
+And the agenda, taken from the exam boards' content review and cut to what
+applies here — the review is a checklist, per item, each answered with a
+quotation from the item rather than a judgement:
+
+1. Is there exactly one defensible answer?
+2. Does each distractor correspond to a nameable misconception?
+3. Is any distractor ungrammatical or impossible, and therefore free?
+4. Is the item decidable from its context, and only from its context?
+5. Does the stem contain a clue — a grammatical agreement that fits only
+   one option, a word repeated in the key, a length or specificity cue?
+6. Does the item assume knowledge a Turkish B2 learner would not have
+   (a cultural reference, a name, an institution, a unit, a holiday)?
+7. Is the register and length within the spec's band?
+8. Does the item test the category it is filed under?
+
+Item 6 deserves a note. The published bias/fairness review exists to catch
+content that disadvantages a subgroup. Here the "subgroup" is the whole
+audience: an item resting on American campus life, imperial units, a
+first-name-only convention, or a cultural assumption is not offensive, it
+is simply harder for the wrong reason. The exam's own passages are
+academic and international; the items should be too.
+
+### 3.4 Resolving disagreement
+
+The systematic-review world has solved this shape of problem and its
+answer is boring and correct: **two independent screeners, conflicts to a
+third adjudicator, and the agreement rate is itself reported.**
+(**Reported**; the literature also records that dual screening finds
+eligible studies a single screener misses, and that inter-rater kappa
+across reviewers is often mediocre — 0.49 in one study of 34 reviewers —
+which is the point: reviewers disagree, so build for it.)
+
+Translated:
+
+- **Reviewer 1** is the blind-solve pass (§3.2). It is mechanical and it
+  never sees the author's reasoning.
+- **Reviewer 2** is the rubric pass (§3.3). It sees the full item
+  including key and explanation, because half the agenda is about the
+  explanation.
+- **Conflicts** — anything either pass flags — go to the supervisor, who
+  adjudicates. He is the third reviewer and the only one whose verdict is
+  final.
+- **Agreement is recorded per batch**: how many items each pass flagged,
+  how many both flagged, how many the supervisor upheld. Three numbers per
+  batch, one line in the log, and they are the only evidence you will ever
+  have about whether the review is working. §4.4.
+
+If Reviewer 2 flags nothing across three batches while the supervisor
+keeps finding defects, Reviewer 2 is decoration and its brief needs
+rewriting. You cannot notice that without the three numbers.
+
+### 3.5 Where the supervisor's attention goes
+
+The budget is one person with a job and an exam. Spend it in this order,
+and note that the first item is *before* he reads anything.
+
+**1 · Take the batch as a test.** Fifteen items, no key visible, ten
+minutes, on the phone. Record the answers. This is the anti-automation-bias
+intervention and it is derived directly from §1.6: reading an item with
+its answer and a persuasive Turkish explanation attached is a task in
+which the defect is undetectable, and *answering* it is a task in which
+the defect surfaces as hesitation. Every item where he hesitated, guessed,
+or answered without reading the context goes on the list regardless of
+whether he got it right.
+
+Second-order benefit, and it is not small: this is retrieval practice for
+the person who has to sit the exam, on material he is going to have to
+read anyway. The review cost is partly repaid as study.
+
+**2 · Read the flag list.** The union of: his own hesitations, Pass A's
+non-`clean` verdicts, Pass B's stripped-context successes, and Reviewer
+2's rubric failures. On a well-behaved batch of 15 this should be four to
+seven items. If it is fifteen, the batch is not ready and the right move
+is to reject it wholesale rather than repair it item by item — repairing a
+bad batch is slower than regenerating against a fixed spec.
+
+**3 · Read every Turkish explanation once, fast.** Fifteen short
+paragraphs. He is the only person who can, and a fluent-but-wrong Turkish
+explanation is a defect the whole rest of the pipeline is blind to.
+
+**4 · Read nothing else.** Specifically: not the distractor rationales for
+items that passed, not the reviewer's prose for `clean` items. That is
+what the pass is for, and re-reading it is how a two-hour review becomes a
+five-hour one and then stops happening.
+
+### 3.6 Is the reviewer actually working? Salt the batch.
+
+A review pass has the same problem as the content: it drifts, and nothing
+tells you. The fix is cheap and this repository already owns the
+materials.
+
+`docs/education-notes.md` records real, human-found defects in shipped
+items: `modals-t17` (two defensible answers), `tenses-t20` (effectively
+two options wide), `passive-voice-t15` (an option no learner would
+consider), `passive-voice-t23` (every option grammatical; keyed on taste),
+`passive-voice-t20` (tests a structure no lesson taught). Freeze those
+five, plus five items the supervisor has personally verified as sound,
+into `docs/agents/calibration-items.json` — **not** under `data/`, because
+they are tooling, not content.
+
+Then: **every review batch is salted with two or three of them**, ids
+rewritten so they are not recognisable. The reviewer must flag the known
+bad ones and pass the known good ones. If it misses a known bad item, its
+verdict on the rest of the batch is worth nothing and the batch is
+re-reviewed with a repaired brief.
+
+This is the closest thing to a unit test a probabilistic reviewer can
+have. It costs one file and a few lines of assembly per batch, it never
+expires, and it grows for free — every defect the supervisor finds by hand
+gets added to the calibration set, so the review gets harder to fool over
+time rather than easier.
