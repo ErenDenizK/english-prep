@@ -12,6 +12,7 @@
     "format:check": "node tools/format-content.mjs --check",
     "check": "npm run format:check && npm run validate && npm run color && npm test",
     "serve": "python3 -m http.server 8000",
-    "verify": "node tools/verify-ui.mjs"
+    "verify": "node tools/verify-ui.mjs",
+    "icons": "node tools/make-icons.mjs"
   }
 }

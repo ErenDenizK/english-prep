@@ -7,7 +7,27 @@
   <meta name="description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#13100d" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <!-- iOS ignores the manifest's icons for Add to Home Screen and wants
+       this one. Without it the home-screen icon is a screenshot of the
+       page, which is what it was. -->
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <!-- This app is distributed by pasting a URL into a group chat, so the
+       preview card is the first thing every one of its users will ever see
+       of it. It was blank. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="English Prep" />
+  <meta property="og:locale" content="tr_TR" />
+  <meta property="og:title" content="English Prep" />
+  <meta property="og:description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
+  <meta property="og:url" content="https://erendenizk.github.io/english-prep/" />
+  <meta property="og:image" content="https://erendenizk.github.io/english-prep/icons/social-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="English Prep — üniversite İngilizce yeterlik sınavı için ders ve test." />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/source-sans-3-400.woff2" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/source-serif-4-400.woff2" />
   <link rel="stylesheet" href="css/fonts.css" />

@@ -45,6 +45,7 @@ npm test            # unit tests (node:test) for quiz-engine and storage
 npm run check       # all four (format as a --check)
 npm run serve       # static server on :8000 (fetch() needs an HTTP origin)
 npm run verify      # drives the real app in Chromium — needs `serve` running
+npm run icons       # redraws the app icons and the link-preview card
 ```
 
 `check` runs in CI on every push and PR to `main` and `test`. `verify`
@@ -90,6 +91,8 @@ js/
   modal.js            Confirmation on a native <dialog>
   config.js           Cross-screen constants
   tiers.js            Difficulty tier ids and Turkish labels
+manifest.webmanifest  Name, icons, colours for an installed app
+icons/                Generated — run `npm run icons`, never hand-edit
 css/style.css         Single stylesheet, in cascade layers
 css/fonts.css         The three subset faces + metric-matched fallbacks
 fonts/                Self-hosted woff2 subsets
@@ -97,10 +100,11 @@ data/manifest.json    Topic index
 data/<topic>/         One JSON file per topic: its lessons and questions
 tools/
   validate-content.mjs  Content schema + cross-file consistency
-  format-content.mjs    Canonical formatting for the content JSON
+  format-content.mjs    Canonical formatting + the manifest's lesson index
   palette.mjs           Re-measures every colour token (WCAG 2 + APCA)
   color.mjs             Zero-dependency OKLCH / contrast maths
   verify-ui.mjs         Drives the real app in Chromium at four widths
+  make-icons.mjs        Draws icons/ from the design tokens and js/icons.js
 tests/                Unit tests
 docs/                 Design system, content schema, dev notes, agent briefs
 docs/components.html  Every primitive on one page, against the real CSS
