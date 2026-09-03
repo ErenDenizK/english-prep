@@ -39,6 +39,20 @@ export async function startTopicTest(topicId, count = TOPIC_TEST_DEFAULT_COUNT) 
 }
 
 /**
+ * Practice for a single grammar category, across every topic that uses
+ * it. Reached from a weak spot in Profil, so the whole point is that the
+ * learner lands on exactly the thing they keep getting wrong.
+ * @param {string} category
+ * @param {number} [count]
+ */
+export async function startCategoryPractice(category, count = TOPIC_TEST_DEFAULT_COUNT) {
+  const manifest = await loadManifest();
+  const topics = manifest.topics.filter((topic) => !topic.comingSoon);
+  topics.forEach(markSeen);
+  go({ mode: "category", topicIds: topics.map((topic) => topic.id), category, count });
+}
+
+/**
  * @param {number|"all"} count
  */
 export async function startMixedTest(count) {

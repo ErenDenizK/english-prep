@@ -15,27 +15,23 @@
 <body>
   <header class="site-header" id="site-header">
     <div class="site-header__inner">
-      <div>
-        <h1>English Prep Practice</h1>
-        <p>Üniversite İngilizce hazırlık sınavı için pratik</p>
-      </div>
+      <h1 id="site-title">English Prep</h1>
+      <button class="profile-trigger" type="button" id="profile-trigger" aria-label="Profilini aç" aria-controls="view-profil">
+        <span id="profile-trigger-initial" aria-hidden="true">?</span>
+      </button>
     </div>
   </header>
 
-  <nav class="tab-bar" id="tab-bar" role="tablist" aria-label="Bölümler">
-    <button class="tab-bar__tab" type="button" role="tab" id="tab-egitim" data-view="egitim" aria-selected="false" aria-controls="view-egitim" tabindex="-1">
-      Eğitim
-    </button>
-    <button class="tab-bar__tab" type="button" role="tab" id="tab-test" data-view="test" aria-selected="true" aria-controls="view-test" tabindex="0">
-      Test
-    </button>
-    <button class="tab-bar__tab" type="button" role="tab" id="tab-profil" data-view="profil" aria-selected="false" aria-controls="view-profil" tabindex="-1">
-      Profil
-    </button>
-  </nav>
-
   <main class="app-content" id="app-content">
     <div class="page">
+      <div class="dev-note" id="dev-note" hidden>
+        <p>
+          <strong>Geliştirme aşamasındayız</strong> — henüz v1 değil. Eğitim
+          ve Test kullanıma hazır; yeni konular ekleniyor.
+        </p>
+        <button type="button" id="dev-note-dismiss" aria-label="Notu kapat">×</button>
+      </div>
+
       <section id="view-egitim" class="view" role="tabpanel" aria-labelledby="tab-egitim" tabindex="0" hidden>
         <div id="lesson-index">
           <p class="empty-state">Dersler yükleniyor&hellip;</p>
@@ -67,7 +63,9 @@
         </section>
       </section>
 
-      <section id="view-profil" class="view" role="tabpanel" aria-labelledby="tab-profil" tabindex="0" hidden>
+      <!-- Profil is identity and settings, not a content mode, so it opens
+           from the header rather than sitting in the bottom nav. -->
+      <section id="view-profil" class="view" aria-label="Profil" tabindex="0" hidden>
         <div id="profile-container">
           <p class="empty-state">Profil yükleniyor&hellip;</p>
         </div>
@@ -75,8 +73,30 @@
     </div>
   </main>
 
+  <nav class="bottom-nav" id="bottom-nav" role="tablist" aria-label="Bölümler">
+    <button class="bottom-nav__tab" type="button" role="tab" id="tab-egitim" data-view="egitim" aria-selected="false" aria-controls="view-egitim" tabindex="-1">
+      <span class="bottom-nav__icon-wrap">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 6.2c-1.5-1.1-3.4-1.7-5.8-1.7v13.3c2.4 0 4.3.6 5.8 1.7 1.5-1.1 3.4-1.7 5.8-1.7V4.5c-2.4 0-4.3.6-5.8 1.7z" />
+          <path d="M12 6.2v13.3" />
+        </svg>
+      </span>
+      Eğitim
+    </button>
+    <button class="bottom-nav__tab" type="button" role="tab" id="tab-test" data-view="test" aria-selected="true" aria-controls="view-test" tabindex="0">
+      <span class="bottom-nav__icon-wrap">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="4" width="14" height="17" rx="2" />
+          <path d="M9 3.3h6v2.2H9z" fill="currentColor" stroke="none" />
+          <path d="M8.5 12.5l2.2 2.2L15.5 10" />
+        </svg>
+      </span>
+      Test
+    </button>
+  </nav>
+
   <!-- Used only by the Eğitim lesson reader, which runs as a focused mode
-       with the header and tab bar hidden — same shape as the quiz screen. -->
+       with the header and bottom nav hidden — same shape as the quiz. -->
   <div id="lesson-bottom-bar" class="bottom-bar" hidden>
     <div class="bottom-bar__inner"></div>
   </div>

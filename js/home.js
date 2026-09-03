@@ -1,12 +1,25 @@
-// Home screen and the app's router. The three tabs are addressed by URL
-// hash (`#egitim`, `#test`, `#profil`, plus `#egitim/<lessonId>` for an
-// open lesson) rather than by in-memory state, which buys three things
-// for free: the device/browser back button steps back through the app
-// instead of leaving it, a lesson can be linked to, and reloading keeps
-// you where you were.
+// Home screen and the app's router.
+//
+// Eğitim and Test are the two content modes and live in the bottom nav —
+// within thumb reach, and visually distinct rather than two mirror-image
+// tabs sharing a bar. Profil is identity and settings, not a mode, so it
+// opens from the header instead of sitting alongside them.
+//
+// Every screen is addressed by URL hash (`#egitim`, `#test`, `#profil`,
+// plus `#egitim/<lessonId>` for an open lesson) rather than by in-memory
+// state, which buys three things for free: the device back button steps
+// back through the app instead of leaving it, a lesson can be linked to,
+// and reloading keeps you where you were.
 
 import { loadManifest } from "./topics.js";
-import { getLastTopicScore, getWeakTopics, getSeenVersion } from "./storage.js";
+import {
+  getLastTopicScore,
+  getWeakTopics,
+  getSeenVersion,
+  getProfileName,
+  isDevNoteDismissed,
+  dismissDevNote,
+} from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createDropdown } from "./dropdown.js";
 import { showLessonIndex, openLesson, closeReader } from "./education.js";
@@ -20,7 +33,10 @@ const DEFAULT_VIEW = "test";
 
 const topicsContainer = document.getElementById("topics-container");
 const startMixedBtn = document.getElementById("start-mixed-btn");
-const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
+const profileTrigger = document.getElementById("profile-trigger");
+const profileInitial = document.getElementById("profile-trigger-initial");
+const devNote = document.getElementById("dev-note");
+const tabs = Array.from(document.querySelectorAll(".bottom-nav__tab"));
 const views = Object.fromEntries(VIEW_IDS.map((id) => [id, document.getElementById(`view-${id}`)]));
 
 let mixedCountDropdown;
@@ -164,13 +180,42 @@ function parseRoute() {
 }
 
 function selectTab(view) {
-  for (const tab of tabs) {
+  const known = tabs.some((tab) => tab.dataset.view === view);
+  tabs.forEach((tab, index) => {
     const selected = tab.dataset.view === view;
     tab.setAttribute("aria-selected", String(selected));
-    // Roving tabindex: one stop for the whole tab list, arrow keys move
-    // within it (WAI-ARIA tabs pattern).
-    tab.tabIndex = selected ? 0 : -1;
+    // Roving tabindex: one stop for the whole nav, arrow keys move within
+    // it (WAI-ARIA tabs pattern). On Profil no tab is selected, so the
+    // first one keeps the tab stop rather than the nav becoming
+    // unreachable by keyboard.
+    tab.tabIndex = selected || (!known && index === 0) ? 0 : -1;
+  });
+  profileTrigger.setAttribute("aria-current", String(view === "profil"));
+}
+
+/**
+ * The header button stands in for the learner, so it shows their initial
+ * once they've set a name. Turkish casing matters here: "i" upper-cases
+ * to "İ", which `toUpperCase()` alone would get wrong.
+ */
+function refreshProfileTrigger() {
+  const name = getProfileName().trim();
+  profileInitial.textContent = name ? name[0].toLocaleUpperCase("tr") : "?";
+  profileTrigger.setAttribute(
+    "aria-label",
+    name ? `Profilini aç (${name})` : "Profilini aç"
+  );
+}
+
+function initDevNote() {
+  if (isDevNoteDismissed()) {
+    return;
   }
+  devNote.hidden = false;
+  document.getElementById("dev-note-dismiss").addEventListener("click", () => {
+    devNote.hidden = true;
+    dismissDevNote();
+  });
 }
 
 async function applyRoute() {
@@ -235,6 +280,13 @@ function init() {
     tab.addEventListener("click", () => navigate(tab.dataset.view));
     tab.addEventListener("keydown", handleTabKeydown);
   }
+
+  profileTrigger.addEventListener("click", () => navigate("profil"));
+  // Profil owns the name field; the header shows it. A DOM event keeps
+  // that one-way rather than making the two modules import each other.
+  document.addEventListener("profile:namechange", refreshProfileTrigger);
+  refreshProfileTrigger();
+  initDevNote();
 
   mixedCountDropdown = createDropdown({
     container: document.getElementById("mixed-count-dropdown"),

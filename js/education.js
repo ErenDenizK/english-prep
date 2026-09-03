@@ -1,19 +1,21 @@
-// Eğitim tab — a staged, interactive lesson experience rather than a
-// slideshow. Two screens:
+// Eğitim tab — a staged, interactive walk through the syllabus. Two
+// screens:
 //
-//   Index   every lesson in syllabus order, each with its own progress,
-//           an overall progress bar, and a "resume where you left off"
-//           card. Grouped under topic headings once more than one topic
-//           has lessons.
-//   Reader  a focused mode (app header and tab bar step out of the way,
-//           same as the quiz screen) that pages through one lesson's
-//           steps — prose, comparison tables, and inline check questions
-//           — then hands the learner on to the next lesson or to a test
-//           on the same topic.
+//   Index   every lesson across every topic, grouped by topic and
+//           skimmable: tap any row to jump straight into it, with an
+//           overall progress bar and a "pick up where you left off" card.
+//           Deliberately not a locked linear path — this is a study tool,
+//           and someone who wants one specific rule should not have to
+//           walk through five chapters to reach it.
+//   Reader  a focused mode (the header and bottom nav step out of the
+//           way, as the quiz screen does) that pages through one lesson
+//           a step at a time.
 //
-// Which of the two is showing is driven by the URL hash and routed by
-// js/home.js, so the device back button leaves a lesson rather than the
-// app.
+// A lesson is authored as an article — intro, form, meaning, usage,
+// examples, common mistakes, recap (see docs/CONTENT_GUIDE.md). This
+// module turns those sections into the reader's steps and slots in check
+// questions drawn from the same category's Test pool. So the content side
+// writes prose, not screens, and the app decides how it is paced.
 
 import { loadManifest, loadLessonsForTopics } from "./topics.js";
 import {
@@ -23,11 +25,14 @@ import {
   markLessonDone,
   countCompletedLessons,
 } from "./storage.js";
+import { shuffle } from "./quiz-engine.js";
+import { renderAnswerFeedback } from "./feedback.js";
 import { startTopicTest } from "./quiz-launch.js";
 import { el, clear, appendProse, appendBlanked } from "./dom.js";
+import { CHECKS_PER_LESSON } from "./config.js";
 
 const siteHeader = document.getElementById("site-header");
-const tabBar = document.getElementById("tab-bar");
+const bottomNav = document.getElementById("bottom-nav");
 const appContent = document.getElementById("app-content");
 const indexContainer = document.getElementById("lesson-index");
 const readerContainer = document.getElementById("lesson-reader");
@@ -35,11 +40,11 @@ const bottomBar = document.getElementById("lesson-bottom-bar");
 const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
 
 const state = {
-  /** @type {Array<object>|null} flat, syllabus-ordered, topic-tagged */
+  /** @type {Array<object>|null} */
   lessons: null,
   /** @type {Promise<Array<object>>|null} */
   loading: null,
-  /** @type {{lessonIndex: number, stepIndex: number, answers: Map<number, number>}|null} */
+  /** @type {{lessonIndex: number, stepIndex: number, steps: Array<object>, answers: Map<number, string>}|null} */
   reader: null,
 };
 
@@ -54,7 +59,7 @@ function loadLessons() {
       return lessons;
     })
     .catch((error) => {
-      // Clear the in-flight promise so leaving the tab and coming back
+      // Drop the in-flight promise so leaving the tab and coming back
       // actually retries instead of replaying the same failure forever.
       state.loading = null;
       throw error;
@@ -69,6 +74,61 @@ function ensureLessons() {
   return state.loading;
 }
 
+/* ---- Turning an authored article into reader steps ---- */
+
+/**
+ * `meaning` and `usage` are merged into one step on purpose: separately
+ * they are two short prose pages in a row, which makes paging feel like
+ * clicking through nothing. Checks land after the examples and after the
+ * common-mistakes step — the two points where the learner has just been
+ * given something worth trying.
+ */
+function buildSteps(lesson) {
+  const steps = [];
+  const checks = shuffle(lesson.checkPool ?? []).slice(0, CHECKS_PER_LESSON);
+  let nextCheck = 0;
+
+  const addCheck = () => {
+    if (nextCheck < checks.length) {
+      steps.push({ kind: "check", heading: "Kontrol", question: checks[nextCheck] });
+      nextCheck += 1;
+    }
+  };
+
+  if (lesson.intro) {
+    steps.push({ kind: "prose", heading: "Giriş", body: lesson.intro });
+  }
+  if (lesson.form) {
+    steps.push({ kind: "form", heading: "Yapı", body: lesson.form });
+  }
+
+  const explanation = [lesson.meaning, lesson.usage].filter(Boolean).join("\n\n");
+  if (explanation) {
+    steps.push({ kind: "prose", heading: "Anlam ve kullanım", body: explanation });
+  }
+
+  if (lesson.examples?.length) {
+    steps.push({ kind: "examples", heading: "Örnekler", examples: lesson.examples });
+    addCheck();
+  }
+  if (lesson.commonMistakes?.length) {
+    steps.push({ kind: "mistakes", heading: "Sık yapılan hatalar", mistakes: lesson.commonMistakes });
+    addCheck();
+  }
+  if (lesson.recap) {
+    steps.push({ kind: "prose", heading: "Özet", body: lesson.recap });
+  }
+
+  return steps;
+}
+
+/** First sentence of the intro — a one-line preview for the index. */
+function previewOf(lesson) {
+  const source = lesson.intro ?? lesson.recap ?? "";
+  const [first] = source.split(/(?<=[.!?])\s+/);
+  return first ?? "";
+}
+
 /* ---- Shared chrome ---- */
 
 function setBottomBarActions(actions) {
@@ -76,11 +136,7 @@ function setBottomBarActions(actions) {
   for (const action of actions) {
     const button = el("button", `btn${action.variant ? ` btn--${action.variant}` : ""}`, action.label);
     button.type = "button";
-    if (action.disabled) {
-      button.disabled = true;
-    } else {
-      button.addEventListener("click", action.onClick);
-    }
+    button.addEventListener("click", action.onClick);
     bottomBarInner.appendChild(button);
   }
   bottomBar.hidden = actions.length === 0;
@@ -91,10 +147,6 @@ function hideBottomBar() {
   clear(bottomBarInner);
 }
 
-function scrollToTop() {
-  appContent.scrollTo({ top: 0 });
-}
-
 function progressTrack(ratio) {
   const track = el("div", "progress-track");
   const fill = el("div", "progress-track__fill");
@@ -103,28 +155,21 @@ function progressTrack(ratio) {
   return track;
 }
 
-function renderLoadError(container) {
-  clear(container);
-  container.appendChild(el("p", "empty-state", "Dersler yüklenemedi. Sayfayı yenile."));
-}
-
 /* ---- Index screen ---- */
 
-function statusOf(lesson, progress) {
+function statusOf(lesson, progress, stepCount) {
   const entry = progress[lesson.id];
   if (entry?.done) {
     return { kind: "done", label: "Tamamlandı" };
   }
   if (entry) {
-    return { kind: "started", label: `Adım ${Math.min(entry.step + 1, lesson.steps.length)} / ${lesson.steps.length}` };
+    return { kind: "started", label: `Adım ${Math.min(entry.step + 1, stepCount)} / ${stepCount}` };
   }
-  return { kind: "new", label: `${lesson.steps.length} adım` };
+  return { kind: "new", label: `${stepCount} adım` };
 }
 
-function renderOverview(lessons, progress) {
-  const completed = countCompletedLessons(lessons.map((lesson) => lesson.id));
+function renderOverview(lessons, completed) {
   const panel = el("section", "panel");
-
   panel.appendChild(
     el("p", "lesson-overview__count", `${lessons.length} dersten ${completed} tanesi tamamlandı`)
   );
@@ -133,19 +178,21 @@ function renderOverview(lessons, progress) {
     el(
       "p",
       "lesson-overview__hint",
-      "Konuları sırayla oku, her dersin sonunda kendini kontrol et. İlerlemen bu cihazda saklanır."
+      "İstediğin dersten başlayabilirsin; sıra zorunlu değil. İlerlemen bu cihazda saklanır."
     )
   );
-
   return panel;
 }
 
-function renderResumeCard(lesson, entry) {
+function renderResumeCard(lesson, entry, stepCount) {
   const panel = el("section", "panel panel--accent");
   panel.appendChild(el("p", "lesson-card__eyebrow", "Kaldığın yer"));
-  panel.appendChild(el("h3", "lesson-resume__title", lesson.title));
+
+  const title = el("h3", "lesson-resume__title", lesson.category);
+  title.lang = "en";
+  panel.appendChild(title);
   panel.appendChild(
-    el("p", "lesson-resume__meta", `Adım ${Math.min(entry.step + 1, lesson.steps.length)} / ${lesson.steps.length}`)
+    el("p", "lesson-resume__meta", `${lesson.topicTitle} · Adım ${Math.min(entry.step + 1, stepCount)} / ${stepCount}`)
   );
 
   const button = el("button", "btn", "Devam Et");
@@ -164,13 +211,11 @@ function renderLessonRow(lesson, status) {
   row.appendChild(el("span", "lesson-row__order", String(lesson.order)));
 
   const main = el("span", "lesson-row__main");
-  const eyebrow = el("span", "lesson-row__category", lesson.category);
-  // English grammar term inside a lang="tr" page: without this, the CSS
-  // uppercase transform Turkish-cases it ("SİMPLE" instead of "SIMPLE").
-  eyebrow.lang = "en";
-  main.appendChild(eyebrow);
-  main.appendChild(el("span", "lesson-row__title", lesson.title));
-  main.appendChild(el("span", "lesson-row__summary", lesson.summary));
+  const title = el("span", "lesson-row__title", lesson.category);
+  // English grammar term inside a lang="tr" page.
+  title.lang = "en";
+  main.appendChild(title);
+  main.appendChild(el("span", "lesson-row__summary", previewOf(lesson)));
   row.appendChild(main);
 
   row.appendChild(el("span", `lesson-row__status lesson-row__status--${status.kind}`, status.label));
@@ -189,14 +234,20 @@ function renderIndex() {
   }
 
   const progress = getAllLessonProgress();
-  indexContainer.appendChild(renderOverview(lessons, progress));
+  const stepCounts = new Map(lessons.map((lesson) => [lesson.id, buildSteps(lesson).length]));
+
+  indexContainer.appendChild(
+    renderOverview(lessons, countCompletedLessons(lessons.map((lesson) => lesson.id)))
+  );
 
   const resumable = lessons.find((lesson) => {
     const entry = progress[lesson.id];
     return entry && !entry.done && entry.step > 0;
   });
   if (resumable) {
-    indexContainer.appendChild(renderResumeCard(resumable, progress[resumable.id]));
+    indexContainer.appendChild(
+      renderResumeCard(resumable, progress[resumable.id], stepCounts.get(resumable.id))
+    );
   }
 
   const topicIds = [...new Set(lessons.map((lesson) => lesson.topicId))];
@@ -204,22 +255,20 @@ function renderIndex() {
 
   for (const topicId of topicIds) {
     const inTopic = lessons.filter((lesson) => lesson.topicId === topicId);
-    // With a single topic the heading would just restate the tab — same
-    // reasoning as the home screen skipping its tier accordion.
     if (topicIds.length > 1) {
       const heading = el("h2", "lesson-list__topic", inTopic[0].topicTitle);
       heading.lang = "en";
       list.appendChild(heading);
     }
     for (const lesson of inTopic) {
-      list.appendChild(renderLessonRow(lesson, statusOf(lesson, progress)));
+      list.appendChild(renderLessonRow(lesson, statusOf(lesson, progress, stepCounts.get(lesson.id))));
     }
   }
 
   indexContainer.appendChild(list);
 }
 
-/* ---- Reader: steps ---- */
+/* ---- Reader: step bodies ---- */
 
 function renderExamples(examples) {
   const list = el("ul", "example-list");
@@ -234,67 +283,42 @@ function renderExamples(examples) {
   return list;
 }
 
-function renderTable(step) {
-  const scroller = el("div", "table-scroll");
-  const table = el("table", "compare-table");
+function renderMistakes(mistakes) {
+  const list = el("ul", "mistake-list");
+  for (const mistake of mistakes) {
+    const item = document.createElement("li");
 
-  const head = document.createElement("thead");
-  const headRow = document.createElement("tr");
-  for (const column of step.columns) {
-    headRow.appendChild(el("th", null, column));
+    const wrong = el("p", "mistake-list__line mistake-list__line--wrong");
+    wrong.appendChild(el("span", "mistake-list__mark", "✕"));
+    const wrongText = el("span", "mistake-list__sentence", mistake.wrong);
+    wrongText.lang = "en";
+    wrong.appendChild(wrongText);
+    item.appendChild(wrong);
+
+    const right = el("p", "mistake-list__line mistake-list__line--right");
+    right.appendChild(el("span", "mistake-list__mark", "✓"));
+    const rightText = el("span", "mistake-list__sentence", mistake.right);
+    rightText.lang = "en";
+    right.appendChild(rightText);
+    item.appendChild(right);
+
+    item.appendChild(el("p", "mistake-list__why", mistake.why));
+    list.appendChild(item);
   }
-  head.appendChild(headRow);
-  table.appendChild(head);
-
-  const body = document.createElement("tbody");
-  for (const row of step.rows) {
-    const tr = document.createElement("tr");
-    row.forEach((cell, index) => {
-      const td = el("td", null, cell);
-      // Read by CSS on narrow screens, where each row stacks into a card
-      // and every cell needs to carry its own column label.
-      td.dataset.label = step.columns[index];
-      tr.appendChild(td);
-    });
-    body.appendChild(tr);
-  }
-  table.appendChild(body);
-
-  scroller.appendChild(table);
-  return scroller;
+  return list;
 }
 
-function renderCheckFeedback(step, selectedIndex) {
-  const correct = selectedIndex === step.correctIndex;
-  const feedback = el("div", `feedback ${correct ? "feedback--correct" : "feedback--incorrect"}`);
-  // Announced to screen readers: the visual state change (green/red
-  // options) is otherwise invisible to anyone not looking at the screen.
-  feedback.setAttribute("role", "status");
-
-  feedback.appendChild(
-    el(
-      "strong",
-      null,
-      correct ? "Doğru!" : `Doğru değil — doğru cevap: "${step.options[step.correctIndex]}".`
-    )
-  );
-  feedback.appendChild(el("p", "feedback__explanation", step.explanation));
-
-  return feedback;
-}
-
-function renderCheckStep(step, stepIndex, card) {
-  card.appendChild(el("p", "lesson-step__kicker", "Kontrol"));
+function renderCheck(step, stepIndex, card) {
+  const question = step.question;
+  const answered = state.reader.answers.has(stepIndex);
+  const selected = state.reader.answers.get(stepIndex);
 
   const prompt = el("p", "question-card__prompt");
-  appendBlanked(prompt, step.prompt);
+  appendBlanked(prompt, question.prompt);
   card.appendChild(prompt);
 
   const optionsWrap = el("div", "options");
-  const answered = state.reader.answers.has(stepIndex);
-  const selectedIndex = state.reader.answers.get(stepIndex);
-
-  step.options.forEach((option, index) => {
+  question.options.forEach((option, index) => {
     const button = el("button", "option-btn");
     button.type = "button";
     button.appendChild(el("span", "option-btn__key", `${index + 1}.`));
@@ -302,48 +326,56 @@ function renderCheckStep(step, stepIndex, card) {
 
     if (answered) {
       button.disabled = true;
-      if (index === step.correctIndex) {
+      if (option === question.correctAnswer) {
         button.classList.add("option-btn--correct");
-      } else if (index === selectedIndex) {
+      } else if (option === selected) {
         button.classList.add("option-btn--incorrect");
       }
     } else {
       button.addEventListener("click", () => {
-        state.reader.answers.set(stepIndex, index);
+        state.reader.answers.set(stepIndex, option);
         renderStep();
       });
     }
-
     optionsWrap.appendChild(button);
   });
   card.appendChild(optionsWrap);
 
   if (answered) {
-    card.appendChild(renderCheckFeedback(step, selectedIndex));
+    // No tip here: the lesson has just spent several steps stating the rule.
+    card.appendChild(renderAnswerFeedback(question, selected === question.correctAnswer, { withTip: false }));
   }
 }
 
 function renderStepCard(step, stepIndex) {
   const card = el("div", "panel lesson-step");
 
-  if (step.type === "check") {
-    renderCheckStep(step, stepIndex, card);
+  if (step.kind === "check") {
+    card.appendChild(el("p", "lesson-step__kicker", step.heading));
+    renderCheck(step, stepIndex, card);
     return card;
   }
 
   card.appendChild(el("h3", "lesson-step__heading", step.heading));
 
-  if (step.type === "table") {
-    card.appendChild(renderTable(step));
-    return card;
-  }
-
-  const body = el("div", "lesson-step__body");
-  appendProse(body, step.body);
-  card.appendChild(body);
-
-  if (step.examples?.length) {
-    card.appendChild(renderExamples(step.examples));
+  switch (step.kind) {
+    case "form": {
+      const body = el("div", "lesson-step__body lesson-step__body--form");
+      appendProse(body, step.body);
+      card.appendChild(body);
+      break;
+    }
+    case "examples":
+      card.appendChild(renderExamples(step.examples));
+      break;
+    case "mistakes":
+      card.appendChild(renderMistakes(step.mistakes));
+      break;
+    default: {
+      const body = el("div", "lesson-step__body");
+      appendProse(body, step.body);
+      card.appendChild(body);
+    }
   }
 
   return card;
@@ -351,50 +383,48 @@ function renderStepCard(step, stepIndex) {
 
 /* ---- Reader: frame ---- */
 
-function currentLesson() {
-  return state.lessons[state.reader.lessonIndex];
-}
+const currentLesson = () => state.lessons[state.reader.lessonIndex];
 
-function renderReaderNav(lesson, trailingText) {
+function renderReaderNav(trailingText) {
   const nav = el("div", "quiz-nav");
-
   const back = el("button", "quiz-nav__exit", "← Dersler");
   back.type = "button";
   back.addEventListener("click", showIndexByHash);
   nav.appendChild(back);
-
   nav.appendChild(el("p", "quiz-progress", trailingText));
   return nav;
 }
 
 function renderLessonHeading(lesson) {
   const wrap = el("div", "lesson-reader__heading");
-  const eyebrow = el("p", "lesson-card__eyebrow", lesson.category);
+  const eyebrow = el("p", "lesson-card__eyebrow", lesson.topicTitle);
   eyebrow.lang = "en";
   wrap.appendChild(eyebrow);
-  wrap.appendChild(el("h2", "lesson-reader__title", lesson.title));
+  const title = el("h2", "lesson-reader__title", lesson.category);
+  title.lang = "en";
+  wrap.appendChild(title);
   return wrap;
 }
 
 function renderStep() {
   const lesson = currentLesson();
-  const { stepIndex } = state.reader;
-  const step = lesson.steps[stepIndex];
-  const isLastStep = stepIndex === lesson.steps.length - 1;
+  const { stepIndex, steps } = state.reader;
+  const step = steps[stepIndex];
+  const isLastStep = stepIndex === steps.length - 1;
 
   recordLessonStep(lesson.id, stepIndex);
 
   clear(readerContainer);
-  readerContainer.appendChild(renderReaderNav(lesson, `${stepIndex + 1} / ${lesson.steps.length}`));
-  readerContainer.appendChild(progressTrack((stepIndex + 1) / lesson.steps.length));
+  readerContainer.appendChild(renderReaderNav(`${stepIndex + 1} / ${steps.length}`));
+  readerContainer.appendChild(progressTrack((stepIndex + 1) / steps.length));
   readerContainer.appendChild(renderLessonHeading(lesson));
   readerContainer.appendChild(renderStepCard(step, stepIndex));
 
-  // A check step must actually be answered before moving on — that's the
-  // difference between a lesson and a slideshow. The disabled button says
-  // why it's disabled rather than leaving the learner guessing, and Geri
-  // stays live so nobody is ever stuck.
-  const awaitingAnswer = step.type === "check" && !state.reader.answers.has(stepIndex);
+  // A check is never a gate. Leaving it unanswered is a legitimate
+  // choice — someone re-reading a lesson for one rule shouldn't have to
+  // sit an exercise to get past it — so the forward control stays live
+  // and just says what it will do.
+  const skippingCheck = step.kind === "check" && !state.reader.answers.has(stepIndex);
 
   setBottomBarActions([
     {
@@ -410,8 +440,7 @@ function renderStep() {
       },
     },
     {
-      label: awaitingAnswer ? "Bir seçenek seç" : isLastStep ? "Dersi Bitir" : "İleri",
-      disabled: awaitingAnswer,
+      label: skippingCheck ? "Atla" : isLastStep ? "Dersi Bitir" : "İleri",
       onClick: () => {
         if (isLastStep) {
           renderCompletion();
@@ -423,49 +452,46 @@ function renderStep() {
     },
   ]);
 
-  scrollToTop();
+  appContent.scrollTo({ top: 0 });
 }
 
 function renderCompletion() {
   const lesson = currentLesson();
-  markLessonDone(lesson.id, lesson.steps.length - 1);
+  markLessonDone(lesson.id, state.reader.steps.length - 1);
 
   const nextLesson = state.lessons[state.reader.lessonIndex + 1] ?? null;
   const completed = countCompletedLessons(state.lessons.map((entry) => entry.id));
 
   clear(readerContainer);
-  readerContainer.appendChild(renderReaderNav(lesson, `${state.lessons.length} dersten ${completed}`));
+  readerContainer.appendChild(renderReaderNav(`${state.lessons.length} dersten ${completed}`));
 
   const panel = el("section", "panel lesson-complete");
   panel.appendChild(el("p", "lesson-card__eyebrow", "Ders tamamlandı"));
-  panel.appendChild(el("h2", "lesson-complete__title", lesson.title));
+  const title = el("h2", "lesson-complete__title", lesson.category);
+  title.lang = "en";
+  panel.appendChild(title);
   panel.appendChild(
     el(
       "p",
       "lesson-complete__body",
-      nextLesson
-        ? "Öğrendiklerini test etmek için bu konudan soru çözebilir ya da sıradaki derse geçebilirsin."
-        : "Bu konudaki dersleri bitirdin. Şimdi kendini test etmenin tam sırası."
+      "Öğrendiğini pekiştirmenin en hızlı yolu birkaç soru çözmek. Ya da sıradaki derse geç."
     )
   );
   panel.appendChild(progressTrack(completed / state.lessons.length));
   readerContainer.appendChild(panel);
 
-  const actions = [
+  setBottomBarActions([
     {
       label: "Bu Konudan Test Çöz",
       variant: "secondary",
       onClick: () => startTopicTest(lesson.topicId),
     },
-  ];
-  actions.push(
     nextLesson
       ? { label: "Sıradaki Ders", onClick: () => openLessonByHash(nextLesson.id) }
-      : { label: "Derslere Dön", onClick: showIndexByHash }
-  );
-  setBottomBarActions(actions);
+      : { label: "Derslere Dön", onClick: showIndexByHash },
+  ]);
 
-  scrollToTop();
+  appContent.scrollTo({ top: 0 });
 }
 
 /* ---- Keyboard shortcuts (reader only) ---- */
@@ -480,14 +506,12 @@ function handleKeydown(event) {
     return;
   }
 
-  const lesson = currentLesson();
-  const step = lesson.steps[state.reader.stepIndex];
-
-  if (step?.type === "check" && !state.reader.answers.has(state.reader.stepIndex)) {
+  const step = state.reader.steps[state.reader.stepIndex];
+  if (step?.kind === "check" && !state.reader.answers.has(state.reader.stepIndex)) {
     const choice = Number(event.key);
-    if (Number.isInteger(choice) && choice >= 1 && choice <= step.options.length) {
+    if (Number.isInteger(choice) && choice >= 1 && choice <= step.question.options.length) {
       event.preventDefault();
-      state.reader.answers.set(state.reader.stepIndex, choice - 1);
+      state.reader.answers.set(state.reader.stepIndex, step.question.options[choice - 1]);
       renderStep();
       return;
     }
@@ -498,11 +522,8 @@ function handleKeydown(event) {
     event.preventDefault();
     buttons[0]?.click();
   } else if (event.key === "ArrowRight" || event.key === "Enter") {
-    const primary = buttons[buttons.length - 1];
-    if (primary && !primary.disabled) {
-      event.preventDefault();
-      primary.click();
-    }
+    event.preventDefault();
+    buttons[buttons.length - 1]?.click();
   }
 }
 
@@ -520,12 +541,17 @@ function openLessonByHash(lessonId) {
 
 function setReaderChrome(active) {
   siteHeader.hidden = active;
-  tabBar.hidden = active;
+  bottomNav.hidden = active;
   indexContainer.hidden = active;
   readerContainer.hidden = !active;
+  // The dev note sits above the views rather than inside one, so it needs
+  // hiding too or it survives into the reader's focused mode. A class,
+  // not `hidden`: that attribute belongs to the dismissal logic in
+  // home.js, and two owners would fight over it.
+  document.body.classList.toggle("is-reading", active);
 }
 
-/** Leaves reader mode and restores the app header and tab bar. */
+/** Leaves reader mode and restores the app header and bottom nav. */
 export function closeReader() {
   state.reader = null;
   setReaderChrome(false);
@@ -539,14 +565,15 @@ export async function showLessonIndex() {
     renderIndex();
   } catch (error) {
     console.error(error);
-    renderLoadError(indexContainer);
+    clear(indexContainer);
+    indexContainer.appendChild(el("p", "empty-state", "Dersler yüklenemedi. Sayfayı yenile."));
   }
 }
 
 /**
- * @param {string} lessonId - from the URL hash, so it may be stale or
- *   hand-typed; an unknown id falls back to the index without leaving a
- *   dead entry in the history.
+ * @param {string} lessonId - comes from the URL hash, so it may be stale
+ *   or hand-typed; an unknown id falls back to the index without leaving
+ *   a dead entry in the history.
  */
 export async function openLesson(lessonId) {
   let lessons;
@@ -554,8 +581,7 @@ export async function openLesson(lessonId) {
     lessons = await ensureLessons();
   } catch (error) {
     console.error(error);
-    closeReader();
-    renderLoadError(indexContainer);
+    await showLessonIndex();
     return;
   }
 
@@ -566,11 +592,11 @@ export async function openLesson(lessonId) {
     return;
   }
 
-  const lesson = lessons[lessonIndex];
+  const steps = buildSteps(lessons[lessonIndex]);
   const entry = getLessonProgress(lessonId);
-  const resumeStep = entry && !entry.done ? Math.min(entry.step, lesson.steps.length - 1) : 0;
+  const resumeStep = entry && !entry.done ? Math.min(entry.step, steps.length - 1) : 0;
 
-  state.reader = { lessonIndex, stepIndex: resumeStep, answers: new Map() };
+  state.reader = { lessonIndex, stepIndex: resumeStep, steps, answers: new Map() };
   setReaderChrome(true);
   renderStep();
 }

@@ -1,6 +1,7 @@
 import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
 import { getQuizRequest, setQuizResult } from "./session-state.js";
+import { renderAnswerFeedback } from "./feedback.js";
 import { el, clear, appendBlanked } from "./dom.js";
 
 const container = document.getElementById("quiz-container");
@@ -58,23 +59,7 @@ function renderPrompt(promptText) {
 }
 
 function renderFeedback(question, correct) {
-  const feedback = el("div", `feedback ${correct ? "feedback--correct" : "feedback--incorrect"}`);
-  // The result is otherwise conveyed only by colour on the option
-  // buttons, which says nothing to a screen reader.
-  feedback.setAttribute("role", "status");
-
-  feedback.appendChild(
-    el("strong", null, correct ? "Doğru!" : `Yanlış — doğru cevap: "${question.correctAnswer}".`)
-  );
-  feedback.appendChild(el("p", "feedback__explanation", question.explanation));
-
-  if (question.tip) {
-    const tip = el("p", "feedback__tip");
-    tip.appendChild(el("strong", null, "Kural: "));
-    tip.appendChild(document.createTextNode(question.tip));
-    feedback.appendChild(tip);
-  }
-
+  const feedback = renderAnswerFeedback(question, correct);
   document.getElementById("question-card").appendChild(feedback);
   // The bottom bar is fixed, so answering doesn't move the next button —
   // but on a small screen the explanation can still land below the fold.
@@ -221,7 +206,10 @@ async function init() {
     const topics = manifest.topics.filter(
       (topic) => !topic.comingSoon && request.topicIds.includes(topic.id)
     );
-    const questions = await loadQuestionsForTopics(topics);
+    let questions = await loadQuestionsForTopics(topics);
+    if (request.category) {
+      questions = questions.filter((question) => question.category === request.category);
+    }
     const session = buildQuizSession(questions, request.count);
 
     if (session.length === 0) {

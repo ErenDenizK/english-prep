@@ -13,6 +13,7 @@ const HISTORY_KEY = "englishPrep.history";
 const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
 const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
+const DEV_NOTE_DISMISSED_KEY = "englishPrep.devNoteDismissed";
 const MIN_ATTEMPTS_FOR_WEAK_ENTRY = 3;
 
 /**
@@ -302,4 +303,27 @@ export function countCompletedLessons(lessonIds) {
 
 export function clearLessonProgress() {
   removeKey(LESSON_PROGRESS_KEY);
+}
+
+/* ---- "Still in development" note ----
+   Kept out of both the history and the profile: dismissing a one-off
+   notice is not progress, so resetting history must not bring it back. */
+
+/**
+ * @returns {boolean} whether the learner has dismissed the note
+ */
+export function isDevNoteDismissed() {
+  try {
+    return localStorage.getItem(DEV_NOTE_DISMISSED_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function dismissDevNote() {
+  try {
+    localStorage.setItem(DEV_NOTE_DISMISSED_KEY, "1");
+  } catch {
+    // Storage may be unavailable; the note just shows again next visit.
+  }
 }

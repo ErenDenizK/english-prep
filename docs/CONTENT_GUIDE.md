@@ -30,7 +30,8 @@ example `"Present Perfect vs Past Simple"`, not `"Tenses"`.
 
 One list of category names serves a whole topic. Both a lesson and a
 question declare which category they belong to, and that is what lets the
-app connect them: a learner who gets `"Perfect Aspects"` wrong on a test
+app connect them — including pulling a lesson's check cards from that
+category's questions: a learner who gets `"Perfect Aspects"` wrong on a test
 sees a link straight to the `"Perfect Aspects"` lesson, from the results
 screen and from their profile.
 
@@ -148,105 +149,66 @@ should name a confusable pair or triad wherever the grammar allows it
 
 ## Lessons (Eğitim tab)
 
-A lesson is a short, paged, interactive walkthrough — closer to a textbook
-section than a slide. It is a list of **steps** the learner moves through
-one at a time.
+A lesson is authored as a **short article**, not as a sequence of screens.
+You write named sections; the app decides how they are paced into the
+reader's steps and where to slot in check questions (see
+`js/education.js`). That split is deliberate — presentation can change
+without touching a single content file, and it has already changed more
+than once.
+
+One lesson per category, in the order they should be studied.
 
 ```json
 {
-  "id": "tenses-l1",
-  "order": 1,
-  "category": "Present Simple vs Present Continuous",
-  "title": "Rutin mi, şu an mı?",
-  "summary": "Aynı fiilin iki hâli arasında seçim yaparken hangi sinyallere bakacağını öğren.",
-  "steps": [ "..." ]
-}
-```
-
-| Field | Notes |
-| --- | --- |
-| `id` | Unique; starts with `<topicId>-`. Progress is stored against it, so **never reuse or renumber an id** — that would silently reassign someone's progress to a different lesson. |
-| `order` | Integers `1..n` within the topic, no gaps or duplicates. Sets the syllabus order. |
-| `category` | From the topic's taxonomy, verbatim. |
-| `title` | **Turkish**, learner-facing. The category is the grammar label; the title is the lesson's name. |
-| `summary` | **Turkish**, one sentence. Shown on the lesson index, so it should say what the learner will get out of it. |
-| `steps` | Non-empty. **At least one step must be a `check`** — a lesson without a question is a slideshow, and the validator rejects it. |
-
-### Step type: `read`
-
-```json
-{
-  "type": "read",
-  "heading": "İki formun görevi farklı",
-  "body": "Present Simple bir eylemin **genel olarak** doğru olduğunu söyler.\n\nPresent Continuous ise eylemin **şu anda** sürdüğünü söyler.",
+  "category": "Present Perfect vs Past Simple",
+  "intro": "Bu ikisi, sınavlarda en sık karıştırılan zaman çiftlerinden biridir...",
+  "form": "Past Simple — Olumlu: S + V2 → 'She visited.' ... Present Perfect — Olumlu: S + have/has + V3 → 'She has visited.'",
+  "meaning": "Past Simple, geçmişte belirli bir zamanda başlayıp biten bir olayı anlatır...",
+  "usage": "Past Simple 'yesterday, last year, in 2020' gibi belirli bir geçmiş nokta veren ifadelerle kullanılır...",
   "examples": [
-    { "sentence": "Water boils at 100 °C.", "note": "Değişmeyen gerçek → Present Simple" }
-  ]
+    { "sentence": "I visited Paris last summer.", "note": "Belirli geçmiş zaman → Past Simple" },
+    { "sentence": "I have visited Paris three times.", "note": "Ne zaman önemli değil → Present Perfect" }
+  ],
+  "commonMistakes": [
+    {
+      "wrong": "I have visited Paris last summer.",
+      "right": "I visited Paris last summer.",
+      "why": "'Last summer' belirli bir geçmiş zaman ifadesidir; belirli zaman ifadeleriyle Present Perfect kullanılmaz."
+    }
+  ],
+  "recap": "Belirli bir geçmiş zaman ifadesi görürsen Past Simple; since/for/already/yet gibi bir ifade görürsen Present Perfect."
 }
 ```
 
-- `heading` — short, Turkish.
-- `body` — Turkish. Paragraphs are separated by a blank line (`\n\n`).
-  The only inline markup is `**bold**`, for the grammar form under
-  discussion; markers must be balanced.
-- `examples` — optional. Each is a clean, **isolated** English `sentence`
-  (much simpler than a test paragraph — this is teaching, not testing)
-  plus a short `note` naming the form and why it applies.
+| Field | Language | Notes |
+| --- | --- | --- |
+| `category` | English | From the topic's taxonomy, verbatim. Unique within the topic. |
+| `intro` | Turkish | Two or three sentences: why this pair is worth a lesson, ideally naming the confusion a Turkish speaker actually has. Also used as the lesson's preview line on the index, so the first sentence has to stand alone. |
+| `form` | mixed | The structural patterns — `S + have/has + V3 → 'She has visited.'` — positive, negative and question for each form. Rendered in monospace, so keep it terse and parallel. |
+| `meaning` | Turkish | What each form actually *says*. Not usage rules yet: the idea behind the form. |
+| `usage` | Turkish | When each is used in practice — above all the signal words that decide it in an exam. |
+| `examples` | English + Turkish notes | 4–6 clean, **isolated** sentences (much simpler than a test paragraph — teaching, not testing). Each `note` names the form and why: `"Alışkanlık → Present Simple"`. Cover both/all forms in the contrast. |
+| `commonMistakes` | English + Turkish `why` | 2–3 entries of `{ wrong, right, why }`. The most valuable part of the lesson: real errors a Turkish speaker makes, not invented ones. `wrong` and `right` should differ in exactly the thing being taught. |
+| `recap` | Turkish | One or two sentences the learner could carry into the exam — a decision procedure ("see X → use Y"), not a summary of the article. |
 
-### Step type: `table`
+Every field is required. There is no `id` and no `order`: the id is
+derived from the topic and the category (`tenses-present-perfect-vs-past-simple`),
+and the order is the array order. That means a content file carries no
+bookkeeping a contributor could renumber by accident — but it also means
+**renaming a category renames the lesson**, and a learner's progress for
+it starts over. Renaming a category is a taxonomy change: it has to be
+made in the questions, the manifest and the lesson together.
 
-```json
-{
-  "type": "table",
-  "heading": "Sinyal kelimeler",
-  "columns": ["Present Simple", "Present Continuous"],
-  "rows": [
-    ["every day, usually, often", "now, at the moment"]
-  ]
-}
-```
+### Check questions
 
-Best used for the side-by-side signal-word comparisons that make a
-contrast concrete. At least 2 columns; every row must have exactly as many
-cells as there are columns.
+You do not author them. The reader pulls check cards from the questions
+that share the lesson's category, so a category never needs two parallel
+bodies of content kept in sync. They are not scored, not recorded, and
+never block progress — an unanswered check simply reads "Atla".
 
-### Step type: `check`
-
-```json
-{
-  "type": "check",
-  "prompt": "Right now, the students ____ in the exam hall.",
-  "options": ["sit", "are sitting"],
-  "correctIndex": 1,
-  "explanation": "\"Right now\" konuşma anını işaret ediyor, bu yüzden Present Continuous."
-}
-```
-
-An inline question the learner must answer before moving on. Not scored
-and not recorded — it exists to make the lesson stick, not to grade.
-
-- `prompt` — an English cloze sentence with at most one `____` blank, or a
-  Turkish question about forms (`"Hangi cümle doğru?"`). Never more than
-  one blank.
-- `options` — **2 to 4** distinct strings. Two options is often the
-  strongest choice right after teaching a binary contrast.
-- `explanation` — Turkish. Shown after answering, either way. No `tip`
-  here; the lesson has already stated the rule.
-
-### Shape of a good lesson
-
-The six Tenses lessons follow a pattern worth copying:
-
-1. `read` — what the forms actually do, with 2–3 examples.
-2. `table` — the signal words side by side.
-3. `check` — a quick binary check on what was just taught.
-4. `read` — the trap: the exception, or the case learners over-apply.
-5. `check` — a harder 4-option check covering the trap.
-6. `read` — **"Sınavda ne yaparsın"**: the concrete scanning procedure to
-   use on a real exam question.
-
-Five to seven steps is the right size. A lesson should be finishable in a
-few minutes; split anything longer into two lessons.
+The practical consequence for authoring: **a category's questions need to
+work as teaching, not only as testing**, since some of them will be met
+right after the rule is explained rather than in an exam run.
 
 ---
 
