@@ -83,7 +83,8 @@
       <h2 class="t-title" id="confirm-dialog-title">Geçmişi sıfırla</h2>
       <p class="t-body">
         Tüm test geçmişin ve ders ilerlemen bu cihazdan silinecek. Bu işlem
-        geri alınamaz.
+        geri alınamaz — silmeden önce yedek almak istersen vazgeç ve
+        "Yedek al"a dokun.
       </p>
     </div>
     <!-- Equal weight, deliberately. Filling one of them would either dress
@@ -93,6 +94,36 @@
     <div class="dialog__actions">
       <button class="btn btn--secondary" type="button" id="confirm-dialog-cancel">Vazgeç</button>
       <button class="btn btn--secondary" type="button" id="confirm-dialog-confirm">Sil</button>
+    </div>
+  </dialog>
+
+  <!-- Restoring a backup. Two steps in one dialog: choose the file or
+       paste the text, then read what it would add before it is written.
+       A restore that silently overwrote would be the one action in this
+       app a learner could not undo. -->
+  <dialog class="dialog" id="restore-dialog" aria-labelledby="restore-dialog-title">
+    <div class="stack">
+      <div class="stack stack--tight">
+        <h2 class="t-title" id="restore-dialog-title">Yedekten geri yükle</h2>
+        <p class="t-body" id="restore-dialog-text">
+          Yedek dosyanı seç, ya da içeriğini aşağıya yapıştır. Mevcut
+          ilerlemen silinmez — iki taraf birleştirilir.
+        </p>
+      </div>
+
+      <div class="stack stack--tight" id="restore-input">
+        <label class="btn btn--secondary" for="restore-file">Dosya seç</label>
+        <input class="visually-hidden" type="file" id="restore-file" accept="application/json,.json" />
+        <label class="t-label" for="restore-text">Ya da yapıştır</label>
+        <textarea class="field field--multiline" id="restore-text" rows="4" spellcheck="false"></textarea>
+      </div>
+
+      <p class="t-meta" id="restore-message" role="status"></p>
+    </div>
+
+    <div class="dialog__actions">
+      <button class="btn btn--secondary" type="button" id="restore-cancel">Vazgeç</button>
+      <button class="btn btn--primary" type="button" id="restore-confirm">Devam</button>
     </div>
   </dialog>
 

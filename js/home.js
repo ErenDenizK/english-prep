@@ -23,6 +23,7 @@ import {
   getProfileName,
   isDevNoteDismissed,
   dismissDevNote,
+  requestPersistentStorage,
 } from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createListbox } from "./listbox.js";
@@ -397,6 +398,11 @@ async function applyRoute() {
 /* ---- Init ---- */
 
 function init() {
+  // Ask the browser to keep this origin's storage. Free on Chrome; on
+  // WebKit the documented heuristic includes whether the site has been
+  // added to the Home Screen, so it will usually say no — the backup in
+  // Profil is the real answer, and this costs nothing to ask.
+  requestPersistentStorage();
   initNav();
   profileTrigger.addEventListener("click", () => {
     window.location.hash = "profil";
