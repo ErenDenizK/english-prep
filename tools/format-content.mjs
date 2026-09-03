@@ -103,7 +103,42 @@ function format(value, depth = 0) {
 async function contentFiles() {
   const manifest = JSON.parse(await readFile(path.join(ROOT, MANIFEST_PATH), "utf8"));
   const topicFiles = (manifest.topics ?? []).map((topic) => topic.file).filter(Boolean);
-  return [MANIFEST_PATH, ...topicFiles];
+  // Topic files first: the manifest's lesson index is derived from them,
+  // so it has to be written from their final contents.
+  return [...topicFiles, MANIFEST_PATH];
+}
+
+/**
+ * Copies each topic's lesson list — category and one-line summary, in
+ * order — into the manifest.
+ *
+ * Generated rather than authored, because it is a duplicate and a
+ * duplicate someone maintains by hand is a duplicate that drifts. It
+ * exists so the Eğitim index, the Test tab, Profil and the results screen
+ * can be built from the manifest alone: before this, rendering a list of
+ * eighteen lesson names downloaded 141 KB of question data to show 1.7 KB
+ * of information, and that cost grows linearly with the content.
+ *
+ * The validator checks it matches, so a topic file edited without running
+ * the formatter fails the build rather than shipping a stale index.
+ */
+async function buildLessonIndex(manifest) {
+  for (const topic of manifest.topics ?? []) {
+    if (!topic.file) {
+      continue;
+    }
+    const data = JSON.parse(await readFile(path.join(ROOT, topic.file), "utf8"));
+    const lessons = (data.lessons ?? []).map((lesson) => ({
+      category: lesson.category,
+      summary: lesson.summary,
+    }));
+    if (lessons.length) {
+      topic.lessons = lessons;
+    } else {
+      delete topic.lessons;
+    }
+  }
+  return manifest;
 }
 
 const check = process.argv.includes("--check");
@@ -112,7 +147,11 @@ const changed = [];
 for (const relativePath of await contentFiles()) {
   const absolute = path.join(ROOT, relativePath);
   const original = await readFile(absolute, "utf8");
-  const formatted = `${format(JSON.parse(original))}\n`;
+  const parsed = JSON.parse(original);
+  // The manifest is formatted last-ish anyway, but it is the one file
+  // whose content is partly derived from the others.
+  const value = relativePath === MANIFEST_PATH ? await buildLessonIndex(parsed) : parsed;
+  const formatted = `${format(value)}\n`;
   if (formatted === original) {
     continue;
   }

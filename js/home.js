@@ -15,7 +15,7 @@
 // the tab is for; then the categories the learner keeps failing, which is
 // the most valuable thing the app knows about them; then the topic list.
 
-import { loadManifest, loadLessonsForTopics } from "./topics.js";
+import { loadManifest } from "./topics.js";
 import {
   getLastTopicScore,
   getWeakCategories,
@@ -262,14 +262,11 @@ async function renderTestTab() {
   // Weak spots are stored by category, and a category only becomes a link
   // to practice if some live topic still carries it — a category that was
   // renamed out of the taxonomy should not strand the learner in an empty
-  // test.
-  let liveCategories = new Set();
-  try {
-    const lessons = await loadLessonsForTopics(manifest.topics.filter((topic) => !topic.comingSoon));
-    liveCategories = new Set(lessons.map((lesson) => lesson.category));
-  } catch (error) {
-    console.error(error);
-  }
+  // test. The manifest already lists every live category, so this needs no
+  // topic file at all.
+  const liveCategories = new Set(
+    manifest.topics.filter((topic) => !topic.comingSoon).flatMap((topic) => topic.categories ?? [])
+  );
 
   clear(testPanel);
   testPanel.appendChild(renderMixedTest());

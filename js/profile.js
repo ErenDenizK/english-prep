@@ -9,7 +9,7 @@
 // lists on the Test tab start practice instead. One row, one action, and
 // which action it is follows from which screen you are on.
 
-import { loadManifest, loadLessonsForTopics } from "./topics.js";
+import { loadManifest, lessonIndex } from "./topics.js";
 import {
   getProfileName,
   setProfileName,
@@ -218,7 +218,9 @@ async function render() {
   try {
     const manifest = await loadManifest();
     titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
-    lessons = await loadLessonsForTopics(manifest.topics.filter((topic) => !topic.comingSoon));
+    // Names and ids only — Profil never shows a lesson's contents, so it
+    // has no business downloading them.
+    lessons = lessonIndex(manifest);
   } catch (error) {
     // Stats come from local storage and are still worth showing, so a
     // failed content load degrades the lesson counter and the

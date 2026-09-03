@@ -1,5 +1,14 @@
 # Architecture and scale
 
+> **Acted on, 2026-09-03.** The lesson index landed the same day this was
+> written. Re-measured after: 328.8 KB and 1,034 ms became **221.0 KB and
+> 647 ms**, and the content JSON on the first screen went from 142.9 KB to
+> **3.7 KB** — the manifest alone. The scaling problem below is the one
+> that mattered and it is now gone: at ten times the content the home
+> screen grows by about 15 KB rather than to 1.38 MB. The offline question
+> is still open.
+
+
 Measured on the `v0.13` build, 2026-09-03, in Chromium at 390×844 against
 a local static server. Every number here was taken rather than estimated;
 where a number could not be taken, it says so.

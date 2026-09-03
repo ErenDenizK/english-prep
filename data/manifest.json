@@ -15,6 +15,14 @@
         "Future Forms",
         "Perfect Aspects",
         "Time Expressions & Signal Words"
+      ],
+      "lessons": [
+        { "category": "Present Simple vs Present Continuous", "summary": "Alışkanlık mı, şu an olan bir şey mi?" },
+        { "category": "Present Perfect vs Past Simple", "summary": "Geçmiş kapandı mı, şimdiye mi uzanıyor?" },
+        { "category": "Past Simple vs Past Continuous vs Past Perfect", "summary": "Hangisi önce bitti, hangisi o sırada sürüyordu?" },
+        { "category": "Future Forms", "summary": "Kararı ne zaman verdin: şimdi mi, önceden mi?" },
+        { "category": "Perfect Aspects", "summary": "Ne kadarı bitti mi, ne kadar süredir mi?" },
+        { "category": "Time Expressions & Signal Words", "summary": "Hangi kelime hangi zamanı çağırır?" }
       ]
     },
     {
@@ -32,6 +40,14 @@
         "Modal Perfects: Must Have vs Can't Have vs Should Have",
         "Should vs Ought To vs Had Better",
         "Can vs Could vs Be Able To"
+      ],
+      "lessons": [
+        { "category": "Must vs Have to vs Don't Have to", "summary": "Kuralı kim koyuyor — ve olumsuzu yasak mı, gereksiz mi?" },
+        { "category": "Can vs Could vs May vs Might", "summary": "İzin mi istiyorsun, yoksa bir ihtimalden mi bahsediyorsun?" },
+        { "category": "Must vs Can't vs Might/Could", "summary": "Kanıt ne kadar güçlü: kesin mi, imkânsız mı, belki mi?" },
+        { "category": "Modal Perfects: Must Have vs Can't Have vs Should Have", "summary": "Geçmişe dair tahmin mi, pişmanlık mı, gereksiz çaba mı?" },
+        { "category": "Should vs Ought To vs Had Better", "summary": "Sıradan bir tavsiye mi, yoksa uymazsan kötü olur mu?" },
+        { "category": "Can vs Could vs Be Able To", "summary": "Genel bir yetenek mi, o gün başarılan tek bir şey mi?" }
       ]
     },
     {
@@ -49,6 +65,14 @@
         "Causative: Have/Get Something Done",
         "Passive Reporting Structures",
         "By + Agent: Include vs Omit"
+      ],
+      "lessons": [
+        { "category": "Tense Forms in Passive", "summary": "Aktif cümledeki zaman, edilgende ne olur?" },
+        { "category": "Passive with Modals", "summary": "Zorunluluk ve olasılık, faili söylemeden nasıl kurulur?" },
+        { "category": "Modal Perfects in Passive", "summary": "'Yapılmış olmalı' mı, 'yapılmalıydı' mı?" },
+        { "category": "Causative: Have/Get Something Done", "summary": "Kendin mi yapıyorsun, birine mi yaptırıyorsun?" },
+        { "category": "Passive Reporting Structures", "summary": "Kaynağı belirtmeden bir bilgi nasıl aktarılır?" },
+        { "category": "By + Agent: Include vs Omit", "summary": "'By' ne zaman gerekli, ne zaman fazlalık?" }
       ]
     }
   ]
