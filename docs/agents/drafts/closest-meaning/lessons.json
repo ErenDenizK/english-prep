@@ -123,7 +123,7 @@
         "heading": "Şıkkı denetle: zaman kaymış mı?",
         "rules": [
           {
-            "condition": "Orijinalin sonucu \"now / today / still\" ile bugünkü bir durumu anlatırken şık \"would have + V3\" ile onu tamamlanmış bir geçmiş eyleme çeviriyorsa",
+            "condition": "Sonucun zamanı kaymışsa: orijinal bugünkü bir durumu anlatırken şık \"would have + V3\" diyorsa, ya da orijinal geçmişte kapanmış bir sonucu anlatırken şık onu bugüne ya da geleceğe taşıyorsa",
             "then": "Re-time"
           },
           {
@@ -139,7 +139,15 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "Şık geçmişin gerçekleşmediğini koruyor ve sonucu orijinalle aynı zamana koyuyorsa",
+            "condition": "Koşul ile sonuç yer değiştirmişse: orijinalde sebep olan şey şıkta sonuç olmuşsa",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Şık, orijinalin söylediğinden fazlasını söylüyorsa (\"hiç\", \"her\", \"zaten imkânsızdı\")",
+            "then": "Overshoot"
+          },
+          {
+            "condition": "Şık geçmişin gerçekleşmediğini koruyor, sonucu orijinalle aynı zamana koyuyor ve koşul yine aynı cümleyse",
             "then": "Same meaning"
           }
         ]
@@ -277,11 +285,11 @@
             "then": "Drop a condition"
           },
           {
-            "condition": "Orijinal \"unless\" derken şık \"if\" diyor ve fiili olumlu bırakmışsa",
+            "condition": "Orijinal \"unless\" derken şık \"if\" diyor ve olumsuzluk hiçbir biçimde görünmüyorsa — ne fiilde, ne de \"no / never / nobody\" gibi bir sözcükte",
             "then": "Reverse"
           },
           {
-            "condition": "Olumsuzluk koşuldan alınıp sonuç cümlesine taşınmışsa",
+            "condition": "Hangi önermenin olumsuzlandığı değişmişse: orijinalde olumsuzlanan koşulken şıkta sonuç olumsuzlanıyorsa (ya da tersi)",
             "then": "Reverse"
           },
           {
@@ -289,7 +297,7 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "Koşul yerinde, olumsuzluk aynı cümlede ve sonuç değişmemişse",
+            "condition": "Koşul yerinde duruyor, olumsuzlanan önerme aynı ve sonuç değişmemişse — \"unless\" olumsuzluğu kendi içinde taşıdığı için cümlede yazılı bir \"not\" aramak gerekmez",
             "then": "Same meaning"
           }
         ]
@@ -772,7 +780,7 @@
   },
   {
     "category": "Passive Reporting: It Is Said vs Is Said To",
-    "summary": "Kim söylemiş? Cümle söylemiyorsa, şık da söyleyemez.",
+    "summary": "Kaynak orijinalde ne kadarsa o kadar: ne ekle, ne çıkar.",
     "blocks": [
       {
         "type": "text",
@@ -784,12 +792,12 @@
         "sides": [
           {
             "label": "It + be + V3 + that",
-            "gloss": "Anlamsız bir \"It\" ile başlar, ardından tam bir cümle gelir. Kaynak cümlenin hiçbir yerinde yoktur.",
+            "gloss": "Anlamsız bir \"It\" ile başlar, ardından tam bir cümle gelir. Kaynak genelde söylenmez; söylenecekse \"by ...\" ile eklenir.",
             "example": "It is thought that the method is safe."
           },
           {
             "label": "S + be + V3 + to ...",
-            "gloss": "Asıl özne öne çıkar, arkasından \"to\" gelir. Aynı bilgiyi verir ve kaynağı yine söylemez.",
+            "gloss": "Asıl özne öne çıkar, arkasından \"to\" gelir. Aynı bilgiyi verir; kaynak varsa \"by ...\" ile aynı yerde durur.",
             "example": "The method is thought to be safe."
           }
         ]
@@ -809,6 +817,12 @@
             "use": "Olay aktarımla aynı zamanda",
             "pattern": "S + is thought to + V",
             "example": "The method is thought to work."
+          },
+          {
+            "form": "S is said by X to + V",
+            "use": "Kaynağı cümlenin kendisi veriyorsa",
+            "pattern": "S + is said + by X + to + V",
+            "example": "The method is said by its designers to be safe."
           },
           {
             "form": "S is thought to be + V-ing",
@@ -898,6 +912,10 @@
             "then": "Overshoot"
           },
           {
+            "condition": "Orijinal kaynağı adıyla veriyor ama şık onu silip \"genel olarak inanılıyor\" gibi yaygın bir kanıya çeviriyorsa",
+            "then": "Overshoot"
+          },
+          {
             "condition": "Şık aktarım kalıbını silip bilgiyi doğrudan olgu gibi söylüyorsa",
             "then": "Overshoot"
           },
@@ -914,7 +932,11 @@
             "then": "Re-time"
           },
           {
-            "condition": "İki kalıp arasında geçilmiş, kaynak yine söylenmemiş ve zaman ilişkisi korunmuşsa",
+            "condition": "Kim kime ne yapmış yer değiştirmişse, ya da bir olumsuzluk eklenip çıkarılmışsa",
+            "then": "Reverse"
+          },
+          {
+            "condition": "İki kalıp arasında geçilmiş, kaynak orijinalde ne kadarsa şıkta da o kadar (eklenmemiş, silinmemiş) ve zaman ilişkisi korunmuşsa",
             "then": "Same meaning"
           }
         ]
