@@ -124,6 +124,48 @@ check them yourself:
 Then re-read your own set once as a student: how many could you answer
 without reading the full passage? Every one of those needs more context.
 
+## Five rules the first content review had to invent
+
+Everything above is the schema. These five are what a review of the first
+72 questions found the schema could not say, and each one names a defect
+that reached shipped content. `docs/content-review.md` has the evidence.
+
+**1 · Never build a question on a sentence from its own lesson.** This is
+the one nobody would guess. `check` blocks are filled from the questions
+sharing the lesson's category, so a question built on the lesson's own
+example sentence is a check whose answer the learner read three blocks
+earlier. In one topic, **20 of 24 keys reused a lesson sentence's subject
+and verb, most of them verbatim**. Take the grammar point from the
+lesson; take the scenario from somewhere else.
+
+**2 · An option a competent teacher would accept is a wrong option.** Not
+"less natural than the key" — accepted. Sixteen of the first 72 items had
+one, and they clustered: `should` against `ought to`, `leaves` against
+`is leaving`, a bare passive against one with an obvious agent. If the
+explanation has to argue that the key is *more natural*, the item is
+broken. Rewrite the paragraph until one option is right and the rest are
+wrong, or key a different contrast.
+
+**3 · A dead option makes a four-option item a three-option one.** An
+option is dead when it is wrong for a reason unrelated to anything the
+lesson teaches — `am` in *I always am it painted*. It is **not** dead
+merely because it looks obviously wrong to a fluent speaker: `had better
+to` is the error this audience actually makes, and the lesson is built on
+it. Write for the Turkish B2 learner, not for yourself.
+
+**4 · One item in four must be decided by meaning, not by a trigger
+word.** Three of the app's nineteen categories can currently be passed
+without reading the paragraph at all — the trigger sits next to the blank
+and the rest is scenery. And at least one item per category should be one
+the trigger gets *wrong*, because that is the caveat the lesson spent its
+most emphatic block on.
+
+**5 · The explanation must name a wrong option, by its own words.** Not
+"Present Perfect is used here" — *"'has done' would mean X, but the
+period closed in 2019"*. `npm run validate` now counts the explanations
+that never mention any wrong option and reports them per topic. Two
+thirds of the first corpus failed it.
+
 ## Out of scope
 
 Don't edit `js/`, `css/`, `*.html`, `data/manifest.json`, or the lessons

@@ -15,15 +15,18 @@
 
 import { el, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
+import { buildReport, sendReport, REPORT_RESULT } from "./report.js";
+import { announce } from "./shell.js";
 
 /**
- * @param {{correctAnswer: string, explanation: string, tip?: string}} question
+ * @param {{id: string, category: string, paragraph: string, correctAnswer: string, explanation: string, tip?: string}} question
  * @param {boolean} correct
- * @param {{withTip?: boolean}} [options] - Eğitim checks omit the tip: the
- *   lesson has just spent several blocks stating the rule.
+ * @param {{withTip?: boolean, selected?: string|null}} [options] - Eğitim
+ *   checks omit the tip: the lesson has just spent several blocks stating
+ *   the rule. `selected` only travels into the problem report.
  * @returns {HTMLDivElement}
  */
-export function renderAnswerFeedback(question, correct, { withTip = true } = {}) {
+export function renderAnswerFeedback(question, correct, { withTip = true, selected = null } = {}) {
   const block = el("div", `feedback bleed ${correct ? "feedback--ok" : "feedback--no"}`);
 
   const verdict = el("p", "feedback__verdict");
@@ -49,7 +52,45 @@ export function renderAnswerFeedback(question, correct, { withTip = true } = {})
     block.appendChild(tip);
   }
 
+  block.appendChild(renderReportButton(question, selected));
+
   return block;
+}
+
+/**
+ * "Bu soruda bir sorun var".
+ *
+ * Quiet on purpose, and last: it must be findable by the learner who has
+ * just decided a question is wrong, and invisible to everyone else. A
+ * prominent one would invite a shrug rather than a report, and this is
+ * the channel that has to stay believable.
+ *
+ * The button is never removed and never changes height — it turns into
+ * its own confirmation. Replacing it with a line of text would reflow the
+ * block under a thumb that is already moving.
+ *
+ * And it is never `disabled`, for the same reason an answered option
+ * isn't: disabling the control that currently has focus drops the
+ * keyboard user at the top of the document, having just told them
+ * nothing. `aria-disabled` with a guard keeps it focusable and readable,
+ * and the outcome goes through the shell's one live region, because a
+ * label that changes under a screen reader's cursor is a label nobody
+ * hears change.
+ */
+function renderReportButton(question, selected) {
+  const button = el("button", "btn btn--quiet feedback__report", "Bu soruda bir sorun var");
+  button.type = "button";
+  button.addEventListener("click", async () => {
+    if (button.getAttribute("aria-disabled") === "true") {
+      return;
+    }
+    button.setAttribute("aria-disabled", "true");
+    const outcome = await sendReport(buildReport(question, selected));
+    const message = outcome === "failed" ? REPORT_RESULT.failed + question.id : REPORT_RESULT[outcome];
+    button.textContent = message;
+    announce(message);
+  });
+  return button;
 }
 
 /**

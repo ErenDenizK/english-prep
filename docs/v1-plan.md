@@ -171,7 +171,35 @@ manifest already contained. Opening the app went from 328.8 KB and
    answer in your head first, then reveal. Zero content cost, and the
    highest value-per-line in the practice-modes arm.
 
-### Stage 1 · Prove the pipeline on the content we have (about a week)
+### Stage 1 · Prove the pipeline on the content we have — ✅ **done, 2026-09-03**
+
+All six landed. The report is `docs/content-review.md`; `npm run verify`
+is 416 checks and green, `npm test` is 75.
+
+It answered its own question — the reviewer scored 5/5 recall and 5/5
+precision on the calibration set, so the pipeline can be pointed at new
+content — and then returned three findings nobody had planned for.
+
+**Nothing in the corpus is miskeyed.** Two independent blind passes,
+different option orders, no answer key: 144 of 144 matched. That is the
+result that made the rest worth doing, because it means the content is
+worth repairing rather than replacing.
+
+**No lesson is insufficient; every lesson teaches more than its questions
+test.** Zero L1 across all eighteen, and about twenty caveats warned
+about and never sprung. The failure runs the opposite way from what
+anybody expected, and item 3 was written expecting the opposite.
+
+**Questions were built on their own lessons' example sentences** — 20 of
+24 keys in one topic. `check` blocks draw from the same category, so the
+learner meets the answer sentence a few blocks above the question that
+asks it. This is a coupling between the block schema and question
+authoring that nobody costed when `check` was designed, and it is now
+rule 1 in `docs/agents/question-author.md`.
+
+Seven questions were rewritten; three of those rewrites failed their own
+blind re-review and were reverted or redone, which is the pipeline
+working on its operator.
 
 The pipeline should be proven on 72 questions before it is aimed at 900.
 

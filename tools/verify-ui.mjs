@@ -374,6 +374,65 @@ async function runThinkFirst(browser) {
 }
 
 /**
+ * "Bu soruda bir sorun var" — the one channel from a learner back to the
+ * content, so it has to work on the device they are holding.
+ *
+ * Checked here rather than only in a unit test because everything that
+ * can go wrong with it is in the browser: the clipboard permission, the
+ * focus that a `disabled` would have thrown away, and the fact that a
+ * label changing silently under a screen reader is a label nobody hears
+ * change.
+ */
+async function runProblemReport(browser) {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    permissions: ["clipboard-read", "clipboard-write"],
+  });
+  const page = await context.newPage();
+
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .btn--primary");
+  await page.locator("#test-panel .btn--primary").click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".option");
+
+  ok((await page.locator(".feedback__report").count()) === 0, "bildirim bağlantısı cevaptan önce yok");
+
+  await page.locator(".option").first().click();
+  await page.waitForSelector(".feedback");
+
+  const report = page.locator(".feedback__report");
+  ok((await report.count()) === 1, "cevaptan sonra bildirim bağlantısı çıkıyor");
+
+  const box = await report.boundingBox();
+  ok(box !== null && box.height >= 44, `bildirim hedefi ${Math.round(box?.height ?? 0)}px (>= 44)`);
+  await auditLayout(page, "bildirim bağlantısıyla geri bildirim", 390);
+
+  await report.focus();
+  await page.keyboard.press("Enter");
+  await page.waitForTimeout(200);
+
+  ok((await report.getAttribute("aria-disabled")) === "true", "kullanıldıktan sonra aria-disabled");
+  ok((await page.locator(".feedback__report[disabled]").count()) === 0, "disabled kullanılmıyor");
+  ok(
+    await page.evaluate(() => document.activeElement?.classList.contains("feedback__report")),
+    "odak düğmede kalıyor"
+  );
+  ok(
+    (await page.locator("#live-region").textContent()).length > 0,
+    "sonuç canlı bölgeden duyuruluyor"
+  );
+
+  const copied = await page.evaluate(() => navigator.clipboard.readText());
+  ok(copied.includes("English Prep"), "panoya giden metin kendini tanıtıyor");
+  ok(/Soru: [a-z-]+-t\d+/.test(copied), "metin soru numarasını taşıyor");
+  ok(copied.includes("Uygulamanın doğru dediği:"), "metin doğru cevabı taşıyor");
+  ok(copied.includes("Benim işaretlediğim:"), "metin öğrencinin seçtiğini taşıyor");
+
+  await context.close();
+}
+
+/**
  * A learner's whole history moving from one browser to another. This is
  * the only operation in the app that can destroy something they cannot get
  * back, so it is checked end to end in two real browser contexts rather
@@ -596,6 +655,9 @@ try {
 
   console.log("\n=== önce kendin düşün ===");
   await runThinkFirst(browser);
+
+  console.log("\n=== soru bildirimi ===");
+  await runProblemReport(browser);
 
   console.log("\n=== yedekleme ve geri yükleme ===");
   await runBackupRoundTrip(browser);

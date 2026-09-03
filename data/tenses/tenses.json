@@ -83,11 +83,11 @@
     {
       "id": "tenses-t8",
       "category": "Present Perfect vs Past Simple",
-      "paragraph": "Turkey ____ several major earthquakes over the past century, which is why building codes have become much stricter.",
+      "paragraph": "Turkey ____ several major earthquakes over the past century, which is why its building codes are now among the strictest in the region.",
       "options": ["experienced", "has experienced", "experiences", "was experiencing"],
       "correctIndex": 1,
-      "explanation": "'Over the past century' geçmişten bugüne uzanan bir dönemi kapsıyor, bu yüzden Present Perfect kullanılır.",
-      "tip": "'Over the last/past + süre' ifadesi genelde Present Perfect'i tetikler."
+      "explanation": "'Over the past century' geçmişte başlayıp bugüne kadar uzanan, hâlâ açık bir dönemi kapsıyor, bu yüzden Present Perfect kullanılır. 'experienced' dönemin kapandığını ima eder ve yanında belirli bir geçmiş zaman ifadesi ister ('in 1999' gibi).",
+      "tip": "'Over the last/past + süre' hâlâ süren bir dönemi işaret eder; kapanmış bir dönem Past Simple ister."
     },
     {
       "id": "tenses-t9",
@@ -194,7 +194,7 @@
       "paragraph": "My advisor mentioned a summer research program in Kyoto and asked whether I would need to apply for a visa. Have you ____ to Japan before, or would this be your first time?",
       "options": ["gone", "been", "go", "went"],
       "correctIndex": 1,
-      "explanation": "'Have been to' bir yere gidip geri dönmüş olma deneyimini anlatır; 'have gone to' ise kişinin hâlâ orada olduğunu ima eder ki bu cümlede uygun değil.",
+      "explanation": "'Have been to' bir yere gidip geri dönmüş olma deneyimini anlatır; 'have gone to' ise kişinin hâlâ orada olduğunu ima eder ki karşısındaki kişiyle konuşurken bu mümkün değildir.",
       "tip": "'Have been to' = gidip döndü (deneyim); 'have gone to' = hâlâ orada, dönmedi."
     },
     {

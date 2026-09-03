@@ -258,6 +258,45 @@ function renderSettings() {
   return section;
 }
 
+/**
+ * Where the content comes from, said plainly.
+ *
+ * It is written by a language model and reviewed by another one, against
+ * a written brief, and `docs/content-review.md` records what that process
+ * caught and what it missed. Someone studying for an exam that decides
+ * their year is entitled to know that before they trust a question — and
+ * knowing it is also what turns a learner into the only pretest panel
+ * this project can have. The report button on every answer is downstream
+ * of this paragraph: it only gets used by someone who has been told the
+ * content can be wrong.
+ */
+function renderAbout() {
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "İçerik hakkında"));
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "Buradaki dersler ve sorular yapay zekâ ile yazıldı, sonra yazılı bir " +
+        "ölçüte göre ayrı bir denetimden geçirildi. Yine de hata çıkabiliyor: " +
+        "bazı soruların birden fazla savunulabilir cevabı olduğu, bazı " +
+        "derslerin uyardığı tuzağı hiçbir sorunun sınamadığı bu denetimde " +
+        "ortaya çıktı ve düzeltiliyor."
+    )
+  );
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "Bir soru sana yanlış geldiyse büyük ihtimalle haklısın. Cevabı " +
+        "gördüğün ekranda \u201cBu soruda bir sorun var\u201d bağlantısı, " +
+        "soruyu bulmaya yetecek bilgiyi hazırlar; kopyalayıp bize " +
+        "ilettiğinde en güvenilir hata bildirimi o oluyor."
+    )
+  );
+  return section;
+}
+
 async function render() {
   let titleById = new Map();
   let lessons = [];
@@ -315,6 +354,7 @@ async function render() {
 
   container.appendChild(renderData());
   container.appendChild(renderSettings());
+  container.appendChild(renderAbout());
 }
 
 export async function initProfileTab() {

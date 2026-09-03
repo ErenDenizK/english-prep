@@ -436,7 +436,7 @@ function renderCheckBlock(question, blockIndex) {
   if (answered) {
     // No tip: the lesson has just said the rule at length.
     wrap.appendChild(
-      renderAnswerFeedback(question, isCorrectAnswer(question, selected), { withTip: false })
+      renderAnswerFeedback(question, isCorrectAnswer(question, selected), { withTip: false, selected })
     );
   }
 
