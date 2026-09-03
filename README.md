@@ -13,7 +13,9 @@ explanations/tips stay in Turkish (already were). Grammar category labels
 (e.g. "Present Perfect vs Past Simple") stay in English — students need to
 recognize the English grammar terms.
 
-Three tabs:
+Two content tabs, plus a Profil that lives behind its own header button
+rather than as a third tab — it's identity/settings, not a content mode,
+so it doesn't sit at the same level as "what am I practicing":
 
 - **Eğitim** — a fast, example-driven tour through each topic's grammar
   categories: a short rule plus simple example sentences, paged with
@@ -26,10 +28,13 @@ Three tabs:
   server — all of it is saved locally in your browser (`localStorage`). A
   topic whose content has grown since your last visit shows a "Yeni
   sorular eklendi" badge (see **Content-freshness tracking** below).
-- **Profil** — an optional display name (local only, never sent anywhere),
-  overall stats (tests completed, questions answered, accuracy), and —
-  once you've done a few tests — which topics and which grammar categories
-  you're weakest in, plus a reset button for all locally saved history.
+- **Profil** — opened from a small circular button in the header (shows
+  the learner's initial once a name is set). An optional display name
+  (local only, never sent anywhere) drives a personalized "Hoş geldin,
+  {name}!" greeting in the header; overall stats (tests completed,
+  questions answered, accuracy); and — once you've done a few tests —
+  which topics and which grammar categories you're weakest in, plus a
+  reset button for all locally saved history.
 
 The whole app is a fixed-height "app shell" (header/tabs, a scrolling
 content area with no visible scrollbar, and a fixed bottom action bar on
@@ -320,42 +325,53 @@ app is a real first release, not any particular feature set being
 
 ## Roadmap to v1.0
 
-Everything shipped so far (`v0.1`–`v0.5`) is development work toward a
+Everything shipped so far (`v0.1`–`v0.6`) is development work toward a
 first real release, not a release itself. Below is the working list of
 what's left, roughly in the order it makes sense to tackle — see
 `CHANGELOG.md` for what's already landed under each `0.y`.
 
-1. **Real-device pass** — everything so far has been verified with
-   Playwright in a headless sandbox plus static screenshots. Before
-   anything is called `1.0`, both the owner and at least one friend should
-   actually use it on their own phones (via the `test` branch's GitHub
+1. **Real-device pass** — in progress. Everything so far has been verified
+   with Playwright in a headless sandbox plus static screenshots; the
+   owner is now testing on real phones (via the `test` branch's GitHub
    Pages preview) — real touch targets, real fonts loading, real network.
 2. ~~Open design thread: the quiz category eyebrow label~~ — **resolved,
    kept as-is.** It ties a Test-tab question directly to the matching
    Eğitim-tab lesson category, which is genuinely useful for a learner
    moving between the two tabs, not just decoration.
-3. **A second real topic** (Modals is already stubbed as `comingSoon` in
+3. ~~Navigation restructure~~ — **done in `v0.6`**, driven directly by
+   artifact-comment feedback on the `v0.5` build: Profil was flagged as
+   "çok alakasız" (irrelevant) sitting next to Eğitim/Test, so it moved
+   out of the tab bar into a small header button (shows the learner's
+   initial once a name is set); the header now shows a personalized
+   "Hoş geldin, {name}!" greeting instead of a static tagline; the app
+   name in the header shortened to "English Prep".
+4. **Short first-run onboarding tour** — 3-4 skippable steps introducing
+   Eğitim/Test/Profil on first open, shown once (tracked locally), and
+   re-openable later from Profil. Not started.
+5. **Guided learning path mechanism in Eğitim** — pulled forward from
+   "beyond v1.0" at the owner's explicit request (see below for what it
+   means). Step-by-step progression through a topic's lessons, ending in
+   an auto-routed mini-test; the free/open Test tab stays exactly as-is
+   alongside it. The owner is authoring the lesson content separately —
+   building the mechanism/schema is blocked on a quick sync on that
+   content's shape first, so the two don't end up mismatched.
+6. **A second real topic** (Modals is already stubbed as `comingSoon` in
    the manifest) — both to make Test/Eğitim feel like a real multi-topic
    app rather than a single-topic demo, and to give the "Yeni sorular
    eklendi" content-freshness badge a real second data point to prove
    itself against.
-4. **Promote to `main` once approved** — `main` is still on the very first
+7. **Promote to `main` once approved** — `main` is still on the very first
    development build; it only moves forward when the owner has tried a
    build on `test` and signs off, per the branch model below. Confirm
    GitHub Pages is actually serving `main` at that point (not left on
    `test` from earlier testing).
-5. **Owner declares `1.0`** — once the above holds and the owner is happy,
+8. **Owner declares `1.0`** — once the above holds and the owner is happy,
    they set `x` to `1`; this isn't a technical milestone this project
    infers on its own.
 
 ## Roadmap beyond v1.0
 
-- A guided, sequential "learning path" mode through topics, building on the
-  per-topic and per-category weak-spot data already collected. Deliberately
-  deferred — it needs its own design pass (what "guided" actually means:
-  a fixed order? adaptive to weak spots? how it interacts with the
-  existing free-form Test/Eğitim tabs) rather than being built on a guess.
-- A dedicated question format for Vocabulary/Word Formation. Also deferred
-  for the same reason — it's a different question shape than the paragraph
-  cloze format everything else is built around, and needs its own schema
+- A dedicated question format for Vocabulary/Word Formation. Deferred —
+  it's a different question shape than the paragraph cloze format
+  everything else is built around, and needs its own schema
   design before content can be authored for it.

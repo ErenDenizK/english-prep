@@ -41,7 +41,10 @@ function renderNameField() {
   input.placeholder = "İsmini yaz (isteğe bağlı)";
   input.value = getProfileName();
   input.maxLength = 40;
-  input.addEventListener("change", () => setProfileName(input.value.trim()));
+  input.addEventListener("change", () => {
+    setProfileName(input.value.trim());
+    window.dispatchEvent(new CustomEvent("englishprep:profilenamechanged"));
+  });
   section.appendChild(input);
 
   return section;

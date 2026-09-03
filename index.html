@@ -13,10 +13,13 @@
 <body>
   <header class="site-header">
     <div class="site-header__inner">
-      <div>
-        <h1>English Prep Practice</h1>
-        <p>Üniversite İngilizce hazırlık sınavı için pratik</p>
+      <div class="site-header__brand">
+        <h1>English Prep</h1>
+        <p id="header-subtitle">Üniversite İngilizce hazırlık sınavı için pratik</p>
       </div>
+      <button class="profile-trigger" type="button" id="profile-trigger" aria-label="Profilini aç" aria-controls="view-profil">
+        <span id="profile-trigger-initial">?</span>
+      </button>
     </div>
   </header>
 
@@ -26,9 +29,6 @@
     </button>
     <button class="tab-bar__tab" type="button" role="tab" id="tab-test" data-view="test" aria-selected="true" aria-controls="view-test">
       Test
-    </button>
-    <button class="tab-bar__tab" type="button" role="tab" id="tab-profil" data-view="profil" aria-selected="false" aria-controls="view-profil">
-      Profil
     </button>
   </nav>
 
@@ -64,7 +64,7 @@
         </section>
       </section>
 
-      <section id="view-profil" class="view" role="tabpanel" aria-labelledby="tab-profil" hidden>
+      <section id="view-profil" class="view" aria-label="Profil" hidden>
         <div id="profile-container">
           <p class="empty-state">Profil yükleniyor&hellip;</p>
         </div>
