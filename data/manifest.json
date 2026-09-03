@@ -7,7 +7,7 @@
       "file": "data/tenses/tenses.json",
       "questionCount": 24,
       "lessonCount": 6,
-      "contentVersion": 1,
+      "contentVersion": 2,
       "categories": [
         "Present Simple vs Present Continuous",
         "Present Perfect vs Past Simple",
@@ -32,7 +32,7 @@
       "file": "data/modals/modals.json",
       "questionCount": 24,
       "lessonCount": 6,
-      "contentVersion": 1,
+      "contentVersion": 2,
       "categories": [
         "Must vs Have to vs Don't Have to",
         "Can vs Could vs May vs Might",
@@ -57,7 +57,7 @@
       "file": "data/passive-voice/passive-voice.json",
       "questionCount": 24,
       "lessonCount": 6,
-      "contentVersion": 1,
+      "contentVersion": 2,
       "categories": [
         "Tense Forms in Passive",
         "Passive with Modals",

@@ -159,7 +159,7 @@ function renderQuestion() {
   }
 
   const feedback = state.answered
-    ? block.appendChild(renderAnswerFeedback(question, isCorrectAnswer(question, selected)))
+    ? block.appendChild(renderAnswerFeedback(question, isCorrectAnswer(question, selected), { selected }))
     : null;
 
   page.appendChild(block);
@@ -193,10 +193,13 @@ function handleKeydown(event) {
   if (!state.session.length || event.metaKey || event.ctrlKey || event.altKey) {
     return;
   }
-  // The advance button takes focus as soon as a question is answered, so
-  // Enter there already activates it natively; handling it here too would
-  // advance twice and skip a question.
-  if (actionBar.contains(event.target)) {
+  // Enter already activates a focused control natively, so handling it
+  // here too would fire twice — advancing the quiz *and* pressing whatever
+  // the learner actually meant to press. That is the advance button, which
+  // takes focus as soon as a question is answered, and it is also the
+  // problem-report link inside the feedback block: reporting a question
+  // used to skip the next one.
+  if (event.target instanceof Element && event.target.closest("button, a, input, select, textarea")) {
     return;
   }
 

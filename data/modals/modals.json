@@ -102,10 +102,10 @@
       "id": "modals-t10",
       "category": "Must vs Can't vs Might/Could",
       "paragraph": "She ____ be at home right now — I just saw her car leaving the parking lot ten minutes ago.",
-      "options": ["can't", "must", "might", "should"],
+      "options": ["can't", "must", "might", "mustn't"],
       "correctIndex": 0,
-      "explanation": "Aracının az önce ayrıldığını görmüş olmak, evde olma ihtimalini güçlü şekilde imkansız kılıyor, bu yüzden olumsuz kesin çıkarım için 'can't' kullanılır ('mustn't' bu anlamda kullanılmaz).",
-      "tip": "Bir şeyin imkansız/çok düşük ihtimalli olduğuna dair güçlü çıkarımlar için 'can't' kullanılır, 'mustn't' değil."
+      "explanation": "Arabasının az önce ayrıldığını görmüş olmak, evde olmasını neredeyse imkânsız kılıyor; olumsuz kesin çıkarım için 'can't' kullanılır. 'must' tam tersini, 'mustn't' ise yasak bildirir — çıkarım cümlesinde 'mustn't' hiçbir zaman doğru cevap değildir.",
+      "tip": "Olumsuz kesin çıkarım 'can't' ile kurulur. Şıkta 'mustn't' görürsen ele: o yasak bildirir, imkânsızlık değil."
     },
     {
       "id": "modals-t11",
@@ -164,11 +164,11 @@
     {
       "id": "modals-t17",
       "category": "Should vs Ought To vs Had Better",
-      "paragraph": "In my opinion, you ____ try that new bakery downtown — their pastries are supposed to be amazing.",
-      "options": ["should", "had better", "must", "ought to"],
+      "paragraph": "There is no rush and nothing depends on it, but in my opinion you ____ try that new bakery downtown at some point — their pastries are supposed to be very good.",
+      "options": ["should", "had better", "had better not", "would rather"],
       "correctIndex": 0,
-      "explanation": "Burada kişisel bir görüşe dayanan hafif bir tavsiye söz konusu ('in my opinion'), bu yüzden en doğal seçim 'should' kullanmaktır. 'Had better' daha acil ve tehdit içeren durumlar için kullanılır, burada bağlama uymaz.",
-      "tip": "'Should', günlük ve genel tavsiyeler için en yaygın kullanılan modal fiildir."
+      "explanation": "Cümle işin sonucunun önemsiz olduğunu açıkça söylüyor ('nothing depends on it'), yani ortada bir uyarı değil sıradan bir tavsiye var; bunun modalı 'should'dur. 'had better' uyulmadığında kötü bir şey olacağını ima eder ve cümlenin ilk yarısıyla çelişir; 'would rather' ise tavsiye değil, iki seçenek arasında tercih bildirir.",
+      "tip": "'Had better' bir uyarıdır: ardında söylenmiş ya da sezilen bir sonuç vardır. Sonuç yoksa 'should' kullan."
     },
     {
       "id": "modals-t18",

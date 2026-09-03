@@ -907,6 +907,25 @@
     color: var(--c-text-2);
   }
 
+  /* The problem report. Pulled to the left edge of the block's text and
+     sized down, because it is the one control here that most learners
+     should never notice: a prominent "something is wrong" button invites
+     a shrug, and this channel is only worth having while it is
+     believable. It keeps the full 48px target height regardless — a
+     control nobody notices is still a control somebody has to hit. */
+  .feedback__report {
+    justify-self: start;
+    margin-inline-start: calc(var(--s-3) * -1);
+    font-size: var(--t-meta);
+    font-weight: 600;
+    text-align: start;
+  }
+
+  .feedback__report[aria-disabled="true"] {
+    color: var(--c-text-2);
+    cursor: default;
+  }
+
   /* -- Option. An answer row: reading-sized, whole row tappable. -- */
   .option {
     display: flex;

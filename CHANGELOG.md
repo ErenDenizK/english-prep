@@ -5,6 +5,97 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.15 — 2026-09-03
+
+Stage 1 of `docs/v1-plan.md`: the content pipeline, proved on the 72
+questions we have before it is aimed at 900. Six reviewers, none of whom
+saw another's output. The report is `docs/content-review.md`.
+
+### The three results
+
+**Nothing is miskeyed.** Two blind passes, different option orders, no
+answer key, 72 items each: 144 of 144 answers matched. Every defect below
+is about what an item *measures*, not whether it is right — which is what
+makes the corpus worth repairing rather than replacing.
+
+**No lesson is insufficient. Every lesson teaches more than its questions
+test.** All eighteen pass on "does the lesson contain what its questions
+need"; about twenty caveats are warned about and never sprung. The
+*Present Perfect vs Past Simple* lesson devotes a whole block to `for`
+appearing on both sides, and the word does not occur in any of its four
+questions. This is the opposite of the failure the pass was written to
+find.
+
+**Questions were built on their own lessons' example sentences** — 20 of
+24 keys in one topic, most verbatim. Because `check` blocks are filled
+from the questions sharing a lesson's category, the learner met the
+answer sentence a few blocks above the question that asked it. Nobody
+costed that coupling when `check` was designed.
+
+### Sixteen items have a second defensible answer
+
+Ten were named by both blind passes independently. They cluster into
+near-synonym modals (`should` against `ought to`), future-form preference
+(`leaves` against `is leaving`), and agent omission as a style judgement.
+`modals-t17` was a coin-flip for both readers.
+
+### What changed in the app
+
+- **"Bu soruda bir sorun var"** on every answer. There is no backend to
+  post it to and it does not need one: the app is distributed by pasting
+  a URL into a group chat, so the report goes back the same way — share
+  sheet first, clipboard second. Six friends sitting the real exam are
+  the only pretest panel this project can have, and until now there was
+  nowhere for them to say a question was wrong.
+- **Profil says where the content comes from**: written by a language
+  model, reviewed against a written brief, and still capable of being
+  wrong. Somebody studying for an exam that decides their year is
+  entitled to know that before they trust a question.
+- **Four content checks in `npm run validate`** that the schema validator
+  could not make — the explanation must name a distractor, banned option
+  forms, corpus-wide near-duplicate stems, scenario over-use. Three of
+  the four can only be answered by reading every question at once. The
+  first found that two thirds of the explanations never mention a wrong
+  option; the second failed immediately on shipped content, because
+  `tenses-t15` offered `leaved`, which is not a word.
+
+### Seven questions rewritten, three rewrites rejected
+
+Every rewrite went back through a blind pass, because an author does not
+certify their own work. `modals-t17` was rejected twice — the first fix
+traded one defensible-second-answer for another — and passed on the
+third. `tenses-t20` was reverted to its original after the rewrite made
+it worse. `passive-voice-t15` was rejected three times and is on the
+register: the reviewer's diagnosis is that its causative structure is
+handed to the learner in the stem, which is a redesign rather than an
+option swap.
+
+### And the method's own limitation
+
+A reviewer dismissed `had better to` as an option "no B2 learner would
+weigh". It is the error Turkish speakers make, the lesson is built on it,
+and all three of that lesson's pitfalls use it. A fluent reviewer's "no
+learner would consider this" is a judgement about the reviewer;
+`docs/agents/reviewer.md` now says so.
+
+### Also
+
+- `docs/agents/reviewer.md`, `calibration.md`, `category-spec.md` and one
+  worked spec — the pipeline's own documents.
+- Five rules added to `docs/agents/question-author.md`, each naming a
+  defect that reached shipped content.
+- `this week` removed from the passive lesson's signal chips: it was a
+  Present Continuous Passive trigger in one lesson and part of the
+  Present Perfect condition in another, and `passive-voice-t4` is keyed
+  against the first, so a learner who studied the other lesson was marked
+  wrong.
+- A bug the report button exposed: the quiz's global `Enter` handler
+  advanced the question whenever focus was not in the action bar, so
+  pressing Enter on any control inside the page fired twice. Reporting a
+  question skipped the next one. The guard now asks whether the target is
+  a control `Enter` already activates.
+- 75 unit tests, 429 verification checks.
+
 ## v0.14 — 2026-09-03
 
 The research round, and everything in it that could be built the same day.

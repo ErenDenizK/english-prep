@@ -163,3 +163,34 @@ enough.
 
 Dated, newest first. Record every reviewer run, including the bad ones —
 a brief that had to be rewritten is the most useful thing in this file.
+
+### 2026-09-03 — first run of `docs/agents/reviewer.md`
+
+**Recall 5/5. Precision 5/5. Discrimination 4/5.** Believed, and run on
+the rest of the corpus; the findings are in `docs/content-review.md`.
+
+Every planted defect was found with the right class. `tenses-t20` came
+back with its second, unrequired defect (D4) as well, and the *Present
+Perfect vs Past Simple* failure was reported once at lesson level as an
+**L5** rather than four times as an item defect — which is the better
+reading of it, and the reason it is written up here at category level.
+The one point lost: it called that finding `worth fixing` where this file
+says `blocking`.
+
+**And it found a hole in this key.** Four of the five items certified
+sound above carry a real **D5** — `tenses-t17`, `modals-t10`,
+`modals-t14` and `passive-voice-t4` all have explanations that argue only
+for the key and never name a wrong option, which
+`docs/CONTENT_GUIDE.md` requires and which I had not applied when
+building the set. `modals-t10`'s is the sharpest: it rules out
+`mustn't`, which is not one of its four options.
+
+Those four are **not** counted as false positives, because the reviewer
+did not claim any of them was wrongly keyed or wrongly built — it passed
+every one on its key and attached a defect that is true. The set stays as
+it is, with this correction attached: *"sound"* here means sound on the
+key and on D1–D3, not clean on all twelve. A future run that reports the
+same four D5s is agreeing with this one, not failing.
+
+`modals-t23` passed completely clean from every pass in the round, blind
+and adversarial, and is the best item in the corpus.

@@ -312,6 +312,49 @@ rewrite of a question that is currently answerable. None was made.
 
 ---
 
+## Round 1 content review (2026-09-03)
+
+Six reviewers, none of whom saw another's output, over all 72 questions
+and all 18 lessons. The full report is `docs/content-review.md`; it is
+the record, and the summary here exists so this file stays the channel it
+claims to be.
+
+Four things that change what the next authoring round should do:
+
+**Nothing is miskeyed.** Two blind passes, different option orders, no
+answer key: 144 of 144 answers matched. The corpus is worth repairing
+rather than replacing.
+
+**Sixteen items have a second defensible answer**, ten of them named by
+both passes independently. They cluster: near-synonym modals
+(`should`/`ought to`/`had better`), future-form preference
+(`leaves`/`is leaving`), and agent omission as a style judgement.
+
+**No lesson is insufficient — every lesson teaches more than its
+questions test.** Zero L1 across all eighteen. About twenty caveats are
+warned about and never sprung, including the flagship `for` warning in
+*Present Perfect vs Past Simple* this file already recorded. Fifteen
+forms the passive lessons teach appear on no option list at all.
+
+**Questions were built on their own lessons' example sentences** — 20 of
+24 keys in one topic. Because `check` blocks draw from the same
+category's questions, the learner meets the answer sentence a few blocks
+above the question. That is now rule 1 in
+`docs/agents/question-author.md`.
+
+Seven questions were rewritten; three rewrites failed their own blind
+re-review and were reverted or redone. `docs/agents/category-spec.md` and
+its worked example are the response: a spec per category, written before
+its content, because every finding worth acting on was invisible inside
+one item and obvious across four.
+
+Four items on this file's open-questions list above are still open and
+are still the owner's call, because each is a taxonomy change. The review
+agreed with all four and added a fifth: *Must vs Have to vs Don't Have
+to* does not name `mustn't`, which is `modals-t3`'s key.
+
+---
+
 ## The signal-word trap (verified 2026-09-03)
 
 The learning-design research arm claimed that the lessons teach signal

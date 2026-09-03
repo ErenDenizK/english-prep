@@ -147,6 +147,35 @@ tell a thorough pass from a shallow one.
 
 ---
 
+## One thing a reviewer of this kind gets wrong
+
+A blind pass is run by somebody fluent in English. The learners are not.
+Those two facts collide in exactly one column — **D2, the dead option** —
+and the collision is systematic rather than occasional.
+
+It surfaced on 2026-09-03. A reviewer rejected `had better to` and
+`ought try` as *"typographical mutilations … no B2 learner deliberating
+meaning will weigh either"*. But `had better to` is the error Turkish
+speakers actually make, the lesson for that category says so, and all
+three of that lesson's pitfalls are built on it. A fluent reader's "no
+learner would consider this" is a judgement about **themselves**.
+
+So, when calling D2:
+
+- ask whether *this* learner would weigh it — a Turkish speaker at B2–C1,
+  carrying Turkish's own patterns — not whether you would;
+- an option that is an error the lesson explicitly teaches against is a
+  **live** distractor, however obviously wrong it looks;
+- an option that is wrong for a reason unrelated to anything taught
+  (`am` in *I always am it painted*) is dead, and that is the real D2.
+
+Say which of the two you are applying when the call is close. The other
+eleven defect classes are not affected: a second defensible answer, a
+style judgement or a missing contrast reads the same from either side of
+the fluency line.
+
+---
+
 ## What a reviewer must not do
 
 - Rewrite an item. A fixed item has not been reviewed; it has been

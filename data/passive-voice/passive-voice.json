@@ -146,11 +146,11 @@
     {
       "id": "passive-voice-t15",
       "category": "Causative: Have/Get Something Done",
-      "paragraph": "I don't paint my own house — I always ____ it painted by professionals every few years.",
-      "options": ["have", "do", "make", "am"],
+      "paragraph": "I have never held a paint roller in my life. Every few years I simply ____ the whole house painted by the same firm my father always used.",
+      "options": ["have", "do", "make", "let"],
       "correctIndex": 0,
-      "explanation": "Cümlede kişinin evi kendisinin boyamadığı, başkasına yaptırdığı açıkça belirtiliyor, bu yüzden 'have' + nesne + V3 yapısı kullanılır.",
-      "tip": "Bir işi kendin yapmayıp başkasına yaptırdığını vurgulamak istediğinde 'have/get something done' kullan."
+      "explanation": "Kişi işi kendisi yapmıyor, başkasına yaptırıyor; bunun kalıbı 'have + nesne + V3'tür. 'make' yaptırma kalıbına girmez — 'make somebody do' der, 'make something done' demez; 'let' ise izin vermek anlamındadır.",
+      "tip": "Bir işi başkasına yaptırdığında 'have/get something done' kullan; 'make' ve 'let' bu kalıba girmez."
     },
     {
       "id": "passive-voice-t16",
@@ -218,11 +218,11 @@
     {
       "id": "passive-voice-t23",
       "category": "By + Agent: Include vs Omit",
-      "paragraph": "The patient ____ to the hospital immediately after the accident, and doctors began treatment within minutes.",
-      "options": ["was taken", "was taken by paramedics", "was taken by the ambulance driver", "was taken by staff"],
+      "paragraph": "The signature at the bottom looked convincing at first, but the museum's analysts showed that the whole letter ____ a modern ballpoint pen, not the quill an eighteenth-century clerk would have used.",
+      "options": ["was written with", "was written by", "was written", "wrote"],
       "correctIndex": 0,
-      "explanation": "Hastayı kimin hastaneye götürdüğü (paramedikler/ambulans ekibi) zaten tahmin edilebilir ve önemli değil, bu yüzden fail belirtilmeden sade yapı kullanılır.",
-      "tip": "Fail bariz/tahmin edilebilirse (bir kaza kurbanının hastaneye götürülmesi gibi) genelde belirtilmez."
+      "explanation": "Söylenen şey işi yapan kişi değil, kullanılan araçtır; araç için 'by' değil 'with' kullanılır. 'was written by' kalemi failin kendisi gibi gösterir, 'was written' ise arkasındaki isim öbeğini boşta bırakır.",
+      "tip": "Fail (kim yaptı) için 'by', araç ya da malzeme (neyle yapıldı) için 'with'."
     },
     {
       "id": "passive-voice-t24",
@@ -326,10 +326,14 @@
           "heading": "Hangi zamanın edilgeni?",
           "rules": [
             { "signals": ["every morning", "usually", "always", "twice a week"], "then": "Present Simple Passive" },
-            { "signals": ["now", "at the moment", "this week", "currently"], "then": "Present Continuous Passive" },
+            { "signals": ["now", "at the moment", "currently"], "then": "Present Continuous Passive" },
             { "signals": ["yesterday", "in 1973", "last week", "two years ago"], "then": "Past Simple Passive" },
             { "signals": ["since", "so far", "already", "recently"], "then": "Present Perfect Passive" },
-            { "condition": "Cümlede iki geçmiş olay varsa ve biri diğerinden önce olmuşsa", "then": "Past Perfect Passive" }
+            { "condition": "Cümlede iki geçmiş olay varsa ve biri diğerinden önce olmuşsa", "then": "Past Perfect Passive" },
+            {
+              "condition": "Bir zaman ifadesi iki tarafa da uyuyorsa (this week, this year), belirleyici olan kelime değil eylemin şu anda sürüp sürmediğidir: sürüyorsa Continuous, sonucu sayılıyorsa Perfect",
+              "then": "Present Continuous Passive"
+            }
           ]
         }
       ]
