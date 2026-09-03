@@ -45,6 +45,62 @@ Perfect") rather than one isolated form — same approach as the existing
 Tenses content, and per the question/lesson schema and AI-authoring prompt
 templates already documented in the README.
 
+## Interaction model proposal: guided path (Eğitim) + open world (Test)
+
+Proposed design for how the two tabs should feel, building on the topic
+order above. This reuses the existing `lessons`/`questions` schema — no new
+question format is required to build this.
+
+**Eğitim = a single linear, story-like path, chapter by chapter.**
+
+- The Stage A → B → C topic order above becomes one path. Each topic is a
+  "level"; each level is split into chapters — one chapter per lesson
+  `category`, matching the schema 1:1 (Tenses' 6 categories → 6 chapters,
+  etc.), so no new content unit needs inventing.
+- A chapter combines, in order: a short, simple framing line to open it
+  (light narrative touch — one relatable sentence, not a full story — so it
+  reads as "next step in a journey" rather than a grammar-book entry) → the
+  existing `rule` (Turkish) → the existing `examples` (English sentence +
+  Turkish note) → 2-3 embedded check questions pulled from that same
+  category's existing `questions` pool → instant feedback using the
+  existing `explanation`/`tip` fields.
+- **Locking:** chapter *N+1* unlocks once chapter *N* has been opened and
+  its check questions attempted (a soft gate — seeing the material and
+  trying the questions is what unlocks the next step, not a required
+  score, so it doesn't feel punishing). Topic *N+1* unlocks once every
+  chapter in topic *N* has been completed.
+- **End-of-topic beat:** a short "you finished Tenses" moment with two
+  paths forward — continue to the next unlocked topic, or jump into Test
+  for that topic to practice freely.
+
+**Test = open world, unchanged.**
+
+- No gating tied to Eğitim progress, ever. Any live topic's test, or the
+  mixed all-topics test, stays selectable at any time — exactly today's
+  behavior. This is the deliberate contrast: Eğitim is the guided,
+  one-thing-unlocks-at-a-time path for learners who want structure; Test is
+  the sandbox for free practice, review, or jumping straight to a known
+  weak spot (per the Profil tab's weak-category data) without walking the
+  path first.
+- No content changes needed here — same schema, same free topic/mixed
+  selection.
+
+**Content impact.** The `lessons` and `questions` files I'm already
+producing topic-by-topic cover both surfaces as-is — one content set, two
+presentations. The one genuinely new piece is the chapter's opening framing
+line; I'd author it as a small addition alongside each lesson entry's
+`rule` (e.g. a new optional `intro` field) rather than a new schema.
+
+**Open question for the dev side, not decided here:** whether the 2-3
+embedded check questions per chapter should be the *same* items that also
+live in the Test pool for that category, or a distinct reserved subset (so
+a learner doesn't see an identical question twice between Eğitim and
+Test). If a reserved subset is wanted, I'd need to author slightly more
+questions per category going forward (e.g. 6 instead of 4, with 2 marked
+for embedding) — worth deciding before more topics are authored, since it
+changes how much per-category content I write. Locking/completion logic,
+progress storage, and the path/map UI itself are dev-side calls entirely.
+
 ## Status
 
 | Topic | Status |
@@ -75,7 +131,10 @@ Tags. When that looks worth it, it'll be logged here with the topic and
 the reasoning. Evaluating and building a new format is a dev-side call, not
 something produced from the content side.
 
-_No open requests yet._
+- **Logged 2026-09-03:** guided-path chapter framing line (see
+  "Interaction model proposal" above) — proposing a new optional `intro`
+  field per lesson entry. Everything else in that proposal reuses the
+  existing schema.
 
 ## Notes
 
