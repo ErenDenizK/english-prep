@@ -93,6 +93,15 @@
     <div class="bleed" id="answers"></div>
   </div>
 
+  <div class="surface stack">
+    <p class="t-label">Restatement — cümlelik seçenekler</p>
+    <!-- The same Option primitive carrying whole sentences. It is here
+         because this is the case that breaks it: the row aligns to its
+         first line, and at 320px these wrap to three. -->
+    <div id="restatement"></div>
+    <div class="bleed" id="restatement-options"></div>
+  </div>
+
   <div class="stack stack--tight">
     <p class="t-label">Yüzey, alan, istatistik</p>
     <div class="surface stack stack--tight">
@@ -125,6 +134,8 @@
   import { icon, ICON_NAMES } from "../js/icons.js";
   import { renderOptions } from "../js/answers.js";
   import { renderAnswerFeedback } from "../js/feedback.js";
+  import { renderPrompt } from "../js/prompt.js";
+  import { QUESTION_TYPE } from "../js/topics.js";
 
   const question = {
     prompt: "The policy ____ twice since the term began.",
@@ -139,6 +150,20 @@
     renderOptions(question, { selected: "changed", answered: true }),
     renderAnswerFeedback(question, false)
   );
+
+  const restated = {
+    type: QUESTION_TYPE.RESTATEMENT,
+    prompt: "If the shipment had left on Monday, it would already have reached the depot.",
+    options: [
+      "The shipment did not leave on Monday, so it has not reached the depot yet.",
+      "The shipment left on Monday and reached the depot as planned.",
+      "The shipment will reach the depot if it leaves on Monday.",
+      "The shipment reached the depot even though it left after Monday.",
+    ],
+    correctAnswer: "The shipment did not leave on Monday, so it has not reached the depot yet.",
+  };
+  document.getElementById("restatement").appendChild(renderPrompt(restated));
+  document.getElementById("restatement-options").appendChild(renderOptions(restated));
 
   for (const host of document.querySelectorAll("[data-icon]")) {
     host.appendChild(icon(host.dataset.icon, { size: host.closest(".nav") ? 24 : 20 }));

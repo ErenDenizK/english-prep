@@ -433,6 +433,52 @@ async function runProblemReport(browser) {
 }
 
 /**
+ * docs/components.html — every primitive on one page, against the real
+ * CSS. It was not checked by anything until a restatement's options went
+ * on it: the case that breaks the Option row is four whole sentences at
+ * 320px, and a component sheet nobody runs is a sheet that has already
+ * drifted.
+ */
+async function runComponents(browser) {
+  for (const width of [320, 390]) {
+    const context = await browser.newContext({ viewport: { width, height: 900 } });
+    const page = await context.newPage();
+    const errors = [];
+    page.on("console", (message) => {
+      if (message.type() === "error") {
+        errors.push(message.text());
+      }
+    });
+    page.on("pageerror", (error) => errors.push(error.message));
+
+    await page.goto(`${BASE}/docs/components.html`, { waitUntil: "networkidle" });
+    await page.waitForSelector("#restatement-options .option");
+
+    ok(
+      (await page.locator("#restatement-options .option").count()) === 4,
+      `${width}px: restatement seçenekleri çiziliyor`
+    );
+    ok(
+      (await page.locator("#restatement .t-meta").textContent()).includes("anlamca en yakın"),
+      `${width}px: restatement yönergesi görünüyor`
+    );
+
+    // The case the alignment change exists for: options that actually wrap.
+    const wrapped = await page.evaluate(() => {
+      const text = document.querySelector("#restatement-options .option__text");
+      const range = document.createRange();
+      range.selectNodeContents(text);
+      return range.getClientRects().length;
+    });
+    ok(wrapped > 1, `${width}px: cümlelik seçenek gerçekten satır kırıyor (${wrapped} satır)`);
+
+    await auditLayout(page, `bileşen sayfası ${width}px`, width);
+    ok(errors.length === 0, `${width}px: konsol temiz${errors.length ? ` — ${errors[0]}` : ""}`);
+    await context.close();
+  }
+}
+
+/**
  * A learner's whole history moving from one browser to another. This is
  * the only operation in the app that can destroy something they cannot get
  * back, so it is checked end to end in two real browser contexts rather
@@ -691,6 +737,9 @@ try {
 
   console.log("\n=== önce kendin düşün ===");
   await runThinkFirst(browser);
+
+  console.log("\n=== bileşen sayfası ===");
+  await runComponents(browser);
 
   console.log("\n=== soru bildirimi ===");
   await runProblemReport(browser);
