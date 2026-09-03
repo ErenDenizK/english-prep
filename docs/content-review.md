@@ -280,6 +280,51 @@ manifest and lesson together.
 
 ---
 
+## Round 2: the explanation repair (2026-09-03)
+
+The largest finding of round 1 was that two thirds of the explanations
+argued only for the key. Forty-six were rewritten by three agents, one
+per topic, each given the questions **and the lesson for their category**
+so the wording would match what the learner had been taught.
+
+Then the rewrites were fact-checked by a reader who had not written them.
+
+| | |
+| --- | --- |
+| Clean | **34 of 46** |
+| Explanations naming an option not on their own list (the pre-existing defect) | **0** |
+| Explanations whose reasoning led away from the key | **0** |
+| **False statements about English** | **12** |
+
+The two that mattered:
+
+- A tip said `should have` *"çıkarım bildirmez"* — does not express
+  inference. But *the parcel should have arrived by now* is ordinary
+  English, and a learner who carried that rule away would misread it.
+- `passive-voice-t13` asserted that *"İngilizcede yaptırma anlamını
+  yalnızca have ve get taşır"*. False — `make` and `let` are causatives
+  too — and it contradicted the same explanation's own sentence about
+  `make` two clauses earlier. What is true is narrower: only `have` and
+  `get` take the *object + past participle* pattern.
+
+The other ten were the same failure at lower stakes: *yet* said to occur
+"only" in questions and negatives; `for` described as marking a period
+still open, when it marks duration and *he lived there for five years* is
+finished — which is precisely the point the *Present Perfect vs Past
+Simple* lesson makes, so the explanation contradicted a shipped lesson;
+Past Perfect said to require a second past event after it.
+
+**The shape is worth naming, because it will recur.** None of the twelve
+was a wrong answer or a bad argument. Each was a correct local
+explanation finished off with a generalisation wider than the evidence
+for it — the sentence an author writes to sound authoritative once the
+real work is done. It is invisible to the person writing it and obvious
+to anybody reading it cold, which is the entire case for the review step.
+
+All twelve corrected. `npm run validate` now reports zero warnings.
+
+---
+
 ## What this changes in the plan
 
 `docs/v1-plan.md` stage 3 said *"one item in four should be decided by

@@ -32,6 +32,35 @@ Also:
   averages 362; past 600 it stops being an explanation and becomes the
   lesson again, in the one place a learner is least willing to read it.
 
+### The rewrites were checked, and twelve of them were wrong
+
+An independent pass fact-checked all 46, and found 34 clean. It found no
+explanation arguing against an option that was not on its own list, and
+none whose reasoning led anywhere but the key — but it found **twelve
+statements about English that are not true**, almost all of the same
+shape: a correct local argument closed off with an absolute wider than
+the fact supporting it.
+
+Two were serious enough to mislead. A tip said `should have` "does not
+express inference" — but *the parcel should have arrived by now* is
+ordinary English. And `passive-voice-t13` claimed that "in English only
+*have* and *get* carry causative meaning", which is false, and which
+contradicted the same explanation's own sentence about `make`. What is
+true, and what it says now, is narrower: only `have` and `get` take the
+*object + past participle* pattern.
+
+The rest were the same failure at lower stakes: *yet* declared to occur
+"only" in questions and negatives (*we have yet to hear back*), `for`
+described as marking a period that is still open (it marks duration —
+*he lived there for five years* is finished, which is the very point the
+Present Perfect lesson makes), Past Perfect said to require a second past
+event after it. All twelve are corrected.
+
+This is the third time in two releases that a review has caught the
+thing written an hour earlier. The rule that produced it is worth
+stating plainly: **nothing this project publishes is certified by
+whoever wrote it.**
+
 ## v0.15 — 2026-09-03
 
 Stage 1 of `docs/v1-plan.md`: the content pipeline, proved on the 72
