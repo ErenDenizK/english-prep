@@ -10,6 +10,7 @@
 import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
 import { getQuizRequest, setQuizResult } from "./session-state.js";
+import { getItemStats } from "./storage.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderOptions } from "./answers.js";
 import { el, clear, appendBlanked } from "./dom.js";
@@ -204,7 +205,11 @@ async function init() {
     if (request.category) {
       questions = questions.filter((question) => question.category === request.category);
     }
-    const session = buildQuizSession(questions, request.count);
+    // Worst-known first: questions never answered, then ones answered
+    // wrong last time, then the least recently seen. Without this the app
+    // re-asks what the learner already knows and the score stops meaning
+    // anything after the first pass through a category.
+    const session = buildQuizSession(questions, request.count, getItemStats());
 
     if (session.length === 0) {
       showMessage("Bu seçim için soru bulunamadı.");
