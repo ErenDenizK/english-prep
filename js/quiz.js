@@ -238,6 +238,11 @@ async function init() {
     if (request.category) {
       questions = questions.filter((question) => question.category === request.category);
     }
+    if (Array.isArray(request.ids)) {
+      // Yanlış defteri: the exact set the learner was shown a count for.
+      const wanted = new Set(request.ids);
+      questions = questions.filter((question) => wanted.has(question.id));
+    }
     // Worst-known first: questions never answered, then ones answered
     // wrong last time, then the least recently seen. Without this the app
     // re-asks what the learner already knows and the score stops meaning

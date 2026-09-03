@@ -417,3 +417,98 @@ test("accuracy is null before anything has been answered", () => {
   assert.equal(storage.getOverallStats().accuracy, null);
   assert.equal(storage.getOverallStats().accuracyWindow, 0);
 });
+
+/* ---- Yanlış defteri ----
+ *
+ * The graduation rule is the whole design, so it is the whole test: an
+ * item leaves the book after two correct answers on two separate days,
+ * and one wrong answer puts it straight back with the count reset. These
+ * are the cases where a learner would notice the app got it wrong.
+ */
+
+const one = (id, correct, date) =>
+  attempt({ date, questions: [{ id, topicId: "tenses", category: "A vs B", correct }] });
+
+test("an item enters the book the moment it is answered wrong", () => {
+  storage.recordAttempt(one("q1", false, "2026-01-01T09:00:00.000Z"));
+  const book = storage.getMistakeBook();
+  assert.equal(book.length, 1);
+  assert.equal(book[0].id, "q1");
+  assert.equal(book[0].wrong, 1);
+  assert.equal(book[0].correctDays, 0);
+});
+
+test("a question never answered wrong is not in the book", () => {
+  storage.recordAttempt(one("q1", true, "2026-01-01T09:00:00.000Z"));
+  assert.deepEqual(storage.getMistakeBook(), []);
+});
+
+test("one correct answer does not graduate an item", () => {
+  storage.recordAttempt(one("q1", false, "2026-01-01T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-02T09:00:00.000Z"));
+  assert.equal(storage.getMistakeBook().length, 1);
+  assert.equal(storage.getMistakeBook()[0].correctDays, 1);
+});
+
+test("two correct answers on the SAME day do not graduate an item", () => {
+  // The point of the rule: answering again ten seconds after reading the
+  // explanation proves the explanation was on screen, nothing more.
+  storage.recordAttempt(one("q1", false, "2026-01-01T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-02T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-02T09:00:30.000Z"));
+  assert.equal(storage.getMistakeBook().length, 1);
+});
+
+test("two correct answers on separate days graduate an item", () => {
+  storage.recordAttempt(one("q1", false, "2026-01-01T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-02T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-03T09:00:00.000Z"));
+  assert.deepEqual(storage.getMistakeBook(), []);
+});
+
+test("getting it wrong again puts it back and resets the count", () => {
+  storage.recordAttempt(one("q1", false, "2026-01-01T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-02T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", false, "2026-01-03T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-04T09:00:00.000Z"));
+  const book = storage.getMistakeBook();
+  assert.equal(book.length, 1);
+  assert.equal(book[0].wrong, 2);
+  assert.equal(book[0].correctDays, 1, "the day before the second mistake must not count");
+});
+
+test("correct answers before the first mistake do not count towards graduating", () => {
+  storage.recordAttempt(one("q1", true, "2026-01-01T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-02T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", false, "2026-01-03T09:00:00.000Z"));
+  assert.equal(storage.getMistakeBook()[0].correctDays, 0);
+});
+
+test("the book is ordered worst first", () => {
+  storage.recordAttempt(one("often", false, "2026-01-01T09:00:00.000Z"));
+  storage.recordAttempt(one("often", false, "2026-01-02T09:00:00.000Z"));
+  storage.recordAttempt(one("once", false, "2026-01-03T09:00:00.000Z"));
+  storage.recordAttempt(one("older", false, "2026-01-01T08:00:00.000Z"));
+  const ids = storage.getMistakeBook().map((entry) => entry.id);
+  assert.equal(ids[0], "often", "more wrong answers first");
+  assert.deepEqual(ids.slice(1), ["once", "older"], "then most recently wrong");
+});
+
+test("the book carries topic and category so a caller need not load content", () => {
+  storage.recordAttempt(one("q1", false, "2026-01-01T09:00:00.000Z"));
+  assert.equal(storage.getMistakeBook()[0].topicId, "tenses");
+  assert.equal(storage.getMistakeBook()[0].category, "A vs B");
+});
+
+test("a backup restored out of order still graduates correctly", () => {
+  // History is appended in order, but merged history is not, so the pass
+  // sorts by timestamp rather than trusting position.
+  storage.recordAttempt(one("q1", true, "2026-01-03T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", false, "2026-01-01T09:00:00.000Z"));
+  storage.recordAttempt(one("q1", true, "2026-01-02T09:00:00.000Z"));
+  assert.deepEqual(storage.getMistakeBook(), [], "two later corrects on separate days");
+});
+
+test("an empty store has an empty book rather than throwing", () => {
+  assert.deepEqual(storage.getMistakeBook(), []);
+});
