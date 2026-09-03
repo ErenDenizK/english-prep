@@ -81,6 +81,13 @@ to the next question, not a restatement of this one. "Bu cümlede 'since'
 olduğu için Present Perfect" is a bad tip; "'since + geçmiş bir nokta'
 her zaman Present Perfect ile kullanılır" is a good one.
 
+**Some of your questions are used as teaching.** The Eğitim reader pulls
+a lesson's check cards from the questions sharing its category, so a few
+of yours will be met right after the rule is explained rather than in an
+exam run. Nothing changes in how you write them — but a question that
+only makes sense to someone who has already finished the whole topic is
+worth flagging to the supervisor.
+
 **Vary everything else.** Different subjects, settings, and sentence
 shapes across the set. University life is a natural setting for this
 audience but shouldn't be the only one. Do not reuse a scenario.
@@ -105,6 +112,11 @@ check them yourself:
 - exactly 4 options, all distinct (comparison is case-insensitive);
 - `correctIndex` in range, and pointing at the option you meant;
 - exactly one `____` (four underscores, no more, no fewer);
+- **read the filled-in sentence**, not just the parts: the validator
+  substitutes your correct option into the paragraph and rejects a word
+  repeated across the seam ("The novel was written by ____ by a
+  student"). It has already caught that in real content — writing the
+  option and the sentence separately makes it invisible;
 - ids unique and prefixed with the topic id;
 - explanations and tips actually in Turkish;
 - paragraphs of at least ~15 words.

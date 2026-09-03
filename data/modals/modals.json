@@ -1,0 +1,353 @@
+{
+  "topicId": "modals",
+  "title": "Modals",
+  "level": "B2-C1",
+  "note": "Her soru YTU IYS ve Bilkent hazirlik sinavi tarzinda: kisa paragraf + tek bosluk + 4 secenek. Aciklamalar ve tuyolar Turkce, ogrenme materyali Ingilizce.",
+  "overview": {
+    "title": "Modallar (Modal Verbs) Nedir?",
+    "body": [
+      "Modal fiiller (can, could, may, might, must, should, will, would, ought to, need, had better gibi) İngilizce'de bir eylemin gerçekleşme olasılığını, zorunluluğunu, iznini ya da tavsiye niteliğini anlatan yardımcı fiillerdir. Diğer fiillerden farklı olarak çekimlenmezler (he/she/it ile bile '-s' almazlar: 'he can', asla 'he cans' değil), ve kendilerinden sonra her zaman fiilin yalın hali (base form) gelir: 'she must go', asla 'she must going' ya da 'she must to go' değil.",
+      "Türkçe'de zorunluluk, izin ve olasılık genelde ayrı kelimelerle (gerekmek, gerekiyor, -abilir, izin var gibi) ama daha esnek bir şekilde ifade edilir. İngilizce'de ise her modal, çok spesifik bir anlam ve ton taşır: 'must' ile 'have to' ikisi de 'zorunlu' demek gibi görünse de, biri içsel/kişisel bir zorunluluğu, diğeri dışarıdan gelen bir kuralı ifade eder. Bu ince farklar, sınavlarda en sık test edilen noktalardır.",
+      "Bu konuda modalleri altı ana kullanım alanına göre işleyeceğiz: zorunluluk/gereklilik, izin/olasılık, şimdiki zamana dair çıkarımlar, geçmişe dair çıkarımlar (modal perfects), tavsiye, ve yetenek. Her biri kendi mantığıyla ayrı bir makale."
+    ],
+    "keyPoints": [
+      "Modal fiiller çekimlenmez ve kendilerinden sonra her zaman fiilin yalın hali gelir.",
+      "Aynı Türkçe karşılığa sahip görünen modaller (must/have to gibi) çoğu zaman farklı bir tonu ya da kaynağı ima eder.",
+      "Modalleri doğru kullanmak, kelimenin kendisinden çok, cümlenin bağlamındaki ipuçlarını (kural mı kişisel görüş mü, kesin mi belirsiz mi) okumakla ilgilidir."
+    ]
+  },
+  "questions": [
+    {
+      "id": "modals-t1",
+      "category": "Must vs Have to vs Don't Have to",
+      "paragraph": "I ____ finish this report tonight — nobody is forcing me, but I promised my manager and I don't want to let her down.",
+      "options": ["must", "have to", "don't have to", "mustn't"],
+      "correctIndex": 0,
+      "explanation": "Burada dışarıdan dayatılan bir kural değil, konuşmacının kendi hissettiği kişisel bir zorunluluk/sorumluluk söz konusu ('kimse zorlamıyor ama söz verdim'), bu yüzden 'must' kullanılır. 'Have to' dışarıdan gelen bir kural/otorite için kullanılırdı.",
+      "tip": "'Must', konuşmacının kendi görüşüne dayanan içsel bir zorunluluğu; 'have to' ise dışarıdan gelen bir kural veya otoriteyi ifade eder."
+    },
+    {
+      "id": "modals-t2",
+      "category": "Must vs Have to vs Don't Have to",
+      "paragraph": "According to the university's regulations, every student ____ submit a health report before moving into the dormitory.",
+      "options": ["has to", "must", "doesn't have to", "mustn't"],
+      "correctIndex": 0,
+      "explanation": "'According to the university's regulations' ifadesi dışarıdan (kurum tarafından) belirlenen bir kuralı gösteriyor, bu yüzden 'have to' (has to) kullanılır. Anlamca 'must'a yakın olsa da, resmi kurumsal kural bağlamında sınavlarda 'have to' tercih edilir.",
+      "tip": "Resmi kurallar, yasalar ve kurumsal zorunluluklar için genelde 'have to' tercih edilir."
+    },
+    {
+      "id": "modals-t3",
+      "category": "Must vs Have to vs Don't Have to",
+      "paragraph": "Passengers ____ use their phones during takeoff and landing; it's strictly forbidden by the airline for safety reasons.",
+      "options": ["mustn't", "don't have to", "don't need to", "may not need to"],
+      "correctIndex": 0,
+      "explanation": "'Strictly forbidden' (kesinlikle yasak) ifadesi bir yasağı gösteriyor, bu yüzden 'mustn't' (yapmamalı/yasak) kullanılır. 'Don't have to' ise bir şeyin gerekli olmadığını, yasak olduğunu değil, ifade eder — anlamca tamamen farklıdır.",
+      "tip": "'Mustn't' = yasak (yapma!); 'don't have to' = gerekli değil (istersen yapabilirsin). Bu ikisini karıştırmak sınavlarda en sık test edilen modal hatalarından biridir."
+    },
+    {
+      "id": "modals-t4",
+      "category": "Must vs Have to vs Don't Have to",
+      "paragraph": "You ____ bring your own textbook to the seminar — the professor said she'll provide printed copies for everyone.",
+      "options": ["don't have to", "mustn't", "can't", "shouldn't"],
+      "correctIndex": 0,
+      "explanation": "Profesörün herkese kopya sağlayacağını söylemesi, kitap getirmenin gerekli olmadığını gösteriyor (yasak değil, sadece gereksiz), bu yüzden 'don't have to' kullanılır.",
+      "tip": "Bir şeyin yapılmasına gerek olmadığını (ama yasak olmadığını) belirtmek için 'don't have to' veya 'don't need to' kullanılır."
+    },
+    {
+      "id": "modals-t5",
+      "category": "Can vs Could vs May vs Might",
+      "paragraph": "\"____ I borrow your notes from yesterday's lecture? I missed the class because I was sick,\" Ayşe asked her friend casually.",
+      "options": ["Can", "Must", "Should", "Will"],
+      "correctIndex": 0,
+      "explanation": "Arkadaşça, gündelik bir izin isteme durumu söz konusu, bu yüzden 'can' uygundur. 'Must', 'should' ve 'will' izin isteme anlamı taşımaz.",
+      "tip": "Gündelik, samimi izin istemelerinde 'can', daha resmi durumlarda 'may' kullanılır."
+    },
+    {
+      "id": "modals-t6",
+      "category": "Can vs Could vs May vs Might",
+      "paragraph": "The meeting ____ be postponed to next week if the director doesn't manage to finish reviewing the budget in time.",
+      "options": ["may", "must", "should", "can"],
+      "correctIndex": 0,
+      "explanation": "Burada kesin olmayan, olası bir gelecek durumdan bahsediliyor ('postponed... if... doesn't manage'), bu da 'may' (belki/olabilir) ile ifade edilen bir olasılığı gösterir. 'Must' kesinlik, 'should' tavsiye/beklenti, 'can' ise genel yetenek/izin anlamı taşır.",
+      "tip": "Kesin olmayan, orta düzey bir olasılık için 'may' veya 'might' kullanılır; 'can' olasılık belirtmek için kullanılmaz."
+    },
+    {
+      "id": "modals-t7",
+      "category": "Can vs Could vs May vs Might",
+      "paragraph": "I'm not sure yet, but I ____ come to the party later tonight if I finish my assignment early.",
+      "options": ["might", "must", "have to", "can't"],
+      "correctIndex": 0,
+      "explanation": "'I'm not sure yet' ifadesi düşük kesinlikli bir olasılığı gösteriyor, bu yüzden 'might' (belki, zayıf olasılık) kullanılır. 'Must' ve 'have to' zorunluluk, 'can't' ise imkansızlığı ifade eder.",
+      "tip": "'Might', 'may'e göre biraz daha düşük bir olasılık derecesini ifade eder; belirsizlik vurgulanmak istendiğinde tercih edilir."
+    },
+    {
+      "id": "modals-t8",
+      "category": "Can vs Could vs May vs Might",
+      "paragraph": "\"____ you possibly lend me your charger for a few minutes? Mine just died,\" she asked the stranger next to her politely.",
+      "options": ["Could", "Must", "Shall", "Need"],
+      "correctIndex": 0,
+      "explanation": "'Possibly' ve 'politely' kelimeleri kibar bir rica olduğunu gösteriyor; 'could' bu tarz kibar isteklerde standart kullanımdır. 'Must' bir zorunluluk ifade eder ve bağlama uymaz.",
+      "tip": "Kibar ricalarda 'could you...?' kalıbı 'can you...?'den daha resmi ve naziktir."
+    },
+    {
+      "id": "modals-t9",
+      "category": "Must vs Can't vs Might/Could",
+      "paragraph": "Look at the queue outside that restaurant — it ____ be the best place in town, since it's always this crowded.",
+      "options": ["must", "might", "can't", "should"],
+      "correctIndex": 0,
+      "explanation": "Somut bir kanıta (her zaman kalabalık olması) dayanarak güçlü bir olumlu çıkarım yapılıyor, bu yüzden 'must' (olmalı, kesinlikle öyle) kullanılır.",
+      "tip": "Mevcut kanıtlara dayanan güçlü bir çıkarımı belirtmek için 'must' kullanılır."
+    },
+    {
+      "id": "modals-t10",
+      "category": "Must vs Can't vs Might/Could",
+      "paragraph": "She ____ be at home right now — I just saw her car leaving the parking lot ten minutes ago.",
+      "options": ["can't", "must", "might", "should"],
+      "correctIndex": 0,
+      "explanation": "Aracının az önce ayrıldığını görmüş olmak, evde olma ihtimalini güçlü şekilde imkansız kılıyor, bu yüzden olumsuz kesin çıkarım için 'can't' kullanılır ('mustn't' bu anlamda kullanılmaz).",
+      "tip": "Bir şeyin imkansız/çok düşük ihtimalli olduğuna dair güçlü çıkarımlar için 'can't' kullanılır, 'mustn't' değil."
+    },
+    {
+      "id": "modals-t11",
+      "category": "Must vs Can't vs Might/Could",
+      "paragraph": "Someone is knocking on the door. It ____ be the courier with my package, but I'm not really expecting anything today.",
+      "options": ["might", "must", "can't", "have to"],
+      "correctIndex": 0,
+      "explanation": "'Not really expecting anything' ifadesi düşük kesinlikli bir tahmini gösteriyor, bu yüzden zayıf olasılık bildiren 'might' kullanılır.",
+      "tip": "Zayıf, emin olunmayan çıkarımlar için 'might' veya 'could' kullanılır; 'must' çok daha güçlü bir kesinlik ifade eder."
+    },
+    {
+      "id": "modals-t12",
+      "category": "Must vs Can't vs Might/Could",
+      "paragraph": "He hasn't answered any of my messages in three days, and his phone goes straight to voicemail — something ____ be wrong.",
+      "options": ["must", "should", "can", "will"],
+      "correctIndex": 0,
+      "explanation": "Güçlü kanıtlara (üç gündür cevap vermemesi, telefonun kapalı olması) dayanan kesin bir çıkarım yapılıyor, bu yüzden 'must' kullanılır. 'Should' beklenti/tavsiye anlamı taşır, çıkarım için uygun değildir.",
+      "tip": "'Should' bir beklentiyi ('normalde böyle olmalı') ifade eder, kesin bir çıkarımı değil — 'must' ile karıştırılmamalı."
+    },
+    {
+      "id": "modals-t13",
+      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "paragraph": "The lights are still on and the door is unlocked — the last person to leave ____ forgotten to lock up.",
+      "options": ["must have", "can't have", "should have", "might"],
+      "correctIndex": 0,
+      "explanation": "Işıkların açık ve kapının kilitsiz olması, güçlü bir geçmiş çıkarımı destekliyor, bu yüzden 'must have + V3' (kesinlikle ... olmuş olmalı) kullanılır.",
+      "tip": "Geçmişte olan bir şey hakkında güçlü bir çıkarım yapmak için 'must have + past participle' kullanılır."
+    },
+    {
+      "id": "modals-t14",
+      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "paragraph": "He ____ finished the marathon in under three hours — he's never run more than five kilometers in his life.",
+      "options": ["can't have", "must have", "should have", "needn't have"],
+      "correctIndex": 0,
+      "explanation": "Kişinin daha önce hiç uzun mesafe koşmadığı bilgisi, maratonu üç saatin altında bitirmiş olmasını imkansız kılıyor, bu yüzden 'can't have + V3' kullanılır.",
+      "tip": "Geçmişte bir şeyin imkansız olduğuna dair güçlü çıkarımlar için 'can't have + past participle' kullanılır."
+    },
+    {
+      "id": "modals-t15",
+      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "paragraph": "I ____ studied harder for that exam — I only found out yesterday how much material was actually going to be covered.",
+      "options": ["should have", "must have", "can't have", "may have"],
+      "correctIndex": 0,
+      "explanation": "Cümle geçmişte yapılmayan ama yapılması gereken bir şeyden duyulan pişmanlığı anlatıyor, bu yüzden 'should have + V3' (yapmalıydım ama yapmadım) kullanılır.",
+      "tip": "'Should have + V3', geçmişte yapılmayan ve pişmanlık duyulan bir eylemi anlatır."
+    },
+    {
+      "id": "modals-t16",
+      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "paragraph": "We ____ brought umbrellas after all — the forecast said rain, but the sky was clear the whole afternoon.",
+      "options": ["needn't have", "must have", "shouldn't have", "can't have"],
+      "correctIndex": 0,
+      "explanation": "Şemsiye getirilmiş (yapılmış bir eylem) ama gereksiz olduğu ortaya çıkmış; bu durumu anlatmak için 'needn't have + V3' (yapmaya gerek yoktu ama yapıldı) kullanılır. 'Shouldn't have' ise yanlış/pişmanlık duyulan bir eylemi ima eder, burada durum sadece gereksizlik, hata değil.",
+      "tip": "'Needn't have + V3' = yapıldı ama gereksizmiş; 'shouldn't have + V3' = yapılmamalıydı, hataydı. İkisi farklı anlamlar taşır."
+    },
+    {
+      "id": "modals-t17",
+      "category": "Should vs Ought To vs Had Better",
+      "paragraph": "In my opinion, you ____ try that new bakery downtown — their pastries are supposed to be amazing.",
+      "options": ["should", "had better", "must", "ought to"],
+      "correctIndex": 0,
+      "explanation": "Burada kişisel bir görüşe dayanan hafif bir tavsiye söz konusu ('in my opinion'), bu yüzden en doğal seçim 'should' kullanmaktır. 'Had better' daha acil ve tehdit içeren durumlar için kullanılır, burada bağlama uymaz.",
+      "tip": "'Should', günlük ve genel tavsiyeler için en yaygın kullanılan modal fiildir."
+    },
+    {
+      "id": "modals-t18",
+      "category": "Should vs Ought To vs Had Better",
+      "paragraph": "You ____ finish that assignment tonight — if you hand it in late again, the teacher said she won't accept it at all.",
+      "options": ["had better", "should", "ought to", "might"],
+      "correctIndex": 0,
+      "explanation": "Cümlede net bir tehdit/olumsuz sonuç bulunuyor (ödev kabul edilmeyecek), bu yüzden acil ve sonuç odaklı tavsiye bildiren 'had better' kullanılır. 'Should' daha genel ve hafif bir tavsiyedir, bu aciliyeti taşımaz.",
+      "tip": "'Had better', genellikle belirtilen olumsuz bir sonuçtan kaçınmak için verilen acil tavsiyelerde kullanılır."
+    },
+    {
+      "id": "modals-t19",
+      "category": "Should vs Ought To vs Had Better",
+      "paragraph": "As the eldest sibling, she ____ set a good example for the younger ones, even when it's not easy.",
+      "options": ["ought to", "had better", "must", "can"],
+      "correctIndex": 0,
+      "explanation": "'Ought to' anlamca 'should' ile neredeyse aynıdır ve burada bir sorumluluk/beklenti bildiren biraz daha resmi bir tavsiye olarak kullanılır. 'Had better' bu kadar genel/uzun vadeli bir beklenti için uygun değildir.",
+      "tip": "'Ought to', 'should' ile neredeyse aynı anlama gelir ama biraz daha resmi ve yazılı dilde daha sık görülür; sonrasında 'to' almayı unutma."
+    },
+    {
+      "id": "modals-t20",
+      "category": "Should vs Ought To vs Had Better",
+      "paragraph": "You ____ leave your valuables visible in the car like that; it's basically an invitation for someone to break in.",
+      "options": ["shouldn't", "mustn't have", "don't have to", "needn't"],
+      "correctIndex": 0,
+      "explanation": "Bu, olumsuz bir tavsiye durumu ('yapmaman iyi olur') — 'shouldn't' bu bağlamda doğru kullanımdır. 'Mustn't have' standart bir yapı değildir ve bu bağlamda kullanılmaz.",
+      "tip": "'Shouldn't', bir şeyin yapılmasının iyi bir fikir olmadığını belirten olumsuz tavsiyede kullanılır."
+    },
+    {
+      "id": "modals-t21",
+      "category": "Can vs Could vs Be Able To",
+      "paragraph": "My little brother ____ solve a Rubik's cube in under a minute — it's honestly one of the most impressive things I've ever seen him do.",
+      "options": ["can", "could", "was able to", "will be able to"],
+      "correctIndex": 0,
+      "explanation": "Şu anki genel bir yeteneği anlatıyor, bu yüzden Present Simple ile 'can' kullanılır.",
+      "tip": "Genel, şu anki yetenekler için 'can' kullanılır."
+    },
+    {
+      "id": "modals-t22",
+      "category": "Can vs Could vs Be Able To",
+      "paragraph": "When she was only five years old, she ____ already read entire novels on her own, which amazed everyone in her family.",
+      "options": ["could", "was able to", "can", "has been able to"],
+      "correctIndex": 0,
+      "explanation": "Geçmişte genel/süregelen bir yetenekten bahsediliyor (beş yaşındayken genel olarak yapabiliyordu), bu yüzden 'could' kullanılır.",
+      "tip": "Geçmişteki genel yetenekler için 'could' kullanılır; belirli, tek seferlik bir başarı için 'was/were able to' tercih edilir."
+    },
+    {
+      "id": "modals-t23",
+      "category": "Can vs Could vs Be Able To",
+      "paragraph": "Despite the terrible traffic, she ____ arrive at the interview exactly on time, which really impressed the hiring manager.",
+      "options": ["was able to", "could", "can", "would be able to"],
+      "correctIndex": 0,
+      "explanation": "Burada belirli, tek seferlik bir başarı anlatılıyor (o gün, o trafiğe rağmen zamanında varması), bu yüzden 'was able to' kullanılır, genel yetenek bildiren 'could' değil.",
+      "tip": "Belirli bir durumda, tek seferlik somut bir başarıyı anlatmak için 'was/were able to' kullanılır, 'could' değil."
+    },
+    {
+      "id": "modals-t24",
+      "category": "Can vs Could vs Be Able To",
+      "paragraph": "Once you finish this course, you ____ speak with much more confidence in job interviews and everyday conversations.",
+      "options": ["will be able to", "can", "could", "were able to"],
+      "correctIndex": 0,
+      "explanation": "Gelecekte kazanılacak bir yetenekten bahsediliyor; 'can' bir modal olduğu için başka bir modal ('will') ile yan yana kullanılamaz, bu yüzden 'will be able to' kullanılır.",
+      "tip": "'Can' başka bir modal ile birlikte kullanılamaz; gelecekteki yetenek için 'will be able to' gerekir."
+    }
+  ],
+  "lessons": [
+    {
+      "category": "Must vs Have to vs Don't Have to",
+      "intro": "Ali'nin bu hafta hem kendi koyduğu kurallar hem de üniversitenin koyduğu kurallar var — ikisi de 'zorunluluk' ama aynı değil.",
+      "form": "Must: S + must + V → 'You must go.' (geçmiş/gelecek formu yoktur, 'had to' ile tamamlanır). Have to: S + have/has to + V → 'She has to go.', geçmişte 'had to', gelecekte 'will have to' olur. Olumsuzları farklı anlam taşır — Mustn't: S + mustn't + V → 'You mustn't go.' (yasak). Don't/Doesn't have to: S + don't/doesn't have to + V → 'You don't have to go.' (gerekli değil).",
+      "meaning": "'Must', konuşmacının kendi görüşüne/hissine dayanan içsel bir zorunluluğu belirtir — konuşmacı bunu kendisi önemli/gerekli görüyordur. 'Have to' dışarıdan gelen bir kural, yasa ya da otoriteyi ifade eder — konuşmacının kişisel görüşü değildir. Olumsuz formlarda anlam tamamen değişir: 'mustn't' bir şeyin yapılmasının yasak olduğunu, 'don't have to' ise bir şeyin yapılmasının gerekli olmadığını (ama yasak da olmadığını) belirtir.",
+      "usage": "Kişisel bir görüş, söz ya da iç ses söz konusuysa ('bence yapmalıyım') → must. Bir kurum, yasa, kural söz konusuysa → have to. Bir şeyin açıkça yasaklandığı bir bağlamsa (forbidden, not allowed) → mustn't. Bir şeyin gereksiz ama serbest olduğu bir bağlamsa (no need, optional) → don't have to.",
+      "examples": [
+        { "sentence": "I must call my mom tonight, I promised her.", "note": "Kişisel/içsel zorunluluk → must" },
+        { "sentence": "Employees have to wear a uniform at this company.", "note": "Dışarıdan gelen kural → have to" },
+        { "sentence": "You mustn't tell anyone about this, it's a secret.", "note": "Yasak → mustn't" },
+        { "sentence": "You don't have to come to the party if you don't want to.", "note": "Gerekli değil, seçime bağlı → don't have to" },
+        { "sentence": "We had to wait two hours at the airport.", "note": "Geçmişte dışarıdan gelen zorunluluk → had to (must'ın geçmişi yoktur)" }
+      ],
+      "commonMistakes": [
+        { "wrong": "You mustn't come if you don't want to, it's optional.", "right": "You don't have to come if you don't want to, it's optional.", "why": "'Mustn't' yasak anlamı taşır; burada anlatılmak istenen 'gerekli değil, istersen gel' olduğu için 'don't have to' kullanılmalı." },
+        { "wrong": "I must go to the dentist yesterday.", "right": "I had to go to the dentist yesterday.", "why": "'Must' geçmiş zaman formuna sahip değildir; geçmişte zorunluluk anlatmak için 'had to' kullanılır." }
+      ],
+      "recap": "Must = içsel/kişisel zorunluluk; have to = dışarıdan gelen kural. Mustn't = yasak; don't have to = gerekli değil. İkisini karıştırmak sınavlarda en sık yapılan modal hatasıdır."
+    },
+    {
+      "category": "Can vs Could vs May vs Might",
+      "intro": "Bazen izin istemek, bazen sadece bir ihtimalden bahsetmek istersin — hangi modal, hangi durumda?",
+      "form": "Can/Could + S + V? (izin/rica sorusu) → 'Can I open the window?' 'Could you help me?' May/Might + V (olasılık) → 'It may rain.' 'It might rain.'",
+      "meaning": "'Can', gündelik, samimi bir izin isteme ya da yetenek bildirir. 'Could', hem geçmiş yetenek hem de daha kibar bir rica/izin isteme biçimidir. 'May', hem resmi bir izin isteme hem de orta düzey bir olasılık bildirir. 'Might', 'may'e göre daha düşük, daha belirsiz bir olasılığı ifade eder.",
+      "usage": "Gündelik, arkadaşça bir izin isteme → can. Kibar bir rica (yabancı biri, üst, resmi ortam) → could / may. Bir şeyin olabileceğini ama emin olmadığını belirtme → may/might; 'might' 'may'e göre biraz daha az kesin hissettirir.",
+      "examples": [
+        { "sentence": "Can I open the window? It's a bit hot in here.", "note": "Gündelik izin isteme → can" },
+        { "sentence": "Could you pass me the salt, please?", "note": "Kibar rica → could" },
+        { "sentence": "May I ask you a question, Professor?", "note": "Resmi izin isteme → may" },
+        { "sentence": "It might rain later, so take an umbrella just in case.", "note": "Düşük ihtimal → might" },
+        { "sentence": "The results may be announced tomorrow, but nothing is confirmed yet.", "note": "Orta düzey olasılık → may" }
+      ],
+      "commonMistakes": [
+        { "wrong": "Can I ask a question, Professor Aydın?", "right": "May I ask a question, Professor Aydın?", "why": "Bir profesöre hitap ederken 'can' yerine daha resmi olan 'may' tercih edilir; 'can' daha gündelik bir tondur." },
+        { "wrong": "She can be at the office, I'm not sure.", "right": "She might be at the office, I'm not sure.", "why": "'Can' genel bir yetenek/imkan bildirir, belirsiz bir olasılık ifadesi için kullanılmaz; belirsizlik için 'may/might' kullanılır." }
+      ],
+      "recap": "Can = gündelik izin/yetenek; could = kibar rica/geçmiş yetenek; may = resmi izin/orta olasılık; might = düşük/belirsiz olasılık."
+    },
+    {
+      "category": "Must vs Can't vs Might/Could",
+      "intro": "Elinde net bir kanıt olduğunda mı yoksa sadece bir tahminin mi var — buna göre farklı bir modal seçersin.",
+      "form": "Must + V (base) → 'That must be true.' Can't + V (base) → 'That can't be true.' Might/Could + V (base) → 'That might be true.'",
+      "meaning": "Bu üçü, geçmiş değil şimdiki bir durum hakkında ne kadar emin olduğunu gösteren bir 'kesinlik skalası'dır: 'must' güçlü, neredeyse kesin bir olumlu çıkarım; 'can't' güçlü, neredeyse kesin bir olumsuz çıkarım (imkansız); 'might/could' ise zayıf, emin olunmayan bir olasılık bildirir.",
+      "usage": "Somut, güçlü bir kanıta dayanarak 'kesinlikle öyle' diyorsan → must. Bir şeyin mantıken imkansız olduğunu düşünüyorsan → can't (asla 'mustn't' değil, bu tamamen farklı bir anlam taşır — yasak). Emin değilsen, sadece bir ihtimalden bahsediyorsan → might/could.",
+      "examples": [
+        { "sentence": "You must be exhausted after that long flight.", "note": "Güçlü olumlu çıkarım → must" },
+        { "sentence": "That can't be true, I just spoke to her an hour ago.", "note": "Güçlü olumsuz çıkarım (imkansız) → can't" },
+        { "sentence": "He might be running late because of the traffic.", "note": "Zayıf ihtimal → might" },
+        { "sentence": "She could be at home, but I'm really not sure.", "note": "Zayıf ihtimal, alternatif → could" },
+        { "sentence": "This can't be the right address, the building doesn't even exist.", "note": "İmkansızlık → can't" }
+      ],
+      "commonMistakes": [
+        { "wrong": "That mustn't be true, it doesn't make sense.", "right": "That can't be true, it doesn't make sense.", "why": "'Mustn't' yasak anlamı taşır (yapmamalısın); bir şeyin imkansız olduğuna dair çıkarım için 'can't' kullanılmalıdır." },
+        { "wrong": "He can be at work now, I saw his car there.", "right": "He must be at work now, I saw his car there.", "why": "Somut bir kanıta (arabasını görmek) dayanan güçlü bir çıkarım söz konusu; bu durumda genel imkan bildiren 'can' değil, güçlü çıkarım bildiren 'must' kullanılmalı." }
+      ],
+      "recap": "Must = güçlü olumlu çıkarım; can't = güçlü olumsuz çıkarım (imkansız); might/could = zayıf, emin olunmayan olasılık. 'Mustn't', imkansızlık için asla kullanılmaz."
+    },
+    {
+      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "intro": "Şimdi aynı çıkarımları geçmişe taşıyalım — 'olmalı' değil 'olmuş olmalı' diyeceğiz.",
+      "form": "Modal + have + V3 → 'must have left', 'can't have left', 'should have left', 'might have left'.",
+      "meaning": "Bir önceki kategorideki 'şimdiki zaman çıkarımları', geçmişe taşındığında 'modal + have + V3' yapısını alır. 'Must have' geçmişe dair güçlü bir çıkarım, 'can't have' geçmişe dair güçlü bir imkansızlık, 'should have' ise yapılmayan ama yapılması gereken, pişmanlık duyulan bir eylemi anlatır — bu üçüncüsü aslında bir çıkarım değil, bir eleştiri/pişmanlıktır.",
+      "usage": "Geçmişte olan bir şey hakkında güçlü bir tahmin yürütüyorsan → must have. Bir şeyin geçmişte olmasının imkansız olduğunu düşünüyorsan → can't have. Geçmişte yapılması gerekirken yapılmamış bir şeyi eleştiriyor ya da pişmanlık duyuyorsan → should have. Bir şey yapılmış ama sonradan gereksiz olduğu anlaşıldıysa → needn't have.",
+      "examples": [
+        { "sentence": "She must have left already, her coat isn't here.", "note": "Geçmişe dair güçlü çıkarım → must have" },
+        { "sentence": "He can't have seen the message, he never replies that slowly.", "note": "Geçmişe dair imkansızlık → can't have" },
+        { "sentence": "I should have called her back yesterday.", "note": "Pişmanlık/yapılmayan eylem → should have" },
+        { "sentence": "We needn't have brought umbrellas — it didn't rain at all.", "note": "Yapıldı ama gereksizmiş → needn't have" },
+        { "sentence": "They might have missed the train, that's why they're late.", "note": "Zayıf geçmiş olasılık → might have" }
+      ],
+      "commonMistakes": [
+        { "wrong": "I should have studied, but I'm not sure if I did.", "right": "I must have studied enough, because I passed easily.", "why": "'Should have' pişmanlık/eleştiri bildirir (yapılmadı); geçmişe dair emin olunan bir çıkarım için 'must have' kullanılmalı." },
+        { "wrong": "We shouldn't have brought umbrellas, it turned out to be unnecessary.", "right": "We needn't have brought umbrellas, it turned out to be unnecessary.", "why": "'Shouldn't have' bir hatayı/pişmanlığı ima eder; burada şemsiye getirmek bir hata değil, sadece gereksiz çıkmış — bu yüzden 'needn't have' daha doğrudur." }
+      ],
+      "recap": "Must have = geçmişe dair güçlü çıkarım; can't have = geçmişe dair imkansızlık; should have = yapılmayan, pişmanlık duyulan eylem; needn't have = yapılmış ama gereksiz çıkan eylem."
+    },
+    {
+      "category": "Should vs Ought To vs Had Better",
+      "intro": "Bir arkadaşına tavsiye verirken, durumun ne kadar ciddi/acil olduğuna göre kelimen değişir.",
+      "form": "Should + V → 'You should rest.' Ought to + V → 'You ought to rest.' Had better + V → 'You had better rest.' (had better'dan sonra asla 'to' gelmez).",
+      "meaning": "'Should' ve 'ought to' anlamca birbirine çok yakındır, genel bir tavsiye ya da beklenti bildirir ('ought to' biraz daha resmi/yazılı dilde görülür). 'Had better' ise çok daha güçlü, aciliyet taşıyan bir tavsiyedir — genellikle belirtilen ya da ima edilen olumsuz bir sonuçtan kaçınmak için kullanılır.",
+      "usage": "Genel, gündelik bir tavsiye/öneri veriyorsan → should. Biraz daha resmi ya da yazılı bir tavsiye veriyorsan → ought to. Net bir tehdit/olumsuz sonuç varsa ve tavsiyeye uyulmazsa kötü bir şey olacaksa → had better.",
+      "examples": [
+        { "sentence": "You should drink more water during the day.", "note": "Genel tavsiye → should" },
+        { "sentence": "You ought to apologize to him for what happened.", "note": "Resmi/genel tavsiye → ought to" },
+        { "sentence": "You had better hurry, or you'll miss the bus.", "note": "Acil, sonuç içeren tavsiye → had better" },
+        { "sentence": "You shouldn't leave your valuables visible in the car.", "note": "Olumsuz tavsiye → shouldn't" },
+        { "sentence": "We'd better leave now if we want to catch the train.", "note": "'Had better' konuşmada genelde 'I'd/we'd better' olarak kısaltılır" }
+      ],
+      "commonMistakes": [
+        { "wrong": "You had better to see a doctor.", "right": "You had better see a doctor.", "why": "'Had better'den sonra asla 'to' gelmez, doğrudan fiilin yalın hali gelir — bu, 'ought to' ile en çok karıştırılan noktadır." },
+        { "wrong": "You ought apologize to her.", "right": "You ought to apologize to her.", "why": "'Ought', 'should'ün aksine, kendisinden sonra mutlaka 'to' alır: 'ought to + V'." }
+      ],
+      "recap": "Should/ought to = genel tavsiye (ought to biraz daha resmi); had better = acil, sonuç içeren tavsiye, 'to' almaz. 'Ought to' mutlaka 'to' alır, 'had better' asla almaz — bu ikisi ters yönde hataya açık."
+    },
+    {
+      "category": "Can vs Could vs Be Able To",
+      "intro": "Yetenekten bahsederken zaman önemli — şimdi mi, geçmişte genel olarak mı, yoksa o an, tek seferlik mi?",
+      "form": "Can + V (şimdiki zaman) → 'I can swim.' Could + V (geçmişte genel yetenek) → 'I could swim.' Was/Were able to + V (geçmişte tek seferlik başarı) → 'I was able to escape.' Will be able to + V (gelecek yetenek) → 'I will be able to speak fluently.'",
+      "meaning": "'Can', şu anki genel bir yeteneği ifade eder. 'Could', geçmişte genel/süregelen bir yeteneği ifade eder (örneğin çocukken yapabildiğin bir şey). 'Was/were able to' ise belirli, tek seferlik bir durumda başarılı olmayı ifade eder — 'could' bu anlamda kullanılmaz. 'Can' bir modal olduğu için başka bir modalle ('will') yan yana gelemez, bu yüzden gelecekteki yetenek 'will be able to' ile ifade edilir.",
+      "usage": "Genel, şu anki bir yetenekten bahsediyorsan → can. Geçmişte genel olarak yapabildiğin bir şeyden bahsediyorsan → could. Belirli bir durumda, tek seferlik somut bir başarıdan bahsediyorsan (özellikle zor bir durumu aşmaktan) → was/were able to (özellikle olumlu cümlelerde 'could' yerine tercih edilir). Gelecekte kazanılacak bir yetenekten bahsediyorsan → will be able to.",
+      "examples": [
+        { "sentence": "I can swim, but I'm not very fast.", "note": "Şu anki genel yetenek → can" },
+        { "sentence": "When I was a child, I could climb trees easily.", "note": "Geçmişte genel yetenek → could" },
+        { "sentence": "Despite the rain, we were able to finish the hike.", "note": "Tek seferlik somut başarı → was able to" },
+        { "sentence": "Once you finish this course, you will be able to speak more confidently.", "note": "Gelecekteki yetenek → will be able to" },
+        { "sentence": "She couldn't understand the instructions at first.", "note": "Geçmişte genel bir beceriksizlik/yetersizlik → couldn't (olumsuzda 'could' rahatça kullanılabilir)" }
+      ],
+      "commonMistakes": [
+        { "wrong": "Despite the traffic, she could arrive on time.", "right": "Despite the traffic, she was able to arrive on time.", "why": "Belirli, tek seferlik bir başarı anlatılıyor; olumlu cümlelerde bu tür tek seferlik başarılar için 'could' değil 'was/were able to' kullanılır." },
+        { "wrong": "Next year, you can speak English fluently if you keep practicing.", "right": "Next year, you will be able to speak English fluently if you keep practicing.", "why": "'Can' başka bir modal ya da gelecek zaman ifadesiyle birlikte kullanılamaz; gelecekteki yetenek için 'will be able to' gerekir." }
+      ],
+      "recap": "Can = şu anki genel yetenek; could = geçmişte genel yetenek (olumluda tek seferlik başarı için kullanılmaz); was/were able to = tek seferlik somut başarı; will be able to = gelecekteki yetenek."
+    }
+  ]
+}

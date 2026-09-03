@@ -4,10 +4,14 @@
 // local storage the rest of the app writes to; there is no login and no
 // server, and "Geçmişi Sıfırla" only ever clears this browser's data.
 //
-// The weak-category list is deliberately actionable rather than a
-// read-out: each category the learner is struggling with links straight
-// to the Eğitim lesson that teaches it, which is the whole point of
-// lessons and questions sharing one category taxonomy.
+// The weak lists are deliberately actionable rather than a read-out.
+// Each category the learner is struggling with offers both ways out of
+// it: tapping the name opens the Eğitim lesson that teaches it, and
+// "Pratik Yap" starts a test scoped to just that category. Both are only
+// possible because lessons and questions share one category taxonomy.
+//
+// Weak topics get rank numbers but no button — their topic card on the
+// Test tab already has one, and a second would just be noise.
 
 import { loadManifest, loadLessonsForTopics } from "./topics.js";
 import {
@@ -21,6 +25,7 @@ import {
   clearLessonProgress,
 } from "./storage.js";
 import { createConfirmModal } from "./modal.js";
+import { startCategoryPractice } from "./quiz-launch.js";
 import { el, clear } from "./dom.js";
 
 const container = document.getElementById("profile-container");
@@ -48,7 +53,12 @@ function renderNameField() {
   input.maxLength = 40;
   input.autocomplete = "off";
   input.setAttribute("aria-labelledby", "profile-name-label");
-  input.addEventListener("change", () => setProfileName(input.value.trim()));
+  input.addEventListener("change", () => {
+    setProfileName(input.value.trim());
+    // The header shows the learner's initial; tell it to catch up without
+    // the two modules having to import each other.
+    document.dispatchEvent(new CustomEvent("profile:namechange"));
+  });
   section.appendChild(input);
 
   return section;
@@ -90,14 +100,18 @@ function renderWeakTopics(entries, titleById) {
   section.appendChild(el("h2", null, "Zayıf Olduğun Konular"));
 
   const list = el("ul", "breakdown-list");
-  for (const entry of entries) {
+  entries.forEach((entry, index) => {
     const item = document.createElement("li");
-    const name = el("span", null, titleById.get(entry.topicId) ?? entry.topicId);
+    const info = el("div", "breakdown-list__info");
+    // Entries already arrive sorted weakest-first; the rank number makes
+    // that order visible instead of leaving it to be inferred.
+    const name = el("span", null, `${index + 1}. ${titleById.get(entry.topicId) ?? entry.topicId}`);
     name.lang = "en";
-    item.appendChild(name);
-    item.appendChild(el("span", null, `${entry.correct}/${entry.total}`));
+    info.appendChild(name);
+    info.appendChild(el("span", "breakdown-list__score", `${entry.correct}/${entry.total}`));
+    item.appendChild(info);
     list.appendChild(item);
-  }
+  });
   section.appendChild(list);
 
   return section;
@@ -111,33 +125,46 @@ function renderWeakCategories(entries, lessonIdByCategory) {
   const section = el("section", "panel");
   section.appendChild(el("h2", null, "Zayıf Olduğun Kategoriler"));
   section.appendChild(
-    el("p", "hero__description", "Dersi olan bir kategoriye dokununca doğrudan o dersi açar.")
+    el("p", "hero__description", "Adına dokunup dersi açabilir ya da doğrudan o kategoriden pratik yapabilirsin.")
   );
 
   const list = el("ul", "breakdown-list");
-  for (const entry of entries) {
-    const item = document.createElement("li");
+  entries.forEach((entry, index) => {
+    const item = el("li", "breakdown-list__item--action");
     const lessonId = lessonIdByCategory.get(entry.category);
+    const label = `${index + 1}. ${entry.category}`;
     const score = `${entry.correct}/${entry.total}`;
 
     if (lessonId) {
       const link = el("a", "breakdown-link");
       link.href = `#egitim/${lessonId}`;
-      const name = el("span", null, entry.category);
+      const name = el("span", null, label);
       name.lang = "en";
       link.appendChild(name);
-      link.appendChild(el("span", "breakdown-link__score", `${score} · Dersi aç →`));
-      item.className = "breakdown-list__item--link";
+      link.appendChild(el("span", "breakdown-link__score", score));
       item.appendChild(link);
     } else {
-      const name = el("span", null, entry.category);
+      const info = el("div", "breakdown-list__info");
+      const name = el("span", null, label);
       name.lang = "en";
-      item.appendChild(name);
-      item.appendChild(el("span", null, score));
+      info.appendChild(name);
+      info.appendChild(el("span", "breakdown-list__score", score));
+      item.appendChild(info);
     }
 
+    const practiceBtn = el("button", "btn btn--secondary btn--sm", "Pratik Yap");
+    practiceBtn.type = "button";
+    practiceBtn.addEventListener("click", () => {
+      practiceBtn.disabled = true;
+      startCategoryPractice(entry.category).catch((error) => {
+        console.error(error);
+        practiceBtn.disabled = false;
+      });
+    });
+    item.appendChild(practiceBtn);
+
     list.appendChild(item);
-  }
+  });
   section.appendChild(list);
 
   return section;

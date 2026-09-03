@@ -5,10 +5,12 @@ Context for Claude sessions working in this repository.
 ## What this is
 
 A static, mobile-first web app for Turkish university English prep-school
-proficiency exams (YTÜ İYS style). Two modes: **Eğitim** (staged
-interactive lessons) and **Test** (paragraph-cloze practice questions with
-instant feedback), plus a local **Profil**. Built by the owner for himself
-and friends sitting the exam. Served from GitHub Pages.
+proficiency exams (YTÜ İYS style). Two content modes in a bottom nav —
+**Eğitim** (article-based lessons in a paged reader) and **Test**
+(paragraph-cloze questions with instant feedback) — plus **Profil**,
+which opens from the header because it's identity and settings, not a
+content mode. Built by the owner for himself and friends sitting the
+exam. Served from GitHub Pages.
 
 No accounts, no backend, no analytics. Everything a learner does is stored
 in their own browser's `localStorage`.
@@ -24,6 +26,10 @@ in their own browser's `localStorage`.
 - **Mobile first.** Verify at 320px before anything else. The app is a
   fixed-height shell: only `.app-content` scrolls, and answering a
   question must never move the button the learner is about to tap.
+- **Navigation is settled, and it was settled by feedback.** The owner
+  asked for the top menu to go and for Profil to leave the tab bar. Don't
+  reopen either without being asked. Likewise lesson checks never gate
+  progress — an unanswered one reads "Atla".
 - **Version `x` stays `0`.** `CHANGELOG.md` uses `x.y`; `x` is bumped to
   `1` only when the owner explicitly decides the app is a real release.
   That is never an assistant's judgment call, no matter how large a
@@ -54,8 +60,11 @@ quiz.html             Question-answering screen
 results.html          Score, breakdown, review
 js/
   home.js             Home screen + the hash router (#egitim, #test, #profil,
-                        #egitim/<lessonId>)
-  education.js        Eğitim: lesson index and the focused lesson reader
+                        #egitim/<lessonId>), bottom nav, profile trigger
+  education.js        Eğitim: lesson index, and the focused reader that
+                        paces an authored article into steps
+  feedback.js         The one answer-feedback block, shared by Test and
+                        Eğitim checks
   quiz.js             Test screen
   results.js          Results screen
   profile.js          Profil tab
@@ -73,7 +82,7 @@ data/manifest.json    Topic index
 data/<topic>/         One JSON file per topic: its lessons and questions
 tools/                Content validator
 tests/                Unit tests
-docs/                 Content schema, and briefs for content agents
+docs/                 Content schema, content/dev notes, agent briefs
 ```
 
 ## Conventions
@@ -99,8 +108,18 @@ touching JavaScript. The schema lives in `docs/CONTENT_GUIDE.md` and is
 enforced by `tools/validate-content.mjs`; change all three together or
 none of them.
 
-**Lesson ids are permanent.** Progress is stored per lesson id. Reusing
-or renumbering an id silently reassigns someone's progress.
+**Lesson ids are derived, not authored** — `lessonId(topicId, category)`
+in `js/topics.js`, mirrored in the validator. Progress is stored against
+them, so renaming a category renames the lesson and resets progress for
+it. A category rename is a taxonomy change: questions, manifest and
+lesson move together or not at all.
+
+**Lessons are articles, not screens.** A lesson file carries named prose
+sections (`intro`, `form`, `meaning`, `usage`, `examples`,
+`commonMistakes`, `recap`); `js/education.js` decides how they are paced
+into reader steps and pulls check cards from the questions sharing the
+lesson's category. Presentation can change without touching content —
+and it already has, more than once.
 
 ## Content authoring
 

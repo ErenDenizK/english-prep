@@ -76,7 +76,7 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
       const name = el("span", null, resolveName(key));
       name.lang = "en";
       item.appendChild(name);
-      item.appendChild(el("span", null, score));
+      item.appendChild(el("span", "breakdown-list__score", score));
     }
 
     list.appendChild(item);

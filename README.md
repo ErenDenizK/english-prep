@@ -15,15 +15,20 @@ stay in English (that's the exam), explanations and lesson prose stay in
 Turkish, and grammar category labels stay in English — students need to
 recognize the terms.
 
-Three tabs:
+Eğitim and Test are the two content modes and live in a bottom nav.
+Profil opens from the header — it's identity and settings, not a mode.
 
-- **Eğitim** — a staged, interactive walkthrough of the syllabus. The
-  index lists every lesson in order with its own progress and a "pick up
-  where you left off" card; opening one drops into a focused reader that
-  pages through the lesson a step at a time: a rule, a side-by-side
-  comparison of the signal words, and inline check questions that have to
-  be answered before moving on. Finishing a lesson offers the next one or
-  a test on the same topic. Nothing here is scored — it's teaching.
+- **Eğitim** — a staged walkthrough of the syllabus. The index lists
+  every lesson across every topic, grouped and skimmable with its own
+  progress and a "pick up where you left off" card; you can start
+  anywhere, since someone after one specific rule shouldn't have to walk
+  through five chapters to reach it. Opening a lesson drops into a
+  focused reader that pages through it a step at a time — why the pair is
+  confusing, the forms, what they mean, how they're used, examples, the
+  mistakes people actually make, and a recap you can carry into the exam
+  — with check questions along the way. Checks are never scored and never
+  block you: an unanswered one just reads "Atla". Finishing a lesson
+  offers the next one or a test on the same topic.
 - **Test** — pick a topic or start a mixed test drawing from every topic
   at once. Paragraph-based multiple-choice cloze questions with instant
   feedback: a full explanation of why the answer fits *this* passage, plus
@@ -31,18 +36,20 @@ Three tabs:
   topic and by grammar category, and each category links straight to the
   lesson that teaches it. A topic whose questions have grown since your
   last visit shows a "Yeni sorular eklendi" badge.
-- **Profil** — an optional display name (local only), how far through the
-  lessons you are, overall practice stats, and which topics and
-  categories you're weakest in — again linked to the lessons that cover
-  them. Plus a reset for everything stored locally.
+- **Profil** — an optional display name (local only, and the initial the
+  header button shows), how far through the lessons you are, overall
+  practice stats, and which topics and categories you're weakest in. A
+  weak category is actionable in both directions: tap its name to open
+  the lesson that teaches it, or "Pratik Yap" to start a test scoped to
+  just that category. Plus a reset for everything stored locally.
 
 Nothing is sent anywhere. All progress lives in this browser's
 `localStorage`.
 
-The whole app is a fixed-height "app shell" — header and tabs, one
-scrolling content area with no visible scrollbar, and a fixed bottom
-action bar on the quiz, results and lesson-reader screens — rather than an
-ordinary scrolling page. Answering a question never shifts the button
+The whole app is a fixed-height "app shell" — header, one scrolling
+content area with no visible scrollbar, and either the bottom nav or, in
+a focused mode, a fixed action bar — rather than an ordinary scrolling
+page. Answering a question never shifts the button
 you're about to tap, and no screen ever moves sideways. The controls that
 would normally hand the screen to the OS (the question-count picker, the
 reset confirmation) are the app's own components, and re-implement the
@@ -134,6 +141,12 @@ JavaScript — it's all JSON.
   that author content — one for lessons, one for questions — plus how the
   handoff works and why the category taxonomy is settled before either
   starts.
+- **`docs/education-notes.md`** is the running content/dev channel:
+  curriculum order for upcoming topics, proposals from the content side,
+  and the development side's answers.
+
+Three topics are live today — Tenses, Modals and Passive Voice — with 24
+questions and 6 lessons each.
 
 ## Versioning
 
@@ -150,21 +163,15 @@ small alike.
 Everything shipped so far is development work toward a first real release.
 What's left, roughly in order:
 
-1. **A second real topic.** Modals is stubbed as `comingSoon` in the
-   manifest. This is the biggest remaining gap: it makes Eğitim and Test
-   feel like a real multi-topic app rather than a single-topic demo, gives
-   the tier grouping on the home screen something to group, and gives the
-   content-freshness badge a second data point. The authoring process is
-   ready — see `docs/agents/`.
-2. **Real-device pass.** Everything so far has been verified with
+1. **Real-device pass.** Everything so far has been verified with
    Playwright across 320/390/768/1280 plus screenshots. Before anything is
    called `1.0`, the owner and at least one friend should use it on their
    own phones via the `test` branch's Pages preview — real touch targets,
    real fonts loading over a real network.
-3. **Promote to `main` once approved.** `main` is still on an early
+2. **Promote to `main` once approved.** `main` is still on an early
    development build; it only moves when the owner has tried a build on
    `test` and signs off. Confirm Pages is serving `main` at that point.
-4. **Owner declares `1.0`.** Once the above holds and the owner is happy.
+3. **Owner declares `1.0`.** Once the above holds and the owner is happy.
    This isn't a milestone the project infers on its own.
 
 ## Roadmap beyond v1.0

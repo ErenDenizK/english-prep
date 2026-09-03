@@ -27,6 +27,11 @@ Vocabulary / Word Formation, which needs a different question shape than
 the paragraph-cloze format everything else is built on, and needs its own
 schema design first.
 
+`docs/education-notes.md` is the running content/dev channel — curriculum
+order for upcoming topics, proposals from the content side, and the
+development side's answers. Read it before a kickoff and write decisions
+back into it, so the reasoning outlives any one session.
+
 ## The kickoff: decide categories before delegating
 
 The category taxonomy is the coupling point between the two agents. A

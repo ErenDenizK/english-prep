@@ -25,91 +25,104 @@ Lessons: 1 per category, in the order listed above
 
 Write the `lessons` array for the topic above: the Eğitim tab's content.
 
-Eğitim is not a slideshow and not a grammar reference. It's a short
-interactive textbook — the learner walks through a lesson one step at a
-time, reads a rule, sees it compared side by side, and gets asked a
-question before moving on. Write for that experience.
+A lesson is a **short article**, not a sequence of screens. You write
+named sections; the app decides how they are paced into the reader's
+steps and where it slots in check questions. Do not think about cards,
+pages or step counts — think about what a Turkish student needs read to
+them, in what order, to stop getting this contrast wrong.
 
 Read `docs/CONTENT_GUIDE.md` first — it is the authoritative schema and
-the validator enforces it. Read the six lessons in
+`tools/validate-content.mjs` enforces it. Read the Tenses lessons in
 `data/tenses/tenses.json` as a worked example of structure and voice.
 
 Deliver **one file**: `data/<topicId>/<topicId>.lessons.json`, containing
-a single JSON array of lesson objects. Nothing else. Do not touch
-`data/manifest.json`, the app code, or the topic's questions — a separate
-session is writing those.
+a single JSON array of lesson objects — one per category, in the kickoff's
+order. Do not touch `data/manifest.json`, the app code, or the topic's
+questions; a separate session is writing those.
 
 ## Shape
 
-One lesson per category, `order` running `1..n` in the kickoff's order.
-Each lesson is a list of steps of three types: `read` (Turkish prose with
-`**bold**` and optional English example sentences), `table` (a side-by-side
-comparison), and `check` (an inline question the learner must answer to
-continue). See the content guide for the exact fields.
+```json
+{
+  "category": "…",
+  "intro": "…",
+  "form": "…",
+  "meaning": "…",
+  "usage": "…",
+  "examples": [{ "sentence": "…", "note": "…" }],
+  "commonMistakes": [{ "wrong": "…", "right": "…", "why": "…" }],
+  "recap": "…"
+}
+```
 
-## The shape that works
+Every field is required. There is no `id` and no `order` — the id is
+derived from the topic and the category, and the order is the array
+order.
 
-Five to seven steps, following the pattern the Tenses lessons use:
+## What each section is for
 
-1. **`read`** — what the forms actually *do*. Not conjugation tables: the
-   job each form performs, and how they differ. Two or three example
-   sentences.
-2. **`table`** — the signal words, side by side. This is what a learner
-   will picture in the exam, so make the columns the forms being
-   contrasted and keep the cells short.
-3. **`check`** — a quick check on exactly what you just taught. Two
-   options is often stronger than four right after a binary contrast.
-4. **`read`** — **the trap**. The exception, the over-applied rule, the
-   case where the obvious answer is wrong. Every category has one, and it
-   is the most valuable step in the lesson.
-5. **`check`** — a harder check, four options, covering the trap.
-6. **`read` — "Sınavda ne yaparsın"**. A concrete procedure for a real
-   exam question: what to scan for first, what that lets you eliminate,
-   what to do when there's no signal at all. This step must be a
-   *procedure*, not a summary of the rule.
+Writing all seven well is the job; the schema is the easy part.
 
-Deviate where the grammar calls for it — but every lesson needs at least
-one `check` (the validator rejects lessons without one), and every lesson
-should end by telling the learner what to actually do under exam
-conditions.
+**`intro`** — why this pair is worth a lesson. The best ones name the
+confusion a *Turkish speaker specifically* has, often because Turkish
+makes a distinction English doesn't, or the reverse. Also used as the
+lesson's one-line preview on the index, so the first sentence must stand
+on its own.
 
-## The quality bar
+**`form`** — the structural patterns, positive/negative/question for each
+form, in parallel: `S + have/has + V3 → 'She has visited.'` It renders in
+monospace, so terse and symmetrical beats prose. No teaching here.
 
-**Teach the contrast, not the form.** The category names a confusable
-pair or triad. The lesson exists to make that specific confusion go away.
+**`meaning`** — what each form *says*. The idea behind it, not yet the
+rules for spotting it. If `meaning` and `usage` read the same, `meaning`
+is wrong.
 
-**Prose is Turkish, examples are English.** Explain in the learner's own
-language; demonstrate in the language being learned. Use `**bold**` for
-the form under discussion, sparingly — bolding half a paragraph bolds
-nothing.
+**`usage`** — when each is actually used, and above all **the signal
+words that decide it in an exam**. This is the section a student will
+recall under time pressure, so name the triggers explicitly.
 
-**Example sentences are teaching, not testing.** Clean, short, isolated —
-the opposite of a test paragraph. Each carries a `note` naming the form
-and why: `"Alışkanlık → Present Simple"`. One idea per example.
+**`examples`** — 4–6 clean, isolated English sentences, much simpler than
+a test paragraph: teaching, not testing. Cover every form in the
+contrast, one idea each. Each `note` is a short Turkish label naming the
+form and why: `"Alışkanlık → Present Simple"`.
 
-**`title` is Turkish and specific.** It's the lesson's name on the index,
-next to the English category label. `"Rutin mi, şu an mı?"` tells a
-learner what they're about to sort out; `"Present Simple"` just repeats
-the category.
+**`commonMistakes`** — 2–3 `{ wrong, right, why }`. The highest-value
+section in the lesson. Use errors Turkish speakers genuinely make, not
+invented ones; `wrong` and `right` should differ in exactly the thing
+being taught and nothing else, because the app shows them stacked and any
+other difference reads as noise. `why` is Turkish and names the rule that
+was broken.
 
-**`summary` is one Turkish sentence** saying what the learner walks away
-with. It's read on the index, before they commit — make it worth tapping.
+**`recap`** — one or two Turkish sentences the student could carry into
+the exam. A decision procedure — "see X → use Y; see Z → use W" — not a
+summary of the article. If it just restates `meaning`, rewrite it.
 
-**`check` steps are for sticking, not grading.** Nothing is scored or
-recorded. So make them the moment the rule bites: the sentence where
-picking the wrong form is tempting. The `explanation` (Turkish, shown
-either way) should name why the tempting option fails.
+## Language
 
-**Keep it finishable.** A lesson should take a few minutes. If a category
-needs more than seven steps, tell the supervisor it should be split
-rather than writing a long one.
+- `form`, `examples[].sentence`, `commonMistakes[].wrong` / `.right`:
+  English.
+- `intro`, `meaning`, `usage`, `examples[].note`,
+  `commonMistakes[].why`, `recap`: **Turkish**.
+- `category`: English, copied verbatim from the kickoff.
 
-## Ids are permanent
+## You do not write check questions
 
-A learner's progress is stored against `id`. Never reuse an id for
-different content, and never renumber ids in an existing topic — that
-silently moves someone's completed lesson to a different one. New content
-gets new ids.
+The reader pulls them from the questions that share the lesson's
+category, so a category never needs two parallel bodies of content kept
+in sync. They are never scored and never block progress.
+
+One thing follows from this that's worth knowing: some of that category's
+test questions will be met right after your explanation rather than in an
+exam run. If a question would only make sense to someone who has already
+finished the topic, say so to the supervisor — that's a note for the
+question author, not something to work around here.
+
+## Renaming a category renames the lesson
+
+Lesson ids are derived from topic + category, and a learner's progress is
+stored against that id. Changing a category name is a taxonomy change:
+questions, manifest and lesson have to move together, and existing
+progress for it resets. Never do it on your own initiative — raise it.
 
 ## Before you hand it over
 
@@ -121,21 +134,20 @@ It won't see your file until the supervisor merges it, so validate by
 temporarily assembling the topic file locally, or ask the supervisor to
 run it. Either way, check what it checks:
 
-- `order` runs `1..n`, no gaps or duplicates;
-- every `category` is one from the kickoff, verbatim;
-- every lesson has at least one `check` step;
-- `**` markers are balanced in every `body`;
-- every table row has exactly as many cells as there are columns;
-- check `options` are 2–4 and distinct, `correctIndex` in range and
-  pointing at the option you meant;
-- prose, notes, summaries and explanations are in Turkish.
+- every `category` is one from the kickoff, verbatim, and used once;
+- all seven fields present and non-empty in every lesson;
+- at least 2 `examples` and 1 `commonMistakes` entry (aim for 4–6 and
+  2–3);
+- `wrong` and `right` actually differ;
+- Turkish fields actually in Turkish.
 
-Then read one lesson end to end as a student. If the last step doesn't
-change what you'd do when you meet the question on an exam, rewrite it.
+Then read one lesson end to end as a student. If `recap` wouldn't change
+what you do when you meet this contrast on an exam, rewrite it.
 
 ## Out of scope
 
 Don't edit `js/`, `css/`, `*.html`, `data/manifest.json`, or the questions
-array. If a category needs a step type the schema doesn't have, say so and
-stop rather than working around it — adding a step type means changing the
-validator and the app too, and that's the supervisor's call.
+array. If a lesson needs a section the schema doesn't have, say so and
+stop rather than forcing it into `usage` — adding a section means
+changing the validator and the reader too, and that's the supervisor's
+call.

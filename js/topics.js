@@ -85,30 +85,62 @@ export async function loadQuestionsForTopics(topics) {
 }
 
 /**
- * @param {{id: string, file: string}} topic
- * @returns {Promise<Array<object>>} the topic's lessons, unmodified
- *   (empty array if the topic has none yet)
+ * A lesson is identified by the topic it belongs to plus its category —
+ * the two things that actually define it. Deriving the id instead of
+ * authoring one means content files carry no bookkeeping field that could
+ * be duplicated or renumbered by accident, and progress stays attached to
+ * the right lesson as long as the category taxonomy holds (which the
+ * validator enforces anyway).
+ * @param {string} topicId
+ * @param {string} category
+ * @returns {string}
  */
-export async function loadTopicLessons(topic) {
-  const data = await loadJson(topic.file);
-  return data.lessons ?? [];
+export function lessonId(topicId, category) {
+  const slug = category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `${topicId}-${slug}`;
+}
+
+function groupByCategory(questions) {
+  const byCategory = new Map();
+  for (const question of questions) {
+    if (!byCategory.has(question.category)) {
+      byCategory.set(question.category, []);
+    }
+    byCategory.get(question.category).push(question);
+  }
+  return byCategory;
 }
 
 /**
- * Loads lessons for several topics into one flat, ordered list, tagging
- * each lesson with the topic it belongs to. Topics keep their manifest
- * order and lessons their authored `order` within a topic, so the Eğitim
- * index reads as one syllabus rather than an arbitrary pile.
+ * Loads the Eğitim syllabus: every live topic's lessons, in topic order
+ * and then authored order, each tagged with the topic it came from and
+ * with the questions that share its category.
+ *
+ * Those questions are the lesson's `checkPool`. Embedded check cards draw
+ * from the same pool the Test tab uses rather than from a reserved set,
+ * so a category never needs two parallel bodies of content kept in sync —
+ * and the topic file is one fetch either way.
+ *
  * @param {Array<{id: string, title: string, file: string}>} topics
  * @returns {Promise<Array<object>>}
  */
 export async function loadLessonsForTopics(topics) {
   const lessonSets = await Promise.all(
     topics.map(async (topic) => {
-      const lessons = await loadTopicLessons(topic);
-      return [...lessons]
-        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-        .map((lesson) => ({ ...lesson, topicId: topic.id, topicTitle: topic.title }));
+      const data = await loadJson(topic.file);
+      const byCategory = groupByCategory((data.questions ?? []).map(normalizeQuestion));
+
+      return (data.lessons ?? []).map((lesson, index) => ({
+        ...lesson,
+        id: lessonId(topic.id, lesson.category),
+        order: index + 1,
+        topicId: topic.id,
+        topicTitle: topic.title,
+        checkPool: byCategory.get(lesson.category) ?? [],
+      }));
     })
   );
   return lessonSets.flat();

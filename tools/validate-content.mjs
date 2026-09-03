@@ -22,10 +22,7 @@ import { TIER_ORDER } from "../js/tiers.js";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = "data/manifest.json";
 
-const LESSON_STEP_TYPES = new Set(["read", "table", "check"]);
 const OPTIONS_PER_QUESTION = 4;
-const MIN_CHECK_OPTIONS = 2;
-const MAX_CHECK_OPTIONS = 4;
 const MIN_EXPLANATION_LENGTH = 40;
 const MIN_TIP_LENGTH = 20;
 const MIN_PARAGRAPH_WORDS = 15;
@@ -102,16 +99,34 @@ function checkBlanks(report, where, text, { required }) {
   }
 }
 
-function checkTurkish(report, where, field, text) {
-  if (!TURKISH_CHARS.test(text) && !TURKISH_WORDS.test(text)) {
-    report.warn(where, `${field} does not look like Turkish — it must be written in Turkish`);
+/**
+ * Reads the sentence the learner will actually see and flags a word
+ * repeated across the blank's edge — "The novel was written by ____ by a
+ * student". An author writing the option and the sentence separately
+ * can't see that seam, and no reader of the JSON would spot it either;
+ * it only shows up once the two are joined. "had had" and "that that"
+ * are legitimate English, so they're allowed through.
+ */
+const ALLOWED_DOUBLE_WORDS = new Set(["had", "that"]);
+
+function checkFilledSentence(report, where, paragraph, answer) {
+  const filled = paragraph.replace("____", answer);
+  const words = filled.match(/[A-Za-z']+/g) ?? [];
+  for (let i = 1; i < words.length; i += 1) {
+    const previous = words[i - 1].toLowerCase();
+    if (previous === words[i].toLowerCase() && !ALLOWED_DOUBLE_WORDS.has(previous)) {
+      report.error(
+        where,
+        `with the correct option filled in, the sentence repeats "${words[i]}":\n    ${filled}`
+      );
+      return;
+    }
   }
 }
 
-function checkBoldMarkers(report, where, text) {
-  const markers = (text.match(/\*\*/g) ?? []).length;
-  if (markers % 2 !== 0) {
-    report.error(where, `unbalanced "**" bold markers in body (${markers} found)`);
+function checkTurkish(report, where, field, text) {
+  if (!TURKISH_CHARS.test(text) && !TURKISH_WORDS.test(text)) {
+    report.warn(where, `${field} does not look like Turkish — it must be written in Turkish`);
   }
 }
 
@@ -189,6 +204,10 @@ function validateQuestion(report, file, question, index, seenIds, topicId) {
 
   if (checkOptions(report, where, question.options, { min: OPTIONS_PER_QUESTION, max: OPTIONS_PER_QUESTION })) {
     checkCorrectIndex(report, where, question.correctIndex, question.options.length);
+    const answer = question.options[question.correctIndex];
+    if (isNonEmptyString(question.paragraph) && isNonEmptyString(answer)) {
+      checkFilledSentence(report, where, question.paragraph, answer);
+    }
   }
 
   if (!isNonEmptyString(question.explanation)) {
@@ -213,135 +232,104 @@ function validateQuestion(report, file, question, index, seenIds, topicId) {
   }
 }
 
-function validateLessonStep(report, file, lessonLabel, step, index) {
-  const where = `${file} › ${lessonLabel} › steps[${index}]`;
+const LESSON_PROSE_FIELDS = ["intro", "meaning", "usage", "recap"];
+const MIN_EXAMPLES_PER_LESSON = 2;
+const MIN_MISTAKES_PER_LESSON = 1;
 
-  if (!step || typeof step !== "object") {
-    report.error(where, "step must be an object");
-    return;
-  }
-  if (!LESSON_STEP_TYPES.has(step.type)) {
-    report.error(where, `type must be one of ${[...LESSON_STEP_TYPES].join(", ")}`);
-    return;
-  }
-
-  if (step.type === "read") {
-    if (!isNonEmptyString(step.heading)) report.error(where, "read step needs a heading");
-    if (!isNonEmptyString(step.body)) {
-      report.error(where, "read step needs a body");
-    } else {
-      checkBoldMarkers(report, where, step.body);
-      checkTurkish(report, where, "body", step.body);
-    }
-    if (step.examples !== undefined) {
-      if (!Array.isArray(step.examples) || step.examples.length === 0) {
-        report.error(where, "examples, when present, must be a non-empty array");
-      } else {
-        step.examples.forEach((example, exampleIndex) => {
-          const exampleWhere = `${where} › examples[${exampleIndex}]`;
-          if (!isNonEmptyString(example?.sentence)) {
-            report.error(exampleWhere, "sentence is required");
-          }
-          if (!isNonEmptyString(example?.note)) {
-            report.error(exampleWhere, "note is required");
-          }
-        });
-      }
-    }
-    return;
-  }
-
-  if (step.type === "table") {
-    if (!isNonEmptyString(step.heading)) report.error(where, "table step needs a heading");
-    if (!Array.isArray(step.columns) || step.columns.length < 2 || !step.columns.every(isNonEmptyString)) {
-      report.error(where, "columns must be an array of at least 2 non-empty strings");
-      return;
-    }
-    if (!Array.isArray(step.rows) || step.rows.length === 0) {
-      report.error(where, "rows must be a non-empty array");
-      return;
-    }
-    step.rows.forEach((row, rowIndex) => {
-      if (!Array.isArray(row) || row.length !== step.columns.length) {
-        report.error(`${where} › rows[${rowIndex}]`, `row must have exactly ${step.columns.length} cells`);
-      } else if (!row.every(isNonEmptyString)) {
-        report.error(`${where} › rows[${rowIndex}]`, "every cell must be a non-empty string");
-      }
-    });
-    return;
-  }
-
-  // step.type === "check"
-  if (!isNonEmptyString(step.prompt)) {
-    report.error(where, "check step needs a prompt");
-  } else {
-    checkBlanks(report, where, step.prompt, { required: false });
-  }
-  if (checkOptions(report, where, step.options, { min: MIN_CHECK_OPTIONS, max: MAX_CHECK_OPTIONS })) {
-    checkCorrectIndex(report, where, step.correctIndex, step.options.length);
-  }
-  if (!isNonEmptyString(step.explanation)) {
-    report.error(where, "check step needs an explanation");
-  } else {
-    checkTurkish(report, where, "explanation", step.explanation);
-  }
+/** Mirrors lessonId() in js/topics.js — lesson ids are derived, not authored. */
+function derivedLessonId(topicId, category) {
+  const slug = category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `${topicId}-${slug}`;
 }
 
+function validateExamples(report, where, examples) {
+  if (!Array.isArray(examples) || examples.length < MIN_EXAMPLES_PER_LESSON) {
+    report.error(where, `examples must be an array of at least ${MIN_EXAMPLES_PER_LESSON} entries`);
+    return;
+  }
+  examples.forEach((example, index) => {
+    const exampleWhere = `${where} › examples[${index}]`;
+    if (!isNonEmptyString(example?.sentence)) {
+      report.error(exampleWhere, "sentence is required");
+    }
+    if (!isNonEmptyString(example?.note)) {
+      report.error(exampleWhere, "note is required");
+    }
+  });
+}
+
+function validateMistakes(report, where, mistakes) {
+  if (!Array.isArray(mistakes) || mistakes.length < MIN_MISTAKES_PER_LESSON) {
+    report.error(where, `commonMistakes must be an array of at least ${MIN_MISTAKES_PER_LESSON} entries`);
+    return;
+  }
+  mistakes.forEach((mistake, index) => {
+    const mistakeWhere = `${where} › commonMistakes[${index}]`;
+    for (const field of ["wrong", "right", "why"]) {
+      if (!isNonEmptyString(mistake?.[field])) {
+        report.error(mistakeWhere, `${field} is required`);
+      }
+    }
+    if (isNonEmptyString(mistake?.wrong) && mistake.wrong === mistake.right) {
+      report.error(mistakeWhere, "wrong and right are identical — there is no mistake to show");
+    }
+    if (isNonEmptyString(mistake?.why)) {
+      checkTurkish(report, mistakeWhere, "why", mistake.why);
+    }
+  });
+}
+
+/**
+ * A lesson is authored as an article: named prose sections plus examples
+ * and common mistakes. How those sections are paced into reader steps,
+ * and where check questions are slotted in, is the app's decision (see
+ * js/education.js) — so nothing here describes screens.
+ */
 function validateLesson(report, file, lesson, index, seenIds, questionCategories, topicId) {
-  const label = `lessons[${index}]${lesson?.id ? ` (${lesson.id})` : ""}`;
-  const where = `${file} › ${label}`;
+  const where = `${file} › lessons[${index}]${lesson?.category ? ` (${lesson.category})` : ""}`;
 
   if (!lesson || typeof lesson !== "object") {
     report.error(where, "lesson must be an object");
-    return null;
-  }
-
-  if (!isNonEmptyString(lesson.id)) {
-    report.error(where, "id is required");
-  } else {
-    if (!lesson.id.startsWith(`${topicId}-`)) {
-      report.warn(where, `id should start with "${topicId}-"`);
-    }
-    if (seenIds.has(lesson.id)) {
-      report.error(where, `duplicate lesson id "${lesson.id}"`);
-    }
-    seenIds.add(lesson.id);
-  }
-
-  if (!isInteger(lesson.order) || lesson.order < 1) {
-    report.error(where, "order must be an integer >= 1");
-  }
-  if (!isNonEmptyString(lesson.title)) report.error(where, "title is required");
-  if (!isNonEmptyString(lesson.summary)) {
-    report.error(where, "summary is required (shown on the lesson index card)");
-  } else {
-    checkTurkish(report, where, "summary", lesson.summary);
+    return;
   }
 
   if (!isNonEmptyString(lesson.category)) {
     report.error(where, "category is required");
-  } else if (questionCategories.size && !questionCategories.has(lesson.category)) {
-    report.error(
-      where,
-      `category "${lesson.category}" is not used by any question in this topic — lessons and questions must share one taxonomy`
-    );
+  } else {
+    if (questionCategories.size && !questionCategories.has(lesson.category)) {
+      report.error(
+        where,
+        `category "${lesson.category}" is not used by any question in this topic — lessons and questions must share one taxonomy`
+      );
+    }
+    // Ids are derived from topic + category, so two lessons sharing a
+    // category inside a topic would silently collapse into one.
+    const id = derivedLessonId(topicId, lesson.category);
+    if (seenIds.has(id)) {
+      report.error(where, `two lessons resolve to the same id "${id}" — categories must be unique per topic`);
+    }
+    seenIds.add(id);
   }
 
-  if (!Array.isArray(lesson.steps) || lesson.steps.length === 0) {
-    report.error(where, "steps must be a non-empty array");
-    return lesson.order;
+  for (const field of LESSON_PROSE_FIELDS) {
+    if (!isNonEmptyString(lesson[field])) {
+      report.error(where, `${field} is required and must be a non-empty string`);
+    } else {
+      checkTurkish(report, where, field, lesson[field]);
+    }
   }
 
-  lesson.steps.forEach((step, stepIndex) => validateLessonStep(report, file, label, step, stepIndex));
-
-  if (!lesson.steps.some((step) => step?.type === "check")) {
-    report.error(
-      where,
-      "lesson has no check step — every lesson must ask the learner at least one question (that's what makes Eğitim interactive rather than a slideshow)"
-    );
+  // `form` is structural notation ("S + have/has + V3 → ..."), so it is
+  // required but deliberately exempt from the Turkish-prose heuristic.
+  if (!isNonEmptyString(lesson.form)) {
+    report.error(where, "form is required and must be a non-empty string");
   }
 
-  return lesson.order;
+  validateExamples(report, where, lesson.examples);
+  validateMistakes(report, where, lesson.commonMistakes);
 }
 
 async function readJson(relativePath) {
@@ -422,18 +410,9 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds) 
     return;
   }
 
-  const orders = lessons.map((lesson, index) =>
+  lessons.forEach((lesson, index) =>
     validateLesson(report, file, lesson, index, seenLessonIds, questionCategories, topic.id)
   );
-
-  const expected = Array.from({ length: lessons.length }, (_, i) => i + 1);
-  const actual = orders.filter(isInteger).slice().sort((a, b) => a - b);
-  if (actual.length === lessons.length && actual.join(",") !== expected.join(",")) {
-    report.error(
-      file,
-      `lesson "order" values must be 1..${lessons.length} with no gaps or duplicates (found ${actual.join(", ")})`
-    );
-  }
 
   if (topic.lessonCount !== undefined && topic.lessonCount !== lessons.length) {
     report.error(
