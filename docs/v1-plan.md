@@ -355,6 +355,55 @@ rather than a thing everyone assumed was there.
 
 ---
 
+### Emin misin? — confidence-weighted answering (decided 2026-09-04)
+
+`practice-modes.md` §8.3 ranked this sixth on the v1 list and flagged it
+as the most likely to be cut, with a condition attached: *"If it cannot
+be done in one tap without moving anything, it is not worth it."* It
+cannot. Both designs fail, for different reasons, and the second one is
+worth writing down because it looks like it works.
+
+**Prospective** — mark your confidence before or while answering — is the
+version the evidence is about. Sparck, Bjork & Bjork's result is a
+property of the *answering format*, so a retrospective substitute is not
+the same intervention. But it is unavoidably a second decision on the
+action a learner performs hundreds of times a session, which is precisely
+what `docs/design-system.md` says not to touch. A long-press variant
+avoids the second tap and fails the accessibility contract instead: no
+keyboard equivalent, and a timing-dependent gesture as the primary
+control.
+
+**Retrospective** — split the existing "İleri" tap into "Biliyordum" and
+"Emin değildim" — costs no extra taps at all and moves nothing, because
+the action bar already holds two buttons and already has a rule for the
+pair. It is genuinely tempting. It also asks the learner to rate their
+confidence *after seeing whether they were right*, which is hindsight
+bias with a button on it. The cell the feature exists to expose —
+confidently wrong — is exactly the cell hindsight destroys, because
+nobody reports having been sure about something they have just been told
+they got wrong. The data would be worse than no data, and Profil would
+say a confident sentence about it.
+
+So: not built. What the feature was for is still real — `getWeakCategories()`
+cannot tell a lucky guess from secure knowledge — and the honest way to
+get that signal is more items per category, not a second control per
+question.
+
+### Neden yanlış? — one line per distractor (open, for the owner)
+
+Not refused, and not scheduled: it needs a decision that is the owner's.
+`practice-modes.md` §8.4 makes the case that this is **the cheapest way
+to triple the teaching value of the items that already exist** — on an
+exam whose restatement and cloze sections are won by eliminating three
+plausible options, practising elimination explicitly is close to the
+actual skill.
+
+The price is authoring: one short Turkish line per wrong option, three
+per question. At 97 questions that is **291 notes**. It is a real job,
+and it competes directly with writing new questions. The trade is worth
+putting plainly: 291 short notes against roughly 100 new items, for a
+pool this small.
+
 ## Blocked on the owner
 
 1. ~~**The exam specification.**~~ **Resolved 2026-09-03**: the owner
