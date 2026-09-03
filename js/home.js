@@ -125,8 +125,18 @@ function renderWeakSpots(entries) {
   }
 
   const section = el("section", "stack stack--tight");
+  // A ranking, not a verdict. The app knows which categories the learner
+  // has got most wrong; on four questions it does not know that they
+  // *cannot do* them, and the heading should not claim otherwise. The
+  // hint says which of the two this is.
+  const confident = entries.some((entry) => entry.confident);
   section.appendChild(
-    sectionHeading("Zayıf noktaların", "Dokunduğunda sadece o kategoriden pratik başlar.")
+    sectionHeading(
+      "En çok zorlandıkların",
+      confident
+        ? "Dokunduğunda sadece o kategoriden pratik başlar."
+        : "Şimdilik az veriyle sıralandı. Dokunduğunda o kategoriden pratik başlar."
+    )
   );
 
   const list = el("div");

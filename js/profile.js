@@ -76,7 +76,16 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
   grid.appendChild(stat(lessonsTotal ? `${lessonsDone}/${lessonsTotal}` : "—", "Tamamlanan ders"));
   grid.appendChild(stat(String(stats.testsCompleted), "Çözülen test"));
   grid.appendChild(stat(String(stats.totalQuestions), "Çözülen soru"));
-  grid.appendChild(stat(formatPercent(stats.accuracy), "Doğruluk"));
+  // The label says which question the number answers. Three lifetime
+  // counters beside one recent average would otherwise read as four of the
+  // same kind of thing, and the learner would take the average for a
+  // lifetime one — which is the reading that makes it discouraging.
+  grid.appendChild(
+    stat(
+      formatPercent(stats.accuracy),
+      stats.accuracyWindow > 0 ? `Son ${stats.accuracyWindow} soruda` : "Doğruluk"
+    )
+  );
   section.appendChild(grid);
 
   if (stats.testsCompleted === 0 && lessonsDone === 0) {
@@ -173,22 +182,27 @@ async function render() {
     renderStats(getOverallStats(), countCompletedLessons(lessonIds), lessonIds.length)
   );
 
-  const weakCategories = renderWeakList(
-    "Zayıf kategoriler",
-    "Dokunduğunda o kategoriyi anlatan ders açılır.",
-    getWeakCategories().map((entry) => ({
+  const weakCategories = getWeakCategories();
+  const weakCategoryList = renderWeakList(
+    "En çok zorlandığın kategoriler",
+    weakCategories.some((entry) => entry.confident)
+      ? "Dokunduğunda o kategoriyi anlatan ders açılır."
+      : "Şimdilik az veriyle sıralandı. Dokunduğunda o kategoriyi anlatan ders açılır.",
+    weakCategories.map((entry) => ({
       name: entry.category,
       score: `${entry.correct}/${entry.total}`,
       lessonId: lessonIdByCategory.get(entry.category) ?? null,
     }))
   );
-  if (weakCategories) {
-    container.appendChild(weakCategories);
+  if (weakCategoryList) {
+    container.appendChild(weakCategoryList);
   }
 
   const weakTopics = renderWeakList(
-    "Zayıf konular",
-    "En çok hata yaptığın konular, en zayıftan başlayarak.",
+    "En çok zorlandığın konular",
+    // "Şu an" is doing real work: the score is the most recent answer to
+    // each distinct question, so it moves as soon as the learner does.
+    "Her sorunun en son cevabına göre, şu an en çok yanıldığından başlayarak.",
     getWeakTopics().map((entry) => ({
       name: titleById.get(entry.topicId) ?? entry.topicId,
       score: `${entry.correct}/${entry.total}`,
