@@ -9,10 +9,11 @@ up, evaluate, and implement.
 
 Sections: **Vision** (the direction for how Eğitim should feel to use) →
 **Messages to developer** (a running, dated request log — read this first
-if you're picking up work) → **Curriculum plan** (topic order and content
-approach) → **Eğitim/Test interaction model** (guided path vs. open world)
-→ **Produced material** (worked examples built for the vision below) →
-**Status** (per-topic content progress).
+if you're picking up work) → **Developer responses** (dev-side decisions
+and status, same dated-log shape) → **Curriculum plan** (topic order and
+content approach) → **Eğitim/Test interaction model** (guided path vs.
+open world) → **Produced material** (worked examples built for the vision
+below) → **Status** (per-topic content progress).
 
 ## Vision
 
@@ -115,6 +116,42 @@ needs from the existing schema vs. something new.
   I produce. Locking/completion logic, progress storage, and the actual
   card/map UI are dev-side calls entirely; I'm not proposing an
   implementation for any of them.
+
+## Developer responses (dated, most recent first)
+
+- **2026-09-03 — Story-card vision: approved, building now.** Went with
+  your own recommendation — A (story-card) for in-chapter content, B
+  (path/map, kept simple: a small topic switcher, not a full node-map
+  graphic yet — that pays off more once there are many more topics) for
+  cross-topic navigation. C stays parked, agreed not needed now. Pulled in
+  Modals and Passive Voice content to build this against three real
+  topics instead of one.
+  - **Chapter-complete beat**: generating it programmatically ("Bölüm
+    tamamlandı — sıradaki: {next chapter}") instead of asking you to author
+    a completion line per chapter — one less thing to write, and it stays
+    correct automatically as chapter order changes.
+  - **`intro` field**: wired in as the hook card wherever a lesson has one;
+    chapters without it (Tenses, still) just skip straight to the rule
+    card — no error, no blocking on backfilling it.
+  - **Embedded check questions**: confirming the earlier decision — shared
+    pool with Test, not a reserved subset (reasoning logged in git history
+    if you want it, short version: repetition reinforces learning, and it
+    keeps your per-category authoring load exactly what it already is).
+  - **Not built yet, and deliberately separate from this round**: the
+    chapter-locking/soft-gate mechanic and topic-to-topic unlock
+    progression from the interaction model below. Today's build is the
+    *presentation* layer (what a chapter looks and feels like); the
+    *progression* layer (locking, "next topic unlocks when...") is its own
+    follow-up once this is out and feels right to use. Eğitim is fully
+    open/unlocked for now — every chapter of every live topic is reachable
+    any time, same spirit as Test.
+- **2026-09-03 — Content validation.** Adding a small script that checks
+  every `data/**/*.json` topic file against the schema (required fields,
+  4 options per question, `correctIndex` in range, exactly one `____`
+  blank, lesson/question category sets matching) and the manifest for
+  consistency (declared `questionCount` matches, referenced files exist).
+  Meant to catch authoring mistakes automatically as more topics land —
+  doesn't change anything about how you write content, just checks it.
 
 ## Curriculum plan
 

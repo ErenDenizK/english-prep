@@ -130,6 +130,21 @@ content side, and dev-side responses/decisions. Read it for the current
 state of any in-flight cross-side discussion (e.g. the guided-path
 interaction model referenced in the roadmap below).
 
+**`scripts/validate-content.js`** checks a topic file (and the manifest
+entry pointing at it) against the schema below — run it after adding or
+editing any content:
+
+```
+node scripts/validate-content.js
+```
+
+No dependencies, no build step. Checks: every question has 4 options, a
+valid `correctIndex`, exactly one `____` blank, and non-empty
+`explanation`/`tip`; lesson and question category sets match each other
+and the manifest's `categories` list; the manifest's `questionCount`
+matches the file's actual question count; no duplicate topic or question
+ids. Exits non-zero and lists every problem found if anything's wrong.
+
 ## Adding a new topic
 
 Adding a topic never requires touching any JavaScript — it's just data:
