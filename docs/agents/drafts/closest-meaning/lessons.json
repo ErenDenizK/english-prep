@@ -97,13 +97,13 @@
         "type": "pitfall",
         "wrong": "If she had left earlier, she would have been there now.",
         "right": "If she had left earlier, she would be there now.",
-        "why": "\"now\" sonucu bugüne bağlıyor. Sonuç bugündeyse sonuç kolu \"would + V\" olur; \"would have + V3\" sonucu geçmişe kapatır ve cümle artık bugün hakkında hiçbir şey söylemez."
+        "why": "\"now\" sonucu bugüne bağlıyor. Sonuç bugünkü bir **durum** ise sonuç kolu \"would + V\" olur; \"would have + V3\" tamamlanmış bir eylem anlatır ve \"orada olmak\" gibi bir durumu bugüne taşıyamaz. Tamamlanmayı bugüne bağlayan cümleler bunun dışındadır: \"she would have arrived by now\" doğrudur."
       },
       {
         "type": "pitfall",
         "wrong": "If she would have left earlier, she would have caught the train.",
         "right": "If she had left earlier, she would have caught the train.",
-        "why": "\"would\" yalnızca sonuç kolunda durur. Türkçede iki kola da \"-ecekti\" duygusu geldiği için şart koluna da would eklenir; İngilizcede şart kolu daima \"had + V3\"tür."
+        "why": "Üçüncü tip şartın if kolunda \"would\" bulunmaz. Türkçede iki kola da \"-ecekti\" duygusu geldiği için şart koluna da would eklenir; bu derste gördüğün iki tipte şart kolu \"had + V3\" ile kurulur."
       },
       {
         "type": "pitfall",
@@ -123,7 +123,7 @@
         "heading": "Şıkkı denetle: zaman kaymış mı?",
         "rules": [
           {
-            "condition": "Orijinalin sonucu \"now / today / still\" ile bugüne bağlıyken şık \"would have + V3\" diyorsa",
+            "condition": "Orijinalin sonucu \"now / today / still\" ile bugünkü bir durumu anlatırken şık \"would have + V3\" ile onu tamamlanmış bir geçmiş eyleme çeviriyorsa",
             "then": "Re-time"
           },
           {
@@ -195,7 +195,7 @@
             "form": "if ... not",
             "use": "Başta gelen koşul",
             "pattern": "If + S + do not + V, ana cümle",
-            "example": "If the code is not entered, the door stays locked."
+            "example": "If you do not enter the code, the door stays locked."
           },
           {
             "form": "otherwise",
@@ -429,7 +429,7 @@
             "then": "Reverse"
           },
           {
-            "condition": "Zıtlık bağlacının yerini bir neden bağlacı almışsa (because, since, as, so)",
+            "condition": "Zıtlık bağlacının yerini bir neden bağlacı (because, since, as) ya da bir sonuç bağlacı (so, therefore) almışsa",
             "then": "Reverse"
           },
           {
@@ -471,12 +471,12 @@
           },
           {
             "label": "Comparative (-er / more / less)",
-            "gloss": "İki taraf arasında açık bir fark kurar. Fazlası hangi taraftaysa \"than\"den önce o durur.",
+            "gloss": "İki taraf arasında açık bir fark kurar. **-er** ve **more** ile fazlası than'den önce durur; **less** ile tam tersi olur, fazlası than'den sonraki taraftadır.",
             "example": "The new model is faster than the old one."
           },
           {
             "label": "the more ... the more",
-            "gloss": "İki değişkeni birbirine bağlar. İlk yarı koşulu ya da sebebi, ikinci yarı sonucu taşır; yarılar yer değiştiremez.",
+            "gloss": "İki değişkeni birbirine bağlar. İlk yarı koşulu ya da sebebi, ikinci yarı sonucu taşır; yarılar yer değiştirirse cümle başka bir şey söyler.",
             "example": "The more you practise, the faster you get."
           }
         ]
@@ -524,7 +524,7 @@
           {
             "form": "the more ... the more",
             "use": "Biri artarken öbürü azalır",
-            "pattern": "The + comparative + clause, the less + clause",
+            "pattern": "The + comparative + clause, the less + adj + clause",
             "example": "The longer it runs, the less accurate it gets."
           }
         ]
@@ -591,11 +591,11 @@
             "then": "Reverse"
           },
           {
-            "condition": "Taraflar şıkta aynı sırada duruyor ama kalıp olumsuzdan olumluya (ya da tersine) dönmüşse",
+            "condition": "Kalıp \"not as ... as\"ten \"-er / more ... than\"e dönmüş ama taraflar aynı sırada kalmışsa: fazlası el değiştirmiştir",
             "then": "Reverse"
           },
           {
-            "condition": "Korelatifin iki yarısı yer değiştirmişse: sebep sonuç, sonuç sebep olmuş",
+            "condition": "\"the more ... the more\" kalıbının iki yarısı yer değiştirmişse: sebep sonuç, sonuç sebep olmuş",
             "then": "Reverse"
           },
           {
@@ -605,6 +605,10 @@
           {
             "condition": "Orijinal kesin bir karşılaştırma yaparken şık \"probably / may be\" gibi bir ihtimal eklemişse",
             "then": "Re-modalise"
+          },
+          {
+            "condition": "Kalıp \"not as ... as\" ile \"less ... than\" arasında dönmüş ve taraflar aynı sırada kalmışsa: fazlası el değiştirmez",
+            "then": "Same meaning"
           },
           {
             "condition": "Fazlası aynı tarafta, yarılar aynı sırada ve karşılaştırma hâlâ bir karşılaştırmaysa",
@@ -717,7 +721,7 @@
         "type": "pitfall",
         "wrong": "I was too happy to hear the news.",
         "right": "I was very happy to hear the news.",
-        "why": "\"too\" olumsuz bir sonuç bildirir: bu cümle \"haberi duyamayacak kadar mutluydum\" demektir. Türkçede \"çok\" tek kelime olduğu için \"too\" olumlu cümlelere de girer; oysa \"too\" daima bir engeli işaret eder."
+        "why": "\"too\" olumsuz bir sonuç bildirir: bu cümle \"haberi duyamayacak kadar mutluydum\" demektir. Türkçede \"çok\" tek kelime olduğu için \"too\" olumlu cümlelere de girer; oysa olumlu bir cümlede \"too ... to\" daima bir engel bildirir. Olumsuzda tersine döner: \"It is not too late to apply\" başvurabilirsin demektir."
       },
       {
         "type": "pitfall",
