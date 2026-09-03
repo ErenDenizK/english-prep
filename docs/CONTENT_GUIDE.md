@@ -140,8 +140,17 @@ should name a confusable pair or triad wherever the grammar allows it
   attempt. The wrong options must be genuinely tempting.
 - **`correctIndex`** — 0-based index into `options`.
 - **`explanation`** — Turkish, always a full explanation: why the correct
-  option fits *this* context, **and** why the closest wrong option doesn't.
-  Never a one-liner.
+  option fits *this* context, **and** why the closest wrong option doesn't
+  — naming that option in its own words, so the learner who chose it is
+  told what they chose. Never a one-liner. Three or four sentences is the
+  shape; the validator warns under 40 characters and over 600, because
+  past that it is the lesson again, in the one place a learner is least
+  willing to read it.
+
+  This is the field that decides whether a wrong answer teaches anything.
+  Two thirds of the first corpus argued only for the key, which meant the
+  learner who picked the distractor was told what was right and never told
+  why what they chose was wrong.
 - **`tip`** — Turkish, a short standalone rule the learner can carry to
   other questions. Distinct from the explanation: the explanation is
   situational, the tip is transferable.

@@ -50,7 +50,7 @@
       "paragraph": "You ____ bring your own textbook to the seminar — the professor said she'll provide printed copies for everyone.",
       "options": ["don't have to", "mustn't", "can't", "shouldn't"],
       "correctIndex": 0,
-      "explanation": "Profesörün herkese kopya sağlayacağını söylemesi, kitap getirmenin gerekli olmadığını gösteriyor (yasak değil, sadece gereksiz), bu yüzden 'don't have to' kullanılır.",
+      "explanation": "Profesörün herkese basılı kopya sağlayacağını söylemesi, kitap getirmenin **gerekli olmadığını** gösteriyor; getirmek isteyen yine getirebilir, bu yüzden 'don't have to' kullanılır. En yakın çeldirici 'mustn't' bir yasaktır: onu seçersen cümle \"kitap getirmen yasak\" anlamına gelir, oysa profesör kimseye bir şey yasaklamıyor, sadece gereğini ortadan kaldırıyor. 'shouldn't' de bir tavsiye bildirir (\"getirmesen iyi olur\"), burada ise ortada ne yasak ne öğüt var, sadece gereksizlik var.",
       "tip": "Bir şeyin yapılmasına gerek olmadığını (ama yasak olmadığını) belirtmek için 'don't have to' veya 'don't need to' kullanılır."
     },
     {
@@ -95,7 +95,7 @@
       "paragraph": "Look at the queue outside that restaurant — it ____ be the best place in town, since it's always this crowded.",
       "options": ["must", "might", "can't", "should"],
       "correctIndex": 0,
-      "explanation": "Somut bir kanıta (her zaman kalabalık olması) dayanarak güçlü bir olumlu çıkarım yapılıyor, bu yüzden 'must' (olmalı, kesinlikle öyle) kullanılır.",
+      "explanation": "Kanıt cümlenin içinde yazılı: 'since it's always this crowded'. Bu kadar güçlü bir kanıt başka açıklama bırakmıyor, yani kanıta dayalı güçlü çıkarım 'must' ile kurulur. En yakın çeldirici 'might' zayıf bir ihtimaldir — \"belki en iyi yerdir, emin değilim\" der ve cümlenin sunduğu 'always this crowded' gerekçesini boşa çıkarır. 'should' ise beklenti bildirir (\"normalde öyle olması lazım\"), elindeki kanıta dayanan bir çıkarımı değil.",
       "tip": "Mevcut kanıtlara dayanan güçlü bir çıkarımı belirtmek için 'must' kullanılır."
     },
     {
@@ -113,7 +113,7 @@
       "paragraph": "Someone is knocking on the door. It ____ be the courier with my package, but I'm not really expecting anything today.",
       "options": ["might", "must", "can't", "have to"],
       "correctIndex": 0,
-      "explanation": "'Not really expecting anything' ifadesi düşük kesinlikli bir tahmini gösteriyor, bu yüzden zayıf olasılık bildiren 'might' kullanılır.",
+      "explanation": "'but I'm not really expecting anything today' konuşmacının emin olmadığını söylüyor; bu düşük kesinlik, zayıf ihtimal bildiren 'might' ile karşılanır. En yakın çeldirici 'must' kanıta dayalı güçlü bir çıkarımdır — \"kesinlikle kuryedir\" demek olurdu ve hemen ardından gelen \"aslında bir şey beklemiyorum\" ifadesiyle çelişirdi. 'can't' ise skalanın ters ucudur: kuryenin gelmiş olmasının imkânsız olduğunu söylerdi, oysa konuşmacı bunu bir ihtimal olarak ortaya atıyor.",
       "tip": "Zayıf, emin olunmayan çıkarımlar için 'might' veya 'could' kullanılır; 'must' çok daha güçlü bir kesinlik ifade eder."
     },
     {
@@ -131,7 +131,7 @@
       "paragraph": "The lights are still on and the door is unlocked — the last person to leave ____ forgotten to lock up.",
       "options": ["must have", "can't have", "should have", "might"],
       "correctIndex": 0,
-      "explanation": "Işıkların açık ve kapının kilitsiz olması, güçlü bir geçmiş çıkarımı destekliyor, bu yüzden 'must have + V3' (kesinlikle ... olmuş olmalı) kullanılır.",
+      "explanation": "Işıkların hâlâ açık ve kapının kilitsiz olması somut bir kanıt; geçmişe dair tek makul açıklamayı veren güçlü çıkarım 'must have + V3' ile kurulur. En yakın çeldirici 'can't have' çıkarımın olumsuz ucudur: \"kilitlemeyi unutmuş olamaz\" derdi, oysa kanıt tam tersini gösteriyor. 'might' ise tek başına V3 alamaz — bu kalıp her zaman modal + have + V3'tür, yani cümlenin çalışması için 'might have forgotten' yazması gerekirdi.",
       "tip": "Geçmişte olan bir şey hakkında güçlü bir çıkarım yapmak için 'must have + past participle' kullanılır."
     },
     {
@@ -140,7 +140,7 @@
       "paragraph": "He ____ finished the marathon in under three hours — he's never run more than five kilometers in his life.",
       "options": ["can't have", "must have", "should have", "needn't have"],
       "correctIndex": 0,
-      "explanation": "Kişinin daha önce hiç uzun mesafe koşmadığı bilgisi, maratonu üç saatin altında bitirmiş olmasını imkansız kılıyor, bu yüzden 'can't have + V3' kullanılır.",
+      "explanation": "'he's never run more than five kilometers in his life' bilgisi, maratonu üç saatin altında bitirmiş olmasını mantıken imkânsız kılıyor; geçmişe dair imkânsızlık 'can't have + V3' ile kurulur. En yakın çeldirici 'must have' çıkarımın olumlu ucudur ve \"kesinlikle bitirmiştir\" derdi — cümlenin ikinci yarısıyla taban tabana zıt. 'needn't have' ise eylemin yapıldığını ama sonradan gereksiz çıktığını söyler; burada eylemin hiç gerçekleşmediği savunuluyor.",
       "tip": "Geçmişte bir şeyin imkansız olduğuna dair güçlü çıkarımlar için 'can't have + past participle' kullanılır."
     },
     {
@@ -149,8 +149,8 @@
       "paragraph": "I ____ studied harder for that exam — I only found out yesterday how much material was actually going to be covered.",
       "options": ["should have", "must have", "can't have", "may have"],
       "correctIndex": 0,
-      "explanation": "Cümle geçmişte yapılmayan ama yapılması gereken bir şeyden duyulan pişmanlığı anlatıyor, bu yüzden 'should have + V3' (yapmalıydım ama yapmadım) kullanılır.",
-      "tip": "'Should have + V3', geçmişte yapılmayan ve pişmanlık duyulan bir eylemi anlatır."
+      "explanation": "Konuşmacı \"daha çok çalışmalıydım ama çalışmadım\" diyor; yapılmamış bir eylem için duyulan pişmanlık 'should have + V3' ile kurulur ve 'I only found out yesterday' bu pişmanlığın sebebini veriyor. En yakın çeldirici 'must have' geçmişe dair bir çıkarımdır: \"herhalde çok çalışmışımdır\" anlamına gelirdi, oysa insan kendi ne kadar çalıştığı hakkında çıkarım yapmaz. 'can't have' de çıkarımdır (imkânsızlık) ve cümledeki pişmanlığı hiç karşılamaz.",
+      "tip": "'Should have + V3', geçmişte yapılmayan bir eylem için pişmanlık ya da eleştiri bildirir; çıkarım bildirmez."
     },
     {
       "id": "modals-t16",
@@ -203,7 +203,7 @@
       "paragraph": "My little brother ____ solve a Rubik's cube in under a minute — it's honestly one of the most impressive things I've ever seen him do.",
       "options": ["can", "could", "was able to", "will be able to"],
       "correctIndex": 0,
-      "explanation": "Şu anki genel bir yeteneği anlatıyor, bu yüzden Present Simple ile 'can' kullanılır.",
+      "explanation": "Kardeşin şu anda sahip olduğu, süregelen genel bir yetenekten söz ediliyor; şimdiki genel yetenek 'can' ile anlatılır ve 'it's honestly one of the most impressive things' ifadesi bu yeteneğin hâlâ geçerli olduğunu gösteriyor. En yakın çeldirici 'could' yeteneği geçmişe taşır — \"eskiden yapabiliyordu\" der ve artık yapamadığı izlenimi bırakır. 'will be able to' ise gelecekte kazanılacak bir yetenek içindir, oysa cümlede geleceğe işaret eden hiçbir ifade yok.",
       "tip": "Genel, şu anki yetenekler için 'can' kullanılır."
     },
     {
@@ -212,8 +212,8 @@
       "paragraph": "When she was only five years old, she ____ already read entire novels on her own, which amazed everyone in her family.",
       "options": ["could", "was able to", "can", "has been able to"],
       "correctIndex": 0,
-      "explanation": "Geçmişte genel/süregelen bir yetenekten bahsediliyor (beş yaşındayken genel olarak yapabiliyordu), bu yüzden 'could' kullanılır.",
-      "tip": "Geçmişteki genel yetenekler için 'could' kullanılır; belirli, tek seferlik bir başarı için 'was/were able to' tercih edilir."
+      "explanation": "'When she was only five years old' bir dönemi işaret ediyor ve o dönem boyunca süren genel bir yetenek anlatılıyor; geçmişteki genel yetenek 'could' ile kurulur. En yakın çeldirici 'was able to' olumlu cümlede belirli bir durumda, tek seferde başarılan somut bir işi anlatır ('despite', 'in the end' gibi ifadelerle gelir) — burada tek bir romanı bitirme anı değil, o yaştaki genel okuma becerisi var. 'can' ise şu anki yeteneği bildirir ve cümlenin geçmiş zaman çerçevesiyle ('was', 'amazed') çelişir.",
+      "tip": "Olumlu cümlelerde geçmişteki genel yetenek için 'could', belirli ve tek seferlik bir başarı için 'was/were able to' kullanılır; olumsuzda 'couldn't' her iki anlamda da serbesttir."
     },
     {
       "id": "modals-t23",
