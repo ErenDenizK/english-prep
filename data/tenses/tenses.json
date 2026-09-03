@@ -146,11 +146,11 @@
     {
       "id": "tenses-t15",
       "category": "Future Forms",
-      "paragraph": "My flight ____ at 7:45 tomorrow morning, according to the confirmation email I received yesterday.",
-      "options": ["leaves", "will leave", "is leaving", "leaved"],
+      "paragraph": "The last train back ____ at 23:10 tomorrow night, and the board at the station is very clear that nothing runs after it.",
+      "options": ["leaves", "will leave", "is going to leave", "has left"],
       "correctIndex": 0,
-      "explanation": "Sabit bir tarifeye/programa (uçuş saatine) bağlı gelecek olaylar için Present Simple kullanılır.",
-      "tip": "Resmi tarifeler, programlar (tren, uçuş, ders saatleri) için Present Simple kullanılır."
+      "explanation": "Saati belirleyen konuşmacının kararı değil, demiryolunun basılı tarifesidir; kişiye bağlı olmayan resmî programlar gelecekten söz etse bile Present Simple ile kurulur. 'will leave' kararın konuşma anında verildiğini ima eder ve önceden basılmış bir tarifeyle çelişir.",
+      "tip": "Resmî tarifeler ve programlar (tren, uçuş, ders saatleri) için gelecek anlamında Present Simple kullanılır."
     },
     {
       "id": "tenses-t16",

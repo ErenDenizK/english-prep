@@ -434,6 +434,27 @@ decision    the procedure to carry into the exam
 
 ---
 
+## What the validator checks about the content itself
+
+Everything above is schema: shape, required fields, lengths. Four more
+checks look at what the questions actually *say*, and three of them can
+only be answered by reading the whole corpus at once. They live in
+`tools/content-checks.mjs` and each has tests around its threshold in
+`tests/content-checks.test.js`.
+
+| Check | Level | What it means |
+| --- | --- | --- |
+| **The explanation names a wrong option** | warning, rolled up per topic | The guide asks an explanation to say why the key fits *and* why the closest wrong option doesn't. An explanation that never mentions any wrong option cannot be doing the second half. The check looks for the option's own text, so it catches the absence of the move, not the quality of it. |
+| **Banned option forms** | error / warning | An invented `-ed` past of an irregular verb (`leaved`, `teached`, `runned`) is an **error**: it ships a non-word. Two options identical once case and spacing are ignored, and a multi-word correct answer that also appears in the paragraph, are warnings. |
+| **Near-duplicate stems** | warning | Two questions anywhere in the corpus sharing 30% of their wording as token trigrams. Also: two questions in the *same category* with an identical set of options. |
+| **Scenario over-use** | warning | A content word in three quarters of one category's paragraphs, or in 15% of the whole corpus. Function words and the grammar's own vocabulary are excluded, so `would` across a modals topic is not a finding. |
+
+None of the four can tell a good question from a bad one. They exist to
+catch the four defects that are invisible while you are writing a single
+item and obvious once somebody counts.
+
+---
+
 ## Before you hand content over
 
 ```bash

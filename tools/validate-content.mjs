@@ -18,6 +18,12 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { TIER_ORDER } from "../js/tiers.js";
+import {
+  checkExplanationsNameDistractors,
+  checkNearDuplicates,
+  checkOptionForms,
+  checkScenarioReuse,
+} from "./content-checks.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = "data/manifest.json";
@@ -210,6 +216,7 @@ function validateQuestion(report, file, question, index, seenIds, topicId) {
     if (isNonEmptyString(question.paragraph) && isNonEmptyString(answer)) {
       checkFilledSentence(report, where, question.paragraph, answer);
     }
+    checkOptionForms(report, where, question);
   }
 
   if (!isNonEmptyString(question.explanation)) {
@@ -534,7 +541,7 @@ function sameSet(a, b) {
   return a.size === b.size && [...a].every((value) => b.has(value));
 }
 
-async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds) {
+async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, corpus) {
   const file = topic.file;
   let data;
   try {
@@ -562,6 +569,16 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds) 
   data.questions.forEach((question, index) =>
     validateQuestion(report, file, question, index, seenQuestionIds, topic.id)
   );
+
+  // Kept for the corpus-wide pass below, which cannot run until every
+  // topic has been read: a near-duplicate stem is invisible inside one
+  // file and obvious across three.
+  for (const question of data.questions) {
+    if (question && typeof question === "object") {
+      corpus.push({ ...question, file, topicId: topic.id });
+    }
+  }
+  checkExplanationsNameDistractors(report, file, data.questions);
 
   if (data.questions.length !== topic.questionCount) {
     report.error(
@@ -673,6 +690,7 @@ async function main() {
     process.exit(1);
   }
 
+  const corpus = [];
   const seenTopicIds = new Set();
   const seenQuestionIds = new Set();
   const seenLessonIds = new Set();
@@ -738,8 +756,11 @@ async function main() {
   }
 
   for (const topic of liveTopics) {
-    await validateTopicFile(report, topic, seenQuestionIds, seenLessonIds);
+    await validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, corpus);
   }
+
+  checkNearDuplicates(report, corpus);
+  checkScenarioReuse(report, corpus);
 
   console.log(
     `Checked ${manifest.topics.length} manifest topic(s): ` +
