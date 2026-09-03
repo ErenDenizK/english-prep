@@ -453,6 +453,32 @@ greyscale and forced-colors, so the selected state is not carried by hue
 alone. This is the Apple and Material convention and it exists for that
 reason.
 
+### 6.1 The set
+
+Fourteen drawings in `js/icons.js`: twelve outlines plus a filled variant
+for each of the two nav destinations. `icon(name, {size, title})` builds
+one; an unknown name throws rather than rendering nothing.
+
+| Icon | Used for |
+| --- | --- |
+| `book` · `book-fill` | Eğitim, in the nav and on a lesson row |
+| `check-square` · `check-square-fill` | Test, in the nav |
+| `user` | the Profil trigger in the header |
+| `arrow-left` · `arrow-right` | stepping back and forward |
+| `check` · `close` | a right and a wrong answer |
+| `chevron-down` · `chevron-right` | the listbox trigger; a row that opens |
+| `bar-chart` | the results breakdown |
+| `refresh` | starting another test |
+| `target` | a weak spot to drill |
+
+Every path coordinate is inside 2…22 and every drawing centres on (12,12)
+— `refresh` alone sits at (12, 11.5), because its arrowhead needs the room
+above the ring. Both filled variants are one `fill-rule="evenodd"` path
+that keeps the outline's silhouette and inverts it: the outline's internal
+strokes become voids, drawn 2 units wider than final so the shared 2-unit
+stroke paints them back to exactly where the outline's stroke sat. Redraw
+an outline and its fill has to be re-derived with it.
+
 **Accessibility.** An icon beside a visible label is decorative:
 `aria-hidden="true"`, and the label names the control. An icon-only
 control is labelled on the *button* with `aria-label`, never on the SVG.

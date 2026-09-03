@@ -29,8 +29,12 @@
 // Filled variants exist for the two bottom-nav destinations only, because
 // the selected state must survive greyscale and forced-colors — fill
 // changes visual mass, hue does not. They are the same drawing as their
-// outlines, not a heavier stroke: the silhouette is identical and the
-// internal separation is simply widened by 2 so it survives being stroked.
+// outlines, not a heavier stroke: both keep the outline's silhouette and
+// invert it, so the lines the outline draws in ink become voids in the
+// fill. Both are one path with fill-rule="evenodd", and both widen the void
+// by 2 first, because the shared 2-unit stroke paints 1 unit back in along
+// every edge — which is exactly what lands the void back on the outline's
+// own stroke.
 //
 // No innerHTML here, same as everywhere else in js/ — nodes are built with
 // createElementNS and attributes set one at a time.
@@ -64,15 +68,28 @@ const ICONS = {
     ["path", { d: "M21 7a2 2 0 0 0-2-2h-3l-4 2v12l4-2h3a2 2 0 0 0 2-2z" }],
   ],
 
-  // Same book, pages filled and pulled 2 off the spine each side, so the
-  // 2-unit stroke does not close the gap that makes it read as *open*.
-  // Silhouette matches the outline exactly: x 2…22, y 4…20 of ink.
+  // Same book, filled: the outline's outer silhouette solid, with the spine
+  // knocked back out of it. Two filled pages with a gap between them does
+  // not work — the notch in the top edge and the point on the bottom are
+  // what say "open book", and they only survive if the shape stays one
+  // connected form. So the spine is a slot that stops short of both, and
+  // the pages stay bridged by 2 of ink at each end. Ink matches the
+  // outline: x 2…22, y 4…20.
   "book-fill": [
-    ["path", { d: "M3 7a2 2 0 0 1 2-2h2l3 2v12l-3-2H5a2 2 0 0 1-2-2z", ...FILLED }],
-    ["path", { d: "M21 7a2 2 0 0 0-2-2h-2l-3 2v12l3-2h2a2 2 0 0 0 2-2z", ...FILLED }],
+    [
+      "path",
+      {
+        d:
+          "M3 7a2 2 0 0 1 2-2h3l4 2 4-2h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3l-4 2-4-2H5a2 2 0 0 1-2-2z" +
+          "M10 9.5a2 2 0 0 1 4 0v7a2 2 0 0 1-4 0z",
+        "fill-rule": "evenodd",
+        ...FILLED,
+      },
+    ],
   ],
 
-  // Checkable document. 18-unit box, r2; check inset 5 from every edge.
+  // Checkable document. 18-unit box, r2; check inset 5 from the side walls
+  // and 6 from top and bottom, which centres it on 12,12.
   "check-square": [
     ["path", { d: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" }],
     ["path", { d: "m8 12 3 3 5-6" }],
@@ -125,11 +142,13 @@ const ICONS = {
   // to corner, which is what makes it sit level with check-square.
   close: [["path", { d: "m5 5 14 14M19 5 5 19" }]],
 
-  // Deliberately lighter than the destination icons — a chevron is an
-  // affordance on a row, not a thing you look at. x 6…18, y 9…15.
-  "chevron-down": [["path", { d: "m6 9 6 6 6-6" }]],
+  // Deliberately the lightest things in the set — a chevron is an affordance
+  // on a row, not a thing you look at — but 14 across rather than Lucide's
+  // 12, so it does not read as undersized beside a 16-unit arrow. The half
+  // unit is what centres a 7-deep chevron on 12. x 5…19, y 8.5…15.5.
+  "chevron-down": [["path", { d: "m5 8.5 7 7 7-7" }]],
 
-  "chevron-right": [["path", { d: "m9 6 6 6-6 6" }]],
+  "chevron-right": [["path", { d: "m8.5 5 7 7-7 7" }]],
 
   // Axis plus three bars at 4 spacing (2 of ink between each), bars stopping
   // 4 short of the baseline. x 4…20, y 4…20.
