@@ -282,8 +282,26 @@ is where it was going to be needed anyway.
 
 ### 2.5 Loading
 
-Self-hosted `woff2`, subset to `latin` plus the five Turkish glyphs, two
-weights per family. Google Fonts' shared-cache argument died when Chrome
+Self-hosted `woff2`, subset to `latin` plus the five Turkish glyphs. Two
+weights of the sans, **one of the serif**: English is set at 400
+everywhere, taking its hierarchy from size and from the face rather than
+from weight, which is the cleaner pairing against a sans at 600 and takes
+the payload from 66.6 KB to 48.0 KB. `.t-en` pins `font-weight: 400` so
+nothing can ask for a weight that isn't shipped and get a faux-bold.
+
+Subsetting is where the saving is: Google's `latin-ext` slice is ~33 KB
+against ~15 KB for `latin`, for hundreds of glyphs this app will never
+render. One file per face, `latin` plus the five, cuts each face by 70–79%.
+The character range was **not** trimmed below `latin` to save more — future
+content will introduce characters this build has never seen, and a stray
+glyph falling back to a system font is the mixed-typeface failure §2.4 is
+about.
+
+Static instances mean **`font-optical-sizing` is a no-op**: Source Serif
+4's `opsz` axis is not present. That was one of the reasons for choosing
+this family, and it is given up here; restoring it means shipping the
+variable font at roughly +20 KB per weight. The superfamily-harmony
+argument stands on its own. Google Fonts' shared-cache argument died when Chrome
 partitioned the HTTP cache by top-level site in 2020; what remains is two
 extra origins and a render-blocking round trip before the font URLs are
 even known.
@@ -672,7 +690,7 @@ excuse: **LCP ≤ 2.0s · INP ≤ 150ms · CLS ≤ 0.05.**
 | HTML shell | ≤ 8 KB |
 | CSS | ≤ 25 KB |
 | JS, critical path | ≤ 50 KB |
-| Fonts, 4 subset faces | ≤ 60 KB |
+| Fonts, 3 subset faces | ≤ 50 KB |
 | **Critical path total** | **≤ 150 KB** |
 | Topic JSON | ≤ 60 KB, lazy, never critical |
 | Longest task on tap | ≤ 50 ms |
