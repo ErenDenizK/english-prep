@@ -1,0 +1,920 @@
+[
+  {
+    "category": "Third Conditional vs Mixed Conditional",
+    "summary": "Sonuç da geçmişte mi kaldı, bugüne mi uzanıyor?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede \"erken çıksaydın yetişirdin\" cümlesi hem \"o gün yetişirdin\" hem de \"şu an orada olurdun\" anlamına gelebilir; hangisi olduğunu bağlamdan çıkarırız. İngilizce bunu ikiye ayırır. Şart kısmı ikisinde de aynıdır — değişen yalnızca **sonucun hangi zamanda durduğudur**."
+      },
+      {
+        "type": "contrast",
+        "heading": "Şart aynı, sonuç farklı",
+        "sides": [
+          {
+            "label": "Third Conditional",
+            "gloss": "Şart da sonuç da geçmişte. Olmamış bir geçmişin, yine geçmişte kapanmış sonucunu anlatır.",
+            "example": "If she had left earlier, she would have caught the train."
+          },
+          {
+            "label": "Mixed Conditional",
+            "gloss": "Şart geçmişte, sonuç bugünde. Olmamış bir geçmişin bugün hâlâ süren sonucunu anlatır.",
+            "example": "If she had left earlier, she would be there now."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Şart kolu değişmez, sonuç kolu değişir",
+        "rows": [
+          {
+            "form": "Third Conditional",
+            "use": "Olumlu",
+            "pattern": "If + S + had + V3, S + would have + V3",
+            "example": "If they had asked, I would have helped."
+          },
+          {
+            "form": "Third Conditional",
+            "use": "Olumsuz şart",
+            "pattern": "If + S + hadn't + V3, S + wouldn't have + V3",
+            "example": "If they hadn't asked, I wouldn't have helped."
+          },
+          {
+            "form": "Third Conditional",
+            "use": "Devrik (if düşer)",
+            "pattern": "Had + S + V3, S + would have + V3",
+            "example": "Had they asked, I would have helped."
+          },
+          {
+            "form": "Mixed Conditional",
+            "use": "Olumlu",
+            "pattern": "If + S + had + V3, S + would + V",
+            "example": "If they had asked, I would know by now."
+          },
+          {
+            "form": "Mixed Conditional",
+            "use": "Olumsuz şart",
+            "pattern": "If + S + hadn't + V3, S + wouldn't + V",
+            "example": "If they hadn't asked, I wouldn't know."
+          },
+          {
+            "form": "Mixed Conditional",
+            "use": "Devrik (if düşer)",
+            "pattern": "Had + S + V3, S + would + V",
+            "example": "Had they asked, I would know."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "If the tickets had been cheaper, we would have gone.",
+            "note": "Gitmedik; hem şart hem sonuç geçmişte → Third Conditional"
+          },
+          {
+            "sentence": "If the tickets had been cheaper, we would be there now.",
+            "note": "Yine gitmedik, ama sonuç bugüne bakıyor → Mixed Conditional"
+          },
+          {
+            "sentence": "Had I known, I would have said something.",
+            "note": "Devrik şart: if düşer, had başa geçer → Third Conditional"
+          },
+          {
+            "sentence": "If he hadn't overslept, he wouldn't be waiting now.",
+            "note": "Geçmişteki hata, bugün süren sonuç → Mixed Conditional"
+          },
+          {
+            "sentence": "She didn't apply, so her name isn't on the list.",
+            "note": "Düz anlatım; koşullu karşılığı Mixed Conditional'dır"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "If she had left earlier, she would have been there now.",
+        "right": "If she had left earlier, she would be there now.",
+        "why": "\"now\" sonucu bugüne bağlıyor. Sonuç bugündeyse sonuç kolu \"would + V\" olur; \"would have + V3\" sonucu geçmişe kapatır ve cümle artık bugün hakkında hiçbir şey söylemez."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "If she would have left earlier, she would have caught the train.",
+        "right": "If she had left earlier, she would have caught the train.",
+        "why": "\"would\" yalnızca sonuç kolunda durur. Türkçede iki kola da \"-ecekti\" duygusu geldiği için şart koluna da would eklenir; İngilizcede şart kolu daima \"had + V3\"tür."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "If had she left earlier, she would have caught the train.",
+        "right": "Had she left earlier, she would have caught the train.",
+        "why": "Devrik şartta \"if\" düşer, yerini başa geçen \"had\" alır. İkisi birden kullanılmaz; sınavda devrik biçim çoğu zaman \"if\" hiç görünmediği için gözden kaçar."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Buraya kadarı kalıptı. Sınavdaki iş ise şu: dört şık da kusursuz İngilizce olur, biri hariç hepsi olayı **başka bir zamana taşır**. Bu kategoride en sık yapılan hamle budur — kapanmış bir geçmiş, açık bir geleceğe ya da bugüne çevrilir."
+      },
+      {
+        "type": "decision",
+        "heading": "Şıkkı denetle: zaman kaymış mı?",
+        "rules": [
+          {
+            "condition": "Orijinalin sonucu \"now / today / still\" ile bugüne bağlıyken şık \"would have + V3\" diyorsa",
+            "then": "Re-time"
+          },
+          {
+            "condition": "Orijinal \"If + had + V3\" derken şık \"If + past simple ... would + V\" diyorsa: kapanmış geçmiş, açık bir ihtimale çevrilmiş",
+            "then": "Re-time"
+          },
+          {
+            "condition": "Şık olayı gerçekten olmuş gibi anlatıyorsa, oysa üçüncü tip şart tam tersini söyler",
+            "then": "Drop a condition"
+          },
+          {
+            "condition": "Orijinal kesin bir sonuç verirken şık \"might have / could have\" ile onu bir ihtimale indiriyorsa",
+            "then": "Re-modalise"
+          },
+          {
+            "condition": "Şık geçmişin gerçekleşmediğini koruyor ve sonucu orijinalle aynı zamana koyuyorsa",
+            "then": "Same meaning"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Unless vs If Not vs Otherwise",
+    "summary": "Olumsuzluk hangi cümleye düşüyor: koşula mı, sonuca mı?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede olumsuz koşul tek bir ektir: \"ödemedikçe\", \"ödemezse\". İngilizce aynı işi üç ayrı yolla yapar ve üçünün cümledeki yeri farklıdır. Zor olan kelimeyi seçmek değil; **olumsuzluğun hangi cümleye düştüğünü** kaybetmemektir."
+      },
+      {
+        "type": "contrast",
+        "heading": "Aynı koşul, üç kuruluş",
+        "sides": [
+          {
+            "label": "unless",
+            "gloss": "Olumsuzluğu kendi içinde taşır: \"eğer ...-mezse\". Bu yüzden ardından gelen cümle olumlu kalır.",
+            "example": "Unless you pay, they will cancel it."
+          },
+          {
+            "label": "if ... not",
+            "gloss": "Aynı şeyi iki parçayla söyler; olumsuzluk koşul cümlesinin fiilindedir.",
+            "example": "If you don't pay, they will cancel it."
+          },
+          {
+            "label": "otherwise",
+            "gloss": "Koşul cümlesi kurmaz. Önce durumu söyler, sonra \"aksi hâlde\" diyerek sonucu ekler; olumsuzluk hiçbir yerde yazılmaz.",
+            "example": "You must pay; otherwise, they will cancel it."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Üç kalıp, aynı sahne",
+        "rows": [
+          {
+            "form": "unless",
+            "use": "Başta gelen koşul",
+            "pattern": "Unless + olumlu cümle, ana cümle",
+            "example": "Unless the code is entered, the door stays locked."
+          },
+          {
+            "form": "unless",
+            "use": "Sonda gelen koşul",
+            "pattern": "Ana cümle + unless + olumlu cümle",
+            "example": "The door stays locked unless the code is entered."
+          },
+          {
+            "form": "if ... not",
+            "use": "Başta gelen koşul",
+            "pattern": "If + S + do not + V, ana cümle",
+            "example": "If the code is not entered, the door stays locked."
+          },
+          {
+            "form": "otherwise",
+            "use": "Durum + sonuç",
+            "pattern": "Cümle; otherwise, sonuç cümlesi",
+            "example": "The code must be entered; otherwise, the door stays locked."
+          },
+          {
+            "form": "otherwise",
+            "use": "İki ayrı cümle hâlinde",
+            "pattern": "Cümle. Otherwise, sonuç cümlesi.",
+            "example": "Enter the code. Otherwise, the door stays locked."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "Unless the file is saved, the changes will be lost.",
+            "note": "Olumsuzluk unless'in içinde; arkasındaki cümle olumlu → unless"
+          },
+          {
+            "sentence": "If the file is not saved, the changes will be lost.",
+            "note": "Aynı anlam, olumsuzluk fiilde → if ... not"
+          },
+          {
+            "sentence": "Save the file; otherwise, the changes will be lost.",
+            "note": "Koşul değil, eklenen sonuç → otherwise"
+          },
+          {
+            "sentence": "Unless you have a ticket, you cannot enter.",
+            "note": "Sonuç cümlesi de olumsuz olabilir; unless yalnızca koşulu olumsuzlar"
+          },
+          {
+            "sentence": "We will not leave unless everyone is on board.",
+            "note": "İki olumsuz aynı cümlede durur ve birbirini götürmez"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Unless you don't pay, they will cancel it.",
+        "right": "Unless you pay, they will cancel it.",
+        "why": "\"unless\" zaten \"...-mezse\" demektir; ardına bir de \"not\" koymak koşulu tersine çevirir. Türkçedeki \"ödemezsen\" iki parçalı olmadığı için bu ikinci olumsuz farkına varılmadan eklenir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "You must pay; unless, they will cancel it.",
+        "right": "You must pay; otherwise, they will cancel it.",
+        "why": "\"unless\" bir koşul bağlacıdır ve ardına cümle alır; tek başına \"aksi hâlde\" demek için kullanılamaz. Durum söylendikten sonra sonucu ekleyen kelime \"otherwise\"dır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "If you pay, they will cancel it.",
+        "right": "If you don't pay, they will cancel it.",
+        "why": "\"Unless you pay, they will cancel it.\" cümlesini \"if\" ile yeniden yazarken olumsuzluk **koşul cümlesine** düşer. İki cümle de kusursuz İngilizcedir; yanlış olan yalnızca birinin orijinalin tersini söylemesidir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Koşullu cümlelerde en sık kurulan tuzak, koşulu hiç kurmamaktır: orijinal \"ödemezsen iptal ederler\" derken şık \"iptal ettiler\" ya da \"iptal edecekler\" der. Cümle doğru bilgiyi taşıyor gibi durur, ama **koşul silindiği için** artık aynı şeyi söylemiyordur."
+      },
+      {
+        "type": "decision",
+        "heading": "Şıkkı denetle: koşul hâlâ duruyor mu?",
+        "rules": [
+          {
+            "condition": "Şık, koşula bağlı olan şeyi olmuş bitmiş ya da kesin bir olgu gibi söylüyorsa",
+            "then": "Drop a condition"
+          },
+          {
+            "condition": "Şıkta iki cümleden yalnızca biri kalmışsa (koşul ya da sonuç düşmüşse)",
+            "then": "Drop a condition"
+          },
+          {
+            "condition": "Orijinal \"unless\" derken şık \"if\" diyor ve fiili olumlu bırakmışsa",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Olumsuzluk koşuldan alınıp sonuç cümlesine taşınmışsa",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Orijinalde \"will\" varken şıkta \"may / might\" varsa",
+            "then": "Re-modalise"
+          },
+          {
+            "condition": "Koşul yerinde, olumsuzluk aynı cümlede ve sonuç değişmemişse",
+            "then": "Same meaning"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Despite vs Although vs However",
+    "summary": "Zıtlığı hangi cümle taşıyor, asıl söylenen hangisi?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede zıtlık tek bir ekle kurulur: \"maliyete rağmen\", \"pahalı olduğu hâlde\". İngilizcede aynı anlam üç ayrı gramer sınıfına dağılır: **despite** bir edat, **although** bir bağlaç, **however** bir zarftır. Anlamları aynıdır; farklı olan ardına ne alabildikleridir."
+      },
+      {
+        "type": "contrast",
+        "heading": "Üçü de aynı şeyi söyler, üçü de başka yere bağlanır",
+        "sides": [
+          {
+            "label": "despite / in spite of",
+            "gloss": "Edat: ardına isim ya da -ing gelir, tam cümle gelmez. Zıtlık kendi öbeğinin içindedir.",
+            "example": "Despite the cost, they went ahead with the plan."
+          },
+          {
+            "label": "although / even though",
+            "gloss": "Bağlaç: ardına özne + fiil alır ve o cümleyi ana cümleye bağlar. Zıtlık kendi cümlesindedir.",
+            "example": "Although it was expensive, they went ahead with the plan."
+          },
+          {
+            "label": "however",
+            "gloss": "Zarf: iki cümleyi birbirine bağlamaz, aralarında durur. Beklenmedik olanı kendinden sonraki cümle taşır.",
+            "example": "It was expensive. However, they went ahead with the plan."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Ardına ne gelir",
+        "rows": [
+          {
+            "form": "despite / in spite of",
+            "use": "İsim öbeğiyle",
+            "pattern": "Despite + noun, main clause",
+            "example": "Despite the noise, she slept well."
+          },
+          {
+            "form": "despite / in spite of",
+            "use": "-ing ile",
+            "pattern": "Despite + V-ing, main clause",
+            "example": "Despite being woken twice, she slept well."
+          },
+          {
+            "form": "despite / in spite of",
+            "use": "Cümleyle (the fact that)",
+            "pattern": "Despite the fact that + clause, main clause",
+            "example": "Despite the fact that it was noisy, she slept well."
+          },
+          {
+            "form": "although / even though",
+            "use": "Başta gelen zıtlık",
+            "pattern": "Although + S + V, main clause",
+            "example": "Although it was noisy, she slept well."
+          },
+          {
+            "form": "although / even though",
+            "use": "Sonda gelen zıtlık",
+            "pattern": "Main clause + although + S + V",
+            "example": "She slept well although it was noisy."
+          },
+          {
+            "form": "however",
+            "use": "İki cümle arasında",
+            "pattern": "Clause. However, clause.",
+            "example": "It was noisy. However, she slept well."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "Despite the cost, they went ahead with the plan.",
+            "note": "Edat + isim öbeği; zıtlık maliyette → despite"
+          },
+          {
+            "sentence": "Although it was expensive, they went ahead with the plan.",
+            "note": "Bağlaç + tam cümle; aynı bilgi, aynı taraf → although"
+          },
+          {
+            "sentence": "It was expensive. However, they went ahead with the plan.",
+            "note": "Zarf; beklenmedik olan, however'dan sonraki cümledir"
+          },
+          {
+            "sentence": "They went ahead with the plan despite the cost.",
+            "note": "Zıtlık öbeği sona geldi; hangi tarafın beklenmedik olduğu değişmedi"
+          },
+          {
+            "sentence": "Although they went ahead with the plan, the cost worried them.",
+            "note": "Taraflar yer değiştirdi: asıl söylenen artık maliyet kaygısı"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Despite it was expensive, they went ahead with the plan.",
+        "right": "Although it was expensive, they went ahead with the plan.",
+        "why": "\"despite\" bir edattır ve ardına özne + fiil alamaz. Türkçede \"-e rağmen\" hem isimle hem cümleyle çalıştığı için bu ayrım görünmez olur; tam cümle geliyorsa bağlaç gerekir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Although they went ahead with the plan, it was expensive.",
+        "right": "Although it was expensive, they went ahead with the plan.",
+        "why": "İki cümle yer değiştirince beklenmedik olan taraf da değişti: artık asıl haber maliyet, ödün ise planın sürdürülmesi. Cümle kusursuz İngilizcedir ama orijinalin söylediğini söylemez."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "They went ahead with the plan. However, it was expensive.",
+        "right": "It was expensive. However, they went ahead with the plan.",
+        "why": "\"however\" kendinden sonraki cümleyi beklenmedik taraf yapar. \"Despite the cost, they went ahead\" cümlesinde beklenmedik olan devam etme kararıdır; bu yüzden however ondan önce durur."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Zıtlık sorularında çeldiriciler neredeyse hep aynı şeyi yapar: iki cümle de yerinde durur, ama **hangisinin beklenmedik taraf olduğu** değişir. Bazen taraflar yer değiştirir, bazen zıtlık bağlacının yerine bir neden bağlacı geçer. İkisi de kusursuz İngilizcedir."
+      },
+      {
+        "type": "decision",
+        "heading": "Şıkkı denetle: beklenmedik olan hâlâ aynı taraf mı?",
+        "rules": [
+          {
+            "condition": "Orijinalde ödün olan cümle şıkta asıl iddia olmuşsa (iki cümle yer değiştirmişse)",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Zıtlık bağlacının yerini bir neden bağlacı almışsa (because, since, as, so)",
+            "then": "Reverse"
+          },
+          {
+            "condition": "\"however\" ya da \"but\" beklenmedik olan cümlenin değil, ödünün başına konmuşsa",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Şık, engelin hiç yaşanmadığını ya da hiçbir etkisinin olmadığını söylüyorsa",
+            "then": "Overshoot"
+          },
+          {
+            "condition": "Orijinal olayın gerçekleştiğini söylerken şık onu bir plana ya da ihtimale çeviriyorsa",
+            "then": "Re-modalise"
+          },
+          {
+            "condition": "İki cümle de aynı rolde duruyor ve yalnızca edat / bağlaç / zarf değişmişse",
+            "then": "Same meaning"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "As...As vs Comparatives vs The More...The More",
+    "summary": "Karşılaştırmada fazlası hangi tarafta kaldı?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Karşılaştırma kalıplarını zaten biliyorsun; sınavda kaybettiren şey kalıp değil **yön**. Cümle uzayınca hangi tarafın daha fazla olduğu kolayca kayar ve çeldiricilerin yaptığı iş tam olarak budur: tarafları aynı sırada bırakıp kalıbı değiştirmek. Bu derste tek bir soruyu güvenle cevaplayacaksın: fazlası kimde?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Üç kalıp, tek soru: fazlası kimde",
+        "sides": [
+          {
+            "label": "as ... as",
+            "gloss": "İki tarafı eşitler. Olumsuzu (not as ... as) ilk tarafın daha az olduğunu söyler; başa yazılan taraf küçük olandır.",
+            "example": "The new model is as fast as the old one."
+          },
+          {
+            "label": "Comparative (-er / more / less)",
+            "gloss": "İki taraf arasında açık bir fark kurar. Fazlası hangi taraftaysa \"than\"den önce o durur.",
+            "example": "The new model is faster than the old one."
+          },
+          {
+            "label": "the more ... the more",
+            "gloss": "İki değişkeni birbirine bağlar. İlk yarı koşulu ya da sebebi, ikinci yarı sonucu taşır; yarılar yer değiştiremez.",
+            "example": "The more you practise, the faster you get."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Kalıplar",
+        "rows": [
+          {
+            "form": "as ... as",
+            "use": "Eşitlik",
+            "pattern": "A + be + as + adj + as + B",
+            "example": "A is as long as B."
+          },
+          {
+            "form": "as ... as",
+            "use": "Eşitsizlik: A daha az",
+            "pattern": "A + be not + as + adj + as + B",
+            "example": "A is not as long as B."
+          },
+          {
+            "form": "Comparative",
+            "use": "Kısa sıfat",
+            "pattern": "A + be + adj-er + than + B",
+            "example": "A is longer than B."
+          },
+          {
+            "form": "Comparative",
+            "use": "Uzun sıfat",
+            "pattern": "A + be + more + adj + than + B",
+            "example": "A is more useful than B."
+          },
+          {
+            "form": "Comparative",
+            "use": "Azlık",
+            "pattern": "A + be + less + adj + than + B",
+            "example": "A is less useful than B."
+          },
+          {
+            "form": "the more ... the more",
+            "use": "İkisi birlikte artar",
+            "pattern": "The + comparative + clause, the + comparative + clause",
+            "example": "The longer it runs, the hotter it gets."
+          },
+          {
+            "form": "the more ... the more",
+            "use": "Biri artarken öbürü azalır",
+            "pattern": "The + comparative + clause, the less + clause",
+            "example": "The longer it runs, the less accurate it gets."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "A is not as expensive as B.",
+            "note": "Ucuz olan A; olumsuz eşitlikte başa küçük taraf yazılır"
+          },
+          {
+            "sentence": "B is more expensive than A.",
+            "note": "Aynı bilgi, yön korunmuş → comparative"
+          },
+          {
+            "sentence": "A is less expensive than B.",
+            "note": "\"less ... than\" ile \"not as ... as\" eşdeğerdir; ikisi de aynı yönü gösterir"
+          },
+          {
+            "sentence": "The more he explained, the more confused we became.",
+            "note": "İki değişken birlikte artıyor; ilk yarı sebep → the more ... the more"
+          },
+          {
+            "sentence": "The earlier you book, the less you pay.",
+            "note": "Biri artarken öbürü azalıyor → the ... the less"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "B is not as fast as A.",
+        "right": "A is not as fast as B.",
+        "why": "\"B is faster than A.\" cümlesini yeniden yazarken tarafları olduğu sırada kopyalamak yönü tersine çevirir. \"not as ... as\" kalıbında başa **daha az olan** yazılır, yani A."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The faster you get, the more you practise.",
+        "right": "The more you practise, the faster you get.",
+        "why": "Korelatifin ilk yarısı sebebi, ikinci yarısı sonucu taşır. Yarılar yer değiştirince cümle \"hızlandıkça daha çok çalışırsın\" demeye başlar; iki cümle de kurallıdır, ama biri diğerinin söylediğini söylemez."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The old model is not fast.",
+        "right": "The old model is not as fast as the new one.",
+        "why": "\"not as ... as\" bir karşılaştırmadır, mutlak bir yargı değil: eski modelin yavaş olduğunu söylemez, yalnızca yenisi kadar hızlı olmadığını söyler. Karşılaştırmayı mutlak bir niteliğe çevirmek cümleye olmayan bir bilgi ekler."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Bu kategori, sınavın **yön çevirme** hamlesinin en çok yaşadığı yerdir. Şık okurken kalıba değil oka bak: orijinal \"A > B\" diyorsa doğru şık da \"A > B\" demek zorundadır, hangi kalıpla söylerse söylesin."
+      },
+      {
+        "type": "decision",
+        "heading": "Şıkkı denetle: ok hâlâ aynı yöne mi bakıyor?",
+        "rules": [
+          {
+            "condition": "İki tarafı A ve B diye yaz, yönü ok gibi çiz: orijinal A > B derken şık B > A diyorsa",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Taraflar şıkta aynı sırada duruyor ama kalıp olumsuzdan olumluya (ya da tersine) dönmüşse",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Korelatifin iki yarısı yer değiştirmişse: sebep sonuç, sonuç sebep olmuş",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Şık karşılaştırmayı mutlak bir yargıya çevirmişse (\"yavaş\", \"pahalı\", \"en iyisi\")",
+            "then": "Overshoot"
+          },
+          {
+            "condition": "Orijinal kesin bir karşılaştırma yaparken şık \"probably / may be\" gibi bir ihtimal eklemişse",
+            "then": "Re-modalise"
+          },
+          {
+            "condition": "Fazlası aynı tarafta, yarılar aynı sırada ve karşılaştırma hâlâ bir karşılaştırmaysa",
+            "then": "Same meaning"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Too vs Enough vs So...That",
+    "summary": "Derece sonucu engelledi mi, yoksa doğurdu mu?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede \"çok ağır\" ile \"kaldırılamayacak kadar ağır\" arasındaki farkı cümlenin gerisinden anlarız. İngilizce bu farkı kalıba yazar: **too** dereceyi bir engel yapar, **enough** yeterli olduğunu söyler, **so ... that** ise dereceyi bir sonuca bağlar. En pahalı hata \"too\"yu \"very\" sanmaktır."
+      },
+      {
+        "type": "contrast",
+        "heading": "Derece ne yapıyor",
+        "sides": [
+          {
+            "label": "too + adj + to V",
+            "gloss": "Derece bir engeldir: sonuç gerçekleşmez. Cümlede \"not\" görünmese bile olumsuz bir yargı taşır.",
+            "example": "The box was too heavy to carry."
+          },
+          {
+            "label": "adj + enough + to V",
+            "gloss": "Derece yeterlidir: sonuç gerçekleşebilir. \"enough\" sıfattan sonra, isimden önce durur.",
+            "example": "The box was light enough to carry."
+          },
+          {
+            "label": "so + adj + that + clause",
+            "gloss": "Dereceyi bir sonuç cümlesine bağlar. Sonucun olumlu mu olumsuz mu olduğunu \"that\"ten sonrası söyler.",
+            "example": "The box was so heavy that nobody could carry it."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Kalıplar",
+        "rows": [
+          {
+            "form": "too",
+            "use": "Engel, mastarla",
+            "pattern": "too + adj + to + V",
+            "example": "It is too dark to read."
+          },
+          {
+            "form": "too",
+            "use": "Kimin için olduğu belirtilir",
+            "pattern": "too + adj + for + O + to + V",
+            "example": "It is too dark for us to read."
+          },
+          {
+            "form": "enough",
+            "use": "Sıfatla",
+            "pattern": "adj + enough + to + V",
+            "example": "It is bright enough to read."
+          },
+          {
+            "form": "enough",
+            "use": "İsimle",
+            "pattern": "enough + noun + to + V",
+            "example": "There is enough light to read."
+          },
+          {
+            "form": "so ... that",
+            "use": "Sıfat ya da zarfla",
+            "pattern": "so + adj/adv + that + clause",
+            "example": "It was so dark that we stopped reading."
+          },
+          {
+            "form": "such ... that",
+            "use": "İsim öbeğiyle",
+            "pattern": "such + a/an + adj + noun + that + clause",
+            "example": "It was such a dark room that we stopped reading."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The soup was too hot to drink.",
+            "note": "Derece engelledi, içilmedi → too ... to"
+          },
+          {
+            "sentence": "The soup was cool enough to drink.",
+            "note": "Derece yetti, içilebildi → enough to"
+          },
+          {
+            "sentence": "The soup was so hot that we had to wait.",
+            "note": "Derece bir sonuç cümlesine bağlandı → so ... that"
+          },
+          {
+            "sentence": "The soup was very hot, but we drank it.",
+            "note": "\"very\" yalnızca derece bildirir, sonucu engellemez"
+          },
+          {
+            "sentence": "It was such a hot day that nobody went out.",
+            "note": "Ardında isim öbeği var (a hot day) → such ... that"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I was too happy to hear the news.",
+        "right": "I was very happy to hear the news.",
+        "why": "\"too\" olumsuz bir sonuç bildirir: bu cümle \"haberi duyamayacak kadar mutluydum\" demektir. Türkçede \"çok\" tek kelime olduğu için \"too\" olumlu cümlelere de girer; oysa \"too\" daima bir engeli işaret eder."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The rope was enough long to reach the ground.",
+        "right": "The rope was long enough to reach the ground.",
+        "why": "\"enough\" sıfattan **sonra** gelir; isimden önce gelmesi ise ayrı bir kalıptır (enough rope). Türkçede \"yeterince uzun\" sırası tersine olduğu için bu kelime sıfatın önüne kayar."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The box was so heavy that they could carry it.",
+        "right": "The box was so heavy that they could not carry it.",
+        "why": "\"too heavy to carry\" cümlesini \"so ... that\" ile yeniden yazarken, \"too\"nun içinde saklı duran olumsuzluk artık \"not\" olarak yazılmak zorundadır. Düşerse cümle tam tersini söyler."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Bu kategoride çeldiriciler genelde cümleyi tersine çevirmez; **kesinliğini düşürür**. \"too heavy to lift\" bir imkânsızlıktır, \"quite difficult to lift\" ise yalnızca bir zorluk. İkisi aynı sahneyi anlatır ve aynı şeyi söylemez."
+      },
+      {
+        "type": "decision",
+        "heading": "Şıkkı denetle: kesinlik korunmuş mu?",
+        "rules": [
+          {
+            "condition": "Orijinal \"too ... to\" derken şık sonucun yine de gerçekleştiğini söylüyorsa",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Şık \"too\"yu \"very\" ile değiştirip engeli kaldırmışsa: imkânsızlık sıradan bir dereceye inmiştir",
+            "then": "Re-modalise"
+          },
+          {
+            "condition": "Orijinal \"could not\" derken şık \"found it difficult / might not\" diyorsa",
+            "then": "Re-modalise"
+          },
+          {
+            "condition": "Şık \"enough\"u \"more than enough\" ya da \"plenty of\" gibi bir fazlalığa çevirmişse",
+            "then": "Overshoot"
+          },
+          {
+            "condition": "Şık sonucu olduğu gibi koruyorsa ve \"too ... to\" ile \"so ... that not\" arasında olumsuzluk kaybolmamışsa",
+            "then": "Same meaning"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Passive Reporting: It Is Said vs Is Said To",
+    "summary": "Kim söylemiş? Cümle söylemiyorsa, şık da söyleyemez.",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Bu iki kalıbı kurmayı Passive Voice konusunda öğrendin. Buradaki iş farklı: aynı bilgiyi bir kalıptan öbürüne taşırken **kimin söylediğini** ve **olayın ne zaman olduğunu** bozmamak. İki kalıp gerçekten eş anlamlıdır, bu yüzden soru hangisinin daha doğal olduğu üzerine kurulamaz."
+      },
+      {
+        "type": "contrast",
+        "heading": "İki kalıp, aynı bilgi",
+        "sides": [
+          {
+            "label": "It + be + V3 + that",
+            "gloss": "Anlamsız bir \"It\" ile başlar, ardından tam bir cümle gelir. Kaynak cümlenin hiçbir yerinde yoktur.",
+            "example": "It is thought that the method is safe."
+          },
+          {
+            "label": "S + be + V3 + to ...",
+            "gloss": "Asıl özne öne çıkar, arkasından \"to\" gelir. Aynı bilgiyi verir ve kaynağı yine söylemez.",
+            "example": "The method is thought to be safe."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Zaman ilişkisini \"to\"dan sonrası taşır",
+        "rows": [
+          {
+            "form": "It is thought that + clause",
+            "use": "Aktarım, cümle hâlinde",
+            "pattern": "It + is thought + that + clause",
+            "example": "It is thought that the method works."
+          },
+          {
+            "form": "S is thought to + V",
+            "use": "Olay aktarımla aynı zamanda",
+            "pattern": "S + is thought to + V",
+            "example": "The method is thought to work."
+          },
+          {
+            "form": "S is thought to be + V-ing",
+            "use": "Olay şu anda sürüyor",
+            "pattern": "S + is thought to be + V-ing",
+            "example": "The method is thought to be spreading."
+          },
+          {
+            "form": "S is thought to have + V3",
+            "use": "Olay aktarımdan önce olmuş",
+            "pattern": "S + is thought to have + V3",
+            "example": "The method is thought to have worked."
+          },
+          {
+            "form": "S is thought to have been + V3",
+            "use": "Daha önce olmuş ve edilgen",
+            "pattern": "S + is thought to have been + V3",
+            "example": "The method is thought to have been copied."
+          },
+          {
+            "form": "S was thought to + V",
+            "use": "Aktarımın kendisi de geçmişte",
+            "pattern": "S + was thought to + V",
+            "example": "The method was thought to work."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "It is believed that the method is safe.",
+            "note": "Kaynaksız aktarım, cümle hâlinde → It is believed that ..."
+          },
+          {
+            "sentence": "The method is believed to be safe.",
+            "note": "Aynı bilgi, özne öne çıkmış → is believed to be"
+          },
+          {
+            "sentence": "It is believed that the method was safe.",
+            "note": "Aktarım şimdi, olay geçmişte; zaman that'li cümlenin fiilinde görünür"
+          },
+          {
+            "sentence": "The method is believed to have been safe.",
+            "note": "Aynı geçmiş, ikinci kalıpta \"to have + V3\" ile taşınır"
+          },
+          {
+            "sentence": "Many people believe the method is safe.",
+            "note": "Artık kaynaklı bir cümle; \"many people\" orijinalde yoksa eklenemez"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The method is thought to be developed in the 1960s.",
+        "right": "The method is thought to have been developed in the 1960s.",
+        "why": "\"in the 1960s\" olayı aktarımdan çok öncesine koyuyor. \"to be + V3\" aktarımla aynı zamanı anlatır; geçmişte kapanmış bir olay için \"to have been + V3\" gerekir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Scientists say that the method is safe.",
+        "right": "It is said that the method is safe.",
+        "why": "Orijinalde kimin söylediği yoktur ve edilgen aktarım tam da bunun için kullanılır. Bir şıkkın \"scientists\", \"experts\" ya da \"officials\" eklemesi cümlede olmayan bir bilgi katar; dilbilgisi kusursuzdur, anlam değil."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The method is safe.",
+        "right": "The method is said to be safe.",
+        "why": "Aktarım kalıbı bilgiyi bir iddiaya çevirir: cümle yöntemin güvenli olduğunu değil, öyle söylendiğini söyler. Kalıbı silmek iddiayı olguya yükseltir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Bu kategorinin çeldiricileri neredeyse hep aynı yönde hata yapar: **cümleden fazlasını** söylerler. Bir kaynak uydururlar, bir söylentiyi kanıta çevirirler ya da aktarımı büsbütün silip bilgiyi olgu diye sunarlar. Üçü de doğru olabilir; hiçbiri orijinalin söylediği değildir."
+      },
+      {
+        "type": "decision",
+        "heading": "Şıkkı denetle: cümlede olmayan bir şey eklenmiş mi?",
+        "rules": [
+          {
+            "condition": "Şık cümlede hiç geçmeyen bir kaynak adı veriyorsa (scientists, experts, officials, everyone)",
+            "then": "Overshoot"
+          },
+          {
+            "condition": "Şık aktarım kalıbını silip bilgiyi doğrudan olgu gibi söylüyorsa",
+            "then": "Overshoot"
+          },
+          {
+            "condition": "Şık \"is said\" yerine \"is known / is proven\" diyorsa: söylenti kesinliğe yükselmiştir",
+            "then": "Re-modalise"
+          },
+          {
+            "condition": "Orijinal \"to have + V3\" derken şık \"to + V\" diyorsa (ya da tersi): olayın zamanı kaymıştır",
+            "then": "Re-time"
+          },
+          {
+            "condition": "Orijinal \"is said\" derken şık \"was said\" diyorsa: aktarımın kendisi geçmişe çekilmiştir",
+            "then": "Re-time"
+          },
+          {
+            "condition": "İki kalıp arasında geçilmiş, kaynak yine söylenmemiş ve zaman ilişkisi korunmuşsa",
+            "then": "Same meaning"
+          }
+        ]
+      }
+    ]
+  }
+]

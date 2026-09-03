@@ -177,8 +177,14 @@ manifest already contained. Opening the app went from 328.8 KB and
   accepting the lesson-progress reset. Cheaper now than at any later
   point, with six users.
 - **Next section: restatement / closest meaning.** Fifteen of Session I's
-  sixty points and the cheapest real section on the paper. Scaffolding
-  landed 2026-09-03; content in progress.
+  sixty points and the cheapest real section on the paper. The code
+  landed 2026-09-03. The content — 24 questions and 6 lessons — is
+  written and reviewed but **not shipped**: it is in
+  `docs/agents/drafts/closest-meaning/`, with the repair list beside it.
+  Both blind passes picked the author's key 24/24, so nothing is
+  miskeyed; what stopped it is two lesson claims about English that are
+  false, and two distractor patterns a student could learn to exploit
+  without reading a stem.
 - **Offline: not a v1 requirement**, and not a requirement at all while
   this is a link people open rather than an app they install. Recorded in
   the README so nobody adds a service worker for its own sake. Revisit
