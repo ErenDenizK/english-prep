@@ -19,7 +19,10 @@ import {
   countCompletedLessons,
   clearHistory,
   clearLessonProgress,
+  getSetting,
+  setSetting,
 } from "./storage.js";
+import { SETTINGS } from "./config.js";
 import { createConfirmModal } from "./modal.js";
 import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
 import { el, clear } from "./dom.js";
@@ -199,15 +202,58 @@ function renderData() {
   return section;
 }
 
+/**
+ * A switch, made out of a Row rather than a new primitive: the whole row
+ * is the target, which is what a Row is for, and `role="switch"` with
+ * `aria-checked` gives it the semantics without inventing a control.
+ */
+function toggleRow({ name, title, description }) {
+  const row = el("button", "row");
+  row.type = "button";
+  row.setAttribute("role", "switch");
+
+  const main = el("span", "row__main");
+  main.appendChild(el("span", "row__title", title));
+  main.appendChild(el("span", "row__sub", description));
+  row.appendChild(main);
+
+  const state = el("span", "chip");
+  row.appendChild(el("span", "row__trail")).appendChild(state);
+
+  const paint = () => {
+    const on = getSetting(name);
+    row.setAttribute("aria-checked", String(on));
+    state.textContent = on ? "Açık" : "Kapalı";
+  };
+  paint();
+
+  row.addEventListener("click", () => {
+    setSetting(name, !getSetting(name));
+    paint();
+  });
+
+  return row;
+}
+
 function renderSettings() {
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", "Ayarlar"));
-  section.appendChild(el("p", "t-meta", "Test geçmişini ve ders ilerlemeni bu cihazdan siler."));
+
+  section.appendChild(
+    toggleRow({
+      name: SETTINGS.THINK_FIRST,
+      title: "Önce kendin düşün",
+      description: "Testte şıklar, sen hazır olduğunu söyleyene kadar gizli kalır.",
+    })
+  );
 
   const reset = el("button", "btn btn--secondary", "Geçmişi sıfırla");
   reset.type = "button";
   reset.addEventListener("click", () => resetModal.open());
   section.appendChild(reset);
+  section.appendChild(
+    el("p", "t-meta", "Sıfırlama, test geçmişini ve ders ilerlemeni bu cihazdan siler.")
+  );
 
   return section;
 }

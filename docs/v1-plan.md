@@ -125,9 +125,20 @@ the pipeline, and it runs against content that already exists before it is
 pointed at content that does not. Stage 2 is the exam shape. Stage 3 is
 volume, and it is months rather than days.
 
-### Stage 0 · Fix what is broken (about a week)
+### Stage 0 · Fix what is broken — ✅ **done, 2026-09-03**
 
-Nothing here needs new content, a schema change or a decision from anyone.
+Nothing here needed new content, a schema change or a decision from
+anyone. All seven landed the day the plan was written; `npm run verify` is
+416 checks and green, `npm test` is 56.
+
+Two things turned out differently from the plan. Item 2 needed no new
+field at all — an attempt already stores its own date beside the ids it
+covered, so "when was this last seen" was derivable. And item 5 removed
+more than expected: with the lesson index in the manifest, *four* screens
+stopped fetching topic files rather than two, because the Test tab and the
+results screen had been loading the question bank for a category list the
+manifest already contained. Opening the app went from 328.8 KB and
+1,034 ms to 221.0 KB and 647 ms.
 
 1. **Draw unseen questions first.** One pure function in
    `js/quiz-engine.js`, which has 29 tests around it: unseen items, then

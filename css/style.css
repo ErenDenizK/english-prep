@@ -665,6 +665,15 @@
     transform: scale(0.97);
   }
 
+  /* A switch built out of a Row rather than as a thirteenth primitive:
+     the whole row is the target, which is the Row's own rule, and the
+     state is a Chip. `role="switch"` and `aria-checked` do the rest, so
+     nothing here has to reinvent a control the platform names. */
+  .row[aria-checked="true"] .chip {
+    background: rgb(239 176 92 / 0.14);
+    color: var(--c-accent-text);
+  }
+
   /* -- Chip. Never interactive. -- */
   .chip {
     display: inline-flex;

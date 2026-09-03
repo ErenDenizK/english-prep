@@ -21,6 +21,7 @@ const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
 const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
 const DEV_NOTE_DISMISSED_KEY = "englishPrep.devNoteDismissed";
+const SETTINGS_KEY = "englishPrep.settings";
 /** Distinct questions that must have been met before a group is ranked. */
 const MIN_ITEMS_FOR_WEAK_ENTRY = 3;
 
@@ -486,6 +487,33 @@ export function clearLessonProgress() {
   removeKey(LESSON_PROGRESS_KEY);
 }
 
+/* ---- Settings ----
+   Learner-chosen behaviour, as opposed to learner progress. Kept in one
+   object rather than a key each, so a new setting costs nothing and a
+   backup carries them all. Everything here defaults to off: a setting the
+   learner has never seen should not change what the app does. */
+
+/** @returns {Record<string, boolean>} */
+export function getSettings() {
+  return readJson(SETTINGS_KEY, {}, isPlainObject);
+}
+
+/**
+ * @param {string} name
+ * @returns {boolean}
+ */
+export function getSetting(name) {
+  return getSettings()[name] === true;
+}
+
+/**
+ * @param {string} name
+ * @param {boolean} value
+ */
+export function setSetting(name, value) {
+  writeJson(SETTINGS_KEY, { ...getSettings(), [name]: value === true });
+}
+
 /* ---- Backup ----
    Everything above lives in one browser and can be deleted by that
    browser without asking. These two functions are how a learner takes it
@@ -503,6 +531,7 @@ export function exportState() {
     seenVersions: readJson(SEEN_VERSIONS_KEY, {}, isPlainObject),
     profileName: getProfileName(),
     devNoteDismissed: isDevNoteDismissed(),
+    settings: getSettings(),
   };
 }
 
@@ -536,6 +565,11 @@ export function importState(backup) {
   }
   if (theirs.devNoteDismissed === true) {
     dismissDevNote();
+  }
+  // The device being held wins on a preference, the same way the name
+  // does; a restore only fills in what has never been chosen here.
+  if (isPlainObject(theirs.settings)) {
+    writeJson(SETTINGS_KEY, { ...theirs.settings, ...getSettings() });
   }
 
   return summary;

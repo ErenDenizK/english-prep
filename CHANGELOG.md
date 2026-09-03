@@ -5,6 +5,112 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.14 — 2026-09-03
+
+The research round, and everything in it that could be built the same day.
+
+Six arms researched independently — the exam itself, learning design, the
+learner model, practice modes, onboarding, and the content pipeline — plus
+a seventh of direct measurement. They are in `docs/research/`, the
+decisions are in `docs/v1-plan.md`, and this release is that plan's
+stage 0: the things that were verifiably broken and needed nobody's
+permission.
+
+### What the round found
+
+**The app was preparing for the wrong shape of exam.** The owner then
+supplied YTÜ SFL's own sample papers, and `docs/exam-spec.md` is written
+from them. Session I is 40 questions at 1.5 points: a ten-blank cloze
+passage, ten restatements, two reading texts of seven, six paragraph
+completions. There is no discrete grammar section anywhere on it — and of
+the ten cloze blanks, **not one tests a tense or the passive.** Two test
+modals; the rest are discourse markers, relative pronouns, quantifiers,
+comparatives, `so/such` and causatives. The app covers about 7% of the
+marks, and its three topics are the wrong three.
+
+**Four questions per category is the binding constraint on everything
+else**, and no amount of modelling escapes it. **Review throughput, not
+generation, is the content bottleneck** — and the one controlled
+comparison found reviewers gave AI drafts measurably less engagement than
+their own, so a review stage that consists of reading and nodding is a
+negative control rather than a weak one.
+
+### The learner's data stops quietly disappearing
+
+WebKit deletes script-written storage after seven days of browser use
+without an interaction on the origin, so on iOS Safari "I came back after
+a couple of weeks" already meant "my progress is gone".
+
+- **Backup and restore**, with a merge that cannot lose anything: attempts
+  are identified by the moment they were recorded, so restoring the same
+  file twice is a no-op; lesson progress takes the further of the two and
+  "done" is sticky. Restoring is two steps — choose, read what it would
+  do, then commit — and the sentence afterwards is written to be true when
+  nothing happened.
+- **Pasting is a first-class path.** The share sheet and the download
+  behave differently on every platform; a textarea depends on nothing.
+- **`navigator.storage.persist()`** at boot, and one honest sentence in
+  Profil about where the data lives.
+- **No install advice anywhere**, deliberately: on iOS a home-screen web
+  app gets a *separate* storage container, so telling someone to install
+  is telling them to leave their progress behind. Backup had to ship
+  first.
+
+### The app stops re-asking what the learner already knows
+
+`buildQuizSession` was `shuffle(pool).slice(0, n)` and had no imports at
+all, so the per-question history recorded since the first commit never
+decided anything. Three of the six arms put this first, independently.
+
+Questions are now drawn worst-known first — never answered, then answered
+wrong last time, then oldest. Selection is principled and presentation is
+not: the chosen questions are shuffled again, so a session never feels
+like it is working down a list.
+
+### The statistics start meaning something
+
+The number driving all three places the app tells a learner what is wrong
+with them summed every answer ever given and called anything short of
+perfect a weakness — which labelled a learner answering at random as weak
+in essentially everything. Now: one observation per distinct question, and
+the one that counts is the most recent answer to it.
+
+The headline accuracy is windowed to the last forty answers for the same
+reason. A lifetime average stops responding long before the learner stops
+improving, and falls when they attempt something hard.
+
+And the screens stop making claims the evidence cannot carry. Two wrong
+out of four is consistent with someone who knows 80% of the material
+having a bad afternoon, so the *ranking* stands on its own while the
+*assertion* is gated on a Wilson bound. "En çok zorlandıkların" is
+something the app knows; "you don't know this" is not.
+
+### The home screen stops downloading the question bank
+
+It was fetching all three topic files — 141.4 KB, questions and all — to
+render a list of eighteen lesson names, 1.7 KB of information. A lesson
+index generated into the manifest by the formatter, and checked by the
+validator so it cannot drift, took opening the app from **328.8 KB and
+1,034 ms to 221.0 KB and 647 ms**. Four screens stopped fetching topic
+files; only the reader and the quiz still do.
+
+The reason to do it now is scale rather than speed: the cost was linear in
+content, and at the question count the exam work implies this screen would
+have pulled 1.38 MB.
+
+### Smaller, and worth having
+
+- **A real icon and a link preview.** The app is shared by pasting a URL
+  into a group chat and that preview was blank; Add to Home Screen
+  produced a screenshot of the page. Both are generated from the design
+  tokens and `js/icons.js` by `npm run icons`, so they can be changed.
+- **"Önce kendin düşün"** — an opt-in setting that hides the answer
+  options until the learner says they have an answer, turning recognition
+  into retrieval. Zero content cost.
+- `npm run verify` is now 416 checks and covers the backup round-trip
+  across two browser contexts, because that is the one operation in the
+  app that could destroy something a learner cannot get back.
+
 ## v0.13 — 2026-09-03
 
 Stages 3 and 4 of `docs/redesign-plan.md`, and the answer to the owner's
