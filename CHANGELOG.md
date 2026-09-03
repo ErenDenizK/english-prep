@@ -5,6 +5,27 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.6 — 2026-09-03
+
+Navigation restructure, driven directly by artifact-comment feedback left
+on the `v0.5` preview — the recurring point across several comments was
+that Profil didn't belong next to Eğitim/Test.
+
+- **Profil moved out of the tab bar.** It now opens from a small circular
+  button in the header instead of sitting as a third tab — it's
+  identity/settings, not a content mode, so grouping it with Eğitim/Test
+  was structurally wrong. The tab bar is back to two tabs.
+- **Personalized header greeting.** Once a display name is set in Profil,
+  the header shows "Hoş geldin, {name}!" instead of the static tagline,
+  and the profile button shows the learner's initial. Updates live, no
+  reload needed.
+- **Header simplified**: the visible app name is now just "English Prep".
+- Removed the artifact-only "Anlık önizleme" preview badge from its
+  header, per direct feedback that it wasn't needed.
+- This is the first step of a broader UX pass; see README's **Roadmap to
+  v1.0** for what's next (a short onboarding tour, and a guided learning
+  path mechanism in Eğitim).
+
 ## v0.5 — 2026-09-02
 
 New "Profil" tab — a real, visible local profile, replacing the previous

@@ -1,5 +1,5 @@
 import { loadManifest } from "./topics.js";
-import { getLastTopicScore, getWeakTopics, getSeenVersion, markTopicSeen } from "./storage.js";
+import { getLastTopicScore, getWeakTopics, getSeenVersion, markTopicSeen, getProfileName } from "./storage.js";
 import { setQuizRequest } from "./session-state.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createDropdown } from "./dropdown.js";
@@ -10,6 +10,11 @@ const TOPIC_TEST_DEFAULT_COUNT = 15;
 
 const topicsContainer = document.getElementById("topics-container");
 const startMixedBtn = document.getElementById("start-mixed-btn");
+const headerSubtitle = document.getElementById("header-subtitle");
+const profileTrigger = document.getElementById("profile-trigger");
+const profileTriggerInitial = document.getElementById("profile-trigger-initial");
+
+const DEFAULT_SUBTITLE = headerSubtitle.textContent;
 
 let mixedCountDropdown;
 
@@ -172,7 +177,11 @@ function renderTopics(topics, weakTopicIds) {
   });
 }
 
-function initTabs() {
+// Profil isn't a peer of Eğitim/Test — it's identity/settings, not a
+// content mode — so it lives behind its own header trigger rather than a
+// third tab. showView() is still the single switchboard for all three
+// views; only how each one gets triggered differs.
+function showView(view) {
   const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
   const views = {
     egitim: document.getElementById("view-egitim"),
@@ -180,26 +189,38 @@ function initTabs() {
     profil: document.getElementById("view-profil"),
   };
 
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const view = tab.dataset.view;
-      tabs.forEach((other) => other.setAttribute("aria-selected", String(other === tab)));
-      views.egitim.hidden = view !== "egitim";
-      views.test.hidden = view !== "test";
-      views.profil.hidden = view !== "profil";
-      if (view === "egitim") {
-        initEducationTab();
-      } else if (view === "profil") {
-        initProfileTab();
-      } else {
-        render();
-      }
-    });
-  });
+  tabs.forEach((tab) => tab.setAttribute("aria-selected", String(tab.dataset.view === view)));
+  profileTrigger.setAttribute("aria-current", String(view === "profil"));
+
+  views.egitim.hidden = view !== "egitim";
+  views.test.hidden = view !== "test";
+  views.profil.hidden = view !== "profil";
+
+  if (view === "egitim") {
+    initEducationTab();
+  } else if (view === "profil") {
+    initProfileTab();
+  } else {
+    render();
+  }
+}
+
+function initNavigation() {
+  const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
+  tabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
+  profileTrigger.addEventListener("click", () => showView("profil"));
+}
+
+function updateHeaderGreeting() {
+  const name = getProfileName();
+  headerSubtitle.textContent = name ? `Hoş geldin, ${name}!` : DEFAULT_SUBTITLE;
+  profileTriggerInitial.textContent = name ? name.trim().charAt(0).toUpperCase() : "P";
 }
 
 async function init() {
-  initTabs();
+  initNavigation();
+  updateHeaderGreeting();
+  window.addEventListener("englishprep:profilenamechanged", updateHeaderGreeting);
 
   mixedCountDropdown = createDropdown({
     container: document.getElementById("mixed-count-dropdown"),
