@@ -18,30 +18,30 @@
     "id": "closest-meaning-t14",
     "type": "restatement",
     "category": "As...As vs Comparatives vs The More...The More",
-    "sentence": "On a Saturday the new shop sells nearly twice as much bread as the original bakery does.",
+    "sentence": "On Saturdays the new shop sells just under twice as much bread as the original bakery does.",
     "options": [
       "On Saturdays the new shop sells a little over half as much bread as the original bakery.",
-      "The new shop sells twice as much bread as the original bakery every day of the week.",
-      "The new shop is expected to sell nearly twice as much bread on Saturdays as the original bakery.",
+      "The new shop sells just under twice as much bread as the original bakery on every day of the week.",
+      "The new shop is expected to sell just under twice as much bread on Saturdays as the original bakery does.",
       "On Saturdays the original bakery sells a little over half as much bread as the new shop."
     ],
     "correctIndex": 3,
-    "explanation": "'nearly twice as much … as' yeni dükkânın önde olduğunu söyler; oranı ters çevirdiğinizde eski fırın, yeni dükkânın sattığının yarısından biraz fazlasını satıyor demektir. 'On Saturdays the new shop sells a little over half as much bread as the original bakery.' seçeneği aynı oranı kurar ama önde olan tarafı değiştirir. Kalan seçeneklerden biri cumartesiyi haftanın her gününe genişletir, diğeri olup biten bir satışı beklentiye çevirir.",
+    "explanation": "'just under twice as much … as' yeni dükkânın önde olduğunu söyler; oranı ters çevirdiğinizde eski fırın, yeni dükkânın sattığının yarısından biraz fazlasını satıyor demektir. 'On Saturdays the new shop sells a little over half as much bread as the original bakery.' seçeneği aynı oranı kurar ama önde olan tarafı değiştirir. Kalan seçeneklerden biri cumartesiye bağlı bilgiyi haftanın her gününe genişletir, diğeri olup biten bir satışı beklentiye çevirir.",
     "tip": "Bir katsayıyı ters çevirirken hangi tarafın çarpan hangi tarafın bölünen olduğunu işaretle; 'iki katı' ilişkisi karşı yönden 'yarısı kadar' diye okunur."
   },
   {
     "id": "closest-meaning-t15",
     "type": "restatement",
     "category": "As...As vs Comparatives vs The More...The More",
-    "sentence": "Critics praised the translation almost as warmly as the original novel, though a few early reviewers found the new version flat.",
+    "sentence": "Critics praised the translation almost as warmly as they praised the original novel, although a few early reviewers had already dismissed the new version as flat.",
     "options": [
-      "Reviewers welcomed the translation nearly as much as the original, even if not all of them did.",
-      "The original novel was welcomed less warmly than its translation, though not every reviewer agreed.",
-      "The translation is expected to be welcomed almost as warmly as the original novel was.",
-      "Reviewers welcomed the translation more warmly than any other novel published that year."
+      "Critics were nearly as warm about the translation as they were about the original novel, even though a few early reviewers had dismissed it.",
+      "The original novel was praised by critics less warmly than the translation, although a few early reviewers dismissed the new version.",
+      "A few early reviewers were nearly as warm about the translation as they were about the original novel, although the critics dismissed the new version as flat.",
+      "The translation is expected to be praised by critics almost as warmly as the original novel was."
     ],
     "correctIndex": 0,
-    "explanation": "'almost as warmly as' çeviriye gösterilen ilginin özgün romana gösterilenin biraz altında kaldığını söyler; sondaki yan cümle de bu övgünün ortak olmadığını ekler. 'The original novel was welcomed less warmly than its translation, though not every reviewer agreed.' seçeneği üstün tarafı değiştirir: özgün cümlede daha çok övülen roman, çeviri değildir. Bir başka seçenek de olup bitmiş övgüyü bir beklentiye taşır.",
+    "explanation": "'almost as warmly as' çeviriye gösterilen övgünün özgün romana gösterilenin biraz altında kaldığını söyler; yan cümle ise bu övgüyü paylaşmayan ayrı ve küçük bir grubu ekler. 'The original novel was praised by critics less warmly than the translation, although a few early reviewers dismissed the new version.' seçeneği üstün tarafı değiştirir: daha çok övülen özgün romandır. Bir diğeri övgüyü eleştirmenlerden alıp ilk okuyuculara verir, bir başkası olup bitmiş övgüyü beklentiye taşır.",
     "tip": "'almost / nearly as … as' eşitlik değil çok küçük bir fark bildirir; ilk anılan taraf genellikle azıcık geride kalır."
   },
   {
@@ -51,28 +51,28 @@
     "sentence": "The more closely the museum's panel examined the brushwork under raking light, the less convinced they became that the painting was genuine.",
     "options": [
       "The more the panel doubted the painting, the more closely they examined its brushwork.",
-      "The closer the panel's examination of the brushwork became, the surer they were that the painting was genuine.",
+      "The more closely the panel examined the brushwork, the surer they became that the painting was genuine.",
       "The panel decided that the painting was a forgery after examining the brushwork closely.",
       "Close examination of the brushwork left the panel steadily more doubtful about the painting."
     ],
     "correctIndex": 3,
-    "explanation": "Cümlede iki değişken birlikte hareket ediyor: inceleme yakınlaştıkça tabloya duyulan güven azalıyor. 'The closer the panel's examination of the brushwork became, the surer they were that the painting was genuine.' seçeneği ikinci yarının yönünü tersine çevirir ve azalan güveni artan güven yapar. Bir diğer seçenek iki yan cümlenin yerini değiştirip şüpheyi incelemenin nedeni gibi gösterir; bir başkası ise azalan güveni verilmiş bir sahtelik kararına dönüştürür.",
+    "explanation": "Cümlede iki değişken birlikte hareket ediyor: inceleme yakınlaştıkça tabloya duyulan güven azalıyor. 'The more closely the panel examined the brushwork, the surer they became that the painting was genuine.' seçeneği ikinci yarının yönünü tersine çevirir ve azalan güveni artan güven yapar. Bir diğer seçenek iki yan cümlenin yerini değiştirip şüpheyi incelemenin nedeni gibi gösterir; bir başkası ise azalan güveni verilmiş bir sahtelik kararına dönüştürür.",
     "tip": "Korelatif karşılaştırmada iki yarının yönünü ayrı ayrı oku: birinin artarken diğerinin artması ile azalması tümüyle farklı iki cümledir."
   },
   {
     "id": "closest-meaning-t17",
     "type": "restatement",
     "category": "Too vs Enough vs So...That",
-    "sentence": "The swell outside the harbour was too heavy for the afternoon ferry to leave on time.",
+    "sentence": "The swell outside the harbour on Thursday afternoon was heavy enough to keep every boat the size of the ferry in port until the wind dropped.",
     "options": [
-      "The swell will be heavy enough to keep the afternoon ferry from leaving on time.",
-      "The swell was so heavy that the afternoon ferry could not leave on schedule.",
-      "The swell was very heavy, but the afternoon ferry still managed to leave on time.",
-      "The swell was so heavy that no ferry was allowed to leave the harbour that day."
+      "The swell was too heavy on Thursday afternoon for boats the size of the ferry to stay in the harbour until the wind dropped.",
+      "The swell was too heavy on Thursday afternoon for boats the size of the ferry to leave the harbour before the wind dropped.",
+      "The swell was so heavy on Thursday afternoon that the harbour was closed to boats of every size until the wind dropped.",
+      "The swell is expected to be heavy enough on Thursday afternoon to keep boats the size of the ferry in the harbour."
     ],
     "correctIndex": 1,
-    "explanation": "'too heavy for … to leave' engellenen bir sonucu bildirir: feribot zamanında kalkamamıştır, bunun karşılığı da 'so heavy that … could not leave'dir. 'The swell was very heavy, but the afternoon ferry still managed to leave on time.' seçeneği 'too'yu 'very' gibi okuyup sonucu tersine çevirir. Bir diğer seçenek olayı geleceğe taşır, bir başkası ise tek bir seferi bütün limana genişletir.",
-    "tip": "'too + sıfat + to' engellenen bir sonucu anlatır ve 'very'den farklıdır; olumlu karşılığı 'so + sıfat + that … not' biçiminde kurulur."
+    "explanation": "'heavy enough to keep … in port' gerçekleşen bir sonucu bildirir: rüzgâr düşünceye kadar bu boydaki tekneler limandan çıkamamıştır. Aynı durum engelleyen taraftan 'too heavy … to leave the harbour' diye yazılır. 'The swell was too heavy on Thursday afternoon for boats the size of the ferry to stay in the harbour until the wind dropped.' seçeneği aynı kalıbı kurar ama sonucun yönünü çevirir. Kalan ikisinden biri sınırı bütün limana genişletir, diğeri olup bitmiş durumu beklentiye taşır.",
+    "tip": "'enough' gerçekleşen, 'too' engellenen bir dereceyi bildirir; birinden diğerine geçerken sonuç cümlesinin olumlu-olumsuz yönü de dönmek zorundadır."
   },
   {
     "id": "closest-meaning-t18",
@@ -93,15 +93,15 @@
     "id": "closest-meaning-t19",
     "type": "restatement",
     "category": "Too vs Enough vs So...That",
-    "sentence": "The floodlights failed so completely that the referee had to stop the match in near darkness.",
+    "sentence": "The floodlights failed so completely that the ground went dark and the referee stopped the match before half-time.",
     "options": [
-      "The referee's decision to stop the match left the ground in near darkness.",
-      "The floodlights failed so completely that the referee should have stopped the match.",
-      "The ground became too dark for the match to go on, so the referee stopped it.",
-      "The floodlights failed so completely that the match was abandoned and never replayed."
+      "The referee's decision to stop the match before half-time left the ground in darkness.",
+      "The floodlights failed so completely that the referee should have stopped the match before half-time.",
+      "The ground became too dark for the match to go on, so the referee ended it before half-time.",
+      "The floodlights failed so completely that the match was abandoned before half-time and never replayed."
     ],
     "correctIndex": 2,
-    "explanation": "'so completely that the referee had to stop the match' gerçekleşmiş bir sonucu bildirir; aynı olay, engellenen taraftan bakılarak 'too dark for the match to go on' diye yazılabilir. 'The floodlights failed so completely that the referee should have stopped the match.' seçeneği olguyu bir öğüde çevirir: hakem maçı zaten durdurmuştur, durdurması gerektiği söylenmiyor. Bir diğer seçenek neden ile sonucun yerini değiştirip karanlığı hakemin kararına bağlar.",
+    "explanation": "'so completely that the ground went dark and the referee stopped the match' gerçekleşmiş bir sonucu bildirir; aynı olay, engellenen taraftan bakılarak 'too dark for the match to go on' diye yazılabilir. 'The floodlights failed so completely that the referee should have stopped the match before half-time.' seçeneği olguyu bir öğüde çevirir: hakem maçı zaten durdurmuştur, durdurması gerektiği söylenmiyor. Bir diğer seçenek neden ile sonucun yerini değiştirip karanlığı hakemin kararına bağlar.",
     "tip": "'so … that' olan bir sonucu, 'too … to' engellenen bir sonucu bildirir; ancak sonuç olumsuza çevrildiğinde ikisi aynı anlama gelir."
   },
   {
@@ -111,12 +111,12 @@
     "sentence": "The flat was left so clean that the landlord had no reason to hold back any of the deposit.",
     "options": [
       "The landlord had no reason to keep the deposit, so the tenants left the flat spotlessly clean.",
-      "The landlord holds back none of the deposit, however the tenants happen to leave the flat.",
+      "The landlord never keeps any of the deposit, no matter what state the tenants leave the flat in.",
       "Once the flat has been cleaned, the landlord will have no reason to hold back the deposit.",
-      "The flat was clean enough to leave the landlord with no grounds for keeping any of the deposit."
+      "The flat was clean enough that the landlord had no grounds for withholding any of the deposit."
     ],
     "correctIndex": 3,
-    "explanation": "'so clean that … had no reason to hold back any of the deposit' temizliği, depozitoyu tutmak için gerekçe bırakmayan bir derece yapar; 'clean enough to leave the landlord with no grounds for keeping any of the deposit' bu bağı olduğu gibi korur. 'The landlord holds back none of the deposit, however the tenants happen to leave the flat.' seçeneği dereceyi tümden atıp iadeyi her koşulda işleyen bir alışkanlığa çevirir. Kalan seçeneklerden biri neden ile sonucun yerini değiştirir, diğeri olup bitmiş temizliği henüz gerçekleşmemiş bir koşula taşır.",
+    "explanation": "'so clean that … had no reason to hold back any of the deposit' temizliği, depozitoyu tutmak için gerekçe bırakmayan bir derece yapar; 'clean enough that the landlord had no grounds for withholding any of the deposit' bu bağı olduğu gibi korur. 'The landlord never keeps any of the deposit, no matter what state the tenants leave the flat in.' seçeneği dereceyi tümden atıp iadeyi her koşulda işleyen bir alışkanlığa çevirir. Kalan seçeneklerden biri neden ile sonucun yerini değiştirir, diğeri olup bitmiş temizliği henüz gerçekleşmemiş bir koşula taşır.",
     "tip": "Bir sonucu bir dereceye bağlayan cümlede o dereceyi atmak anlamı bozar; 'so … that' genel bir alışkanlığı değil tek bir nedeni anlatır."
   },
   {
@@ -142,11 +142,11 @@
     "options": [
       "It has now been established that the consignment was unloaded at the wrong depot on Friday.",
       "The wrong consignment is rumoured to have been unloaded at the depot on Friday night.",
-      "The consignment is rumoured to have been unloaded at the wrong depot, though this may not be true.",
+      "The consignment is rumoured to have been unloaded at the wrong depot on Friday night.",
       "There is no suggestion at all that the consignment went to the wrong depot on Friday night."
     ],
     "correctIndex": 2,
-    "explanation": "'It is only rumoured that' aktarılanın doğrulanmadığını söyler; kişisel kalıba 'is rumoured to have been unloaded' ile geçilir ve doğru şık bu belirsizliği 'though this may not be true' ile korur. 'It has now been established that the consignment was unloaded at the wrong depot on Friday.' seçeneği söylentiyi kanıtlanmış bir olguya yükseltir. Kalan seçeneklerden biri yanlış olanın depo değil sevkiyat olduğunu söyler, diğeri de ortada bir söylenti bulunduğunu tümden yok sayar.",
+    "explanation": "'It is only rumoured that' aktarılanın doğrulanmadığını söyler; kişisel kalıba geçilirken bu belirsizliği 'is rumoured to have been unloaded' kalıbının kendisi taşır, ayrıca söylenmesi gerekmez. 'It has now been established that the consignment was unloaded at the wrong depot on Friday.' seçeneği söylentiyi kanıtlanmış bir olguya yükseltir. Kalan seçeneklerden biri yanlış olanın depo değil sevkiyat olduğunu söyler, diğeri de ortada bir söylenti bulunduğunu tümden yok sayar.",
     "tip": "Aktarımın kesinlik derecesi de anlamın parçasıdır: 'only rumoured' bir söylentiyi, 'has been established' kanıtlanmış bir olguyu bildirir ve biri diğerinin yerine geçmez."
   },
   {
