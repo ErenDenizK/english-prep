@@ -6,7 +6,7 @@
     "sentence": "The northern route up the pass is not as steep as the old road, but it is a good deal longer.",
     "options": [
       "The northern route is steeper than the old road, though the old road is longer.",
-      "The old road up the pass is steeper than the northern route, though it is the shorter one.",
+      "The old road up the pass is steeper than the northern route, though the old road is the shorter one.",
       "The old road is steeper than the northern route, and it is longer as well.",
       "The old road is the steepest and the shortest of all the routes up the pass."
     ],
@@ -81,12 +81,12 @@
     "sentence": "The engineers have repaired the bridge well enough for lorries to cross it again from Monday.",
     "options": [
       "The bridge has been repaired so well that lorries can use it again from Monday.",
-      "The bridge has been repaired well enough for lorries to start crossing it well before Monday.",
+      "The bridge has been repaired well enough for lorries to start crossing it several days before Monday.",
       "The bridge is still too badly damaged for lorries to cross it, even after Monday.",
       "The engineers have repaired the bridge so thoroughly that lorries of any weight can cross it from Monday."
     ],
     "correctIndex": 0,
-    "explanation": "'well enough for lorries to cross' yeterli bir dereceyi ve pazartesiden itibaren gerçekleşen bir sonucu bildirir; 'so well that lorries can use it again from Monday' aynı şeyi söyler. 'The bridge has been repaired well enough for lorries to start crossing it well before Monday.' seçeneği dereceyi doğru okur ama sonucu pazartesiden öne çeker. Kalan seçeneklerden biri 'enough'u 'too'ya çevirip geçişi engellenmiş gösterir, diğeri de cümlenin vermediği bir ayrıcalığı, ağırlık sınırının kalkmasını ekler.",
+    "explanation": "'well enough for lorries to cross' yeterli bir dereceyi ve pazartesiden itibaren gerçekleşen bir sonucu bildirir; 'so well that lorries can use it again from Monday' aynı şeyi söyler. 'The bridge has been repaired well enough for lorries to start crossing it several days before Monday.' seçeneği dereceyi doğru okur ama sonucu pazartesiden öne çeker. Kalan seçeneklerden biri 'enough'u 'too'ya çevirip geçişi engellenmiş gösterir, diğeri de cümlenin vermediği bir ayrıcalığı, ağırlık sınırının kalkmasını ekler.",
     "tip": "'enough' gerçekleşen bir sonucu, 'too' engellenen bir sonucu bildirir; derece doğru olsa bile sonucun ne zaman geçerli olduğunu ayrıca denetle."
   },
   {
