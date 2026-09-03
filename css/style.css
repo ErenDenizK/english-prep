@@ -91,8 +91,10 @@
           control under 16px, and 16 is the floor for comfortable reading at
           phone distance. Every line-height is a multiple of 4 so type lands
           on the spacing grid; the ratio falls as size rises. -- */
-    --f-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
-    --f-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+    /* The *-Fallback families are metric-matched (see css/fonts.css), so the
+       swap when the webfont arrives changes no line box and shifts nothing. */
+    --f-serif: "Source Serif 4", "Source Serif 4 Fallback", "Times New Roman", Georgia, serif;
+    --f-sans: "Source Sans 3", "Source Sans 3 Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
 
     --t-display: 28px;
     --t-display-lh: 32px;
@@ -362,10 +364,16 @@
     color: var(--c-text-3);
   }
 
-  /* English: the serif, always at block level. */
+  /* English: the serif, always at block level.
+     No font-optical-sizing here: the shipped faces are static instances, so
+     Source Serif 4's opsz axis is not present and the property would be a
+     no-op. Restoring it means shipping the variable font at roughly +20 KB
+     per weight — see docs/design-system.md §2.5.
+     The weight pin lives in the utilities layer, not here: a component's
+     own font-weight would otherwise outrank it and ask for a 600 that is
+     not shipped, which the browser answers with a faux-bold. */
   .t-en {
     font-family: var(--f-serif);
-    font-optical-sizing: auto;
   }
 
   /* Figures that change. A counter whose width shifts between questions
@@ -805,6 +813,14 @@
    ========================================================================== */
 
 @layer utilities {
+  /* Only the 400 serif is shipped. This sits in the last layer so a
+     component's own font-weight cannot ask for a 600 that does not exist
+     and get a synthesised faux-bold — English takes its hierarchy from size
+     and from the face, never from weight. */
+  .t-en {
+    font-weight: 400;
+  }
+
   /* Outline, never box-shadow: outlines survive forced-colors mode and are
      not clipped by an overflow:hidden ancestor. :focus-visible so a thumb
      tap never paints a ring. */

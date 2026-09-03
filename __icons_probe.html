@@ -1,0 +1,57 @@
+<!doctype html><meta charset="utf-8">
+<style>
+ body{background:#101215;color:#e6e9ee;font:14px system-ui;margin:0;padding:24px}
+ .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:20px}
+ .cell{display:flex;flex-direction:column;align-items:center;gap:6px}
+ .box{position:relative;width:96px;height:96px;background:#1a1d22;border-radius:8px;display:grid;place-items:center}
+ .box svg{width:96px;height:96px}
+ /* live-area guide: 20/24 of 96 = 80px inset 8px */
+ .box::after{content:"";position:absolute;inset:8px;outline:1px dashed rgba(255,255,255,.18)}
+ .row2{margin-top:36px}
+ .strip{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:28px}
+ .sel{background:#2b6cf6;color:#fff;border-radius:8px;padding:6px}
+ .grey{filter:grayscale(1) contrast(.9)}
+ small{opacity:.6}
+</style>
+<div class="grid" id="g"></div>
+<div class="strip" id="s"></div>
+<script type="module">
+import { icon, ICON_NAMES } from "/js/icons.js";
+const g = document.getElementById("g");
+const report = [];
+for (const name of ICON_NAMES) {
+  const cell = document.createElement("div"); cell.className = "cell";
+  const box = document.createElement("div"); box.className = "box";
+  const svg = icon(name, { size: 96 });
+  box.appendChild(svg); cell.appendChild(box);
+  const lbl = document.createElement("small"); lbl.textContent = name; cell.appendChild(lbl);
+  g.appendChild(cell);
+}
+// second strip: 24px real size, plus greyscale nav pairs
+const s = document.getElementById("s");
+for (const name of ICON_NAMES) {
+  const w = document.createElement("span"); w.appendChild(icon(name)); s.appendChild(w);
+}
+for (const n of ["book","book-fill","check-square","check-square-fill"]) {
+  const w = document.createElement("span"); w.className="grey"; w.appendChild(icon(n, {size:28})); s.appendChild(w);
+}
+// geometry audit via getBBox (stroke-free, i.e. pure path coordinates)
+window.__audit = ICON_NAMES.map((name) => {
+  const probe = icon(name, { size: 24 });
+  probe.style.position = "absolute"; probe.style.left = "-9999px";
+  document.body.appendChild(probe);
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  for (const child of probe.children) {
+    if (child.tagName === "title") continue;
+    const b = child.getBBox();
+    x0=Math.min(x0,b.x); y0=Math.min(y0,b.y);
+    x1=Math.max(x1,b.x+b.width); y1=Math.max(y1,b.y+b.height);
+    if (child.getAttribute("stroke-width")) throw new Error("per-path stroke-width on "+name);
+  }
+  probe.remove();
+  return { name, x0:+x0.toFixed(2), y0:+y0.toFixed(2), x1:+x1.toFixed(2), y1:+y1.toFixed(2),
+           w:+(x1-x0).toFixed(2), h:+(y1-y0).toFixed(2),
+           cx:+((x0+x1)/2).toFixed(2), cy:+((y0+y1)/2).toFixed(2) };
+});
+window.__ready = true;
+</script>
