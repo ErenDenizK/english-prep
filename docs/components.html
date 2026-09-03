@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Bileşen sayfası — English Prep</title>
+<!-- Every primitive in docs/design-system.md on one page, using the real
+     stylesheet. Serve the repo and open /docs/components.html to check the
+     system at any width without going through the app. Not linked from
+     the app; it is a development surface. -->
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<main class="shell__scroll">
+<div class="page stack--loose stack">
+
+  <div class="stack stack--tight">
+    <p class="t-label">Yüzeyler</p>
+    <div class="cluster">
+      <div style="width:88px;height:56px;background:var(--c-surface-0);border-radius:var(--r-1)"></div>
+      <div style="width:88px;height:56px;background:var(--c-surface-1);border-radius:var(--r-1)"></div>
+      <div style="width:88px;height:56px;background:var(--c-surface-2);border-radius:var(--r-1)"></div>
+    </div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Tipografi</p>
+    <h1 class="t-display">Geçmişte sıralama</h1>
+    <h2 class="t-title">Present Perfect vs Past Simple</h2>
+    <p class="t-lead">Bu ikisi sınavlarda en sık karıştırılan çifttir.</p>
+    <div class="prose">
+      <p class="t-body">Past Simple <strong>kapanmış</strong> bir zaman diliminden konuşur: olay bitti, zaman da bitti. Present Perfect ise geçmişteki olayı şimdiye bağlar.</p>
+      <p class="t-body t-en">She has taught here since 2018.</p>
+    </div>
+    <p class="t-meta t-num">Adım 3 / 8</p>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Butonlar</p>
+    <div class="cluster">
+      <button class="btn btn--primary">Devam</button>
+      <button class="btn btn--secondary">Atla</button>
+      <button class="btn btn--quiet">Dersler</button>
+    </div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Satırlar</p>
+    <div>
+      <button class="row"><span class="row__lead t-num t-meta">1</span><span class="row__main"><span class="row__title t-en">Present Simple vs Present Continuous</span><span class="row__sub">Alışkanlık mı, şu an mı?</span></span><span class="row__trail">Tamamlandı</span></button>
+      <button class="row"><span class="row__lead t-num t-meta">2</span><span class="row__main"><span class="row__title t-en">Present Perfect vs Past Simple</span><span class="row__sub">Geçmiş bitti mi, şimdiye mi uzanıyor?</span></span><span class="row__trail t-num">4/8</span></button>
+    </div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Çipler ve ilerleme</p>
+    <div class="cluster">
+      <span class="chip">6 ders</span>
+      <span class="chip chip--ok">Tamamlandı</span>
+      <span class="chip chip--accent">Sıradaki</span>
+    </div>
+    <div class="progress"><div class="progress__fill" style="width:38%"></div></div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Seçenekler ve geri bildirim</p>
+    <div class="bleed">
+      <button class="option"><span class="option__key">1</span>changed<span class="option__mark">✕</span></button>
+      <button class="option option--ok"><span class="option__key">2</span>has changed<span class="option__mark">✓</span></button>
+      <button class="option"><span class="option__key">3</span>was changing</button>
+      <div class="feedback feedback--no bleed">
+        <p class="feedback__verdict">Doğru değil — doğru cevap: <span class="t-en">has changed</span></p>
+        <p class="feedback__body">“since + geçmiş bir nokta” hâlâ açık bir aralık kurar, ve açık aralık Present Perfect ister.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Yüzey, alan, istatistik</p>
+    <div class="surface stack stack--tight">
+      <p class="t-label">Kaldığın yer</p>
+      <p class="t-title t-en">Future Forms</p>
+      <input class="field" placeholder="İsmini yaz (isteğe bağlı)">
+    </div>
+    <div class="stats">
+      <div><div class="stat__value t-num">3/18</div><div class="stat__label">Tamamlanan ders</div></div>
+      <div><div class="stat__value t-num">%74</div><div class="stat__label">Genel doğruluk</div></div>
+      <div><div class="stat__value t-num">126</div><div class="stat__label">Çözülen soru</div></div>
+    </div>
+  </div>
+
+</div>
+</main>
+<nav class="nav">
+  <a class="nav__item" href="#" aria-current="page">Eğitim</a>
+  <a class="nav__item" href="#">Test</a>
+</nav>
+</body>
+</html>

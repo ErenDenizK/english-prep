@@ -145,14 +145,20 @@ block therefore carries **four redundant channels** — glyph, word, tint,
 and the answer itself — so it survives greyscale, colour-vision deficiency
 (~8% of men), a phone in sunlight, and forced-colors mode.
 
-### 1.6 Hairlines separate; they never mean
+#### 1.6 Two lines, and the distinction is load-bearing
 
-`--c-hairline: #36322D`. Contrast against the page is 1.12 — far below
-1.4.11's 3:1, and legitimately so: a **decorative** separator is exempt.
+`--c-hairline: #36322D` **separates**. Contrast against the page is 1.12 —
+far below 1.4.11's 3:1, and legitimately so: a decorative separator is
+exempt.
 
-Reaching 3:1 against `--c-surface-2` would require roughly `#7E7A74`, a
-mid-grey that reads as a drawn line rather than a hairline. So the rule is
-absolute: **no border ever carries information.** State is expressed by
+`--c-edge: #78746E` **identifies a control's boundary**, which 1.4.11
+requires at 3:1. It is the lightest value that clears 3:1 against all
+three surfaces, and it exists for exactly one reason: no two surfaces in
+this ramp are 3:1 apart, so a fill cannot delineate a text field. A field
+with no visible edge is a conformance failure and a usability one at once.
+This is the only place a border is required rather than forbidden.
+
+For everything else the rule is absolute: **no border ever carries state.** State is expressed by
 fill, glyph or text. This is the same conclusion the "no boxes" direction
 arrived at from the visual side, reached independently from the contrast
 maths — which is a good sign it is right.
