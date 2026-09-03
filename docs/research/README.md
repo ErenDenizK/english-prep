@@ -14,7 +14,7 @@ The six arms of the 2026-09-03 round:
 
 | | |
 | --- | --- |
-| `the-exam.md` | what YTÜ's İYS actually contains, and how little of it the app covers |
+| `the-exam.md` | what YTÜ's İYS contains — **superseded by `docs/exam-spec.md`**, written from the real sample papers |
 | `learning-design.md` | the teaching loop, desirable difficulties, curriculum sequencing |
 | `learner-model.md` | what to record, what can honestly be inferred from it, what to show |
 | `practice-modes.md` | practice modes worth having, and the motivational mechanics to refuse |

@@ -1,5 +1,16 @@
 # The exam
 
+> **Superseded in part, 2026-09-03.** The owner supplied YTÜ SFL's own
+> sample papers after this was written, and `docs/exam-spec.md` is now the
+> verified specification. Read that first; where the two disagree, it
+> wins. This document's section list held up. Its point weights did not —
+> Session I is 40 items at 1.5 points for 60, not 50 — and its estimate
+> that the app covers 12–19% of the marks was generous: the real figure is
+> about 7%, because the cloze section turned out to test grammar this app
+> does not teach at all. The reasoning below is kept because it is what
+> made the right questions get asked.
+
+
 What YTÜ's İngilizce Yeterlik Sınavı actually is, how much of it this app
 covers, and what to build next.
 

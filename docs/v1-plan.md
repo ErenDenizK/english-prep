@@ -23,14 +23,23 @@ build is not a seventh grammar topic.**
 
 Three findings carry the plan.
 
-**1 · There is no discrete grammar section on the exam.** YTÜ's İYS
-appears to be two 50-point sessions — cloze passage, restatement, two
-reading passages, paragraph completion, then listening and an essay — with
-a session-1 gate. Grammar appears only *inside* other item types. The
-app's 72 single-blank questions cover something like 12–19% of the marks,
-in a format that does not appear on the paper. (`the-exam.md`. Every
-direct source was blocked from this environment; **this is the one finding
-that must be verified before content money is spent on it.**)
+**1 · There is no discrete grammar section on the exam — and the grammar
+it does test is not the grammar the app teaches.** **Verified**: the owner
+supplied YTÜ SFL's own sample papers on 2026-09-03 and the specification
+is now in `docs/exam-spec.md`. Session I is 40 questions at 1.5 points
+each: a 10-blank cloze passage, 10 restatements, two reading texts of
+seven questions, six paragraph completions. Session II is listening, and
+its larger half is a hand-written note-taking sheet rather than multiple
+choice.
+
+The research arm estimated the app covered 12–19% of the marks. The real
+paper puts it at about **7%**, and for a reason nobody predicted: of the
+ten cloze blanks, **not one tests a tense or the passive**. Two test
+modals. The rest test discourse markers, relative pronouns, quantifiers,
+comparatives, `so/such` and causatives — almost exactly the grammar the
+app does not cover. The learning-design arm reached the same conclusion
+from published error analyses of Turkish learners; the paper confirms it
+from the other side.
 
 **2 · Four questions per category is the binding constraint on
 everything.** Three arms reached this independently. A second topic test
@@ -186,18 +195,22 @@ The pipeline should be proven on 72 questions before it is aimed at 900.
 Ordered by exam weight against cost. **Blocked on verifying the exam
 specification** — see below.
 
-1. **Restatement items.** A `type` discriminator, a CSS pass so a
-   three-line option survives 320px, a validator branch. No engine change.
-   12.5% of the paper, and it is the exam's own use of the grammar the app
-   already teaches. *~1 day of code, 40 items to ship.*
+1. **Restatement items** ("Closest Meaning"). A `type` discriminator, a
+   CSS pass so a four-line option survives 320px, a validator branch. No
+   engine change, no passage. **15 of Session I's 60 points — a quarter of
+   the paper** — and the cheapest real section there is. *~1 day of code,
+   40 items to ship.*
 2. **The timed, feedback-deferred block**, shipping with the above.
    *~1 day of code, no content.*
 3. **Reading passages.** The real structural change: the question pool
    becomes units, because a passage of seven items stays together;
    `context` has to reach the results screen; and `checkPool` needs a
    guard or an Eğitim check will pull one orphaned question out of a
-   passage. Highest exam weight of anything buildable, and it is the gate.
-   *~1 week of code, 10 passages / 70 items to ship.*
+   passage. **21 points, the largest section on Session I.** The sample
+   papers add a requirement the research could not have known: passages
+   are divided into Roman-numbered paragraphs and most questions cite one,
+   so paragraphs have to be addressable in the schema rather than a blob
+   of text. *~1 week of code, 10 passages / 70 items to ship.*
 4. **Reading-skill lessons** — five short ones, so the results screen's
    category→lesson link does not dead-end on the new taxonomy. Ships with
    the above or the feature is half-wired. *No code; the block schema
@@ -215,10 +228,18 @@ Roughly 490 items to ship the sections above, 950 to be credible, against
 hours for the first number. The honest response is to **ship fewer
 sections properly** rather than all of them thinly.
 
-Also here, from the learning-design arm: published error analyses of
-Turkish learners rank **articles and prepositions above tense**, and the
-app covers neither. And one item in four should be decided by something
-other than the surface cue.
+Also here, and now confirmed by the paper rather than inferred: **the
+three topics are the wrong three.** Tenses, Modals and Passive Voice were
+chosen without a sample paper in front of anyone. They are real B1–B2
+grammar and they carry two cloze blanks and part of the restatement
+section, so none of that work is wasted — but the grammar the paper
+actually rewards is **discourse markers, relative clauses, conditionals,
+comparatives, quantifiers and `so/such`**, and that is what the next
+grammar round should write. The learning-design arm reached the same list
+from published error analyses of Turkish learners.
+
+And one item in four should be decided by something other than the surface
+cue.
 
 ---
 
@@ -265,12 +286,12 @@ rather than a thing everyone assumed was there.
 
 ## Blocked on the owner
 
-1. **The exam specification.** Every arm was blocked from every primary
-   source; three conflicts are unresolved (40 vs 45 items, a 25 vs 30
-   session-1 gate, session length). The owner has a sample paper. Stage 2
-   should not be commissioned from a reconstruction when the real document
-   is available — content briefs written from the actual item formats are
-   worth more than any amount of further research.
+1. ~~**The exam specification.**~~ **Resolved 2026-09-03**: the owner
+   supplied both sample papers. `docs/exam-spec.md` is now the verified
+   source and supersedes the research arm. Still unknown, and only
+   relevant to a mock-exam mode: the writing task's format and weight, the
+   pass mark, and the session durations — none of the three appears on the
+   sample papers.
 2. **The exam date.** The answer given was ambiguous — "we have a week"
    and "there is time to add enough content" point in opposite directions.
    Stage 0 and stage 1 are correct under either reading and are being
