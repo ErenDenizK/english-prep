@@ -4,7 +4,13 @@
 
 import test from "node:test";
 import assert from "node:assert/strict";
-import { shuffle, buildQuizSession, isCorrectAnswer, scoreSession } from "../js/quiz-engine.js";
+import {
+  shuffle,
+  orderForPractice,
+  buildQuizSession,
+  isCorrectAnswer,
+  scoreSession,
+} from "../js/quiz-engine.js";
 
 const sortedCopy = (items) => [...items].sort();
 
@@ -134,4 +140,74 @@ test("scoreSession on an empty session produces an empty, non-crashing result", 
   assert.equal(result.totalCount, 0);
   assert.deepEqual(result.topicBreakdown, {});
   assert.deepEqual(result.questionResults, []);
+});
+
+/* ---- Ordering practice by what the learner needs ---- */
+
+const practicePool = [
+  { id: "a", options: ["1", "2"], correctAnswer: "1" },
+  { id: "b", options: ["1", "2"], correctAnswer: "1" },
+  { id: "c", options: ["1", "2"], correctAnswer: "1" },
+  { id: "d", options: ["1", "2"], correctAnswer: "1" },
+];
+
+test("unseen questions come before seen ones", () => {
+  const stats = {
+    a: { seen: 3, wrong: 0, lastCorrect: true, last: 100 },
+    b: { seen: 1, wrong: 1, lastCorrect: false, last: 200 },
+  };
+  const order = orderForPractice(practicePool, stats).map((q) => q.id);
+
+  // c and d have never been answered, so they lead in some order.
+  assert.deepEqual(order.slice(0, 2).sort(), ["c", "d"]);
+  // Then the one answered wrong last time, then the one answered right.
+  assert.deepEqual(order.slice(2), ["b", "a"]);
+});
+
+test("among questions answered correctly, the oldest comes first", () => {
+  const stats = {
+    a: { seen: 1, wrong: 0, lastCorrect: true, last: 300 },
+    b: { seen: 1, wrong: 0, lastCorrect: true, last: 100 },
+    c: { seen: 1, wrong: 0, lastCorrect: true, last: 200 },
+    d: { seen: 1, wrong: 0, lastCorrect: true, last: 400 },
+  };
+  assert.deepEqual(
+    orderForPractice(practicePool, stats).map((q) => q.id),
+    ["b", "c", "a", "d"]
+  );
+});
+
+test("with no history at all, every question is a candidate", () => {
+  assert.deepEqual(orderForPractice(practicePool).map((q) => q.id).sort(), ["a", "b", "c", "d"]);
+  assert.equal(orderForPractice(practicePool, {}).length, 4);
+});
+
+test("a short session draws the questions that are needed, not random ones", () => {
+  const stats = {
+    a: { seen: 2, wrong: 0, lastCorrect: true, last: 100 },
+    b: { seen: 2, wrong: 0, lastCorrect: true, last: 200 },
+    c: { seen: 2, wrong: 0, lastCorrect: true, last: 300 },
+    d: { seen: 1, wrong: 1, lastCorrect: false, last: 400 },
+  };
+  // Run it repeatedly: the selection must be stable even though the
+  // presentation order inside the session is shuffled.
+  for (let run = 0; run < 20; run += 1) {
+    const ids = buildQuizSession(practicePool, 2, stats).map((q) => q.id).sort();
+    assert.deepEqual(ids, ["a", "d"], "the wrong one and the oldest one");
+  }
+});
+
+test("selection is principled but presentation is not", () => {
+  const stats = {};
+  const orders = new Set();
+  for (let run = 0; run < 40; run += 1) {
+    orders.add(buildQuizSession(practicePool, 4, stats).map((q) => q.id).join(""));
+  }
+  assert.ok(orders.size > 1, "a session should not always arrive in the same order");
+});
+
+test("buildQuizSession still works when no stats are passed", () => {
+  const session = buildQuizSession(practicePool, 2);
+  assert.equal(session.length, 2);
+  assert.equal(buildQuizSession(practicePool, "all").length, 4);
 });

@@ -17,17 +17,67 @@ export function shuffle(items) {
 }
 
 /**
- * Picks `count` random questions from the pool and shuffles each
- * question's answer options so the correct answer isn't always in the
- * same position.
+ * Orders a pool by what the learner most needs to see, worst-known first:
+ *
+ *   1. questions never answered
+ *   2. questions whose last answer was wrong
+ *   3. everything else, least recently seen first
+ *
+ * This is the whole of the app's "adaptivity" and it is deliberately not
+ * more than this. With a handful of questions per category, an estimator
+ * fitted to six noisy observations is estimating noise; drawing the
+ * unseen ones first is correct on day one with no data at all.
+ *
+ * It matters more than it looks. Without it a session is
+ * `shuffle(pool).slice(0, n)`, so a learner meets the same items over and
+ * over — and once that happens `correct` stops measuring whether they know
+ * the grammar and starts measuring whether they remember the question.
+ *
+ * @param {Array<object>} questions
+ * @param {Record<string, {seen: number, lastCorrect: boolean, last: number}>} [stats]
+ *   keyed by question id; anything absent counts as never seen
+ * @returns {Array<object>} a new array, best-first
+ */
+export function orderForPractice(questions, stats = {}) {
+  const tierOf = (question) => {
+    const entry = stats[question.id];
+    if (!entry || !entry.seen) {
+      return 0;
+    }
+    return entry.lastCorrect ? 2 : 1;
+  };
+
+  // Shuffle first so that items which tie — everything in tier 0, and
+  // anything sharing a timestamp because it was answered in the same
+  // session — come out in a different order each time.
+  return shuffle(questions).sort((a, b) => {
+    const tierDelta = tierOf(a) - tierOf(b);
+    if (tierDelta !== 0) {
+      return tierDelta;
+    }
+    // Within a tier, oldest first. Unseen questions have no timestamp and
+    // keep the shuffled order they arrived in.
+    return (stats[a.id]?.last ?? 0) - (stats[b.id]?.last ?? 0);
+  });
+}
+
+/**
+ * Picks `count` questions and shuffles each question's answer options so
+ * the correct answer isn't always in the same position.
+ *
+ * Selection is principled and presentation is not: the questions are
+ * *chosen* worst-known first, then shuffled again before being handed
+ * over, so a session never feels like it is working down a list.
+ *
  * @param {Array<object>} questions
  * @param {number|"all"} count
+ * @param {Record<string, {seen: number, lastCorrect: boolean, last: number}>} [stats]
  * @returns {Array<object>}
  */
-export function buildQuizSession(questions, count) {
-  const pool = shuffle(questions);
-  const size = count === "all" ? pool.length : Math.min(count, pool.length);
-  return pool.slice(0, size).map((question) => ({
+export function buildQuizSession(questions, count, stats = {}) {
+  const ordered = orderForPractice(questions, stats);
+  const size = count === "all" ? ordered.length : Math.min(count, ordered.length);
+  return shuffle(ordered.slice(0, size)).map((question) => ({
     ...question,
     options: shuffle(question.options),
   }));

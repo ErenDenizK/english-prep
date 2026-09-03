@@ -94,6 +94,44 @@ function sumBreakdowns(attempts, breakdownKey) {
  * Aggregates correct/total counts per topic across all recorded attempts.
  * @returns {Record<string, {correct: number, total: number}>}
  */
+/**
+ * Per-question history, derived rather than stored: every attempt already
+ * carries its own `date` and the ids it covered, so "when did this learner
+ * last see this question" needs no new field and no migration.
+ *
+ * `lastCorrect` is the outcome of the most recent answer, not a running
+ * average — what the session builder needs to know is whether the learner
+ * got it wrong *last time*, which is a different question from whether
+ * they usually do.
+ *
+ * @returns {Record<string, {seen: number, wrong: number, lastCorrect: boolean, last: number}>}
+ */
+export function getItemStats() {
+  const stats = {};
+  for (const attempt of getHistory()) {
+    const at = Date.parse(attempt?.date ?? "");
+    const when = Number.isNaN(at) ? 0 : at;
+    for (const question of attempt?.questions ?? []) {
+      if (typeof question?.id !== "string") {
+        continue;
+      }
+      const entry = (stats[question.id] ??= { seen: 0, wrong: 0, lastCorrect: false, last: 0 });
+      entry.seen += 1;
+      if (!question.correct) {
+        entry.wrong += 1;
+      }
+      // History is appended in order, but a restored backup could arrive
+      // out of order, so the newest answer wins on timestamp rather than
+      // on position.
+      if (when >= entry.last) {
+        entry.last = when;
+        entry.lastCorrect = question.correct === true;
+      }
+    }
+  }
+  return stats;
+}
+
 export function getTopicTotals() {
   return sumBreakdowns(getHistory(), "topicBreakdown");
 }
