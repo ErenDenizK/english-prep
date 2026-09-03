@@ -74,11 +74,17 @@ dependencies and no build step**, and nothing here is needed to serve it.
 
 ```bash
 npm run validate       # content schema + manifest/topic-file consistency
+npm run color          # re-measures every colour token (WCAG 2 + APCA)
 npm test               # unit tests for the scoring and storage logic
-npm run check          # both
+npm run check          # all three
+npm run verify         # drives the real app in a browser — needs `serve`
 ```
 
-Both run in CI on every push and pull request to `main` and `test`.
+`check` runs in CI on every push and pull request to `main` and `test`.
+`verify` does not: it needs a browser, and the point of having no
+dependencies is not to acquire one for CI. Run it locally for anything
+that touches the interface — it walks a whole learner journey at four
+widths and audits every screen it lands on. See `CLAUDE.md`.
 
 `npm run validate` is the important one when content changes: it checks
 every question and lesson against the documented schema, and catches the
@@ -164,7 +170,7 @@ Everything shipped so far is development work toward a first real release.
 What's left, roughly in order:
 
 1. **Real-device pass.** Everything so far has been verified with
-   Playwright across 320/390/768/1280 plus screenshots. Before anything is
+   `npm run verify` across 320/390/768/1280 plus screenshots. Before anything is
    called `1.0`, the owner and at least one friend should use it on their
    own phones via the `test` branch's Pages preview — real touch targets,
    real fonts loading over a real network.

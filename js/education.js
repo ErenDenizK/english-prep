@@ -1,15 +1,13 @@
-// Eğitim tab — a staged, interactive walk through the syllabus. Two
-// screens:
+// Eğitim — the app's home, and its teaching half. Two screens:
 //
-//   Index   every lesson across every topic, grouped by topic and
-//           skimmable: tap any row to jump straight into it, with an
-//           overall progress bar and a "pick up where you left off" card.
-//           Deliberately not a locked linear path — this is a study tool,
-//           and someone who wants one specific rule should not have to
-//           walk through five chapters to reach it.
-//   Reader  a focused mode (the header and bottom nav step out of the
-//           way, as the quiz screen does) that pages through one lesson
-//           a step at a time.
+//   Index   every lesson across every topic. It opens with what to do
+//           next, not with a table of contents: overall progress, then the
+//           lesson you were in the middle of, then the list. Deliberately
+//           not a locked linear path — this is a study tool, and someone
+//           who wants one specific rule should not have to walk through
+//           five chapters to reach it.
+//   Reader  a focused mode (the header and the nav step out of the way, as
+//           on the quiz screen) that paces one lesson.
 //
 // A lesson is authored as an article — intro, form, meaning, usage,
 // examples, common mistakes, recap (see docs/CONTENT_GUIDE.md). This
@@ -25,19 +23,20 @@ import {
   markLessonDone,
   countCompletedLessons,
 } from "./storage.js";
-import { shuffle } from "./quiz-engine.js";
-import { renderAnswerFeedback } from "./feedback.js";
+import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
+import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
+import { renderOptions } from "./answers.js";
 import { startTopicTest } from "./quiz-launch.js";
 import { el, clear, appendProse, appendBlanked } from "./dom.js";
+import { icon } from "./icons.js";
+import { announce, scrollToTop, createActionBar } from "./shell.js";
 import { CHECKS_PER_LESSON } from "./config.js";
 
-const siteHeader = document.getElementById("site-header");
+const shellHeader = document.getElementById("shell-header");
 const bottomNav = document.getElementById("bottom-nav");
-const appContent = document.getElementById("app-content");
 const indexContainer = document.getElementById("lesson-index");
 const readerContainer = document.getElementById("lesson-reader");
-const bottomBar = document.getElementById("lesson-bottom-bar");
-const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
+const actionBar = createActionBar("lesson-bar");
 
 const state = {
   /** @type {Array<object>|null} */
@@ -129,96 +128,99 @@ function previewOf(lesson) {
   return first ?? "";
 }
 
-/* ---- Shared chrome ---- */
+/* ---- Shared pieces ---- */
 
-function setBottomBarActions(actions) {
-  clear(bottomBarInner);
-  for (const action of actions) {
-    const button = el("button", `btn${action.variant ? ` btn--${action.variant}` : ""}`, action.label);
-    button.type = "button";
-    button.addEventListener("click", action.onClick);
-    bottomBarInner.appendChild(button);
-  }
-  bottomBar.hidden = actions.length === 0;
-}
-
-function hideBottomBar() {
-  bottomBar.hidden = true;
-  clear(bottomBarInner);
-}
-
-function progressTrack(ratio) {
-  const track = el("div", "progress-track");
-  const fill = el("div", "progress-track__fill");
+function progressBar(ratio) {
+  const track = el("div", "progress");
+  const fill = el("div", "progress__fill");
   fill.style.width = `${Math.round(Math.min(Math.max(ratio, 0), 1) * 100)}%`;
   track.appendChild(fill);
   return track;
 }
 
-/* ---- Index screen ---- */
+function englishTitle(tag, className, text) {
+  const node = el(tag, className, text);
+  // A grammar term inside an otherwise-Turkish page. Without this the CSS
+  // uppercase transform follows lang="tr" and "Simple" becomes "SİMPLE".
+  node.lang = "en";
+  return node;
+}
+
+/* ---- Index ---- */
 
 function statusOf(lesson, progress, stepCount) {
   const entry = progress[lesson.id];
   if (entry?.done) {
-    return { kind: "done", label: "Tamamlandı" };
+    return { done: true, label: "Tamamlandı" };
   }
   if (entry) {
-    return { kind: "started", label: `Adım ${Math.min(entry.step + 1, stepCount)} / ${stepCount}` };
+    return { done: false, label: `${Math.min(entry.step + 1, stepCount)}/${stepCount}` };
   }
-  return { kind: "new", label: `${stepCount} adım` };
+  return { done: false, label: `${stepCount} adım` };
 }
 
-function renderOverview(lessons, completed) {
-  const panel = el("section", "panel");
-  panel.appendChild(
-    el("p", "lesson-overview__count", `${lessons.length} dersten ${completed} tanesi tamamlandı`)
+function renderProgressSummary(lessons, completed) {
+  const block = el("section", "stack stack--tight");
+  block.appendChild(el("h2", "t-label", "İlerlemen"));
+  block.appendChild(progressBar(lessons.length === 0 ? 0 : completed / lessons.length));
+  block.appendChild(
+    el("p", "t-meta", `${lessons.length} dersten ${completed} tanesi tamamlandı`)
   );
-  panel.appendChild(progressTrack(lessons.length === 0 ? 0 : completed / lessons.length));
-  panel.appendChild(
+  return block;
+}
+
+/**
+ * The one thing on the screen that is a card. It is heterogeneous — a
+ * label, an English title, a Turkish counter and an action — which is
+ * exactly the case a surface is for; the lesson list below it is
+ * homogeneous, so it is rows.
+ */
+function renderResumeCard(lesson, entry, stepCount) {
+  const card = el("section", "surface stack");
+
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("p", "t-label", "Kaldığın yer"));
+  head.appendChild(englishTitle("h2", "t-title t-en", lesson.category));
+  head.appendChild(
     el(
       "p",
-      "lesson-overview__hint",
-      "İstediğin dersten başlayabilirsin; sıra zorunlu değil. İlerlemen bu cihazda saklanır."
+      "t-meta t-num",
+      `${lesson.topicTitle} · ${Math.min(entry.step + 1, stepCount)}/${stepCount}`
     )
   );
-  return panel;
-}
+  card.appendChild(head);
 
-function renderResumeCard(lesson, entry, stepCount) {
-  const panel = el("section", "panel panel--accent");
-  panel.appendChild(el("p", "lesson-card__eyebrow", "Kaldığın yer"));
-
-  const title = el("h3", "lesson-resume__title", lesson.category);
-  title.lang = "en";
-  panel.appendChild(title);
-  panel.appendChild(
-    el("p", "lesson-resume__meta", `${lesson.topicTitle} · Adım ${Math.min(entry.step + 1, stepCount)} / ${stepCount}`)
-  );
-
-  const button = el("button", "btn", "Devam Et");
+  const button = el("button", "btn btn--primary", "Devam et");
   button.type = "button";
   button.addEventListener("click", () => openLessonByHash(lesson.id));
-  panel.appendChild(button);
+  card.appendChild(button);
 
-  return panel;
+  return card;
 }
 
 function renderLessonRow(lesson, status) {
-  const row = el("button", "lesson-row");
+  const row = el("button", "row");
   row.type = "button";
   row.addEventListener("click", () => openLessonByHash(lesson.id));
 
-  row.appendChild(el("span", "lesson-row__order", String(lesson.order)));
+  row.appendChild(el("span", "row__lead t-num t-meta", String(lesson.order)));
 
-  const main = el("span", "lesson-row__main");
-  const title = el("span", "lesson-row__title", lesson.category);
-  // English grammar term inside a lang="tr" page.
-  title.lang = "en";
-  main.appendChild(title);
-  main.appendChild(el("span", "lesson-row__summary", previewOf(lesson)));
+  const main = el("span", "row__main");
+  main.appendChild(englishTitle("span", "row__title t-en", lesson.category));
+  main.appendChild(el("span", "row__sub", previewOf(lesson)));
   row.appendChild(main);
 
-  row.appendChild(el("span", `lesson-row__status lesson-row__status--${status.kind}`, status.label));
+  const trail = el("span", "row__trail");
+  if (status.done) {
+    // No tick inside the chip: the set is drawn with a 2px absolute stroke
+    // and a chip-sized icon would render it at 1.2px, which is exactly how
+    // an icon set starts going soft. The green tint is the second channel.
+    trail.appendChild(el("span", "chip chip--ok", "Tamamlandı"));
+  } else {
+    trail.appendChild(el("span", "t-num", status.label));
+  }
+  trail.appendChild(icon("chevron-right", { size: 20 }));
+  row.appendChild(trail);
 
   return row;
 }
@@ -226,19 +228,18 @@ function renderLessonRow(lesson, status) {
 function renderIndex() {
   const lessons = state.lessons;
   clear(indexContainer);
-  hideBottomBar();
+  actionBar.hide();
 
   if (lessons.length === 0) {
-    indexContainer.appendChild(el("p", "empty-state", "Henüz ders eklenmedi."));
+    indexContainer.appendChild(el("p", "t-meta", "Henüz ders eklenmedi."));
     return;
   }
 
   const progress = getAllLessonProgress();
   const stepCounts = new Map(lessons.map((lesson) => [lesson.id, buildSteps(lesson).length]));
+  const completed = countCompletedLessons(lessons.map((lesson) => lesson.id));
 
-  indexContainer.appendChild(
-    renderOverview(lessons, countCompletedLessons(lessons.map((lesson) => lesson.id)))
-  );
+  indexContainer.appendChild(renderProgressSummary(lessons, completed));
 
   const resumable = lessons.find((lesson) => {
     const entry = progress[lesson.id];
@@ -251,162 +252,153 @@ function renderIndex() {
   }
 
   const topicIds = [...new Set(lessons.map((lesson) => lesson.topicId))];
-  const list = el("div", "lesson-list");
-
   for (const topicId of topicIds) {
     const inTopic = lessons.filter((lesson) => lesson.topicId === topicId);
+    const section = el("section", "stack stack--tight");
+    // With one topic the heading would label the only group there is.
     if (topicIds.length > 1) {
-      const heading = el("h2", "lesson-list__topic", inTopic[0].topicTitle);
-      heading.lang = "en";
-      list.appendChild(heading);
+      section.appendChild(englishTitle("h2", "t-label", inTopic[0].topicTitle));
+    } else {
+      section.appendChild(el("h2", "t-label", "Dersler"));
     }
+    const list = el("div");
     for (const lesson of inTopic) {
       list.appendChild(renderLessonRow(lesson, statusOf(lesson, progress, stepCounts.get(lesson.id))));
     }
+    section.appendChild(list);
+    indexContainer.appendChild(section);
   }
-
-  indexContainer.appendChild(list);
 }
 
 /* ---- Reader: step bodies ---- */
 
+function renderProse(text) {
+  const body = el("div", "prose");
+  appendProse(body, text, "t-body");
+  return body;
+}
+
+/**
+ * The structural pattern of a tense — the one place on a lesson step where
+ * a card earns its keep, because it is a reference the learner will scroll
+ * back to rather than a paragraph they read once.
+ */
+function renderForm(text) {
+  const card = el("div", "surface");
+  card.appendChild(renderProse(text));
+  return card;
+}
+
 function renderExamples(examples) {
-  const list = el("ul", "example-list");
-  for (const example of examples) {
-    const item = document.createElement("li");
-    const sentence = el("span", "example-list__sentence", example.sentence);
-    sentence.lang = "en";
-    item.appendChild(sentence);
-    item.appendChild(el("span", "example-list__note", example.note));
+  const list = el("ul", "stack");
+  examples.forEach((example, index) => {
+    const item = el("li", "stack stack--tight");
+    if (index > 0) {
+      item.appendChild(el("span", "divider"));
+    }
+    item.appendChild(englishTitle("p", "t-lead t-en", example.sentence));
+    item.appendChild(el("p", "t-meta", example.note));
     list.appendChild(item);
-  }
+  });
   return list;
 }
 
+/**
+ * Wrong above right, both in the serif, with the verdict carried by a
+ * glyph as well as by colour — neither red nor green clears the contrast
+ * bar as text on this ground, and colour alone would say nothing in
+ * greyscale.
+ */
 function renderMistakes(mistakes) {
-  const list = el("ul", "mistake-list");
+  const list = el("ul", "stack stack--loose");
+
+  const line = (kind, sentence) => {
+    const row = el("p", "cluster");
+    const mark = el("span", kind === "ok" ? "ink-ok" : "ink-no");
+    mark.appendChild(icon(kind === "ok" ? "check" : "close", { size: 20 }));
+    row.appendChild(mark);
+    row.appendChild(englishTitle("span", "t-body t-en", sentence));
+    return row;
+  };
+
   for (const mistake of mistakes) {
-    const item = document.createElement("li");
-
-    const wrong = el("p", "mistake-list__line mistake-list__line--wrong");
-    wrong.appendChild(el("span", "mistake-list__mark", "✕"));
-    const wrongText = el("span", "mistake-list__sentence", mistake.wrong);
-    wrongText.lang = "en";
-    wrong.appendChild(wrongText);
-    item.appendChild(wrong);
-
-    const right = el("p", "mistake-list__line mistake-list__line--right");
-    right.appendChild(el("span", "mistake-list__mark", "✓"));
-    const rightText = el("span", "mistake-list__sentence", mistake.right);
-    rightText.lang = "en";
-    right.appendChild(rightText);
-    item.appendChild(right);
-
-    item.appendChild(el("p", "mistake-list__why", mistake.why));
+    const item = el("li", "stack stack--tight");
+    item.appendChild(line("no", mistake.wrong));
+    item.appendChild(line("ok", mistake.right));
+    item.appendChild(el("p", "t-meta", mistake.why));
     list.appendChild(item);
   }
+
   return list;
 }
 
-function renderCheck(step, stepIndex, card) {
+function renderCheck(step, stepIndex) {
   const question = step.question;
   const answered = state.reader.answers.has(stepIndex);
-  const selected = state.reader.answers.get(stepIndex);
+  const selected = state.reader.answers.get(stepIndex) ?? null;
 
-  const prompt = el("p", "question-card__prompt");
+  const block = el("div", "stack");
+
+  const prompt = el("p", "t-lead t-en");
+  prompt.lang = "en";
   appendBlanked(prompt, question.prompt);
-  card.appendChild(prompt);
+  block.appendChild(prompt);
 
-  const optionsWrap = el("div", "options");
-  question.options.forEach((option, index) => {
-    const button = el("button", "option-btn");
-    button.type = "button";
-    button.appendChild(el("span", "option-btn__key", `${index + 1}.`));
-    button.appendChild(document.createTextNode(option));
-
-    if (answered) {
-      button.disabled = true;
-      if (option === question.correctAnswer) {
-        button.classList.add("option-btn--correct");
-      } else if (option === selected) {
-        button.classList.add("option-btn--incorrect");
-      }
-    } else {
-      button.addEventListener("click", () => {
+  block.appendChild(
+    renderOptions(question, {
+      selected,
+      answered,
+      onSelect: (option) => {
         state.reader.answers.set(stepIndex, option);
-        renderStep();
-      });
-    }
-    optionsWrap.appendChild(button);
-  });
-  card.appendChild(optionsWrap);
+        announce(...answerAnnouncement(question, isCorrectAnswer(question, option)));
+        renderStep({ keepScroll: true });
+      },
+    })
+  );
 
   if (answered) {
-    // No tip here: the lesson has just spent several steps stating the rule.
-    card.appendChild(renderAnswerFeedback(question, selected === question.correctAnswer, { withTip: false }));
+    // No tip: the lesson has just spent several steps stating the rule.
+    block.appendChild(
+      renderAnswerFeedback(question, isCorrectAnswer(question, selected), { withTip: false })
+    );
   }
+
+  return block;
 }
 
-function renderStepCard(step, stepIndex) {
-  const card = el("div", "panel lesson-step");
-
-  if (step.kind === "check") {
-    card.appendChild(el("p", "lesson-step__kicker", step.heading));
-    renderCheck(step, stepIndex, card);
-    return card;
-  }
-
-  card.appendChild(el("h3", "lesson-step__heading", step.heading));
-
+function renderStepBody(step, stepIndex) {
   switch (step.kind) {
-    case "form": {
-      const body = el("div", "lesson-step__body lesson-step__body--form");
-      appendProse(body, step.body);
-      card.appendChild(body);
-      break;
-    }
+    case "check":
+      return renderCheck(step, stepIndex);
+    case "form":
+      return renderForm(step.body);
     case "examples":
-      card.appendChild(renderExamples(step.examples));
-      break;
+      return renderExamples(step.examples);
     case "mistakes":
-      card.appendChild(renderMistakes(step.mistakes));
-      break;
-    default: {
-      const body = el("div", "lesson-step__body");
-      appendProse(body, step.body);
-      card.appendChild(body);
-    }
+      return renderMistakes(step.mistakes);
+    default:
+      return renderProse(step.body);
   }
-
-  return card;
 }
 
 /* ---- Reader: frame ---- */
 
 const currentLesson = () => state.lessons[state.reader.lessonIndex];
 
-function renderReaderNav(trailingText) {
-  const nav = el("div", "quiz-nav");
-  const back = el("button", "quiz-nav__exit", "← Dersler");
+function renderReaderTop(trailingText) {
+  const strip = el("div", "cluster cluster--spread");
+
+  const back = el("button", "btn btn--quiet", "Dersler");
   back.type = "button";
+  back.prepend(icon("arrow-left", { size: 20 }));
   back.addEventListener("click", showIndexByHash);
-  nav.appendChild(back);
-  nav.appendChild(el("p", "quiz-progress", trailingText));
-  return nav;
+  strip.appendChild(back);
+
+  strip.appendChild(el("p", "t-meta t-num", trailingText));
+  return strip;
 }
 
-function renderLessonHeading(lesson) {
-  const wrap = el("div", "lesson-reader__heading");
-  const eyebrow = el("p", "lesson-card__eyebrow", lesson.topicTitle);
-  eyebrow.lang = "en";
-  wrap.appendChild(eyebrow);
-  const title = el("h2", "lesson-reader__title", lesson.category);
-  title.lang = "en";
-  wrap.appendChild(title);
-  return wrap;
-}
-
-function renderStep() {
+function renderStep({ keepScroll = false } = {}) {
   const lesson = currentLesson();
   const { stepIndex, steps } = state.reader;
   const step = steps[stepIndex];
@@ -415,21 +407,30 @@ function renderStep() {
   recordLessonStep(lesson.id, stepIndex);
 
   clear(readerContainer);
-  readerContainer.appendChild(renderReaderNav(`${stepIndex + 1} / ${steps.length}`));
-  readerContainer.appendChild(progressTrack((stepIndex + 1) / steps.length));
-  readerContainer.appendChild(renderLessonHeading(lesson));
-  readerContainer.appendChild(renderStepCard(step, stepIndex));
+  const page = el("div", "stack stack--loose");
+  page.appendChild(renderReaderTop(`${stepIndex + 1} / ${steps.length}`));
+  page.appendChild(progressBar((stepIndex + 1) / steps.length));
 
-  // A check is never a gate. Leaving it unanswered is a legitimate
-  // choice — someone re-reading a lesson for one rule shouldn't have to
-  // sit an exercise to get past it — so the forward control stays live
-  // and just says what it will do.
+  const heading = el("div", "stack stack--tight");
+  heading.appendChild(englishTitle("p", "t-label", lesson.category));
+  heading.appendChild(el("h2", "t-title", step.heading));
+  page.appendChild(heading);
+
+  page.appendChild(renderStepBody(step, stepIndex));
+  readerContainer.appendChild(page);
+
+  // A check is never a gate. Leaving it unanswered is a legitimate choice
+  // — someone re-reading a lesson for one rule should not have to sit an
+  // exercise to get past it — so the forward control stays live and just
+  // says what it will do.
   const skippingCheck = step.kind === "check" && !state.reader.answers.has(stepIndex);
 
-  setBottomBarActions([
+  actionBar.set([
     {
+      // No arrow here: the strip at the top already carries one, and two
+      // back arrows on one screen is two answers to the same question.
       label: "Geri",
-      variant: "secondary",
+      level: "secondary",
       onClick: () => {
         if (stepIndex === 0) {
           showIndexByHash();
@@ -440,7 +441,8 @@ function renderStep() {
       },
     },
     {
-      label: skippingCheck ? "Atla" : isLastStep ? "Dersi Bitir" : "İleri",
+      label: skippingCheck ? "Atla" : isLastStep ? "Dersi bitir" : "İleri",
+      level: "primary",
       onClick: () => {
         if (isLastStep) {
           renderCompletion();
@@ -452,7 +454,11 @@ function renderStep() {
     },
   ]);
 
-  appContent.scrollTo({ top: 0 });
+  // Answering a check re-renders the same step; scrolling back to the top
+  // there would throw the learner away from the feedback they just earned.
+  if (!keepScroll) {
+    scrollToTop();
+  }
 }
 
 function renderCompletion() {
@@ -463,35 +469,39 @@ function renderCompletion() {
   const completed = countCompletedLessons(state.lessons.map((entry) => entry.id));
 
   clear(readerContainer);
-  readerContainer.appendChild(renderReaderNav(`${state.lessons.length} dersten ${completed}`));
+  const page = el("div", "stack stack--loose");
+  page.appendChild(renderReaderTop(`${state.lessons.length} dersten ${completed}`));
 
-  const panel = el("section", "panel lesson-complete");
-  panel.appendChild(el("p", "lesson-card__eyebrow", "Ders tamamlandı"));
-  const title = el("h2", "lesson-complete__title", lesson.category);
-  title.lang = "en";
-  panel.appendChild(title);
-  panel.appendChild(
+  const card = el("section", "surface stack");
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("p", "t-label", "Ders tamamlandı"));
+  head.appendChild(englishTitle("h2", "t-title t-en", lesson.category));
+  head.appendChild(
     el(
       "p",
-      "lesson-complete__body",
+      "t-body",
       "Öğrendiğini pekiştirmenin en hızlı yolu birkaç soru çözmek. Ya da sıradaki derse geç."
     )
   );
-  panel.appendChild(progressTrack(completed / state.lessons.length));
-  readerContainer.appendChild(panel);
+  card.appendChild(head);
+  card.appendChild(progressBar(completed / state.lessons.length));
+  page.appendChild(card);
+  readerContainer.appendChild(page);
 
-  setBottomBarActions([
+  announce(`Ders tamamlandı. ${state.lessons.length} dersten ${completed} tanesi bitti.`);
+
+  actionBar.set([
     {
-      label: "Bu Konudan Test Çöz",
-      variant: "secondary",
-      onClick: () => startTopicTest(lesson.topicId),
+      label: "Test çöz",
+      level: "secondary",
+      onClick: () => startTopicTest(lesson.topicId).catch(console.error),
     },
     nextLesson
-      ? { label: "Sıradaki Ders", onClick: () => openLessonByHash(nextLesson.id) }
-      : { label: "Derslere Dön", onClick: showIndexByHash },
+      ? { label: "Sıradaki ders", level: "primary", onClick: () => openLessonByHash(nextLesson.id) }
+      : { label: "Derslere dön", level: "primary", onClick: showIndexByHash },
   ]);
 
-  appContent.scrollTo({ top: 0 });
+  scrollToTop();
 }
 
 /* ---- Keyboard shortcuts (reader only) ---- */
@@ -500,9 +510,9 @@ function handleKeydown(event) {
   if (!state.reader || event.metaKey || event.ctrlKey || event.altKey) {
     return;
   }
-  // A focused bottom-bar button already activates on Enter natively;
+  // A focused action-bar button already activates on Enter natively;
   // handling it here as well would advance two steps at once.
-  if (bottomBar.contains(event.target)) {
+  if (actionBar.contains(event.target)) {
     return;
   }
 
@@ -511,13 +521,15 @@ function handleKeydown(event) {
     const choice = Number(event.key);
     if (Number.isInteger(choice) && choice >= 1 && choice <= step.question.options.length) {
       event.preventDefault();
-      state.reader.answers.set(state.reader.stepIndex, step.question.options[choice - 1]);
-      renderStep();
+      const option = step.question.options[choice - 1];
+      state.reader.answers.set(state.reader.stepIndex, option);
+      announce(...answerAnnouncement(step.question, isCorrectAnswer(step.question, option)));
+      renderStep({ keepScroll: true });
       return;
     }
   }
 
-  const buttons = bottomBarInner.querySelectorAll("button");
+  const buttons = actionBar.buttons();
   if (event.key === "ArrowLeft") {
     event.preventDefault();
     buttons[0]?.click();
@@ -540,14 +552,14 @@ function openLessonByHash(lessonId) {
 }
 
 function setReaderChrome(active) {
-  siteHeader.hidden = active;
+  shellHeader.hidden = active;
   bottomNav.hidden = active;
   indexContainer.hidden = active;
   readerContainer.hidden = !active;
   // The dev note sits above the views rather than inside one, so it needs
-  // hiding too or it survives into the reader's focused mode. A class,
-  // not `hidden`: that attribute belongs to the dismissal logic in
-  // home.js, and two owners would fight over it.
+  // hiding too or it survives into the reader's focused mode. A class, not
+  // `hidden`: that attribute belongs to the dismissal logic in home.js,
+  // and two owners would fight over it.
   document.body.classList.toggle("is-reading", active);
 }
 
@@ -555,7 +567,7 @@ function setReaderChrome(active) {
 export function closeReader() {
   state.reader = null;
   setReaderChrome(false);
-  hideBottomBar();
+  actionBar.hide();
 }
 
 export async function showLessonIndex() {
@@ -566,14 +578,14 @@ export async function showLessonIndex() {
   } catch (error) {
     console.error(error);
     clear(indexContainer);
-    indexContainer.appendChild(el("p", "empty-state", "Dersler yüklenemedi. Sayfayı yenile."));
+    indexContainer.appendChild(el("p", "t-meta", "Dersler yüklenemedi. Sayfayı yenile."));
   }
 }
 
 /**
- * @param {string} lessonId - comes from the URL hash, so it may be stale
- *   or hand-typed; an unknown id falls back to the index without leaving
- *   a dead entry in the history.
+ * @param {string} lessonId - comes from the URL hash, so it may be stale or
+ *   hand-typed; an unknown id falls back to the index without leaving a
+ *   dead entry in the history.
  */
 export async function openLesson(lessonId) {
   let lessons;
@@ -598,5 +610,6 @@ export async function openLesson(lessonId) {
 
   state.reader = { lessonIndex, stepIndex: resumeStep, steps, answers: new Map() };
   setReaderChrome(true);
+  announce(lessons[lessonIndex].category);
   renderStep();
 }

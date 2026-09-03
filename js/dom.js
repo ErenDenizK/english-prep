@@ -66,9 +66,14 @@ export function appendProse(parent, text, paragraphClass) {
 }
 
 /**
- * Appends a sentence whose `____` blank is rendered as a styled span.
- * Used by both the test questions and the Eğitim tab's inline checks, so
- * a blank looks identical wherever a learner meets one.
+ * Appends a sentence whose `____` blank is rendered as a rule on the
+ * baseline. Used by both the test questions and the Eğitim tab's inline
+ * checks, so a blank looks identical wherever a learner meets one.
+ *
+ * The gap carries no glyphs: a run of underscores breaks the sentence's
+ * rhythm in the serif, and a screen reader reads them out one at a time.
+ * The word inside is for the synthesiser only. Every blank is the same
+ * width on purpose — sizing it to the answer would leak the answer.
  * @param {Node} parent
  * @param {string} text
  */
@@ -77,7 +82,9 @@ export function appendBlanked(parent, text) {
   parts.forEach((part, index) => {
     parent.appendChild(document.createTextNode(part));
     if (index < parts.length - 1) {
-      parent.appendChild(el("span", "blank", "_____"));
+      const blank = el("span", "blank");
+      blank.appendChild(el("span", "visually-hidden", "boşluk"));
+      parent.appendChild(blank);
     }
   });
 }

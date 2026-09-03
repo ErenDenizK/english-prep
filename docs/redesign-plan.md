@@ -11,12 +11,12 @@ the reasoning outlives any one session.
 that build markup for it) and the lesson content format.
 
 **Kept:** the app shell, hash routing, storage, the quiz engine, the 72
-questions, the category taxonomy, the validator, the tests and the
-Playwright harness.
+questions, the category taxonomy, the validator, the tests and the browser
+sweep.
 
 That split is what makes this affordable. Content is data, presentation
-is code, and there are 28 unit tests plus a 217-check browser sweep to
-catch what a redesign breaks.
+is code, and there are 28 unit tests plus a ~150-check browser sweep
+(`npm run verify`) to catch what a redesign breaks.
 
 ## Diagnosis
 
@@ -58,9 +58,12 @@ blocks rather than paragraphs: a contrast, a wrong→right pair, a rule, an
 example, a check. Blocks are separated by rules and whitespace, never by
 nested boxes. Check questions appear inline in the flow.
 
-**Palette: to be chosen from mockups.** Both a rebuilt dark identity and
-a light/paper direction are being drawn on the same screens so the choice
-is made by looking, not describing.
+**Palette: dark, settled.** Both a rebuilt dark identity and a
+light/paper direction were drawn on the same four screens; the owner chose
+dark by looking at them. The tokens were then *solved* against a contrast
+requirement in two models rather than picked — see `docs/design-system.md`
+§1 and `tools/palette.mjs`, which re-measures every one of them and fails
+the build if a value drifts.
 
 **Not reopening** (settled by earlier feedback): the bottom nav with
 Profil in the header; checks that never gate progress; no build step and
@@ -79,14 +82,39 @@ tokens, spacing scale, type scale, component inventory.
 before the direction was settled. Nobody should write 5,400 words again
 against a layout that hasn't been seen.*
 
-**1 · Design system in code.** Rebuild the token layer and the
-primitives: surface tiers instead of borders, at most one card level,
-a real type scale, a restricted accent. Apply to the existing screens
-first so old and new can be compared directly. No content changes.
+**1 · Design system in code.** ✅ *Done.* `css/style.css` rebuilt from
+scratch — 881 lines from 1354, five cascade layers, twelve primitives from
+45 ad-hoc component roots. The palette is solved rather than picked and
+re-measured by `npm run color`. Fonts self-hosted as three subset faces
+(46.9 KB), and the icon set hand-drawn to the §6 contract.
 
-**2 · Screen-by-screen.** Home/Test, quiz, results, Profil — each one's
-information hierarchy reconsidered, not merely repainted. The home screen
-leads with resuming and weak spots; the mixed test moves down.
+*The plan said "apply to the existing screens first so old and new can be
+compared". That turned out not to be possible: the rebuild replaced the
+class vocabulary wholesale, so there was no intermediate state where both
+existed. Stage 2 therefore had to land before anything rendered at all.*
+
+**2 · Screen-by-screen.** ✅ *Done.* Every screen rebuilt on the new
+vocabulary, and three hierarchy decisions taken:
+
+- **Eğitim is the default view.** Someone opening a study app wants to
+  carry on where they left off, not to be handed an exam. Its index leads
+  with overall progress, then the lesson you were in the middle of, then
+  the list. The mixed test moved to the Test tab, where it belongs and
+  where it is the point rather than the obstacle.
+- **A weak spot does different things on different screens.** On Test,
+  tapping one starts practice scoped to that category; in Profil, it opens
+  the lesson that teaches it. That is what let every row keep a single
+  action — the old build had rows carrying a link *and* a button, which is
+  a row that cannot be tapped.
+- **Results are ranked worst-first.** A breakdown in the order the
+  questions happened to come out is a table; in this order it is a reading
+  list.
+
+Also in this stage, because they were the same change: the nav became a
+landmark with `aria-current` instead of a `role="tablist"`, the
+confirmation dialog became a native `<dialog>` (deleting the hand-rolled
+focus trap), and `tools/verify-ui.mjs` was written so the browser sweep is
+a checked-in command rather than a script each session rebuilds.
 
 **3 · Eğitim: the new lesson model.** Schema and reader together, plus
 `tools/validate-content.mjs`, `docs/CONTENT_GUIDE.md` and the briefs in
@@ -98,12 +126,17 @@ delegated work: two agents, one pair per topic, from the updated brief.
 Tenses first as the reference implementation, reviewed closely before the
 other two topics start.
 
-**5 · Verify and ship.** Full Playwright sweep at 320/390/768/1280, then
+**5 · Verify and ship.** `npm run verify` green at 320/390/768/1280, then
 a real-device pass by the owner, then `main`.
 
 ## Guardrails for the new system
 
-Carry these into stage 1 so the old failure mode can't return:
+Written for stage 1, and they held. `css/style.css` now declares a border
+in exactly three places, and none of them is decoration: `.field`, where
+1.4.11 requires a control's boundary at 3:1 and no fill in this ramp can
+reach it; and two rules inside `@media (forced-colors: active)`, where the
+system discards every background and an outline is the only channel left.
+Everything else that used to be a box is a surface, a hairline or a gap.
 
 - **At most one card level.** If something inside a card needs its own
   frame, the card is wrong.

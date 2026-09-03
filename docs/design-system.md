@@ -507,6 +507,23 @@ is the point of the rebuild.
 | **Progress** | `progress-track` | Also the reader's position indicator |
 | **Feedback** | `feedback` | Four redundant channels — §1.5 |
 
+Three things sit outside that inventory and are not primitives:
+
+- **The shell** — `.shell__header`, `.shell__scroll`, `.shell__nav`,
+  `.shell__bar`. Layout, not a component. The header and the bar share the
+  page's measure and gutters so the brand, the content and the buttons all
+  land on the same two keylines. `.shell__bar-inner` has a fixed minimum
+  height — the tallest thing it can hold, a 52px primary button, plus its
+  padding — so a bar holding a hint and a bar holding a button are the same
+  size and answering a question cannot move it.
+- **`.btn--icon`** — a *shape*, orthogonal to the three levels, for a
+  control whose whole content is one glyph or one letter. It carries
+  `flex: none`, because the 48px square exists precisely so it cannot be
+  squeezed, and in a flex row it otherwise collapses to 23px at 320.
+- **`.blank`** — the cloze gap: a rule on the baseline, uniform width, with
+  the word for the synthesiser hidden inside it. Sizing the gap to the
+  answer would leak the answer.
+
 ### 7.1 Row versus Surface
 
 The deciding question is **homogeneity**, not importance. Homogeneous,
@@ -521,6 +538,15 @@ leading content is the single most common cause of an unscannable list.**
 
 Only **one separation mechanism per boundary**: a hairline, or a gap, or a
 background change. Never two.
+
+A row's secondary line is **one line, always** — clipped with an ellipsis.
+A hint that wraps to four lines gives every row in the list a different
+height, which is the same unscannability by another route.
+
+**A control whose fill is `surface-1` steps up to `surface-2` when it sits
+on a Surface**, or it disappears into it. Depth here is surface lightness;
+two things at the same depth overlapping means one of them is at the wrong
+depth.
 
 ### 7.2 Button
 

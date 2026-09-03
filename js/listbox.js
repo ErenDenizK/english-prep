@@ -1,14 +1,21 @@
-// Small custom dropdown — an app-owned menu instead of a native <select>,
-// so opening it never hands the screen over to OS chrome and, being
-// absolutely positioned, never reflows the page around it.
+// The listbox — an app-owned menu instead of a native <select>, so opening
+// it never hands the screen over to OS chrome and, being absolutely
+// positioned, never reflows the page around it.
 //
 // Replacing a native control means re-earning what it gave for free, so
-// this follows the WAI-ARIA listbox pattern: focus stays on the trigger
-// and the active option is tracked with aria-activedescendant, which
-// keeps keyboard and screen-reader behaviour close to a real <select>
-// without any focus juggling inside the menu.
+// this is a *select-only combobox* in the WAI-ARIA sense: role="combobox"
+// on the trigger, role="listbox" on the popup, and — the part hand-rolled
+// versions get wrong — DOM focus never leaves the trigger, with the active
+// option tracked by aria-activedescendant. Down/Up open and move, Enter
+// accepts, Escape dismisses without committing, Home/End jump, and
+// printable characters type ahead, all as a real <select> does.
+
+import { icon } from "./icons.js";
 
 let instanceCount = 0;
+
+/** How long consecutive keystrokes count as one type-ahead search. */
+const TYPEAHEAD_RESET_MS = 500;
 
 /**
  * @param {{
@@ -20,8 +27,9 @@ let instanceCount = 0;
  * }} config
  * @returns {{ getValue: () => string, setValue: (value: string) => void }}
  */
-export function createDropdown({ container, options, value, onChange, labelledBy }) {
-  const id = `dropdown-${(instanceCount += 1)}`;
+export function createListbox({ container, options, value, onChange, labelledBy }) {
+  const id = `listbox-${(instanceCount += 1)}`;
+  container.classList.add("listbox");
   const optionId = (index) => `${id}-option-${index}`;
 
   let currentValue = value;
@@ -32,7 +40,8 @@ export function createDropdown({ container, options, value, onChange, labelledBy
 
   const trigger = document.createElement("button");
   trigger.type = "button";
-  trigger.className = "dropdown__trigger";
+  trigger.className = "listbox__trigger";
+  trigger.setAttribute("role", "combobox");
   trigger.setAttribute("aria-haspopup", "listbox");
   trigger.setAttribute("aria-expanded", "false");
   trigger.setAttribute("aria-controls", `${id}-menu`);
@@ -44,15 +53,11 @@ export function createDropdown({ container, options, value, onChange, labelledBy
   // no hint of what it is set to.
   trigger.setAttribute("aria-labelledby", [labelledBy, triggerLabel.id].filter(Boolean).join(" "));
 
-  const chevron = document.createElement("span");
-  chevron.className = "dropdown__chevron";
-  chevron.textContent = "▾";
-  chevron.setAttribute("aria-hidden", "true");
-  trigger.append(triggerLabel, chevron);
+  trigger.append(triggerLabel, icon("chevron-down", { size: 20 }));
 
   const menu = document.createElement("ul");
   menu.id = `${id}-menu`;
-  menu.className = "dropdown__menu";
+  menu.className = "listbox__menu";
   menu.setAttribute("role", "listbox");
   menu.hidden = true;
 
@@ -67,11 +72,11 @@ export function createDropdown({ container, options, value, onChange, labelledBy
     options.forEach((option, index) => {
       const item = document.createElement("li");
       item.id = optionId(index);
-      item.className = "dropdown__option";
+      item.className = "listbox__option";
       item.setAttribute("role", "option");
       item.textContent = option.label;
       item.setAttribute("aria-selected", String(option.value === currentValue));
-      item.classList.toggle("dropdown__option--active", isOpen() && index === activeIndex);
+      item.classList.toggle("listbox__option--active", isOpen() && index === activeIndex);
       // Pointer, not click: on touch this fires before the document-level
       // outside-click handler can close the menu out from under the tap.
       item.addEventListener("pointerup", () => select(index));
@@ -94,6 +99,33 @@ export function createDropdown({ container, options, value, onChange, labelledBy
     trigger.focus();
     if (changed) {
       onChange?.(currentValue);
+    }
+  }
+
+  let typeahead = "";
+  let typeaheadAt = 0;
+
+  /**
+   * Type-ahead. Repeating one character cycles through the options starting
+   * with it, which is what a native <select> does and what someone reaching
+   * for "5" then "5" again expects.
+   */
+  function typeAhead(char) {
+    const now = Date.now();
+    typeahead = now - typeaheadAt > TYPEAHEAD_RESET_MS ? char : typeahead + char;
+    typeaheadAt = now;
+
+    const repeated = typeahead.length > 1 && typeahead.split("").every((c) => c === typeahead[0]);
+    const needle = (repeated ? typeahead[0] : typeahead).toLocaleLowerCase("tr");
+    const from = repeated ? activeIndex + 1 : activeIndex;
+
+    for (let step = 0; step < options.length; step += 1) {
+      const index = (from + step) % options.length;
+      if (options[index].label.toLocaleLowerCase("tr").startsWith(needle)) {
+        activeIndex = index;
+        renderOptions();
+        return;
+      }
     }
   }
 
@@ -180,6 +212,10 @@ export function createDropdown({ container, options, value, onChange, labelledBy
         close();
         break;
       default:
+        if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
+          event.preventDefault();
+          typeAhead(event.key);
+        }
         break;
     }
   });

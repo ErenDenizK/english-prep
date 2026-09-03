@@ -9,6 +9,7 @@
     "validate": "node tools/validate-content.mjs",
     "color": "node tools/palette.mjs",
     "check": "npm run validate && npm run color && npm test",
-    "serve": "python3 -m http.server 8000"
+    "serve": "python3 -m http.server 8000",
+    "verify": "node tools/verify-ui.mjs"
   }
 }
