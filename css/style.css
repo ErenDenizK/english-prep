@@ -1,1354 +1,891 @@
-/* Design tokens — warm ink-and-amber identity (single committed theme,
-   not a light/dark toggle: see README for the design rationale). */
-:root {
-  --color-bg: #1c1b22;
-  --color-surface: #242229;
-  --color-surface-raised: #2d2b34;
-  --color-border: #3a3742;
-  --color-text: #efe9de;
-  --color-text-muted: #a39cae;
-  --color-accent: #e6a13c;
-  --color-accent-hover: #f0b558;
-  --color-accent-contrast: #1c1b22;
-  --color-accent-bg: rgba(230, 161, 60, 0.16);
-  --color-success: #8aab7f;
-  --color-success-bg: rgba(138, 171, 127, 0.14);
-  --color-danger: #cf7b5d;
-  --color-danger-bg: rgba(207, 123, 93, 0.14);
+/* English Prep — stylesheet.
+ *
+ * The binding specification is docs/design-system.md. Read it before
+ * changing anything here; every value below traces to a rule there, and
+ * the colour tokens in particular were solved against a contrast
+ * requirement rather than chosen — `npm run color` re-measures them and
+ * fails if one drifts.
+ *
+ * Three rules generate most of this file:
+ *   1. Depth is surface lightness. Never a shadow, never a border.
+ *   2. One card level. Nothing framed inside a framed thing.
+ *   3. One accent, one job.
+ *
+ * Cascade layers order the whole sheet, so nothing here ever needs a
+ * specificity fight or an !important.
+ */
 
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+@layer reset, tokens, base, components, utilities;
 
-  --radius: 3px;
-  --space-1: 0.5rem;
-  --space-2: 1rem;
-  --space-3: 1.5rem;
-  --space-4: 2rem;
-  --max-width: 880px;
-}
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
 
-* {
-  box-sizing: border-box;
-}
+@layer tokens {
+  :root {
+    color-scheme: dark;
 
-/* The native [hidden] UA rule loses to any author class rule of equal or
-   higher specificity (e.g. .btn's `display: inline-flex`), so a plain
-   hidden button/element can stay visually displayed. Force it globally. */
-[hidden] {
-  display: none !important;
-}
+    /* -- Surfaces. Three levels; past three they stop being
+          distinguishable, and each one costs contrast on every text token
+          that has to survive the brightest. Derived from a warm near-black
+          with Material's elevation-overlay curve at 1dp and 6dp. -- */
+    --c-surface-0: #13100d;
+    --c-surface-1: #1f1c19;
+    --c-surface-2: #2c2a27;
 
-html {
-  color-scheme: dark;
-}
+    /* -- Text. Solid, never white-at-opacity: a translucent token has a
+          different contrast on every surface in the ramp. Measured against
+          surface-2, the worst case. -- */
+    --c-text-1: #edeae6; /* APCA Lc 91 — body prose, English sentences */
+    --c-text-2: #d6d1cb; /* Lc 75 — labels, secondary lines */
+    --c-text-3: #bdb7b0; /* Lc 60 — non-essential: hints, counters */
 
-/* ---- App shell ----
-   The whole app is a fixed-height column (header / scrollable content /
-   bottom nav, or a bottom action bar in a focused mode). Nothing but .app-content ever scrolls, so
-   the frame never grows or loses a scrollbar and never shifts sideways —
-   that instability was the core complaint the app-shell rewrite fixes. */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-}
+    /* -- Accent. Amber is structurally a dark-ink-on-fill colour: no ink
+          reaches Lc 75 on it (pure black tops out at 67), so the fill
+          carries short bold labels and never a sentence. -- */
+    --c-accent: #efb05c;
+    --c-on-accent: #1a0f03;
+    --c-accent-text: #f1cc92;
+    --c-focus: #f4dab2;
 
-/* Mobile browsers grow and shrink the visual viewport as their toolbars
-   slide in and out, which makes a `100%`-height fixed shell jump around.
-   `100dvh` tracks that live. It comes after the `100%` rule so browsers
-   without dvh support keep the fallback. */
-@supports (height: 100dvh) {
-  html,
-  body {
-    height: 100dvh;
+    /* -- Semantic. Indicators, not text colours: red cannot reach Lc 75 at
+          any usable chroma on this ground. The words are set in --c-text-1
+          and the hue lives in the glyph and the tint, which is what WCAG
+          1.4.1 requires anyway. -- */
+    --c-ok: #7ccd8e;
+    --c-no: #e97871;
+    --c-ok-tint: rgb(124 205 142 / 0.12);
+    --c-no-tint: rgb(233 120 113 / 0.12);
+
+    /* -- Two different lines, and the distinction is load-bearing.
+          A hairline *separates* — decorative, and exempt from 1.4.11.
+          An edge *identifies a control's boundary*, which 1.4.11 requires
+          at 3:1, so it is the lightest token here that clears 3:1 against
+          all three surfaces. A text field with no visible edge is both a
+          conformance failure and a usability one. -- */
+    --c-hairline: #36322d;
+    --c-edge: #78746e;
+
+    /* -- Space. 4pt base: a text-dense app on a 320px floor needs 4 and 12
+          for icon gaps and chip padding. Dense at the bottom, coarse at the
+          top. -- */
+    --s-1: 2px;
+    --s-2: 4px;
+    --s-3: 8px;
+    --s-4: 12px;
+    --s-5: 16px;
+    --s-6: 24px;
+    --s-7: 32px;
+    --s-8: 40px;
+    --s-9: 48px;
+
+    /* -- Radius. 0 for anything full-bleed. Nested radius = outer minus
+          padding; if that is <= 0 the inner element is square-cornered,
+          which is usually the sign it should not have been nested. -- */
+    --r-1: 8px;
+    --r-2: 12px;
+    --r-3: 16px;
+    --r-pill: 999px;
+
+    /* -- Type. Base 16px is not negotiable: iOS Safari zooms a focused
+          control under 16px, and 16 is the floor for comfortable reading at
+          phone distance. Every line-height is a multiple of 4 so type lands
+          on the spacing grid; the ratio falls as size rises. -- */
+    --f-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    --t-display: 28px;
+    --t-display-lh: 32px;
+    --t-title: 22px;
+    --t-title-lh: 28px;
+    --t-lead: 19px;
+    --t-lead-lh: 28px;
+    --t-body: 16px;
+    --t-body-lh: 26px;
+    --t-ui: 15px;
+    --t-ui-lh: 20px;
+    --t-meta: 13px;
+    --t-meta-lh: 16px;
+    --t-micro: 11px;
+    --t-micro-lh: 16px;
+
+    /* -- Motion. Exits are shorter than entrances: a leaving element no
+          longer needs to be read. Nothing exceeds 400ms, the Doherty
+          threshold. Never ease-in on anything the user is waiting for. -- */
+    --d-micro: 120ms;
+    --d-enter: 220ms;
+    --d-exit: 170ms;
+    --d-view: 280ms;
+    --ease-out: cubic-bezier(0, 0, 0, 1);
+    --ease-in: cubic-bezier(0.3, 0, 1, 1);
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+    /* -- Layout -- */
+    --w-page: 640px;
+    --w-measure: 65ch;
+    --h-target: 48px; /* clears WCAG 2.5.5 AAA, Material and Apple at once */
+    --h-nav: 60px;
+    --gutter: var(--s-5);
+  }
+
+  /* OKLCH is the authoring space — equal lightness across hues means equal
+     measured contrast — but the hex values above are what ship, so the
+     override below only applies where oklch() is understood. Values are
+     identical; this exists so the palette stays re-derivable. */
+  @supports (color: oklch(0.5 0.1 75)) {
+    :root {
+      --c-surface-0: oklch(0.175 0.008 75);
+      --c-text-1: oklch(0.938 0.006 75);
+      --c-text-2: oklch(0.862 0.01 75);
+      --c-text-3: oklch(0.782 0.012 75);
+      --c-accent: oklch(0.8 0.125 72);
+      --c-on-accent: oklch(0.18 0.03 72);
+      --c-accent-text: oklch(0.864 0.085 78);
+      --c-focus: oklch(0.9 0.06 78);
+      --c-ok: oklch(0.78 0.12 150);
+      --c-no: oklch(0.7 0.14 25);
+      --c-hairline: oklch(0.32 0.01 75);
+      --c-edge: oklch(0.56 0.01 75);
+    }
+  }
+
+  /* Preference overrides redefine tokens rather than rules, which keeps
+     them out of specificity fights entirely. */
+  @media (prefers-contrast: more) {
+    :root {
+      --c-text-2: var(--c-text-1);
+      --c-text-3: #d6d1cb;
+      --c-hairline: #6b665f;
+      --c-edge: #a09a93;
+    }
   }
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-  /* Buttons get their own :hover/:focus-visible treatment; the grey
-     flash the OS paints on tap is noise on top of it. */
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-}
+/* ==========================================================================
+   Reset
+   ========================================================================== */
 
-/* Honour the OS "reduce motion" setting: everything here is decorative
-   (progress fills, colour transitions), so there is nothing to keep. */
-@media (prefers-reduced-motion: reduce) {
+@layer reset {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    box-sizing: border-box;
+  }
+
+  /* The native [hidden] rule loses to any author class rule of equal or
+     higher specificity, so a hidden button with display:inline-flex stays
+     visible. Force it. */
+  [hidden] {
+    display: none !important;
+  }
+
+  html {
+    /* Mobile browsers inflate text in full-width blocks, which breaks a
+       fixed-height shell. 100%, not none: none would also block the user's
+       own text scaling, which is a 1.4.4 failure. */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  html,
+  body {
+    height: 100vh; /* fallback for engines without svh */
+    height: 100svh; /* not dvh: dvh reflows as the toolbar animates, and
+                       this shell is entirely fixed elements */
+    margin: 0;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-surface-0);
+    color: var(--c-text-1);
+    font-family: var(--f-sans);
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4, p, ul, ol, figure {
+    margin: 0;
+  }
+
+  ul, ol {
+    padding: 0;
+    list-style: none;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    /* Removes the legacy tap delay without disabling pan or pinch-zoom. */
+    touch-action: manipulation;
+  }
+
+  a {
+    color: var(--c-accent-text);
+  }
+
+  svg {
+    display: block;
+    flex: none;
+  }
+
+  /* Reduced motion is written as an opt-in below, so the safe version is
+     always the fallback. This only catches anything that slipped through. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.app-content {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior: contain;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.app-content::-webkit-scrollbar {
-  display: none;
-}
-
-.page {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: var(--space-3) var(--space-2) var(--space-4);
-  /* viewport-fit=cover means content can run under a notch in landscape. */
-  padding-left: max(var(--space-2), env(safe-area-inset-left));
-  padding-right: max(var(--space-2), env(safe-area-inset-right));
-}
-
-/* Header */
-.site-header {
-  flex: 0 0 auto;
-  padding: var(--space-2);
-  padding-top: max(var(--space-2), env(safe-area-inset-top));
-  padding-left: max(var(--space-2), env(safe-area-inset-left));
-  padding-right: max(var(--space-2), env(safe-area-inset-right));
-  border-bottom: 1px solid var(--color-border);
-}
-
-.site-header__inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.site-header h1 {
-  font-size: 1.3rem;
-  margin: 0;
-}
-
-/* The header title doubles as a link home on the sub-pages. The negative
-   margin cancels the padding visually, so the hit area grows to a
-   comfortable tap size without moving anything. */
-.site-header a {
-  display: inline-block;
-  padding: 0.4rem 0;
-  margin: -0.4rem 0;
-  color: inherit;
-  text-decoration: none;
-}
-
-/* Stands in for the learner: shows their initial once a name is set, and
-   is where Profil lives — it's identity and settings, not a content mode,
-   so it doesn't belong in the nav next to Eğitim and Test. */
-.profile-trigger {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  background: var(--color-surface);
-  color: var(--color-accent);
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.profile-trigger:hover,
-.profile-trigger[aria-current="true"] {
-  border-color: var(--color-accent);
-}
-
-.profile-trigger:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-/* Bottom nav: two content modes, within thumb reach, told apart by icon
-   as well as label rather than being two mirror-image text tabs. */
-.bottom-nav {
-  flex: 0 0 auto;
-  display: flex;
-  border-top: 1px solid var(--color-border);
-  background: var(--color-bg);
-  padding: 0.25rem var(--space-2);
-  padding-bottom: max(0.25rem, env(safe-area-inset-bottom));
-  padding-left: max(var(--space-2), env(safe-area-inset-left));
-  padding-right: max(var(--space-2), env(safe-area-inset-right));
-}
-
-.bottom-nav__tab {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  min-height: 2.75rem;
-  padding: 0.35rem 0.25rem;
-  border: none;
-  background: none;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  cursor: pointer;
-}
-
-.bottom-nav__icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 1.75rem;
-  border-radius: 999px;
-  transition: background-color 0.15s ease;
-}
-
-.bottom-nav__tab[aria-selected="true"] {
-  color: var(--color-accent);
-}
-
-.bottom-nav__tab[aria-selected="true"] .bottom-nav__icon-wrap {
-  background: var(--color-accent-bg);
-}
-
-.bottom-nav__tab:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: -2px;
-}
-
-/* Dismissible "not v1 yet" note. Suppressed inside the lesson reader,
-   which is a focused mode — see setReaderChrome() in js/education.js. */
-.is-reading .dev-note {
-  display: none;
-}
-
-.dev-note {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
-  margin-bottom: var(--space-3);
-  padding: var(--space-2);
-  border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-  border-radius: var(--radius);
-  background: var(--color-surface);
-}
-
-.dev-note p {
-  margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--color-text-muted);
-}
-
-.dev-note strong {
-  color: var(--color-text);
-}
-
-/* The negative margin keeps the visual box tight while the hit area
-   reaches a comfortable tap size. */
-.dev-note button {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin: -0.6rem -0.6rem -0.6rem 0;
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--color-text-muted);
-  font-size: 1.2rem;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.dev-note button:hover {
-  color: var(--color-accent);
-}
-
-.dev-note button:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-/* Fixed bottom action bar — quiz.html and results.html. Its height is
-   part of the flex column, not overlaid, so .app-content shrinks to make
-   room for it; the bar itself never moves regardless of how tall the
-   scrollable content above becomes. */
-.bottom-bar {
-  flex: 0 0 auto;
-  border-top: 1px solid var(--color-border);
-  padding: var(--space-2);
-  /* Keeps the primary action clear of the home indicator on a notched
-     phone, where it would otherwise sit under it and be hard to tap. */
-  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
-  padding-left: max(var(--space-2), env(safe-area-inset-left));
-  padding-right: max(var(--space-2), env(safe-area-inset-right));
-  background: var(--color-bg);
-}
-
-.bottom-bar__inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: flex;
-  gap: var(--space-2);
-}
-
-.bottom-bar__inner .btn {
-  flex: 1;
-}
-
-/* Hero */
-.hero {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-  margin-bottom: var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.hero__title {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.hero__description {
-  margin: 0;
-  color: var(--color-text-muted);
-}
-
-.hero__controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-/* Buttons and inputs */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius);
-  padding: 0.7rem 1.2rem;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1;
-  /* Some buttons are anchors ("Ana Sayfa"), which would otherwise carry
-     the UA underline and read as a link dropped inside a button. */
-  text-decoration: none;
-  cursor: pointer;
-  background: var(--color-accent);
-  color: var(--color-accent-contrast);
-  transition: background-color 0.15s ease, color 0.15s ease;
-  min-height: 2.75rem;
-}
-
-.btn:hover {
-  background: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
-}
-
-.btn:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-}
-
-.btn--secondary {
-  background: transparent;
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-}
-
-.btn--secondary:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background: transparent;
-}
-
-.btn--danger {
-  background: var(--color-danger);
-  border-color: var(--color-danger);
-  color: var(--color-accent-contrast);
-}
-
-.btn--danger:hover {
-  background: #d98a6c;
-  border-color: #d98a6c;
-}
-
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Custom dropdown (replaces native <select> — an app-owned menu instead
-   of OS chrome, positioned absolutely so opening it never reflows the
-   page). */
-.dropdown {
-  position: relative;
-}
-
-.dropdown__trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 0.8rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-  min-width: 5.5rem;
-  justify-content: space-between;
-}
-
-.dropdown__trigger:hover,
-.dropdown__trigger[aria-expanded="true"] {
-  border-color: var(--color-accent);
-}
-
-.dropdown__chevron {
-  color: var(--color-text-muted);
-  font-size: 0.75rem;
-}
-
-.dropdown__menu {
-  position: absolute;
-  z-index: 20;
-  max-height: 14rem;
-  overflow-y: auto;
-  top: calc(100% + 0.3rem);
-  left: 0;
-  min-width: 100%;
-  list-style: none;
-  margin: 0;
-  padding: 0.3rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-}
-
-.dropdown__option {
-  display: flex;
-  align-items: center;
-  min-height: 2.75rem;
-  padding: 0.5rem 0.7rem;
-  border-radius: var(--radius);
-  font-size: 0.95rem;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.dropdown__option:hover,
-.dropdown__option[aria-selected="true"] {
-  background: var(--color-surface-raised);
-  color: var(--color-accent);
-}
-
-/* Keyboard cursor. Focus stays on the trigger (aria-activedescendant
-   pattern), so the active option needs its own visible marker rather
-   than relying on :focus. */
-.dropdown__option--active {
-  box-shadow: inset 0 0 0 1px var(--color-accent);
-}
-
-/* Modal overlay (replaces window.confirm — a fixed overlay that never
-   affects document flow or scroll position). */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-2);
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.modal {
-  width: 100%;
-  max-width: 320px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-}
-
-.modal__title {
-  margin: 0 0 var(--space-1);
-  font-size: 1.1rem;
-}
-
-.modal p {
-  margin: 0 0 var(--space-2);
-}
-
-.modal__actions {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.modal__actions .btn {
-  flex: 1;
-}
-
-/* Topic groups and cards */
-.topics {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.topic-tier {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.topic-tier > summary {
-  cursor: pointer;
-  padding: var(--space-2) var(--space-3);
-  font-weight: 600;
-  font-family: var(--font-display);
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid transparent;
-}
-
-.topic-tier[open] > summary {
-  border-bottom-color: var(--color-border);
-}
-
-.topic-tier > summary::-webkit-details-marker {
-  display: none;
-}
-
-.topic-tier > summary::after {
-  content: "+";
-  font-weight: 400;
-  color: var(--color-text-muted);
-}
-
-.topic-tier[open] > summary::after {
-  content: "\2212";
-}
-
-.topic-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-2);
-}
-
-/* Inside an accordion tier, inset the grid from the tier's own border —
-   mirrors .hero's bordered-panel-with-inset-content pattern. With only one
-   tier (no accordion), the grid renders directly in .topics with no
-   border to justify an inset, so its cards align edge-to-edge with the
-   hero panel above them instead of floating with unexplained dead space. */
-.topic-tier .topic-grid {
-  padding: 0 var(--space-3) var(--space-3);
-}
-
-.topic-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-2);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.topic-card h3 {
-  margin: 0;
-  font-size: 1.1rem;
-}
-
-.topic-card__meta {
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
-  font-family: var(--font-mono);
-}
-
-.topic-card--coming-soon {
-  opacity: 0.7;
-}
-
-.category-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.category-chip {
-  font-size: 0.72rem;
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 0.15rem 0.5rem;
-}
-
-.category-chip--more {
-  border-style: dashed;
-}
-
-.badge {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-family: var(--font-mono);
-  padding: 0.15rem 0.5rem;
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius);
-  color: var(--color-accent);
-  width: fit-content;
-}
-
-.badge--muted {
-  border-color: var(--color-border);
-  color: var(--color-text-muted);
-}
-
-.badge--new {
-  border-color: var(--color-success);
-  color: var(--color-success);
-}
-
-.badge-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-/* Quiz */
-.quiz-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-  margin-bottom: var(--space-1);
-}
-
-.quiz-nav__exit {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.5rem;
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.quiz-nav__exit:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.quiz-nav__exit:hover {
-  color: var(--color-accent);
-}
-
-.quiz-progress {
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-}
-
-.progress-track {
-  height: 4px;
-  border-radius: 2px;
-  background: var(--color-surface-raised);
-  margin-bottom: var(--space-2);
-  overflow: hidden;
-}
-
-.progress-track__fill {
-  height: 100%;
-  background: var(--color-accent);
-  border-radius: 2px;
-  transition: width 0.2s ease;
-}
-
-.question-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-}
-
-.question-card__category {
-  margin: 0 0 var(--space-1);
-  color: var(--color-accent);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.question-card__prompt {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  line-height: 1.6;
-  margin: 0 0 var(--space-3);
-}
-
-/* De-emphasized on purpose (feedback: the bold amber fill was too loud) —
-   just a quiet underline so the blank reads as "fill this in", not as
-   the visual focal point of the sentence. */
-.question-card__prompt .blank {
-  color: inherit;
-  border-bottom: 2px solid var(--color-border);
-  padding: 0 0.2rem;
-}
-
-.options {
-  display: grid;
-  gap: var(--space-1);
-  margin-bottom: var(--space-2);
-}
-
-.option-btn {
-  text-align: left;
-  padding: 0.8rem 1rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  gap: 0.6rem;
-}
-
-.option-btn:hover:not(:disabled) {
-  border-color: var(--color-accent);
-}
-
-.option-btn:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.option-btn__key {
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-weight: 600;
-}
-
-.option-btn:disabled {
-  cursor: default;
-}
-
-.option-btn--correct {
-  background: var(--color-success-bg);
-  border-color: var(--color-success);
-}
-
-.option-btn--incorrect {
-  background: var(--color-danger-bg);
-  border-color: var(--color-danger);
-}
-
-.feedback {
-  border-radius: var(--radius);
-  border: 1px solid var(--color-border);
-  padding: var(--space-2);
-}
-
-.feedback--correct {
-  border-color: var(--color-success);
-}
-
-.feedback--incorrect {
-  border-color: var(--color-danger);
-}
-
-.feedback--correct strong {
-  color: var(--color-success);
-}
-
-.feedback--incorrect strong {
-  color: var(--color-danger);
-}
-
-.feedback__explanation {
-  color: var(--color-text);
-  margin: var(--space-1) 0 0;
-  font-size: 0.95rem;
-}
-
-.feedback__tip {
-  color: var(--color-text-muted);
-  margin: var(--space-1) 0 0;
-  padding-top: var(--space-1);
-  border-top: 1px solid var(--color-border);
-  font-size: 0.9rem;
-}
-
-.feedback__tip strong {
-  color: var(--color-accent);
-}
-
-/* Results */
-.score-summary {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-  margin-bottom: var(--space-3);
-  text-align: center;
-}
-
-.score-summary__value {
-  font-family: var(--font-mono);
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: var(--color-accent);
-}
-
-.breakdown-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-1);
-}
-
-.breakdown-list li {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-2);
-  padding: 0.6rem var(--space-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-}
-
-.breakdown-list li span:last-child {
-  font-family: var(--font-mono);
-  color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-.breakdown-list__item--link {
-  padding: 0;
-}
-
-.breakdown-list__info {
-  display: flex;
-  flex: 1;
-  min-width: 0;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.breakdown-list__score {
-  font-family: var(--font-mono);
-  color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-.breakdown-list__item--action {
-  gap: var(--space-1);
-  padding: 0.4rem 0.4rem 0.4rem var(--space-2);
-}
-
-.breakdown-list__item--action .breakdown-link {
-  padding-left: 0;
-}
-
-.btn--sm {
-  flex: 0 0 auto;
-  min-height: 2.25rem;
-  padding: 0.4rem 0.7rem;
-  font-size: 0.8rem;
-}
-
-.breakdown-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-  width: 100%;
-  min-height: 2.75rem;
-  padding: 0.6rem var(--space-2);
-  color: inherit;
-  text-decoration: none;
-}
-
-.breakdown-link:hover,
-.breakdown-link:hover .breakdown-link__score {
-  color: var(--color-accent);
-}
-
-.breakdown-link:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: -2px;
-}
-
-.breakdown-link__score {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  white-space: nowrap;
-  color: var(--color-text-muted);
-}
-
-.callout {
-  border: 1px solid var(--color-accent);
-  border-radius: var(--radius);
-  padding: var(--space-2);
-  color: var(--color-accent);
-  margin-bottom: var(--space-3);
-}
-
-.review-item {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-2);
-  margin-bottom: var(--space-2);
-}
-
-.review-item__prompt {
-  font-family: var(--font-display);
-  font-weight: 600;
-  margin: 0 0 0.4rem;
-}
-
-.review-item__answer {
-  font-size: 0.9rem;
-  margin: 0.2rem 0;
-}
-
-.review-item__answer--correct {
-  color: var(--color-success);
-}
-
-.review-item__answer--incorrect {
-  color: var(--color-danger);
-}
-
-.review-item__explanation {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  margin-top: 0.4rem;
-}
-
-.review-item__tip {
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  margin-top: 0.4rem;
-  padding-top: 0.4rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.review-item__tip strong {
-  color: var(--color-accent);
-}
-
-/* ---- Eğitim: shared ---- */
-.lesson-card__eyebrow {
-  margin: 0 0 var(--space-1);
-  color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-/* ---- Eğitim: lesson index ---- */
-.lesson-overview__count {
-  margin: 0 0 var(--space-1);
-  font-family: var(--font-mono);
-  font-size: 1.05rem;
-  color: var(--color-text);
-}
-
-.lesson-overview__hint {
-  margin: var(--space-2) 0 0;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--color-text-muted);
-}
-
-.panel--accent {
-  border-color: var(--color-accent);
-}
-
-.lesson-resume__title {
-  margin: 0.2rem 0;
-  font-size: 1.15rem;
-}
-
-.lesson-resume__meta {
-  margin: 0 0 var(--space-2);
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-.lesson-list {
-  display: grid;
-  gap: var(--space-1);
-  margin-top: var(--space-3);
-}
-
-.lesson-list__topic {
-  margin: var(--space-2) 0 0;
-  font-size: 1rem;
-  color: var(--color-text-muted);
-}
-
-/* A lesson row is the whole tap target — a table-of-contents entry, not
-   a card with a button inside it. */
-.lesson-row {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: start;
-  column-gap: var(--space-2);
-  row-gap: 0;
-  width: 100%;
-  padding: var(--space-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: transparent;
-  color: var(--color-text);
-  font-family: var(--font-body);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color 0.15s ease;
-}
-
-.lesson-row:hover {
-  border-color: var(--color-accent);
-}
-
-.lesson-row:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.lesson-row__order {
-  padding-top: 0.15rem;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-}
-
-.lesson-row__main {
-  display: grid;
-  gap: 0.15rem;
-  min-width: 0;
-}
-
-.lesson-row__category {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-}
-
-.lesson-row__title {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 600;
-}
-
-.lesson-row__summary {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-  font-size: 0.85rem;
-  line-height: 1.45;
-  color: var(--color-text-muted);
-}
-
-.lesson-row__status {
-  padding-top: 0.2rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  white-space: nowrap;
-  color: var(--color-text-muted);
-}
-
-.lesson-row__status--done {
-  color: var(--color-success);
-}
-
-.lesson-row__status--started {
-  color: var(--color-accent);
-}
-
-/* On a phone a third column would squeeze the summary into a ribbon, so
-   the status drops below the text instead. */
-@media (max-width: 480px) {
-  .lesson-row {
-    grid-template-columns: auto 1fr;
+/* ==========================================================================
+   Base — the shell, and type
+   ========================================================================== */
+
+@layer base {
+  /* -- App shell. A fixed-height column: header, one scrolling region,
+        bottom nav or a focused-mode action bar. Only .shell__scroll ever
+        scrolls, so the frame never grows and never shifts sideways. -- */
+
+  .shell__header,
+  .shell__nav,
+  .shell__bar {
+    flex: none;
   }
 
-  .lesson-row__status {
-    grid-column: 2;
-    padding-top: 0.35rem;
+  .shell__scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Stops a fast flick at the top of a lesson triggering pull-to-refresh
+       mid-question. Note this prevents chaining, not scrolling. */
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    /* WCAG 2.4.11: a fixed bottom bar is the criterion's named offender and
+       scroll-padding is its named fix — a focused control scrolls clear of
+       the bar instead of under it. */
+    scroll-padding-bottom: calc(var(--h-nav) + env(safe-area-inset-bottom, 0px) + var(--s-5));
+    scroll-padding-top: var(--s-5);
+  }
+
+  .shell__scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .page {
+    max-width: var(--w-page);
+    margin: 0 auto;
+    padding-block: var(--s-5) var(--s-8);
+    padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
+      max(var(--gutter), env(safe-area-inset-right, 0px));
+  }
+
+  /* Full-bleed: escapes the page gutter to run edge to edge. On a phone the
+     viewport is already the frame, so a band that interrupts the reading
+     flow does it without becoming a card. */
+  .bleed {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+  }
+
+  /* -- Type. Serif is English, sans is Turkish — the typeface tells the
+        learner which language they are looking at before they read a word.
+        Block level only: an English word inside a Turkish sentence stays in
+        the sans, because inline typeface switching costs baseline alignment
+        for a signal stronger than the distinction warrants. -- */
+
+  .t-display,
+  .t-title,
+  .t-lead {
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  .t-display {
+    font-size: var(--t-display);
+    line-height: var(--t-display-lh);
+    font-weight: 600;
+  }
+
+  .t-title {
+    font-size: var(--t-title);
+    line-height: var(--t-title-lh);
+    font-weight: 600;
+  }
+
+  .t-lead {
+    font-size: var(--t-lead);
+    line-height: var(--t-lead-lh);
+  }
+
+  .t-body {
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+  }
+
+  .t-ui {
+    font-size: var(--t-ui);
+    line-height: var(--t-ui-lh);
+  }
+
+  .t-meta {
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    color: var(--c-text-3);
+  }
+
+  /* A block label. Not uppercased: all-caps is harder to read, some screen
+     readers spell short all-caps strings out, and under lang="tr" the CSS
+     transform would turn "Simple" into "SİMPLE". Weight and tracking do the
+     same job without any of that. */
+  .t-label {
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    color: var(--c-text-3);
+  }
+
+  /* English: the serif, always at block level. */
+  .t-en {
+    font-family: var(--f-serif);
+    font-optical-sizing: auto;
+  }
+
+  /* Figures that change. A counter whose width shifts between questions
+     moves the button under the learner's thumb — a layout-shift bug and a
+     pointer-cancellation hazard at once. */
+  .t-num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* -- Prose. The measure cap is inert at 320px (the arithmetic gives ~36
+        characters and the only way to reach 45 would be dropping below
+        16px, which is worse); it binds on tablet and up. -- */
+  .prose {
+    max-width: var(--w-measure);
+    text-wrap: pretty;
+    /* Turkish agglutination produces single words wider than the viewport. */
+    overflow-wrap: break-word;
+  }
+
+  .prose > * + * {
+    margin-top: var(--s-5);
+  }
+
+  .prose strong {
+    font-weight: 600;
+    color: var(--c-text-1);
   }
 }
 
-/* ---- Eğitim: lesson reader ---- */
-.lesson-reader__heading {
-  margin: var(--space-2) 0;
+/* ==========================================================================
+   Components — twelve primitives, and no thirteenth without a reason
+   ========================================================================== */
+
+@layer components {
+  /* -- Surface. The one card level. If something inside a surface needs its
+        own frame, the surface is wrong. -- */
+  .surface {
+    background: var(--c-surface-1);
+    border-radius: var(--r-2);
+    padding: var(--s-5);
+    /* A light edge rather than a border: reads as elevation, not as a
+       frame, and does not participate in the no-frames rule. */
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.045);
+  }
+
+  .surface--flush {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* -- Row. Homogeneous, scannable content. The whole row is the target;
+        leading and trailing slots are fixed-width so every row's text starts
+        and ends on the same keyline — ragged edges from variable-width
+        leading content is what makes a list unscannable. -- */
+  .row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: var(--s-4);
+    row-gap: 0;
+    width: 100%;
+    min-height: var(--h-target);
+    padding: var(--s-4) 0;
+    text-align: left;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color var(--d-micro) var(--ease-standard);
+  }
+
+  /* One separation mechanism per boundary: a hairline, or a gap, or a
+     background change. Never two. */
+  .row + .row {
+    box-shadow: inset 0 1px 0 var(--c-hairline);
+  }
+
+  .row__lead {
+    display: grid;
+    place-items: center;
+    width: var(--s-6);
+    color: var(--c-text-3);
+  }
+
+  .row__main {
+    min-width: 0;
+    display: grid;
+    gap: var(--s-1);
+  }
+
+  .row__title {
+    font-size: var(--t-ui);
+    line-height: var(--t-ui-lh);
+    font-weight: 600;
+  }
+
+  .row__sub {
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    color: var(--c-text-3);
+  }
+
+  .row__trail {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    white-space: nowrap;
+    color: var(--c-text-3);
+    font-size: var(--t-meta);
+  }
+
+  @media (hover: hover) {
+    .row:hover {
+      background: var(--c-surface-1);
+    }
+  }
+
+  /* -- Button. Three levels, one filled per screen. No outlined variant:
+        an outlined button inside a tinted band is a frame inside a frame,
+        which is the one box-in-box the first mockups actually shipped. -- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+    min-height: var(--h-target);
+    min-width: 88px; /* short Turkish labels shouldn't produce runts */
+    padding: 0 var(--s-5);
+    border-radius: var(--r-2);
+    font-size: var(--t-ui);
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background-color var(--d-micro) var(--ease-standard),
+      transform var(--d-micro) var(--ease-standard);
+  }
+
+  /* The filled action. Its label is 16px/700 because no ink reaches APCA
+     Lc 75 on amber — 67 is the ceiling, which the APCA font table clears
+     only at that size and weight. */
+  .btn--primary {
+    background: var(--c-accent);
+    color: var(--c-on-accent);
+    font-size: var(--t-body);
+    font-weight: 700;
+    min-height: 52px;
+  }
+
+  .btn--secondary {
+    background: var(--c-surface-1);
+    color: var(--c-text-1);
+  }
+
+  .btn--quiet {
+    min-width: 0;
+    padding: 0 var(--s-3);
+    color: var(--c-text-2);
+    font-weight: 600;
+  }
+
+  @media (hover: hover) {
+    /* On a dark ground hover and pressed both want to go lighter and would
+       collapse into each other, so they are separated by channel: hover
+       moves the surface, pressed moves scale. */
+    .btn--primary:hover { background: #f5bd72; }
+    .btn--secondary:hover { background: var(--c-surface-2); }
+    .btn--quiet:hover { color: var(--c-text-1); }
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  /* -- Chip. Never interactive. -- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--r-pill);
+    background: var(--c-surface-1);
+    font-size: var(--t-micro);
+    line-height: var(--t-micro-lh);
+    font-weight: 600;
+    color: var(--c-text-2);
+  }
+
+  .chip--ok { background: var(--c-ok-tint); color: var(--c-ok); }
+  .chip--accent { background: rgb(239 176 92 / 0.14); color: var(--c-accent-text); }
+
+  /* -- Note. A tinted band, full bleed, no left-border accent. -- */
+  .note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-4);
+    padding-block: var(--s-4);
+    background: var(--c-surface-1);
+    font-size: var(--t-meta);
+    line-height: 20px;
+    color: var(--c-text-2);
+  }
+
+  /* -- Field. 16px is the whole fix for iOS focus-zoom. -- */
+  .field {
+    width: 100%;
+    min-height: var(--h-target);
+    padding: 0 var(--s-4);
+    /* The one place a border is required rather than forbidden: 1.4.11
+       wants a control's boundary identifiable at 3:1, and a fill cannot
+       do it — no two surfaces in this ramp are 3:1 apart. */
+    border: 1px solid var(--c-edge);
+    border-radius: var(--r-1);
+    background: transparent;
+    font-size: var(--t-body);
+  }
+
+  .field::placeholder {
+    color: var(--c-text-3);
+  }
+
+  /* -- Listbox. A select-only combobox: focus stays on the trigger and the
+        active option is tracked with aria-activedescendant. -- */
+  .listbox {
+    position: relative;
+  }
+
+  .listbox__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-height: var(--h-target);
+    min-width: 6rem;
+    padding: 0 var(--s-4);
+    border-radius: var(--r-1);
+    background: var(--c-surface-1);
+    font-size: var(--t-ui);
+    font-weight: 600;
+  }
+
+  .listbox__menu {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + var(--s-2));
+    left: 0;
+    min-width: 100%;
+    max-height: 14rem;
+    overflow-y: auto;
+    padding: var(--s-2);
+    border-radius: var(--r-1);
+    background: var(--c-surface-2);
+  }
+
+  .listbox__option {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 var(--s-3);
+    border-radius: var(--r-1);
+    font-size: var(--t-ui);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .listbox__option[aria-selected="true"] {
+    color: var(--c-accent-text);
+  }
+
+  /* Focus stays on the trigger, so the active option needs its own visible
+     marker rather than relying on :focus. */
+  .listbox__option--active {
+    background: var(--c-surface-1);
+    outline: 2px solid var(--c-focus);
+    outline-offset: -2px;
+  }
+
+  /* -- Dialog. Native <dialog>: the browser gives the top layer, the
+        backdrop, focus containment and inert-everything-else for free. -- */
+  .dialog {
+    width: min(22rem, calc(100vw - var(--s-8)));
+    padding: var(--s-6);
+    border: none;
+    border-radius: var(--r-3);
+    background: var(--c-surface-2);
+    color: var(--c-text-1);
+  }
+
+  .dialog::backdrop {
+    background: rgb(0 0 0 / 0.6);
+  }
+
+  .dialog__actions {
+    display: flex;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+
+  .dialog__actions .btn {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* -- Nav. Two content modes. A <nav> landmark with aria-current, not a
+        tablist: a tablist makes the whole bar one tab stop, implies panels
+        in this document, and fights a hash router. -- */
+  .nav {
+    display: flex;
+    background: var(--c-surface-0);
+    box-shadow: inset 0 1px 0 var(--c-hairline);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-inline: max(0px, env(safe-area-inset-left, 0px))
+      max(0px, env(safe-area-inset-right, 0px));
+  }
+
+  .nav__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-1);
+    min-height: var(--h-nav);
+    font-size: var(--t-micro);
+    font-weight: 600;
+    color: var(--c-text-3);
+    text-decoration: none;
+  }
+
+  /* Selected state is carried by a filled icon and full-strength text, not
+     by hue alone — so it survives greyscale and forced-colors. */
+  .nav__item[aria-current] {
+    color: var(--c-text-1);
+  }
+
+  /* -- Progress. Also the reader's position indicator: on mobile, readers
+        lose their place and cannot tell how much is left, so this is a
+        comprehension aid rather than decoration. -- */
+  .progress {
+    height: 3px;
+    border-radius: var(--r-pill);
+    background: var(--c-surface-1);
+    overflow: hidden;
+  }
+
+  .progress__fill {
+    height: 100%;
+    background: var(--c-accent);
+    border-radius: inherit;
+  }
+
+  /* -- Feedback. Four redundant channels — glyph, word, tint and the answer
+        itself — so the verdict survives greyscale, colour-vision deficiency,
+        sunlight and forced-colors. Colour alone would fail WCAG 1.4.1. -- */
+  .feedback {
+    display: grid;
+    gap: var(--s-3);
+    padding-block: var(--s-5);
+  }
+
+  .feedback--ok { background: var(--c-ok-tint); }
+  .feedback--no { background: var(--c-no-tint); }
+
+  .feedback__verdict {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: var(--t-ui);
+    font-weight: 700;
+  }
+
+  .feedback--ok .feedback__verdict > svg { color: var(--c-ok); }
+  .feedback--no .feedback__verdict > svg { color: var(--c-no); }
+
+  .feedback__body {
+    font-size: var(--t-meta);
+    line-height: 20px;
+    color: var(--c-text-2);
+  }
+
+  /* -- Option. An answer row: reading-sized, whole row tappable. -- */
+  .option {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    width: 100%;
+    min-height: 52px;
+    padding: var(--s-3) var(--gutter);
+    text-align: left;
+    font-family: var(--f-serif);
+    font-size: 17px;
+    line-height: 24px;
+    transition: background-color var(--d-micro) var(--ease-standard);
+  }
+
+  .option + .option {
+    box-shadow: inset 0 1px 0 var(--c-hairline);
+  }
+
+  .option__key {
+    flex: none;
+    font-family: var(--f-sans);
+    font-size: var(--t-meta);
+    font-variant-numeric: tabular-nums;
+    color: var(--c-text-3);
+  }
+
+  .option__mark {
+    margin-left: auto;
+    flex: none;
+  }
+
+  .option--ok { background: var(--c-ok-tint); }
+  .option--no { background: var(--c-no-tint); }
+  .option--ok .option__mark { color: var(--c-ok); }
+  .option--no .option__mark { color: var(--c-no); }
+
+  /* -- Stat -- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+    gap: var(--s-4);
+  }
+
+  .stat__value {
+    font-size: var(--t-title);
+    line-height: var(--t-title-lh);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat__label {
+    font-size: var(--t-meta);
+    color: var(--c-text-3);
+  }
 }
 
-.lesson-reader__title {
-  margin: 0.15rem 0 0;
-  font-size: 1.3rem;
-}
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
 
-.lesson-step__heading {
-  margin: 0 0 var(--space-2);
-  font-size: 1.1rem;
-}
+@layer utilities {
+  /* Outline, never box-shadow: outlines survive forced-colors mode and are
+     not clipped by an overflow:hidden ancestor. :focus-visible so a thumb
+     tap never paints a ring. */
+  :focus-visible {
+    outline: 2px solid var(--c-focus);
+    outline-offset: 2px;
+  }
 
-/* Marks a step as a question rather than something to read. */
-.lesson-step__kicker {
-  margin: 0 0 var(--space-2);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-}
+  .stack {
+    display: grid;
+    gap: var(--s-5);
+  }
 
-.lesson-step__body > p {
-  margin: 0 0 var(--space-2);
-  line-height: 1.65;
-}
+  .stack--tight { gap: var(--s-3); }
+  .stack--loose { gap: var(--s-7); }
 
-.lesson-step__body > p:last-child {
-  margin-bottom: 0;
-}
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
 
-/* Example sentences use a rule down the side rather than a box: a panel
-   inside a panel reads as clutter at this nesting depth. */
-.example-list {
-  list-style: none;
-  margin: var(--space-3) 0 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-2);
-}
+  /* Clipped, not display:none — a live region that is display:none is never
+     announced. */
+  .visually-hidden:not(:focus):not(:active) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 
-.example-list li {
-  padding-left: var(--space-2);
-  border-left: 2px solid var(--color-border);
-}
+  .divider {
+    height: 1px;
+    background: var(--c-hairline);
+  }
 
-.example-list__sentence {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 1.02rem;
-  line-height: 1.5;
-}
+  /* Motion is opted into, so the reduced version is the fallback rather
+     than an override that also nukes meaningful feedback. */
+  @media (prefers-reduced-motion: no-preference) {
+    .animate-in {
+      animation: fade-rise var(--d-enter) var(--ease-out) both;
+    }
 
-.example-list__note {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.82rem;
-  color: var(--color-text-muted);
-}
+    @keyframes fade-rise {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
 
-/* Common mistakes: the wrong form and the fix on adjacent lines, so the
-   contrast is visible before the explanation is read. */
-.mistake-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-3);
-}
+  @media (prefers-reduced-motion: reduce) {
+    .animate-in {
+      animation: fade var(--d-enter) var(--ease-out) both;
+    }
 
-.mistake-list__line {
-  display: flex;
-  gap: 0.5rem;
-  margin: 0 0 0.2rem;
-  line-height: 1.5;
-}
+    @keyframes fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  }
 
-.mistake-list__mark {
-  flex: 0 0 auto;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.6;
-}
+  /* Forced colours discard background-color, so anything signalled by fill
+     alone disappears. Give inactive states a transparent border for the
+     active one to become. */
+  @media (forced-colors: active) {
+    .option,
+    .nav__item,
+    .chip {
+      border: 1px solid transparent;
+    }
 
-.mistake-list__line--wrong .mistake-list__mark {
-  color: var(--color-danger);
-}
+    .option--ok,
+    .option--no,
+    .nav__item[aria-current] {
+      border-color: Highlight;
+    }
 
-.mistake-list__line--right .mistake-list__mark {
-  color: var(--color-success);
-}
-
-.mistake-list__sentence {
-  font-family: var(--font-display);
-  font-size: 1rem;
-}
-
-.mistake-list__line--wrong .mistake-list__sentence {
-  color: var(--color-text-muted);
-  text-decoration: line-through;
-  text-decoration-color: var(--color-danger);
-}
-
-.mistake-list__why {
-  margin: 0.4rem 0 0;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  color: var(--color-text-muted);
-}
-
-/* The `form` section is dense structural notation (S + V-ing, arrows);
-   a touch of monospace keeps the patterns readable as patterns. */
-.lesson-step__body--form > p {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.7;
-}
-
-.lesson-complete {
-  text-align: center;
-}
-
-.lesson-complete__title {
-  margin: 0.2rem 0 var(--space-2);
-  font-size: 1.4rem;
-}
-
-.lesson-complete__body {
-  margin: 0 0 var(--space-3);
-  color: var(--color-text-muted);
-}
-
-.empty-state {
-  text-align: center;
-  color: var(--color-text-muted);
-  padding: var(--space-4);
-}
-
-.field-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.field-row > span {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-}
-
-/* Generic bordered panel — used by the Profil tab's stacked sections.
-   Other screens use their own more specific classes (.hero,
-   .question-card, .score-summary, ...) for the same visual treatment;
-   this is the reusable version for anything new. */
-.panel {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-}
-
-.panel + .panel {
-  margin-top: var(--space-3);
-}
-
-/* Profil tab */
-.text-input {
-  width: 100%;
-  margin-top: var(--space-2);
-  padding: 0.7rem 0.8rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-body);
-  font-size: 1rem;
-}
-
-.text-input:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-color: var(--color-accent);
-}
-
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
-  gap: var(--space-2);
-  margin-top: var(--space-1);
-}
-
-.stat-tile {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-2) var(--space-1);
-  text-align: center;
-}
-
-.stat-tile__value {
-  font-family: var(--font-mono);
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--color-accent);
-  font-variant-numeric: tabular-nums;
-}
-
-.stat-tile__label {
-  margin-top: 0.25rem;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-}
-
-@media (min-width: 640px) {
-  .hero {
-    padding: var(--space-4);
+    .btn--primary {
+      border: 1px solid ButtonText;
+    }
   }
 }

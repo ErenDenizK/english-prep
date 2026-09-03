@@ -38,6 +38,7 @@ const SPEC = {
   "no":          { L: 0.700, C: 0.140, H:  25, need: { ui: 3.0 } },
   "focus":       { L: 0.900, C: 0.060, H:  78, need: { ui: 3.0 } },
   "hairline":    { L: 0.320, C: 0.010, H:  75, need: {} },
+  "edge":        { L: 0.560, C: 0.010, H:  75, need: { ui: 3.0 } },
 };
 
 export const tokens = Object.fromEntries(
