@@ -147,6 +147,31 @@ tell a thorough pass from a shallow one.
 
 ---
 
+## Two things that are never findings
+
+**The option letters.** A blind pass reads a stimulus file whose options
+were shuffled by the harness that built it, and the app reshuffles them
+again for every attempt — `buildQuizSession` in `js/quiz-engine.js` ends
+with `options: shuffle(question.options)`. So "the answer is B nine times
+out of twenty-four", "A is never correct in the first half", and "four
+consecutive Bs" are all facts about one throw of the dice. Two separate
+reviewers have reported this as a defect; it has never been one. The
+authored `correctIndex` spread is even, and no learner ever sees a fixed
+letter.
+
+**Anything about the order the items arrive in.** Same reason: the
+session is shuffled, and a learner meeting item 3 after item 17 is the
+normal case.
+
+What *is* a finding, and looks similar: a **role** that always falls to
+the same kind of option — the hedged one always wrong, the one naming a
+source always wrong, the longest one always right. Those survive
+shuffling, because they are properties of the option rather than of its
+position, and they are exactly what a test-wise student learns. Report
+those.
+
+---
+
 ## One thing a reviewer of this kind gets wrong
 
 A blind pass is run by somebody fluent in English. The learners are not.
