@@ -5,6 +5,82 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.13 — 2026-09-03
+
+Stages 3 and 4 of `docs/redesign-plan.md`, and the answer to the owner's
+verdict on the article lessons: *"makale tipini genel olarak beğenmedim."*
+A lesson is no longer an article, and no longer a slideshow either.
+
+### A lesson is a page you scroll, built from typed blocks
+
+- **Seven block types** — `text`, `contrast`, `forms`, `examples`,
+  `pitfall`, `decision`, `check` — replace the named prose sections
+  (`intro`, `form`, `meaning`, `usage`, `commonMistakes`, `recap`). The
+  old fields buried the parts that actually win exam marks: `meaning` was
+  a contrast written as a paragraph, `usage` was a list of signal words
+  written as a sentence, `recap` was a decision procedure. Those are now
+  what they are, and the app can present each one properly.
+- **The types are semantic, not presentational.** `contrast` means "these
+  two forms are set against each other", not "draw two columns". Every
+  decision about how a block looks stays in `js/education.js`, which is
+  the point: this is the third lesson format, and each previous change
+  forced a full content rewrite. It should be the last one a redesign can
+  force.
+- **`text` blocks are capped at 400 characters, as an error.** A block
+  that grows past it is the wall of prose the schema exists to break up,
+  and what it is really carrying is a contrast or a decision nobody has
+  written as one yet. Saying so at validation time is the only moment
+  anyone acts on it.
+
+### The reader
+
+- **One scrolling page**, not eight taps. A step holding a single sentence
+  left two thirds of a phone empty and still asked for a tap to leave.
+- **A sticky header** carries the way out and the read position. On a
+  3700px lesson, scrolling back to the top to find a Back button is not a
+  way out.
+- **No action bar.** A filled amber slab pinned under every screen is the
+  loudest thing on a surface whose whole job is to be quiet.
+- **Reaching the end finishes the lesson.** There is no "Dersi bitir"
+  button, because a button that only confirms what the scroll position
+  already proved is a tap asked for nothing.
+- **Progress is a read fraction, not a step index** — which is what a
+  scrolling page has, and which stays meaningful when an author adds a
+  block to a lesson someone is halfway through. Reopening a lesson returns
+  you to where you stopped reading.
+- Answering an inline check keeps the scroll position exactly. Chrome's
+  own scroll anchoring moved it 162px on a 320px screen — the whole
+  verdict line sliding out from under the reader's eyes.
+
+### All 18 lessons rewritten
+
+Three agents in parallel, one per topic, against a hand-written reference
+lesson and a machine-checked schema. Their reports were worth as much as
+the lessons: they found a signal word taught as a Present Perfect trigger
+that the same lesson's own example contradicted; a `when` rule that would
+have been actively wrong on one of the questions; a "common mistake" whose
+wrong and right sentences differed in three things at once; and a pitfall
+marking perfectly good English as an error. Every one of those was hiding
+inside a paragraph in the article version.
+
+Open content questions they raised — including two questions that may be
+in the wrong category — are recorded in `docs/education-notes.md`. Those
+are taxonomy changes and the owner's call, so none was made.
+
+### Content files stop churning
+
+`npm run format` (`tools/format-content.mjs`) gives the content JSON one
+canonical shape, checked in CI. Several sessions write into `data/`, and
+any of them that read a topic file, changed one lesson and wrote it back
+with `JSON.stringify(data, null, 2)` reformatted every question in the
+file at the same time — a four-line change arriving as four hundred. That
+happened once already, and "remember not to do that" is not a fix.
+
+Also fixed, both found by the content agents reading the validator against
+its own comments: the Turkish heuristic was calling `resmî` and `kâğıt`
+foreign, and it was being applied to example notes that its own
+documentation exempts.
+
 ## v0.12 — 2026-09-03
 
 The redesign, stages 1 and 2 of `docs/redesign-plan.md`. The owner's

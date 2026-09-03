@@ -176,36 +176,49 @@ test("seen content versions default to 0 and round-trip per topic", () => {
 test("lesson progress only ever moves forward", () => {
   assert.equal(storage.getLessonProgress("tenses-l1"), null);
 
-  storage.recordLessonStep("tenses-l1", 0);
-  storage.recordLessonStep("tenses-l1", 3);
-  storage.recordLessonStep("tenses-l1", 1);
+  storage.recordLessonRead("tenses-l1", 0.2);
+  storage.recordLessonRead("tenses-l1", 0.7);
+  storage.recordLessonRead("tenses-l1", 0.4);
 
-  assert.deepEqual(storage.getLessonProgress("tenses-l1"), { step: 3, done: false });
+  assert.deepEqual(storage.getLessonProgress("tenses-l1"), { read: 0.7, done: false });
 });
 
-test("completing a lesson keeps the furthest step and marks it done", () => {
-  storage.recordLessonStep("tenses-l1", 2);
-  storage.markLessonDone("tenses-l1", 5);
+test("a read fraction is clamped to 0…1 however it arrives", () => {
+  storage.recordLessonRead("tenses-l1", 4);
+  assert.equal(storage.getLessonProgress("tenses-l1").read, 1);
 
-  assert.deepEqual(storage.getLessonProgress("tenses-l1"), { step: 5, done: true });
+  // A read of 0 still records the lesson as opened — the index shows a
+  // lesson you have been into differently from one you have not.
+  storage.recordLessonRead("tenses-l2", -1);
+  assert.deepEqual(storage.getLessonProgress("tenses-l2"), { read: 0, done: false });
+
+  storage.recordLessonRead("tenses-l3", Number.NaN);
+  assert.deepEqual(storage.getLessonProgress("tenses-l3"), { read: 0, done: false });
+});
+
+test("completing a lesson marks it read to the end", () => {
+  storage.recordLessonRead("tenses-l1", 0.3);
+  storage.markLessonDone("tenses-l1");
+
+  assert.deepEqual(storage.getLessonProgress("tenses-l1"), { read: 1, done: true });
 
   // Re-reading a finished lesson must not un-finish it.
-  storage.recordLessonStep("tenses-l1", 1);
+  storage.recordLessonRead("tenses-l1", 0.1);
   assert.equal(storage.getLessonProgress("tenses-l1").done, true);
 });
 
 test("completed lessons are counted only for lessons that still exist", () => {
-  storage.markLessonDone("tenses-l1", 5);
-  storage.markLessonDone("tenses-l2", 5);
-  storage.markLessonDone("removed-lesson", 5);
-  storage.recordLessonStep("tenses-l3", 2);
+  storage.markLessonDone("tenses-l1");
+  storage.markLessonDone("tenses-l2");
+  storage.markLessonDone("removed-lesson");
+  storage.recordLessonRead("tenses-l3", 0.5);
 
   assert.equal(storage.countCompletedLessons(["tenses-l1", "tenses-l2", "tenses-l3"]), 2);
   assert.equal(storage.countCompletedLessons([]), 0);
 });
 
 test("clearLessonProgress wipes lesson progress but not scores", () => {
-  storage.markLessonDone("tenses-l1", 5);
+  storage.markLessonDone("tenses-l1");
   storage.recordAttempt(attempt({ topics: { tenses: { correct: 1, total: 1 } } }));
 
   storage.clearLessonProgress();
@@ -228,17 +241,22 @@ test("malformed lesson entries are normalized rather than trusted", () => {
   entries.set(
     "englishPrep.lessonProgress",
     JSON.stringify({
-      good: { step: 2, done: true },
-      negative: { step: -5, done: false },
-      wrongTypes: { step: "3", done: "yes" },
+      good: { read: 0.5, done: true },
+      negative: { read: -5, done: false },
+      wrongTypes: { read: "3", done: "yes" },
+      // Written by a build before lessons became one scrolling page. The
+      // shape is gone, so the entry reads as unstarted rather than as a
+      // read fraction of 2.
+      legacyStep: { step: 2, done: true },
       notAnObject: "nope",
     })
   );
 
   assert.deepEqual(storage.getAllLessonProgress(), {
-    good: { step: 2, done: true },
-    negative: { step: 0, done: false },
-    wrongTypes: { step: 0, done: false },
+    good: { read: 0.5, done: true },
+    negative: { read: 0, done: false },
+    wrongTypes: { read: 0, done: false },
+    legacyStep: { read: 0, done: true },
   });
 });
 

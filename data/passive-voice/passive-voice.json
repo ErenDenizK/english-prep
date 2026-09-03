@@ -237,109 +237,596 @@
   "lessons": [
     {
       "category": "Tense Forms in Passive",
-      "intro": "Fabrikadaki üretim hattını düşün — bazen her gün oluyor, bazen geçmişte bir kere oldu, bazen şu an oluyor. Edilgen çatı da aynı zaman ayrımını taşır.",
-      "form": "Present Simple Passive: S + am/is/are + V3 → 'It is checked.' Past Simple Passive: S + was/were + V3 → 'It was checked.' Present Perfect Passive: S + have/has been + V3 → 'It has been checked.' Present Continuous Passive: S + am/is/are being + V3 → 'It is being checked.'",
-      "meaning": "Edilgen çatıda fiilin zamanı, aktif cümledeki zamanla birebir aynı kalır; sadece yapı 'be + V3' şeklinde kurulur. Hangi tense'in edilgen hali kurulacağı, aktif cümlede hangi tense kullanılacaksa ona bağlıdır — yani önce 'bu aktif cümlede hangi tense kullanılırdı' diye düşünmek en güvenli yoldur.",
-      "usage": "Rutin için Present Simple Passive, belirli bir geçmiş an için Past Simple Passive, geçmişten bugüne uzanan bir süreç için Present Perfect Passive, şu an devam eden bir eylem için Present Continuous Passive kullanılır — tıpkı aktif çatıdaki sinyal kelimelerinin aynılarıyla (every day, yesterday, since, right now).",
-      "examples": [
-        { "sentence": "This form is checked by two different departments.", "note": "Rutin → Present Simple Passive" },
-        { "sentence": "The email was sent yesterday afternoon.", "note": "Belirli geçmiş an → Past Simple Passive" },
-        { "sentence": "The road is being repaired this month.", "note": "Şu an devam ediyor → Present Continuous Passive" },
-        { "sentence": "Over a million units have been sold since launch.", "note": "Geçmişten bugüne süreç → Present Perfect Passive" },
-        { "sentence": "The results will be announced next week.", "note": "Gelecek → Future Passive (will be + V3)" }
-      ],
-      "commonMistakes": [
-        { "wrong": "The cake is make by my mother every year.", "right": "The cake is made by my mother every year.", "why": "Edilgen çatıda fiil her zaman V3 (past participle) formunda olmalı: 'make' değil 'made'." },
-        { "wrong": "The report was wrote last week.", "right": "The report was written last week.", "why": "'Write' fiilinin V3 hali 'written'dır, 'wrote' Past Simple'ın aktif formudur, edilgen çatıda kullanılmaz." }
-      ],
-      "recap": "Aktif cümlede hangi tense kullanılırdıysa, edilgen çatı da aynı tense'in 'be + V3' halini alır. Fiil her zaman V3 (past participle) olmalı."
+      "summary": "Aktif cümledeki zaman, edilgende ne olur?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Türkçede edilgenlik fiile eklenen tek bir ektir: \"yaptı\" → \"yapıldı\". İngilizcede ise iki parça vardır — bir **be** fiili ve fiilin **V3** (past participle) hâli. Zor kısım V3 değil, o **be**'nin hangi zamana çekileceğidir. Cevap her zaman aynı: aktif cümlede hangi zamanı kullanacaktıysan, **be** o zamana çekilir. Edilgen yeni bir zaman değildir."
+        },
+        {
+          "type": "contrast",
+          "heading": "Aynı olay, iki çatı",
+          "sides": [
+            {
+              "label": "Active",
+              "gloss": "Odak eylemi yapanda: özne işi yapar, nesne işten etkilenir.",
+              "example": "This bakery bakes fresh bread every morning."
+            },
+            {
+              "label": "Passive",
+              "gloss": "Odak eylemden etkilenende: aktif cümlenin nesnesi özne olur, eylemi yapan geri plana düşer ya da hiç söylenmez. Zaman değişmez.",
+              "example": "Fresh bread is baked every morning."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Her zamanın edilgeni",
+          "rows": [
+            { "form": "Present Simple", "use": "Rutin, genel gerçek", "pattern": "S + am/is/are + V3", "example": "The form is checked twice." },
+            {
+              "form": "Present Continuous",
+              "use": "Şu anda, bu aralar süren",
+              "pattern": "S + am/is/are being + V3",
+              "example": "The lobby is being renovated."
+            },
+            { "form": "Past Simple", "use": "Belirli bir geçmiş an", "pattern": "S + was/were + V3", "example": "The bridge was built in 1973." },
+            { "form": "Past Continuous", "use": "Geçmişte o sırada süren", "pattern": "S + was/were being + V3", "example": "The road was being repaired." },
+            {
+              "form": "Present Perfect",
+              "use": "Geçmişten bugüne uzanan",
+              "pattern": "S + have/has been + V3",
+              "example": "Three million copies have been sold."
+            },
+            {
+              "form": "Past Perfect",
+              "use": "Geçmişteki bir andan önce",
+              "pattern": "S + had been + V3",
+              "example": "The letter had been sent before we called."
+            },
+            { "form": "Future (will)", "use": "Gelecek", "pattern": "S + will be + V3", "example": "The results will be announced on Friday." }
+          ]
+        },
+        {
+          "type": "text",
+          "body": "Edilgene çevirdiğinde cümlenin öznesi de değişir: aktif cümlenin nesnesi özne olur. Bu yüzden **be** artık yeni özneyle uyuşur — \"They print the forms\" → \"The forms **are** printed\", ama \"They print the form\" → \"The form **is** printed\"."
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "This form is checked by two different departments.", "note": "Her gün tekrarlanan bir iş → Present Simple Passive" },
+            { "sentence": "The email was sent yesterday afternoon.", "note": "Belirli geçmiş an → Past Simple Passive" },
+            { "sentence": "The road is being repaired this month.", "note": "Şu an devam ediyor → Present Continuous Passive" },
+            { "sentence": "Over a million units have been sold since launch.", "note": "Geçmişten bugüne süreç → Present Perfect Passive" },
+            { "sentence": "The results will be announced next week.", "note": "Gelecekte olacak bir iş → Future Passive (will be + V3)" }
+          ]
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The bridge built in 1973 by a French engineer.",
+          "right": "The bridge was built in 1973 by a French engineer.",
+          "why": "Türkçede edilgenlik fiilin içindedir (\"yapıldı\"), bu yüzden **be** kolayca unutulur. İngilizcede edilgen çatı **be** olmadan kurulmaz; \"the bridge built...\" cümlesi köprünün bir şey inşa ettiğini söyler."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The report was wrote last week.",
+          "right": "The report was written last week.",
+          "why": "**be**'den sonra fiilin V2 (past simple) hâli değil, V3 (past participle) hâli gelir: wrote değil written. Düzensiz fiillerde üçüncü sütunu ezbere bilmek gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The accident was happened at midnight.",
+          "right": "The accident happened at midnight.",
+          "why": "Nesne almayan fiillerin (happen, occur, arrive, rise, die) edilgeni olmaz: özne yapılacak bir nesne yoktur. Türkçede \"gerçekleşti\" edilgen gibi duyulduğu için bu fiillere gereksiz yere **be** eklenir."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Hangi zamanın edilgeni?",
+          "rules": [
+            { "signals": ["every morning", "usually", "always", "twice a week"], "then": "Present Simple Passive" },
+            { "signals": ["now", "at the moment", "this week", "currently"], "then": "Present Continuous Passive" },
+            { "signals": ["yesterday", "in 1973", "last week", "two years ago"], "then": "Past Simple Passive" },
+            { "signals": ["since", "so far", "already", "recently"], "then": "Present Perfect Passive" },
+            { "condition": "Cümlede iki geçmiş olay varsa ve biri diğerinden önce olmuşsa", "then": "Past Perfect Passive" }
+          ]
+        }
+      ]
     },
     {
       "category": "Passive with Modals",
-      "intro": "Bir kuralı ya da olasılığı, eylemi kimin yapacağını söylemeden anlatmak istediğinde modal + edilgen yapı devreye girer.",
-      "form": "Modal + be + V3 → 'This must be done.' 'The results can be checked.' 'The event might be cancelled.'",
-      "meaning": "Modal fiillerle edilgen yapı kurarken fiil her zaman 'modal + be + V3' şeklinde olur; modalin kendi anlamı (zorunluluk, imkan, olasılık) korunur, sadece fiile 'kim tarafından yapılacağı' değil 'ne yapılacağı' vurgusu eklenir.",
-      "usage": "Bir kuralı ya da olasılığı, eylemi kimin yapacağını söylemeden anlatmak istediğinde bu kalıp kullanılır — resmi talimatlarda, kurallarda, prosedürlerde çok sık görülür.",
-      "examples": [
-        { "sentence": "This document must be signed before Friday.", "note": "Zorunluluk + edilgen → must be + V3" },
-        { "sentence": "The results can be checked online.", "note": "Olasılık/imkan + edilgen → can be + V3" },
-        { "sentence": "The event might be cancelled due to bad weather.", "note": "Belirsizlik + edilgen → might be + V3" },
-        { "sentence": "All applications should be submitted by Monday.", "note": "Tavsiye/beklenti + edilgen → should be + V3" },
-        { "sentence": "This medicine shouldn't be taken with alcohol.", "note": "Olumsuz tavsiye + edilgen → shouldn't be + V3" }
-      ],
-      "commonMistakes": [
-        { "wrong": "This must be do carefully.", "right": "This must be done carefully.", "why": "Modal + edilgen kalıbında fiil mutlaka V3 olmalı: 'do' değil 'done'." },
-        { "wrong": "The homework can finished tomorrow.", "right": "The homework can be finished tomorrow.", "why": "Modal + edilgen çatıda 'be' asla atlanamaz: 'can finished' değil 'can be finished'." }
-      ],
-      "recap": "Modal + edilgen her zaman 'modal + be + V3' formundadır — 'be' asla düşmez, fiil asla yalın halde kalmaz."
+      "summary": "Zorunluluk ve olasılık, faili söylemeden nasıl kurulur?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Kurallar, talimatlar ve kullanım kılavuzları eylemi kimin yapacağını genelde söylemez: \"Formlar cuma gününe kadar teslim edilmelidir.\" Kimin teslim edeceği zaten bellidir ve söylenmesine gerek yoktur. İngilizce bunu tek bir kalıpla kurar ve kalıbın hiç istisnası yoktur: **modal + be + V3**."
+        },
+        {
+          "type": "contrast",
+          "heading": "Aynı kural, iki çatı",
+          "sides": [
+            {
+              "label": "Modal + V",
+              "gloss": "Kuralı kimin uygulayacağını söyler; özne eylemi yapan kişidir ve fiilin arkasından nesnesi gelir.",
+              "example": "You must keep all fire exits clear."
+            },
+            {
+              "label": "Modal + be + V3",
+              "gloss": "Kimin yapacağını değil, neyin yapılması gerektiğini öne çıkarır; fail cümlede hiç geçmez.",
+              "example": "All fire exits must be kept clear."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Modal değişir, be + V3 değişmez",
+          "rows": [
+            { "form": "must", "use": "Güçlü zorunluluk", "pattern": "S + must be + V3", "example": "Exits must be kept clear." },
+            { "form": "have to", "use": "Dıştan gelen zorunluluk", "pattern": "S + has/have to be + V3", "example": "The form has to be signed." },
+            { "form": "should", "use": "Tavsiye, beklenti", "pattern": "S + should be + V3", "example": "Applications should be submitted online." },
+            { "form": "can", "use": "İmkân, izin", "pattern": "S + can be + V3", "example": "This medicine can be taken with food." },
+            { "form": "may / might", "use": "İhtimal", "pattern": "S + may/might be + V3", "example": "The project might be postponed." },
+            { "form": "will", "use": "Gelecek", "pattern": "S + will be + V3", "example": "The results will be announced on Friday." },
+            {
+              "form": "mustn't / shouldn't",
+              "use": "Yasak, olumsuz tavsiye",
+              "pattern": "S + modal + not be + V3",
+              "example": "This medicine shouldn't be taken with alcohol."
+            }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "text",
+          "body": "Soru hâlinde yalnızca modal öne geçer, edilgen parça hiç bozulmaz: \"Can the form **be sent** by email?\" Olumsuzda da **not** modalin arkasına girer, **be + V3** yine aynı kalır: \"The door **must not be left** open.\""
+        },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "This document must be signed before Friday.", "note": "Bir kural, zorunluluk → must be + V3" },
+            { "sentence": "The results can be checked online.", "note": "İmkân → can be + V3" },
+            { "sentence": "The event might be cancelled because of the weather.", "note": "İhtimal → might be + V3" },
+            { "sentence": "Can the application be submitted online?", "note": "Soru → modal + özne + be + V3" },
+            { "sentence": "This medicine shouldn't be taken with alcohol.", "note": "Olumsuz bir tavsiye → shouldn't be + V3" }
+          ]
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The homework can finished tomorrow.",
+          "right": "The homework can be finished tomorrow.",
+          "why": "Edilgen çatının iki parçası vardır ve **be** onlardan biridir; modal ne olursa olsun düşmez. \"can finished\" ne aktiftir ne edilgen."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "All fire exits must been kept clear.",
+          "right": "All fire exits must be kept clear.",
+          "why": "Modalden sonra fiil daima yalın hâlde gelir, bu yüzden **be**. **been** yalnızca have ile birlikte kullanılır — \"must have been kept\" — ve o da geçmişe bakan ayrı bir kalıptır."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "This form should submit by the end of the week.",
+          "right": "This form should be submitted by the end of the week.",
+          "why": "Formu teslim eden değil, edilen o. \"should submit\" formun bir şeyi teslim ettiğini söyler; özne eylemi kendi yapamıyorsa yapı edilgendir."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Aktif mi, edilgen mi?",
+          "rules": [
+            { "condition": "Boşluktan sonra fiilin nesnesi yoksa (doğrudan by, zaman ya da yer geliyorsa)", "then": "Modal + be + V3" },
+            { "condition": "Özne eylemi kendi yapabilecek bir varlık değilse (form, kapı, ilaç, proje)", "then": "Modal + be + V3" },
+            { "condition": "Özne eylemi yapan kişiyse ve arkasından nesnesi geliyorsa", "then": "Modal + V" },
+            { "condition": "Olay geçmişte kalmışsa ve şimdi onun hakkında tahmin yürütülüyorsa", "then": "Modal + have been + V3" }
+          ]
+        }
+      ]
     },
     {
       "category": "Modal Perfects in Passive",
-      "intro": "Şimdi modal + edilgen yapıyı geçmişe taşıyalım — 'yapılmalı' değil 'yapılmış olmalı' ya da 'yapılmalıydı' diyeceğiz.",
-      "form": "Modal + have been + V3 → 'must have been done', 'should have been checked', 'can't have been broken'.",
-      "meaning": "Geçmişe dönük çıkarım ya da eleştiri bildiren edilgen yapılar 'modal + have been + V3' şeklinde kurulur — bir önceki kategorideki modal perfect mantığı, burada edilgen çatıya taşınıyor.",
-      "usage": "Güçlü çıkarım için 'must have been', imkansızlık için 'can't have been', pişmanlık/eleştiri için 'should have been' kullanılır — tıpkı aktif modal perfect'lerde olduğu gibi, sadece fail belirtilmiyor ya da önemli değil.",
-      "examples": [
-        { "sentence": "The letter must have been delivered by now.", "note": "Geçmişe dair güçlü çıkarım → must have been + V3" },
-        { "sentence": "This error should have been fixed weeks ago.", "note": "Geçmişe dair eleştiri → should have been + V3" },
-        { "sentence": "The vase can't have been broken by the cat, it's too heavy.", "note": "Geçmişe dair imkansızlık → can't have been + V3" },
-        { "sentence": "The documents might have been lost in the move.", "note": "Zayıf geçmiş olasılık, edilgen → might have been + V3" }
-      ],
-      "commonMistakes": [
-        { "wrong": "The window must have broken by the storm.", "right": "The window must have been broken by the storm.", "why": "Edilgen modal perfect kalıbında 'be' atlanamaz: 'must have broken' aktif bir anlam taşır (pencere kendisi kırdı), doğrusu 'must have been broken'dır." }
-      ],
-      "recap": "Geçmişe dönük modal çıkarımların edilgen hali 'modal + have been + V3' şeklindedir — 'have been' asla düşmez."
+      "summary": "'Yapılmış olmalı' mı, 'yapılmalıydı' mı?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Bir önceki kalıp şimdiye ve geleceğe bakıyordu: \"must be done\" = yapılmalı. Bu kalıp ise geçmişe bakar. Olay çoktan olmuş ya da olmamıştır; sen sadece onun hakkında bir tahmin yürütür ya da bir eleştiri yaparsın. Yapı tek bir parça daha uzundur: **modal + have been + V3**."
+        },
+        {
+          "type": "contrast",
+          "heading": "Şimdi mi, geçmiş mi",
+          "sides": [
+            {
+              "label": "modal + be + V3",
+              "gloss": "Şimdi ya da gelecek için kural, imkân, beklenti. Eylem henüz yapılmamıştır ve hâlâ yapılabilir.",
+              "example": "This mistake should be corrected."
+            },
+            {
+              "label": "modal + have been + V3",
+              "gloss": "Geçmiş için çıkarım ya da eleştiri. İş bitmiştir; artık değiştiremezsin, sadece yorumlayabilirsin.",
+              "example": "This mistake should have been caught much earlier."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Hangi modal, hangi anlam",
+          "rows": [
+            {
+              "form": "must have been",
+              "use": "Kesine yakın çıkarım",
+              "pattern": "S + must have been + V3",
+              "example": "The package must have been delivered to the wrong address."
+            },
+            {
+              "form": "may / might have been",
+              "use": "Zayıf ya da orta ihtimal",
+              "pattern": "S + may/might have been + V3",
+              "example": "The email may have been sent to your spam folder."
+            },
+            {
+              "form": "could have been",
+              "use": "Mümkündü, olabilirdi",
+              "pattern": "S + could have been + V3",
+              "example": "The problem could have been avoided."
+            },
+            {
+              "form": "can't / couldn't have been",
+              "use": "İmkânsızlık",
+              "pattern": "S + can't have been + V3",
+              "example": "The window can't have been broken by the wind."
+            },
+            {
+              "form": "should have been",
+              "use": "Olması gerekirdi, olmadı",
+              "pattern": "S + should have been + V3",
+              "example": "This error should have been fixed weeks ago."
+            },
+            {
+              "form": "shouldn't have been",
+              "use": "Olmamalıydı, oldu",
+              "pattern": "S + shouldn't have been + V3",
+              "example": "The file shouldn't have been deleted."
+            }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "text",
+          "body": "Bir asimetriye dikkat: olumlu cümlede **can have been** kullanılmaz. Geçmişe dair ihtimal için may / might / could have been dersin; can'in geçmişe dönük hâli yalnızca olumsuzda yaşar: can't / couldn't have been. Sınavda \"can have been\" şıkkını gördüğünde neredeyse her zaman elemekle işe başlayabilirsin."
+        },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "The letter must have been delivered by now.", "note": "Geçmişe dair güçlü çıkarım → must have been + V3" },
+            { "sentence": "This error should have been fixed weeks ago.", "note": "Olması gerekirken olmamış → should have been + V3" },
+            { "sentence": "The vase can't have been broken by the cat; it is far too heavy.", "note": "Kanıt tersini söylüyor → can't have been + V3" },
+            { "sentence": "The documents might have been lost in the move.", "note": "Zayıf ihtimal → might have been + V3" }
+          ]
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The window must have broken by the storm.",
+          "right": "The window must have been broken by the storm.",
+          "why": "**been** düşünce cümle aktifleşir: \"must have broken\" pencerenin bir şeyi kırdığını söyler. Cümlede **by + fail** varsa yapının edilgen olması gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "This mistake should be caught much earlier.",
+          "right": "This mistake should have been caught much earlier.",
+          "why": "\"Much earlier\" olayın geçmişte kaldığını söylüyor. \"should be\" hâlâ yapılabilecek bir şeyi anlatır; kaçırılmış bir fırsatı eleştirmek için **have been** gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The email can have been sent to your spam folder.",
+          "right": "The email may have been sent to your spam folder.",
+          "why": "\"can have been\" olumlu cümlede kullanılmaz. Geçmişe dair ihtimal may / might / could have been ile kurulur; can't have been ise tam tersini, imkânsızlığı anlatır."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Sınavda sırayla bunlara bak",
+          "rules": [
+            { "condition": "Olay henüz olmamışsa ve hâlâ yapılabilir durumdaysa", "then": "modal + be + V3" },
+            { "condition": "Kanıta dayanarak \"kesin öyle olmuştur\" diyorsan", "then": "must have been + V3" },
+            { "condition": "\"Olabilir, emin değilim\" diyorsan", "then": "may / might have been + V3" },
+            { "condition": "Kanıt tersini söylüyor, \"öyle olması imkânsız\" diyorsan", "then": "can't have been + V3" },
+            { "condition": "Olması gerekiyordu ama olmadı; cümlede eleştiri ya da pişmanlık varsa", "then": "should have been + V3" }
+          ]
+        }
+      ]
     },
     {
       "category": "Causative: Have/Get Something Done",
-      "intro": "Bir işi kendin yapmıyorsun, birine yaptırıyorsun — İngilizce'de bunun için özel bir kalıp var.",
-      "form": "Have + nesne + V3 → 'I had my hair cut.' Get + nesne + V3 → 'I got my hair cut.'",
-      "meaning": "'Have/get + nesne + V3' yapısı, bir işi kendimizin değil başka birinin yaptığını anlatır. 'Have' daha nötr, 'get' ise biraz daha gündelik/informal bir tondur, çoğu zaman çaba veya zorlukla yaptırma anlamı da taşıyabilir.",
-      "usage": "Bir işi kendin yapmayıp bir uzmana/başkasına yaptırdığını anlatmak istediğinde bu kalıp kullanılır — saç kestirme, araba tamir ettirme, ev boyatma gibi günlük hayattan örnekler tipiktir.",
-      "examples": [
-        { "sentence": "I had my phone repaired last week.", "note": "Başkasına yaptırma (nötr) → have + nesne + V3" },
-        { "sentence": "She got her nails done for the party.", "note": "Başkasına yaptırma (gündelik) → get + nesne + V3" },
-        { "sentence": "We're having the house painted next month.", "note": "Planlanan, başkasına yaptırılan iş → have + nesne + V3" },
-        { "sentence": "He finally got his suit tailored for the wedding.", "note": "Çaba/özel talep içeren yaptırma → get + nesne + V3" }
-      ],
-      "commonMistakes": [
-        { "wrong": "I had cut my hair yesterday.", "right": "I had my hair cut yesterday.", "why": "'Have my hair cut' yapısında nesne (my hair) fiilden önce gelir; 'had cut my hair' ise 'saçımı kendim kestim' ya da Past Perfect anlamına gelir, causative değildir." }
-      ],
-      "recap": "'Have/get + nesne + V3' — nesne her zaman fiilden önce gelir. Bir işi kendin yapmayıp yaptırdığını vurgulamak istediğinde bu kalıbı kullan."
+      "summary": "Kendin mi yapıyorsun, birine mi yaptırıyorsun?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Türkçede bunun için bir ek var: \"kestim\" → \"kestirdim\", \"boyadım\" → \"boyattım\". İngilizcede ek yok, kalıp var: **have/get + nesne + V3**. \"I cut my hair\" saçını kendin kestiğini söyler; kuaförde kestirdiysen \"I had my hair cut\" demen gerekir. Türkçede tek bir ek kadar küçük olan fark, İngilizcede cümlenin tamamını değiştirir."
+        },
+        {
+          "type": "contrast",
+          "heading": "İşi kim yapıyor?",
+          "sides": [
+            { "label": "Active", "gloss": "İşi özne kendi yapar.", "example": "I painted the house last summer." },
+            {
+              "label": "have + object + V3",
+              "gloss": "İşi başkası yapar, sen yaptırırsın. Nötr ton: para verilen ya da rica edilen bir hizmet.",
+              "example": "I had the house painted last summer."
+            },
+            {
+              "label": "get + object + V3",
+              "gloss": "Aynı anlam, daha gündelik ton; çoğu zaman biraz uğraşarak, ayarlayarak yaptırmayı ima eder.",
+              "example": "I finally got the house painted."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Çekim have/get üzerindedir; V3 hiç değişmez",
+          "rows": [
+            { "form": "Present Simple", "use": "Rutin", "pattern": "S + have/has + nesne + V3", "example": "I have my car serviced every year." },
+            {
+              "form": "Present Continuous",
+              "use": "Şu an ya da planlanmış",
+              "pattern": "S + am/is/are having + nesne + V3",
+              "example": "We are having the kitchen redone."
+            },
+            { "form": "Past Simple", "use": "Belirli bir geçmiş an", "pattern": "S + had + nesne + V3", "example": "She had her hair cut before the wedding." },
+            {
+              "form": "Present Perfect",
+              "use": "Geçmişten bugüne",
+              "pattern": "S + have/has had + nesne + V3",
+              "example": "They have had the roof repaired twice."
+            },
+            {
+              "form": "Past Perfect",
+              "use": "Geçmişteki bir andan önce",
+              "pattern": "S + had had + nesne + V3",
+              "example": "The owners had had the kitchen renovated before we moved in."
+            },
+            { "form": "Future (will)", "use": "Gelecek", "pattern": "S + will have + nesne + V3", "example": "I'll have the documents translated." },
+            { "form": "get", "use": "Aynı çekimler, gündelik ton", "pattern": "S + got/gets/will get + nesne + V3", "example": "We finally got the car fixed." }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "I had my phone repaired last week.", "note": "Başkasına yaptırma, nötr → have + nesne + V3" },
+            { "sentence": "She got her nails done for the party.", "note": "Gündelik ton → get + nesne + V3" },
+            { "sentence": "We're having the house painted next month.", "note": "Planlanan iş → am/is/are having + nesne + V3" },
+            { "sentence": "I need to get this document signed today.", "note": "Yaptırılacak iş, mastar hâlinde → get + nesne + V3" },
+            { "sentence": "He had the mechanic check the brakes.", "note": "İşi yapan kişi söyleniyorsa yalın fiil → have + kişi + V" }
+          ]
+        },
+        {
+          "type": "text",
+          "body": "Son örnek ikinci bir kalıp: **have + kişi + yalın fiil**. Aynı olayın iki anlatımıdır — \"I had the mechanic fix the car\" işi kimin yaptığını, \"I had the car fixed\" işin kendisini öne çıkarır. **Make** ise yaptırma kalıbına girmez: make bir kişiyi zorlar ve yalın fiil alır (\"The teacher made us rewrite the essay\")."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "I cut my hair at the hairdresser's yesterday.",
+          "right": "I had my hair cut at the hairdresser's yesterday.",
+          "why": "Kuaförde kestirdiysen fiili sen yapmadın. Türkçede \"-tir\" ekiyle hallolan bu fark İngilizcede **have + nesne + V3** kalıbını gerektirir; \"I cut my hair\" saçını kendi elinle kestiğini söyler."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "I had cut my hair yesterday.",
+          "right": "I had my hair cut yesterday.",
+          "why": "Nesne fiilden önce gelmezse kalıp bozulur: \"had cut my hair\" causative değil Past Perfect'tir ve yine \"kendim kestim\" anlamına gelir. Sıra şudur: have + nesne + V3."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "We made the kitchen renovated.",
+          "right": "We had the kitchen renovated.",
+          "why": "Bir işi yaptırdığını anlatmak için make kullanılmaz. Make bir kişiyi zorlar ya da ikna eder ve yalın fiil alır (they made us wait); yaptırma anlamı have ya da get ile kurulur."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Boşluktan sonrasına bak",
+          "rules": [
+            { "condition": "Boşluktan sonra \"nesne + V3\" sırası varsa (her hair cut, the car fixed)", "then": "have / get + object + V3" },
+            { "condition": "Boşluktan sonra işi yapan kişi ve yalın fiil geliyorsa", "then": "have + person + V" },
+            { "condition": "Zorlama, ikna ya da baskı varsa", "then": "make + person + V" },
+            { "condition": "Nesne fiilden sonra geliyorsa cümle causative değildir, işi özne kendi yapmıştır", "then": "Past Perfect (had + V3)" }
+          ]
+        }
+      ]
     },
     {
       "category": "Passive Reporting Structures",
-      "intro": "Bir haberi ya da söylentiyi, kaynağını belirtmeden aktarmak istediğinde bu kalıplar işine yarar.",
-      "form": "It is said/believed/thought/reported that + cümle. Özne + is said/believed/reported to + V (base) / to have + V3 (geçmiş için).",
-      "meaning": "Bu yapılar, bir bilgiyi kesin bir kaynağa bağlamadan, genel bir görüş ya da söylenti olarak aktarmak için kullanılır — haberlerde, akademik metinlerde çok sık görülür.",
-      "usage": "'It is said that...' yapısı bir cümleyle devam eder; 'özne + is said to + fiil' yapısı ise doğrudan öznenin kendisiyle devam eder ve daha kısa/akıcıdır. Geçmişe dönük bir bilgi aktarılıyorsa 'to have + V3' kullanılır.",
-      "examples": [
-        { "sentence": "It is said that the recipe is over a hundred years old.", "note": "Genel söylenti → it is said that..." },
-        { "sentence": "The company is believed to be planning layoffs.", "note": "Genel görüş → is believed to + fiil" },
-        { "sentence": "The suspect is reported to have left the country.", "note": "Geçmişe dönük raporlama → is reported to have + V3" },
-        { "sentence": "The bridge is thought to be one of the oldest in the region.", "note": "Genel görüş → is thought to + fiil" }
-      ],
-      "commonMistakes": [
-        { "wrong": "It is said the meeting was postponed.", "right": "It is said that the meeting was postponed.", "why": "'It is said' yapısından sonra 'that' genelde kullanılır (özellikle yazılı/sınav dilinde); atlanması gündelik konuşmada mümkün olsa da sınavlarda tam yapı beklenir." }
-      ],
-      "recap": "'It is said/believed/reported that...' ya da 'özne + is said/believed to + fiil' — kaynağı belirtmeden bir bilgiyi aktarmanın edilgen yolu budur."
+      "summary": "Kaynağı belirtmeden bir bilgi nasıl aktarılır?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Haber dilinde ve akademik yazıda bir bilgi sık sık kaynağı verilmeden aktarılır: \"iddia ediliyor\", \"olduğu düşünülüyor\". İngilizcede bunun iki standart kalıbı vardır ve ikisi aynı şeyi söyler. Aralarındaki fark cümlenin nereden başladığıdır — sınavda hangisinin isteneceğini de tam olarak bu belirler."
+        },
+        {
+          "type": "contrast",
+          "heading": "İki kalıp, aynı anlam",
+          "sides": [
+            {
+              "label": "It is said that + clause",
+              "gloss": "Cümle anlamsız bir \"It\" ile başlar ve arkasından tam bir cümle gelir. Söyleyenin kim olduğu hiç geçmez.",
+              "example": "It is believed that the city was destroyed by an earthquake."
+            },
+            {
+              "label": "S + is said to + V",
+              "gloss": "Asıl özne öne çıkar, arkasından \"to + fiil\" gelir. Daha kısadır ve akademik metinlerde daha sık görülür.",
+              "example": "The CEO is said to be extremely demanding."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "to'dan sonrası zamanı taşır",
+          "rows": [
+            {
+              "form": "It + be + V3 + that",
+              "use": "Genel görüş, cümleyle devam eder",
+              "pattern": "It is said/thought/believed/reported that + cümle",
+              "example": "It is reported that the talks have failed."
+            },
+            { "form": "S + be + V3 + to + V", "use": "Aktarımla aynı zamanda", "pattern": "S + is said to + V", "example": "He is said to live in Ankara." },
+            {
+              "form": "S + be + V3 + to be + V-ing",
+              "use": "Şu anda süren",
+              "pattern": "S + is believed to be + V-ing",
+              "example": "The company is believed to be planning layoffs."
+            },
+            {
+              "form": "S + be + V3 + to have + V3",
+              "use": "Aktarımdan önce olmuş",
+              "pattern": "S + is reported to have + V3",
+              "example": "The suspect is reported to have left the country."
+            },
+            {
+              "form": "S + be + V3 + to have been + V3",
+              "use": "Daha önce olmuş ve edilgen",
+              "pattern": "S + is reported to have been + V3",
+              "example": "The hikers are reported to have been seen near the trail."
+            },
+            {
+              "form": "be supposed to",
+              "use": "Beklenti, plan ya da kural",
+              "pattern": "S + is supposed to + V",
+              "example": "The meeting is supposed to start at nine."
+            }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "text",
+          "body": "Zaman farkını taşıyan parça **to**'dan sonrasıdır: aktarım ile olay aynı zamandaysa \"to + fiil\", olay daha önce olduysa \"to have + V3\". Özne o eylemi yapmıyor da ona bir şey yapılıyorsa araya bir **be** / **been** girer: to be seen, to have been seen."
+        },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "It is said that the recipe is over a hundred years old.", "note": "Genel söylenti → It is said that + cümle" },
+            { "sentence": "The company is believed to be planning layoffs.", "note": "Şu an süren, aynı zaman → is believed to be + V-ing" },
+            { "sentence": "The suspect is reported to have left the country.", "note": "Aktarımdan önce olmuş → is reported to have + V3" },
+            { "sentence": "Two climbers are reported to have been rescued last night.", "note": "Hem geçmiş hem edilgen → to have been + V3" },
+            { "sentence": "The train is supposed to arrive at six.", "note": "Beklenti bildiren bir plan → is supposed to + fiil" }
+          ]
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The CEO is said that he is very demanding.",
+          "right": "The CEO is said to be very demanding.",
+          "why": "İki kalıp birbirine karışmış. \"that\" ile devam eden yapı yalnızca It ile başlar (It is said that the CEO is very demanding); özneyle başlayan yapıda ise \"to + fiil\" gelir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The suspect is reported to leave the country last night.",
+          "right": "The suspect is reported to have left the country last night.",
+          "why": "\"last night\" olayın aktarımdan önce olduğunu söylüyor. \"to + fiil\" aktarımla aynı zamanı anlatır; geçmişte kalmış bir olay için \"to have + V3\" gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The meeting is supposed start at nine.",
+          "right": "The meeting is supposed to start at nine.",
+          "why": "\"be supposed\" tek başına kullanılmaz; kalıp **be supposed to + yalın fiil**'dir. Türkçeye \"başlaması gerekiyordu\" diye çevrilir ve çoğu zaman işlerin öyle gitmediğini ima eder."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Boşluğun iki yanına bak",
+          "rules": [
+            { "condition": "Boşluk cümlenin başındaysa ve arkasından tam bir cümle (özne + fiil) geliyorsa", "then": "It is said/believed/reported that ..." },
+            { "condition": "Boşluğun önünde asıl özne varsa ve arkasından yalın fiil geliyorsa", "then": "S + is said to + V" },
+            { "condition": "Aktarılan olay aktarımdan daha önce olmuşsa", "then": "to have + V3" },
+            { "condition": "Olay hem geçmişteyse hem de özne eylemi yapmıyorsa (görülmüş, bulunmuş, kurtarılmış)", "then": "to have been + V3" },
+            { "condition": "Beklenen ya da planlanan, ama gerçekleşmemiş olabilecek bir durumdan söz ediliyorsa", "then": "is supposed to + V" }
+          ]
+        }
+      ]
     },
     {
       "category": "By + Agent: Include vs Omit",
-      "intro": "Edilgen cümlede failin kim olduğunu her zaman söylemek zorunda değilsin — bazen söylemek gereksiz, bazen ise cümlenin en önemli parçası olur.",
-      "form": "... + by + fail (isteğe bağlı) → 'The window was broken (by the storm).'",
-      "meaning": "Fail (eylemi yapan) bilinmiyorsa, önemli değilse veya bariz/tahmin edilebilirse 'by' ile belirtilmez. Fail beklenmedik, özel ya da vurgulanmak istenen bir bilgiyse 'by + fail' mutlaka cümleye eklenir.",
-      "usage": "Kendine şunu sor: 'Failin kim olduğu bu cümlenin en önemli/şaşırtıcı bilgisi mi, yoksa gereksiz/bariz bir detay mı?' Cevap 'gereksiz/bariz' ise 'by' çıkar; 'önemli/şaşırtıcı' ise 'by' kalır.",
-      "examples": [
-        { "sentence": "The window was broken last night.", "note": "Fail önemli değil → by belirtilmez" },
-        { "sentence": "This painting was created by a twelve-year-old artist.", "note": "Fail şaşırtıcı/önemli → by + fail belirtilir" },
-        { "sentence": "The injured man was taken to the hospital.", "note": "Fail bariz (medical staff) → by belirtilmez" },
-        { "sentence": "The vaccine was developed by a team at Oxford.", "note": "Fail'in kimliği önemli/övgüye değer → by + fail belirtilir" }
-      ],
-      "commonMistakes": [
-        { "wrong": "My wallet was stolen by someone on the train.", "right": "My wallet was stolen on the train.", "why": "'By someone' gibi belirsiz bir fail belirtmek gereksizdir ve doğal İngilizce'de tercih edilmez; fail bilinmiyorsa tamamen çıkarılır." }
-      ],
-      "recap": "Fail önemsiz/bariz/belirsizse cümleden çıkar; önemli/şaşırtıcı/övgüye değerse 'by + fail' ile mutlaka belirt."
+      "summary": "'By' ne zaman gerekli, ne zaman fazlalık?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Edilgen çatı okulda çoğu zaman \"be + V3 + by\" diye tek parça bir kalıp gibi öğretilir, bu yüzden \"by\" cümleye refleksle eklenir. Oysa gerçek metinlerde edilgen cümlelerin büyük çoğunluğunda fail hiç geçmez; faili gizleyebilmek edilgen çatıyı seçmenin ana sebeplerinden biridir. \"By\" bir süs değil, bir karardır."
+        },
+        {
+          "type": "contrast",
+          "heading": "By var, by yok",
+          "sides": [
+            {
+              "label": "Passive without an agent",
+              "gloss": "Fail bilinmiyorsa, önemsizse ya da bağlamdan zaten tahmin edilebiliyorsa cümleden düşer. En yaygın kullanım budur.",
+              "example": "My wallet was stolen on the train."
+            },
+            {
+              "label": "Passive + by + agent",
+              "gloss": "Fail cümlenin en önemli ya da en şaşırtıcı bilgisiyse söylenir ve cümlenin sonundaki vurgulu yerde durur.",
+              "example": "The novel was written by a fifteen-year-old student."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "by mı, with mi, yoksa hiçbiri mi",
+          "rows": [
+            { "form": "Passive", "use": "Fail söylenmez", "pattern": "S + be + V3", "example": "The patient was taken to hospital." },
+            {
+              "form": "Passive + by",
+              "use": "Fail söylenir",
+              "pattern": "S + be + V3 + by + fail",
+              "example": "The vaccine was developed by a team at Oxford."
+            },
+            {
+              "form": "Passive + with",
+              "use": "Kullanılan araç ya da malzeme söylenir",
+              "pattern": "S + be + V3 + with + araç",
+              "example": "The cake was made with dark chocolate."
+            },
+            { "form": "Active", "use": "Fail zaten öznedir", "pattern": "S + V + O", "example": "A team at Oxford developed the vaccine." }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "The window was broken during the night.", "note": "Fail bilinmiyor, önemli değil → by yok" },
+            { "sentence": "The injured man was taken to hospital.", "note": "Fail bariz (sağlık ekibi) → by yok" },
+            { "sentence": "This painting was created by a twelve-year-old.", "note": "Fail şaşırtıcı → by + fail" },
+            { "sentence": "The law was passed by parliament last year.", "note": "Failin kimliği bilgi veriyor → by + fail" },
+            { "sentence": "The door was forced open with a screwdriver.", "note": "Araç → with, by değil" }
+          ]
+        },
+        {
+          "type": "pitfall",
+          "wrong": "My wallet was stolen by someone on the train.",
+          "right": "My wallet was stolen on the train.",
+          "why": "\"by someone\", \"by people\", \"by them\" gibi belirsiz failler yazılmaz: cümleye hiçbir bilgi eklemezler. Fail bilinmiyorsa edilgen cümle zaten onu söylememek için kurulmuştur."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The vaccine was developed a team of researchers.",
+          "right": "The vaccine was developed by a team of researchers.",
+          "why": "Fail cümlede duruyorsa **by** zorunludur; atlanırsa \"aşı bir ekip geliştirdi\" gibi bozuk bir cümle çıkar. Boşluktan sonra faili söyleyen bir isim öbeği varsa by mutlaka gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The letter was written by a fountain pen.",
+          "right": "The letter was written with a fountain pen.",
+          "why": "**by** eylemi yapanı gösterir, **with** ise kullanılan aracı. Dolma kalem mektubu kendi yazmadı; onu kullanan biri yazdı."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "By yazayım mı?",
+          "rules": [
+            { "condition": "Faili sen de bilmiyorsan ya da someone / people / they gibi belirsizse", "then": "Passive without an agent" },
+            { "condition": "Fail bağlamdan zaten belliyse (doktorlar, polis, garsonlar)", "then": "Passive without an agent" },
+            { "condition": "Fail cümlenin en şaşırtıcı ya da en bilgilendirici parçasıysa", "then": "Passive + by + agent" },
+            { "condition": "Boşluktan hemen sonra faili söyleyen bir isim öbeği geliyorsa", "then": "Passive + by + agent" },
+            { "condition": "Söylenen şey fail değil, kullanılan araç ya da malzemeyse", "then": "Passive + with + instrument" }
+          ]
+        }
+      ]
     }
   ]
 }

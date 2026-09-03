@@ -38,16 +38,23 @@ in their own browser's `localStorage`.
 ## Commands
 
 ```bash
+npm run format      # canonical formatting for the content JSON
 npm run validate    # content schema + manifest/topic-file consistency
 npm run color       # every colour token re-measured (WCAG 2 + APCA)
 npm test            # unit tests (node:test) for quiz-engine and storage
-npm run check       # all three
+npm run check       # all four (format as a --check)
 npm run serve       # static server on :8000 (fetch() needs an HTTP origin)
 npm run verify      # drives the real app in Chromium — needs `serve` running
 ```
 
 `check` runs in CI on every push and PR to `main` and `test`. `verify`
 does not: it needs a browser, and this project has no dependencies.
+
+**Run `npm run format` after editing a content file.** Several sessions
+write into `data/`, and any of them that reads a topic file, changes one
+lesson and writes it back with `JSON.stringify(data, null, 2)` reformats
+every question in the file at the same time — a four-line change arrives
+as a four-hundred-line diff. `check` fails when the files drift.
 
 ## Branches
 
@@ -90,6 +97,7 @@ data/manifest.json    Topic index
 data/<topic>/         One JSON file per topic: its lessons and questions
 tools/
   validate-content.mjs  Content schema + cross-file consistency
+  format-content.mjs    Canonical formatting for the content JSON
   palette.mjs           Re-measures every colour token (WCAG 2 + APCA)
   color.mjs             Zero-dependency OKLCH / contrast maths
   verify-ui.mjs         Drives the real app in Chromium at four widths
@@ -147,12 +155,20 @@ them, so renaming a category renames the lesson and resets progress for
 it. A category rename is a taxonomy change: questions, manifest and
 lesson move together or not at all.
 
-**Lessons are articles, not screens.** A lesson file carries named prose
-sections (`intro`, `form`, `meaning`, `usage`, `examples`,
-`commonMistakes`, `recap`); `js/education.js` decides how they are paced
-into reader steps and pulls check cards from the questions sharing the
-lesson's category. Presentation can change without touching content —
-and it already has, more than once.
+**A lesson is a page of typed blocks, not an article and not screens.**
+A lesson file carries `{ category, summary, blocks }`, where each block
+declares what it *is* — a `contrast`, a set of `forms`, a `pitfall`, a
+`decision`, a `check`. The types are semantic, so `js/education.js` owns
+every decision about how they look, and `check` blocks are still filled
+from the questions sharing the lesson's category.
+
+This replaced an article of named prose sections, which replaced a
+sequence of story cards. Each time, the presentation changed and the
+*content* had to be rewritten with it — which is precisely what a block
+vocabulary is meant to stop. The blocks are the last schema change that
+should be forced by a redesign; if a fourth one looks necessary, the
+question to ask first is whether the block types are wrong or only their
+rendering is.
 
 ## Content authoring
 

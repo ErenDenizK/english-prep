@@ -116,15 +116,43 @@ confirmation dialog became a native `<dialog>` (deleting the hand-rolled
 focus trap), and `tools/verify-ui.mjs` was written so the browser sweep is
 a checked-in command rather than a script each session rebuilds.
 
-**3 · Eğitim: the new lesson model.** Schema and reader together, plus
-`tools/validate-content.mjs`, `docs/CONTENT_GUIDE.md` and the briefs in
-`docs/agents/` in the same change — the project's standing rule is that
-schema, validator and guide move together or not at all.
+**3 · Eğitim: the new lesson model.** ✅ *Done.* A lesson is now
+`{ category, summary, blocks }` — seven semantic block types (`text`,
+`contrast`, `forms`, `examples`, `pitfall`, `decision`, `check`) — and the
+reader holds it as one scrolling page with a sticky header carrying the
+way out and the read position. Schema, validator, guide and the two agent
+briefs moved in the same change, as the standing rule requires.
 
-**4 · Content rewrite.** 18 lessons in the new model. This is the
-delegated work: two agents, one pair per topic, from the updated brief.
-Tenses first as the reference implementation, reviewed closely before the
-other two topics start.
+Three decisions worth keeping:
+
+- **Reaching the end is what finishes a lesson.** There is no "Dersi
+  bitir" button, because a button that only confirms what the scroll
+  position already proved is a tap asked for nothing. Progress is stored
+  as a read fraction rather than a step index, so it stays meaningful when
+  an author adds a block to a lesson someone is halfway through.
+- **No action bar in the reader at all.** A filled amber slab pinned under
+  every screen is the loudest thing on a surface whose job is to be quiet.
+  The sticky header is the way out; the things to do next are at the end,
+  where you arrive at them.
+- **`tools/format-content.mjs`.** Several sessions write into `data/`, and
+  any of them that round-trips a topic file through `JSON.stringify`
+  reformats every question in it. That happened once; a formatter and a
+  `--check` in CI is the fix, not a note asking people to remember.
+
+**4 · Content rewrite.** ✅ *Done.* 18 lessons, three agents in parallel,
+one per topic — with the first Tenses lesson written by hand first as the
+reference implementation, which is what made three parallel arms safe
+rather than three divergent interpretations of a prose spec.
+
+The agents' reports were worth as much as the lessons. They found a
+signal word taught as a Present Perfect trigger that the same lesson's own
+example contradicted; a `when` rule that would have been actively wrong on
+one of the questions; a "common mistake" whose wrong and right sentences
+differed in three things at once; and a pitfall marking perfectly good
+English as an error. Those are all failures the previous format hid inside
+paragraphs. Open content questions they raised are recorded at the end of
+`docs/education-notes.md` — including two questions that may be in the
+wrong category, which is the owner's call and not an assistant's.
 
 **5 · Verify and ship.** `npm run verify` green at 320/390/768/1280, then
 a real-device pass by the owner, then `main`.

@@ -157,49 +157,69 @@ async function runFlow(page, viewport) {
   await auditLayout(page, "Eğitim indeksi", viewport.width);
 
   await page.locator(".row").first().click();
-  await page.waitForSelector("#lesson-reader .progress");
+  await page.waitForSelector("#lesson-reader .reader__top");
   ok(await page.locator("#shell-header").isHidden(), "okuyucuda başlık gizli (odaklı mod)");
   ok(await page.locator("#bottom-nav").isHidden(), "okuyucuda alt navigasyon gizli");
+  ok(await page.locator("#lesson-bar").isHidden(), "okuyucuda alt eylem barı yok");
   ok(/#egitim\//.test(page.url()), "ders URL ile adreslenebilir");
   await auditLayout(page, "okuyucu", viewport.width);
 
-  // Forward to the first check question, and answer it.
+  // A lesson is one scrolling page, so the way out and the position have
+  // to stay on screen however far down it the learner is.
+  await page.evaluate(() => document.getElementById("shell-scroll").scrollBy({ top: 1200 }));
+  await page.waitForTimeout(150);
+  const stickyBox = await page.locator("#lesson-reader .reader__top").boundingBox();
+  ok(stickyBox !== null && stickyBox.y < 80, "okuyucu başlığı kaydırırken ekranda kaldı");
+  const readout = await page.locator("#lesson-reader .reader__top .t-num").textContent();
+  ok(/^%\d+$/.test(readout) && readout !== "%0", `okuma yüzdesi ilerledi (${readout})`);
+
+  // An inline check: answering must not throw the learner's place away,
+  // because the feedback they just earned is right where they are looking.
+  await page.evaluate(() => document.getElementById("shell-scroll").scrollTo({ top: 0 }));
+  await page.waitForTimeout(100);
   let sawCheck = false;
-  for (let step = 0; step < 12 && !sawCheck; step += 1) {
-    if (await page.locator(".option").count()) {
-      const barBefore = await page.locator("#lesson-bar").boundingBox();
-      await page.locator(".option").first().click();
-      await page.waitForSelector(".feedback");
-      const barAfter = await page.locator("#lesson-bar").boundingBox();
-      ok(barBefore.y === barAfter.y, "cevap alt barı yerinden oynatmadı");
-      ok(await page.locator(".feedback__verdict svg").count() > 0, "geri bildirimde glif var (renk tek kanal değil)");
+  for (let attempt = 0; attempt < 24; attempt += 1) {
+    const options = page.locator("#lesson-reader .option");
+    if (await options.count()) {
+      await options.first().scrollIntoViewIfNeeded();
+      await page.waitForTimeout(120);
+      const before = await page.evaluate(() => document.getElementById("shell-scroll").scrollTop);
+      await options.first().click();
+      await page.waitForSelector("#lesson-reader .feedback");
+      await page.waitForTimeout(120);
+      const after = await page.evaluate(() => document.getElementById("shell-scroll").scrollTop);
+      ok(Math.abs(after - before) < 4, `cevap kaydırma konumunu korudu (${before} → ${after})`);
+      ok(
+        await page.locator("#lesson-reader .feedback__verdict svg").count() > 0,
+        "geri bildirimde glif var (renk tek kanal değil)"
+      );
       await auditLayout(page, "kontrol sorusu", viewport.width);
       sawCheck = true;
       break;
     }
-    await page.locator("#lesson-bar button").last().click();
+    await page.evaluate(() => document.getElementById("shell-scroll").scrollBy({ top: 400 }));
     await page.waitForTimeout(60);
   }
   ok(sawCheck, "derste kontrol sorusu göründü");
 
-  // An unanswered check must never lock the way forward.
-  for (let step = 0; step < 14; step += 1) {
-    const label = (await page.locator("#lesson-bar button").last().textContent()) ?? "";
-    await page.locator("#lesson-bar button").last().click();
-    await page.waitForTimeout(60);
-    if (label.includes("bitir")) {
-      break;
-    }
-  }
-  await page.waitForSelector("#lesson-reader .surface");
-  ok(true, "ders sonuna ulaşıldı");
-  await auditLayout(page, "ders tamamlandı", viewport.width);
+  // Reaching the end is what finishes a lesson — there is no button for it.
+  await page.evaluate(() => {
+    const region = document.getElementById("shell-scroll");
+    region.scrollTo({ top: region.scrollHeight });
+  });
+  await page.waitForTimeout(250);
+  ok(
+    (await page.locator("#lesson-reader .reader__top .t-num").textContent()) === "%100",
+    "sona inince okuma %100"
+  );
+  ok(await page.locator("#lesson-reader .surface").count() > 0, "ders sonu kartı göründü");
+  await auditLayout(page, "ders sonu", viewport.width);
 
-  await page.locator("#lesson-reader button").first().click();
+  await page.locator("#lesson-reader .reader__top button").first().click();
   await page.waitForSelector("#lesson-index .row");
   ok(
     (await page.locator("#lesson-index").textContent()).includes("1 tanesi tamamlandı"),
-    "ilerleme kaydedildi"
+    "sona kadar okumak dersi tamamladı"
   );
   ok(await page.locator("#shell-header").isVisible(), "indekse dönünce başlık geri geldi");
 
@@ -254,6 +274,57 @@ async function runFlow(page, viewport) {
   await auditLayout(page, "Profil", viewport.width);
 
   ok(errors.length === 0, `konsol temiz${errors.length ? ` — ${[...new Set(errors)].join(" | ")}` : ""}`);
+}
+
+/**
+ * Opens every lesson there is, at one width, and audits each. The journey
+ * above only ever sees the first lesson, and a block type that renders
+ * badly in exactly one lesson — a `forms` block whose patterns are long, a
+ * `contrast` with three sides — is precisely the failure that reaches a
+ * learner and never reaches a test.
+ */
+async function runEveryLesson(page) {
+  const errors = [];
+  page.on("console", (message) => {
+    if (message.type() === "error" && !IGNORED_CONSOLE.test(message.text())) {
+      errors.push(message.text());
+    }
+  });
+  page.on("pageerror", (error) => errors.push(String(error)));
+
+  await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await page.waitForSelector(".row");
+  const lessons = await page.locator("#lesson-index .row").count();
+  ok(lessons > 0, `${lessons} ders bulundu`);
+
+  for (let index = 0; index < lessons; index += 1) {
+    await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+    await page.waitForSelector(".row");
+    await page.locator("#lesson-index .row").nth(index).click();
+    await page.waitForSelector("#lesson-reader .reader__top");
+
+    const title = (await page.locator("#lesson-reader h1").textContent())?.trim() ?? `#${index}`;
+    const blocks = await page.locator("#lesson-reader article > *").count();
+    ok(blocks > 3, `${title}: ${blocks} blok çizildi`);
+
+    // Scroll the whole lesson, auditing as it goes: an overflow can live
+    // three screens down as easily as on the first one.
+    for (let screen = 0; screen < 12; screen += 1) {
+      await auditLayout(page, `${title} (ekran ${screen + 1})`, 390);
+      const atEnd = await page.evaluate(() => {
+        const region = document.getElementById("shell-scroll");
+        const before = region.scrollTop;
+        region.scrollBy({ top: region.clientHeight - 120 });
+        return region.scrollTop === before;
+      });
+      await page.waitForTimeout(60);
+      if (atEnd) {
+        break;
+      }
+    }
+  }
+
+  ok(errors.length === 0, `her derste konsol temiz${errors.length ? ` — ${[...new Set(errors)].join(" | ")}` : ""}`);
 }
 
 /** The parts of §8 that do not vary with the viewport. */
@@ -365,6 +436,11 @@ try {
     await runFlow(page, viewport);
     await context.close();
   }
+
+  console.log("\n=== her ders, 390px ===");
+  const lessonContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  await runEveryLesson(await lessonContext.newPage());
+  await lessonContext.close();
 
   console.log("\n=== erişilebilirlik sözleşmesi (§8) ===");
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });

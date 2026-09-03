@@ -149,66 +149,287 @@ should name a confusable pair or triad wherever the grammar allows it
 
 ## Lessons (Eğitim tab)
 
-A lesson is authored as a **short article**, not as a sequence of screens.
-You write named sections; the app decides how they are paced into the
-reader's steps and where to slot in check questions (see
-`js/education.js`). That split is deliberate — presentation can change
-without touching a single content file, and it has already changed more
-than once.
+A lesson is **a page you scroll**, built out of typed blocks. Not a
+sequence of screens, and no longer an article of named prose sections.
+
+That change came from watching the article version on a phone. Its
+`meaning` and `usage` were three-to-five-sentence Turkish paragraphs, and
+the parts that actually win exam marks — the contrast between the two
+forms, the signal words, the decision procedure — were buried inside them
+as clauses. A block says what it *is*, so the app can give each one the
+presentation it deserves: a contrast reads as a contrast, a signal word
+reads as a signal word.
+
+The blocks are **semantic, not presentational**. `contrast` means "these
+two forms are being set against each other", not "draw two columns". How
+that looks is still entirely the app's business, and it will change again.
 
 One lesson per category, in the order they should be studied.
 
 ```json
 {
   "category": "Present Perfect vs Past Simple",
-  "intro": "Bu ikisi, sınavlarda en sık karıştırılan zaman çiftlerinden biridir...",
-  "form": "Past Simple — Olumlu: S + V2 → 'She visited.' ... Present Perfect — Olumlu: S + have/has + V3 → 'She has visited.'",
-  "meaning": "Past Simple, geçmişte belirli bir zamanda başlayıp biten bir olayı anlatır...",
-  "usage": "Past Simple 'yesterday, last year, in 2020' gibi belirli bir geçmiş nokta veren ifadelerle kullanılır...",
-  "examples": [
-    { "sentence": "I visited Paris last summer.", "note": "Belirli geçmiş zaman → Past Simple" },
-    { "sentence": "I have visited Paris three times.", "note": "Ne zaman önemli değil → Present Perfect" }
-  ],
-  "commonMistakes": [
-    {
-      "wrong": "I have visited Paris last summer.",
-      "right": "I visited Paris last summer.",
-      "why": "'Last summer' belirli bir geçmiş zaman ifadesidir; belirli zaman ifadeleriyle Present Perfect kullanılmaz."
-    }
-  ],
-  "recap": "Belirli bir geçmiş zaman ifadesi görürsen Past Simple; since/for/already/yet gibi bir ifade görürsen Present Perfect."
+  "summary": "Geçmiş kapandı mı, şimdiye mi uzanıyor?",
+  "blocks": [
+    { "type": "text", "body": "Bu ikisi sınavlarda en sık karıştırılan çifttir..." },
+    { "type": "contrast", "sides": [
+      { "label": "Past Simple", "gloss": "Belirli bir zamanda başlayıp bitmiş...", "example": "I visited Paris last summer." },
+      { "label": "Present Perfect", "gloss": "Ne zaman olduğu önemli değil...", "example": "I have visited Paris three times." }
+    ]},
+    { "type": "check" }
+  ]
 }
 ```
 
 | Field | Language | Notes |
 | --- | --- | --- |
 | `category` | English | From the topic's taxonomy, verbatim. Unique within the topic. |
-| `intro` | Turkish | Two or three sentences: why this pair is worth a lesson, ideally naming the confusion a Turkish speaker actually has. Also used as the lesson's preview line on the index, so the first sentence has to stand alone. |
-| `form` | mixed | The structural patterns — `S + have/has + V3 → 'She has visited.'` — positive, negative and question for each form. Rendered in monospace, so keep it terse and parallel. |
-| `meaning` | Turkish | What each form actually *says*. Not usage rules yet: the idea behind the form. |
-| `usage` | Turkish | When each is used in practice — above all the signal words that decide it in an exam. |
-| `examples` | English + Turkish notes | 4–6 clean, **isolated** sentences (much simpler than a test paragraph — teaching, not testing). Each `note` names the form and why: `"Alışkanlık → Present Simple"`. Cover both/all forms in the contrast. |
-| `commonMistakes` | English + Turkish `why` | 2–3 entries of `{ wrong, right, why }`. The most valuable part of the lesson: real errors a Turkish speaker makes, not invented ones. `wrong` and `right` should differ in exactly the thing being taught. |
-| `recap` | Turkish | One or two sentences the learner could carry into the exam — a decision procedure ("see X → use Y"), not a summary of the article. |
+| `summary` | Turkish | **One line, at most 70 characters.** It is the lesson's line on the index, where it is clipped to a single line — so write one, rather than a sentence that will be cut. Ideally the question the lesson answers: `"Geçmiş kapandı mı, şimdiye mi uzanıyor?"` |
+| `blocks` | — | 6–14 blocks. Fewer is a stub; more is an article again. |
 
-Every field is required. There is no `id` and no `order`: the id is
-derived from the topic and the category (`tenses-present-perfect-vs-past-simple`),
-and the order is the array order. That means a content file carries no
-bookkeeping a contributor could renumber by accident — but it also means
-**renaming a category renames the lesson**, and a learner's progress for
-it starts over. Renaming a category is a taxonomy change: it has to be
-made in the questions, the manifest and the lesson together.
+There is no `id` and no `order`: the id is derived from the topic and the
+category (`tenses-present-perfect-vs-past-simple`), and the order is the
+array order. So a content file carries no bookkeeping anyone could
+renumber by accident — but it also means **renaming a category renames the
+lesson**, and a learner's progress for it starts over. Renaming a category
+is a taxonomy change: questions, manifest and lesson move together.
 
-### Check questions
+### The seven block types
 
-You do not author them. The reader pulls check cards from the questions
-that share the lesson's category, so a category never needs two parallel
-bodies of content kept in sync. They are not scored, not recorded, and
-never block progress — an unanswered check simply reads "Atla".
+Seven, and there will not be an eighth without a reason. A block
+vocabulary decays the same way an icon set does: one more "just for this
+lesson" at a time.
 
-The practical consequence for authoring: **a category's questions need to
-work as teaching, not only as testing**, since some of them will be met
+#### `text` — the connective tissue
+
+```json
+{ "type": "text", "body": "Türkçe'de 'gidiyorum' dediğinde..." }
+```
+
+Turkish. **At most 400 characters**, and the validator enforces it — a
+`text` block that grows past that is the wall of prose this schema exists
+to break up, and what it is really carrying is a `contrast` or a
+`decision` that has not been written as one yet. Blank-line-separated
+paragraphs are allowed inside it; `**bold**` works.
+
+#### `contrast` — two or three forms set against each other
+
+```json
+{ "type": "contrast", "heading": "Aradaki fark",
+  "sides": [
+    { "label": "Past Simple", "gloss": "Geçmişte belirli bir zamanda başlayıp bitmiş; bugünle bağı vurgulanmıyor.", "example": "I visited Paris last summer." },
+    { "label": "Present Perfect", "gloss": "Ne zaman olduğu belirsiz ya da önemsiz; önemli olan gerçekleşmiş olması.", "example": "I have visited Paris three times." }
+  ]}
+```
+
+2 or 3 `sides`. `label` is English (the form's name), `gloss` is Turkish
+and **one or two sentences** — a gloss that runs longer is a `text` block
+wearing a costume. `example` is optional English but nearly always worth
+having: a contrast the learner can see is worth three they have to imagine.
+`heading` is optional Turkish.
+
+This is the highest-value block in the schema, because every category in
+this app is a confusable pair. If a lesson has no `contrast`, ask why.
+
+#### `forms` — the structural patterns
+
+```json
+{ "type": "forms", "rows": [
+  { "form": "Past Simple", "use": "Olumlu", "pattern": "S + V2", "example": "She visited." },
+  { "form": "Past Simple", "use": "Olumsuz", "pattern": "S + didn't + V", "example": "She didn't visit." },
+  { "form": "Present Perfect", "use": "Olumlu", "pattern": "S + have/has + V3", "example": "She has visited." }
+]}
+```
+
+Deliberately **flat**: one row per pattern, grouped by `form` when it is
+drawn. Nesting this by form would put three levels in a hand-written JSON
+file, which is how content files acquire errors a validator has to catch
+instead of a shape that prevents them.
+
+`form` and `pattern` are English, `use` is Turkish, `example` is English.
+
+**`use` is a slot, not a polarity.** `Olumlu` / `Olumsuz` / `Soru` is the
+obvious filling when the block is a conjugation table, and it is not a
+closed set: where the block is a *pattern* table — four ways of talking
+about the future, six signal words and where each one sits in the sentence
+— `use` names what the row is for (`Kesinleşmiş plan`, `Başlangıç
+noktası`). Both are legitimate uses of the block. What matters is that the
+rows in one block answer the same question, so the reader can line them
+up; a block mixing polarities with purposes is two blocks.
+
+Do **not** invent a row to square off the grid. `must` has no past,
+`might` takes no requests: where a form genuinely lacks a row the other
+forms have, the gap is the teaching, and filling it is a lie about
+English.
+
+Keep `pattern` terse and parallel across rows: it is set in the serif and
+read as a formula.
+
+#### `examples` — sentences with a reason
+
+```json
+{ "type": "examples", "items": [
+  { "sentence": "I visited Paris last summer.", "note": "Belirli geçmiş zaman → Past Simple" },
+  { "sentence": "Have you ever been to Japan?", "note": "Hayat boyu deneyim sorusu → Present Perfect" }
+]}
+```
+
+3–6 clean, **isolated** English sentences — much simpler than a test
+paragraph, because this is teaching, not testing. Every `note` is Turkish
+and names the form *and* why. Cover every side of the contrast.
+
+#### `pitfall` — one real mistake, one block
+
+```json
+{ "type": "pitfall",
+  "wrong": "I have visited Paris last summer.",
+  "right": "I visited Paris last summer.",
+  "why": "'Last summer' belirli bir geçmiş zaman ifadesidir; belirli zaman ifadeleriyle Present Perfect kullanılmaz." }
+```
+
+The most valuable thing in a lesson: a real error a Turkish speaker makes,
+not an invented one. `wrong` and `right` must differ in **exactly** the
+thing being taught and nothing else — the validator checks they are not
+identical, but only an author can check they differ in the right place.
+2–3 per lesson, as separate blocks.
+
+#### `decision` — what to do when you see it
+
+```json
+{ "type": "decision", "heading": "Sınavda ne yapacaksın",
+  "rules": [
+    { "signals": ["yesterday", "in 2020", "two days ago"], "then": "Past Simple" },
+    { "signals": ["since", "for", "already", "yet", "ever"], "then": "Present Perfect" },
+    { "condition": "Olayın ne zaman olduğu hiç belirtilmemişse", "then": "Present Perfect" }
+  ]}
+```
+
+The procedure the learner carries into the exam. Each rule has **exactly
+one** of:
+
+- `signals` — an array of English trigger words or phrases. Drawn as
+  chips, because that is how they are met: scanned for, not read.
+- `condition` — a Turkish sentence, for a rule no word list captures.
+
+and `then` — English, and usually a form name (`Past Simple`), but a
+lesson whose whole subject is *which word goes in the gap* decides a word,
+and `then: "since"` is the right answer there. What `then` must be is the
+thing the learner writes down, in English, spelled identically everywhere
+it appears in one lesson. Where a rule genuinely admits more than one
+answer — *Must vs Can't vs Might/Could* has branches that do — a slash
+form (`"Might / Could"`) is the honest `then`; inventing a single name for
+two forms is not.
+
+A lesson should end on one of these, and it is the block a learner will
+come back for.
+
+**A signal that appears in both branches is worse than no signal.** `for`
+looks like a Present Perfect trigger until you meet *I lived there for
+five years* — what actually decides it is whether the period is still
+open. When the honest answer is a condition rather than a word list, write
+the condition. A trigger that holds two thirds of the time trains a habit
+that fails on exactly the questions an exam uses to separate students.
+
+#### `check` — a question, here
+
+```json
+{ "type": "check" }
+```
+
+Has no content, and that is the point. The reader fills it from the
+questions that share the lesson's category — shuffled once per opening,
+each `check` taking the next one, so a learner does not meet the same two
+questions every time. If a lesson asks for more checks than the category
+has questions, the extra blocks render as nothing. Checks are **not
+scored, not recorded, and never block progress**.
+
+Place 2–3 of them, and place them where the learner has just been given
+something worth trying — after a `contrast`, after the `pitfall`s. A check
+as the first block is a quiz, not a lesson. The validator warns if a
+lesson asks for more checks than its category has questions.
+
+The practical consequence for question authoring: **a category's questions
+have to work as teaching, not only as testing**, since some will be met
 right after the rule is explained rather than in an exam run.
+
+### What the validator enforces
+
+Every block type also takes an optional `heading` (Turkish) — a label for
+the block, for the cases where the type alone does not say enough.
+
+| Field | Required | Checked as |
+| --- | --- | --- |
+| `category`, `summary`, `blocks` | yes | error |
+| `summary` over 70 characters | — | **error** |
+| `text.body` | yes | error |
+| `text.body` over 400 characters | — | **error** |
+| `contrast.sides` (2 or 3) | yes | error |
+| `contrast.sides[].label`, `.gloss` | yes | error |
+| `contrast.sides[].example` | no | — |
+| two sides sharing a `label` | — | error |
+| `forms.rows` (≥2), `.form`, `.use`, `.pattern` | yes | error |
+| `forms.rows[].example` | no | — |
+| `examples.items` (≥3), `.sentence`, `.note` | yes | error |
+| `pitfall.wrong`, `.right`, `.why` | yes | error |
+| `wrong` identical to `right` | — | error |
+| `decision.rules` (≥2), `.then` | yes | error |
+| exactly one of `.signals` / `.condition` per rule | yes | error |
+| any other property on a `check` block | — | error |
+| an unknown block `type` | — | error |
+| fewer than 6 or more than 14 blocks | — | warning |
+| more than 6 `examples.items` | — | warning |
+| no `contrast` block in a lesson | — | warning |
+| no `check` block in a lesson | — | warning |
+| more `check` blocks than the category has questions | — | warning |
+| a `check` as the first block | — | warning |
+| a `gloss` over 200 characters | — | warning |
+| Turkish prose that does not look Turkish | — | warning |
+
+Character counts are JavaScript string length — UTF-16 code units, so `ğ`,
+`ş` and `İ` each count as one. An **unknown property** on any block other
+than `check` is currently ignored rather than rejected; do not rely on
+that, and do not invent fields.
+
+Two things the validator deliberately does **not** check, because only an
+author can: whether a `pitfall`'s `wrong` and `right` differ in exactly
+the thing being taught, and whether a `decision`'s signals really decide.
+Both are where a lesson is won or lost.
+
+**`then` is not linked to anything.** Nothing requires a `decision` rule's
+`then` to match a `contrast` side's `label` — a decision can name a form
+the lesson never set against another. Keep the spelling identical across
+one lesson anyway; the learner is matching strings by eye.
+
+**`**bold**` works in every Turkish prose field** — `text.body`, `gloss`,
+`note`, `why`, `condition`, `summary` — and it is the *only* inline markup
+there is. `*single asterisks*` render as literal asterisks; so does
+everything else. Blank-line-separated paragraphs are honoured in
+`text.body` only; everywhere else a field is one paragraph.
+
+That shortness is deliberate. The app builds every node and sets
+`textContent` — there is no `innerHTML` anywhere in it — so authored
+content can never inject markup whatever a content file contains, and the
+price of that guarantee is one bold marker and no more.
+
+### A shape that works
+
+Not a template. It is where to start when nothing suggests otherwise, and
+several of the Tenses lessons depart from it for good reasons: a category
+with four forms rather than two carries two `contrast` blocks along its
+two real axes, and a lesson that needs both of them before anything is
+worth trying puts its first `check` after `forms` instead.
+
+```
+text        why this pair is worth a lesson, and the confusion a Turkish
+            speaker actually has
+contrast    the two forms, side by side
+forms       the structural patterns
+check
+examples    sentences that show the contrast doing its work
+pitfall     ×2–3, each its own block
+check
+decision    the procedure to carry into the exam
+```
 
 ---
 
