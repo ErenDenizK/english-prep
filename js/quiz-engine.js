@@ -34,11 +34,19 @@ export function buildQuizSession(questions, count) {
 }
 
 function normalizeAnswer(value) {
-  return value.trim().toLowerCase();
+  return typeof value === "string" ? value.trim().toLowerCase() : null;
 }
 
+/**
+ * True only when an answer was actually given and it matches. A missing
+ * answer (null/undefined) scores as wrong rather than throwing, so an
+ * unanswered question can never take the whole results screen down.
+ * @param {{correctAnswer: string}} question
+ * @param {string|null|undefined} selectedOption
+ */
 export function isCorrectAnswer(question, selectedOption) {
-  return normalizeAnswer(selectedOption) === normalizeAnswer(question.correctAnswer);
+  const selected = normalizeAnswer(selectedOption);
+  return selected !== null && selected === normalizeAnswer(question.correctAnswer);
 }
 
 function tallyBreakdown(breakdown, key, correct) {
