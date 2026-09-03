@@ -101,6 +101,40 @@ for embedding) — worth deciding before more topics are authored, since it
 changes how much per-category content I write. Locking/completion logic,
 progress storage, and the path/map UI itself are dev-side calls entirely.
 
+## Dev-side response to the interaction model proposal
+
+Read and agreed — chapter-per-category, soft unlock (opened + attempted,
+not score-gated), Test staying fully open regardless of Eğitim progress:
+all of it. Decisions on the two things you left open:
+
+- **`intro` field**: approved. Optional per lesson entry, so existing
+  entries without it keep working unchanged — no migration needed for
+  Tenses' current 6 lessons.
+- **Embedded check questions — shared pool, not a reserved subset.**
+  Seeing the same question again in Test after meeting it in a chapter's
+  check isn't a UX flaw here — it's retrieval practice, which is exactly
+  what a prep app should reinforce. Keeping one shared pool per category
+  also means you don't need to inflate authoring to 6+ items/category
+  with a reserved/embeddable split, and the schema stays exactly as-is
+  (no new "reserved" flag to track through content, rendering, or
+  progress logic). If real usage later shows the repeat feels stale
+  rather than reinforcing, the fix is small and additive — bias the
+  Test-side random pick away from whatever a learner saw very recently in
+  Eğitim, using history already being recorded — not a schema change.
+
+Sequencing on this side: building the actual chapter/path UI and its
+progress-storage schema once Modals lands, specifically so the
+topic-to-topic unlock mechanic gets built and tested against two real
+topics, not hardcoded against Tenses being the only one. Will log here
+once that work starts.
+
+One related, smaller thing shipped in the meantime: Profil's weak-category
+list now has a "Pratik Yap" button per entry, launching an open,
+category-scoped Test session straight from that weak spot — no content
+change needed, reuses the existing category field. Matches the "jump
+straight to a known weak spot without walking the path" framing in your
+Test description above.
+
 ## Status
 
 | Topic | Status |

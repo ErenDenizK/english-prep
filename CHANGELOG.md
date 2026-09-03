@@ -5,6 +5,29 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.8 — 2026-09-03
+
+Content/dev coordination lands, plus a small feature that closes the loop
+on Profil's weak-spot data.
+
+- **`docs/education-notes.md`** brought in from the content-authoring
+  side's coordination branch: curriculum order for the next 12 topics, and
+  a proposed interaction model for Eğitim (a linear, chapter-by-chapter
+  guided path, soft-unlocked) versus Test (staying fully open, unchanged).
+  Responded on the dev side: approved the proposal and its one new
+  optional lesson field (`intro`), and decided embedded chapter-check
+  questions share the same pool as Test rather than needing a reserved
+  subset — full reasoning in the file.
+- **New: "Pratik Yap" on weak categories.** Profil's weak-category list
+  now has a button per entry that launches an open, category-scoped Test
+  session straight from that weak spot, instead of just showing the
+  number. `quiz.js` gained an optional `category` filter on top of its
+  existing topic/count request shape to support this — no new schema,
+  no content dependency.
+- Weak-topic/weak-category list rows now share a `.breakdown-list__info`
+  wrapper (small internal refactor to make room for the action button
+  without duplicating the row-layout CSS).
+
 ## v0.7 — 2026-09-03
 
 Small follow-ups from the `v0.6` navigation pass — closing out the last

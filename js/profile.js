@@ -14,6 +14,7 @@ import {
   clearHistory,
 } from "./storage.js";
 import { createConfirmModal } from "./modal.js";
+import { setQuizRequest } from "./session-state.js";
 
 const container = document.getElementById("profile-container");
 let resetModal;
@@ -83,7 +84,10 @@ function renderStats(stats) {
 // Entries arrive sorted weakest-first (lowest accuracy first) — the rank
 // number makes that order visible instead of implicit, since without it
 // the list reads as an arbitrary ordering rather than "worst to best".
-function renderWeakList(heading, entries, resolveName) {
+// `buildAction`, when given, appends a trailing button per entry (used by
+// the category list's "Pratik Yap" — weak topics already have a start
+// button on their home-page card, so they don't need a second one here).
+function renderWeakList(heading, entries, resolveName, buildAction) {
   if (entries.length === 0) {
     return null;
   }
@@ -94,13 +98,23 @@ function renderWeakList(heading, entries, resolveName) {
   const list = el("ul", "breakdown-list");
   entries.forEach((entry, index) => {
     const item = document.createElement("li");
-    item.appendChild(el("span", null, `${index + 1}. ${resolveName(entry)}`));
-    item.appendChild(el("span", null, `${entry.correct}/${entry.total}`));
+    const info = el("div", "breakdown-list__info");
+    info.appendChild(el("span", null, `${index + 1}. ${resolveName(entry)}`));
+    info.appendChild(el("span", "breakdown-list__score", `${entry.correct}/${entry.total}`));
+    item.appendChild(info);
+    if (buildAction) {
+      item.appendChild(buildAction(entry));
+    }
     list.appendChild(item);
   });
   section.appendChild(list);
 
   return section;
+}
+
+function startCategoryPractice(category, allTopicIds) {
+  setQuizRequest({ mode: "topic", topicIds: allTopicIds, category, count: "all" });
+  window.location.href = "quiz.html";
 }
 
 function renderSettings() {
@@ -131,7 +145,18 @@ async function render() {
     container.appendChild(weakTopics);
   }
 
-  const weakCategories = renderWeakList("Zayıf Olduğun Kategoriler", getWeakCategories(), (entry) => entry.category);
+  const allTopicIds = manifest.topics.filter((topic) => !topic.comingSoon).map((topic) => topic.id);
+  const weakCategories = renderWeakList(
+    "Zayıf Olduğun Kategoriler",
+    getWeakCategories(),
+    (entry) => entry.category,
+    (entry) => {
+      const btn = el("button", "btn btn--secondary btn--sm", "Pratik Yap");
+      btn.type = "button";
+      btn.addEventListener("click", () => startCategoryPractice(entry.category, allTopicIds));
+      return btn;
+    }
+  );
   if (weakCategories) {
     container.appendChild(weakCategories);
   }

@@ -77,6 +77,7 @@ function renderBreakdown(heading, breakdown, resolveName) {
     item.appendChild(name);
 
     const score = document.createElement("span");
+    score.className = "breakdown-list__score";
     score.textContent = `${stats.correct}/${stats.total}`;
     item.appendChild(score);
 
