@@ -31,6 +31,22 @@
         "Should vs Ought To vs Had Better",
         "Can vs Could vs Be Able To"
       ]
+    },
+    {
+      "id": "passive-voice",
+      "title": "Passive Voice",
+      "tier": "core-grammar",
+      "file": "data/passive-voice/passive-voice.json",
+      "questionCount": 24,
+      "contentVersion": 1,
+      "categories": [
+        "Tense Forms in Passive",
+        "Passive with Modals",
+        "Modal Perfects in Passive",
+        "Causative: Have/Get Something Done",
+        "Passive Reporting Structures",
+        "By + Agent: Include vs Omit"
+      ]
     }
   ]
 }
