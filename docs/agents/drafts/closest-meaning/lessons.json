@@ -394,6 +394,10 @@
             "note": "Zarf; beklenmedik olan, however'dan sonraki cümledir"
           },
           {
+            "sentence": "It was expensive, but they went ahead with the plan.",
+            "note": "\"but\" da bir zıtlık bağlacıdır: ödünü kendinden önceki cümleye, asıl iddiayı sonrakine koyar"
+          },
+          {
             "sentence": "They went ahead with the plan despite the cost.",
             "note": "Zıtlık öbeği sona geldi; hangi tarafın beklenmedik olduğu değişmedi"
           },
@@ -449,8 +453,12 @@
             "then": "Overshoot"
           },
           {
-            "condition": "Orijinal olayın gerçekleştiğini söylerken şık onu bir plana ya da ihtimale çeviriyorsa",
+            "condition": "Kesinlik derecesi değişmişse: orijinal olayın gerçekleştiğini söylerken şık onu bir ihtimale çeviriyorsa, ya da orijinal ihtimal bildirirken şık onu olmuş bitmiş gibi söylüyorsa",
             "then": "Re-modalise"
+          },
+          {
+            "condition": "İki cümle de aynı rolde duruyor ama biri başka bir zamana taşınmışsa",
+            "then": "Re-time"
           },
           {
             "condition": "İki cümle de aynı rolde duruyor ve yalnızca edat / bağlaç / zarf değişmişse",
@@ -506,6 +514,12 @@
             "example": "A is not as long as B."
           },
           {
+            "form": "as ... as",
+            "use": "Kat olarak eşitsizlik",
+            "pattern": "A + V + twice / half as much + as + B",
+            "example": "A sells twice as much bread as B."
+          },
+          {
             "form": "Comparative",
             "use": "Kısa sıfat",
             "pattern": "A + be + adj-er + than + B",
@@ -554,6 +568,10 @@
           {
             "sentence": "A is less expensive than B.",
             "note": "\"less ... than\" ile \"not as ... as\" eşdeğerdir; ikisi de aynı yönü gösterir"
+          },
+          {
+            "sentence": "B sells half as much bread as A.",
+            "note": "\"A, B'nin iki katı\" ile \"B, A'nın yarısı\" aynı şeyi söyler; kat tersine çevrilirken taraflar da yer değiştirir"
           },
           {
             "sentence": "The more he explained, the more confused we became.",
@@ -607,7 +625,7 @@
             "then": "Reverse"
           },
           {
-            "condition": "Şık karşılaştırmayı mutlak bir yargıya çevirmişse (\"yavaş\", \"pahalı\", \"en iyisi\")",
+            "condition": "Şık karşılaştırmayı mutlak bir yargıya çevirmişse (\"yavaş\", \"pahalı\", \"en iyisi\") ya da kapsamı genişletmişse (\"her gün\", \"bütün yollar arasında\")",
             "then": "Overshoot"
           },
           {
@@ -619,7 +637,7 @@
             "then": "Same meaning"
           },
           {
-            "condition": "Fazlası aynı tarafta, yarılar aynı sırada ve karşılaştırma hâlâ bir karşılaştırmaysa",
+            "condition": "Fazlası hâlâ aynı tarafta ve karşılaştırma hâlâ bir karşılaştırmaysa — taraflar yer değiştirmiş olabilir, bakılacak olan kimde fazla olduğudur",
             "then": "Same meaning"
           }
         ]
@@ -712,6 +730,10 @@
             "note": "Derece yetti, içilebildi → enough to"
           },
           {
+            "sentence": "The soup was cool enough to drink, so it was not so hot that we had to wait.",
+            "note": "\"enough to\" ile olumlu \"so ... that\" aynı şeyi söyler: derece sonucu doğurur. \"too ... to\" ise sonucu engeller"
+          },
+          {
             "sentence": "The soup was so hot that we had to wait.",
             "note": "Derece bir sonuç cümlesine bağlandı → so ... that"
           },
@@ -767,11 +789,15 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "Şık \"enough\"u \"more than enough\" ya da \"plenty of\" gibi bir fazlalığa çevirmişse",
+            "condition": "Şık, orijinalin söylediğinden fazlasını söylüyorsa: \"enough\"u bir fazlalığa çevirmiş (\"more than enough\", \"plenty of\"), ya da kapsamı genişletmiş (\"hiçbiri\", \"o gün hiç\", \"her ağırlıkta\")",
             "then": "Overshoot"
           },
           {
-            "condition": "Şık sonucu olduğu gibi koruyorsa ve \"too ... to\" ile \"so ... that not\" arasında olumsuzluk kaybolmamışsa",
+            "condition": "Derece ile sonuç aynı kalmış ama olay başka bir zamana taşınmışsa (olmuş bitmiş bir şey gelecek zamana, ya da tersi)",
+            "then": "Re-time"
+          },
+          {
+            "condition": "Şık sonucu olduğu gibi koruyorsa ve derece ile sonuç arasındaki ilişki bozulmamışsa: \"too ... to\" ile \"so ... that not\" arasında olumsuzluk kaybolmamış, ya da \"enough to\" ile olumlu \"so ... that\" arasında sonuç yine gerçekleşiyorsa",
             "then": "Same meaning"
           }
         ]
