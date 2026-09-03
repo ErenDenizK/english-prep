@@ -836,9 +836,67 @@ h3 {
   color: var(--color-accent);
 }
 
-/* Eğitim (lesson) card */
-.lesson-card__eyebrow {
-  margin: 0 0 var(--space-1);
+/* Eğitim: story-card chapter viewer.
+   A chapter (one lesson category) is a sequence of small full-bleed
+   "beats" -- hook, rule, each example, a couple of check questions, a
+   generated chapter-complete beat. Segmented progress bar on top (like
+   Stories), edge arrows either side of the card to move through them.
+   Not a literal Stories clone: no auto-advance/timer, since grammar
+   needs reading time a story doesn't assume. */
+
+.topic-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: var(--space-2);
+}
+
+.topic-switcher__pill {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.topic-switcher__pill:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.topic-switcher__pill--active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-success-bg);
+}
+
+.story-progress {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: var(--space-1);
+}
+
+.story-progress__segment {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-surface-raised);
+}
+
+.story-progress__segment--filled {
+  background: var(--color-accent);
+}
+
+.story-progress__segment--current {
+  background: var(--color-text-muted);
+}
+
+.story-eyebrow {
+  margin: 0 0 var(--space-2);
   color: var(--color-text-muted);
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -846,64 +904,133 @@ h3 {
   letter-spacing: 0.08em;
 }
 
-.lesson-card__category {
-  margin: 0 0 var(--space-2);
-  font-size: 1.25rem;
+.story-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4rem;
 }
 
-.lesson-card__rule {
-  margin: 0 0 var(--space-3);
-  font-size: 1rem;
+.story-edge {
+  flex: 0 0 auto;
+  width: 2.25rem;
+  border: none;
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: var(--radius);
 }
 
-.lesson-card__examples {
-  list-style: none;
-  margin: 0 0 var(--space-3);
-  padding: 0;
-  display: grid;
-  gap: var(--space-1);
+.story-edge:hover:not(:disabled) {
+  color: var(--color-accent);
+  background: var(--color-surface);
 }
 
-.lesson-card__examples li {
+.story-edge:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.story-edge:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.story-card {
+  flex: 1;
+  min-width: 0;
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: var(--space-2);
+  padding: var(--space-4) var(--space-3);
 }
 
-.lesson-card__example-sentence {
-  display: block;
+/* A distinct visual treatment per beat type, so the learner recognizes
+   at a glance what kind of card they're on. */
+.story-card--hook {
+  align-items: center;
+  text-align: center;
+  background: var(--color-surface);
+}
+
+.story-card__hook {
+  margin: 0;
   font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-style: italic;
+  line-height: 1.5;
+  max-width: 32ch;
+}
+
+.story-card__category {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.story-card__rule {
+  margin: 0;
   font-size: 1.05rem;
+  line-height: 1.6;
 }
 
-.lesson-card__example-note {
-  display: block;
-  margin-top: 0.3rem;
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
+.story-card--example {
+  align-items: flex-start;
 }
 
-.lesson-card__nav {
+.story-card__example-sentence {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.5;
+}
+
+.story-card__example-note {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+}
+
+.story-card--check {
+  justify-content: flex-start;
+}
+
+.story-card--complete {
+  align-items: center;
+  text-align: center;
+  background: var(--color-success-bg);
+  border-color: var(--color-success);
+}
+
+.story-card__complete-check {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-success);
+  color: var(--color-success);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
+  justify-content: center;
+  font-size: 1.3rem;
 }
 
-.lesson-card__dots {
-  display: flex;
-  gap: 0.35rem;
+.story-card__complete-title {
+  margin: 0;
+  font-size: 1.2rem;
 }
 
-.lesson-card__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-border);
+.story-card__complete-next {
+  margin: 0;
+  color: var(--color-text-muted);
 }
 
-.lesson-card__dot--active {
-  background: var(--color-accent);
+.story-card__complete-actions {
+  margin-top: var(--space-1);
 }
 
 .empty-state {

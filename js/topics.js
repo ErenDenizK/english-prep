@@ -68,31 +68,20 @@ export async function loadQuestionsForTopics(topics) {
 }
 
 /**
+ * Loads a topic's lessons and questions together from its one JSON file
+ * (a single fetch — the Eğitim story-card viewer needs both at once, to
+ * pull a chapter's embedded check questions from the same category).
  * @param {{id: string, file: string}} topic
- * @returns {Promise<Array<{category: string, rule: string, examples: Array<{sentence: string, note: string}>}>>}
- *   the topic's lessons, unmodified (empty array if the topic has none yet)
+ * @returns {Promise<{lessons: Array<object>, questions: Array<object>}>}
  */
-export async function loadTopicLessons(topic) {
+export async function loadTopicContent(topic) {
   const response = await fetch(topic.file);
   if (!response.ok) {
-    throw new Error(`Failed to load lessons for topic "${topic.id}".`);
+    throw new Error(`Failed to load content for topic "${topic.id}".`);
   }
   const data = await response.json();
-  return data.lessons ?? [];
-}
-
-/**
- * Loads lessons for several topics and tags each with its topic's title
- * so the lesson viewer can show which topic a lesson belongs to.
- * @param {Array<{id: string, title: string, file: string}>} topics
- * @returns {Promise<Array<object>>}
- */
-export async function loadLessonsForTopics(topics) {
-  const lessonSets = await Promise.all(
-    topics.map(async (topic) => {
-      const lessons = await loadTopicLessons(topic);
-      return lessons.map((lesson) => ({ ...lesson, topicTitle: topic.title }));
-    })
-  );
-  return lessonSets.flat();
+  return {
+    lessons: data.lessons ?? [],
+    questions: (data.questions ?? []).map(normalizeQuestion),
+  };
 }

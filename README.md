@@ -17,9 +17,14 @@ Two content tabs, plus a Profil that lives behind its own header button
 rather than as a third tab — it's identity/settings, not a content mode,
 so it doesn't sit at the same level as "what am I practicing":
 
-- **Eğitim** — a fast, example-driven tour through each topic's grammar
-  categories: a short rule plus simple example sentences, paged with
-  Next/Previous. No scoring, just teaching.
+- **Eğitim** — a story-card walk through each topic's grammar categories,
+  one small full-screen beat at a time: an opening hook (when authored),
+  the rule, each example, a couple of check questions (answer to move
+  on), then a chapter-complete beat — tap the edge arrows or use
+  Left/Right to move through them. A segmented progress bar shows where
+  you are in the current chapter; a pill switcher lets you jump between
+  topics once more than one is live. Nothing is locked — every chapter of
+  every topic is reachable any time, same as Test.
 - **Test** — pick a topic or start a mixed test drawing from every topic at
   once. Multiple-choice, paragraph-based cloze questions with instant
   feedback: a full explanation plus a short, generalizable rule after every
@@ -366,7 +371,7 @@ app is a real first release, not any particular feature set being
 
 ## Roadmap to v1.0
 
-Everything shipped so far (`v0.1`–`v0.8`) is development work toward a
+Everything shipped so far (`v0.1`–`v0.9`) is development work toward a
 first real release, not a release itself. Below is the working list of
 what's left, roughly in the order it makes sense to tackle — see
 `CHANGELOG.md` for what's already landed under each `0.y`.
@@ -392,27 +397,30 @@ what's left, roughly in the order it makes sense to tackle — see
    development and what's usable today. Proportionate for this stage; a
    fuller step-by-step tour can still happen later if the app grows
    enough to need one.
-5. **Guided learning path mechanism in Eğitim** — design proposed by the
-   content-authoring side and approved on the dev side (see
-   `docs/education-notes.md` for the full proposal and response): a
-   linear, chapter-by-chapter path through the curriculum order, one
-   chapter per lesson category, soft-unlocked (opening a chapter and
-   attempting its embedded check questions unlocks the next one); Test
-   stays fully open throughout, never gated by Eğitim progress. Building
-   it is sequenced after the second topic (next item below) lands, so the
-   topic-to-topic unlock logic gets built and tested against two real
-   topics instead of hardcoded against Tenses alone.
-6. **A second real topic** (Modals is already stubbed as `comingSoon` in
-   the manifest) — both to make Test/Eğitim feel like a real multi-topic
-   app rather than a single-topic demo, and to give the "Yeni sorular
-   eklendi" content-freshness badge a real second data point to prove
-   itself against.
-7. **Promote to `main` once approved** — `main` is still on the very first
+5. ~~A second real topic~~ — **done in `v0.9`.** Modals and Passive Voice
+   are both live (3 real topics total), pulled in from the
+   content-authoring side. Test/Eğitim now feel like a real multi-topic
+   app, and the "Yeni sorular eklendi" content-freshness badge has real
+   data points beyond Tenses to prove itself against.
+6. ~~Story-card presentation for Eğitim chapters~~ — **done in `v0.9`.**
+   Built from the content side's Vision proposal in
+   `docs/education-notes.md`: each chapter (lesson category) is now a
+   sequence of full-screen beats (hook/rule/examples/check questions/
+   chapter-complete) instead of one long paginated card.
+7. **Chapter locking / guided-path progression** — the one piece of the
+   original interaction-model proposal not yet built: soft-unlocking
+   chapter *N+1* only once chapter *N* has been opened and attempted, and
+   topic-to-topic progression. Deliberately kept separate from the v0.9
+   presentation-layer work above — it needs its own progress-storage
+   schema and is easier to get right now that there are 3 real topics to
+   test the topic-to-topic unlock against, rather than just Tenses alone.
+   Eğitim stays fully open (no locking) until this lands.
+8. **Promote to `main` once approved** — `main` is still on the very first
    development build; it only moves forward when the owner has tried a
    build on `test` and signs off, per the branch model below. Confirm
    GitHub Pages is actually serving `main` at that point (not left on
    `test` from earlier testing).
-8. **Owner declares `1.0`** — once the above holds and the owner is happy,
+9. **Owner declares `1.0`** — once the above holds and the owner is happy,
    they set `x` to `1`; this isn't a technical milestone this project
    infers on its own.
 

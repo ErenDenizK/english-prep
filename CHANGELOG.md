@@ -5,6 +5,36 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.9 — 2026-09-03
+
+Eğitim rebuilt as a story-card chapter viewer, two new topics live, and
+the content pipeline gets a validator.
+
+- **Eğitim redesign: story cards.** Replaces the flat, all-topics-in-one
+  pager with a chapter-by-chapter sequence of small full-screen beats per
+  category — hook (when a lesson has one) → rule → each example → 2
+  embedded check questions (answer required before advancing) → a
+  generated chapter-complete beat, ending each topic with a "Bu Konudan
+  Test Et" shortcut into a full Test session for it. A segmented progress
+  bar (Stories-style) shows position within the current chapter; a topic
+  switcher (pills) appears once more than one topic is live; edge arrows
+  (plus ArrowLeft/ArrowRight/number-key/Enter shortcuts) move through
+  cards. Built from the content side's "Vision" proposal in
+  `docs/education-notes.md` — presentation only, no chapter locking yet
+  (every chapter of every topic stays reachable any time, same as Test).
+- **Modals and Passive Voice are live** (24 questions / 6 categories
+  each, pulled in from the content-authoring side) — the app now has 3
+  real topics instead of 1, and the home screen's tier accordion groups
+  them for the first time.
+- **`scripts/validate-content.js`**: a small, dependency-free script that
+  checks the manifest and every topic file against the schema (see
+  README). Passes clean against all 3 live topics.
+- Small refactor: extracted `js/feedback.js` so the "verdict +
+  explanation + tip" block isn't duplicated between `quiz.js` and the new
+  story-card check cards.
+- `docs/education-notes.md` gained a "Developer responses" section
+  answering the content side's story-card vision and messages.
+
 ## v0.8 — 2026-09-03
 
 Content/dev coordination lands, plus a small feature that closes the loop

@@ -1,6 +1,7 @@
 import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
 import { getQuizRequest, setQuizResult } from "./session-state.js";
+import { renderAnswerFeedback } from "./feedback.js";
 
 const container = document.getElementById("quiz-container");
 const bottomBar = document.getElementById("quiz-bottom-bar");
@@ -99,29 +100,7 @@ function handleOptionSelected(question, selectedOption, optionButtons) {
 }
 
 function renderFeedback(question, correct) {
-  const feedback = document.createElement("div");
-  feedback.className = `feedback ${correct ? "feedback--correct" : "feedback--incorrect"}`;
-
-  const heading = document.createElement("strong");
-  heading.textContent = correct ? "Doğru!" : `Yanlış — doğru cevap: "${question.correctAnswer}".`;
-  feedback.appendChild(heading);
-
-  const explanation = document.createElement("p");
-  explanation.className = "feedback__explanation";
-  explanation.textContent = question.explanation;
-  feedback.appendChild(explanation);
-
-  if (question.tip) {
-    const tip = document.createElement("p");
-    tip.className = "feedback__tip";
-    const tipLabel = document.createElement("strong");
-    tipLabel.textContent = "Kural: ";
-    tip.appendChild(tipLabel);
-    tip.appendChild(document.createTextNode(question.tip));
-    feedback.appendChild(tip);
-  }
-
-  document.getElementById("question-card").appendChild(feedback);
+  document.getElementById("question-card").appendChild(renderAnswerFeedback(question, correct));
 }
 
 function advance() {
