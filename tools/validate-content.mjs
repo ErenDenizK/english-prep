@@ -34,7 +34,9 @@ const TOPIC_ID_PATTERN = /^[a-z][a-z0-9-]*$/;
 // not applied to example `note`s: those are terse form labels that mix
 // Turkish with English grammar terms ("Alışkanlık → Present Simple"), where
 // the heuristic is unreliable and the payoff is low.
-const TURKISH_CHARS = /[ıİşŞğĞçÇöÖüÜ]/;
+// â î û are ordinary Turkish spellings — resmî, kâğıt, âdet — and leaving
+// them out made the heuristic call perfectly good Turkish foreign.
+const TURKISH_CHARS = /[ıİşŞğĞçÇöÖüÜâÂîÎûÛ]/;
 const TURKISH_WORDS = /\b(bir|ve|için|bu|ile|ama|çünkü|değil|gibi|olur|olarak|yani|hangi)\b/i;
 
 class Report {
@@ -232,10 +234,6 @@ function validateQuestion(report, file, question, index, seenIds, topicId) {
   }
 }
 
-const LESSON_PROSE_FIELDS = ["intro", "meaning", "usage", "recap"];
-const MIN_EXAMPLES_PER_LESSON = 2;
-const MIN_MISTAKES_PER_LESSON = 1;
-
 /** Mirrors lessonId() in js/topics.js — lesson ids are derived, not authored. */
 function derivedLessonId(topicId, category) {
   const slug = category
@@ -245,50 +243,245 @@ function derivedLessonId(topicId, category) {
   return `${topicId}-${slug}`;
 }
 
-function validateExamples(report, where, examples) {
-  if (!Array.isArray(examples) || examples.length < MIN_EXAMPLES_PER_LESSON) {
-    report.error(where, `examples must be an array of at least ${MIN_EXAMPLES_PER_LESSON} entries`);
+/* ---- Lesson blocks ----
+ *
+ * A lesson is a page built from typed blocks (docs/CONTENT_GUIDE.md). The
+ * types are semantic, not presentational, so nothing below describes a
+ * screen — `contrast` means "two forms set against each other", and how
+ * that is drawn is js/education.js's business.
+ *
+ * The limits here exist to stop the schema decaying back into the article
+ * it replaced. A `text` block over 400 characters is the wall of prose the
+ * block model was introduced to break up: what it is really carrying is a
+ * contrast or a decision that has not been written as one yet, and saying
+ * so at validation time is the only moment anyone will act on it.
+ */
+
+const MAX_TEXT_BLOCK = 400;
+const MAX_SUMMARY = 70;
+const MIN_BLOCKS = 6;
+const MAX_BLOCKS = 14;
+const MAX_GLOSS = 200;
+const MIN_EXAMPLE_ITEMS = 3;
+const MAX_EXAMPLE_ITEMS = 6;
+
+/** Runs `check` over every entry of an array field, with a shared shape. */
+function eachEntry(report, where, field, value, { min, max, validate }) {
+  if (!Array.isArray(value) || value.length < min) {
+    report.error(where, `${field} must be an array of at least ${min} entries`);
     return;
   }
-  examples.forEach((example, index) => {
-    const exampleWhere = `${where} › examples[${index}]`;
-    if (!isNonEmptyString(example?.sentence)) {
-      report.error(exampleWhere, "sentence is required");
-    }
-    if (!isNonEmptyString(example?.note)) {
-      report.error(exampleWhere, "note is required");
-    }
-  });
+  if (max !== undefined && value.length > max) {
+    report.warn(where, `${field} has ${value.length} entries — ${max} is the intended ceiling`);
+  }
+  value.forEach((entry, index) => validate(entry, `${where} › ${field}[${index}]`));
 }
 
-function validateMistakes(report, where, mistakes) {
-  if (!Array.isArray(mistakes) || mistakes.length < MIN_MISTAKES_PER_LESSON) {
-    report.error(where, `commonMistakes must be an array of at least ${MIN_MISTAKES_PER_LESSON} entries`);
-    return;
-  }
-  mistakes.forEach((mistake, index) => {
-    const mistakeWhere = `${where} › commonMistakes[${index}]`;
+const BLOCK_VALIDATORS = {
+  text(report, where, block) {
+    if (!isNonEmptyString(block.body)) {
+      report.error(where, "body is required");
+      return;
+    }
+    checkTurkish(report, where, "body", block.body);
+    if (block.body.length > MAX_TEXT_BLOCK) {
+      report.error(
+        where,
+        `body is ${block.body.length} characters, over the ${MAX_TEXT_BLOCK} limit — ` +
+          "a text block this long is an article paragraph again. Split it, or write " +
+          "the contrast or decision it is really carrying as its own block."
+      );
+    }
+  },
+
+  contrast(report, where, block) {
+    if (!Array.isArray(block.sides) || block.sides.length < 2 || block.sides.length > 3) {
+      report.error(where, "sides must be an array of 2 or 3 entries");
+      return;
+    }
+    block.sides.forEach((side, index) => {
+      const sideWhere = `${where} › sides[${index}]`;
+      if (!isNonEmptyString(side?.label)) {
+        report.error(sideWhere, "label is required (the English form name)");
+      }
+      if (!isNonEmptyString(side?.gloss)) {
+        report.error(sideWhere, "gloss is required");
+      } else {
+        checkTurkish(report, sideWhere, "gloss", side.gloss);
+        if (side.gloss.length > MAX_GLOSS) {
+          report.warn(
+            sideWhere,
+            "gloss is long — a contrast side should be one or two sentences, or it is a text block wearing a costume"
+          );
+        }
+      }
+      if (side?.example !== undefined && !isNonEmptyString(side.example)) {
+        report.error(sideWhere, "example, when present, must be a non-empty string");
+      }
+    });
+    // Two sides labelled the same thing is not a contrast.
+    const labels = block.sides.map((side) => side?.label).filter(isNonEmptyString);
+    if (new Set(labels).size !== labels.length) {
+      report.error(where, "two sides share a label — there is nothing being contrasted");
+    }
+  },
+
+  forms(report, where, block) {
+    eachEntry(report, where, "rows", block.rows, {
+      min: 2,
+      validate(row, rowWhere) {
+        for (const field of ["form", "use", "pattern"]) {
+          if (!isNonEmptyString(row?.[field])) {
+            report.error(rowWhere, `${field} is required`);
+          }
+        }
+        if (row?.example !== undefined && !isNonEmptyString(row.example)) {
+          report.error(rowWhere, "example, when present, must be a non-empty string");
+        }
+      },
+    });
+  },
+
+  examples(report, where, block) {
+    eachEntry(report, where, "items", block.items, {
+      min: MIN_EXAMPLE_ITEMS,
+      max: MAX_EXAMPLE_ITEMS,
+      validate(item, itemWhere) {
+        if (!isNonEmptyString(item?.sentence)) {
+          report.error(itemWhere, "sentence is required");
+        }
+        // No Turkish check on a note. They are terse form labels that mix
+        // Turkish with English grammar terms — "Resmî izin isteme → may" —
+        // where the heuristic is unreliable and the payoff is low. That is
+        // the rule the heuristic's own comment states; calling it here was
+        // a contradiction, and it cost an author two false positives.
+        if (!isNonEmptyString(item?.note)) {
+          report.error(itemWhere, "note is required");
+        }
+      },
+    });
+  },
+
+  pitfall(report, where, block) {
     for (const field of ["wrong", "right", "why"]) {
-      if (!isNonEmptyString(mistake?.[field])) {
-        report.error(mistakeWhere, `${field} is required`);
+      if (!isNonEmptyString(block[field])) {
+        report.error(where, `${field} is required`);
       }
     }
-    if (isNonEmptyString(mistake?.wrong) && mistake.wrong === mistake.right) {
-      report.error(mistakeWhere, "wrong and right are identical — there is no mistake to show");
+    if (isNonEmptyString(block.wrong) && block.wrong === block.right) {
+      report.error(where, "wrong and right are identical — there is no mistake to show");
     }
-    if (isNonEmptyString(mistake?.why)) {
-      checkTurkish(report, mistakeWhere, "why", mistake.why);
+    if (isNonEmptyString(block.why)) {
+      checkTurkish(report, where, "why", block.why);
     }
+  },
+
+  decision(report, where, block) {
+    eachEntry(report, where, "rules", block.rules, {
+      min: 2,
+      validate(rule, ruleWhere) {
+        const hasSignals = rule?.signals !== undefined;
+        const hasCondition = rule?.condition !== undefined;
+        if (hasSignals === hasCondition) {
+          report.error(ruleWhere, "a rule needs exactly one of signals or condition");
+        }
+        if (hasSignals) {
+          if (!Array.isArray(rule.signals) || rule.signals.length === 0 || !rule.signals.every(isNonEmptyString)) {
+            report.error(ruleWhere, "signals must be a non-empty array of trigger words");
+          }
+        }
+        if (hasCondition) {
+          if (!isNonEmptyString(rule.condition)) {
+            report.error(ruleWhere, "condition must be a non-empty string");
+          } else {
+            checkTurkish(report, ruleWhere, "condition", rule.condition);
+          }
+        }
+        if (!isNonEmptyString(rule?.then)) {
+          report.error(ruleWhere, "then is required (the English form name that follows)");
+        }
+      },
+    });
+  },
+
+  check(report, where, block) {
+    // Deliberately has no content: the reader fills it from the questions
+    // sharing the lesson's category. Anything else here is a misunderstanding
+    // worth catching now rather than as a silently ignored field.
+    const extra = Object.keys(block).filter((key) => key !== "type" && key !== "heading");
+    if (extra.length) {
+      report.error(where, `a check block carries no content of its own; remove ${extra.join(", ")}`);
+    }
+  },
+};
+
+const BLOCK_TYPES = Object.keys(BLOCK_VALIDATORS);
+
+function validateBlocks(report, where, blocks, categoryQuestionCount) {
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    report.error(where, "blocks must be a non-empty array");
+    return;
+  }
+  if (blocks.length < MIN_BLOCKS) {
+    report.warn(where, `only ${blocks.length} blocks — under ${MIN_BLOCKS} a lesson is a stub`);
+  }
+  if (blocks.length > MAX_BLOCKS) {
+    report.warn(where, `${blocks.length} blocks — over ${MAX_BLOCKS} it is an article again`);
+  }
+
+  let checks = 0;
+  let hasContrast = false;
+
+  blocks.forEach((block, index) => {
+    const blockWhere = `${where} › blocks[${index}]${block?.type ? ` (${block.type})` : ""}`;
+    if (!block || typeof block !== "object") {
+      report.error(blockWhere, "block must be an object");
+      return;
+    }
+    const validate = BLOCK_VALIDATORS[block.type];
+    if (!validate) {
+      report.error(blockWhere, `unknown block type "${block.type}" — one of ${BLOCK_TYPES.join(", ")}`);
+      return;
+    }
+    if (block.heading !== undefined && !isNonEmptyString(block.heading)) {
+      report.error(blockWhere, "heading, when present, must be a non-empty string");
+    }
+    if (block.type === "check") {
+      checks += 1;
+      if (index === 0) {
+        report.warn(blockWhere, "a check as the first block is a quiz, not a lesson");
+      }
+    }
+    if (block.type === "contrast") {
+      hasContrast = true;
+    }
+    validate(report, blockWhere, block);
   });
+
+  if (!hasContrast) {
+    // Every category in this app names a confusable pair, so a lesson with
+    // nothing set against anything is usually a lesson that has not found
+    // its own point yet. A warning, not an error: the grammar occasionally
+    // does not offer a pair.
+    report.warn(where, "no contrast block — every category here names a confusable pair, so this is worth a second look");
+  }
+  if (checks === 0) {
+    report.warn(where, "no check blocks — the lesson never asks the learner to try anything");
+  }
+  if (categoryQuestionCount !== null && checks > categoryQuestionCount) {
+    report.warn(
+      where,
+      `${checks} check blocks but only ${categoryQuestionCount} question(s) in this category — the extras will render as nothing`
+    );
+  }
 }
 
 /**
- * A lesson is authored as an article: named prose sections plus examples
- * and common mistakes. How those sections are paced into reader steps,
- * and where check questions are slotted in, is the app's decision (see
- * js/education.js) — so nothing here describes screens.
+ * A lesson is a page built from typed blocks. How those blocks are drawn,
+ * and how the page is paced, is the app's decision (see js/education.js) —
+ * so nothing here describes a screen.
  */
-function validateLesson(report, file, lesson, index, seenIds, questionCategories, topicId) {
+function validateLesson(report, file, lesson, index, seenIds, questionCategories, topicId, questionsByCategory) {
   const where = `${file} › lessons[${index}]${lesson?.category ? ` (${lesson.category})` : ""}`;
 
   if (!lesson || typeof lesson !== "object") {
@@ -296,6 +489,7 @@ function validateLesson(report, file, lesson, index, seenIds, questionCategories
     return;
   }
 
+  let categoryQuestionCount = null;
   if (!isNonEmptyString(lesson.category)) {
     report.error(where, "category is required");
   } else {
@@ -305,6 +499,7 @@ function validateLesson(report, file, lesson, index, seenIds, questionCategories
         `category "${lesson.category}" is not used by any question in this topic — lessons and questions must share one taxonomy`
       );
     }
+    categoryQuestionCount = questionsByCategory.get(lesson.category) ?? 0;
     // Ids are derived from topic + category, so two lessons sharing a
     // category inside a topic would silently collapse into one.
     const id = derivedLessonId(topicId, lesson.category);
@@ -314,22 +509,20 @@ function validateLesson(report, file, lesson, index, seenIds, questionCategories
     seenIds.add(id);
   }
 
-  for (const field of LESSON_PROSE_FIELDS) {
-    if (!isNonEmptyString(lesson[field])) {
-      report.error(where, `${field} is required and must be a non-empty string`);
-    } else {
-      checkTurkish(report, where, field, lesson[field]);
+  if (!isNonEmptyString(lesson.summary)) {
+    report.error(where, "summary is required — it is the lesson's line on the index");
+  } else {
+    checkTurkish(report, where, "summary", lesson.summary);
+    if (lesson.summary.length > MAX_SUMMARY) {
+      report.error(
+        where,
+        `summary is ${lesson.summary.length} characters, over ${MAX_SUMMARY} — ` +
+          "the index clips it to one line, so write one rather than a sentence that will be cut"
+      );
     }
   }
 
-  // `form` is structural notation ("S + have/has + V3 → ..."), so it is
-  // required but deliberately exempt from the Turkish-prose heuristic.
-  if (!isNonEmptyString(lesson.form)) {
-    report.error(where, "form is required and must be a non-empty string");
-  }
-
-  validateExamples(report, where, lesson.examples);
-  validateMistakes(report, where, lesson.commonMistakes);
+  validateBlocks(report, where, lesson.blocks, categoryQuestionCount);
 }
 
 async function readJson(relativePath) {
@@ -377,9 +570,16 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds) 
     );
   }
 
-  const questionCategories = new Set(
-    data.questions.map((question) => question?.category).filter(isNonEmptyString)
-  );
+  // Also counted, not just collected: a lesson can ask for more check
+  // blocks than its category has questions to fill them with, and the
+  // extras would then render as nothing at all.
+  const questionsByCategory = new Map();
+  for (const question of data.questions) {
+    if (isNonEmptyString(question?.category)) {
+      questionsByCategory.set(question.category, (questionsByCategory.get(question.category) ?? 0) + 1);
+    }
+  }
+  const questionCategories = new Set(questionsByCategory.keys());
 
   if (topic.categories !== undefined) {
     if (!Array.isArray(topic.categories) || !topic.categories.every(isNonEmptyString)) {
@@ -411,7 +611,16 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds) 
   }
 
   lessons.forEach((lesson, index) =>
-    validateLesson(report, file, lesson, index, seenLessonIds, questionCategories, topic.id)
+    validateLesson(
+      report,
+      file,
+      lesson,
+      index,
+      seenLessonIds,
+      questionCategories,
+      topic.id,
+      questionsByCategory
+    )
   );
 
   if (topic.lessonCount !== undefined && topic.lessonCount !== lessons.length) {

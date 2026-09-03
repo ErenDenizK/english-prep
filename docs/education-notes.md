@@ -230,3 +230,82 @@ three live files for real examples):
 - This file, like the rest of the repo's technical/dev-facing files, is in
   English; only learner-facing content (lesson text, question text) is
   Turkish/English per the convention above.
+
+## Open content questions (2026-09-03, from the block conversion)
+
+Two things surfaced while converting the Tenses lessons that are content
+decisions rather than code ones, and neither is an assistant's to make.
+
+**`tenses-t19` may be in the wrong category.** "By the time she turned
+thirty, she ____ two companies" tests Past Perfect for the earlier of two
+past events — which is what *Past Simple vs Past Continuous vs Past
+Perfect* exists to teach, and what `t10` and `t12` already test there. It
+currently sits in *Perfect Aspects*, so it reaches learners as a check
+inside that lesson, and the Perfect Aspects lesson therefore teaches the
+rule a second time. Moving it would let Perfect Aspects be purely
+Simple-versus-Continuous plus been/gone, and would make the results
+screen link a wrong answer to the lesson that actually covers it. Moving
+it is a taxonomy change; both categories already exist, so it costs one
+edit and nothing else.
+
+**`tenses-t20` is a weak question.** "Have you ____ to Japan before" is
+decided by `before` alone, and only `gone` is a tempting distractor — `go`
+and `went` are ungrammatical after `have`, so it is effectively a
+two-option question. Worth rewriting the next time the question set is
+touched.
+
+Three more, from the Modals conversion:
+
+**`modals-t17` has two defensible answers.** "In my opinion, you ____ try
+that new bakery downtown", with `should | had better | must | ought to`.
+`ought to` is grammatical and natural here and means much the same thing;
+the explanation only argues `should` is *more* natural, which is a
+preference rather than a rule. An item like that punishes the student who
+knows more. Dropping `ought to` from the options costs nothing — `might`
+distracts just as well.
+
+**The modal-perfect category name omits a form a quarter of its questions
+turn on.** `Modal Perfects: Must Have vs Can't Have vs Should Have`, but
+`t16` is entirely `needn't have` versus `shouldn't have`. The lesson
+teaches it; the label under-describes the set. Renaming is a taxonomy
+change — questions, manifest and lesson move together, and every learner's
+progress for that lesson resets — so it is worth doing once, deliberately,
+rather than in passing.
+
+**`modals-t20`'s distractor `mustn't have` is not a standard structure at
+all.** That is a legitimate way to build a distractor, and the lessons now
+say so explicitly in two places, but it is worth knowing it was doing that
+work silently before.
+
+Four more, from the Passive Voice conversion:
+
+**`passive-voice-t20` tests something no lesson taught, and may be
+miscategorised.** It turns entirely on `be supposed to`, which the article
+version of *Passive Reporting Structures* never mentioned in any field.
+The block version now teaches it — a `forms` row, an example, a pitfall
+and a decision rule — so the gap is closed, but the deeper point stands:
+`be supposed to` is an expectation-and-obligation structure that happens
+to look passive, not a way of attributing information to an unnamed
+source. If the taxonomy is ever re-cut, it belongs with the modals.
+
+**`passive-voice-t21` and `-t23` are style judgements dressed as grammar
+items.** "My wallet was stolen by someone on the train" and "The patient
+was taken by paramedics to the hospital" are both grammatically perfect;
+every option in each is grammatical, so the item rewards guessing which
+one the author found natural. `t23` is the one to rewrite — either make
+the omitted agent genuinely predictable, or drop the distractor.
+
+**`passive-voice-t15` is effectively three options wide.** Its fourth,
+`am`, produces "I always am it painted", which no learner would consider.
+
+**Nothing in the passive set tests Future Passive or Past Perfect Passive
+as a correct answer** — they appear only as distractors. The lessons teach
+both anyway, because rejecting a form is a skill too, but the question set
+has a hole where two of the seven passive tenses should be.
+
+---
+
+Everything above is the owner's call, not an assistant's: each one is
+either a taxonomy change (which resets a learner's progress for the
+lesson, and has to move questions, manifest and lesson together) or a
+rewrite of a question that is currently answerable. None was made.

@@ -238,7 +238,13 @@ function loadLessonProgress() {
 }
 
 /**
- * @returns {Record<string, {step: number, done: boolean}>} progress for
+ * Lesson progress is a *read fraction*, not a step index: a lesson is one
+ * scrolling page now, so how far through it you are is a position on that
+ * page. Kept as a number 0…1 so it survives the lesson getting longer or
+ * shorter when its content is edited — a stored step index would silently
+ * point somewhere else after an author adds a block.
+ *
+ * @returns {Record<string, {read: number, done: boolean}>} progress for
  *   every lesson the learner has opened
  */
 export function getAllLessonProgress() {
@@ -247,7 +253,7 @@ export function getAllLessonProgress() {
   for (const [lessonId, entry] of Object.entries(stored)) {
     if (isPlainObject(entry)) {
       normalized[lessonId] = {
-        step: Number.isInteger(entry.step) && entry.step >= 0 ? entry.step : 0,
+        read: clampRead(entry.read),
         done: entry.done === true,
       };
     }
@@ -255,40 +261,45 @@ export function getAllLessonProgress() {
   return normalized;
 }
 
+/** Anything unparseable, out of range or absent reads as "not started". */
+function clampRead(value) {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    return 0;
+  }
+  return value >= 1 ? 1 : value;
+}
+
 /**
  * @param {string} lessonId
- * @returns {{step: number, done: boolean} | null} null if never opened
+ * @returns {{read: number, done: boolean} | null} null if never opened
  */
 export function getLessonProgress(lessonId) {
   return getAllLessonProgress()[lessonId] ?? null;
 }
 
 /**
- * Records that the learner reached a step. Only ever moves forward, so
- * paging back through a lesson doesn't undo progress.
+ * Records how far down the lesson the learner has been. Only ever moves
+ * forward, so scrolling back up does not undo progress.
  * @param {string} lessonId
- * @param {number} stepIndex - 0-based
+ * @param {number} read - 0…1
  */
-export function recordLessonStep(lessonId, stepIndex) {
+export function recordLessonRead(lessonId, read) {
+  const value = clampRead(read);
   const progress = getAllLessonProgress();
   const existing = progress[lessonId];
-  if (existing && existing.step >= stepIndex) {
+  if (existing && existing.read >= value) {
     return;
   }
-  progress[lessonId] = { step: stepIndex, done: existing?.done === true };
+  progress[lessonId] = { read: value, done: existing?.done === true };
   writeJson(LESSON_PROGRESS_KEY, progress);
 }
 
 /**
  * @param {string} lessonId
- * @param {number} lastStepIndex - the lesson's final step index
  */
-export function markLessonDone(lessonId, lastStepIndex) {
+export function markLessonDone(lessonId) {
   const progress = getAllLessonProgress();
-  progress[lessonId] = {
-    step: Math.max(progress[lessonId]?.step ?? 0, lastStepIndex),
-    done: true,
-  };
+  progress[lessonId] = { read: 1, done: true };
   writeJson(LESSON_PROGRESS_KEY, progress);
 }
 

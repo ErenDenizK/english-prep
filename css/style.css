@@ -201,6 +201,10 @@
   body {
     display: flex;
     flex-direction: column;
+    /* The top inset belongs to the shell, not to the header: the reader
+       and the quiz run with the header hidden, and without this their
+       first line would sit under a notch. */
+    padding-top: env(safe-area-inset-top, 0px);
     background: var(--c-surface-0);
     color: var(--c-text-1);
     font-family: var(--f-sans);
@@ -304,7 +308,6 @@
   }
 
   .shell__header {
-    padding-top: env(safe-area-inset-top, 0px);
     padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
       max(var(--gutter), env(safe-area-inset-right, 0px));
   }
@@ -363,6 +366,21 @@
     padding-block: var(--s-5) var(--s-8);
     padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
       max(var(--gutter), env(safe-area-inset-right, 0px));
+  }
+
+  /* The lesson reader's own header. A lesson is one long page, so the way
+     out and the position indicator have to stay reachable — scrolling
+     3000px back to the top to find a Back button is not a way out. Sticky
+     rather than a fixed bar, so it belongs to the page it heads and does
+     not eat the reading height on a short screen. */
+  .reader__top {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: grid;
+    gap: var(--s-3);
+    padding-block: var(--s-3);
+    background: var(--c-surface-0);
   }
 
   /* Full-bleed: escapes the page gutter to run edge to edge. On a phone the

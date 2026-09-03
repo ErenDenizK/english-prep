@@ -22,13 +22,14 @@ Profil opens from the header — it's identity and settings, not a mode.
   every lesson across every topic, grouped and skimmable with its own
   progress and a "pick up where you left off" card; you can start
   anywhere, since someone after one specific rule shouldn't have to walk
-  through five chapters to reach it. Opening a lesson drops into a
-  focused reader that pages through it a step at a time — why the pair is
-  confusing, the forms, what they mean, how they're used, examples, the
-  mistakes people actually make, and a recap you can carry into the exam
-  — with check questions along the way. Checks are never scored and never
-  block you: an unanswered one just reads "Atla". Finishing a lesson
-  offers the next one or a test on the same topic.
+  through five chapters to reach it. Opening a lesson drops into a focused
+  reader holding it as one page you scroll, built from blocks rather than
+  paragraphs: the two forms set against each other, the structural
+  patterns, the mistakes people actually make, and the decision procedure
+  to carry into the exam — with check questions inline along the way.
+  Checks are never scored and never block you. Reaching the end is what
+  finishes a lesson; there is no button for it, and the end of the page
+  offers the next lesson or a test on the same topic.
 - **Test** — pick a topic or start a mixed test drawing from every topic
   at once. Paragraph-based multiple-choice cloze questions with instant
   feedback: a full explanation of why the answer fits *this* passage, plus
@@ -73,10 +74,11 @@ Then open `http://localhost:8000/`.
 dependencies and no build step**, and nothing here is needed to serve it.
 
 ```bash
+npm run format         # canonical formatting for the content JSON
 npm run validate       # content schema + manifest/topic-file consistency
 npm run color          # re-measures every colour token (WCAG 2 + APCA)
 npm test               # unit tests for the scoring and storage logic
-npm run check          # all three
+npm run check          # all four
 npm run verify         # drives the real app in a browser — needs `serve`
 ```
 
@@ -141,8 +143,9 @@ Adding a topic, a lesson or a question never requires touching
 JavaScript — it's all JSON.
 
 - **`docs/CONTENT_GUIDE.md`** is the authoritative schema: the manifest,
-  the question shape, the lesson shape and its three step types, and the
-  language rules. `npm run validate` enforces it.
+  the question shape, the lesson shape and its seven block types, and the
+  language rules. `npm run validate` enforces it, and `npm run format`
+  keeps the files from churning between authors.
 - **`docs/agents/`** holds the briefs for the separate Claude sessions
   that author content — one for lessons, one for questions — plus how the
   handoff works and why the category taxonomy is settled before either

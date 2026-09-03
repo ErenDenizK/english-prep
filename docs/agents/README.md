@@ -86,13 +86,20 @@ Rules of thumb for setting one:
    reports. A drop that hasn't been validated isn't finished.
 4. **Merge** — supervisor assembles the topic file from both arrays,
    updates `data/manifest.json` (`file`, `questionCount`, `lessonCount`,
-   `categories`, `contentVersion`, and dropping `comingSoon`), and runs
-   `npm run validate && npm test`.
+   `categories`, `contentVersion`, and dropping `comingSoon`), runs
+   `npm run format`, and then `npm run check`.
+
+   The formatter is the supervisor's job, not an agent's, and that is
+   deliberate: two agents running it concurrently would clobber each
+   other's files. Agents write valid JSON and leave the shape alone.
 5. **Review** — the validator checks shape, not teaching quality. The
    supervisor still reads the content and judges the things no script
    can: are the wrong options actually tempting, does the explanation
-   name the trap, is the lesson's "Sınavda ne yaparsın" step a real
-   procedure or a restatement of the rule?
+   name the trap, do a lesson's `pitfall` blocks differ in exactly the
+   thing being taught, do the signal words in its `decision` block really
+   decide the answer or only usually? And, because a lesson is a page of
+   typed blocks rather than an article, whether the author used them: a
+   lesson carried by `text` blocks is the old prose in new packaging.
 6. **Ship** — commit to `test`, try it on a phone, then merge to `main`.
 
 ## What agents must not do
