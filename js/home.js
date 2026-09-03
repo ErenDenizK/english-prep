@@ -18,13 +18,10 @@ const TOPIC_TEST_DEFAULT_COUNT = 15;
 
 const topicsContainer = document.getElementById("topics-container");
 const startMixedBtn = document.getElementById("start-mixed-btn");
-const headerSubtitle = document.getElementById("header-subtitle");
 const profileTrigger = document.getElementById("profile-trigger");
 const profileTriggerInitial = document.getElementById("profile-trigger-initial");
 const devNote = document.getElementById("dev-note");
 const devNoteDismissBtn = document.getElementById("dev-note-dismiss");
-
-const DEFAULT_SUBTITLE = headerSubtitle.textContent;
 
 let mixedCountDropdown;
 
@@ -192,7 +189,7 @@ function renderTopics(topics, weakTopicIds) {
 // third tab. showView() is still the single switchboard for all three
 // views; only how each one gets triggered differs.
 function showView(view) {
-  const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
+  const tabs = Array.from(document.querySelectorAll(".bottom-nav__tab"));
   const views = {
     egitim: document.getElementById("view-egitim"),
     test: document.getElementById("view-test"),
@@ -227,22 +224,21 @@ function initDevNote() {
 }
 
 function initNavigation() {
-  const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
+  const tabs = Array.from(document.querySelectorAll(".bottom-nav__tab"));
   tabs.forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
   profileTrigger.addEventListener("click", () => showView("profil"));
 }
 
-function updateHeaderGreeting() {
+function updateProfileAvatar() {
   const name = getProfileName();
-  headerSubtitle.textContent = name ? `Hoş geldin, ${name}!` : DEFAULT_SUBTITLE;
   profileTriggerInitial.textContent = name ? name.trim().charAt(0).toUpperCase() : "P";
 }
 
 async function init() {
   initNavigation();
   initDevNote();
-  updateHeaderGreeting();
-  window.addEventListener("englishprep:profilenamechanged", updateHeaderGreeting);
+  updateProfileAvatar();
+  window.addEventListener("englishprep:profilenamechanged", updateProfileAvatar);
 
   mixedCountDropdown = createDropdown({
     container: document.getElementById("mixed-count-dropdown"),

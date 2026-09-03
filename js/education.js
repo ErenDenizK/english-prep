@@ -1,28 +1,32 @@
-// Eğitim tab: a story-card, chapter-by-chapter walk through each topic's
-// grammar categories -- one full-screen "beat" at a time (a hook, the
-// rule, each example, a couple of check questions, a chapter-complete
-// beat), tap or use the edge arrows to move through them. Follows the
-// content side's story-card vision in docs/education-notes.md: modeled
-// on formats like Instagram/TikTok Stories, but not a literal clone --
-// no auto-advance or timer, since grammar needs reading time a story
-// doesn't assume.
+// Eğitim tab: a chapter index (skim/jump to any chapter directly) plus a
+// story-card, chapter-by-chapter walk (hook, rule, each example, a check
+// question, a chapter-complete beat) for whichever chapter you open.
 //
-// This is the presentation layer only. Every chapter of every live topic
-// is reachable at any time -- nothing is locked. Progression/locking
-// across chapters and topics is a deliberately separate, later piece of
-// work (see docs/education-notes.md).
+// The index exists because a pure linear "story" format -- the only way
+// in was v0.9's -- is bad for study/reference use: you can't jump to a
+// specific rule without tapping through everything before it. This keeps
+// the story cards (they work well as a "walk me through it" experience)
+// but they're no longer the only entry point, and answering a check
+// question is no longer a hard gate -- the forward control still moves
+// on ("Atla") if you haven't answered yet. See docs/education-notes.md
+// and the plan behind this round for the research this is based on.
+//
+// Every chapter of every live topic is reachable at any time -- nothing
+// is locked. Progression/locking across chapters and topics is a
+// deliberately separate, later piece of work.
 
 import { loadManifest, loadTopicContent } from "./topics.js";
 import { isCorrectAnswer } from "./quiz-engine.js";
 import { renderAnswerFeedback } from "./feedback.js";
 import { setQuizRequest } from "./session-state.js";
 
-const CHECK_QUESTIONS_PER_CHAPTER = 2;
+const CHECK_QUESTIONS_PER_CHAPTER = 1;
 
 const container = document.getElementById("lesson-container");
 
 const state = {
   topics: [], // [{ id, title, lessons, questions }]
+  view: "index", // "index" | "chapter"
   topicIndex: 0,
   chapterIndex: 0,
   cards: [],
@@ -82,9 +86,25 @@ function loadChapter() {
   render();
 }
 
-function canAdvance() {
+function openChapter(topicIndex, chapterIndex) {
+  state.topicIndex = topicIndex;
+  state.chapterIndex = chapterIndex;
+  state.view = "chapter";
+  loadChapter();
+}
+
+function backToIndex() {
+  state.view = "index";
+  render();
+}
+
+// A check card no longer blocks moving on -- answering it is encouraged
+// (it's the natural next tap, and stays visible) but skimming past an
+// unanswered one is always allowed. Only the very last card of the very
+// last chapter has nothing further to move to.
+function isUnansweredCheck() {
   const card = state.cards[state.cardIndex];
-  return card.type !== "check" || state.answers.has(state.cardIndex);
+  return card.type === "check" && !state.answers.has(state.cardIndex);
 }
 
 function isAtVeryStart() {
@@ -101,7 +121,7 @@ function isAtVeryEnd() {
 }
 
 function goNext() {
-  if (!canAdvance() || isAtVeryEnd()) {
+  if (isAtVeryEnd()) {
     return;
   }
   if (state.cardIndex < state.cards.length - 1) {
@@ -148,9 +168,7 @@ function switchTopic(index) {
   if (index === state.topicIndex) {
     return;
   }
-  state.topicIndex = index;
-  state.chapterIndex = 0;
-  loadChapter();
+  openChapter(index, 0);
 }
 
 function startTopicTest(topicId) {
@@ -158,7 +176,37 @@ function startTopicTest(topicId) {
   window.location.href = "quiz.html";
 }
 
-// ---- Rendering ----
+// ---- Rendering: chapter index ----
+
+function renderChapterRow(topicIndex, chapterIndex, chapter) {
+  const row = el("button", "chapter-row");
+  row.type = "button";
+  const title = el("span", "chapter-row__title", chapter.category);
+  title.lang = "en";
+  row.appendChild(title);
+  row.appendChild(el("span", "chapter-row__preview", chapter.rule));
+  row.addEventListener("click", () => openChapter(topicIndex, chapterIndex));
+  return row;
+}
+
+function renderIndexView() {
+  state.topics.forEach((topic, topicIndex) => {
+    const section = el("section", "panel");
+    const heading = el("h3", null, topic.title);
+    heading.lang = "en";
+    section.appendChild(heading);
+
+    const list = el("div", "chapter-list");
+    topic.lessons.forEach((chapter, chapterIndex) => {
+      list.appendChild(renderChapterRow(topicIndex, chapterIndex, chapter));
+    });
+    section.appendChild(list);
+
+    container.appendChild(section);
+  });
+}
+
+// ---- Rendering: story-card chapter view ----
 
 function renderTopicSwitcher() {
   if (state.topics.length <= 1) {
@@ -190,11 +238,18 @@ function renderProgress() {
   return track;
 }
 
-function renderEyebrow() {
+function renderChapterNav() {
+  const nav = el("div", "quiz-nav");
+  const backBtn = el("button", "quiz-nav__exit", "‹ Konulara Dön");
+  backBtn.type = "button";
+  backBtn.addEventListener("click", backToIndex);
+  nav.appendChild(backBtn);
+
   const topic = currentTopic();
-  const eyebrow = el("p", "story-eyebrow", `${topic.title} · Bölüm ${state.chapterIndex + 1}/${topic.lessons.length}`);
+  const eyebrow = el("p", "quiz-progress", `${topic.title} · Bölüm ${state.chapterIndex + 1}/${topic.lessons.length}`);
   eyebrow.lang = "en";
-  return eyebrow;
+  nav.appendChild(eyebrow);
+  return nav;
 }
 
 function renderPrompt(promptText) {
@@ -264,14 +319,18 @@ function renderCompleteCard(card) {
     wrap.appendChild(el("p", "story-card__complete-next", "Şu an için tüm konuları tamamladın!"));
   }
 
+  const actions = el("div", "story-card__complete-actions");
   if (card.isLastChapterInTopic) {
-    const actions = el("div", "story-card__complete-actions");
     const testBtn = el("button", "btn btn--secondary btn--sm", "Bu Konudan Test Et");
     testBtn.type = "button";
     testBtn.addEventListener("click", () => startTopicTest(card.topicId));
     actions.appendChild(testBtn);
-    wrap.appendChild(actions);
   }
+  const indexBtn = el("button", "btn btn--secondary btn--sm", "Konulara Dön");
+  indexBtn.type = "button";
+  indexBtn.addEventListener("click", backToIndex);
+  actions.appendChild(indexBtn);
+  wrap.appendChild(actions);
 
   return wrap;
 }
@@ -302,20 +361,13 @@ function renderCard(card, index) {
   return renderCompleteCard(card);
 }
 
-function render() {
-  container.innerHTML = "";
-
-  if (state.topics.length === 0) {
-    container.appendChild(el("p", "empty-state", "Henüz ders eklenmedi."));
-    return;
-  }
-
+function renderChapterView() {
   const switcher = renderTopicSwitcher();
   if (switcher) {
     container.appendChild(switcher);
   }
   container.appendChild(renderProgress());
-  container.appendChild(renderEyebrow());
+  container.appendChild(renderChapterNav());
 
   const row = el("div", "story-row");
 
@@ -328,18 +380,34 @@ function render() {
 
   row.appendChild(renderCard(state.cards[state.cardIndex], state.cardIndex));
 
-  const nextBtn = el("button", "story-edge story-edge--next", "›");
+  const skip = isUnansweredCheck();
+  const nextBtn = el("button", skip ? "story-edge story-edge--next story-edge--skip" : "story-edge story-edge--next", skip ? "Atla" : "›");
   nextBtn.type = "button";
-  nextBtn.setAttribute("aria-label", "Sonraki");
-  nextBtn.disabled = !canAdvance() || isAtVeryEnd();
+  nextBtn.setAttribute("aria-label", skip ? "Soruyu atla" : "Sonraki");
+  nextBtn.disabled = isAtVeryEnd();
   nextBtn.addEventListener("click", goNext);
   row.appendChild(nextBtn);
 
   container.appendChild(row);
 }
 
-function handleKeydown(event) {
+function render() {
+  container.innerHTML = "";
+
   if (state.topics.length === 0) {
+    container.appendChild(el("p", "empty-state", "Henüz ders eklenmedi."));
+    return;
+  }
+
+  if (state.view === "index") {
+    renderIndexView();
+  } else {
+    renderChapterView();
+  }
+}
+
+function handleKeydown(event) {
+  if (state.topics.length === 0 || state.view !== "chapter") {
     return;
   }
   const card = state.cards[state.cardIndex];
@@ -372,13 +440,8 @@ export async function initEducationTab() {
     );
     state.topics = contents.filter((topic) => topic.lessons.length > 0);
 
-    if (state.topics.length === 0) {
-      render();
-      return;
-    }
-
     document.addEventListener("keydown", handleKeydown);
-    loadChapter();
+    render();
   } catch (error) {
     console.error(error);
     container.innerHTML = "";

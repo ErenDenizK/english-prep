@@ -5,6 +5,40 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.10 — 2026-09-03
+
+UI/UX overhaul driven by direct feedback on v0.9 ("Eğitim sistemini hiç
+beğenmedim", "tepedeki menü kötü"): the top navigation moves to the
+bottom, the header shrinks, and Eğitim gets a skimmable entry point
+instead of forcing one linear path through each chapter.
+
+- **Bottom tab bar replaces the top tab bar.** Eğitim/Test now switch via
+  a fixed bottom nav with distinct icons (open book vs. checklist),
+  following the mobile-standard pattern for 2–5 top-level destinations —
+  better thumb reach, and structurally separates the two modes instead of
+  two mirror-image tabs sharing one bar. Profil deliberately stays out of
+  it (still the header-corner avatar button) — it's identity/settings,
+  not a content mode.
+- **Header collapses to one slim row.** Drops the wordmark's subtitle/
+  greeting line entirely; just "English Prep" + the profile avatar.
+- **Eğitim gets a chapter index.** Opening Eğitim now shows a skimmable
+  list of every chapter across every topic (category name + one-line rule
+  preview) — tap any row to jump straight into that chapter's story
+  cards, no need to walk through earlier ones first. A "‹ Konulara Dön"
+  control returns to the index from mid-chapter, and the chapter-complete
+  card now offers it alongside "Bu Konudan Test Et". This was the direct
+  fix for the "didn't like the Eğitim system at all" feedback: a forced
+  single path with no way to jump to or skip anything is a known-bad
+  pattern for study/reference use (fine for onboarding a total novice,
+  bad once you want a specific rule).
+- **Check questions no longer hard-gate.** Down to 1 per chapter (from
+  2); the forward control is never disabled on an unanswered check card —
+  it reads "Atla" (skip) until answered, then the normal "›".
+- Research and reasoning behind this round — bottom-nav ergonomics,
+  Duolingo's path-vs-practice-hub split, linear-story vs. skimmable-view
+  precedent, icon-based destination differentiation — are in the approved
+  plan for this round; see the PR/commit for the full citation list.
+
 ## v0.9 — 2026-09-03
 
 Eğitim rebuilt as a story-card chapter viewer, two new topics live, and
