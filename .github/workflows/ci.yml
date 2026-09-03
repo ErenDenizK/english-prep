@@ -1,0 +1,29 @@
+name: CI
+
+# Runs on both branches in the project's branch model (see README): every
+# push to `test` where content and changes land first, and every push to
+# `main`, plus pull requests targeting either.
+on:
+  push:
+    branches: [main, test]
+  pull_request:
+    branches: [main, test]
+
+jobs:
+  check:
+    name: Validate content and run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # No `npm ci` step on purpose: the project has zero dependencies, so
+      # there is no lockfile to install from and nothing to build.
+      - name: Validate content
+        run: npm run validate
+
+      - name: Run unit tests
+        run: npm test
