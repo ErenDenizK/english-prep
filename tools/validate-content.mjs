@@ -39,6 +39,17 @@ const MIN_EXPLANATION_LENGTH = 40;
 const MAX_EXPLANATION_LENGTH = 600;
 const MIN_TIP_LENGTH = 20;
 const MIN_PARAGRAPH_WORDS = 15;
+/* A restatement's stem is one sentence, not a passage, so it has its own
+ * floor — but a five-word sentence has nothing in it to restate, and the
+ * exam's own stems run to fifteen or twenty words. */
+const MIN_SENTENCE_WORDS = 10;
+/* And its options are whole sentences. An option of three words is not a
+ * paraphrase of anything; it is a cloze item that wandered in. */
+const MIN_RESTATEMENT_OPTION_WORDS = 4;
+
+/* The item types. Absent means cloze — every question authored before
+ * restatements existed is a cloze item and must stay valid untouched. */
+const QUESTION_TYPES = new Set(["cloze", "restatement"]);
 const TOPIC_ID_PATTERN = /^[a-z][a-z0-9-]*$/;
 
 // Turkish-language heuristic for the prose fields that must be Turkish
@@ -204,23 +215,64 @@ function validateQuestion(report, file, question, index, seenIds, topicId) {
     report.error(where, "category is required");
   }
 
-  if (!isNonEmptyString(question.paragraph)) {
-    report.error(where, "paragraph is required");
+  const type = question.type ?? "cloze";
+  if (question.type !== undefined && !QUESTION_TYPES.has(question.type)) {
+    report.error(where, `unknown type "${question.type}" — one of ${[...QUESTION_TYPES].join(", ")}`);
+  }
+  const restatement = type === "restatement";
+
+  /* The two item shapes carry their stem in different fields, and each
+   * must not carry the other's: a restatement with a `paragraph` is a
+   * cloze item somebody relabelled, and the blank rule is the whole
+   * difference between them. */
+  if (restatement) {
+    if (question.paragraph !== undefined) {
+      report.error(where, "a restatement carries its stem in `sentence`, not `paragraph`");
+    }
+    if (!isNonEmptyString(question.sentence)) {
+      report.error(where, "sentence is required — the sentence to be restated");
+    } else {
+      checkBlanks(report, where, question.sentence, { required: false });
+      const words = question.sentence.trim().split(/\s+/).length;
+      if (words < MIN_SENTENCE_WORDS) {
+        report.warn(
+          where,
+          `sentence is only ${words} words — a stem this short has nothing in it to restate`
+        );
+      }
+    }
   } else {
-    checkBlanks(report, where, question.paragraph, { required: true });
-    const words = question.paragraph.trim().split(/\s+/).length;
-    if (words < MIN_PARAGRAPH_WORDS) {
-      report.warn(
-        where,
-        `paragraph is only ${words} words — the exam format needs 1-3 sentences of real context, not an isolated sentence`
-      );
+    if (question.sentence !== undefined) {
+      report.error(where, "`sentence` belongs to a restatement; a cloze item uses `paragraph`");
+    }
+    if (!isNonEmptyString(question.paragraph)) {
+      report.error(where, "paragraph is required");
+    } else {
+      checkBlanks(report, where, question.paragraph, { required: true });
+      const words = question.paragraph.trim().split(/\s+/).length;
+      if (words < MIN_PARAGRAPH_WORDS) {
+        report.warn(
+          where,
+          `paragraph is only ${words} words — the exam format needs 1-3 sentences of real context, not an isolated sentence`
+        );
+      }
     }
   }
 
   if (checkOptions(report, where, question.options, { min: OPTIONS_PER_QUESTION, max: OPTIONS_PER_QUESTION })) {
     checkCorrectIndex(report, where, question.correctIndex, question.options.length);
     const answer = question.options[question.correctIndex];
-    if (isNonEmptyString(question.paragraph) && isNonEmptyString(answer)) {
+    if (restatement) {
+      const short = question.options.filter(
+        (option) => isNonEmptyString(option) && option.trim().split(/\s+/).length < MIN_RESTATEMENT_OPTION_WORDS
+      );
+      if (short.length) {
+        report.warn(
+          where,
+          `these options are not paraphrases of anything: ${short.map((o) => `"${o}"`).join(", ")}`
+        );
+      }
+    } else if (isNonEmptyString(question.paragraph) && isNonEmptyString(answer)) {
       checkFilledSentence(report, where, question.paragraph, answer);
     }
     checkOptionForms(report, where, question);

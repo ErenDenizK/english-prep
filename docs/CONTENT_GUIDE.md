@@ -157,6 +157,83 @@ should name a confusable pair or triad wherever the grammar allows it
 
 ---
 
+## Restatement questions — the exam's "closest meaning"
+
+A second item type, and the only one so far. It exists because it is a
+quarter of the real paper: fifteen of Session I's sixty points
+(`docs/exam-spec.md`).
+
+```json
+{
+  "id": "closest-meaning-t1",
+  "type": "restatement",
+  "category": "Third Conditional",
+  "sentence": "If the shipment had left on Monday, it would already have reached the depot in Ankara.",
+  "options": [
+    "The shipment did not leave on Monday, so it has not reached the depot yet.",
+    "The shipment left on Monday and reached the depot as planned.",
+    "The shipment will reach the depot if it leaves on Monday.",
+    "The shipment reached the depot even though it left after Monday."
+  ],
+  "correctIndex": 0,
+  "explanation": "...",
+  "tip": "..."
+}
+```
+
+Two fields differ from a cloze item, and nothing else does:
+
+- **`type`** — `"restatement"`. Omitted means `"cloze"`, so every question
+  written before this type existed is still valid, untouched.
+- **`sentence`** replaces `paragraph`, and carries **no blank**. A
+  restatement with a `paragraph`, or a cloze with a `sentence`, is a
+  validator error: the blank is the whole difference between the two
+  shapes, and mislabelling one as the other hides that.
+
+`options` are four complete sentences rather than four forms of one verb.
+`explanation` and `tip` work exactly as above.
+
+### What makes a restatement item good
+
+The exam's own distractors are the model, and they are **grammatically
+fluent**: every option is a well-formed English sentence, and the wrong
+ones are wrong about *meaning*. The sample paper's distractors do one of
+these:
+
+| Move | What it does |
+| --- | --- |
+| Reverse the causal direction | *X because Y* becomes *Y because X* |
+| Change the modality | a certainty becomes a possibility, an obligation becomes advice |
+| Swap what is compared | *A is less advanced than B* becomes *B is less advanced than A* |
+| Move the event in time | a completed result becomes a future one |
+| Drop or add a condition | an unfulfilled past becomes a real future one |
+
+An option that is wrong because it is *ungrammatical* is not a
+restatement distractor at all — it belongs in a cloze item, and here it is
+a dead option a learner discards without reading.
+
+The category names what the item **turns on**, not that it is a
+restatement: `Third Conditional`, `Passive Reporting`, `Modal Perfects`.
+That is what lets a wrong answer link to a lesson, which is the same rule
+the whole taxonomy runs on.
+
+### What the validator checks
+
+| Rule | Level |
+| --- | --- |
+| `type` is `cloze`, `restatement`, or absent | error |
+| a restatement has `sentence` and not `paragraph` | error |
+| a cloze has `paragraph` and not `sentence` | error |
+| `sentence` contains no `____` | error |
+| `sentence` under 10 words | warning — nothing in it to restate |
+| an option under 4 words | warning — not a paraphrase of anything |
+
+The corpus-wide checks (near-duplicate stems, scenario over-use, the
+answer appearing in the stem) all read whichever field the type uses, so
+they apply unchanged.
+
+---
+
 ## Lessons (Eğitim tab)
 
 A lesson is **a page you scroll**, built out of typed blocks. Not a

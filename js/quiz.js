@@ -13,8 +13,9 @@ import { getQuizRequest, setQuizResult } from "./session-state.js";
 import { getItemStats, getSetting } from "./storage.js";
 import { SETTINGS } from "./config.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
+import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
-import { el, clear, appendBlanked } from "./dom.js";
+import { el, clear } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
 
@@ -131,10 +132,7 @@ function renderQuestion() {
     block.appendChild(category);
   }
 
-  const prompt = el("p", "t-lead t-en");
-  prompt.lang = "en";
-  appendBlanked(prompt, question.prompt);
-  block.appendChild(prompt);
+  block.appendChild(renderPrompt(question));
 
   if (state.optionsHidden) {
     const reveal = el("button", "btn btn--secondary", "Şıkları göster");

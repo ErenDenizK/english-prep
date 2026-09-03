@@ -134,6 +134,7 @@ export function scoreSession(session, selectedAnswers) {
     return {
       id: question.id,
       topicId: question.topicId,
+      type: question.type,
       category: question.category,
       prompt: question.prompt,
       correctAnswer: question.correctAnswer,

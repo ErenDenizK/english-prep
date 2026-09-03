@@ -15,6 +15,14 @@ const isNonEmptyString = (value) => typeof value === "string" && value.trim().le
 /** The manifest is where a corpus-wide finding is reported against. */
 const MANIFEST_PATH = "data/manifest.json";
 
+/**
+ * A question's own text, whichever field its type keeps it in: a cloze
+ * item's `paragraph`, a restatement's `sentence`. Every check below works
+ * on the stem rather than on a field name, so a new item type costs one
+ * line here instead of four scattered ones.
+ */
+const stemOf = (question) => question?.paragraph ?? question?.sentence ?? "";
+
 /* Corpus-wide thresholds. All four of these enforce rules
  * docs/CONTENT_GUIDE.md already states and could not previously check —
  * they are the difference between a schema validator and a content one.
@@ -238,13 +246,14 @@ export function checkOptionForms(report, where, question) {
   }
 
   const answer = options[question.correctIndex];
-  if (isNonEmptyString(answer) && isNonEmptyString(question.paragraph)) {
-    const rest = question.paragraph.replace(/____/g, " ").toLowerCase();
+  const stem = stemOf(question);
+  if (isNonEmptyString(answer) && isNonEmptyString(stem)) {
+    const rest = stem.replace(/____/g, " ").toLowerCase();
     const needle = answer.toLowerCase();
     if (needle.split(/\s+/).length > 1 && rest.includes(needle)) {
       report.warn(
         where,
-        `the correct answer "${answer}" also appears in the paragraph — ` +
+        `the correct answer "${answer}" also appears in the question's own text — ` +
           `the item can be answered by matching rather than by choosing`
       );
     }
@@ -265,7 +274,7 @@ export function checkOptionForms(report, where, question) {
  */
 export function checkNearDuplicates(report, questions) {
   const shingles = questions.map((question) =>
-    isNonEmptyString(question.paragraph) ? stemShingles(question.paragraph) : new Set()
+    isNonEmptyString(stemOf(question)) ? stemShingles(stemOf(question)) : new Set()
   );
 
   for (let i = 0; i < questions.length; i += 1) {
@@ -324,10 +333,10 @@ export function checkScenarioReuse(report, questions) {
   const corpusCounts = new Map();
 
   for (const question of questions) {
-    if (!isNonEmptyString(question.paragraph) || !isNonEmptyString(question.category)) {
+    if (!isNonEmptyString(stemOf(question)) || !isNonEmptyString(question.category)) {
       continue;
     }
-    const words = scenarioWords(question.paragraph);
+    const words = scenarioWords(stemOf(question));
     for (const word of words) {
       corpusCounts.set(word, (corpusCounts.get(word) ?? 0) + 1);
     }

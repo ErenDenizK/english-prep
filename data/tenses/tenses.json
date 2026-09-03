@@ -163,7 +163,7 @@
     },
     {
       "id": "tenses-t17",
-      "category": "Perfect Aspects",
+      "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone",
       "paragraph": "I ____ this report for almost three hours now, and I still have two sections left to finish.",
       "options": ["wrote", "have written", "have been writing", "am writing"],
       "correctIndex": 2,
@@ -172,7 +172,7 @@
     },
     {
       "id": "tenses-t18",
-      "category": "Perfect Aspects",
+      "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone",
       "paragraph": "She ____ five chapters of the book so far, and she's determined to finish the rest by the weekend.",
       "options": ["has been reading", "has read", "read", "was reading"],
       "correctIndex": 1,
@@ -181,7 +181,7 @@
     },
     {
       "id": "tenses-t19",
-      "category": "Perfect Aspects",
+      "category": "Past Simple vs Past Continuous vs Past Perfect",
       "paragraph": "By the time she turned thirty, she ____ two companies and sold both of them for a considerable profit.",
       "options": ["founded", "has founded", "had founded", "was founding"],
       "correctIndex": 2,
@@ -190,12 +190,21 @@
     },
     {
       "id": "tenses-t20",
-      "category": "Perfect Aspects",
+      "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone",
       "paragraph": "My advisor mentioned a summer research program in Kyoto and asked whether I would need to apply for a visa. Have you ____ to Japan before, or would this be your first time?",
       "options": ["gone", "been", "go", "went"],
       "correctIndex": 1,
       "explanation": "'Have been to' bir yere gidip geri dönmüş olma deneyimini anlatır; 'have gone to' ise kişinin hâlâ orada olduğunu ima eder ki karşısındaki kişiyle konuşurken bu mümkün değildir.",
       "tip": "'Have been to' = gidip döndü (deneyim); 'have gone to' = hâlâ orada, dönmedi."
+    },
+    {
+      "id": "tenses-t25",
+      "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone",
+      "paragraph": "Nobody has seen Deniz since the lunch break, and her laptop is still open on the desk with the screen unlocked. She ____ down to the archive on the ground floor, I think, so she should be back before the meeting starts.",
+      "options": ["has gone", "has been", "has been going", "had gone"],
+      "correctIndex": 0,
+      "explanation": "Dizüstü bilgisayarı hâlâ açık duruyor ve 'she should be back before the meeting starts' deniyor: kişi gittiği yerden henüz dönmedi, hâlâ oradadır. Hâlâ orada olan biri için 'has gone to' kullanılır. En yakın çeldirici 'has been', kişinin gidip döndüğünü söyler ve 'should be back' ile açıkça çelişir. 'has been going' tek bir gidişi değil tekrarlanan bir gidip gelmeyi anlatır; 'had gone' ise cümlede bulunmayan, geçmişte bir referans anı ister.",
+      "tip": "Kişi hâlâ oradaysa 'has gone to', gidip döndüyse 'has been to'. Kararı zaman ifadesi değil, kişinin şu an nerede olduğu verir."
     },
     {
       "id": "tenses-t21",
@@ -560,7 +569,7 @@
       ]
     },
     {
-      "category": "Perfect Aspects",
+      "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone",
       "summary": "Ne kadarı bitti mi, ne kadar süredir mi?",
       "blocks": [
         {

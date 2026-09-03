@@ -14,9 +14,10 @@
 import { loadManifest, lessonIndex } from "./topics.js";
 import { getQuizResult, setQuizResult } from "./session-state.js";
 import { recordAttempt } from "./storage.js";
-import { el, clear, appendInline, appendBlanked } from "./dom.js";
+import { el, clear, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, createActionBar } from "./shell.js";
+import { renderPrompt } from "./prompt.js";
 
 const container = document.getElementById("results-container");
 const actionBar = createActionBar("results-bar");
@@ -122,10 +123,7 @@ function renderReview(result) {
     verdict.appendChild(el("span", "t-meta t-num", `Soru ${index + 1}`));
     item.appendChild(verdict);
 
-    const prompt = el("p", "t-body t-en");
-    prompt.lang = "en";
-    appendBlanked(prompt, question.prompt);
-    item.appendChild(prompt);
+    item.appendChild(renderPrompt(question, { lead: false }));
 
     const answers = el("p", "t-meta");
     answers.appendChild(document.createTextNode("Cevabın: "));

@@ -19,7 +19,7 @@
   "questions": [
     {
       "id": "modals-t1",
-      "category": "Must vs Have to vs Don't Have to",
+      "category": "Must vs Have to vs Mustn't vs Don't Have to",
       "paragraph": "I ____ finish this report tonight — nobody is forcing me, but I promised my manager and I don't want to let her down.",
       "options": ["must", "have to", "don't have to", "mustn't"],
       "correctIndex": 0,
@@ -28,7 +28,7 @@
     },
     {
       "id": "modals-t2",
-      "category": "Must vs Have to vs Don't Have to",
+      "category": "Must vs Have to vs Mustn't vs Don't Have to",
       "paragraph": "According to the university's regulations, every student ____ submit a health report before moving into the dormitory.",
       "options": ["has to", "must", "doesn't have to", "mustn't"],
       "correctIndex": 0,
@@ -37,7 +37,7 @@
     },
     {
       "id": "modals-t3",
-      "category": "Must vs Have to vs Don't Have to",
+      "category": "Must vs Have to vs Mustn't vs Don't Have to",
       "paragraph": "Passengers ____ use their phones during takeoff and landing; it's strictly forbidden by the airline for safety reasons.",
       "options": ["mustn't", "don't have to", "don't need to", "may not need to"],
       "correctIndex": 0,
@@ -46,7 +46,7 @@
     },
     {
       "id": "modals-t4",
-      "category": "Must vs Have to vs Don't Have to",
+      "category": "Must vs Have to vs Mustn't vs Don't Have to",
       "paragraph": "You ____ bring your own textbook to the seminar — the professor said she'll provide printed copies for everyone.",
       "options": ["don't have to", "mustn't", "can't", "shouldn't"],
       "correctIndex": 0,
@@ -127,7 +127,7 @@
     },
     {
       "id": "modals-t13",
-      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "category": "Modal Perfects: Must / Can't / Should / Needn't Have",
       "paragraph": "The lights are still on and the door is unlocked — the last person to leave ____ forgotten to lock up.",
       "options": ["must have", "can't have", "should have", "might"],
       "correctIndex": 0,
@@ -136,7 +136,7 @@
     },
     {
       "id": "modals-t14",
-      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "category": "Modal Perfects: Must / Can't / Should / Needn't Have",
       "paragraph": "He ____ finished the marathon in under three hours — he's never run more than five kilometers in his life.",
       "options": ["can't have", "must have", "should have", "needn't have"],
       "correctIndex": 0,
@@ -145,7 +145,7 @@
     },
     {
       "id": "modals-t15",
-      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "category": "Modal Perfects: Must / Can't / Should / Needn't Have",
       "paragraph": "I ____ studied harder for that exam — I only found out yesterday how much material was actually going to be covered.",
       "options": ["should have", "must have", "can't have", "may have"],
       "correctIndex": 0,
@@ -154,7 +154,7 @@
     },
     {
       "id": "modals-t16",
-      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "category": "Modal Perfects: Must / Can't / Should / Needn't Have",
       "paragraph": "We ____ brought umbrellas after all — the forecast said rain, but the sky was clear the whole afternoon.",
       "options": ["needn't have", "must have", "shouldn't have", "can't have"],
       "correctIndex": 0,
@@ -236,7 +236,7 @@
   ],
   "lessons": [
     {
-      "category": "Must vs Have to vs Don't Have to",
+      "category": "Must vs Have to vs Mustn't vs Don't Have to",
       "summary": "Kuralı kim koyuyor — ve olumsuzu yasak mı, gereksiz mi?",
       "blocks": [
         {
@@ -505,7 +505,7 @@
       ]
     },
     {
-      "category": "Modal Perfects: Must Have vs Can't Have vs Should Have",
+      "category": "Modal Perfects: Must / Can't / Should / Needn't Have",
       "summary": "Geçmişe dair tahmin mi, pişmanlık mı, gereksiz çaba mı?",
       "blocks": [
         {

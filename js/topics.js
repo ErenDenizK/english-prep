@@ -3,10 +3,16 @@
 // the app works with.
 //
 // Authored schema (what topic files contain — see docs/CONTENT_GUIDE.md
-// for the full spec): { id, category, paragraph, options, correctIndex,
-// explanation, tip }
-// Internal shape (what this module returns): { id, category, prompt,
+// for the full spec): { id, type, category, paragraph | sentence, options,
+// correctIndex, explanation, tip }
+// Internal shape (what this module returns): { id, type, category, prompt,
 // options, correctAnswer, explanation, tip }
+//
+// `prompt` is whichever the item type carries: a cloze item's `paragraph`,
+// with its blank, or a restatement's `sentence`, without one. The screens
+// need to know which they are showing — a restatement needs a lead-in
+// telling the learner what to do with the sentence — but nothing else in
+// the app has to care, and the scoring does not.
 //
 // The split exists so content authors write `correctIndex` against a fixed
 // options list (robust, easy to author and to validate), while the quiz
@@ -46,11 +52,21 @@ export function loadManifest() {
   return loadJson(MANIFEST_URL);
 }
 
+/** The item types the app can draw. Absent in a file means CLOZE. */
+export const QUESTION_TYPE = {
+  /** A passage with one blank — the format everything started as. */
+  CLOZE: "cloze",
+  /** A sentence and four paraphrases: the exam's "closest meaning". */
+  RESTATEMENT: "restatement",
+};
+
 function normalizeQuestion(question) {
+  const type = question.type ?? QUESTION_TYPE.CLOZE;
   return {
     id: question.id,
+    type,
     category: question.category,
-    prompt: question.paragraph,
+    prompt: type === QUESTION_TYPE.RESTATEMENT ? question.sentence : question.paragraph,
     options: question.options,
     correctAnswer: question.options[question.correctIndex],
     explanation: question.explanation,

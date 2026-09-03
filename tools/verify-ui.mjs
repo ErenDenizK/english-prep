@@ -636,6 +636,42 @@ async function runAccessibility(page) {
   }
   ok(announcedEnglish, "yanlış cevap duyurusu İngilizce formu lang=\"en\" ile sarıyor");
 
+  /* The option row aligns to its first line rather than to its middle,
+     because a restatement's options are whole sentences. Measured rather
+     than eyeballed: a one-line option must still look centred, or every
+     existing screen shifts. */
+  const geometry = await page.evaluate(() => {
+    const option = document.querySelector(".option");
+    const key = option?.querySelector(".option__key");
+    const text = option?.querySelector(".option__text");
+    if (!option || !key || !text) {
+      return null;
+    }
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    const [firstLine] = range.getClientRects();
+    const row = option.getBoundingClientRect();
+    const chip = key.getBoundingClientRect();
+    return {
+      rowHeight: row.height,
+      textTop: firstLine.top - row.top,
+      textBottom: row.bottom - firstLine.bottom,
+      keyOffset: chip.top + chip.height / 2 - (firstLine.top + firstLine.height / 2),
+      lines: range.getClientRects().length,
+    };
+  });
+  ok(geometry !== null, "seçenek satırı ölçülebiliyor");
+  if (geometry) {
+    ok(
+      geometry.lines > 1 || Math.abs(geometry.textTop - geometry.textBottom) <= 1,
+      `tek satırlık seçenek dikeyde ortalı (üst ${geometry.textTop.toFixed(1)}, alt ${geometry.textBottom.toFixed(1)})`
+    );
+    ok(
+      Math.abs(geometry.keyOffset) <= 3,
+      `numara ilk satırla hizalı (${geometry.keyOffset.toFixed(1)}px sapma)`
+    );
+  }
+
   ok(await page.locator('.option[aria-disabled="true"]').count() > 0, "cevaplanan seçenekler aria-disabled");
   ok(await page.locator(".option[disabled]").count() === 0, "hiçbir yerde disabled kullanılmıyor");
 }
