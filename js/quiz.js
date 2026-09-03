@@ -244,7 +244,10 @@ async function init() {
   try {
     const manifest = await loadManifest();
     const topics = manifest.topics.filter((topic) => request.topicIds.includes(topic.id));
-    const questions = await loadQuestionsForTopics(topics);
+    let questions = await loadQuestionsForTopics(topics);
+    if (request.category) {
+      questions = questions.filter((question) => question.category === request.category);
+    }
     const session = buildQuizSession(questions, request.count);
 
     if (session.length === 0) {

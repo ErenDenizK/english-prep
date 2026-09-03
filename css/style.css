@@ -298,6 +298,12 @@ h3 {
   cursor: not-allowed;
 }
 
+.btn--sm {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.82rem;
+  flex: 0 0 auto;
+}
+
 /* Custom dropdown (replaces native <select> — an app-owned menu instead
    of OS chrome, positioned absolutely so opening it never reflows the
    page). */
@@ -706,6 +712,7 @@ h3 {
 
 .breakdown-list li {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
   padding: 0.6rem var(--space-2);
@@ -713,7 +720,18 @@ h3 {
   border-radius: var(--radius);
 }
 
-.breakdown-list li span:last-child {
+/* Groups a row's name+score together so an optional trailing action
+   button (see .breakdown-list__action) has room on the right without
+   the name/score pair drifting apart from each other. */
+.breakdown-list__info {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.breakdown-list__score {
   font-family: var(--font-mono);
   color: var(--color-text-muted);
   white-space: nowrap;
