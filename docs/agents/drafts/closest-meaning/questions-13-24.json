@@ -81,13 +81,13 @@
     "sentence": "The engineers have repaired the bridge well enough for lorries to cross it again from Monday.",
     "options": [
       "The bridge has been repaired so well that lorries can use it again from Monday.",
+      "The bridge has been repaired well enough for lorries to start crossing it well before Monday.",
       "The bridge is still too badly damaged for lorries to cross it, even after Monday.",
-      "Lorries have been crossing the bridge since the engineers finished repairing it last Monday.",
-      "The engineers have repaired the bridge so thoroughly that lorries can now cross it without a weight limit."
+      "The engineers have repaired the bridge so thoroughly that lorries of any weight can cross it from Monday."
     ],
     "correctIndex": 0,
-    "explanation": "'well enough for lorries to cross' yeterli bir dereceyi ve gerçekleşen bir sonucu bildirir; 'so well that … can use it' aynı şeyi söyler. 'The bridge is still too badly damaged for lorries to cross it, even after Monday.' seçeneği sonucu engellenmiş gibi gösterip cümlenin tersini söyler. Bir diğer seçenek geçişi pazartesiden bugüne kadar süren bir şeye çevirir, bir başkası da cümlenin vermediği bir ayrıcalığı, ağırlık sınırının kalktığını ekler.",
-    "tip": "'enough' gerçekleşen bir sonucu, 'too' engellenen bir sonucu bildirir; ikisi arasında geçerken sonucun olumlu mu olumsuz mu olduğunu koru."
+    "explanation": "'well enough for lorries to cross' yeterli bir dereceyi ve pazartesiden itibaren gerçekleşen bir sonucu bildirir; 'so well that lorries can use it again from Monday' aynı şeyi söyler. 'The bridge has been repaired well enough for lorries to start crossing it well before Monday.' seçeneği dereceyi doğru okur ama sonucu pazartesiden öne çeker. Kalan seçeneklerden biri 'enough'u 'too'ya çevirip geçişi engellenmiş gösterir, diğeri de cümlenin vermediği bir ayrıcalığı, ağırlık sınırının kalkmasını ekler.",
+    "tip": "'enough' gerçekleşen bir sonucu, 'too' engellenen bir sonucu bildirir; derece doğru olsa bile sonucun ne zaman geçerli olduğunu ayrıca denetle."
   },
   {
     "id": "closest-meaning-t19",
@@ -110,13 +110,13 @@
     "category": "Too vs Enough vs So...That",
     "sentence": "The flat was left so clean that the landlord had no reason to hold back any of the deposit.",
     "options": [
-      "The landlord returned the deposit in full, so the tenants had no reason to clean the flat.",
+      "The landlord had no reason to keep the deposit, so the tenants left the flat spotlessly clean.",
       "The landlord holds back none of the deposit, however the tenants happen to leave the flat.",
-      "The flat was cleaner when the tenants left it than it had been when they moved in.",
-      "The flat was clean enough for the landlord to return the deposit in full."
+      "Once the flat has been cleaned, the landlord will have no reason to hold back the deposit.",
+      "The flat was clean enough to leave the landlord with no grounds for keeping any of the deposit."
     ],
     "correctIndex": 3,
-    "explanation": "'so clean that … had no reason to hold back any of the deposit' temizliği iadenin nedeni yapar; 'clean enough for … to return the deposit in full' bu bağı olduğu gibi korur. 'The landlord holds back none of the deposit, however the tenants happen to leave the flat.' seçeneği koşulu tümden atıp iadeyi her durumda işleyen bir alışkanlık gibi gösterir. Bir diğer seçenek neden ile sonucun yerini değiştirir.",
+    "explanation": "'so clean that … had no reason to hold back any of the deposit' temizliği, depozitoyu tutmak için gerekçe bırakmayan bir derece yapar; 'clean enough to leave the landlord with no grounds for keeping any of the deposit' bu bağı olduğu gibi korur. 'The landlord holds back none of the deposit, however the tenants happen to leave the flat.' seçeneği dereceyi tümden atıp iadeyi her koşulda işleyen bir alışkanlığa çevirir. Kalan seçeneklerden biri neden ile sonucun yerini değiştirir, diğeri olup bitmiş temizliği henüz gerçekleşmemiş bir koşula taşır.",
     "tip": "Bir sonucu bir dereceye bağlayan cümlede o dereceyi atmak anlamı bozar; 'so … that' genel bir alışkanlığı değil tek bir nedeni anlatır."
   },
   {
@@ -143,10 +143,10 @@
       "It has now been established that the consignment was unloaded at the wrong depot on Friday.",
       "The wrong consignment is rumoured to have been unloaded at the depot on Friday night.",
       "The consignment is rumoured to have been unloaded at the wrong depot, though this may not be true.",
-      "Nobody at the depot has suggested that the consignment went to the wrong place on Friday."
+      "There is no suggestion at all that the consignment went to the wrong depot on Friday night."
     ],
     "correctIndex": 2,
-    "explanation": "'It is only rumoured that' aktarılanın doğrulanmadığını söyler; kişisel kalıba 'is rumoured to have been unloaded' ile geçilir ve doğru şık bu belirsizliği 'though this may not be true' ile korur. 'It has now been established that the consignment was unloaded at the wrong depot on Friday.' seçeneği söylentiyi kanıtlanmış bir olguya yükseltir. Bir diğer seçenek yanlış olanın depo değil sevkiyat olduğunu söyler.",
+    "explanation": "'It is only rumoured that' aktarılanın doğrulanmadığını söyler; kişisel kalıba 'is rumoured to have been unloaded' ile geçilir ve doğru şık bu belirsizliği 'though this may not be true' ile korur. 'It has now been established that the consignment was unloaded at the wrong depot on Friday.' seçeneği söylentiyi kanıtlanmış bir olguya yükseltir. Kalan seçeneklerden biri yanlış olanın depo değil sevkiyat olduğunu söyler, diğeri de ortada bir söylenti bulunduğunu tümden yok sayar.",
     "tip": "Aktarımın kesinlik derecesi de anlamın parçasıdır: 'only rumoured' bir söylentiyi, 'has been established' kanıtlanmış bir olguyu bildirir ve biri diğerinin yerine geçmez."
   },
   {
@@ -161,8 +161,8 @@
       "It was widely believed at the time that the council had abandoned the tram line to save money."
     ],
     "correctIndex": 0,
-    "explanation": "'had abandoned' aktarımdan önce bitmiş bir olaydır, bu yüzden kişisel kalıpta mastar 'to have abandoned' olur ve bildiren kaynak cümlede kaldığı gibi kalır. 'The council was reported by the regional newspaper to be abandoning the tram line in order to save money.' seçeneği olayı aktarımla aynı ana çekip kararın hâlâ sürdüğünü söyler. Bir diğer seçenek bildiren ile bildirileni yer değiştirir.",
-    "tip": "Edilgen aktarımda mastarın zamanı, olayın aktarımdan önce mi onunla aynı anda mı olduğunu belirler; ikisi eşanlamlı değildir."
+    "explanation": "'had abandoned' aktarımdan önce bitmiş bir olaydır, bu yüzden kişisel kalıpta mastar 'to have abandoned' olur; bildiren kaynak cümlede anıldığı için doğru şıkta 'by the regional newspaper' olarak kalır. 'The council was reported by the regional newspaper to be abandoning the tram line in order to save money.' seçeneği olayı aktarımla aynı ana çekip kararın hâlâ sürdüğünü söyler. Kalan seçeneklerden biri bildiren ile bildirileni yer değiştirir, diğeri de adı geçen gazeteyi silip aktarımı kaynaksız bir kanaate çevirir.",
+    "tip": "Edilgen aktarımda mastarın zamanı olayın aktarımdan önce mi onunla aynı anda mı olduğunu belirler; cümlede adı geçen kaynak da paraphrase'de yerinde kalmalıdır."
   },
   {
     "id": "closest-meaning-t24",
