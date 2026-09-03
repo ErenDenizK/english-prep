@@ -130,14 +130,17 @@ The İYS is not idiosyncratic. Every Turkish university proficiency exam I
 could check has the same skeleton — **reading + listening + writing, with
 grammar embedded rather than sectioned off**:
 
-- **[İTÜ](https://ydy.itu.edu.tr/programlar/lisans-hazirlik-programi/yeterlik-sinavi)** — session 1: restatement (9 items, 14 pts) + reading (24 items,
+- **[İTÜ](https://ydy.itu.edu.tr/programlar/lisans-hazirlik-programi/yeterlik-sinavi)**
+  — session 1: restatement (9 items, 14 pts) + reading (24 items,
   36 pts) = 60; session 2: listening (10 items, 20 pts) + a ~350-word
   academic essay (20 pts) = 40. Pass 60, minimum 20 from session 2, 65 for
   graduate students. *No grammar section, no cloze.*
-- **[Boğaziçi (BUEPT)](https://yadyok.bogazici.edu.tr/en/pages/testing-and-assessment-unit/2399)** — listening (selective + note-taking), reading
+- **[Boğaziçi (BUEPT)](https://yadyok.bogazici.edu.tr/en/pages/testing-and-assessment-unit/2399)**
+  — listening (selective + note-taking), reading
   (search reading + careful reading), writing; ~4 hours; pass 60 overall
   **and** a pass on writing specifically. *No grammar section at all.*
-- **[YDS / e-YDS (ÖSYM)](https://www.uzmaningilizce.com/sss/yds_e_ydsde_soru_dagilimi_nasildir)** — the contrast case: 80 items, 180 minutes, all
+- **[YDS / e-YDS (ÖSYM)](https://www.uzmaningilizce.com/sss/yds_e_ydsde_soru_dagilimi_nasildir)**
+  — the contrast case: 80 items, 180 minutes, all
   multiple choice, no writing and no listening. Its published distribution
   is roughly vocabulary 6, grammar 10, cloze 10, sentence completion 10,
   EN→TR translation 3, TR→EN 3, reading passages 20, dialogue completion
@@ -228,7 +231,7 @@ content is aimed at the right target. Only the delivery is wrong.
 6. **Cloze as a real passage — 12.5%.** The app's current questions are
    what a cloze *item* looks like after you cut it out of its passage and
    give it its own paragraph. Putting ten blanks back into one text is a
-   structural change, and it shares that change with reading (§4.1).
+   structural change, and it shares that change with reading (§4.3–4.4).
 
 ---
 
@@ -559,13 +562,18 @@ enumerable**.
 - **Hu & Nation (2000)** put comfortable unassisted reading comprehension
   at **98% lexical coverage**, with 95% as a floor for minimally adequate
   comprehension. Be honest about this number: it is influential and it is
-  contested — a [2023 replication in *Language Learning*](https://onlinelibrary.wiley.com/doi/10.1111/lang.12622) (Kremmel et al.)
-  could not fully reproduce it, and the original regression rested on 66
-  students. Treat 95–98% as the right order of magnitude, not a constant.
-- **The [NGSL](https://www.newgeneralservicelist.com/new-general-service-list)** (2,809 words) gives ~92% coverage of general English. A
-  B2 candidate broadly has this; it is not where the marks are.
-- **The AWL** ([Coxhead 2000](https://onlinelibrary.wiley.com/doi/abs/10.2307/3587951)) is 570 word families that account for about
-  **10% of the tokens in academic text** and only 1.4% of fiction. On a
+  contested — a 2023
+  [replication in *Language Learning*](https://onlinelibrary.wiley.com/doi/10.1111/lang.12622)
+  (Kremmel et al.) could not fully reproduce it, and the original
+  regression rested on 66 students. Treat 95–98% as the right order of
+  magnitude, not a constant.
+- **The [NGSL](https://www.newgeneralservicelist.com/new-general-service-list)**
+  (2,809 words) gives ~92% coverage of general English. A B2 candidate
+  broadly has this; it is not where the marks are.
+- **The AWL**
+  ([Coxhead 2000](https://onlinelibrary.wiley.com/doi/abs/10.2307/3587951))
+  is 570 word families that account for about **10% of the tokens in
+  academic text** and only 1.4% of fiction. On a
   350-word exam passage that is ~35 tokens. Coxhead built the list from
   exactly the words *outside* the first 2,000 — which is to say, from the
   band a B2 candidate has not covered and a reading passage is full of.
@@ -580,9 +588,11 @@ a bounded, authorable, finishable list — which is exactly the kind of
 thing a small static app is good at and a big commercial app is not.
 
 Two caveats worth writing down. The AWL is built on the 1953 GSL and on
-word *families*, both criticised; **Gardner & Davies' [Academic Vocabulary
-List](https://www.eapfoundation.com/vocab/wordlists/overview/) (2013)** is the modern alternative and worth a look before
-committing. And word families are the reason **word formation** belongs
+word *families*, both criticised; **Gardner & Davies' Academic
+Vocabulary List (2013)** — see the
+[list overview](https://www.eapfoundation.com/vocab/wordlists/overview/)
+— is the modern alternative and worth a look before committing. And
+word families are the reason **word formation** belongs
 here: *analyse / analysis / analyst / analytical / analytically* is one
 AWL family and four separate exam answers. The README already has "a
 question format for Vocabulary / Word Formation" on the post-1.0 roadmap;
@@ -593,17 +603,21 @@ the AWL family lists are the principled content source it was missing.
 Four findings, each with a direct consequence for the build:
 
 **Deliberate study is not inferior to learning from context.** The
-comparative literature ([Webb 2007](https://journals.sagepub.com/doi/10.1177/1362168806072463) on word pairs vs glossed sentences; the
-broader decontextualised-vs-contextualised work) finds decontextualised
+comparative literature
+([Webb 2007](https://journals.sagepub.com/doi/10.1177/1362168806072463)
+on word pairs vs glossed sentences; the broader
+decontextualised-vs-contextualised work) finds decontextualised
 tasks **equal or better** for establishing the form–meaning link, and
 context adds other kinds of knowledge rather than replacing it. *So:* an
 app that drills words deliberately is not a compromise. It is the
-efficient strand. [Nation's four-strands](https://www.victoria.ac.nz/__data/assets/pdf_file/0003/1626123/2012-Yamamoto-Four-strands.pdf) framing says the same thing —
-language-focused learning is one of four legitimate strands, not a
-guilty one.
+efficient strand.
+[Nation's four-strands](https://www.victoria.ac.nz/__data/assets/pdf_file/0003/1626123/2012-Yamamoto-Four-strands.pdf)
+framing says the same thing — language-focused learning is one of four
+legitimate strands, not a guilty one.
 
-**Spaced beats massed, robustly.** [Kim & Webb's 2022 meta-analysis in
-*Language Learning*](https://onlinelibrary.wiley.com/doi/10.1111/lang.12479) pooled 98 effect sizes from 48 experiments
+**Spaced beats massed, robustly.** Kim & Webb's 2022
+[meta-analysis in *Language Learning*](https://onlinelibrary.wiley.com/doi/10.1111/lang.12479)
+pooled 98 effect sizes from 48 experiments
 (N = 3,411) and found spaced practice reliably better for L2 learning.
 *So:* the scheduling matters at least as much as the items. An app that
 shows 20 random words is doing the weaker half.
@@ -632,17 +646,26 @@ words instead of verb forms:
   "paragraph": "The committee could not ____ the two accounts of the incident, since each witness insisted the other was mistaken.",
   "options": ["reconcile", "reconsider", "reinforce", "reallocate"],
   "correctIndex": 0,
-  "explanation": "'Reconcile' iki çelişkili anlatıyı bağdaştırmak demektir… Turkish gloss: **bağdaştırmak, uzlaştırmak**.",
-  "tip": "reconcile A with B — iki farklı ifadeyi/rakamı birbirine uydurmak."
+  "explanation": "**reconcile** — bağdaştırmak, uzlaştırmak. Cümlede iki tanığın birbirini yalanlaması var, yani komisyonun elinde çelişen iki anlatı var… 'reconsider' (yeniden düşünmek) burada anlamsız, çünkü…",
+  "tip": "reconcile A with B — birbiriyle çelişen iki ifadeyi/rakamı bağdaştırmak."
 }
 ```
 
 Distractors drawn from the same AWL family or the same sublist are what
 make it exam-like: *reconsider / reinforce / reallocate* are all plausible
 academic verbs, and only the argument of the sentence picks one. The
-Turkish gloss lives in the `explanation`, where the schema already puts
-the teaching, so the learner gets both the contextual reading and the
-word-pair form–meaning link in one item.
+Turkish gloss opens the `explanation`, where the schema already puts the
+teaching, so one item delivers both the contextual reading and the
+word-pair form–meaning link the research says is the efficient part.
+
+**The category needs deciding, and sublist numbers are the wrong
+answer.** `"AWL Sublist 1"` is an authoring bucket, not something a
+learner recognises, and the results screen would show them "you are weak
+in Sublist 3", which means nothing and links to no lesson. Group by
+something a learner can act on — `"Research & Evidence"`,
+`"Cause & Effect"`, `"Change & Trend"` — and keep the sublist as an
+authoring note, not a category. This is the same taxonomy question as the
+reading skills in §4.4, and it wants answering once for both.
 
 **So the only new code is the scheduling** — and that is genuinely new.
 `js/storage.js` today stores attempt history, lesson progress and a name.
@@ -651,7 +674,8 @@ version is a **Leitner box**: five levels, an item answered right moves up
 a level, wrong drops to level 1, and each level has a delay
 (1 / 2 / 4 / 8 / 16 days). Perhaps 60 lines in `storage.js` plus a session
 builder in `quiz-engine.js` that selects by due date instead of at random.
-`resetAll()` must clear it, and it is per-browser and unbacked like
+Profil's reset must clear it alongside `clearHistory()` and
+`clearLessonProgress()`, and it is per-browser and unbacked like
 everything else — which for a word schedule is a real loss and should be
 said in the UI once.
 
