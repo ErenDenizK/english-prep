@@ -169,6 +169,21 @@ prefer one distractor per category that is consistent with every fact in
 the stem and wrong only in the grammatical relation — the way the
 strongest reporting item already works.
 
+## The integration is proved
+
+Assembled into `data/` as a dry run on 2026-09-04 and then reverted. With
+the fourth topic present:
+
+- `npm run validate` — **4 topics, 97 questions, 24 lessons, clean**
+- `npm test` — 89
+- `npm run verify` — **545 checks, no problems** (up from 455, the extra
+  ninety being the six new lessons audited at 390px)
+
+So nothing about a fourth topic, the `compound-structures` tier — which
+had never been used — or restatement items inside a lesson's `check`
+blocks needs code. `node docs/agents/drafts/closest-meaning/assemble.mjs`
+from the repo root is genuinely the whole of it.
+
 ## What is left
 
 1. Repair the lessons — 2 blocking first.
