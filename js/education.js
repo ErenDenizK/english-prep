@@ -21,7 +21,7 @@
 // what a scrolling page has, and because it stays meaningful when an
 // author adds a block to a lesson someone is halfway through.
 
-import { loadManifest, loadLessonsForTopics } from "./topics.js";
+import { loadManifest, loadLessonsForTopics, lessonIndex } from "./topics.js";
 import {
   getAllLessonProgress,
   getLessonProgress,
@@ -54,10 +54,16 @@ const state = {
 
 /* ---- Loading ---- */
 
+/**
+ * The index screen needs names and progress, not content, so it loads the
+ * manifest and stops there. Opening a lesson is what fetches a topic file
+ * — see `openLesson`. That split is the difference between a 141 KB home
+ * screen and a 1.7 KB one, and it grows with the content.
+ */
 function loadLessons() {
   return loadManifest()
-    .then((manifest) => loadLessonsForTopics(manifest.topics.filter((topic) => !topic.comingSoon)))
-    .then((lessons) => {
+    .then((manifest) => {
+      const lessons = lessonIndex(manifest);
       state.lessons = lessons;
       state.loading = null;
       return lessons;
@@ -699,16 +705,36 @@ export async function openLesson(lessonId) {
     return;
   }
 
-  const lessonIndex = lessons.findIndex((lesson) => lesson.id === lessonId);
-  if (lessonIndex === -1) {
+  const lessonPosition = lessons.findIndex((lesson) => lesson.id === lessonId);
+  if (lessonPosition === -1) {
     history.replaceState(null, "", "#egitim");
     await showLessonIndex();
     return;
   }
 
-  state.reader = { lessonIndex, answers: new Map() };
+  // Only now is the topic file worth fetching — and only this lesson's.
+  try {
+    const manifest = await loadManifest();
+    const topic = manifest.topics.find((entry) => entry.id === lessons[lessonPosition].topicId);
+    const full = await loadLessonsForTopics([topic]);
+    const loaded = full.find((lesson) => lesson.id === lessonId);
+    if (!loaded) {
+      throw new Error(`lesson ${lessonId} is in the manifest index but not in ${topic?.file}`);
+    }
+    // Keep the index entry's position so "next lesson" still walks the
+    // whole syllabus rather than one topic.
+    state.lessons = lessons.map((lesson) => (lesson.id === lessonId ? { ...lesson, ...loaded } : lesson));
+  } catch (error) {
+    console.error(error);
+    clear(readerContainer);
+    readerContainer.appendChild(el("p", "t-meta", "Ders yüklenemedi. Bağlantını kontrol edip tekrar dene."));
+    setReaderChrome(true);
+    return;
+  }
+
+  state.reader = { lessonIndex: lessonPosition, answers: new Map() };
   setReaderChrome(true);
-  announce(lessons[lessonIndex].category);
+  announce(lessons[lessonPosition].category);
   renderLesson();
 
   // Pick up where they stopped reading. Deferred a frame because the page

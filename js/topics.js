@@ -127,6 +127,40 @@ function groupByCategory(questions) {
  * @param {Array<{id: string, title: string, file: string}>} topics
  * @returns {Promise<Array<object>>}
  */
+/**
+ * Every lesson there is, from the manifest alone — id, order, topic,
+ * category and the one-line summary. No question data, and no topic file
+ * fetched at all.
+ *
+ * This is what the Eğitim index, the Test tab, Profil and the results
+ * screen need, and it is 1.7 KB against the 141 KB those screens used to
+ * download. The index is generated into the manifest by
+ * tools/format-content.mjs and checked by the validator, so it cannot
+ * drift from the topic files it was copied out of.
+ *
+ * @param {{topics: Array<object>}} manifest
+ * @returns {Array<{id: string, order: number, topicId: string, topicTitle: string, category: string, summary: string}>}
+ */
+export function lessonIndex(manifest) {
+  return manifest.topics
+    .filter((topic) => !topic.comingSoon && Array.isArray(topic.lessons))
+    .flatMap((topic) =>
+      topic.lessons.map((lesson, index) => ({
+        id: lessonId(topic.id, lesson.category),
+        order: index + 1,
+        topicId: topic.id,
+        topicTitle: topic.title,
+        category: lesson.category,
+        summary: lesson.summary,
+      }))
+    );
+}
+
+/**
+ * The full lessons, blocks and check questions included. Fetches every
+ * topic file, so this is only for the reader — anything that just needs
+ * the list of lessons wants `lessonIndex` instead.
+ */
 export async function loadLessonsForTopics(topics) {
   const lessonSets = await Promise.all(
     topics.map(async (topic) => {

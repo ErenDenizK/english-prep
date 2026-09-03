@@ -11,7 +11,7 @@
 // than boxed: eight cards in a column is the box-in-box failure with extra
 // steps.
 
-import { loadManifest, loadLessonsForTopics } from "./topics.js";
+import { loadManifest, lessonIndex } from "./topics.js";
 import { getQuizResult, setQuizResult } from "./session-state.js";
 import { recordAttempt } from "./storage.js";
 import { el, clear, appendInline, appendBlanked } from "./dom.js";
@@ -192,8 +192,9 @@ async function init() {
   try {
     const manifest = await loadManifest();
     titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
-    const lessons = await loadLessonsForTopics(manifest.topics.filter((topic) => !topic.comingSoon));
-    lessonIdByCategory = new Map(lessons.map((lesson) => [lesson.category, lesson.id]));
+    // The results screen links a wrong answer to the lesson that teaches
+    // it, which needs the mapping and not the lessons themselves.
+    lessonIdByCategory = new Map(lessonIndex(manifest).map((lesson) => [lesson.category, lesson.id]));
   } catch (error) {
     // The score itself came through the session handoff, so a failed
     // content load costs the topic titles and the lesson links, not the

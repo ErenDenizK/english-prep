@@ -90,7 +90,8 @@ should name a confusable pair or triad wherever the grammar allows it
 | `questionCount` | live topics | Must equal the number of questions in the file. |
 | `lessonCount` | no | Must equal the number of lessons in the file, if given. |
 | `contentVersion` | no | Integer, starts at `1`. **Bump it whenever you add or materially change questions.** That's what raises the "Yeni sorular eklendi" badge on the topic card; starting a test clears it. Omit the field to opt a topic out of freshness tracking. |
-| `categories` | no | Must match the topic's question categories exactly. Shown as preview chips on the topic card. |
+| `categories` | no | Must match the topic's question categories exactly. |
+| `lessons` | generated | **Do not author or edit this.** `npm run format` copies each lesson's `category` and `summary` into it, in order, and the validator fails if it drifts. It exists so the lesson list, the Test tab, Profil and the results screen can be built from this file alone — before it, drawing a list of eighteen lesson names downloaded 141 KB of question data to show 1.7 KB of information. |
 | `comingSoon` | no | `true` marks a roadmap teaser: a disabled card, excluded from the mixed-test pool. Such an entry must **not** declare `file`, `questionCount` or `lessonCount`. Drop the flag once real content exists. |
 
 ---
@@ -436,9 +437,14 @@ decision    the procedure to carry into the exam
 ## Before you hand content over
 
 ```bash
+npm run format      # canonical formatting, and regenerates the lesson index
 npm run validate    # schema, cross-file consistency, content bugs
 npm test            # the app's own unit tests
 ```
+
+**Run `npm run format` after every content edit.** It is what keeps the
+manifest's generated lesson index in step with the topic files, and
+`npm run validate` fails if you forget.
 
 `npm run validate` must print `✓ Content validation passed`. Warnings are
 advisory but are usually worth fixing — a "paragraph is only N words"
