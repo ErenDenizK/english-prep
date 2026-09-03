@@ -5,6 +5,24 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.7 — 2026-09-03
+
+Small follow-ups from the `v0.6` navigation pass — closing out the last
+two items planned for this round.
+
+- **Dismissible "still in development" note**: a small banner above the
+  tabs tells first-time visitors the app isn't `v1` yet and what's
+  usable today (Eğitim, Test, Profil). Dismissing it is remembered
+  locally and survives a history reset — it's a separate, deliberately
+  simpler stand-in for the more elaborate multi-step onboarding tour
+  that was on the roadmap; that fuller tour is deferred as
+  disproportionate for this stage.
+- **Weak-spot lists show rank numbers** ("1. Tenses", "2. ..."):
+  addresses artifact-comment feedback that the ordering read as
+  arbitrary — entries were already sorted weakest-first, the numbers
+  just make that order visible instead of implicit.
+- Ported both to the "Tenses Practice" artifact.
+
 ## v0.6 — 2026-09-03
 
 Navigation restructure, driven directly by artifact-comment feedback left

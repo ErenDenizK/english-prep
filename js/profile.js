@@ -80,6 +80,9 @@ function renderStats(stats) {
   return section;
 }
 
+// Entries arrive sorted weakest-first (lowest accuracy first) — the rank
+// number makes that order visible instead of implicit, since without it
+// the list reads as an arbitrary ordering rather than "worst to best".
 function renderWeakList(heading, entries, resolveName) {
   if (entries.length === 0) {
     return null;
@@ -89,9 +92,9 @@ function renderWeakList(heading, entries, resolveName) {
   section.appendChild(el("h2", null, heading));
 
   const list = el("ul", "breakdown-list");
-  entries.forEach((entry) => {
+  entries.forEach((entry, index) => {
     const item = document.createElement("li");
-    item.appendChild(el("span", null, resolveName(entry)));
+    item.appendChild(el("span", null, `${index + 1}. ${resolveName(entry)}`));
     item.appendChild(el("span", null, `${entry.correct}/${entry.total}`));
     list.appendChild(item);
   });

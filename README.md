@@ -36,6 +36,12 @@ so it doesn't sit at the same level as "what am I practicing":
   which topics and which grammar categories you're weakest in, plus a
   reset button for all locally saved history.
 
+A dismissible note above the tabs tells first-time visitors the app is
+still in development (not yet `v1`) and what's usable today. It's shown
+once — dismissing it is remembered locally and survives a "Geçmişi
+Sıfırla" history reset (it's tracked separately from score history), so
+it won't reappear just because someone clears their stats.
+
 The whole app is a fixed-height "app shell" (header/tabs, a scrolling
 content area with no visible scrollbar, and a fixed bottom action bar on
 the quiz/results screens) rather than an ordinary scrolling web page —
@@ -103,6 +109,18 @@ scores and numbers, and hairline borders instead of shadowed "card" panels.
 The goal is to read as an edited, purpose-built study tool rather than a
 generic dashboard template. See `css/style.css` for the token definitions
 (`:root` custom properties) if this direction is extended to new pages.
+
+## Content authoring workflow
+
+Lesson and question content (the actual Turkish explanations, example
+sentences, and topic coverage) is being authored separately from this
+engineering work — in its own planning process, producing a curriculum
+and material for each topic. This repo's job is the app engine: turning
+whatever content arrives into working topics using the schema below (or
+extending the schema first, when a new content shape doesn't fit it —
+e.g. a guided step-by-step lesson sequence, or a non-cloze question
+format), and building whatever UI features that content needs. Content
+itself isn't authored here.
 
 ## Adding a new topic
 
@@ -325,7 +343,7 @@ app is a real first release, not any particular feature set being
 
 ## Roadmap to v1.0
 
-Everything shipped so far (`v0.1`–`v0.6`) is development work toward a
+Everything shipped so far (`v0.1`–`v0.7`) is development work toward a
 first real release, not a release itself. Below is the working list of
 what's left, roughly in the order it makes sense to tackle — see
 `CHANGELOG.md` for what's already landed under each `0.y`.
@@ -345,16 +363,21 @@ what's left, roughly in the order it makes sense to tackle — see
    initial once a name is set); the header now shows a personalized
    "Hoş geldin, {name}!" greeting instead of a static tagline; the app
    name in the header shortened to "English Prep".
-4. **Short first-run onboarding tour** — 3-4 skippable steps introducing
-   Eğitim/Test/Profil on first open, shown once (tracked locally), and
-   re-openable later from Profil. Not started.
+4. ~~Short first-run onboarding tour~~ — **done in `v0.7`, in simplified
+   form.** Rather than a multi-step guided tour, a small dismissible note
+   above the tabs tells a first-time visitor the app is still in
+   development and what's usable today. Proportionate for this stage; a
+   fuller step-by-step tour can still happen later if the app grows
+   enough to need one.
 5. **Guided learning path mechanism in Eğitim** — pulled forward from
    "beyond v1.0" at the owner's explicit request (see below for what it
    means). Step-by-step progression through a topic's lessons, ending in
    an auto-routed mini-test; the free/open Test tab stays exactly as-is
-   alongside it. The owner is authoring the lesson content separately —
-   building the mechanism/schema is blocked on a quick sync on that
-   content's shape first, so the two don't end up mismatched.
+   alongside it. Content (the lesson material and route through it) is
+   being authored separately — see **Content authoring workflow** above.
+   Building the mechanism/schema is blocked on that content's shape
+   arriving first, so the two don't end up mismatched; features get
+   added here as that process specifies what it needs.
 6. **A second real topic** (Modals is already stubbed as `comingSoon` in
    the manifest) — both to make Test/Eğitim feel like a real multi-topic
    app rather than a single-topic demo, and to give the "Yeni sorular

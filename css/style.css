@@ -727,6 +727,53 @@ h3 {
   margin-bottom: var(--space-3);
 }
 
+/* Dismissible status note — sits above whichever tab is active (it's a
+   direct child of .page, not inside any one view) so it's seen once
+   regardless of where a learner starts, without needing its own onboarding
+   flow. Muted rather than accent-colored: it's informational, not a nudge
+   to act on like .callout. */
+.dev-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  margin-bottom: var(--space-3);
+  background: var(--color-surface);
+}
+
+.dev-note p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.dev-note strong {
+  color: var(--color-text);
+}
+
+.dev-note button {
+  flex: 0 0 auto;
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dev-note button:hover {
+  color: var(--color-accent);
+}
+
+.dev-note button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .review-item {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
