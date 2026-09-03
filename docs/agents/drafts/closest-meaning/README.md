@@ -115,6 +115,60 @@ along a second real axis, and lesson 4's two blocking defects are exactly
 what that missing contrast would have caught; and three `pitfall`s per
 lesson produces filler in four of the six.
 
+## Round 2 (2026-09-04) — after the repairs
+
+The lessons' eleven false claims are fixed and committed. The questions
+went back through **two fresh independent blind passes**.
+
+| | |
+| --- | --- |
+| Agreement with the key | **24/24 and 24/24** |
+| Items with two faithful restatements | **0**, from either reader |
+| The hedge exploit | dead — `may have` / `might have` went from 8 distractors and 0 keys to **1 distractor and 2 keys** |
+| The named-source exploit | dead — one stem now names its source and its key keeps it, one item names nobody at all, so the reflex deletes the correct answer as often as a wrong one |
+
+One reader called the reporting category "the best-engineered part of the
+set", because two options in each item now carry the same raised-passive
+form and differ only in content — the transformation cannot be recognised
+and guessed. Both readers independently named `t13` and `t23` the two
+strongest items.
+
+**Nothing that remains is a correctness defect.** What the second round
+found is about what the items *measure*:
+
+- The *Third Conditional* group reduces three of its four items to one
+  move — a past counterfactual means both propositions are false. Only
+  the mixed-conditional item adds anything.
+- The *Unless* group is the most rigid: one reader called it "one item,
+  four times", and all four carry a past-tense option that is eliminable
+  on sight because every stem is future.
+- One stem never says whether an event is over, so a distractor is not
+  decisively wrong on the stem alone.
+- One key glosses its own hedge, so the reporting grammar is not
+  exercised in that item.
+- Assorted prose: a stadium that finishes a match, an examination that
+  becomes closer, "On a Saturday" for "On Saturdays", a stem that
+  distinguishes critics from reviewers and options that collapse them.
+
+### One finding deliberately not acted on
+
+A reader observed that in most items the three distractors fail on
+**content** alone — one contradicts a stated fact, one invents a fact,
+one shifts the tense — so the target structure is never strictly
+*required*, and ten items are solvable by elimination without it.
+
+That is true, and it is also how the real paper works. `docs/exam-spec.md`
+records that its distractors "are grammatically fluent and differ in
+*meaning*, usually by reversing a causal direction, changing a modality,
+or swapping which of two things is being compared." Content-level
+discrimination is the skill this section tests. Redesigning around the
+observation would make the app's items less like the exam's, not more.
+
+What *was* asked for is narrower and cheap: where it costs nothing,
+prefer one distractor per category that is consistent with every fact in
+the stem and wrong only in the grammatical relation — the way the
+strongest reporting item already works.
+
 ## What is left
 
 1. Repair the lessons — 2 blocking first.
