@@ -309,3 +309,46 @@ Everything above is the owner's call, not an assistant's: each one is
 either a taxonomy change (which resets a learner's progress for the
 lesson, and has to move questions, manifest and lesson together) or a
 rewrite of a question that is currently answerable. None was made.
+
+---
+
+## The signal-word trap (verified 2026-09-03)
+
+The learning-design research arm claimed that the lessons teach signal
+words and that every question then rewards them, so a learner never meets
+the case where the heuristic fails. I checked it against the four
+*Present Perfect vs Past Simple* items, because a claim about our own data
+should not be taken on trust.
+
+The first check I wrote was wrong — a regex matched `since` inside
+"we haven't kept in touch since then", a clause that has nothing to do
+with the blank, and reported `t6` as an item that punishes the heuristic.
+Read properly, item by item:
+
+| | Cue at the blank | Answer | |
+| --- | --- | --- | --- |
+| `t5` | "since she started university" | `has done` | rewards the rule |
+| `t6` | "two years ago" | `met` | rewards the rule |
+| `t7` | no time marker; present result | `has broken` | rule silent |
+| `t8` | "over the past century" | `has experienced` | rewards the rule |
+
+**The arm is right. Nothing in this category punishes the heuristic.**
+
+That matters more than it looks, because the lesson itself warns about
+exactly this. Its text block says `for` appears on both sides — *"I have
+lived here for five years"* against *"I lived there for five years, then I
+moved"* — and that the deciding factor is whether the period is still
+open, not the word. The lesson teaches a caveat the practice never
+exercises, so a learner can pass every question in the category while
+holding precisely the belief the lesson tried to correct.
+
+The fix is a content one and belongs to the next authoring round: roughly
+one item in four should be decided by something other than the surface
+cue, and each of these categories should carry at least one item that the
+signal word gets wrong. That is a specification for the question-author
+brief, not a bug in any single question — every item above is correct
+English and correctly keyed.
+
+The same audit should be run across all eighteen categories before the
+next content round; this one was checked by hand and the other seventeen
+were not.
