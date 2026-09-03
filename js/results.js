@@ -173,9 +173,13 @@ async function init() {
       mode: result.mode,
       topicBreakdown: result.topicBreakdown,
       categoryBreakdown: result.categoryBreakdown,
+      // The category travels with the answer. Without it, working out
+      // which grammar point a learner is weak at would mean guessing the
+      // group from the question id, and the id only encodes the topic.
       questions: result.questionResults.map((question) => ({
         id: question.id,
         topicId: question.topicId,
+        category: question.category,
         correct: question.correct,
       })),
     });

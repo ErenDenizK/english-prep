@@ -14,7 +14,19 @@ const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
 const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
 const DEV_NOTE_DISMISSED_KEY = "englishPrep.devNoteDismissed";
-const MIN_ATTEMPTS_FOR_WEAK_ENTRY = 3;
+/** Distinct questions that must have been met before a group is ranked. */
+const MIN_ITEMS_FOR_WEAK_ENTRY = 3;
+
+/** And before the app is willing to *state* that something is a weakness. */
+const MIN_ITEMS_FOR_WEAK_CLAIM = 6;
+
+/**
+ * Below this, current accuracy counts as not-yet-learned. Not 1: requiring
+ * perfection made every category the learner had ever answered imperfectly
+ * a "weakness", which meant a learner guessing at random was told they were
+ * weak in everything, 99.6% of the time.
+ */
+const MASTERY = 0.8;
 
 /**
  * Reads and JSON-parses a key, falling back to `fallback` for anything
@@ -91,10 +103,6 @@ function sumBreakdowns(attempts, breakdownKey) {
 }
 
 /**
- * Aggregates correct/total counts per topic across all recorded attempts.
- * @returns {Record<string, {correct: number, total: number}>}
- */
-/**
  * Per-question history, derived rather than stored: every attempt already
  * carries its own `date` and the ids it covered, so "when did this learner
  * last see this question" needs no new field and no migration.
@@ -104,7 +112,12 @@ function sumBreakdowns(attempts, breakdownKey) {
  * got it wrong *last time*, which is a different question from whether
  * they usually do.
  *
- * @returns {Record<string, {seen: number, wrong: number, lastCorrect: boolean, last: number}>}
+ * Each entry also carries the topic and category the question belonged to,
+ * copied from the attempt record, so a caller can group items without
+ * loading any content — storage.js does no fetching. `category` is absent
+ * on attempts recorded before it was stored.
+ *
+ * @returns {Record<string, {seen: number, wrong: number, lastCorrect: boolean, last: number, topicId?: string, category?: string}>}
  */
 export function getItemStats() {
   const stats = {};
@@ -117,6 +130,12 @@ export function getItemStats() {
       }
       const entry = (stats[question.id] ??= { seen: 0, wrong: 0, lastCorrect: false, last: 0 });
       entry.seen += 1;
+      if (typeof question.topicId === "string") {
+        entry.topicId = question.topicId;
+      }
+      if (typeof question.category === "string") {
+        entry.category = question.category;
+      }
       if (!question.correct) {
         entry.wrong += 1;
       }
@@ -132,6 +151,10 @@ export function getItemStats() {
   return stats;
 }
 
+/**
+ * Aggregates correct/total counts per topic across all recorded attempts.
+ * @returns {Record<string, {correct: number, total: number}>}
+ */
 export function getTopicTotals() {
   return sumBreakdowns(getHistory(), "topicBreakdown");
 }
@@ -162,11 +185,84 @@ export function getLastTopicScore(topicId) {
   return null;
 }
 
-function weakestEntries(totals, limit) {
-  return Object.entries(totals)
-    .map(([key, stats]) => ({ key, ...stats, accuracy: stats.correct / stats.total }))
-    .filter((entry) => entry.total >= MIN_ATTEMPTS_FOR_WEAK_ENTRY && entry.accuracy < 1)
-    .sort((a, b) => a.accuracy - b.accuracy)
+/**
+ * Upper end of the 95% Wilson score interval for `correct` out of `total`.
+ *
+ * This is the honesty check on every claim the app makes about a learner.
+ * Two wrong out of four is 50%, and it is also completely consistent with
+ * someone who knows 80% of the material having a bad afternoon — the
+ * Wilson upper bound for 2/4 is about 0.85, so the app has no business
+ * saying that category is a weakness. The bound is what separates "this is
+ * the one you got most wrong" (a ranking, which needs little evidence)
+ * from "you don't know this" (a claim, which needs a lot).
+ *
+ * Wilson rather than the normal approximation because the normal one is
+ * badly behaved at exactly the sample sizes this app has.
+ */
+function wilsonUpper(correct, total) {
+  if (total === 0) {
+    return 1;
+  }
+  const z = 1.96;
+  const p = correct / total;
+  const denominator = 1 + (z * z) / total;
+  const centre = p + (z * z) / (2 * total);
+  const margin = z * Math.sqrt((p * (1 - p)) / total + (z * z) / (4 * total * total));
+  return Math.min(1, (centre + margin) / denominator);
+}
+
+/**
+ * Ranks what the learner is currently getting wrong.
+ *
+ * Two things here are deliberately not what they were. It used to sum
+ * every answer ever given and call anything short of perfect a weakness,
+ * which was wrong twice over: a learner who answers the same four
+ * questions three times has a "total" of twelve and has demonstrated four
+ * things, and lifetime sums never recover — from 60% over a hundred
+ * answers it takes sixty consecutive correct ones to read 75%, so the
+ * number stops responding to the learner long before they stop improving.
+ *
+ * So: one observation per distinct question, and the one that counts is
+ * the *most recent* answer to it. That is a direct answer to "what do you
+ * get right today", it recovers as fast as the learner does, and it cannot
+ * be inflated by repetition.
+ *
+ * @param {"topicId"|"category"} field - which grouping to rank
+ * @param {number} limit
+ */
+function weakestEntries(field, limit) {
+  const current = {};
+
+  for (const stat of Object.values(getItemStats())) {
+    const key = stat[field];
+    // Attempts recorded before this field was stored cannot be grouped.
+    // Skipping them costs a little history and is the only honest option:
+    // guessing the group from the question id would be a different
+    // statistic wearing this one's name.
+    if (typeof key !== "string") {
+      continue;
+    }
+    const entry = (current[key] ??= { correct: 0, total: 0 });
+    entry.total += 1;
+    if (stat.lastCorrect) {
+      entry.correct += 1;
+    }
+  }
+
+  return Object.entries(current)
+    .map(([key, stats]) => ({
+      key,
+      correct: stats.correct,
+      total: stats.total,
+      accuracy: stats.correct / stats.total,
+      // True only when the evidence rules out mastery, not merely when the
+      // learner has got something wrong. Everything the app *says out loud*
+      // about a weakness is gated on this; the ranking itself is not.
+      confident:
+        stats.total >= MIN_ITEMS_FOR_WEAK_CLAIM && wilsonUpper(stats.correct, stats.total) < MASTERY,
+    }))
+    .filter((entry) => entry.total >= MIN_ITEMS_FOR_WEAK_ENTRY && entry.accuracy < MASTERY)
+    .sort((a, b) => a.accuracy - b.accuracy || b.total - a.total)
     .slice(0, limit);
 }
 
@@ -178,7 +274,7 @@ function weakestEntries(totals, limit) {
  * @returns {Array<{topicId: string, correct: number, total: number, accuracy: number}>}
  */
 export function getWeakTopics(limit = 3) {
-  return weakestEntries(getTopicTotals(), limit).map(({ key, ...rest }) => ({ topicId: key, ...rest }));
+  return weakestEntries("topicId", limit).map(({ key, ...rest }) => ({ topicId: key, ...rest }));
 }
 
 /**
@@ -188,11 +284,30 @@ export function getWeakTopics(limit = 3) {
  * @returns {Array<{category: string, correct: number, total: number, accuracy: number}>}
  */
 export function getWeakCategories(limit = 5) {
-  return weakestEntries(getCategoryTotals(), limit).map(({ key, ...rest }) => ({ category: key, ...rest }));
+  return weakestEntries("category", limit).map(({ key, ...rest }) => ({ category: key, ...rest }));
 }
 
 /**
  * @returns {{testsCompleted: number, totalQuestions: number, totalCorrect: number, accuracy: number|null}}
+ */
+/** How many recent answers the headline accuracy is measured over. */
+const ACCURACY_WINDOW = 40;
+
+/**
+ * The counters are lifetime totals, because that is what a counter is for.
+ * The accuracy is not.
+ *
+ * A lifetime average stops responding to the learner long before the
+ * learner stops improving: from 60% over a hundred answers it takes sixty
+ * consecutive correct ones to reach 75%, so someone who has genuinely
+ * turned things around watches a number that will not move. Worse, it
+ * falls when they attempt something hard, which punishes exactly the
+ * behaviour the app wants. Windowed to the last few dozen answers it means
+ * "how are you doing lately", which is both the more useful question and
+ * the one a learner assumes it is answering.
+ *
+ * @returns {{testsCompleted: number, totalQuestions: number, totalCorrect: number,
+ *            accuracy: number|null, accuracyWindow: number}}
  */
 export function getOverallStats() {
   const attempts = getHistory();
@@ -202,11 +317,21 @@ export function getOverallStats() {
     totalQuestions += attempt.questions.length;
     totalCorrect += attempt.questions.filter((q) => q.correct).length;
   }
+
+  // Walk backwards through the history, newest attempt first, until the
+  // window is full. Attempts are whole; the window is a floor, not a cap,
+  // so a single long test is never chopped in half.
+  const recent = [];
+  for (let i = attempts.length - 1; i >= 0 && recent.length < ACCURACY_WINDOW; i -= 1) {
+    recent.push(...(attempts[i].questions ?? []));
+  }
+
   return {
     testsCompleted: attempts.length,
     totalQuestions,
     totalCorrect,
-    accuracy: totalQuestions === 0 ? null : totalCorrect / totalQuestions,
+    accuracy: recent.length === 0 ? null : recent.filter((q) => q.correct).length / recent.length,
+    accuracyWindow: recent.length,
   };
 }
 
