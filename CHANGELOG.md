@@ -5,6 +5,33 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.16 — 2026-09-03
+
+**Every wrong answer now tells you why what you chose was wrong.**
+
+The v0.15 review found that two thirds of the explanations argued only
+for the key. That is the exact moment an explanation exists for: a
+learner who picked a distractor was told what was right and never told
+what was wrong with their own reasoning. Forty-six of the 72 have been
+rewritten to name the closest wrong option in its own words and say what
+it would have meant in that paragraph — quoting the phrase that rules it
+out, where there is one.
+
+`npm run validate` now reports **zero warnings** for the first time.
+
+Six tips were rewritten as well, all of them for the same reason: they
+stated as absolutes rules the lessons themselves disown. "'Since' is
+always used with the Present Perfect" was false and the app contained its
+own counterexample — `tenses-t12` is keyed against it, and *since* also
+means *because*. A tip is meant to be carried to other questions, so an
+absolute in one has to actually hold.
+
+Also:
+
+- The validator warns on an explanation over 600 characters. The corpus
+  averages 362; past 600 it stops being an explanation and becomes the
+  lesson again, in the one place a learner is least willing to read it.
+
 ## v0.15 — 2026-09-03
 
 Stage 1 of `docs/v1-plan.md`: the content pipeline, proved on the 72

@@ -30,6 +30,13 @@ const MANIFEST_PATH = "data/manifest.json";
 
 const OPTIONS_PER_QUESTION = 4;
 const MIN_EXPLANATION_LENGTH = 40;
+/* An explanation is read once, right after the learner has committed to an
+ * answer, and it has two jobs — why the key fits, why the closest wrong
+ * option doesn't. Doing both honestly runs to three or four sentences;
+ * the corpus averages 362 characters and its longest is 520. Past this it
+ * is no longer an explanation but the lesson again, in the one place a
+ * learner is least willing to read it. */
+const MAX_EXPLANATION_LENGTH = 600;
 const MIN_TIP_LENGTH = 20;
 const MIN_PARAGRAPH_WORDS = 15;
 const TOPIC_ID_PATTERN = /^[a-z][a-z0-9-]*$/;
@@ -222,10 +229,16 @@ function validateQuestion(report, file, question, index, seenIds, topicId) {
   if (!isNonEmptyString(question.explanation)) {
     report.error(where, "explanation is required");
   } else {
-    if (question.explanation.trim().length < MIN_EXPLANATION_LENGTH) {
+    const length = question.explanation.trim().length;
+    if (length < MIN_EXPLANATION_LENGTH) {
       report.warn(
         where,
-        `explanation is very short (${question.explanation.trim().length} chars) — it must say why the right option fits and why the closest wrong one doesn't`
+        `explanation is very short (${length} chars) — it must say why the right option fits and why the closest wrong one doesn't`
+      );
+    } else if (length > MAX_EXPLANATION_LENGTH) {
+      report.warn(
+        where,
+        `explanation is ${length} chars — past ${MAX_EXPLANATION_LENGTH} it is the lesson again, in the place a learner is least willing to read it`
       );
     }
     checkTurkish(report, where, "explanation", question.explanation);
