@@ -13,18 +13,25 @@ explanations/tips stay in Turkish (already were). Grammar category labels
 (e.g. "Present Perfect vs Past Simple") stay in English — students need to
 recognize the English grammar terms.
 
-Two content tabs, plus a Profil that lives behind its own header button
-rather than as a third tab — it's identity/settings, not a content mode,
-so it doesn't sit at the same level as "what am I practicing":
+Two content destinations on a bottom tab bar (Eğitim/Test — icons, not
+just a label color, so the two feel structurally distinct), plus a Profil
+that lives behind its own header-corner avatar button rather than as a
+third tab — it's identity/settings, not a content mode, so it doesn't sit
+at the same level as "what am I practicing":
 
-- **Eğitim** — a story-card walk through each topic's grammar categories,
-  one small full-screen beat at a time: an opening hook (when authored),
-  the rule, each example, a couple of check questions (answer to move
-  on), then a chapter-complete beat — tap the edge arrows or use
-  Left/Right to move through them. A segmented progress bar shows where
-  you are in the current chapter; a pill switcher lets you jump between
-  topics once more than one is live. Nothing is locked — every chapter of
-  every topic is reachable any time, same as Test.
+- **Eğitim** — opens on a skimmable chapter index (every category across
+  every topic, with a one-line rule preview) so you can jump straight
+  into whichever chapter you need without walking through earlier ones.
+  Tapping a row opens that chapter as a story-card walk, one small
+  full-screen beat at a time: an opening hook (when authored), the rule,
+  each example, a check question (answering is encouraged but never
+  required — the forward control reads "Atla"/skip until you answer),
+  then a chapter-complete beat with a "Konulara Dön" (back to index) and,
+  on a topic's last chapter, a "Bu Konudan Test Et" shortcut. A segmented
+  progress bar shows where you are in the current chapter; a pill switcher
+  lets you jump between topics once more than one is live. Nothing is
+  locked — every chapter of every topic is reachable any time, same as
+  Test.
 - **Test** — pick a topic or start a mixed test drawing from every topic at
   once. Multiple-choice, paragraph-based cloze questions with instant
   feedback: a full explanation plus a short, generalizable rule after every
@@ -92,7 +99,7 @@ No GitHub Actions workflow is required since there's nothing to build.
 ## Project structure
 
 ```
-index.html          Home: Eğitim/Test tabs, topic selection, mixed test
+index.html          Home: bottom-nav Eğitim/Test, topic selection, mixed test
 quiz.html            Question-answering screen
 results.html          Score, breakdown, and review
 css/style.css          Single stylesheet — the fixed app-shell layout,
@@ -100,7 +107,7 @@ css/style.css          Single stylesheet — the fixed app-shell layout,
 js/                     ES modules — see file-level comments for each one's role
   dropdown.js             Custom dropdown (replaces native <select>)
   modal.js                Custom confirm modal (replaces window.confirm)
-  education.js             Eğitim tab: paginated lesson viewer
+  education.js             Eğitim tab: chapter index + story-card viewer
 data/manifest.json       Topic index (id, title, tier, file, question count,
                             contentVersion, categories)
 data/tenses/tenses.json    Tenses topic: questions (grouped by category) and
@@ -286,9 +293,9 @@ the topic, categories, and count):
 ### Lesson schema (Eğitim tab)
 
 Alongside `questions`, a topic file can carry a `lessons` array — one
-entry per category, used by the Eğitim tab's paginated tour. Same category
-taxonomy as the questions, so there's one set of category names per topic,
-not two.
+entry per category, each rendered as its own chapter (a story-card walk,
+reachable directly from the Eğitim chapter index). Same category taxonomy
+as the questions, so there's one set of category names per topic, not two.
 
 ```json
 {
@@ -371,7 +378,7 @@ app is a real first release, not any particular feature set being
 
 ## Roadmap to v1.0
 
-Everything shipped so far (`v0.1`–`v0.9`) is development work toward a
+Everything shipped so far (`v0.1`–`v0.10`) is development work toward a
 first real release, not a release itself. Below is the working list of
 what's left, roughly in the order it makes sense to tackle — see
 `CHANGELOG.md` for what's already landed under each `0.y`.
@@ -407,20 +414,27 @@ what's left, roughly in the order it makes sense to tackle — see
    `docs/education-notes.md`: each chapter (lesson category) is now a
    sequence of full-screen beats (hook/rule/examples/check questions/
    chapter-complete) instead of one long paginated card.
-7. **Chapter locking / guided-path progression** — the one piece of the
+7. ~~UI/UX overhaul: bottom nav + skimmable Eğitim~~ — **done in `v0.10`**,
+   driven directly by feedback that the v0.9 story-card Eğitim was
+   disliked outright and the top navigation was bad. Eğitim/Test moved to
+   a bottom tab bar (icons, not just color, so the two read as distinct
+   destinations), the header dropped to a single slim row, and Eğitim now
+   opens on a skimmable chapter index instead of forcing a linear walk —
+   the research and reasoning are in `CHANGELOG.md`'s `v0.10` entry.
+8. **Chapter locking / guided-path progression** — the one piece of the
    original interaction-model proposal not yet built: soft-unlocking
    chapter *N+1* only once chapter *N* has been opened and attempted, and
-   topic-to-topic progression. Deliberately kept separate from the v0.9
+   topic-to-topic progression. Deliberately kept separate from the
    presentation-layer work above — it needs its own progress-storage
    schema and is easier to get right now that there are 3 real topics to
    test the topic-to-topic unlock against, rather than just Tenses alone.
    Eğitim stays fully open (no locking) until this lands.
-8. **Promote to `main` once approved** — `main` is still on the very first
+9. **Promote to `main` once approved** — `main` is still on the very first
    development build; it only moves forward when the owner has tried a
    build on `test` and signs off, per the branch model below. Confirm
    GitHub Pages is actually serving `main` at that point (not left on
    `test` from earlier testing).
-9. **Owner declares `1.0`** — once the above holds and the owner is happy,
+10. **Owner declares `1.0`** — once the above holds and the owner is happy,
    they set `x` to `1`; this isn't a technical milestone this project
    infers on its own.
 
