@@ -67,6 +67,19 @@ builds the card UI):
 Dated, most recent first. Each entry: what I'm asking for, why, and what it
 needs from the existing schema vs. something new.
 
+- **2026-09-03 — Modals content is live** (`data/modals/modals.json`,
+  manifest entry updated, `comingSoon` removed). Same shape as Tenses: 24
+  questions across 6 confusable-pair/triad categories (Must vs Have to vs
+  Don't Have to · Can vs Could vs May vs Might · Must vs Can't vs
+  Might/Could · Modal Perfects · Should vs Ought To vs Had Better · Can vs
+  Could vs Be Able To), plus a matching 6-entry `lessons` array. Each
+  lesson entry already carries the proposed `intro` field (one short
+  Turkish hook line) — it's inert with the current `education.js` renderer
+  (extra JSON keys are simply ignored), so this ships safely today and is
+  ready to use whenever the story-card UI (see Vision) gets built; nothing
+  needs to change in the data when that happens. Validated: JSON parses,
+  lesson/question category sets match exactly, every question has 4
+  options with `correctIndex` in range and exactly one `____` blank.
 - **2026-09-03 — Story-card chapter format (Vision, above).** Requesting
   evaluation of a card-based, tap-to-advance presentation for Eğitim
   chapters (option A in Vision), combined with the path/map navigation
@@ -205,7 +218,7 @@ topic, so the dev side can build the card UI against a consistent shape.
 | Topic | Status |
 |---|---|
 | Tenses | Live (24 questions, 6 categories) |
-| Modals | In progress — next up |
+| Modals | Live (24 questions, 6 categories) — includes `intro` per lesson |
 | Passive Voice | Not started |
 | Conditionals | Not started |
 | Gerunds & Infinitives | Not started |
