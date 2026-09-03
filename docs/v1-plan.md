@@ -171,6 +171,21 @@ manifest already contained. Opening the app went from 328.8 KB and
    answer in your head first, then reveal. Zero content cost, and the
    highest value-per-line in the practice-modes arm.
 
+## Decisions the owner has made
+
+- **Taxonomy: fix now.** All four category problems corrected 2026-09-03,
+  accepting the lesson-progress reset. Cheaper now than at any later
+  point, with six users.
+- **Next section: restatement / closest meaning.** Fifteen of Session I's
+  sixty points and the cheapest real section on the paper. Scaffolding
+  landed 2026-09-03; content in progress.
+- **Offline: not a v1 requirement**, and not a requirement at all while
+  this is a link people open rather than an app they install. Recorded in
+  the README so nobody adds a service worker for its own sake. Revisit
+  only if the app becomes something people install.
+
+---
+
 ### Stage 1 · Prove the pipeline on the content we have — ✅ **done, 2026-09-03**
 
 All six landed. The report is `docs/content-review.md`; `npm run verify`

@@ -47,6 +47,15 @@ Profil opens from the header — it's identity and settings, not a mode.
 Nothing is sent anywhere. All progress lives in this browser's
 `localStorage`.
 
+**It needs a connection.** Deliberately: there is no service worker and no
+offline mode, because the owner does not need one and the cost of a
+half-working one is a stale cache nobody can clear. A visit after the
+first often works offline anyway — that is the browser's HTTP cache
+happening to still hold the files, not a promise. If this ever becomes an
+app people install rather than a link people open, offline is the first
+thing to add, with a versioned precache and a visible way to force an
+update; `docs/research/architecture-and-scale.md` has the measurements.
+
 The whole app is a fixed-height "app shell" — header, one scrolling
 content area with no visible scrollbar, and either the bottom nav or, in
 a focused mode, a fixed action bar — rather than an ordinary scrolling
