@@ -4,14 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>English Prep Practice</title>
+  <meta name="description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
+  <meta name="theme-color" content="#1c1b22" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" id="site-header">
     <div class="site-header__inner">
       <div>
         <h1>English Prep Practice</h1>
@@ -20,27 +22,28 @@
     </div>
   </header>
 
-  <nav class="tab-bar" role="tablist">
-    <button class="tab-bar__tab" type="button" role="tab" id="tab-egitim" data-view="egitim" aria-selected="false" aria-controls="view-egitim">
+  <nav class="tab-bar" id="tab-bar" role="tablist" aria-label="Bölümler">
+    <button class="tab-bar__tab" type="button" role="tab" id="tab-egitim" data-view="egitim" aria-selected="false" aria-controls="view-egitim" tabindex="-1">
       Eğitim
     </button>
-    <button class="tab-bar__tab" type="button" role="tab" id="tab-test" data-view="test" aria-selected="true" aria-controls="view-test">
+    <button class="tab-bar__tab" type="button" role="tab" id="tab-test" data-view="test" aria-selected="true" aria-controls="view-test" tabindex="0">
       Test
     </button>
-    <button class="tab-bar__tab" type="button" role="tab" id="tab-profil" data-view="profil" aria-selected="false" aria-controls="view-profil">
+    <button class="tab-bar__tab" type="button" role="tab" id="tab-profil" data-view="profil" aria-selected="false" aria-controls="view-profil" tabindex="-1">
       Profil
     </button>
   </nav>
 
-  <main class="app-content">
+  <main class="app-content" id="app-content">
     <div class="page">
-      <section id="view-egitim" class="view" role="tabpanel" aria-labelledby="tab-egitim" hidden>
-        <div id="lesson-container">
+      <section id="view-egitim" class="view" role="tabpanel" aria-labelledby="tab-egitim" tabindex="0" hidden>
+        <div id="lesson-index">
           <p class="empty-state">Dersler yükleniyor&hellip;</p>
         </div>
+        <div id="lesson-reader" hidden></div>
       </section>
 
-      <section id="view-test" class="view" role="tabpanel" aria-labelledby="tab-test">
+      <section id="view-test" class="view" role="tabpanel" aria-labelledby="tab-test" tabindex="0">
         <section class="hero">
           <h2 class="hero__title">Karışık test başlat</h2>
           <p class="hero__description">
@@ -49,7 +52,7 @@
           </p>
           <div class="hero__controls">
             <div class="field-row">
-              <label id="mixed-count-label">Soru sayısı</label>
+              <span id="mixed-count-label">Soru sayısı</span>
               <div class="dropdown" id="mixed-count-dropdown"></div>
             </div>
             <button id="start-mixed-btn" class="btn" type="button">Karışık Teste Başla</button>
@@ -64,7 +67,7 @@
         </section>
       </section>
 
-      <section id="view-profil" class="view" role="tabpanel" aria-labelledby="tab-profil" hidden>
+      <section id="view-profil" class="view" role="tabpanel" aria-labelledby="tab-profil" tabindex="0" hidden>
         <div id="profile-container">
           <p class="empty-state">Profil yükleniyor&hellip;</p>
         </div>
@@ -72,11 +75,18 @@
     </div>
   </main>
 
+  <!-- Used only by the Eğitim lesson reader, which runs as a focused mode
+       with the header and tab bar hidden — same shape as the quiz screen. -->
+  <div id="lesson-bottom-bar" class="bottom-bar" hidden>
+    <div class="bottom-bar__inner"></div>
+  </div>
+
   <div class="modal-overlay" id="confirm-modal" hidden>
-    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-modal-text">
+    <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-modal-title" aria-describedby="confirm-modal-text">
+      <h2 class="modal__title" id="confirm-modal-title">Geçmişi sıfırla</h2>
       <p id="confirm-modal-text">
-        Kayıtlı tüm skorları silmek istediğine emin misin? Bu işlem geri
-        alınamaz.
+        Tüm test geçmişin ve ders ilerlemen bu cihazdan silinecek. Bu işlem
+        geri alınamaz.
       </p>
       <div class="modal__actions">
         <button class="btn btn--secondary" type="button" id="confirm-modal-cancel">İptal</button>

@@ -1,8 +1,10 @@
 import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
 import { getQuizRequest, setQuizResult } from "./session-state.js";
+import { el, clear, appendBlanked } from "./dom.js";
 
 const container = document.getElementById("quiz-container");
+const appContent = document.getElementById("app-content");
 const bottomBar = document.getElementById("quiz-bottom-bar");
 const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
 
@@ -14,64 +16,69 @@ const state = {
 };
 
 function showBottomBarAction(label, onClick) {
-  bottomBarInner.innerHTML = "";
-  const btn = document.createElement("button");
-  btn.className = "btn";
-  btn.type = "button";
-  btn.textContent = label;
-  btn.addEventListener("click", onClick);
-  bottomBarInner.appendChild(btn);
+  clear(bottomBarInner);
+  const button = el("button", "btn", label);
+  button.type = "button";
+  button.addEventListener("click", onClick);
+  bottomBarInner.appendChild(button);
   bottomBar.hidden = false;
-  btn.focus();
+  button.focus();
 }
 
 function hideBottomBar() {
   bottomBar.hidden = true;
-  bottomBarInner.innerHTML = "";
+  clear(bottomBarInner);
 }
 
 function showMessage(text, { withHomeLink = true } = {}) {
   hideBottomBar();
-  container.innerHTML = "";
-  const message = document.createElement("p");
-  message.className = "empty-state";
-  message.textContent = text;
-  container.appendChild(message);
+  clear(container);
+  container.appendChild(el("p", "empty-state", text));
 
   if (withHomeLink) {
-    const link = document.createElement("a");
-    link.className = "btn";
+    const link = el("a", "btn", "Ana Sayfa");
     link.href = "index.html";
-    link.textContent = "Ana Sayfa";
     container.appendChild(link);
   }
 }
 
 function renderCategoryLabel(category) {
-  const label = document.createElement("p");
-  label.className = "question-card__category";
+  const label = el("p", "question-card__category", category);
   // English grammar term inside an otherwise-Turkish page: without this,
   // the CSS uppercase transform follows the page's lang="tr" and turns
-  // "Simple" into "SİMPLE" (Turkish dotted İ), not "SIMPLE".
+  // "Simple" into "SİMPLE" (Turkish dotted İ) rather than "SIMPLE".
   label.lang = "en";
-  label.textContent = category;
   return label;
 }
 
 function renderPrompt(promptText) {
-  const paragraph = document.createElement("p");
-  paragraph.className = "question-card__prompt";
-  const parts = promptText.split("____");
-  parts.forEach((part, index) => {
-    paragraph.appendChild(document.createTextNode(part));
-    if (index < parts.length - 1) {
-      const blank = document.createElement("span");
-      blank.className = "blank";
-      blank.textContent = "_____";
-      paragraph.appendChild(blank);
-    }
-  });
+  const paragraph = el("p", "question-card__prompt");
+  appendBlanked(paragraph, promptText);
   return paragraph;
+}
+
+function renderFeedback(question, correct) {
+  const feedback = el("div", `feedback ${correct ? "feedback--correct" : "feedback--incorrect"}`);
+  // The result is otherwise conveyed only by colour on the option
+  // buttons, which says nothing to a screen reader.
+  feedback.setAttribute("role", "status");
+
+  feedback.appendChild(
+    el("strong", null, correct ? "Doğru!" : `Yanlış — doğru cevap: "${question.correctAnswer}".`)
+  );
+  feedback.appendChild(el("p", "feedback__explanation", question.explanation));
+
+  if (question.tip) {
+    const tip = el("p", "feedback__tip");
+    tip.appendChild(el("strong", null, "Kural: "));
+    tip.appendChild(document.createTextNode(question.tip));
+    feedback.appendChild(tip);
+  }
+
+  document.getElementById("question-card").appendChild(feedback);
+  // The bottom bar is fixed, so answering doesn't move the next button —
+  // but on a small screen the explanation can still land below the fold.
+  feedback.scrollIntoView({ block: "nearest" });
 }
 
 function handleOptionSelected(question, selectedOption, optionButtons) {
@@ -83,45 +90,19 @@ function handleOptionSelected(question, selectedOption, optionButtons) {
 
   const correct = isCorrectAnswer(question, selectedOption);
 
-  optionButtons.forEach((button) => {
+  for (const button of optionButtons) {
     button.disabled = true;
     if (isCorrectAnswer(question, button.dataset.option)) {
       button.classList.add("option-btn--correct");
     } else if (button.dataset.option === selectedOption) {
       button.classList.add("option-btn--incorrect");
     }
-  });
+  }
 
   renderFeedback(question, correct);
 
   const isLastQuestion = state.currentIndex === state.session.length - 1;
   showBottomBarAction(isLastQuestion ? "Sonuçları Gör" : "Sonraki Soru", advance);
-}
-
-function renderFeedback(question, correct) {
-  const feedback = document.createElement("div");
-  feedback.className = `feedback ${correct ? "feedback--correct" : "feedback--incorrect"}`;
-
-  const heading = document.createElement("strong");
-  heading.textContent = correct ? "Doğru!" : `Yanlış — doğru cevap: "${question.correctAnswer}".`;
-  feedback.appendChild(heading);
-
-  const explanation = document.createElement("p");
-  explanation.className = "feedback__explanation";
-  explanation.textContent = question.explanation;
-  feedback.appendChild(explanation);
-
-  if (question.tip) {
-    const tip = document.createElement("p");
-    tip.className = "feedback__tip";
-    const tipLabel = document.createElement("strong");
-    tipLabel.textContent = "Kural: ";
-    tip.appendChild(tipLabel);
-    tip.appendChild(document.createTextNode(question.tip));
-    feedback.appendChild(tip);
-  }
-
-  document.getElementById("question-card").appendChild(feedback);
 }
 
 function advance() {
@@ -149,40 +130,30 @@ async function finishQuiz() {
     ),
   });
 
-  window.location.href = "results.html";
+  // replace(), not href: going back from the results screen should return
+  // to where the test was started, not silently re-roll a brand new test.
+  window.location.replace("results.html");
 }
 
 function renderQuestion() {
   hideBottomBar();
-  container.innerHTML = "";
+  clear(container);
 
-  const nav = document.createElement("div");
-  nav.className = "quiz-nav";
-
-  const exitBtn = document.createElement("a");
-  exitBtn.className = "quiz-nav__exit";
-  exitBtn.href = "index.html";
-  exitBtn.textContent = "← Ana Sayfa";
-  nav.appendChild(exitBtn);
-
-  const progress = document.createElement("p");
-  progress.className = "quiz-progress";
-  progress.textContent = `Soru ${state.currentIndex + 1} / ${state.session.length}`;
-  nav.appendChild(progress);
+  const nav = el("div", "quiz-nav");
+  const exitLink = el("a", "quiz-nav__exit", "← Ana Sayfa");
+  exitLink.href = "index.html";
+  nav.appendChild(exitLink);
+  nav.appendChild(el("p", "quiz-progress", `Soru ${state.currentIndex + 1} / ${state.session.length}`));
   container.appendChild(nav);
 
-  const progressTrack = document.createElement("div");
-  progressTrack.className = "progress-track";
-  const progressFill = document.createElement("div");
-  progressFill.className = "progress-track__fill";
-  const percentComplete = ((state.currentIndex + 1) / state.session.length) * 100;
-  progressFill.style.width = `${percentComplete}%`;
+  const progressTrack = el("div", "progress-track");
+  const progressFill = el("div", "progress-track__fill");
+  progressFill.style.width = `${((state.currentIndex + 1) / state.session.length) * 100}%`;
   progressTrack.appendChild(progressFill);
   container.appendChild(progressTrack);
 
-  const card = document.createElement("div");
+  const card = el("div", "question-card");
   card.id = "question-card";
-  card.className = "question-card";
 
   const question = state.session[state.currentIndex];
   if (question.category) {
@@ -190,46 +161,50 @@ function renderQuestion() {
   }
   card.appendChild(renderPrompt(question.prompt));
 
-  const optionsWrap = document.createElement("div");
-  optionsWrap.className = "options";
-
+  const optionsWrap = el("div", "options");
   const optionButtons = question.options.map((option, index) => {
-    const button = document.createElement("button");
-    button.className = "option-btn";
+    const button = el("button", "option-btn");
     button.type = "button";
     button.dataset.option = option;
-
-    const key = document.createElement("span");
-    key.className = "option-btn__key";
-    key.textContent = `${index + 1}.`;
-    button.appendChild(key);
+    button.appendChild(el("span", "option-btn__key", `${index + 1}.`));
     button.appendChild(document.createTextNode(option));
-
     optionsWrap.appendChild(button);
     return button;
   });
 
-  optionButtons.forEach((button) => {
-    button.addEventListener("click", () => handleOptionSelected(question, button.dataset.option, optionButtons));
-  });
+  for (const button of optionButtons) {
+    button.addEventListener("click", () =>
+      handleOptionSelected(question, button.dataset.option, optionButtons)
+    );
+  }
 
   card.appendChild(optionsWrap);
   container.appendChild(card);
+  appContent.scrollTo({ top: 0 });
 }
 
 function handleKeydown(event) {
-  if (!state.session.length) {
+  if (!state.session.length || event.metaKey || event.ctrlKey || event.altKey) {
+    return;
+  }
+  // The advance button is focused as soon as a question is answered, so
+  // pressing Enter there already activates it natively. Handling it here
+  // too would advance twice and skip a question.
+  if (bottomBar.contains(event.target)) {
     return;
   }
 
-  if (!state.answered && ["1", "2", "3", "4"].includes(event.key)) {
-    const buttons = document.querySelectorAll(".option-btn");
-    const button = buttons[Number(event.key) - 1];
-    button?.click();
+  if (!state.answered) {
+    const choice = Number(event.key);
+    if (Number.isInteger(choice) && choice >= 1 && choice <= 4) {
+      event.preventDefault();
+      document.querySelectorAll(".option-btn")[choice - 1]?.click();
+    }
     return;
   }
 
-  if (state.answered && event.key === "Enter") {
+  if (event.key === "Enter") {
+    event.preventDefault();
     bottomBarInner.querySelector("button")?.click();
   }
 }
@@ -243,7 +218,9 @@ async function init() {
 
   try {
     const manifest = await loadManifest();
-    const topics = manifest.topics.filter((topic) => request.topicIds.includes(topic.id));
+    const topics = manifest.topics.filter(
+      (topic) => !topic.comingSoon && request.topicIds.includes(topic.id)
+    );
     const questions = await loadQuestionsForTopics(topics);
     const session = buildQuizSession(questions, request.count);
 
