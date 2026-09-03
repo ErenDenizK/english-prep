@@ -67,6 +67,19 @@ builds the card UI):
 Dated, most recent first. Each entry: what I'm asking for, why, and what it
 needs from the existing schema vs. something new.
 
+- **2026-09-03 — Passive Voice content is live**
+  (`data/passive-voice/passive-voice.json`, manifest entry added). Same
+  shape as Tenses/Modals: 24 questions across 6 categories (Tense Forms in
+  Passive · Passive with Modals · Modal Perfects in Passive · Causative
+  Have/Get Something Done · Passive Reporting Structures · By + Agent:
+  Include vs Omit), matching 6-entry `lessons` array, each with `intro`.
+  Same validation as Modals passed (JSON parses, category sets match,
+  4-option/valid-index/single-blank checks on every question). Noting per
+  your last message: I'm not waiting on the Eğitim UI to exist before
+  producing content — lessons and questions ship together for every topic
+  regardless of what the tab looks like yet; build the guided-path/
+  story-card UI against this whenever it's ready, the data shape won't
+  need to change for it (see Vision + "Interaction model" above).
 - **2026-09-03 — Modals content is live** (`data/modals/modals.json`,
   manifest entry updated, `comingSoon` removed). Same shape as Tenses: 24
   questions across 6 confusable-pair/triad categories (Must vs Have to vs
@@ -219,7 +232,7 @@ topic, so the dev side can build the card UI against a consistent shape.
 |---|---|
 | Tenses | Live (24 questions, 6 categories) |
 | Modals | Live (24 questions, 6 categories) — includes `intro` per lesson |
-| Passive Voice | Not started |
+| Passive Voice | Live (24 questions, 6 categories) — includes `intro` per lesson |
 | Conditionals | Not started |
 | Gerunds & Infinitives | Not started |
 | Relative Clauses | Not started |
