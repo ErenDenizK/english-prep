@@ -433,6 +433,116 @@ async function runProblemReport(browser) {
 }
 
 /**
+ * Yanlış defteri, end to end: get one wrong, see it appear, drill it, and
+ * watch the graduation rule refuse to let it out on the same day.
+ *
+ * Driven through the real app rather than tested against the selector,
+ * because the part that can break is the wiring — the id set travelling
+ * in the request, and the empty state saying the true thing instead of
+ * congratulating somebody who has only seen each question once.
+ */
+async function runMistakeBook(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .btn--primary");
+  ok(
+    !(await page.locator("#test-panel").textContent()).includes("Yanlış defteri"),
+    "geçmiş yokken defter kartı hiç çıkmıyor"
+  );
+
+  // Plant one wrong answer and one correct one, yesterday.
+  await page.evaluate(() => {
+    const yesterday = new Date(Date.now() - 86_400_000).toISOString();
+    localStorage.setItem(
+      "englishPrep.history",
+      JSON.stringify({ attempts: [
+        {
+          date: yesterday,
+          mode: "mixed",
+          topicBreakdown: { tenses: { correct: 1, total: 2 } },
+          categoryBreakdown: {},
+          questions: [
+            { id: "tenses-t1", topicId: "tenses", category: "Present Simple vs Present Continuous", correct: false },
+            { id: "tenses-t2", topicId: "tenses", category: "Present Simple vs Present Continuous", correct: true },
+          ],
+        },
+      ] })
+    );
+  });
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel");
+
+  const panel = await page.locator("#test-panel").textContent();
+  ok(panel.includes("Yanlış defteri"), "yanlıştan sonra defter kartı çıkıyor");
+  ok(/1 soru burada bekliyor/.test(panel), "defter yalnızca yanlış olanı sayıyor");
+  await auditLayout(page, "yanlış defteri", 390);
+
+  await page.locator("button", { hasText: "Yanlışları çalış" }).click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".option");
+
+  const drilled = await page.evaluate(
+    () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
+  );
+  ok(drilled.mode === "mistakes", "istek yanlış defteri modunda");
+  ok(
+    Array.isArray(drilled.ids) && drilled.ids.length === 1 && drilled.ids[0] === "tenses-t1",
+    "yalnızca defterdeki soru gönderiliyor"
+  );
+
+  // Answer it correctly today: one correct answer must NOT graduate it.
+  await page.evaluate(() => {
+    const history = JSON.parse(localStorage.getItem("englishPrep.history"));
+    history.attempts.push({
+      date: new Date().toISOString(),
+      mode: "mistakes",
+      topicBreakdown: { tenses: { correct: 1, total: 1 } },
+      categoryBreakdown: {},
+      questions: [{ id: "tenses-t1", topicId: "tenses", correct: true }],
+    });
+    localStorage.setItem("englishPrep.history", JSON.stringify(history));
+  });
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel");
+  ok(
+    /1 soru burada bekliyor/.test(await page.locator("#test-panel").textContent()),
+    "tek doğru cevap soruyu defterden düşürmüyor"
+  );
+
+  // A second correct answer, on a second day, does.
+  await page.evaluate(() => {
+    const history = JSON.parse(localStorage.getItem("englishPrep.history"));
+    history.attempts.push({
+      date: new Date(Date.now() + 86_400_000).toISOString(),
+      mode: "mistakes",
+      topicBreakdown: { tenses: { correct: 1, total: 1 } },
+      categoryBreakdown: {},
+      questions: [{ id: "tenses-t1", topicId: "tenses", correct: true }],
+    });
+    localStorage.setItem("englishPrep.history", JSON.stringify(history));
+  });
+  // reload, not goto: navigating to the URL the page is already on is a
+  // same-document navigation, so the module never re-runs and the panel
+  // never re-renders. That cost twenty minutes once.
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel");
+  const emptied = await page.locator("#test-panel").textContent();
+  ok(emptied.includes("bekleyen soru yok"), "ayrı iki günde iki doğru soruyu düşürüyor");
+  ok(
+    emptied.includes("bildiğin anlamına değil"),
+    "boş defter bir tebrik değil — doğru olanı söylüyor"
+  );
+  ok(
+    !(await page.locator("button", { hasText: "Yanlışları çalış" }).count()),
+    "boş defterde çalışma düğmesi yok"
+  );
+
+  await context.close();
+}
+
+/**
  * docs/components.html — every primitive on one page, against the real
  * CSS. It was not checked by anything until a restatement's options went
  * on it: the case that breaks the Option row is four whole sentences at
@@ -737,6 +847,9 @@ try {
 
   console.log("\n=== önce kendin düşün ===");
   await runThinkFirst(browser);
+
+  console.log("\n=== yanlış defteri ===");
+  await runMistakeBook(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);

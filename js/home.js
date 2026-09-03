@@ -24,12 +24,14 @@ import {
   isDevNoteDismissed,
   dismissDevNote,
   requestPersistentStorage,
+  getMistakeBook,
+  getHistory,
 } from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createListbox } from "./listbox.js";
 import { showLessonIndex, openLesson, closeReader } from "./education.js";
 import { initProfileTab } from "./profile.js";
-import { startTopicTest, startMixedTest, startCategoryPractice } from "./quiz-launch.js";
+import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook } from "./quiz-launch.js";
 import { el, clear } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop } from "./shell.js";
@@ -69,16 +71,86 @@ function sectionHeading(text, hint) {
   return head;
 }
 
+/**
+ * Yanlış defteri — the questions this learner has got wrong and not yet
+ * earned their way out of.
+ *
+ * Placed above the mixed test, because that is the honest order: with a
+ * pool this size, uniform random practice spends most of a session on
+ * material the learner has already demonstrated, and continued testing of
+ * not-yet-learned items is the thing that moves delayed recall.
+ *
+ * The empty state is the design's one real trap, and it is deliberately
+ * not a congratulation. An empty book in an app this size means "you have
+ * seen everything once", not "you are ready", and saying the second thing
+ * would be the app's first lie.
+ */
+function renderMistakeBook() {
+  const book = getMistakeBook();
+  const hasHistory = getHistory().length > 0;
+  if (!hasHistory) {
+    // Nothing to say yet, and an empty card explaining a mode nobody can
+    // use is worse than no card.
+    return null;
+  }
+
+  const surface = el("section", "surface stack");
+  const intro = el("div", "stack stack--tight");
+  intro.appendChild(el("h2", "t-title", "Yanlış defteri"));
+
+  if (book.length === 0) {
+    intro.appendChild(
+      el(
+        "p",
+        "t-body",
+        "Şu an defterinde bekleyen soru yok. Bu, yanlışlarını temizlediğin " +
+          "anlamına gelir — soruların hepsini bildiğin anlamına değil. Karışık " +
+          "testle devam et; yeni bir yanlış çıkarsa buraya düşer."
+      )
+    );
+    surface.appendChild(intro);
+    return surface;
+  }
+
+  intro.appendChild(
+    el(
+      "p",
+      "t-body",
+      `Yanlış yaptığın ${book.length} soru burada bekliyor. Bir soru, ayrı ` +
+        "iki günde doğru cevaplandığında defterden düşer."
+    )
+  );
+  surface.appendChild(intro);
+
+  const start = el("button", "btn btn--primary", "Yanlışları çalış");
+  start.type = "button";
+  start.addEventListener("click", () => {
+    startMistakeBook().catch(console.error);
+  });
+  surface.appendChild(start);
+
+  return surface;
+}
+
 function renderMixedTest() {
   const surface = el("section", "surface stack");
 
   const intro = el("div", "stack stack--tight");
   intro.appendChild(el("h2", "t-title", "Karışık test"));
+  // Not "the quickest way to see where you stand", which is what this
+  // said and which framed the app's best-evidenced mode as a convenience.
+  // Interleaving — mixing topics rather than blocking them — is the one
+  // practice format with a clean classroom trial behind it, and the
+  // reason is worth telling the learner: when the topic is not announced,
+  // choosing the rule becomes part of the question, exactly as it is on
+  // the paper.
   intro.appendChild(
     el(
       "p",
       "t-body",
-      "Sorular tüm konulardan rastgele gelir. Seviyeni görmenin en hızlı yolu."
+      "Sorular tüm konulardan karışık gelir — ve karışık çalışmak, tek konuyu " +
+        "arka arkaya çalışmaktan daha iyi öğretir. Hangi kuralın gerektiğini de " +
+        "kendin bulmak zorunda kalırsın; sınavda da öyle olacak."
     )
   );
   surface.appendChild(intro);
@@ -269,6 +341,12 @@ async function renderTestTab() {
   );
 
   clear(testPanel);
+
+  const mistakeBook = renderMistakeBook();
+  if (mistakeBook) {
+    testPanel.appendChild(mistakeBook);
+  }
+
   testPanel.appendChild(renderMixedTest());
 
   const weakSpots = renderWeakSpots(

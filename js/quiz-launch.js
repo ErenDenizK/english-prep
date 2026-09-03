@@ -7,7 +7,7 @@
 // point can't quietly skip a step.
 
 import { loadManifest } from "./topics.js";
-import { markTopicSeen } from "./storage.js";
+import { markTopicSeen, getMistakeBook } from "./storage.js";
 import { setQuizRequest } from "./session-state.js";
 import { TOPIC_TEST_DEFAULT_COUNT } from "./config.js";
 
@@ -60,4 +60,25 @@ export async function startMixedTest(count) {
   const topics = manifest.topics.filter((topic) => !topic.comingSoon);
   topics.forEach(markSeen);
   go({ mode: "mixed", topicIds: topics.map((topic) => topic.id), count });
+}
+
+/**
+ * Yanlış defteri — only the questions this learner has got wrong and not
+ * yet earned their way out of. The ids travel in the request rather than
+ * being recomputed on the quiz screen, so the set the learner was shown a
+ * count for is exactly the set they get.
+ *
+ * @param {number|"all"} [count]
+ * @returns {Promise<boolean>} false if the book is empty
+ */
+export async function startMistakeBook(count = "all") {
+  const ids = getMistakeBook().map((entry) => entry.id);
+  if (ids.length === 0) {
+    return false;
+  }
+  const manifest = await loadManifest();
+  const topics = manifest.topics.filter((topic) => !topic.comingSoon);
+  topics.forEach(markSeen);
+  go({ mode: "mistakes", topicIds: topics.map((topic) => topic.id), ids, count });
+  return true;
 }

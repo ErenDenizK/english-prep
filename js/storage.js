@@ -159,6 +159,87 @@ export function getItemStats() {
   return stats;
 }
 
+/** Two correct answers, on two different days, and an item graduates. */
+export const MISTAKE_BOOK_GRADUATION = 2;
+
+/** A local calendar day, because "on separate days" is what a learner means. */
+function dayKey(timestamp) {
+  const date = new Date(timestamp);
+  return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+}
+
+/**
+ * Yanlış defteri — the questions this learner has got wrong and has not
+ * yet earned their way out of.
+ *
+ * The rule: an item enters the book the moment it is answered wrong, and
+ * leaves after **two correct answers on two separate days** since that
+ * wrong answer. One correct answer straight after reading the explanation
+ * proves only that the explanation was on screen; a second one the next
+ * day is the first evidence of anything durable. Getting it wrong again
+ * puts it straight back, and the count starts over.
+ *
+ * Derived, like getItemStats, from history the app has recorded since the
+ * beginning — so every learner's book already has its contents and there
+ * is nothing to migrate.
+ *
+ * @returns {Array<{id: string, topicId?: string, category?: string, wrong: number, lastWrong: number, correctDays: number}>}
+ *   worst first: most wrong answers, then most recently wrong.
+ */
+export function getMistakeBook() {
+  /** @type {Record<string, {wrong: number, lastWrong: number, days: Set<string>, topicId?: string, category?: string}>} */
+  const items = {};
+
+  // Oldest first, so "since the last wrong answer" is a single pass. A
+  // restored backup can arrive out of order, hence the sort rather than
+  // trusting the append order.
+  const answers = [];
+  for (const attempt of getHistory()) {
+    const at = Date.parse(attempt?.date ?? "");
+    const when = Number.isNaN(at) ? 0 : at;
+    for (const question of attempt?.questions ?? []) {
+      if (typeof question?.id === "string") {
+        answers.push({ ...question, when });
+      }
+    }
+  }
+  answers.sort((a, b) => a.when - b.when);
+
+  for (const answer of answers) {
+    const entry = (items[answer.id] ??= { wrong: 0, lastWrong: 0, days: new Set() });
+    if (typeof answer.topicId === "string") {
+      entry.topicId = answer.topicId;
+    }
+    if (typeof answer.category === "string") {
+      entry.category = answer.category;
+    }
+    if (answer.correct === true) {
+      // Only counts towards graduating if the item is currently in the
+      // book; a correct answer before the first mistake proves nothing
+      // about the mistake that has not happened yet.
+      if (entry.lastWrong > 0) {
+        entry.days.add(dayKey(answer.when));
+      }
+    } else {
+      entry.wrong += 1;
+      entry.lastWrong = answer.when;
+      entry.days.clear();
+    }
+  }
+
+  return Object.entries(items)
+    .filter(([, entry]) => entry.lastWrong > 0 && entry.days.size < MISTAKE_BOOK_GRADUATION)
+    .map(([id, entry]) => ({
+      id,
+      topicId: entry.topicId,
+      category: entry.category,
+      wrong: entry.wrong,
+      lastWrong: entry.lastWrong,
+      correctDays: entry.days.size,
+    }))
+    .sort((a, b) => b.wrong - a.wrong || b.lastWrong - a.lastWrong);
+}
+
 /**
  * Aggregates correct/total counts per topic across all recorded attempts.
  * @returns {Record<string, {correct: number, total: number}>}
