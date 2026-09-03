@@ -1,71 +1,56 @@
+// Home screen and the app's router. The three tabs are addressed by URL
+// hash (`#egitim`, `#test`, `#profil`, plus `#egitim/<lessonId>` for an
+// open lesson) rather than by in-memory state, which buys three things
+// for free: the device/browser back button steps back through the app
+// instead of leaving it, a lesson can be linked to, and reloading keeps
+// you where you were.
+
 import { loadManifest } from "./topics.js";
-import { getLastTopicScore, getWeakTopics, getSeenVersion, markTopicSeen } from "./storage.js";
-import { setQuizRequest } from "./session-state.js";
+import { getLastTopicScore, getWeakTopics, getSeenVersion } from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createDropdown } from "./dropdown.js";
-import { initEducationTab } from "./education.js";
+import { showLessonIndex, openLesson, closeReader } from "./education.js";
 import { initProfileTab } from "./profile.js";
+import { startTopicTest, startMixedTest } from "./quiz-launch.js";
+import { el, clear } from "./dom.js";
+import { MAX_VISIBLE_CATEGORY_CHIPS, MIXED_TEST_DEFAULT_COUNT } from "./config.js";
 
-const TOPIC_TEST_DEFAULT_COUNT = 15;
+const VIEW_IDS = ["egitim", "test", "profil"];
+const DEFAULT_VIEW = "test";
 
 const topicsContainer = document.getElementById("topics-container");
 const startMixedBtn = document.getElementById("start-mixed-btn");
+const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
+const views = Object.fromEntries(VIEW_IDS.map((id) => [id, document.getElementById(`view-${id}`)]));
 
 let mixedCountDropdown;
 
-function startQuiz(request) {
-  setQuizRequest(request);
-  window.location.href = "quiz.html";
-}
-
-function parseCount(rawValue) {
-  return rawValue === "all" ? "all" : Number(rawValue);
-}
-
-function markSeenIfVersioned(topic) {
-  if (typeof topic.contentVersion === "number") {
-    markTopicSeen(topic.id, topic.contentVersion);
-  }
-}
-
-const MAX_VISIBLE_CATEGORY_CHIPS = 3;
+/* ---- Topic cards (Test tab) ---- */
 
 function buildCategoryChips(categories) {
-  const wrap = document.createElement("div");
-  wrap.className = "category-chips";
+  const wrap = el("div", "category-chips");
 
   const visible = categories.slice(0, MAX_VISIBLE_CATEGORY_CHIPS);
-  visible.forEach((category) => {
-    const chip = document.createElement("span");
-    chip.className = "category-chip";
-    chip.textContent = category;
+  for (const category of visible) {
+    const chip = el("span", "category-chip", category);
+    chip.lang = "en";
     wrap.appendChild(chip);
-  });
+  }
 
   const remaining = categories.length - visible.length;
   if (remaining > 0) {
-    const chip = document.createElement("span");
-    chip.className = "category-chip category-chip--more";
-    chip.textContent = `+${remaining} tane daha`;
-    wrap.appendChild(chip);
+    wrap.appendChild(el("span", "category-chip category-chip--more", `+${remaining} tane daha`));
   }
 
   return wrap;
 }
 
 function buildComingSoonCard(topic) {
-  const card = document.createElement("div");
-  card.className = "topic-card topic-card--coming-soon";
-
-  const title = document.createElement("h3");
-  title.textContent = topic.title;
+  const card = el("div", "topic-card topic-card--coming-soon");
+  const title = el("h3", null, topic.title);
+  title.lang = "en";
   card.appendChild(title);
-
-  const badge = document.createElement("span");
-  badge.className = "badge badge--muted";
-  badge.textContent = "Yakında";
-  card.appendChild(badge);
-
+  card.appendChild(el("span", "badge badge--muted", "Yakında"));
   return card;
 }
 
@@ -74,52 +59,45 @@ function buildTopicCard(topic, weakTopicIds) {
     return buildComingSoonCard(topic);
   }
 
-  const card = document.createElement("div");
-  card.className = "topic-card";
+  const card = el("div", "topic-card");
 
-  const title = document.createElement("h3");
-  title.textContent = topic.title;
+  const title = el("h3", null, topic.title);
+  title.lang = "en";
   card.appendChild(title);
 
-  const meta = document.createElement("p");
-  meta.className = "topic-card__meta";
-  meta.textContent = `${topic.questionCount} soru`;
-  card.appendChild(meta);
+  const meta = [`${topic.questionCount} soru`];
+  if (topic.lessonCount) {
+    meta.push(`${topic.lessonCount} ders`);
+  }
+  card.appendChild(el("p", "topic-card__meta", meta.join(" · ")));
 
   if (topic.categories?.length) {
     card.appendChild(buildCategoryChips(topic.categories));
   }
 
+  const badges = el("div", "badge-row");
   if (typeof topic.contentVersion === "number" && getSeenVersion(topic.id) < topic.contentVersion) {
-    const badge = document.createElement("span");
-    badge.className = "badge badge--new";
-    badge.textContent = "Yeni sorular eklendi";
-    card.appendChild(badge);
+    badges.appendChild(el("span", "badge badge--new", "Yeni sorular eklendi"));
   }
-
   const lastScore = getLastTopicScore(topic.id);
   if (lastScore) {
-    const badge = document.createElement("span");
-    badge.className = "badge";
-    badge.textContent = `Son skor: ${lastScore.correct}/${lastScore.total}`;
-    card.appendChild(badge);
+    badges.appendChild(el("span", "badge", `Son skor: ${lastScore.correct}/${lastScore.total}`));
   }
-
   if (weakTopicIds.has(topic.id)) {
-    const badge = document.createElement("span");
-    badge.className = "badge";
-    badge.textContent = "Pratik gerekiyor";
-    card.appendChild(badge);
+    badges.appendChild(el("span", "badge", "Pratik gerekiyor"));
+  }
+  if (badges.childElementCount > 0) {
+    card.appendChild(badges);
   }
 
-  const startBtn = document.createElement("button");
-  startBtn.className = "btn btn--secondary";
+  const startBtn = el("button", "btn btn--secondary", "Bu Konudan Başla");
   startBtn.type = "button";
-  startBtn.textContent = "Bu Konudan Başla";
   startBtn.addEventListener("click", () => {
-    const count = Math.min(TOPIC_TEST_DEFAULT_COUNT, topic.questionCount);
-    markSeenIfVersioned(topic);
-    startQuiz({ mode: "topic", topicIds: [topic.id], count });
+    startBtn.disabled = true;
+    startTopicTest(topic.id).catch((error) => {
+      console.error(error);
+      startBtn.disabled = false;
+    });
   });
   card.appendChild(startBtn);
 
@@ -127,22 +105,18 @@ function buildTopicCard(topic, weakTopicIds) {
 }
 
 function buildTopicGrid(topics, weakTopicIds) {
-  const grid = document.createElement("div");
-  grid.className = "topic-grid";
+  const grid = el("div", "topic-grid");
   for (const topic of topics) {
     grid.appendChild(buildTopicCard(topic, weakTopicIds));
   }
   return grid;
 }
 
-function renderTopics(topics, weakTopicIds) {
-  topicsContainer.innerHTML = "";
+function renderTopicList(topics, weakTopicIds) {
+  clear(topicsContainer);
 
   if (topics.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "empty-state";
-    empty.textContent = "Henüz konu eklenmedi.";
-    topicsContainer.appendChild(empty);
+    topicsContainer.appendChild(el("p", "empty-state", "Henüz konu eklenmedi."));
     return;
   }
 
@@ -157,90 +131,137 @@ function renderTopics(topics, weakTopicIds) {
 
   tiersPresent.forEach((tier, index) => {
     const topicsInTier = topics.filter((topic) => topic.tier === tier);
-    const details = document.createElement("details");
-    details.className = "topic-tier";
+    const details = el("details", "topic-tier");
     if (index === 0) {
       details.open = true;
     }
-
-    const summary = document.createElement("summary");
-    summary.textContent = `${TIER_LABELS[tier] ?? tier} (${topicsInTier.length})`;
-    details.appendChild(summary);
+    details.appendChild(el("summary", null, `${TIER_LABELS[tier] ?? tier} (${topicsInTier.length})`));
     details.appendChild(buildTopicGrid(topicsInTier, weakTopicIds));
-
     topicsContainer.appendChild(details);
   });
 }
 
-function initTabs() {
-  const tabs = Array.from(document.querySelectorAll(".tab-bar__tab"));
-  const views = {
-    egitim: document.getElementById("view-egitim"),
-    test: document.getElementById("view-test"),
-    profil: document.getElementById("view-profil"),
-  };
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const view = tab.dataset.view;
-      tabs.forEach((other) => other.setAttribute("aria-selected", String(other === tab)));
-      views.egitim.hidden = view !== "egitim";
-      views.test.hidden = view !== "test";
-      views.profil.hidden = view !== "profil";
-      if (view === "egitim") {
-        initEducationTab();
-      } else if (view === "profil") {
-        initProfileTab();
-      } else {
-        render();
-      }
-    });
-  });
+async function renderTestTab() {
+  try {
+    const manifest = await loadManifest();
+    const weakTopicIds = new Set(getWeakTopics().map((entry) => entry.topicId));
+    renderTopicList(manifest.topics, weakTopicIds);
+  } catch (error) {
+    console.error(error);
+    clear(topicsContainer);
+    topicsContainer.appendChild(el("p", "empty-state", "Konular yüklenemedi. Sayfayı yenile."));
+  }
 }
 
-async function init() {
-  initTabs();
+/* ---- Routing ---- */
+
+function parseRoute() {
+  const raw = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+  const [view, ...rest] = raw.split("/");
+  return VIEW_IDS.includes(view)
+    ? { view, param: rest.join("/") || null }
+    : { view: DEFAULT_VIEW, param: null };
+}
+
+function selectTab(view) {
+  for (const tab of tabs) {
+    const selected = tab.dataset.view === view;
+    tab.setAttribute("aria-selected", String(selected));
+    // Roving tabindex: one stop for the whole tab list, arrow keys move
+    // within it (WAI-ARIA tabs pattern).
+    tab.tabIndex = selected ? 0 : -1;
+  }
+}
+
+async function applyRoute() {
+  const { view, param } = parseRoute();
+
+  selectTab(view);
+  for (const id of VIEW_IDS) {
+    views[id].hidden = id !== view;
+  }
+
+  if (view === "egitim") {
+    await (param ? openLesson(param) : showLessonIndex());
+    return;
+  }
+
+  // Leaving Eğitim: make sure the reader's focused mode is torn down, or
+  // the header and tab bar would stay hidden on the next screen.
+  closeReader();
+
+  if (view === "profil") {
+    await initProfileTab();
+  } else {
+    await renderTestTab();
+  }
+}
+
+function navigate(view) {
+  if (window.location.hash === `#${view}`) {
+    return;
+  }
+  window.location.hash = view;
+}
+
+function handleTabKeydown(event) {
+  const currentIndex = tabs.indexOf(event.target);
+  if (currentIndex === -1) {
+    return;
+  }
+
+  const offsets = { ArrowRight: 1, ArrowLeft: -1 };
+  let nextIndex = null;
+  if (event.key in offsets) {
+    nextIndex = (currentIndex + offsets[event.key] + tabs.length) % tabs.length;
+  } else if (event.key === "Home") {
+    nextIndex = 0;
+  } else if (event.key === "End") {
+    nextIndex = tabs.length - 1;
+  }
+  if (nextIndex === null) {
+    return;
+  }
+
+  event.preventDefault();
+  tabs[nextIndex].focus();
+  navigate(tabs[nextIndex].dataset.view);
+}
+
+/* ---- Init ---- */
+
+function init() {
+  for (const tab of tabs) {
+    tab.addEventListener("click", () => navigate(tab.dataset.view));
+    tab.addEventListener("keydown", handleTabKeydown);
+  }
 
   mixedCountDropdown = createDropdown({
     container: document.getElementById("mixed-count-dropdown"),
     options: [
       { value: "5", label: "5" },
       { value: "10", label: "10" },
+      { value: "20", label: "20" },
       { value: "all", label: "Tümü" },
     ],
-    value: "10",
-    onChange: () => {},
+    value: MIXED_TEST_DEFAULT_COUNT,
     labelledBy: "mixed-count-label",
   });
 
-  startMixedBtn.addEventListener("click", async () => {
-    const manifest = await loadManifest();
-    const availableTopics = manifest.topics.filter((topic) => !topic.comingSoon);
-    availableTopics.forEach(markSeenIfVersioned);
-    const availableTopicIds = availableTopics.map((topic) => topic.id);
-    startQuiz({
-      mode: "mixed",
-      topicIds: availableTopicIds,
-      count: parseCount(mixedCountDropdown.getValue()),
+  startMixedBtn.addEventListener("click", () => {
+    const raw = mixedCountDropdown.getValue();
+    startMixedBtn.disabled = true;
+    startMixedTest(raw === "all" ? "all" : Number(raw)).catch((error) => {
+      console.error(error);
+      startMixedBtn.disabled = false;
     });
   });
 
-  await render();
-}
+  window.addEventListener("hashchange", () => {
+    applyRoute();
+  });
 
-async function render() {
-  try {
-    const manifest = await loadManifest();
-    const weakTopicIds = new Set(getWeakTopics().map((entry) => entry.topicId));
-    renderTopics(manifest.topics, weakTopicIds);
-  } catch (error) {
-    topicsContainer.innerHTML = "";
-    const message = document.createElement("p");
-    message.className = "empty-state";
-    message.textContent = "Konular yüklenemedi. Sayfayı yenile.";
-    topicsContainer.appendChild(message);
-    console.error(error);
-  }
+  return applyRoute();
 }
 
 init();

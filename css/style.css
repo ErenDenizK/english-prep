@@ -54,6 +54,17 @@ body {
   overflow: hidden;
 }
 
+/* Mobile browsers grow and shrink the visual viewport as their toolbars
+   slide in and out, which makes a `100%`-height fixed shell jump around.
+   `100dvh` tracks that live. It comes after the `100%` rule so browsers
+   without dvh support keep the fallback. */
+@supports (height: 100dvh) {
+  html,
+  body {
+    height: 100dvh;
+  }
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -63,6 +74,23 @@ body {
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  /* Buttons get their own :hover/:focus-visible treatment; the grey
+     flash the OS paints on tap is noise on top of it. */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Honour the OS "reduce motion" setting: everything here is decorative
+   (progress fills, colour transitions), so there is nothing to keep. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 h1,
@@ -90,12 +118,18 @@ h3 {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: var(--space-3) var(--space-2) var(--space-4);
+  /* viewport-fit=cover means content can run under a notch in landscape. */
+  padding-left: max(var(--space-2), env(safe-area-inset-left));
+  padding-right: max(var(--space-2), env(safe-area-inset-right));
 }
 
 /* Header */
 .site-header {
   flex: 0 0 auto;
   padding: var(--space-2);
+  padding-top: max(var(--space-2), env(safe-area-inset-top));
+  padding-left: max(var(--space-2), env(safe-area-inset-left));
+  padding-right: max(var(--space-2), env(safe-area-inset-right));
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -114,7 +148,13 @@ h3 {
   margin: 0;
 }
 
+/* The header title doubles as a link home on the sub-pages. The negative
+   margin cancels the padding visually, so the hit area grows to a
+   comfortable tap size without moving anything. */
 .site-header a {
+  display: inline-block;
+  padding: 0.4rem 0;
+  margin: -0.4rem 0;
   color: inherit;
   text-decoration: none;
 }
@@ -166,6 +206,12 @@ h3 {
   flex: 0 0 auto;
   border-top: 1px solid var(--color-border);
   padding: var(--space-2);
+  /* Keeps the primary action clear of the home indicator on a notched
+     phone, where it would otherwise sit under it and be hard to tap. */
+  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+  padding-left: max(var(--space-2), env(safe-area-inset-left));
+  padding-right: max(var(--space-2), env(safe-area-inset-right));
+  background: var(--color-bg);
 }
 
 .bottom-bar__inner {
@@ -220,10 +266,14 @@ h3 {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1;
+  /* Some buttons are anchors ("Ana Sayfa"), which would otherwise carry
+     the UA underline and read as a link dropped inside a button. */
+  text-decoration: none;
   cursor: pointer;
   background: var(--color-accent);
   color: var(--color-accent-contrast);
   transition: background-color 0.15s ease, color 0.15s ease;
+  min-height: 2.75rem;
 }
 
 .btn:hover {
@@ -301,6 +351,8 @@ h3 {
 .dropdown__menu {
   position: absolute;
   z-index: 20;
+  max-height: 14rem;
+  overflow-y: auto;
   top: calc(100% + 0.3rem);
   left: 0;
   min-width: 100%;
@@ -313,7 +365,10 @@ h3 {
 }
 
 .dropdown__option {
-  padding: 0.5rem 0.6rem;
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.7rem;
   border-radius: var(--radius);
   font-size: 0.95rem;
   cursor: pointer;
@@ -324,6 +379,13 @@ h3 {
 .dropdown__option[aria-selected="true"] {
   background: var(--color-surface-raised);
   color: var(--color-accent);
+}
+
+/* Keyboard cursor. Focus stays on the trigger (aria-activedescendant
+   pattern), so the active option needs its own visible marker rather
+   than relying on :focus. */
+.dropdown__option--active {
+  box-shadow: inset 0 0 0 1px var(--color-accent);
 }
 
 /* Modal overlay (replaces window.confirm — a fixed overlay that never
@@ -346,6 +408,11 @@ h3 {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: var(--space-3);
+}
+
+.modal__title {
+  margin: 0 0 var(--space-1);
+  font-size: 1.1rem;
 }
 
 .modal p {
@@ -482,6 +549,12 @@ h3 {
   color: var(--color-success);
 }
 
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
 /* Quiz */
 .quiz-nav {
   display: flex;
@@ -492,13 +565,22 @@ h3 {
 }
 
 .quiz-nav__exit {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
   background: none;
   border: none;
   padding: 0;
   color: var(--color-text-muted);
   font-family: var(--font-mono);
   font-size: 0.85rem;
+  text-decoration: none;
   cursor: pointer;
+}
+
+.quiz-nav__exit:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .quiz-nav__exit:hover {
@@ -685,6 +767,39 @@ h3 {
   white-space: nowrap;
 }
 
+.breakdown-list__item--link {
+  padding: 0;
+}
+
+.breakdown-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem var(--space-2);
+  color: inherit;
+  text-decoration: none;
+}
+
+.breakdown-link:hover,
+.breakdown-link:hover .breakdown-link__score {
+  color: var(--color-accent);
+}
+
+.breakdown-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.breakdown-link__score {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
 .callout {
   border: 1px solid var(--color-accent);
   border-radius: var(--radius);
@@ -737,7 +852,7 @@ h3 {
   color: var(--color-accent);
 }
 
-/* Eğitim (lesson) card */
+/* ---- Eğitim: shared ---- */
 .lesson-card__eyebrow {
   margin: 0 0 var(--space-1);
   color: var(--color-text-muted);
@@ -747,64 +862,303 @@ h3 {
   letter-spacing: 0.08em;
 }
 
-.lesson-card__category {
+/* ---- Eğitim: lesson index ---- */
+.lesson-overview__count {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  color: var(--color-text);
+}
+
+.lesson-overview__hint {
+  margin: var(--space-2) 0 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.panel--accent {
+  border-color: var(--color-accent);
+}
+
+.lesson-resume__title {
+  margin: 0.2rem 0;
+  font-size: 1.15rem;
+}
+
+.lesson-resume__meta {
   margin: 0 0 var(--space-2);
-  font-size: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
 }
 
-.lesson-card__rule {
-  margin: 0 0 var(--space-3);
-  font-size: 1rem;
-}
-
-.lesson-card__examples {
-  list-style: none;
-  margin: 0 0 var(--space-3);
-  padding: 0;
+.lesson-list {
   display: grid;
   gap: var(--space-1);
+  margin-top: var(--space-3);
 }
 
-.lesson-card__examples li {
+.lesson-list__topic {
+  margin: var(--space-2) 0 0;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+}
+
+/* A lesson row is the whole tap target — a table-of-contents entry, not
+   a card with a button inside it. */
+.lesson-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  column-gap: var(--space-2);
+  row-gap: 0;
+  width: 100%;
+  padding: var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: var(--space-2);
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
 }
 
-.lesson-card__example-sentence {
-  display: block;
+.lesson-row:hover {
+  border-color: var(--color-accent);
+}
+
+.lesson-row:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.lesson-row__order {
+  padding-top: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.lesson-row__main {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.lesson-row__category {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+.lesson-row__title {
   font-family: var(--font-display);
   font-size: 1.05rem;
+  font-weight: 600;
 }
 
-.lesson-card__example-note {
-  display: block;
-  margin-top: 0.3rem;
-  color: var(--color-text-muted);
+.lesson-row__summary {
   font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
 }
 
-.lesson-card__nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.lesson-row__status {
+  padding-top: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.lesson-row__status--done {
+  color: var(--color-success);
+}
+
+.lesson-row__status--started {
+  color: var(--color-accent);
+}
+
+/* On a phone a third column would squeeze the summary into a ribbon, so
+   the status drops below the text instead. */
+@media (max-width: 480px) {
+  .lesson-row {
+    grid-template-columns: auto 1fr;
+  }
+
+  .lesson-row__status {
+    grid-column: 2;
+    padding-top: 0.35rem;
+  }
+}
+
+/* ---- Eğitim: lesson reader ---- */
+.lesson-reader__heading {
+  margin: var(--space-2) 0;
+}
+
+.lesson-reader__title {
+  margin: 0.15rem 0 0;
+  font-size: 1.3rem;
+}
+
+.lesson-step__heading {
+  margin: 0 0 var(--space-2);
+  font-size: 1.1rem;
+}
+
+/* Marks a step as a question rather than something to read. */
+.lesson-step__kicker {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+}
+
+.lesson-step__body > p {
+  margin: 0 0 var(--space-2);
+  line-height: 1.65;
+}
+
+.lesson-step__body > p:last-child {
+  margin-bottom: 0;
+}
+
+/* Example sentences use a rule down the side rather than a box: a panel
+   inside a panel reads as clutter at this nesting depth. */
+.example-list {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  display: grid;
   gap: var(--space-2);
 }
 
-.lesson-card__dots {
-  display: flex;
-  gap: 0.35rem;
+.example-list li {
+  padding-left: var(--space-2);
+  border-left: 2px solid var(--color-border);
 }
 
-.lesson-card__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-border);
+.example-list__sentence {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  line-height: 1.5;
 }
 
-.lesson-card__dot--active {
-  background: var(--color-accent);
+.example-list__note {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+/* Deliberately not uppercased: a column heading can be an English
+   grammar term ("Present Simple"), and text-transform on a lang="tr"
+   page would Turkish-case it into "PRESENT SİMPLE". */
+.compare-table th {
+  padding: 0 var(--space-2) var(--space-1) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: var(--color-accent);
+}
+
+.compare-table td {
+  padding: 0.55rem var(--space-2) 0.55rem 0;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+.compare-table tr:last-child td {
+  border-bottom: none;
+}
+
+.compare-table th:last-child,
+.compare-table td:last-child {
+  padding-right: 0;
+}
+
+/* Two even columns, so a comparison reads as a comparison. */
+.compare-table th,
+.compare-table td {
+  width: 50%;
+}
+
+/* Only on the narrowest phones do the columns stop fitting; there each
+   row stacks into a labelled block (labels come from the cells'
+   data-label, set when the table is built). Keeping the breakpoint this
+   low preserves the side-by-side contrast — which is the whole point of
+   these tables — everywhere it still works. */
+@media (max-width: 379px) {
+  .compare-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .compare-table tr {
+    display: block;
+    padding: var(--space-1) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .compare-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .compare-table td {
+    display: block;
+    width: auto;
+    padding: 0.2rem 0;
+    border: none;
+  }
+
+  .compare-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    color: var(--color-accent);
+  }
+}
+
+.lesson-complete {
+  text-align: center;
+}
+
+.lesson-complete__title {
+  margin: 0.2rem 0 var(--space-2);
+  font-size: 1.4rem;
+}
+
+.lesson-complete__body {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
 }
 
 .empty-state {
@@ -820,7 +1174,7 @@ h3 {
   flex-wrap: wrap;
 }
 
-.field-row label {
+.field-row > span {
   font-size: 0.9rem;
   color: var(--color-text-muted);
 }
@@ -860,7 +1214,7 @@ h3 {
 
 .stat-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
   gap: var(--space-2);
   margin-top: var(--space-1);
 }

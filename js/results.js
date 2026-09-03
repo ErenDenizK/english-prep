@@ -1,44 +1,31 @@
-import { loadManifest } from "./topics.js";
+import { loadManifest, loadLessonsForTopics } from "./topics.js";
 import { getQuizResult, setQuizResult } from "./session-state.js";
 import { recordAttempt, getWeakTopics } from "./storage.js";
+import { el, clear, appendBlanked } from "./dom.js";
 
 const container = document.getElementById("results-container");
 const bottomBar = document.getElementById("results-bottom-bar");
 const bottomBarInner = bottomBar.querySelector(".bottom-bar__inner");
 
-function showMessage(text) {
-  container.innerHTML = "";
-  const message = document.createElement("p");
-  message.className = "empty-state";
-  message.textContent = text;
-  container.appendChild(message);
-
-  bottomBarInner.innerHTML = "";
-  const link = document.createElement("a");
-  link.className = "btn";
-  link.href = "index.html";
-  link.textContent = "Ana Sayfa";
-  bottomBarInner.appendChild(link);
-  bottomBar.hidden = false;
-}
-
 function formatPercent(correct, total) {
   return total === 0 ? "%0" : `%${Math.round((correct / total) * 100)}`;
 }
 
+function showMessage(text) {
+  clear(container);
+  container.appendChild(el("p", "empty-state", text));
+
+  clear(bottomBarInner);
+  const link = el("a", "btn", "Ana Sayfa");
+  link.href = "index.html";
+  bottomBarInner.appendChild(link);
+  bottomBar.hidden = false;
+}
+
 function renderScoreSummary(result) {
-  const summary = document.createElement("section");
-  summary.className = "score-summary";
-
-  const value = document.createElement("div");
-  value.className = "score-summary__value";
-  value.textContent = `${result.correctCount} / ${result.totalCount}`;
-  summary.appendChild(value);
-
-  const label = document.createElement("p");
-  label.textContent = `${formatPercent(result.correctCount, result.totalCount)} doğru`;
-  summary.appendChild(label);
-
+  const summary = el("section", "score-summary");
+  summary.appendChild(el("div", "score-summary__value", `${result.correctCount} / ${result.totalCount}`));
+  summary.appendChild(el("p", null, `${formatPercent(result.correctCount, result.totalCount)} doğru`));
   return summary;
 }
 
@@ -49,82 +36,87 @@ function renderWeakTopicsCallout(titleById) {
   }
 
   const names = weakTopics.map((entry) => titleById.get(entry.topicId) ?? entry.topicId).join(", ");
-  const callout = document.createElement("div");
-  callout.className = "callout";
-  callout.textContent = `Sırada bu konuya odaklan: ${names}`;
-  return callout;
+  return el("div", "callout", `Sırada bu konuya odaklan: ${names}`);
 }
 
-function renderBreakdown(heading, breakdown, resolveName) {
+/**
+ * @param {string} heading
+ * @param {Record<string, {correct: number, total: number}>} breakdown
+ * @param {(key: string) => string} resolveName
+ * @param {(key: string) => string|null} [resolveLessonId] - when a row
+ *   maps to a lesson, the row becomes a link into the Eğitim tab
+ */
+function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
   const keys = Object.keys(breakdown);
+  // A one-row breakdown just restates the score above it.
   if (keys.length <= 1) {
     return null;
   }
 
-  const section = document.createElement("section");
-  const headingEl = document.createElement("h2");
-  headingEl.textContent = heading;
-  section.appendChild(headingEl);
+  const section = el("section");
+  section.appendChild(el("h2", null, heading));
 
-  const list = document.createElement("ul");
-  list.className = "breakdown-list";
-  keys.forEach((key) => {
+  const list = el("ul", "breakdown-list");
+  for (const key of keys) {
     const stats = breakdown[key];
     const item = document.createElement("li");
+    const score = `${stats.correct}/${stats.total}`;
+    const lessonId = resolveLessonId?.(key) ?? null;
 
-    const name = document.createElement("span");
-    name.textContent = resolveName(key);
-    item.appendChild(name);
-
-    const score = document.createElement("span");
-    score.textContent = `${stats.correct}/${stats.total}`;
-    item.appendChild(score);
+    if (lessonId) {
+      const link = el("a", "breakdown-link");
+      link.href = `index.html#egitim/${lessonId}`;
+      const name = el("span", null, resolveName(key));
+      name.lang = "en";
+      link.appendChild(name);
+      link.appendChild(el("span", "breakdown-link__score", `${score} · Dersi aç →`));
+      item.className = "breakdown-list__item--link";
+      item.appendChild(link);
+    } else {
+      const name = el("span", null, resolveName(key));
+      name.lang = "en";
+      item.appendChild(name);
+      item.appendChild(el("span", null, score));
+    }
 
     list.appendChild(item);
-  });
+  }
   section.appendChild(list);
 
   return section;
 }
 
 function renderReview(result) {
-  const section = document.createElement("section");
-  const heading = document.createElement("h2");
-  heading.textContent = "İnceleme";
-  section.appendChild(heading);
+  const section = el("section");
+  section.appendChild(el("h2", null, "İnceleme"));
 
   result.questionResults.forEach((question, index) => {
-    const item = document.createElement("div");
-    item.className = "review-item";
+    const item = el("div", "review-item");
 
-    const prompt = document.createElement("p");
-    prompt.className = "review-item__prompt";
-    prompt.textContent = `${index + 1}. ${question.prompt}`;
+    const prompt = el("p", "review-item__prompt");
+    prompt.appendChild(document.createTextNode(`${index + 1}. `));
+    appendBlanked(prompt, question.prompt);
     item.appendChild(prompt);
 
-    const yourAnswer = document.createElement("p");
-    yourAnswer.className = `review-item__answer review-item__answer--${question.correct ? "correct" : "incorrect"}`;
-    yourAnswer.textContent = `Cevabın: ${question.selectedAnswer}`;
-    item.appendChild(yourAnswer);
+    item.appendChild(
+      el(
+        "p",
+        `review-item__answer review-item__answer--${question.correct ? "correct" : "incorrect"}`,
+        `Cevabın: ${question.selectedAnswer ?? "—"}`
+      )
+    );
 
     if (!question.correct) {
-      const correctAnswer = document.createElement("p");
-      correctAnswer.className = "review-item__answer review-item__answer--correct";
-      correctAnswer.textContent = `Doğru cevap: ${question.correctAnswer}`;
-      item.appendChild(correctAnswer);
+      item.appendChild(
+        el("p", "review-item__answer review-item__answer--correct", `Doğru cevap: ${question.correctAnswer}`)
+      );
     }
 
-    const explanation = document.createElement("p");
-    explanation.className = "review-item__explanation";
-    explanation.textContent = question.explanation;
-    item.appendChild(explanation);
+    item.appendChild(el("p", "review-item__explanation", question.explanation));
 
     if (question.tip) {
-      const tip = document.createElement("p");
-      tip.className = "review-item__tip";
-      const tipLabel = document.createElement("strong");
-      tipLabel.textContent = "Kural: ";
-      tip.appendChild(tipLabel);
+      const tip = el("p", "review-item__tip");
+      tip.appendChild(el("strong", null, "Kural: "));
       tip.appendChild(document.createTextNode(question.tip));
       item.appendChild(tip);
     }
@@ -136,22 +128,20 @@ function renderReview(result) {
 }
 
 function renderBottomBarActions() {
-  bottomBarInner.innerHTML = "";
+  clear(bottomBarInner);
 
-  const retryBtn = document.createElement("button");
-  retryBtn.className = "btn";
+  const homeLink = el("a", "btn btn--secondary", "Ana Sayfa");
+  homeLink.href = "index.html";
+  bottomBarInner.appendChild(homeLink);
+
+  // Draws a fresh random set from the same selection rather than
+  // replaying the identical questions, hence "Yeni Test".
+  const retryBtn = el("button", "btn", "Yeni Test");
   retryBtn.type = "button";
-  retryBtn.textContent = "Tekrar Dene";
   retryBtn.addEventListener("click", () => {
     window.location.href = "quiz.html";
   });
   bottomBarInner.appendChild(retryBtn);
-
-  const homeLink = document.createElement("a");
-  homeLink.className = "btn btn--secondary";
-  homeLink.href = "index.html";
-  homeLink.textContent = "Ana Sayfa";
-  bottomBarInner.appendChild(homeLink);
 
   bottomBar.hidden = false;
 }
@@ -163,6 +153,8 @@ async function init() {
     return;
   }
 
+  // Guarded so reloading the results screen doesn't record the same
+  // attempt twice and inflate the history.
   if (!result.recorded) {
     recordAttempt({
       date: result.date,
@@ -179,10 +171,20 @@ async function init() {
     setQuizResult(result);
   }
 
-  const manifest = await loadManifest();
-  const titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
+  let titleById = new Map();
+  let lessonIdByCategory = new Map();
+  try {
+    const manifest = await loadManifest();
+    titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
+    const lessons = await loadLessonsForTopics(manifest.topics.filter((topic) => !topic.comingSoon));
+    lessonIdByCategory = new Map(lessons.map((lesson) => [lesson.category, lesson.id]));
+  } catch (error) {
+    // The score itself came through the session handoff, so a failed
+    // content load costs the topic titles and lesson links, not the page.
+    console.error(error);
+  }
 
-  container.innerHTML = "";
+  clear(container);
   container.appendChild(renderScoreSummary(result));
 
   const weakCallout = renderWeakTopicsCallout(titleById);
@@ -190,8 +192,10 @@ async function init() {
     container.appendChild(weakCallout);
   }
 
-  const topicBreakdown = renderBreakdown("Konuya Göre Dağılım", result.topicBreakdown, (topicId) =>
-    titleById.get(topicId) ?? topicId
+  const topicBreakdown = renderBreakdown(
+    "Konuya Göre Dağılım",
+    result.topicBreakdown,
+    (topicId) => titleById.get(topicId) ?? result.topicTitles?.[topicId] ?? topicId
   );
   if (topicBreakdown) {
     container.appendChild(topicBreakdown);
@@ -201,7 +205,8 @@ async function init() {
     const categoryBreakdown = renderBreakdown(
       "Kategoriye Göre Dağılım",
       result.categoryBreakdown,
-      (category) => category
+      (category) => category,
+      (category) => lessonIdByCategory.get(category) ?? null
     );
     if (categoryBreakdown) {
       container.appendChild(categoryBreakdown);

@@ -1,28 +1,49 @@
-// Loads the topic manifest and question sets from the static data/ folder,
+// Loads the topic manifest and topic files from the static data/ folder,
 // and normalizes the authored question schema into the shape the rest of
 // the app works with.
 //
-// Authored schema (what question files contain, see README for the full
-// spec): { id, category, paragraph, options, correctIndex, explanation, tip }
+// Authored schema (what topic files contain — see docs/CONTENT_GUIDE.md
+// for the full spec): { id, category, paragraph, options, correctIndex,
+// explanation, tip }
 // Internal shape (what this module returns): { id, category, prompt,
 // options, correctAnswer, explanation, tip }
 //
 // The split exists so content authors write `correctIndex` against a fixed
-// options list (robust, easy for AI to generate), while the quiz engine
-// scores against a `correctAnswer` string (stable even after options are
-// shuffled for display).
+// options list (robust, easy to author and to validate), while the quiz
+// engine scores against a `correctAnswer` string (stable even after the
+// options are shuffled for display).
 
 const MANIFEST_URL = "data/manifest.json";
 
-/**
- * @returns {Promise<{topics: Array<{id: string, title: string, tier: string, file: string, questionCount: number}>}>}
- */
-export async function loadManifest() {
-  const response = await fetch(MANIFEST_URL);
-  if (!response.ok) {
-    throw new Error("Failed to load the topic manifest.");
+// A topic file holds both its questions and its lessons, so the Test tab
+// and the Eğitim tab would otherwise fetch and parse the same file twice.
+// Cache the in-flight promise, and drop a failed one so a retry actually
+// retries instead of replaying the rejection forever.
+const fileCache = new Map();
+
+function loadJson(url) {
+  if (!fileCache.has(url)) {
+    const pending = fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load ${url} (HTTP ${response.status}).`);
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        fileCache.delete(url);
+        throw error;
+      });
+    fileCache.set(url, pending);
   }
-  return response.json();
+  return fileCache.get(url);
+}
+
+/**
+ * @returns {Promise<{topics: Array<object>}>} the parsed manifest
+ */
+export function loadManifest() {
+  return loadJson(MANIFEST_URL);
 }
 
 function normalizeQuestion(question) {
@@ -42,11 +63,7 @@ function normalizeQuestion(question) {
  * @returns {Promise<Array<object>>} the topic's questions, normalized
  */
 export async function loadTopicQuestions(topic) {
-  const response = await fetch(topic.file);
-  if (!response.ok) {
-    throw new Error(`Failed to load questions for topic "${topic.id}".`);
-  }
-  const data = await response.json();
+  const data = await loadJson(topic.file);
   return data.questions.map(normalizeQuestion);
 }
 
@@ -69,21 +86,19 @@ export async function loadQuestionsForTopics(topics) {
 
 /**
  * @param {{id: string, file: string}} topic
- * @returns {Promise<Array<{category: string, rule: string, examples: Array<{sentence: string, note: string}>}>>}
- *   the topic's lessons, unmodified (empty array if the topic has none yet)
+ * @returns {Promise<Array<object>>} the topic's lessons, unmodified
+ *   (empty array if the topic has none yet)
  */
 export async function loadTopicLessons(topic) {
-  const response = await fetch(topic.file);
-  if (!response.ok) {
-    throw new Error(`Failed to load lessons for topic "${topic.id}".`);
-  }
-  const data = await response.json();
+  const data = await loadJson(topic.file);
   return data.lessons ?? [];
 }
 
 /**
- * Loads lessons for several topics and tags each with its topic's title
- * so the lesson viewer can show which topic a lesson belongs to.
+ * Loads lessons for several topics into one flat, ordered list, tagging
+ * each lesson with the topic it belongs to. Topics keep their manifest
+ * order and lessons their authored `order` within a topic, so the Eğitim
+ * index reads as one syllabus rather than an arbitrary pile.
  * @param {Array<{id: string, title: string, file: string}>} topics
  * @returns {Promise<Array<object>>}
  */
@@ -91,7 +106,9 @@ export async function loadLessonsForTopics(topics) {
   const lessonSets = await Promise.all(
     topics.map(async (topic) => {
       const lessons = await loadTopicLessons(topic);
-      return lessons.map((lesson) => ({ ...lesson, topicTitle: topic.title }));
+      return [...lessons]
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+        .map((lesson) => ({ ...lesson, topicId: topic.id, topicTitle: topic.title }));
     })
   );
   return lessonSets.flat();

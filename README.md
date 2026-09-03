@@ -1,361 +1,184 @@
 # English Prep Practice
 
-A simple, free multiple-choice practice app for university English prep-school
-exams ("hazırlık yeterlik/İYS" style Cloze Tests). Built as a static site so
-it can be hosted for free on GitHub Pages and used by anyone with the link —
-no accounts, no backend, no build step.
+A free study app for Turkish university English prep-school proficiency
+exams (YTÜ İYS style Cloze Tests). Built as a static site so it can be
+hosted on GitHub Pages and used by anyone with the link — no accounts, no
+backend, no build step.
+
+Mobile first: it's designed to be used on a phone between classes, and
+verified at 320px before anything else.
 
 ## How it works
 
-The interface (buttons, headings, status text) is in Turkish, since that's
-the audience; practice sentences stay in English (that's the exam) and
-explanations/tips stay in Turkish (already were). Grammar category labels
-(e.g. "Present Perfect vs Past Simple") stay in English — students need to
-recognize the English grammar terms.
+The interface is in Turkish, since that's the audience. Practice sentences
+stay in English (that's the exam), explanations and lesson prose stay in
+Turkish, and grammar category labels stay in English — students need to
+recognize the terms.
 
 Three tabs:
 
-- **Eğitim** — a fast, example-driven tour through each topic's grammar
-  categories: a short rule plus simple example sentences, paged with
-  Next/Previous. No scoring, just teaching.
-- **Test** — pick a topic or start a mixed test drawing from every topic at
-  once. Multiple-choice, paragraph-based cloze questions with instant
-  feedback: a full explanation plus a short, generalizable rule after every
-  answer. See your score and a breakdown by topic and by grammar category
-  (e.g. "Present Perfect vs Past Simple: 3/4"). Nothing is sent to a
-  server — all of it is saved locally in your browser (`localStorage`). A
-  topic whose content has grown since your last visit shows a "Yeni
-  sorular eklendi" badge (see **Content-freshness tracking** below).
-- **Profil** — an optional display name (local only, never sent anywhere),
-  overall stats (tests completed, questions answered, accuracy), and —
-  once you've done a few tests — which topics and which grammar categories
-  you're weakest in, plus a reset button for all locally saved history.
+- **Eğitim** — a staged, interactive walkthrough of the syllabus. The
+  index lists every lesson in order with its own progress and a "pick up
+  where you left off" card; opening one drops into a focused reader that
+  pages through the lesson a step at a time: a rule, a side-by-side
+  comparison of the signal words, and inline check questions that have to
+  be answered before moving on. Finishing a lesson offers the next one or
+  a test on the same topic. Nothing here is scored — it's teaching.
+- **Test** — pick a topic or start a mixed test drawing from every topic
+  at once. Paragraph-based multiple-choice cloze questions with instant
+  feedback: a full explanation of why the answer fits *this* passage, plus
+  a short transferable rule. The results screen breaks the score down by
+  topic and by grammar category, and each category links straight to the
+  lesson that teaches it. A topic whose questions have grown since your
+  last visit shows a "Yeni sorular eklendi" badge.
+- **Profil** — an optional display name (local only), how far through the
+  lessons you are, overall practice stats, and which topics and
+  categories you're weakest in — again linked to the lessons that cover
+  them. Plus a reset for everything stored locally.
 
-The whole app is a fixed-height "app shell" (header/tabs, a scrolling
-content area with no visible scrollbar, and a fixed bottom action bar on
-the quiz/results screens) rather than an ordinary scrolling web page —
-answering a question never shifts the button you're about to tap next, and
-nothing on any screen ever causes horizontal shift. All interactive
-controls (the question-count picker, the clear-history confirmation) are
-the app's own components, not native browser `<select>`/`confirm()` chrome.
+Nothing is sent anywhere. All progress lives in this browser's
+`localStorage`.
+
+The whole app is a fixed-height "app shell" — header and tabs, one
+scrolling content area with no visible scrollbar, and a fixed bottom
+action bar on the quiz, results and lesson-reader screens — rather than an
+ordinary scrolling page. Answering a question never shifts the button
+you're about to tap, and no screen ever moves sideways. The controls that
+would normally hand the screen to the OS (the question-count picker, the
+reset confirmation) are the app's own components, and re-implement the
+keyboard and focus behaviour they replaced.
 
 ## Running locally
 
-This is plain HTML/CSS/JS with no build step, but the pages load question
-data with `fetch()`, which requires an HTTP origin (opening `index.html`
-directly as a `file://` URL will not work). Serve the project root with any
-static file server, for example:
+Plain HTML/CSS/JS with no build step, but the pages load content with
+`fetch()`, which needs an HTTP origin — opening `index.html` as a `file://`
+URL will not work.
 
 ```bash
-python3 -m http.server 8000
+npm run serve          # python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000/` in a browser.
+Then open `http://localhost:8000/`.
+
+## Checks
+
+`package.json` exists for tooling only. The app itself has **no
+dependencies and no build step**, and nothing here is needed to serve it.
+
+```bash
+npm run validate       # content schema + manifest/topic-file consistency
+npm test               # unit tests for the scoring and storage logic
+npm run check          # both
+```
+
+Both run in CI on every push and pull request to `main` and `test`.
+
+`npm run validate` is the important one when content changes: it checks
+every question and lesson against the documented schema, and catches the
+cross-file drift that would otherwise show up as a wrong number on a
+topic card or a lesson that links to nothing.
 
 ## Branches
 
 - **`main`** — always working, verified content only. GitHub Pages serves
   this branch.
 - **`test`** — day-to-day development. New content and changes land here
-  first; once tried and approved, they're merged into `main`.
+  first; once tried on a real phone and approved, they're merged into
+  `main`.
 
 ## Deploying to GitHub Pages
 
 1. In the repository, go to **Settings → Pages**.
 2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select `main` (or `test`, for previewing in-progress work) and the
+3. Select `main` (or `test`, to preview in-progress work) and the
    `/ (root)` folder, then save.
-4. GitHub Pages will publish the site at
-   `https://<username>.github.io/<repository>/` within a few minutes, and
-   auto-updates on every push to that branch — no further steps needed.
 
-No GitHub Actions workflow is required since there's nothing to build.
+The site publishes at `https://<username>.github.io/<repository>/` within
+a few minutes and auto-updates on every push to that branch. No Actions
+workflow is needed to build it — the CI workflow only runs the checks.
 
 ## Project structure
 
 ```
-index.html          Home: Eğitim/Test tabs, topic selection, mixed test
-quiz.html            Question-answering screen
-results.html          Score, breakdown, and review
-css/style.css          Single stylesheet — the fixed app-shell layout,
-                         custom dropdown/modal components, mobile-first
-js/                     ES modules — see file-level comments for each one's role
-  dropdown.js             Custom dropdown (replaces native <select>)
-  modal.js                Custom confirm modal (replaces window.confirm)
-  education.js             Eğitim tab: paginated lesson viewer
-data/manifest.json       Topic index (id, title, tier, file, question count,
-                            contentVersion, categories)
-data/tenses/tenses.json    Tenses topic: questions (grouped by category) and
-                            lessons (one per category, for the Eğitim tab)
+index.html            App shell: tab bar + Eğitim / Test / Profil views
+quiz.html             Question-answering screen
+results.html          Score, breakdown, review
+css/style.css         Single stylesheet; design tokens in :root
+js/                   ES modules — see each file's header comment
+data/manifest.json    Topic index
+data/<topic>/         One JSON file per topic: its lessons and questions
+tools/                Content validator
+tests/                Unit tests
+docs/                 Content schema and content-agent briefs
 ```
 
 ## Design
 
-The visual identity is a single, deliberate look — not a light/dark toggle:
-a warm, dark ink-and-amber palette, a serif display face (Fraunces) for
-headings paired with IBM Plex Sans for body text and IBM Plex Mono for
-scores and numbers, and hairline borders instead of shadowed "card" panels.
-The goal is to read as an edited, purpose-built study tool rather than a
-generic dashboard template. See `css/style.css` for the token definitions
-(`:root` custom properties) if this direction is extended to new pages.
+The visual identity is a single, deliberate look — not a light/dark
+toggle: a warm, dark ink-and-amber palette, a serif display face
+(Fraunces) for headings paired with IBM Plex Sans for body text and IBM
+Plex Mono for scores and numbers, and hairline borders instead of shadowed
+"card" panels. The goal is to read as an edited, purpose-built study tool
+rather than a generic dashboard template. Token definitions are the
+`:root` custom properties at the top of `css/style.css`.
 
-## Adding a new topic
+## Adding content
 
-Adding a topic never requires touching any JavaScript — it's just data:
+Adding a topic, a lesson or a question never requires touching
+JavaScript — it's all JSON.
 
-1. Create a new JSON file (e.g. `data/modals/modals.json`) using the schema
-   below.
-2. Add an entry for it to `data/manifest.json`, including a `tier` (see
-   **Topic roadmap** below for the available tiers).
-3. That's it — the topic shows up on the home page automatically.
-
-A manifest entry looks like:
-
-```json
-{
-  "id": "tenses",
-  "title": "Tenses",
-  "tier": "foundations",
-  "file": "data/tenses/tenses.json",
-  "questionCount": 24,
-  "contentVersion": 1,
-  "categories": ["Present Simple vs Present Continuous", "..."]
-}
-```
-
-- **`categories`** (optional) — the distinct category names used across the
-  topic's questions, shown as preview chips on its home-page card. Purely
-  cosmetic; keep it in sync with the categories actually used in the
-  topic's question file.
-- **`contentVersion`** (optional integer, start at `1`) — bump it whenever
-  you add or materially change questions in this topic. The app compares
-  it against what a learner's browser last recorded (see **Content-freshness
-  tracking** below) and shows a "Yeni sorular eklendi" badge on the topic
-  card when the manifest's version is higher. Starting a test for that
-  topic marks the new version as seen. Omit the field entirely if you
-  don't want freshness tracking for a topic.
-- **`comingSoon`** (optional, `true`/omit) — marks a topic as a roadmap
-  teaser: it renders a disabled card with a "Coming soon" badge, is
-  excluded from the mixed-test question pool, and needs no `file` or
-  `questionCount` yet. Flip it to a real entry (add `file` +
-  `questionCount`, drop `comingSoon`) once the content is authored.
-
-## Content-freshness tracking
-
-There's no login — just a local record (`localStorage`, same mechanism as
-the score history and the Profil tab) of which `contentVersion` a learner
-has last seen per topic. It exists solely to power the "new questions
-added" badge described above; it's separate from the Profil tab's display
-name and stats, and isn't cleared by the "Geçmişi Sıfırla" reset. See
-`getSeenVersion`/`markTopicSeen` in `js/storage.js`.
-
-### Question schema
-
-Each topic file looks like this:
-
-```json
-{
-  "topicId": "tenses",
-  "title": "Tenses",
-  "level": "B2-C1",
-  "note": "Optional free-text note about the set.",
-  "questions": [
-    {
-      "id": "tenses-t1",
-      "category": "Present Simple vs Present Continuous",
-      "paragraph": "Every morning, Elif ____ to the university library before her first class starts. She says the quiet hours right after opening are the only time she can truly concentrate.",
-      "options": ["goes", "is going", "has gone", "went"],
-      "correctIndex": 0,
-      "explanation": "'Every morning' alışkanlık/rutin bildiren bir zaman ifadesi, bu yüzden Present Simple kullanılır. 'is going' anlık bir eylem için kullanılırdı, ama burada tekrar eden bir alışkanlıktan bahsediliyor.",
-      "tip": "Alışkanlık bildiren zaman zarfları (every day, usually, often) Present Simple'ı tetikler."
-    }
-  ]
-}
-```
-
-Field rules:
-
-- **`category`** — the specific grammar contrast this question tests (e.g.
-  "Present Perfect vs Past Simple", not just "Tenses"). Real exam difficulty
-  comes from confusing similar forms, so questions should target a specific
-  confusable pair/triad wherever possible, not just any one form in
-  isolation. Used to group questions for the per-category breakdown on the
-  results screen.
-- **`paragraph`** — 1–3 sentences of realistic context with exactly one
-  blank marked as `____` (four underscores). A single decontextualized
-  sentence is too easy and not representative of the real exam; give the
-  blank enough surrounding context (time expressions, cause/effect,
-  narrative sequence) that picking the right form actually requires
-  understanding the passage, the way YTÜ İYS's Cloze Test does.
-- **`options`** — exactly 4 strings, usually different forms/tenses of the
-  same verb. Order doesn't matter; the app shuffles it per attempt.
-- **`correctIndex`** — the 0-based index into `options` of the correct
-  answer.
-- **`explanation`** — **in Turkish** (the practice sentence stays in
-  English; the teaching explanation should be in the learner's own
-  language). Always a full explanation, never a one-liner: say why the
-  correct option is right given the paragraph's context, and why the
-  nearest wrong option(s) don't fit.
-- **`tip`** — **in Turkish**, a short, standalone, generalizable rule (not
-  tied to this specific sentence) the learner can carry into other
-  questions, e.g. "Since + geçmiş bir nokta' her zaman Present Perfect ile
-  kullanılır." This is distinct from `explanation`: the explanation is
-  situational, the tip is a transferable rule.
-
-### Prompt template for AI-authored questions
-
-Use a prompt along these lines when generating a new question set (adjust
-the topic, categories, and count):
-
-> Write [N] multiple-choice cloze questions for the topic "[TOPIC NAME]",
-> targeting the YTÜ İYS-style university English prep-school exam (B2-C1
-> level). Group them into [K] categories, each testing a specific pair or
-> triad of easily-confused forms within the topic (e.g. for Tenses:
-> "Present Perfect vs Past Simple", not just "Present Perfect" alone).
-> Return them as a JSON array matching this exact shape:
->
-> `{ "id": string, "category": string, "paragraph": string, "options": string[4], "correctIndex": number, "explanation": string, "tip": string }`
->
-> Rules:
-> - `paragraph` must be 1–3 sentences of realistic context (not an isolated
->   textbook sentence) containing exactly one blank written as `____`.
-> - `options` must have exactly 4 plausible forms, only one of which is
->   correct in context — the wrong options should be genuinely tempting,
->   not obviously wrong.
-> - `correctIndex` is the 0-based index of the correct option.
-> - `explanation` **must be written in Turkish**: explain why the correct
->   answer fits this specific context, and why the closest wrong option(s)
->   don't.
-> - `tip` **must be written in Turkish**: a short, standalone, generalizable
->   rule the learner can reuse on other questions — not a repeat of the
->   explanation.
-> - Vary subjects, contexts, and sentence structure across questions; avoid
->   repeating the same scenario.
-
-### Lesson schema (Eğitim tab)
-
-Alongside `questions`, a topic file can carry a `lessons` array — one
-entry per category, used by the Eğitim tab's paginated tour. Same category
-taxonomy as the questions, so there's one set of category names per topic,
-not two.
-
-```json
-{
-  "topicId": "tenses",
-  "title": "Tenses",
-  "questions": [ "..." ],
-  "lessons": [
-    {
-      "category": "Present Simple vs Present Continuous",
-      "rule": "Kısa, net bir Türkçe kural açıklaması.",
-      "examples": [
-        { "sentence": "She goes to the gym every morning.", "note": "Alışkanlık → Present Simple" },
-        { "sentence": "She is going to the gym right now.", "note": "Şu an oluyor → Present Continuous" }
-      ]
-    }
-  ]
-}
-```
-
-- **`category`** — must match a category name used in that topic's
-  `questions`.
-- **`rule`** — **in Turkish**, one or two sentences stating the general
-  pattern (not tied to a specific example).
-- **`examples`** — 2–3 entries, each a clean, isolated English sentence
-  (simpler than a test paragraph — teaching, not testing) demonstrating the
-  rule, with a short Turkish `note` naming which form and why.
-
-Prompt template for AI-authored lessons:
-
-> Write a short lesson for the topic "[TOPIC NAME]", category "[CATEGORY
-> NAME]", for a Turkish university English prep-school student. Return
-> JSON matching this exact shape:
->
-> `{ "category": string, "rule": string, "examples": [{ "sentence": string, "note": string }] }`
->
-> Rules:
-> - `rule` must be in Turkish, one or two sentences, stating the general
->   pattern — not tied to any one example.
-> - Provide 2–3 `examples`. Each `sentence` is a clean, simple, isolated
->   English sentence (much simpler than an exam paragraph — this is
->   teaching, not testing) that clearly demonstrates the rule.
-> - Each example's `note` is a short Turkish phrase naming the form and
->   why it applies (e.g. "Alışkanlık → Present Simple").
-
-## Topic roadmap
-
-The long-term goal is to cover the full prep-school grammar syllabus. New
-topics are grouped into four learner-facing difficulty tiers (used to group
-topic cards on the home page once more than one tier has content), plus a
-cross-cutting vocabulary track:
-
-- **Foundations** — Tenses, Articles, Prepositions, Quantifiers,
-  Comparatives & Superlatives.
-- **Core Grammar** — Modals, Passive Voice, Gerunds & Infinitives.
-- **Compound Structures** — Conditionals, Relative Clauses, Question Tags.
-- **Advanced / Discourse-level** — Reported Speech, Connectors & Linking
-  Words.
-- **Vocabulary** (cross-cutting, not tied to a tier) — Word Formation,
-  collocations. This will likely need its own question sub-type eventually
-  and is flagged for a future design pass.
-
-This tiering reflects a difficulty grouping for learners, not a required
-authoring order — topics can be added in any order; whichever gets a JSON
-file next simply becomes the next live topic card. See the architecture
-plan in this repository's history for the full reasoning.
+- **`docs/CONTENT_GUIDE.md`** is the authoritative schema: the manifest,
+  the question shape, the lesson shape and its three step types, and the
+  language rules. `npm run validate` enforces it.
+- **`docs/agents/`** holds the briefs for the separate Claude sessions
+  that author content — one for lessons, one for questions — plus how the
+  handoff works and why the category taxonomy is settled before either
+  starts.
 
 ## Versioning
 
 `x.y`, tracked in `CHANGELOG.md`. **`x` is fixed at `0` for the entire
-development phase and only the project owner bumps it — not a rule an
+development phase and only the project owner bumps it** — not a rule an
 assistant or contributor applies on their own judgment, no matter how big
-a change looks.** `1.0` marks the point the owner explicitly decides the
-app is a real first release, not any particular feature set being
-"finished." Until then:
-
-- **`y` (development build number)** — increments for every round of
-  shipped changes, big or small alike (a new mode is still just the next
-  `0.y`, not a reason to touch `x`). Current: see the latest entry in
-  `CHANGELOG.md`.
+a change looks. `1.0` marks the point the owner explicitly decides the app
+is a real first release, not any particular feature set being "finished".
+Until then, `y` increments for every round of shipped changes, big or
+small alike.
 
 ## Roadmap to v1.0
 
-Everything shipped so far (`v0.1`–`v0.5`) is development work toward a
-first real release, not a release itself. Below is the working list of
-what's left, roughly in the order it makes sense to tackle — see
-`CHANGELOG.md` for what's already landed under each `0.y`.
+Everything shipped so far is development work toward a first real release.
+What's left, roughly in order:
 
-1. **Real-device pass** — everything so far has been verified with
-   Playwright in a headless sandbox plus static screenshots. Before
-   anything is called `1.0`, both the owner and at least one friend should
-   actually use it on their own phones (via the `test` branch's GitHub
-   Pages preview) — real touch targets, real fonts loading, real network.
-2. ~~Open design thread: the quiz category eyebrow label~~ — **resolved,
-   kept as-is.** It ties a Test-tab question directly to the matching
-   Eğitim-tab lesson category, which is genuinely useful for a learner
-   moving between the two tabs, not just decoration.
-3. **A second real topic** (Modals is already stubbed as `comingSoon` in
-   the manifest) — both to make Test/Eğitim feel like a real multi-topic
-   app rather than a single-topic demo, and to give the "Yeni sorular
-   eklendi" content-freshness badge a real second data point to prove
-   itself against.
-4. **Promote to `main` once approved** — `main` is still on the very first
-   development build; it only moves forward when the owner has tried a
-   build on `test` and signs off, per the branch model below. Confirm
-   GitHub Pages is actually serving `main` at that point (not left on
-   `test` from earlier testing).
-5. **Owner declares `1.0`** — once the above holds and the owner is happy,
-   they set `x` to `1`; this isn't a technical milestone this project
-   infers on its own.
+1. **A second real topic.** Modals is stubbed as `comingSoon` in the
+   manifest. This is the biggest remaining gap: it makes Eğitim and Test
+   feel like a real multi-topic app rather than a single-topic demo, gives
+   the tier grouping on the home screen something to group, and gives the
+   content-freshness badge a second data point. The authoring process is
+   ready — see `docs/agents/`.
+2. **Real-device pass.** Everything so far has been verified with
+   Playwright across 320/390/768/1280 plus screenshots. Before anything is
+   called `1.0`, the owner and at least one friend should use it on their
+   own phones via the `test` branch's Pages preview — real touch targets,
+   real fonts loading over a real network.
+3. **Promote to `main` once approved.** `main` is still on an early
+   development build; it only moves when the owner has tried a build on
+   `test` and signs off. Confirm Pages is serving `main` at that point.
+4. **Owner declares `1.0`.** Once the above holds and the owner is happy.
+   This isn't a milestone the project infers on its own.
 
 ## Roadmap beyond v1.0
 
-- A guided, sequential "learning path" mode through topics, building on the
-  per-topic and per-category weak-spot data already collected. Deliberately
-  deferred — it needs its own design pass (what "guided" actually means:
-  a fixed order? adaptive to weak spots? how it interacts with the
-  existing free-form Test/Eğitim tabs) rather than being built on a guess.
-- A dedicated question format for Vocabulary/Word Formation. Also deferred
-  for the same reason — it's a different question shape than the paragraph
-  cloze format everything else is built around, and needs its own schema
-  design before content can be authored for it.
+- **A guided learning path** through topics, built on the per-category
+  weak-spot data already collected. Deliberately deferred: it needs its
+  own design pass (fixed order? adaptive to weak spots? how it coexists
+  with the free-form Eğitim and Test tabs) rather than being built on a
+  guess.
+- **A question format for Vocabulary / Word Formation.** Deferred for the
+  same reason — it's a different question shape than the paragraph cloze
+  everything else is built around, and needs schema design before content
+  can be authored for it.
+- **Self-hosted fonts.** The three families are loaded from Google Fonts
+  today, which is one render-blocking third-party request on a phone that
+  may be on a poor connection. Vendoring the `latin` + `latin-ext` subsets
+  would remove it. Worth doing, not worth blocking `1.0` on.

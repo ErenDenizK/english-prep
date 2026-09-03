@@ -5,6 +5,106 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.6 — 2026-09-03
+
+Eğitim becomes a real teaching mode, and content authoring gets a safety
+net so it can be handed to someone other than whoever wrote the app.
+
+- **Eğitim rewritten as a staged, interactive lesson experience.** The
+  flat carousel across every topic's lessons is gone. In its place: a
+  lesson index in syllabus order, each row showing its own progress, with
+  an overall progress bar and a "pick up where you left off" card; and a
+  focused reader (header and tab bar step aside, same as the quiz screen)
+  that pages through one lesson a step at a time. Finishing a lesson
+  offers the next one or a test on the same topic.
+- **New lesson schema.** A lesson was a rule plus two example sentences —
+  a shape that can only ever render as a slideshow. It is now
+  `{ id, order, category, title, summary, steps[] }` with three step
+  types: `read` (Turkish prose with `**bold**` and optional English
+  examples), `table` (side-by-side signal-word comparisons), and `check`
+  (an inline question that must be answered before continuing). The
+  validator requires at least one `check` per lesson, so "interactive" is
+  enforced rather than hoped for.
+- **The six Tenses lessons rewritten against it**: 36 steps and 12 inline
+  checks, each lesson ending with a concrete "Sınavda ne yaparsın"
+  procedure rather than a restatement of the rule.
+- **Lesson progress persists** (`localStorage`, per lesson id), resumes
+  where you left off, and now feeds a "Tamamlanan ders" tile in Profil.
+  "Geçmişi Sıfırla" clears it alongside test history; the confirmation
+  copy now says so.
+- **Weak categories became actionable.** On the results screen and in
+  Profil, a category you're struggling with links straight to the lesson
+  that teaches it — the payoff for lessons and questions sharing one
+  category taxonomy.
+- **Hash routing** (`#egitim`, `#test`, `#profil`, `#egitim/<lessonId>`).
+  The device back button now steps back through the app instead of
+  leaving it, a lesson can be linked to, and a reload keeps your place.
+
+### Quality infrastructure
+
+- **`tools/validate-content.mjs`** (`npm run validate`) validates the
+  manifest, every topic file against the documented schema, and the
+  agreement between them — the drift that silently breaks topic cards and
+  the "new questions added" badge. It also catches content bugs no reader
+  would spot, such as duplicate answer options, which the
+  case-insensitive scorer would mark correct twice.
+- **Unit tests** (`npm test`, `node:test`): 28 covering the scoring
+  engine and the storage layer, including corrupt-store and
+  unavailable-`localStorage` degradation.
+- **CI** runs both on every push and PR to `main` and `test`.
+- **`docs/CONTENT_GUIDE.md`** is now the authoritative schema (moved out
+  of the README), and **`docs/agents/`** holds paste-ready briefs for the
+  separate Claude sessions that author lessons and questions, plus the
+  handoff loop — including why the category taxonomy is fixed before
+  either agent starts.
+- **`CLAUDE.md`** carries project context forward to future sessions.
+
+### Fixes
+
+- A failed content load left the Eğitim tab permanently stuck on its
+  error message: the "already loaded" flag was set before the fetch, so
+  leaving and returning never retried.
+- Topic files were fetched and parsed twice (once for questions, once for
+  lessons). They're cached now, and a failed fetch is evicted so a retry
+  actually retries.
+- `viewport-fit=cover` was declared but no safe-area insets were applied,
+  so the bottom action bar sat under the home indicator on notched
+  phones.
+- The fixed shell used `height: 100%`, which jumps as mobile browser
+  toolbars slide in and out; it now tracks `100dvh` where supported.
+- Going back from the results screen re-entered `quiz.html` and silently
+  rolled a brand new test. Results now `replace()` the quiz in history.
+- Fraunces 400 was used by the question prompt and the lesson example
+  sentences but never requested — the two most prominent pieces of
+  teaching text rendered in a weight that wasn't loaded. The font request
+  now asks for exactly the two weights the stylesheet uses (down from
+  nine), which is also smaller.
+- Anchors styled as buttons ("Ana Sayfa") carried the browser's underline.
+- `isCorrectAnswer` threw on an unanswered question instead of scoring it
+  wrong.
+- Pressing Enter on a focused advance button could fire twice — once
+  natively, once through the keyboard shortcut — and skip a question.
+
+### Accessibility and mobile
+
+- The custom dropdown now implements the full WAI-ARIA listbox contract
+  it took over from `<select>`: arrow keys, Home/End, Enter/Escape,
+  `aria-activedescendant`, and an accessible name that includes the
+  current value (it previously announced only "Soru sayısı", never what
+  it was set to).
+- The confirm modal traps focus while open and returns it to whatever
+  opened it, and opens on Cancel rather than the destructive action.
+- Tabs follow the ARIA tabs pattern (roving tabindex, arrow-key
+  navigation).
+- Answer feedback is announced (`role="status"`) — previously the result
+  was conveyed by colour alone — and a wrong answer in a lesson check now
+  says so in words.
+- Touch targets are at least 44px throughout; comparison tables stack
+  into labelled blocks below 380px and stay side by side above it;
+  `prefers-reduced-motion` is honoured.
+- Verified with Playwright across 320/390/768/1280: no horizontal
+  overflow, no undersized targets, no console errors on any screen.
+
 ## v0.5 — 2026-09-02
 
 New "Profil" tab — a real, visible local profile, replacing the previous

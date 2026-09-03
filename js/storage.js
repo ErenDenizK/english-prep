@@ -1,31 +1,64 @@
-// Persists quiz attempt history in localStorage so results survive across
-// visits on the same device/browser, plus a small local profile (optional
-// display name, and a silent "seen content" record used only to power
-// "new questions added" badges). No login, no server — everything here
-// lives entirely in this browser.
+// Persists everything the app remembers about a learner in localStorage,
+// so it survives across visits on the same device/browser:
+//
+//   - quiz attempt history (scores, per-topic and per-category breakdowns)
+//   - Eğitim lesson progress (furthest step reached, and completion)
+//   - a small local profile (optional display name)
+//   - a silent "seen content" record, used only to power the
+//     "new questions added" badge
+//
+// No login, no server — everything here lives entirely in this browser.
 
 const HISTORY_KEY = "englishPrep.history";
 const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
+const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
 const MIN_ATTEMPTS_FOR_WEAK_ENTRY = 3;
 
-function loadHistory() {
+/**
+ * Reads and JSON-parses a key, falling back to `fallback` for anything
+ * that isn't usable: storage unavailable (private browsing), absent key,
+ * corrupt JSON, or a value of the wrong shape. Practising without saved
+ * progress is an acceptable degradation; crashing is not.
+ */
+function readJson(key, fallback, isValid) {
   try {
-    const raw = localStorage.getItem(HISTORY_KEY);
-    const parsed = raw ? JSON.parse(raw) : null;
-    return parsed && Array.isArray(parsed.attempts) ? parsed : { attempts: [] };
+    const raw = localStorage.getItem(key);
+    if (!raw) {
+      return fallback;
+    }
+    const parsed = JSON.parse(raw);
+    return isValid(parsed) ? parsed : fallback;
   } catch {
-    return { attempts: [] };
+    return fallback;
   }
 }
 
-function saveHistory(history) {
+function writeJson(key, value) {
   try {
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // Storage may be unavailable (e.g. private browsing quota). Practicing
-    // without a saved history is an acceptable degradation.
+    // Storage may be unavailable or over quota. The app keeps working;
+    // this session's progress just isn't remembered.
   }
+}
+
+function removeKey(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Nothing to do if storage is unavailable.
+  }
+}
+
+const isPlainObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+
+function loadHistory() {
+  return readJson(HISTORY_KEY, { attempts: [] }, (value) => isPlainObject(value) && Array.isArray(value.attempts));
+}
+
+function saveHistory(history) {
+  writeJson(HISTORY_KEY, history);
 }
 
 /**
@@ -139,21 +172,11 @@ export function getOverallStats() {
 }
 
 export function clearHistory() {
-  try {
-    localStorage.removeItem(HISTORY_KEY);
-  } catch {
-    // Nothing to do if storage is unavailable.
-  }
+  removeKey(HISTORY_KEY);
 }
 
 function loadSeenVersions() {
-  try {
-    const raw = localStorage.getItem(SEEN_VERSIONS_KEY);
-    const parsed = raw ? JSON.parse(raw) : null;
-    return parsed && typeof parsed === "object" ? parsed : {};
-  } catch {
-    return {};
-  }
+  return readJson(SEEN_VERSIONS_KEY, {}, isPlainObject);
 }
 
 /**
@@ -173,11 +196,7 @@ export function getSeenVersion(topicId) {
 export function markTopicSeen(topicId, version) {
   const seen = loadSeenVersions();
   seen[topicId] = version;
-  try {
-    localStorage.setItem(SEEN_VERSIONS_KEY, JSON.stringify(seen));
-  } catch {
-    // Storage may be unavailable; the badge just won't clear this visit.
-  }
+  writeJson(SEEN_VERSIONS_KEY, seen);
 }
 
 /**
@@ -195,13 +214,92 @@ export function getProfileName() {
  * @param {string} name
  */
 export function setProfileName(name) {
+  if (!name) {
+    removeKey(PROFILE_NAME_KEY);
+    return;
+  }
   try {
-    if (name) {
-      localStorage.setItem(PROFILE_NAME_KEY, name);
-    } else {
-      localStorage.removeItem(PROFILE_NAME_KEY);
-    }
+    localStorage.setItem(PROFILE_NAME_KEY, name);
   } catch {
     // Storage may be unavailable; the name just won't persist this visit.
   }
+}
+
+/* ---- Eğitim lesson progress ----
+   One record per lesson: how far into it the learner got, and whether
+   they finished it. `step` is the furthest step *reached*, which is what
+   makes "resume where you left off" possible without replaying a whole
+   lesson. Keyed by lesson id, so reordering or renaming lessons never
+   silently reassigns someone's progress to the wrong lesson. */
+
+function loadLessonProgress() {
+  return readJson(LESSON_PROGRESS_KEY, {}, isPlainObject);
+}
+
+/**
+ * @returns {Record<string, {step: number, done: boolean}>} progress for
+ *   every lesson the learner has opened
+ */
+export function getAllLessonProgress() {
+  const stored = loadLessonProgress();
+  const normalized = {};
+  for (const [lessonId, entry] of Object.entries(stored)) {
+    if (isPlainObject(entry)) {
+      normalized[lessonId] = {
+        step: Number.isInteger(entry.step) && entry.step >= 0 ? entry.step : 0,
+        done: entry.done === true,
+      };
+    }
+  }
+  return normalized;
+}
+
+/**
+ * @param {string} lessonId
+ * @returns {{step: number, done: boolean} | null} null if never opened
+ */
+export function getLessonProgress(lessonId) {
+  return getAllLessonProgress()[lessonId] ?? null;
+}
+
+/**
+ * Records that the learner reached a step. Only ever moves forward, so
+ * paging back through a lesson doesn't undo progress.
+ * @param {string} lessonId
+ * @param {number} stepIndex - 0-based
+ */
+export function recordLessonStep(lessonId, stepIndex) {
+  const progress = getAllLessonProgress();
+  const existing = progress[lessonId];
+  if (existing && existing.step >= stepIndex) {
+    return;
+  }
+  progress[lessonId] = { step: stepIndex, done: existing?.done === true };
+  writeJson(LESSON_PROGRESS_KEY, progress);
+}
+
+/**
+ * @param {string} lessonId
+ * @param {number} lastStepIndex - the lesson's final step index
+ */
+export function markLessonDone(lessonId, lastStepIndex) {
+  const progress = getAllLessonProgress();
+  progress[lessonId] = {
+    step: Math.max(progress[lessonId]?.step ?? 0, lastStepIndex),
+    done: true,
+  };
+  writeJson(LESSON_PROGRESS_KEY, progress);
+}
+
+/**
+ * @param {string[]} lessonIds - the lessons that currently exist
+ * @returns {number} how many of them the learner has completed
+ */
+export function countCompletedLessons(lessonIds) {
+  const progress = getAllLessonProgress();
+  return lessonIds.filter((lessonId) => progress[lessonId]?.done).length;
+}
+
+export function clearLessonProgress() {
+  removeKey(LESSON_PROGRESS_KEY);
 }
