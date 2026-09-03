@@ -1,0 +1,376 @@
+// The four content checks that could not live in the schema validator.
+//
+// They are here rather than in tools/validate-content.mjs for the same
+// reason tools/color.mjs is not inside tools/palette.mjs: a script with a
+// top-level await main() cannot be imported, so nothing in it can be unit
+// tested, and these four are the checks whose thresholds most need a test
+// around them. tests/content-checks.test.mjs plants each defect and asserts
+// it is caught.
+//
+// Each takes a `report` with .error(where, message) and .warn(where,
+// message) — the validator's Report class, or anything shaped like it.
+
+const isNonEmptyString = (value) => typeof value === "string" && value.trim().length > 0;
+
+/** The manifest is where a corpus-wide finding is reported against. */
+const MANIFEST_PATH = "data/manifest.json";
+
+/* Corpus-wide thresholds. All four of these enforce rules
+ * docs/CONTENT_GUIDE.md already states and could not previously check —
+ * they are the difference between a schema validator and a content one.
+ *
+ * They are corpus-wide on purpose: a near-duplicate stem or an over-used
+ * scenario is invisible inside one topic file and obvious across three.
+ */
+
+/** Token-trigram Jaccard above this and two stems are the same question. */
+const STEM_SIMILARITY_LIMIT = 0.3;
+/** A content word in this share of one category's questions is its scenario, not its context. */
+const CATEGORY_SCENARIO_SHARE = 0.75;
+/** A content word in this share of the whole corpus is a rut. */
+const CORPUS_SCENARIO_SHARE = 0.15;
+/** Below this, a category is too small for the count to mean anything. */
+const MIN_CATEGORY_FOR_SCENARIO = 3;
+/** And below this there is no corpus to speak of — one topic's worth. */
+const MIN_CORPUS_FOR_SCENARIO = 24;
+/** Words too short to be a scenario. */
+const SCENARIO_MIN_LENGTH = 5;
+
+/* Irregular verbs whose regular -ed form is not a word. An option like
+ * "leaved" is a dead option in the exact sense docs/agents/reviewer.md
+ * means by D2: no learner considers it, so a four-option item is really a
+ * three-option item, and the item measures less than it claims to.
+ *
+ * Deliberately not the full irregular list — only stems whose *-ed form
+ * is not also a real English word. "found"/"founded", "hanged"/"hung",
+ * "lied"/"lay" are all legitimate and must not be flagged.
+ */
+/* Real English words that the rule above would otherwise call invented:
+ * "seed" strips to "see". Add to this rather than removing a stem from
+ * NO_ED_FORM, which would lose the check for the whole verb.
+ */
+const REAL_ED_WORDS = new Set(["seed"]);
+
+const NO_ED_FORM = new Set([
+  "become", "begin", "bring", "buy", "catch", "choose", "come", "do", "draw",
+  "drink", "drive", "eat", "fall", "feel", "fight", "fly", "forget", "get",
+  "give", "go", "grow", "hear", "hold", "keep", "know", "leave", "lend",
+  "lose", "make", "mean", "meet", "pay", "read", "ride", "rise", "run",
+  "say", "see", "sell", "send", "sing", "sit", "sleep", "speak", "spend",
+  "stand", "steal", "swim", "take", "teach", "tell", "think", "throw",
+  "understand", "wear", "win", "write",
+]);
+
+/* Function words, and the vocabulary of the grammar itself. Excluded from
+ * the scenario count because "would" recurring across a modals topic is
+ * the topic, not a rut. Everything else is left in: the check is meant to
+ * be data-driven, so it should not need a scenario lexicon anybody has to
+ * maintain.
+ */
+const SCENARIO_STOPWORDS = new Set([
+  "about", "after", "again", "against", "already", "although", "always",
+  "another", "anything", "because", "before", "being", "below", "between",
+  "could", "doesn", "don't", "during", "eight", "either", "enough", "even",
+  "every", "everyone", "everything", "first", "found", "further", "going",
+  "hasn", "have", "haven", "having", "hundred", "instead", "isn't", "itself",
+  "just", "might", "more", "most", "much", "must", "mustn", "myself",
+  "never", "nobody", "nothing", "other", "ought", "over", "really", "right",
+  "same", "seven", "several", "shall", "should", "shouldn", "since", "some",
+  "someone", "something", "still", "such", "than", "that", "their", "them",
+  "then", "there", "these", "they", "thing", "things", "third", "this",
+  "those", "three", "through", "under", "until", "very", "what", "when",
+  "where", "whether", "which", "while", "whole", "will", "with", "within",
+  "without", "would", "wouldn", "yesterday", "your",
+]);
+
+/* The validator checks one file against the schema. These four check the
+ * *content* against rules docs/CONTENT_GUIDE.md states in prose and could
+ * not previously enforce — and three of the four can only be answered by
+ * looking at every question at once.
+ *
+ * They are warnings, not errors, and deliberately so: each describes a
+ * question that works and measures less than it should, which is a thing
+ * to fix in an authoring round rather than a thing to block a commit on.
+ * The one exception is a dead option, which is a defect in the item as
+ * shipped.
+ */
+
+/** Content words of a paragraph, blank removed, deduplicated. */
+function scenarioWords(paragraph) {
+  return new Set(
+    paragraph
+      .toLowerCase()
+      .replace(/____/g, " ")
+      .replace(/[^\p{L}\p{N}\s]/gu, " ")
+      .split(/\s+/)
+      .filter((word) => word.length >= SCENARIO_MIN_LENGTH && !SCENARIO_STOPWORDS.has(word))
+  );
+}
+
+/**
+ * Token trigrams plus bare tokens. Trigrams catch a reused sentence
+ * frame; bare tokens catch a reused scenario with the words reordered.
+ * Either alone misses half of what a duplicate looks like in practice.
+ */
+function stemShingles(paragraph) {
+  const words = paragraph
+    .toLowerCase()
+    .replace(/____/g, " ")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+  const shingles = new Set(words);
+  for (let i = 0; i + 2 < words.length; i += 1) {
+    shingles.add(words.slice(i, i + 3).join(" "));
+  }
+  return shingles;
+}
+
+function jaccard(a, b) {
+  if (a.size === 0 || b.size === 0) {
+    return 0;
+  }
+  let intersection = 0;
+  for (const value of a) {
+    if (b.has(value)) {
+      intersection += 1;
+    }
+  }
+  return intersection / (a.size + b.size - intersection);
+}
+
+/**
+ * 1 · The explanation must name a distractor.
+ *
+ * CONTENT_GUIDE requires an explanation to say why the correct option
+ * fits *and* why the closest wrong one doesn't. An explanation that only
+ * argues for the key is the most common defect in this corpus, and the
+ * one that makes a review feel productive while teaching nothing: the
+ * learner who chose the distractor is told what is right and never told
+ * why what they chose is wrong.
+ *
+ * Checked by looking for a wrong option's own text inside the
+ * explanation. That is a floor, not a ceiling — an explanation can quote
+ * an option and still not argue against it — so this catches the absence
+ * of the move, not the quality of it. Reported once per topic: at the
+ * volumes stage 3 implies, one warning per question would bury every
+ * other warning here.
+ */
+export function checkExplanationsNameDistractors(report, file, questions) {
+  const silent = questions
+    .filter((question) => {
+      if (!isNonEmptyString(question?.explanation) || !Array.isArray(question.options)) {
+        return false;
+      }
+      const explanation = question.explanation.toLowerCase();
+      return !question.options.some(
+        (option, index) =>
+          index !== question.correctIndex &&
+          isNonEmptyString(option) &&
+          explanation.includes(option.toLowerCase())
+      );
+    })
+    .map((question) => question.id);
+
+  if (silent.length) {
+    report.warn(
+      file,
+      `${silent.length} of ${questions.length} explanations never name a wrong option, ` +
+        `so they argue only for the key:\n    ${silent.join(", ")}`
+    );
+  }
+}
+
+/**
+ * 2 · Banned option forms.
+ *
+ * A four-option item with a dead option is a three-option item. These are
+ * the dead-option shapes a script can actually see:
+ *
+ *   - an invented -ed past of an irregular verb ("leaved", "teached");
+ *   - two options differing only in case or spacing, which is one option
+ *     written twice;
+ *   - the correct answer appearing verbatim elsewhere in the paragraph,
+ *     which hands the item to anyone who reads before choosing.
+ *
+ * The first is an error: it ships a non-word to somebody studying for an
+ * exam. The other two are warnings.
+ */
+export function checkOptionForms(report, where, question) {
+  const options = question.options;
+  if (!Array.isArray(options)) {
+    return;
+  }
+
+  for (const option of options) {
+    if (!isNonEmptyString(option)) {
+      continue;
+    }
+    for (const word of option.toLowerCase().split(/\s+/)) {
+      if (!word.endsWith("ed") || REAL_ED_WORDS.has(word)) {
+        continue;
+      }
+      const stem = word.slice(0, -2);
+      // Three spellings of the same invented past, and all three occur:
+      // "teached" drops nothing, "leaved" dropped a silent e, "runned"
+      // doubled the final consonant.
+      const candidates = [stem, `${stem}e`];
+      if (stem.length > 1 && stem[stem.length - 1] === stem[stem.length - 2]) {
+        candidates.push(stem.slice(0, -1));
+      }
+      if (candidates.some((candidate) => NO_ED_FORM.has(candidate))) {
+        report.error(
+          where,
+          `option "${option}" contains "${word}", which is not an English word — ` +
+            `a dead option makes this a three-option question`
+        );
+      }
+    }
+  }
+
+  const seen = new Set();
+  for (const option of options.filter(isNonEmptyString)) {
+    const normalised = option.toLowerCase().replace(/\s+/g, " ").trim();
+    if (seen.has(normalised)) {
+      report.warn(where, `two options are the same once case and spacing are ignored: "${normalised}"`);
+    }
+    seen.add(normalised);
+  }
+
+  const answer = options[question.correctIndex];
+  if (isNonEmptyString(answer) && isNonEmptyString(question.paragraph)) {
+    const rest = question.paragraph.replace(/____/g, " ").toLowerCase();
+    const needle = answer.toLowerCase();
+    if (needle.split(/\s+/).length > 1 && rest.includes(needle)) {
+      report.warn(
+        where,
+        `the correct answer "${answer}" also appears in the paragraph — ` +
+          `the item can be answered by matching rather than by choosing`
+      );
+    }
+  }
+}
+
+/**
+ * 3 · Near-duplicate stems, across the whole corpus.
+ *
+ * Two questions built on one scenario measure the same thing twice, and
+ * the second measures memory of the first. At four questions per category
+ * that is a quarter of the evidence for a category gone.
+ *
+ * Also flagged: two questions in one category with an identical option
+ * set. Not always wrong — a deduction category legitimately offers
+ * must/can't/might again and again — but worth seeing, because it is what
+ * an item pool looks like just before it stops discriminating.
+ */
+export function checkNearDuplicates(report, questions) {
+  const shingles = questions.map((question) =>
+    isNonEmptyString(question.paragraph) ? stemShingles(question.paragraph) : new Set()
+  );
+
+  for (let i = 0; i < questions.length; i += 1) {
+    for (let j = i + 1; j < questions.length; j += 1) {
+      const similarity = jaccard(shingles[i], shingles[j]);
+      if (similarity >= STEM_SIMILARITY_LIMIT) {
+        report.warn(
+          questions[i].file,
+          `"${questions[i].id}" and "${questions[j].id}" share ${(similarity * 100).toFixed(0)}% ` +
+            `of their wording — the second one measures memory of the first`
+        );
+      }
+    }
+  }
+
+  const byOptionSet = new Map();
+  for (const question of questions) {
+    if (!Array.isArray(question.options) || !isNonEmptyString(question.category)) {
+      continue;
+    }
+    const key = `${question.category} ${[...question.options]
+      .map((option) => String(option).toLowerCase())
+      .sort()
+      .join("|")}`;
+    if (!byOptionSet.has(key)) {
+      byOptionSet.set(key, []);
+    }
+    byOptionSet.get(key).push(question);
+  }
+  for (const group of byOptionSet.values()) {
+    if (group.length > 1) {
+      report.warn(
+        group[0].file,
+        `${group.map((question) => question.id).join(", ")} offer an identical set of options ` +
+          `within "${group[0].category}"`
+      );
+    }
+  }
+}
+
+/**
+ * 4 · Scenario over-use.
+ *
+ * Every paragraph in this app is a small piece of fiction, and an author
+ * writing forty of them in one sitting writes forty about university.
+ * That is a validity problem rather than a style one: a learner who has
+ * only ever met the present perfect in a library sentence has learned the
+ * library sentence.
+ *
+ * Data-driven on purpose — no scenario lexicon for anybody to maintain.
+ * Function words and the grammar's own vocabulary are excluded, because
+ * "would" recurring across a modals topic is the topic, not a rut.
+ */
+export function checkScenarioReuse(report, questions) {
+  const byCategory = new Map();
+  const corpusCounts = new Map();
+
+  for (const question of questions) {
+    if (!isNonEmptyString(question.paragraph) || !isNonEmptyString(question.category)) {
+      continue;
+    }
+    const words = scenarioWords(question.paragraph);
+    for (const word of words) {
+      corpusCounts.set(word, (corpusCounts.get(word) ?? 0) + 1);
+    }
+    const key = `${question.topicId} ${question.category}`;
+    if (!byCategory.has(key)) {
+      byCategory.set(key, {
+        file: question.file,
+        category: question.category,
+        total: 0,
+        counts: new Map(),
+      });
+    }
+    const bucket = byCategory.get(key);
+    bucket.total += 1;
+    for (const word of words) {
+      bucket.counts.set(word, (bucket.counts.get(word) ?? 0) + 1);
+    }
+  }
+
+  for (const bucket of byCategory.values()) {
+    if (bucket.total < MIN_CATEGORY_FOR_SCENARIO) {
+      continue;
+    }
+    const shared = [...bucket.counts]
+      .filter(([, count]) => count > 1 && count / bucket.total >= CATEGORY_SCENARIO_SHARE)
+      .map(([word, count]) => `${word} (${count}/${bucket.total})`);
+    if (shared.length) {
+      report.warn(
+        bucket.file,
+        `"${bucket.category}" builds its questions on one scenario: ${shared.join(", ")}`
+      );
+    }
+  }
+
+  if (questions.length < MIN_CORPUS_FOR_SCENARIO) {
+    return;
+  }
+
+  const overused = [...corpusCounts]
+    .filter(([, count]) => count / questions.length >= CORPUS_SCENARIO_SHARE)
+    .sort((a, b) => b[1] - a[1])
+    .map(([word, count]) => `${word} (${count}/${questions.length})`);
+  if (overused.length) {
+    report.warn(MANIFEST_PATH, `the corpus keeps returning to one setting: ${overused.join(", ")}`);
+  }
+}
