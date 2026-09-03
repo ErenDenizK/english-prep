@@ -1,8 +1,94 @@
 # Education Content Notes
 
-A shared coordination log between the curriculum/education-content side of
-this project and the technical/dev side. Read this before starting new
-topic work; log status updates and format requests here as they happen.
+This file is the single channel between the curriculum/education-content
+side of this project and the technical/dev side — my notes, my requests,
+and the material I produce all live here, and nowhere else. I don't touch
+`index.html`, `css/`, `js/`, or the live `data/*.json` files; anything I
+want built or changed goes through this document for the dev side to pick
+up, evaluate, and implement.
+
+Sections: **Vision** (the direction for how Eğitim should feel to use) →
+**Messages to developer** (a running, dated request log — read this first
+if you're picking up work) → **Curriculum plan** (topic order and content
+approach) → **Eğitim/Test interaction model** (guided path vs. open world)
+→ **Produced material** (worked examples built for the vision below) →
+**Status** (per-topic content progress).
+
+## Vision
+
+Eğitim shouldn't read like a textbook page — it should feel like consuming
+a short, tappable sequence of small beats, in the spirit of formats
+learners already use daily (Instagram/TikTok Stories is one illustrative
+example, not a spec to clone literally): one idea per screen, tap or swipe
+to move forward, a visible "how much is left in this chapter" progress
+indicator, fast pacing suited to studying in short bursts between other
+things — instead of a long scroll of dense paragraph-and-example text.
+
+This is a direction, not a fixed mechanic. Concrete shapes it could take,
+for the dev side to weigh:
+
+- **A. Story-card chapters (recommended core).** Each chapter (= one lesson
+  category, e.g. "Present Simple vs Present Continuous") becomes a sequence
+  of full-bleed cards: hook → rule → example → example → check question →
+  feedback → chapter-complete. Tap to advance, small segmented progress bar
+  at the top, swipe back to the previous card. See the worked example below
+  — this reshapes content I'm already writing, it doesn't require rewriting
+  it.
+- **B. Path/map navigation (already proposed, keep).** The topic order from
+  the curriculum plan below, laid out as a node map (a level per topic).
+  Tapping a node opens that topic's story-card sequence (A). This is the
+  macro layer; A is the micro layer inside each node.
+- **C. Conversational/chat delivery (experiment, not core).** A "tutor"
+  character delivers rule/examples as chat bubbles, questions come back as
+  chat replies. Mimics messaging apps, but is a bigger build than A+B and
+  isn't needed for the guided-path idea to work — flagging it as a later
+  experiment, not something to build now.
+
+Recommendation: **B for cross-topic navigation, A for in-chapter content.**
+C is optional and lower priority.
+
+Content-authoring principles that follow from this vision (these shape how
+I write chapters going forward, independent of whether/when the dev side
+builds the card UI):
+
+- One idea per beat/card — a single rule statement, a single example, a
+  single question. Already true of the existing `rule`/`examples`/
+  `questions` fields; they just need re-chunking into beats, not rewriting.
+- Keep each card's text short enough for a full-screen mobile card, not a
+  paragraph dump — the existing content (1-2 sentence rules, single-line
+  examples) already fits this without changes.
+- A distinct visual treatment per beat *type* (rule vs. example vs.
+  question) so the learner recognizes at a glance what kind of card they're
+  on — a dev-side visual-design decision, noted here so content structure
+  and UI design stay aligned.
+
+## Messages to developer (requests log)
+
+Dated, most recent first. Each entry: what I'm asking for, why, and what it
+needs from the existing schema vs. something new.
+
+- **2026-09-03 — Story-card chapter format (Vision, above).** Requesting
+  evaluation of a card-based, tap-to-advance presentation for Eğitim
+  chapters (option A in Vision), combined with the path/map navigation
+  already requested below. See "Produced material" for a worked example
+  built from real, already-shipped Tenses content, showing the reshape
+  requires no new question format — only two small additions: a chapter
+  hook line and chapter-complete transition copy (both short, easy to
+  author alongside existing lesson entries).
+- **2026-09-03 — Guided-path chapter framing line.** Proposing a new
+  optional `intro` field per lesson entry (one short Turkish sentence) to
+  open each chapter before the existing `rule` — see the interaction model
+  below. Everything else in that proposal reuses the existing schema.
+- **Open question, not decided here:** should the 2-3 embedded check
+  questions per chapter be the *same* items also live in the Test pool for
+  that category, or a distinct reserved subset (so a learner doesn't see an
+  identical question twice between Eğitim and Test)? If a reserved subset
+  is wanted, I'd write slightly more questions per category going forward
+  (e.g. 6 instead of 4, 2 marked for embedding) — worth deciding before
+  more topics are authored, since it changes how much per-category content
+  I produce. Locking/completion logic, progress storage, and the actual
+  card/map UI are dev-side calls entirely; I'm not proposing an
+  implementation for any of them.
 
 ## Curriculum plan
 
@@ -45,11 +131,7 @@ Perfect") rather than one isolated form — same approach as the existing
 Tenses content, and per the question/lesson schema and AI-authoring prompt
 templates already documented in the README.
 
-## Interaction model proposal: guided path (Eğitim) + open world (Test)
-
-Proposed design for how the two tabs should feel, building on the topic
-order above. This reuses the existing `lessons`/`questions` schema — no new
-question format is required to build this.
+## Eğitim/Test interaction model: guided path + open world
 
 **Eğitim = a single linear, story-like path, chapter by chapter.**
 
@@ -63,7 +145,8 @@ question format is required to build this.
   existing `rule` (Turkish) → the existing `examples` (English sentence +
   Turkish note) → 2-3 embedded check questions pulled from that same
   category's existing `questions` pool → instant feedback using the
-  existing `explanation`/`tip` fields.
+  existing `explanation`/`tip` fields. (This is exactly the card sequence
+  in Vision's option A.)
 - **Locking:** chapter *N+1* unlocks once chapter *N* has been opened and
   its check questions attempted (a soft gate — seeing the material and
   trying the questions is what unlocks the next step, not a required
@@ -85,21 +168,37 @@ question format is required to build this.
 - No content changes needed here — same schema, same free topic/mixed
   selection.
 
-**Content impact.** The `lessons` and `questions` files I'm already
-producing topic-by-topic cover both surfaces as-is — one content set, two
-presentations. The one genuinely new piece is the chapter's opening framing
-line; I'd author it as a small addition alongside each lesson entry's
-`rule` (e.g. a new optional `intro` field) rather than a new schema.
+## Produced material
 
-**Open question for the dev side, not decided here:** whether the 2-3
-embedded check questions per chapter should be the *same* items that also
-live in the Test pool for that category, or a distinct reserved subset (so
-a learner doesn't see an identical question twice between Eğitim and
-Test). If a reserved subset is wanted, I'd need to author slightly more
-questions per category going forward (e.g. 6 instead of 4, with 2 marked
-for embedding) — worth deciding before more topics are authored, since it
-changes how much per-category content I write. Locking/completion logic,
-progress storage, and the path/map UI itself are dev-side calls entirely.
+Worked example: how one already-shipped chapter reshapes into story cards
+(Vision, option A), using the real, already-authored Tenses content —
+nothing invented except the two short new lines marked *(new)*.
+
+**Topic: Tenses → Chapter: "Present Simple vs Present Continuous"**
+
+1. **Hook** *(new — one line)*: "Elif'in her sabah aynı bir rutini var —
+   ama bu sabah bir şey biraz farklı."
+2. **Rule** (existing `lessons[0].rule`): "Present Simple; alışkanlıkları,
+   rutinleri ve genel gerçekleri anlatır. Present Continuous ise şu anda
+   veya bu aralar devam eden eylemleri anlatır."
+3. **Example card**: "She goes to the gym every morning." — *Alışkanlık →
+   Present Simple*
+4. **Example card**: "She is going to the gym right now." — *Şu an oluyor
+   → Present Continuous*
+5. **Check question** (existing `questions[tenses-t1]`): "Every morning,
+   Elif ____ to the university library before her first class starts..." —
+   4 options, instant feedback using the existing `explanation` + `tip`.
+6. **Check question** (existing `questions[tenses-t2]`): "Please don't
+   interrupt him right now — he ____ on a very tight deadline..." — same
+   pattern.
+7. **Chapter complete** *(new — one line)*: "Bölüm tamamlandı ✅ Sıradaki:
+   Present Perfect vs Past Simple."
+
+Seven cards, five of them pulled verbatim from `data/tenses/tenses.json`
+with zero rewriting — only the hook and the completion line are new, and
+both are trivial to write alongside each chapter going forward. This is
+the pattern I'll follow when preparing chapter material for every future
+topic, so the dev side can build the card UI against a consistent shape.
 
 ## Status
 
@@ -119,22 +218,6 @@ progress storage, and the path/map UI itself are dev-side calls entirely.
 | Comparatives & Superlatives | Not started |
 | Question Tags | Not started |
 | Vocabulary / Word Formation | Deferred — needs a new question schema |
-
-## Format requests
-
-Content is authored against the existing schema: `lessons` (rule +
-examples, for the Eğitim tab) and `questions` (single-blank cloze, for the
-Test tab). Some topics may teach better with a practice format other than
-single-blank cloze — for example sentence-combining for Relative Clauses,
-transformation drills for Reported Speech, or quick matching for Question
-Tags. When that looks worth it, it'll be logged here with the topic and
-the reasoning. Evaluating and building a new format is a dev-side call, not
-something produced from the content side.
-
-- **Logged 2026-09-03:** guided-path chapter framing line (see
-  "Interaction model proposal" above) — proposing a new optional `intro`
-  field per lesson entry. Everything else in that proposal reuses the
-  existing schema.
 
 ## Notes
 
