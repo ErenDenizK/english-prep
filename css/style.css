@@ -712,6 +712,17 @@
     color: var(--c-text-3);
   }
 
+  /* A field that holds more than a line. The padding block is set
+     explicitly because a textarea does not centre its text the way an
+     input does. */
+  .field--multiline {
+    padding: var(--s-3) var(--s-4);
+    line-height: var(--t-body-lh);
+    resize: vertical;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: var(--t-ui);
+  }
+
   /* -- The cloze blank. A rule on the baseline rather than a run of
         underscores: five underscore glyphs break the sentence's rhythm,
         and a screen reader reads them out one at a time. The width is

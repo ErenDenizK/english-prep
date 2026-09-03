@@ -9,6 +9,13 @@
 //
 // No login, no server — everything here lives entirely in this browser.
 
+import {
+  mergeHistory,
+  mergeLessonProgress,
+  mergeSeenVersions,
+  summariseRestore,
+} from "./backup.js";
+
 const HISTORY_KEY = "englishPrep.history";
 const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
@@ -477,6 +484,76 @@ export function countCompletedLessons(lessonIds) {
 
 export function clearLessonProgress() {
   removeKey(LESSON_PROGRESS_KEY);
+}
+
+/* ---- Backup ----
+   Everything above lives in one browser and can be deleted by that
+   browser without asking. These two functions are how a learner takes it
+   with them; the merge itself is pure and lives in js/backup.js. */
+
+/**
+ * The whole learner-owned state, raw. Reads through the same guarded
+ * helpers as everything else, so a corrupt key exports as its empty
+ * fallback rather than taking the export down.
+ */
+export function exportState() {
+  return {
+    history: loadHistory(),
+    lessonProgress: loadLessonProgress(),
+    seenVersions: readJson(SEEN_VERSIONS_KEY, {}, isPlainObject),
+    profileName: getProfileName(),
+    devNoteDismissed: isDevNoteDismissed(),
+  };
+}
+
+/**
+ * Merges a backup into what is already here and writes the result. Never
+ * destructive: an attempt already recorded is kept as it stands, lesson
+ * progress takes the further of the two, and a name already set is not
+ * overwritten by an older one.
+ *
+ * @param {{data: object}} backup - already validated by parseBackup
+ * @returns {{newAttempts: number, newQuestions: number, advancedLessons: number}}
+ */
+export function importState(backup) {
+  const theirs = backup?.data ?? {};
+  const mineHistory = loadHistory();
+  const mineLessons = loadLessonProgress();
+
+  const summary = summariseRestore(mineHistory, theirs.history, mineLessons, theirs.lessonProgress);
+
+  saveHistory(mergeHistory(mineHistory, theirs.history));
+  writeJson(LESSON_PROGRESS_KEY, mergeLessonProgress(mineLessons, theirs.lessonProgress));
+  writeJson(
+    SEEN_VERSIONS_KEY,
+    mergeSeenVersions(readJson(SEEN_VERSIONS_KEY, {}, isPlainObject), theirs.seenVersions)
+  );
+
+  // A name is the one field with no sensible merge, so the device the
+  // learner is holding wins and a restore only fills a blank.
+  if (!getProfileName() && typeof theirs.profileName === "string") {
+    setProfileName(theirs.profileName);
+  }
+  if (theirs.devNoteDismissed === true) {
+    dismissDevNote();
+  }
+
+  return summary;
+}
+
+/**
+ * Asks the browser not to evict this origin's storage. Chrome grants it on
+ * engagement heuristics; WebKit's documented heuristic includes whether
+ * the site has been added to the Home Screen, which is why the app can
+ * ask and still be refused. Fire-and-forget: there is nothing useful to do
+ * with a "no", and the backup above is the actual answer.
+ */
+export function requestPersistentStorage() {
+  try {
+    navigator.storage?.persist?.().catch(() => {});
+  } catch {
+    // Not available. Nothing to do.
+  }
 }
 
 /* ---- "Still in development" note ----

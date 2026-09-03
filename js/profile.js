@@ -21,11 +21,14 @@ import {
   clearLessonProgress,
 } from "./storage.js";
 import { createConfirmModal } from "./modal.js";
+import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
 import { el, clear } from "./dom.js";
 import { icon } from "./icons.js";
+import { announce } from "./shell.js";
 
 const container = document.getElementById("profile-container");
 let resetModal;
+let restoreDialog;
 let initialized = false;
 
 function formatPercent(value) {
@@ -146,6 +149,56 @@ function renderWeakList(heading, hint, rows) {
   return section;
 }
 
+/**
+ * The one part of Profil that is not a read-out.
+ *
+ * Everything the app knows about a learner lives in this browser and can
+ * be deleted by it without asking — WebKit clears script-written storage
+ * after seven days of browser use without an interaction on the origin.
+ * That is not a rare edge case for a study app used a few times a week
+ * before an exam; it is the normal case. So the app says so plainly, and
+ * gives them the file.
+ */
+function renderData() {
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Verilerin"));
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "İlerlemen sadece bu tarayıcıda saklanıyor — bir hesap yok, hiçbir yere " +
+        "gönderilmiyor. Telefon değiştirirsen ya da tarayıcı verini silerse kaybolur. " +
+        "Ara sıra yedek al; başka bir cihaza da böyle taşırsın."
+    )
+  );
+
+  const status = el("p", "t-meta");
+  status.setAttribute("role", "status");
+
+  const backup = el("button", "btn btn--secondary", "Yedek al");
+  backup.type = "button";
+  backup.addEventListener("click", () => {
+    downloadBackup()
+      .then((how) => {
+        status.textContent =
+          how === "shared" ? "Yedek paylaşıma hazırlandı." : "Yedek dosyan indirildi.";
+      })
+      .catch((error) => {
+        console.error(error);
+        status.textContent = "Yedek alınamadı. Tarayıcıyı yenileyip tekrar dene.";
+      });
+  });
+  section.appendChild(backup);
+
+  const restore = el("button", "btn btn--secondary", "Yedekten geri yükle");
+  restore.type = "button";
+  restore.addEventListener("click", () => restoreDialog.open());
+  section.appendChild(restore);
+
+  section.appendChild(status);
+  return section;
+}
+
 function renderSettings() {
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", "Ayarlar"));
@@ -212,12 +265,25 @@ async function render() {
     container.appendChild(weakTopics);
   }
 
+  container.appendChild(renderData());
   container.appendChild(renderSettings());
 }
 
 export async function initProfileTab() {
   if (!initialized) {
     initialized = true;
+    restoreDialog = createRestoreDialog({
+      onRestored: (summary) => {
+        const said = describeRestore(summary);
+        announce(said);
+        render().then(() => {
+          const status = container.querySelector('[role="status"]');
+          if (status) {
+            status.textContent = said;
+          }
+        });
+      },
+    });
     resetModal = createConfirmModal({
       dialogId: "confirm-dialog",
       confirmId: "confirm-dialog-confirm",

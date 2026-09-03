@@ -327,6 +327,117 @@ async function runEveryLesson(page) {
   ok(errors.length === 0, `her derste konsol temiz${errors.length ? ` — ${[...new Set(errors)].join(" | ")}` : ""}`);
 }
 
+/**
+ * A learner's whole history moving from one browser to another. This is
+ * the only operation in the app that can destroy something they cannot get
+ * back, so it is checked end to end in two real browser contexts rather
+ * than trusted to the unit tests on the merge functions.
+ */
+async function runBackupRoundTrip(browser) {
+  const source = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const first = await source.newPage();
+  await first.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await first.waitForSelector(".row");
+
+  // Read a lesson to the end and sit one whole test, so there is real
+  // progress of both kinds to carry.
+  await first.locator(".row").first().click();
+  await first.waitForSelector("#lesson-reader .reader__top");
+  await first.evaluate(() => {
+    const region = document.getElementById("shell-scroll");
+    region.scrollTo({ top: region.scrollHeight });
+  });
+  await first.waitForTimeout(250);
+  await first.locator("#lesson-reader .reader__top button").first().click();
+  await first.waitForSelector("#lesson-index .row");
+  await first.locator('.nav__item[data-view="test"]').click();
+  await first.waitForSelector("#test-panel .btn--primary");
+  await first.locator("#test-panel .btn--primary").click();
+  await first.waitForURL(/quiz\.html/);
+  for (let step = 0; step < 30 && !first.url().includes("results"); step += 1) {
+    if (!(await first.locator(".option--ok, .option--no").count())) {
+      await first.locator(".option").first().click();
+      await first.waitForTimeout(40);
+    }
+    const advance = first.locator("#quiz-bar button");
+    if (!(await advance.count())) {
+      break;
+    }
+    await advance.click();
+    await first.waitForTimeout(90);
+  }
+  await first.waitForURL(/results\.html/);
+
+  const backup = await first.evaluate(async () => {
+    const storage = await import("/js/storage.js");
+    const backupModule = await import("/js/backup.js");
+    return JSON.stringify(backupModule.buildBackup(storage.exportState()));
+  });
+  ok(JSON.parse(backup).data.history.attempts.length === 1, "yedek gerçek ilerlemeyi taşıyor");
+  await source.close();
+
+  const target = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const second = await target.newPage();
+  await second.goto(`${BASE}/index.html#profil`, { waitUntil: "networkidle" });
+  await second.waitForSelector("#profile-container .surface");
+
+  await second.locator("#profile-container button", { hasText: "Yedekten geri yükle" }).click();
+  await second.waitForSelector("dialog#restore-dialog[open]");
+  ok(
+    await second.evaluate(() => document.activeElement.id) === "restore-cancel",
+    "geri yükleme penceresinde odak güvenli eyleme düşüyor"
+  );
+
+  // Every way this can go wrong has to say which way it went wrong.
+  await second.locator("#restore-text").fill("merhaba");
+  await second.locator("#restore-confirm").click();
+  ok(
+    (await second.locator("#restore-message").textContent()).includes("okunamadı"),
+    "okunamayan metin sebebiyle birlikte reddediliyor"
+  );
+  await second.locator("#restore-text").fill('{"app":"baska-uygulama","data":{}}');
+  await second.locator("#restore-confirm").click();
+  ok(
+    (await second.locator("#restore-message").textContent()).includes("English Prep"),
+    "başka bir uygulamanın dosyası reddediliyor"
+  );
+
+  await second.locator("#restore-text").fill(backup);
+  await second.locator("#restore-confirm").click();
+  ok(
+    (await second.locator("#restore-confirm").textContent()).trim() === "Geri yükle",
+    "yazmadan önce bir önizleme adımı var"
+  );
+  await second.locator("#restore-confirm").click();
+  await second.waitForTimeout(400);
+
+  const restored = await second.evaluate(() => ({
+    attempts: JSON.parse(localStorage.getItem("englishPrep.history") || '{"attempts":[]}').attempts.length,
+    lessons: Object.keys(JSON.parse(localStorage.getItem("englishPrep.lessonProgress") || "{}")).length,
+  }));
+  ok(restored.attempts === 1, "test geçmişi diğer tarayıcıya taşındı");
+  ok(restored.lessons === 1, "ders ilerlemesi diğer tarayıcıya taşındı");
+
+  // Idempotence: a learner who restores the same file twice must not end
+  // up with two of everything.
+  await second.locator("#profile-container button", { hasText: "Yedekten geri yükle" }).click();
+  await second.waitForSelector("dialog#restore-dialog[open]");
+  await second.locator("#restore-text").fill(backup);
+  await second.locator("#restore-confirm").click();
+  await second.locator("#restore-confirm").click();
+  await second.waitForTimeout(400);
+  const twice = await second.evaluate(
+    () => JSON.parse(localStorage.getItem("englishPrep.history")).attempts.length
+  );
+  ok(twice === 1, "aynı yedeği iki kez yüklemek hiçbir şeyi çoğaltmıyor");
+  ok(
+    (await second.locator("#profile-container").textContent()).includes("hiçbir şey değişmedi"),
+    "ve uygulama bunu dürüstçe söylüyor"
+  );
+
+  await target.close();
+}
+
 /** The parts of §8 that do not vary with the viewport. */
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
@@ -436,6 +547,9 @@ try {
     await runFlow(page, viewport);
     await context.close();
   }
+
+  console.log("\n=== yedekleme ve geri yükleme ===");
+  await runBackupRoundTrip(browser);
 
   console.log("\n=== her ders, 390px ===");
   const lessonContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
