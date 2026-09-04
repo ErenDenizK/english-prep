@@ -146,7 +146,7 @@
       "when"
     ],
     "correctIndex": 2,
-    "explanation": "Öncül bir bina, yani bir yer; ama yan cümlede 'has put up' fiilinin nesnesi eksik, dolayısıyla eksik olan bir isimdir ve boşluk 'which' ister. 'where' seçilirse vakfın ne diktiği hiç söylenmemiş olur — yer bildiren bir öncül tek başına 'where' gerektirmez. 'whose' ise kendisinden sonra bir isim bekler.",
+    "explanation": "Öncül bir bina, yani bir yer; ama yan cümlede 'put up' fiilinin nesnesi eksik, dolayısıyla eksik olan bir isimdir ve boşluk 'which' ister. 'where' seçilirse vakfın ne diktiği hiç söylenmemiş olur — yer bildiren bir öncül tek başına 'where' gerektirmez. 'whose' ise kendisinden sonra bir isim bekler.",
     "tip": "Yer bildiren bir öncül otomatik olarak 'where' almaz: yan cümlede özne ya da nesne eksikse 'which' kullanılır."
   },
   {
@@ -341,7 +341,7 @@
       "none of them"
     ],
     "correctIndex": 0,
-    "explanation": "Ortada üç öneri var ve hiçbiri ayakta kalmamış; ikiden fazla öge için 'none' kullanılır. 'neither of which' yalnızca tam olarak iki seçenek varken doğrudur, bu yüzden 'three separate tram proposals' ile kurulamaz — sayıyı veren bilgi bir önceki satırdadır. 'none of them' ise ilgi cümlesi kurmaz; virgülden sonra öznesi olan yeni bir cümle başlatır.",
+    "explanation": "Ortada üç öneri var ve hiçbiri ayakta kalmamış; ikiden fazla öge için 'none' kullanılır. 'neither of which' yalnızca tam olarak iki seçenek varken doğrudur, bu yüzden 'three separate tram proposals' ile kurulamaz — sayıyı veren bilgi boşluğun hemen önünde, virgülden önce duruyor. 'none of them' ise ilgi cümlesi kurmaz; virgülden sonra öznesi olan yeni bir cümle başlatır.",
     "tip": "'neither' tam olarak iki öge için, 'none' ikiden fazlası için kullanılır; ikisi de ilgi cümlesinde 'of which / of whom' ile sürer."
   },
   {

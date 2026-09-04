@@ -1,8 +1,8 @@
 # Drafts
 
-**Shipped 2026-09-04: `closest-meaning`, `connectors`, `quantifiers`** —
-72 questions and 18 lessons, taking the app to 6 topics, 145 questions
-and 36 lessons. Each cleared a blind pass on its items and a sufficiency
+**Shipped 2026-09-04: `closest-meaning`, `connectors`, `quantifiers`,
+`relative-clauses`** — 96 questions and 24 lessons, taking the app to 7
+topics, 169 questions and 42 lessons. Each cleared a blind pass on its items and a sufficiency
 pass on its lessons, and each of the three lesson repairs went back for
 an independent re-audit rather than being trusted. Their sections below
 are kept as the record of what those passes found.
@@ -139,9 +139,12 @@ That pass also caught a 400-character text block pushed over the limit by
 the rule repair before it, which meant the topic could not have shipped
 at all.
 
-**Needs:** a sufficiency re-run. The decision rules were repaired and
-have not been checked since, and on this project's record an unaudited
-repair is where the next defect comes from.
+**Final pass 2026-09-04: 16/16 on all six categories, no blocking
+defect.** All four structural changes — a deletion, two reorderings and
+an inserted rule — were re-traced against what every rule below them now
+sees. That pass also grepped for each deleted string to confirm the
+claimed fixes had landed, a habit the connectors round earned, where two
+of five had not. **Shipped.**
 
 ## quantifiers · 24 questions, 6 lessons
 

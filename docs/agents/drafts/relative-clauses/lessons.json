@@ -111,7 +111,7 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
-            "condition": "Ana isim bir insan değilse ve boşluktan sonra ona ait bir isim de gelmiyorsa",
+            "condition": "Ana isim bir insan değilse ve boşluktan hemen sonra ona ait bir isim (its roof, its ceiling) gelmiyorsa",
             "then": "Which / That"
           },
           {
@@ -123,7 +123,7 @@
             "then": "Whom"
           },
           {
-            "condition": "Boşluktan hemen sonra bir isim ya da zamir geliyor (the jury, my sister) ve bu öncüle ait bir şey değil, yan cümlenin kendi öznesiyse — boşluk sahiplik değil nesne bildirir",
+            "condition": "Boşluktan hemen sonra bir isim ya da zamir geliyor (the committee, my sister) ve bu öncüle ait bir şey değil, yan cümlenin kendi öznesiyse — boşluk sahiplik değil nesne bildirir",
             "then": "Whom"
           },
           {
@@ -263,7 +263,7 @@
         "type": "pitfall",
         "wrong": "Istanbul, that is the largest city, has fifteen million residents.",
         "right": "Istanbul, which is the largest city, has fifteen million residents.",
-        "why": "Virgülle ayrılmış bir ilgi cümlesi 'that' ile kurulamaz. Özel isim zaten tek bir şeyi gösterir, yani cümle her zaman tanımlamayan tiptedir ve 'which' ister."
+        "why": "Virgülle ayrılmış bir ilgi cümlesi 'that' ile kurulamaz. Özel isim tek bir şeyi gösterdiği için buradaki cümle tanımlamayan tiptedir ve 'which' ister."
       },
       {
         "type": "pitfall",
@@ -597,7 +597,7 @@
         "rules": [
           {
             "condition": "Şıklar edat bakımından ayrışıyorsa — biri edatlı biri edatsız ya da iki ayrı edat — soru önce edatı soruyor: cümleyi düz yaz ve hangi edatın gerektiğini gör. Edatı bazen fiil seçer (She works for the company), bazen öncül ismin kendisi (the extent to which prices rose). Başka bir edat taşıyan ya da edatı hiç taşımayan şık elenir",
-            "then": "The preposition the plain sentence uses"
+            "then": "The plain sentence's preposition"
           },
           {
             "condition": "Boşluğun içinde ya da hemen önünde bir edat varsa (to, with, for, at, in) ve ana isim bir insansa — edattan sonra 'who' gelmez",
@@ -726,7 +726,7 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
-            "condition": "Boşluktan sonra gelen isim, arkasındaki çekimli fiilin öznesiyse (the book I read gibi) indirgeme yapılamaz",
+            "condition": "Boşluktan hemen sonra gelen isim, arkasındaki çekimli fiilin öznesiyse — yani o fiilin öznesi ana isim değil, boşluktan sonra yazılan isimse (the book I read gibi) — indirgeme yapılamaz",
             "then": "That / Which + S + V"
           },
           {
@@ -734,7 +734,7 @@
             "then": "V-ing / V3 (-ed)"
           },
           {
-            "condition": "Şık 'having + V3' biçimindeyse elenir: bu, ana cümledeki eylemden önce bitmiş ayrı bir olayı anlatır, süren ya da o sırada geçerli olan bir durumu kısaltmaz — 'the guests arriving' ile 'the guests having arrived' aynı şey değildir",
+            "condition": "Şık 'having + V3' biçimindeyse bu soruda elenir: bu, ana cümledeki eylemden önce bitmiş ayrı bir olayı anlatır, süren ya da o sırada geçerli olan bir durumu kısaltmaz — 'the guests arriving' ile 'the guests having arrived' aynı şey değildir",
             "then": "V-ing / V3 (-ed)"
           },
           {
