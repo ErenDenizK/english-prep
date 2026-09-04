@@ -29,8 +29,3 @@ export function getQuizResult() {
   const raw = sessionStorage.getItem(QUIZ_RESULT_KEY);
   return raw ? JSON.parse(raw) : null;
 }
-
-export function clearQuizState() {
-  sessionStorage.removeItem(QUIZ_REQUEST_KEY);
-  sessionStorage.removeItem(QUIZ_RESULT_KEY);
-}

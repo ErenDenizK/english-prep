@@ -12,8 +12,14 @@
 // steps.
 
 import { loadManifest, lessonIndex } from "./topics.js";
-import { getQuizResult, setQuizResult } from "./session-state.js";
-import { recordAttempt, markTopicSeen, MIN_ITEMS_FOR_WEAK_ENTRY } from "./storage.js";
+import { getQuizRequest, getQuizResult, setQuizResult } from "./session-state.js";
+import {
+  recordAttempt,
+  markTopicSeen,
+  getMistakeBook,
+  MIN_ITEMS_FOR_WEAK_ENTRY,
+} from "./storage.js";
+import { startMistakeBook } from "./quiz-launch.js";
 import { el, clear, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, createActionBar } from "./shell.js";
@@ -119,6 +125,77 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
   section.appendChild(list);
 
   return section;
+}
+
+/**
+ * One row into the Yanlış defteri.
+ *
+ * This is the screen where the book gets written — every wrong answer
+ * above just went into it — and until now the only door was the Test tab,
+ * a tab away and below the fold. The row appears only when the book has
+ * something in it, and never after a mistakes run: the bar's own button
+ * already offers exactly that.
+ */
+function renderMistakeShortcut(result) {
+  if (result.mode === "mistakes") {
+    return null;
+  }
+  const book = getMistakeBook();
+  if (book.length === 0) {
+    return null;
+  }
+
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("span", "divider"));
+
+  const row = el("a", "row");
+  row.href = "index.html#test";
+  const main = el("span", "row__main");
+  main.appendChild(el("span", "row__title", "Yanlış defteri"));
+  main.appendChild(el("span", "row__sub t-num", `${book.length} soru bekliyor`));
+  row.appendChild(main);
+  const trail = el("span", "row__trail");
+  trail.appendChild(icon("chevron-right", { size: 20 }));
+  row.appendChild(trail);
+  section.appendChild(row);
+
+  return section;
+}
+
+/**
+ * The forward action. For every mode but one it is a link back to
+ * quiz.html, which re-reads the stored request and re-shuffles — the same
+ * selection, a different set of questions.
+ *
+ * A mistakes request is the exception: it carries explicit ids, so
+ * re-entering quiz.html replayed the identical questions the learner had
+ * just been through, which is the one thing the label promised it was
+ * not. It is rebuilt from the book instead — and the book is not what it
+ * was when the run started, because recording the attempt above may have
+ * graduated items out of it.
+ */
+function newTestAction(result) {
+  if (result.mode !== "mistakes") {
+    return { label: "Yeni test", level: "primary", icon: "refresh", href: "quiz.html" };
+  }
+
+  const book = getMistakeBook();
+  if (book.length === 0) {
+    // Cleared. Not a congratulation and not a dead end: the Test tab is
+    // where the next thing to do lives.
+    return { label: "Karışık test", level: "primary", icon: "refresh", href: "index.html#test" };
+  }
+
+  const requested = getQuizRequest()?.count;
+  const count = requested === "all" || typeof requested === "number" ? requested : "all";
+  return {
+    label: "Yeni test",
+    level: "primary",
+    icon: "refresh",
+    onClick: () => {
+      startMistakeBook(count).catch(console.error);
+    },
+  };
 }
 
 function renderReview(result) {
@@ -259,13 +336,16 @@ async function init() {
     }
   }
 
+  const mistakeShortcut = renderMistakeShortcut(result);
+  if (mistakeShortcut) {
+    container.appendChild(mistakeShortcut);
+  }
+
   container.appendChild(renderReview(result));
 
   actionBar.set([
     { label: "Ana sayfa", level: "secondary", href: "index.html" },
-    // Draws a fresh random set from the same selection rather than
-    // replaying the identical questions, hence "Yeni test".
-    { label: "Yeni test", level: "primary", icon: "refresh", href: "quiz.html" },
+    newTestAction(result),
   ]);
 }
 

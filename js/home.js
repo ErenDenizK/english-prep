@@ -56,6 +56,7 @@ const navItems = Array.from(document.querySelectorAll(".nav__item"));
 const views = Object.fromEntries(VIEW_IDS.map((id) => [id, document.getElementById(`view-${id}`)]));
 
 let mixedCount;
+let mistakeCount;
 
 /* ---- Test tab ---- */
 
@@ -109,12 +110,46 @@ function renderMistakeBook() {
   );
   surface.appendChild(intro);
 
+  // How many, because "all" stops being a session and starts being a
+  // wall. Simulated over the real corpus at twenty questions a day, the
+  // book reaches 24 items by day 4 and 30 by day 5 — and the mode was
+  // hard-coded to draw every one of them, so it became unusable exactly
+  // as it became valuable. The same simulation says a bounded run is
+  // what makes the graduation promise keepable: with all-or-nothing,
+  // **zero** items graduate in five days; at ten a day, eleven do.
+  const row = el("div", "cluster cluster--spread");
+  const label = el("span", "t-ui", "Soru sayısı");
+  label.id = "mistake-count-label";
+  row.appendChild(label);
+  const listboxHost = el("div");
+  row.appendChild(listboxHost);
+  surface.appendChild(row);
+
   const start = el("button", "btn btn--primary", "Yanlışları çalış");
   start.type = "button";
   start.addEventListener("click", () => {
-    startMistakeBook().catch(console.error);
+    const raw = mistakeCount.getValue();
+    startMistakeBook(raw === "all" ? "all" : Number(raw)).catch(console.error);
   });
   surface.appendChild(start);
+
+  // Options capped at what the book actually holds, so the list never
+  // offers twenty questions to someone who has eight.
+  const choices = [
+    { value: "5", label: "5" },
+    { value: "10", label: "10" },
+    { value: "20", label: "20" },
+  ].filter((choice) => Number(choice.value) < book.length);
+  choices.push({ value: "all", label: `Tümü (${book.length})` });
+
+  mistakeCount = createListbox({
+    container: listboxHost,
+    options: choices,
+    // Ten by default: the length the simulation shows graduating items,
+    // and short enough that a learner finishes it on a phone.
+    value: choices.some((choice) => choice.value === "10") ? "10" : "all",
+    labelledBy: "mistake-count-label",
+  });
 
   return surface;
 }

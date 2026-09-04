@@ -693,6 +693,164 @@ async function runMistakeBook(browser) {
 }
 
 /**
+ * Walks a quiz to the results screen, answering the first option every
+ * time. Some of those are wrong, which is the point: a run that never
+ * misses writes nothing into the book.
+ */
+async function answerThroughToResults(page) {
+  for (let step = 0; step < 40; step += 1) {
+    if (page.url().includes("results.html")) {
+      break;
+    }
+    if (!(await page.locator(".option").count())) {
+      break;
+    }
+    if (!(await page.locator(".option--ok, .option--no").count())) {
+      await page.locator(".option").first().click();
+      await page.waitForTimeout(50);
+    }
+    const advance = page.locator("#quiz-bar button");
+    if (!(await advance.count())) {
+      break;
+    }
+    await advance.click();
+    await page.waitForTimeout(100);
+  }
+  await page.waitForURL(/results\.html/, { timeout: 8000 });
+  await page.waitForSelector(".t-display");
+}
+
+/** Fourteen questions answered wrong yesterday — a book worth bounding. */
+function seedFullBook() {
+  const yesterday = new Date(Date.now() - 86_400_000).toISOString();
+  const questions = [];
+  for (let i = 1; i <= 14; i += 1) {
+    questions.push({
+      id: `tenses-t${i}`,
+      topicId: "tenses",
+      category: "Present Simple vs Present Continuous",
+      correct: false,
+    });
+  }
+  localStorage.setItem(
+    "englishPrep.history",
+    JSON.stringify({
+      attempts: [
+        {
+          date: yesterday,
+          mode: "mixed",
+          topicBreakdown: { tenses: { correct: 0, total: 14 } },
+          categoryBreakdown: {
+            "Present Simple vs Present Continuous": { correct: 0, total: 14 },
+          },
+          questions,
+        },
+      ],
+    })
+  );
+}
+
+/**
+ * How many questions a mistakes run holds, and how the results screen
+ * gets back to the book.
+ *
+ * Both come from the same simulation over the real corpus: the book
+ * reaches two dozen items within four days of ordinary use, and the mode
+ * was hard-coded to draw every one of them — so it became a wall exactly
+ * when it became the best thing in the app, and with all-or-nothing runs
+ * *no* item graduates inside five days.
+ *
+ * The results screen is the other half. It is where the book gets
+ * written, and the only door into it was a tab away; and its "Yeni test"
+ * button re-entered quiz.html, which for a mistakes request re-reads the
+ * stored ids — the identical questions, in a mode whose whole promise is
+ * that the set moves.
+ */
+async function runMistakeRuns(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.evaluate(seedFullBook);
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .surface");
+
+  const panel = await page.locator("#test-panel").innerText();
+  ok(/Yanlış yaptığın 14 soru burada/.test(panel), "defter on dört soruyu sayıyor");
+  ok(panel.includes("Soru sayısı"), "defterde de soru sayısı seçilebiliyor");
+
+  const bookListbox = page.locator("#test-panel .listbox").first();
+  const trigger = bookListbox.locator(".listbox__trigger");
+  ok((await trigger.innerText()).trim() === "10", "varsayılan on — biten bir oturum");
+  await trigger.click();
+  await page.waitForSelector("#test-panel .listbox__option");
+  const options = await bookListbox.locator(".listbox__option").allInnerTexts();
+  ok(
+    options.map((text) => text.trim()).join("|") === "5|10|Tümü (14)",
+    `seçenekler defterin boyuna göre (${options.join(", ")})`
+  );
+  await page.keyboard.press("Escape");
+
+  await page.locator("button", { hasText: "Yanlışları çalış" }).click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".option");
+  const request = await page.evaluate(
+    () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
+  );
+  ok(request.count === 10, "seçilen sayı isteğe geçiyor");
+  ok(request.ids.length === 14, "defterin tamamı gönderiliyor, sınırı motor koyuyor");
+
+  await answerThroughToResults(page);
+  const score = await page.locator(".t-display").innerText();
+  ok(score.trim().endsWith("/ 10"), `on soruluk tur on soru sürdü (${score.trim()})`);
+
+  // A mistakes run must not offer to replay itself.
+  const forward = page.locator("#results-bar .btn--primary");
+  ok(
+    (await forward.evaluate((node) => node.tagName)) === "BUTTON",
+    "yanlış turundan sonra ileri düğmesi quiz.html bağlantısı değil"
+  );
+  ok(
+    !(await page.locator("#results-container").innerText()).includes("Yanlış defteri"),
+    "yanlış turunun sonunda deftere ayrı bir satır konmuyor"
+  );
+  await forward.click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".option");
+  const again = await page.evaluate(
+    () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
+  );
+  ok(again.mode === "mistakes", "yeni tur yine defterden geliyor");
+  ok(again.count === 10, "seçilen uzunluk korunuyor");
+  // Rebuilt from the book as it stands now, not from the request that
+  // was stashed before the run. Nothing graduated here — graduating takes
+  // two correct answers on two separate days — so the count is the tell
+  // that it was recomputed rather than replayed with a stale list.
+  ok(again.ids.length === 14, `defter o anki hâlinden okunuyor (${again.ids.length} soru)`);
+
+  // And from an ordinary test, the book is one row away.
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .surface");
+  await page.locator("#test-panel .btn--secondary", { hasText: "Teste başla" }).click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".option");
+  await answerThroughToResults(page);
+  const shortcut = page.locator('#results-container a[href="index.html#test"]');
+  ok(await shortcut.count() === 1, "karışık testin sonunda defter satırı var");
+  ok(
+    /soru bekliyor/.test(await shortcut.innerText()),
+    "satır kaç soru beklediğini söylüyor"
+  );
+  ok(
+    (await page.locator("#results-bar .btn--primary").evaluate((node) => node.tagName)) === "A",
+    "karışık testte ileri düğmesi hâlâ düz bir bağlantı"
+  );
+  await auditLayout(page, "sonuç, defter satırıyla", 390);
+
+  await context.close();
+}
+
+/**
  * docs/components.html — every primitive on one page, against the real
  * CSS. It was not checked by anything until a restatement's options went
  * on it: the case that breaks the Option row is four whole sentences at
@@ -1141,6 +1299,41 @@ async function runIndexStates(browser) {
     "öneri kartı konu listesini kilitlemiyor"
   );
   await auditLayout(view.page, "sıradaki adım", 320, { maxScreens: LANDING_BUDGET_SCREENS });
+  await view.context.close();
+
+  // 5b — the same weak category, but the lesson has been read. This is
+  // the normal case, not the odd one: the app learns a category is weak
+  // by testing it, and it tests it after the lesson. The card used to
+  // answer "sıradaki adım" with a page the learner had finished.
+  view = await open(
+    new Function(
+      `localStorage.setItem("englishPrep.lessonProgress", JSON.stringify({` +
+        `"tenses-present-simple-vs-present-continuous": { read: 1, done: true } }));` +
+        `localStorage.setItem("englishPrep.history", JSON.stringify({ attempts: [{` +
+        `date: new Date().toISOString(), mode: "mixed",` +
+        `topicBreakdown: { tenses: { correct: 1, total: 6 } },` +
+        `categoryBreakdown: { "Present Simple vs Present Continuous": { correct: 1, total: 6 } },` +
+        `questions: [0,1,2,3,4,5].map((i) => ({ id: "tenses-t" + i, topicId: "tenses",` +
+        `category: "Present Simple vs Present Continuous", correct: i === 0 }))` +
+        `}] }));`
+    )
+  );
+  ok(view.text.includes("Sıradaki adım"), "okunmuş zayıf derste de kart çıkıyor");
+  ok(
+    view.text.includes("Bu kategoriden pratik yap"),
+    "okunmuş dersi tekrar açtırmak yerine pratik öneriliyor"
+  );
+  ok(!view.text.includes("Bu dersi aç"), "bitmiş ders yeniden 'aç' diye sunulmuyor");
+  ok(view.text.includes("Bu dersi okudun"), "kart neden pratik dediğini söylüyor");
+  await view.page.locator("#lesson-index .btn--primary").click();
+  await view.page.waitForURL(/quiz\.html/);
+  const practice = await view.page.evaluate(
+    () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
+  );
+  ok(
+    practice.mode === "category" && practice.category === "Present Simple vs Present Continuous",
+    "düğme tam o kategorinin pratiğini açıyor"
+  );
   await view.context.close();
 
   // 6 — everything read and every question met. The one screen that used
@@ -1893,6 +2086,9 @@ try {
 
   console.log("\n=== yanlış defteri ===");
   await runMistakeBook(browser);
+
+  console.log("\n=== yanlış turu ve sonuç kısayolları ===");
+  await runMistakeRuns(browser);
 
   console.log("\n=== dersten önce (ön test) ===");
   await runPretest(browser);

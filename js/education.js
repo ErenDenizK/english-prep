@@ -376,12 +376,29 @@ function renderNextStepCard(lessons, progress, completed) {
     return null;
   }
 
+  // The weak category's lesson is often one the learner has already read
+  // — that is the normal case, not the odd one: the app knows a category
+  // is weak because it was tested, and it gets tested after the lesson.
+  // Saying "Bu dersi aç" there sends someone back through a page they
+  // finished and calls it the next step. What is actually next is
+  // practice, which is what the weak-spot rows on the Test tab offer.
+  const rereading = weakLesson !== null && Boolean(progress[weakLesson.id]?.done);
+
   const card = el("section", "surface stack");
   const head = el("div", "stack stack--tight");
   head.appendChild(el("p", "t-label", "Sıradaki adım"));
   head.appendChild(englishTitle("h2", "t-title t-en", target.category));
 
-  if (weakLesson) {
+  if (rereading) {
+    head.appendChild(
+      el(
+        "p",
+        "t-body",
+        "Bu dersi okudun ama son testlerinde en çok bu sorularda zorlandın. " +
+          "Sıradaki adım okumak değil, bu kategoriden soru çözmek."
+      )
+    );
+  } else if (weakLesson) {
     // A ranking, not a verdict — the same hedge the weak-spot list on the
     // Test tab carries, for the same reason: on four questions the app
     // knows which one went worst, not that the learner cannot do it.
@@ -398,9 +415,19 @@ function renderNextStepCard(lessons, progress, completed) {
   }
   card.appendChild(head);
 
-  const open = el("button", "btn btn--primary", "Bu dersi aç");
+  const open = el(
+    "button",
+    "btn btn--primary",
+    rereading ? "Bu kategoriden pratik yap" : "Bu dersi aç"
+  );
   open.type = "button";
-  open.addEventListener("click", () => openLessonByHash(target.id));
+  open.addEventListener("click", () => {
+    if (rereading) {
+      startCategoryPractice(target.category).catch(console.error);
+    } else {
+      openLessonByHash(target.id);
+    }
+  });
   card.appendChild(open);
 
   card.appendChild(
