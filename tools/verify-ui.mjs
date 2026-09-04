@@ -1023,9 +1023,15 @@ async function runAccessibility(page) {
 
   // §8.4 — a wrong answer names the English form, wrapped so the
   // synthesiser switches voice. And the options stay reachable.
+  //
+  // A TOPIC test, not the mixed one. The mixed test draws from every live
+  // topic, and since the restatement content shipped that includes items
+  // with no blank at all — so "the blank is spoken" became a check that
+  // failed on a perfectly good question. Tenses is cloze all the way
+  // through, which is what this part of §8.4 is about.
   await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#test-panel .btn--primary");
-  await page.locator("#test-panel .btn--primary").click();
+  await page.waitForSelector("#test-panel .row");
+  await page.locator("#test-panel .row", { hasText: "Tenses" }).first().click();
   await page.waitForURL(/quiz\.html/);
   await page.waitForSelector(".option");
 

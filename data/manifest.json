@@ -155,6 +155,31 @@
         { "category": "Either vs Neither vs Nor", "summary": "İkisinden biri mi, ikisi de değil mi?" },
         { "category": "Most vs Most Of vs The Most", "summary": "Genel olarak çoğu mu, bu grubun çoğu mu, yoksa en mi?" }
       ]
+    },
+    {
+      "id": "relative-clauses",
+      "title": "Relative Clauses",
+      "tier": "compound-structures",
+      "file": "data/relative-clauses/relative-clauses.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Who vs Whom vs Whose",
+        "Defining vs Non-defining: That vs Which",
+        "Where vs When vs Why vs Which",
+        "Preposition + Relative Pronoun: In Which / For Whom / Of Which",
+        "Reduced Relative Clauses: -ing vs -ed",
+        "Quantifier + Relative Pronoun: Some Of Which / All Of Whom"
+      ],
+      "lessons": [
+        { "category": "Who vs Whom vs Whose", "summary": "Kişi yan cümlede özne mi, nesne mi, yoksa sahip mi?" },
+        { "category": "Defining vs Non-defining: That vs Which", "summary": "Virgül var mı? Cümlenin anlamı orada değişiyor." },
+        { "category": "Where vs When vs Why vs Which", "summary": "Boşluktan sonrası eksiksiz mi, bir öğe mi eksik?" },
+        { "category": "Preposition + Relative Pronoun: In Which / For Whom / Of Which", "summary": "Edat öne geçtiğinde who ve that neden elenir?" },
+        { "category": "Reduced Relative Clauses: -ing vs -ed", "summary": "İsim eylemi kendisi mi yapıyor, eylem ona mı yapılıyor?" },
+        { "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom", "summary": "İki cümleyi 'some of them' bağlamaz — peki ne bağlar?" }
+      ]
     }
   ]
 }
