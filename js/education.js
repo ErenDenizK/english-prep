@@ -394,16 +394,25 @@ function renderDecisionBlock(block) {
   return list;
 }
 
+/* The pretest is not one of the lesson's blocks, so it needs a key of its
+ * own in the answers Map, which is otherwise keyed by block index. -1 is
+ * the one value an index can never take. */
+const PRETEST_INDEX = -1;
+
 /**
  * An inline check. Answering re-renders only this block, not the page:
  * rebuilding the whole lesson would throw the learner's scroll position
  * away at the exact moment they want to read the feedback.
  */
-function renderCheckBlock(question, blockIndex) {
+function renderCheckBlock(question, blockIndex, { label = "Kontrol" } = {}) {
   const wrap = el("div", "stack");
   wrap.dataset.check = String(blockIndex);
 
-  wrap.appendChild(el("p", "t-label", "Kontrol"));
+  // The pretest supplies its own heading and passes null, so the block
+  // does not read "Önce bir dene" and then "Kontrol" two lines later.
+  if (label) {
+    wrap.appendChild(el("p", "t-label", label));
+  }
 
   wrap.appendChild(renderPrompt(question));
 
@@ -425,7 +434,7 @@ function renderCheckBlock(question, blockIndex) {
         // new content. Measured at 162px on a 320px screen, which is the
         // whole verdict line sliding out from under the reader's eyes.
         const top = scrollRegion.scrollTop;
-        wrap.replaceWith(renderCheckBlock(question, blockIndex));
+        wrap.replaceWith(renderCheckBlock(question, blockIndex, { label }));
         scrollRegion.scrollTop = top;
       },
     })
@@ -438,6 +447,43 @@ function renderCheckBlock(question, blockIndex) {
     );
   }
 
+  return wrap;
+}
+
+/**
+ * Dersten önce — one question at the top of a lesson nobody has opened
+ * yet, before a word of it has been taught.
+ *
+ * Not a quiz. The learner is *expected* to get it wrong, and the framing
+ * says so, because the value is in the attempt rather than in the answer:
+ * a failed retrieval before study leaves the later reading better
+ * retained than the same reading without it. It is the same effect the
+ * "cevabı önce düşün" setting is built on, applied where this app already
+ * has the machinery — `check` blocks carry no authored prose, they are
+ * filled from the lesson's own category at render time, so putting one at
+ * the front costs no content and changes no schema.
+ *
+ * It appears once. On a re-read the lesson opens normally: a pretest on
+ * material you have already read is just a quiz in the wrong place.
+ *
+ * Like every check, it never gates anything. Scrolling past it without
+ * answering is a supported way to read a lesson.
+ */
+function renderPretestBlock(question) {
+  const wrap = el("section", "stack stack--tight");
+  const intro = el("div", "stack stack--tight");
+  intro.appendChild(el("h3", "t-label", "Önce bir dene"));
+  intro.appendChild(
+    el(
+      "p",
+      "t-body",
+      "Bu dersi henüz okumadın. Bilmiyorsan sorun değil — asıl işe yarayan " +
+        "denemenin kendisi: bir tahminde bulunup yanılmak, sonra okuduğunu " +
+        "daha iyi aklında tutmanı sağlıyor. İstersen atla."
+    )
+  );
+  wrap.appendChild(intro);
+  wrap.appendChild(renderCheckBlock(question, PRETEST_INDEX, { label: null }));
   return wrap;
 }
 
@@ -561,6 +607,10 @@ function renderReaderTop() {
 function renderLesson() {
   const lesson = currentLesson();
   const nextCheck = takeChecks(lesson);
+  // Decided once per opening rather than per render: answering the pretest
+  // re-renders it, and a progress record written in between must not make
+  // the block it is inside disappear from under the learner.
+  const pretest = state.reader.pretest;
 
   clear(readerContainer);
   const page = el("article", "stack stack--loose");
@@ -573,6 +623,10 @@ function renderLesson() {
     heading.appendChild(el("p", "t-lead", lesson.summary));
   }
   page.appendChild(heading);
+
+  if (pretest) {
+    page.appendChild(renderPretestBlock(pretest));
+  }
 
   lesson.blocks.forEach((block, index) => {
     const node = renderBlock(block, index, nextCheck);
@@ -730,7 +784,21 @@ export async function openLesson(lessonId) {
     return;
   }
 
-  state.reader = { lessonIndex: lessonPosition, answers: new Map() };
+  // A lesson nobody has opened gets one question before it starts. Read
+  // from the stored progress rather than from `read`, because the reader
+  // records a read fraction as soon as it paints — so by the time the
+  // first scroll handler runs, every lesson looks started.
+  // state.lessons, not `lessons`: the latter is the index, which carries
+  // names and progress but no blocks and no checkPool. The loaded lesson
+  // was merged into state.lessons just above.
+  const lesson = state.lessons[lessonPosition];
+  const seen = getLessonProgress(lesson.id);
+  const unread = !seen || (!seen.done && (seen.read ?? 0) <= 0.02);
+  state.reader = {
+    lessonIndex: lessonPosition,
+    answers: new Map(),
+    pretest: unread ? takeChecks(lesson)() : null,
+  };
   setReaderChrome(true);
   announce(lessons[lessonPosition].category);
   renderLesson();

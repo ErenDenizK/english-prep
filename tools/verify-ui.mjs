@@ -699,6 +699,65 @@ async function runBackupRoundTrip(browser) {
   await target.close();
 }
 
+/**
+ * Dersten önce — one question at the top of a lesson nobody has read.
+ *
+ * Checked at 320px, because that is where a block added above the lesson
+ * body costs the most, and because the whole point of the mode is that it
+ * is the first thing on the screen.
+ */
+async function runPretest(browser) {
+  const context = await browser.newContext({ viewport: { width: 320, height: 640 } });
+  const page = await context.newPage();
+
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await page.waitForSelector(".row");
+  await page.locator(".row").first().click();
+  await page.waitForSelector(".shell__scroll .option");
+
+  const body = await page.locator(".shell__scroll").innerText();
+  ok(body.includes("Önce bir dene"), "okunmamış ders bir ön testle açılıyor");
+  ok(
+    !/Önce bir dene\s*\n\s*Kontrol/.test(body),
+    "ön test kendi başlığını kullanıyor, ikinci bir 'Kontrol' koymuyor"
+  );
+  ok(
+    body.indexOf("Önce bir dene") < body.indexOf("Kontrol"),
+    "ön test dersin gövdesinden önce geliyor"
+  );
+
+  // The rule the whole shell is built on: answering must not move the
+  // thing the learner is looking at. Scrolled into view first, so the
+  // measurement is of the answer and not of the driver's own scrolling.
+  const option = page.locator(".option").first();
+  await option.scrollIntoViewIfNeeded();
+  const before = await page.evaluate(() => document.querySelector(".shell__scroll").scrollTop);
+  const boxBefore = await option.boundingBox();
+  await option.click();
+  await page.waitForSelector(".feedback");
+  const after = await page.evaluate(() => document.querySelector(".shell__scroll").scrollTop);
+  const boxAfter = await page.locator(".option").first().boundingBox();
+  ok(before === after, `ön test cevaplanınca sayfa kaymıyor (${before} → ${after})`);
+  ok(
+    Math.abs(boxBefore.y - boxAfter.y) < 1,
+    `cevaplanan şık yerinde kalıyor (${boxBefore.y.toFixed(1)} → ${boxAfter.y.toFixed(1)})`
+  );
+  await auditLayout(page, "ön test", 320);
+
+  // It is a pretest, not a quiz: it appears once, and a lesson already
+  // read opens on its own first words.
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await page.waitForSelector(".row, .card");
+  await page.locator(".row, .card").first().click();
+  await page.waitForSelector(".shell__scroll");
+  ok(
+    !(await page.locator(".shell__scroll").innerText()).includes("Önce bir dene"),
+    "okunmuş ders ikinci açılışta ön test göstermiyor"
+  );
+
+  await context.close();
+}
+
 /** The parts of §8 that do not vary with the viewport. */
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
@@ -876,6 +935,9 @@ try {
 
   console.log("\n=== yanlış defteri ===");
   await runMistakeBook(browser);
+
+  console.log("\n=== dersten önce (ön test) ===");
+  await runPretest(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);

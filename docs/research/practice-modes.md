@@ -890,7 +890,7 @@ correct/total, and any number that goes up.
 | **Adaptive difficulty** (§8.6) | same threshold, plus a per-item difficulty signal, which today would have to be inferred from aggregate accuracy the app does not have enough users to estimate |
 | **Mastery levels, Khan-style** (§2.3) | ~8–10 questions per category, so a level can be earned, lost and re-earned without the learner meeting the same two items each time |
 | **Flashcards** (§2.1) | vocabulary content exists — the README already has this deferred for the same reason |
-| **Deliberate pretest before a lesson** (§8.5) | it is nearly free, so this is deferred only behind the v1 list; it needs one question answered by the content side about how existing checks would read at the front of a lesson |
+| ~~**Deliberate pretest before a lesson** (§8.5)~~ | **Shipped 2026-09-04.** The question for the content side turned out not to arise: a `check` block carries no authored prose at all — it is `{"type": "check"}` and is filled from the lesson's category at render time — so there was no recap wording to read oddly at the front. |
 
 The pattern is worth stating: **almost nothing here is blocked by the
 constraints.** No build step, no backend and no dependencies cost this
