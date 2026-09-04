@@ -225,7 +225,7 @@
             "then": "but / while / whereas"
           },
           {
-            "condition": "Boşluktan önce nokta var; iki cümle aynı şeyin ya da aynı seçeneğin iki yüzünü tartıyor, ikisi de aynı anda doğru ve ikinci cümle birincinin iddiasını yalanlamıyorsa",
+            "condition": "Boşluktan önce nokta ya da noktalı virgül var; iki cümle aynı şeyin ya da aynı seçeneğin iki yüzünü tartıyor, ikisi de aynı anda doğru, birinci cümle ikincisini şaşırtıcı kılmıyor ve ikinci cümle birincinin iddiasını yalanlamıyorsa",
             "then": "On the Other Hand"
           },
           {
@@ -265,7 +265,7 @@
           {
             "label": "In Order To",
             "gloss": "Aynı **amaç** ilişkisi, farklı dilbilgisi: ardından yalın fiil gelir ve amacın öznesi ana cümlenin öznesiyle aynıdır.",
-            "example": "She left early in order to catch the bus."
+            "example": "She left early in order to avoid the traffic."
           }
         ]
       },
@@ -369,11 +369,11 @@
             "then": "so"
           },
           {
-            "condition": "Boşluktan önce nokta ya da noktalı virgül var ve ikinci cümle eylemin hedeflediği durumu değil, ondan çıkan gerçekleşmiş sonucu anlatıyorsa",
+            "condition": "Boşluk iki cümleciği virgülle birleştirmiyorsa — kendi cümlesinin başında ya da yardımcı fiil ile asıl fiilin arasında duruyorsa — ve ikinci cümle eylemin hedeflediği durumu değil, ondan çıkan gerçekleşmiş sonucu anlatıyorsa",
             "then": "Therefore / Thus"
           },
           {
-            "condition": "İlişki amaçsa ve boşluktan sonra özne + can/could/would gelen bir cümlecik varsa",
+            "condition": "İlişki amaçsa ve boşluktan sonra kendi öznesi olan bir cümlecik geliyorsa (çoğunlukla can, could ya da would ile)",
             "then": "So That"
           },
           {
@@ -449,7 +449,7 @@
             "form": "for instance",
             "use": "Özne ile yüklemin arasında",
             "pattern": "S, + for instance, + V",
-            "example": "The steering gear, for instance, needed replacing."
+            "example": "The oldest teacher, for instance, still marks by hand."
           }
         ]
       },
@@ -515,8 +515,12 @@
             "then": "For Instance"
           },
           {
-            "condition": "Boşluktan sonra yüklemi olmayan tek bir isim öbeği varsa, listenin eksiksiz mi yoksa açık uçlu mu olduğuna bak",
-            "then": "Namely / For Instance"
+            "condition": "Bağlaç, örneklenen şeyin adı ile yüklemi arasında iki virgül içinde duruyorsa karar yine küme-üye ilişkisine göre verilir: önceki cümlede tanımlanan kümenin üyelerinden biri anlatılıyorsa",
+            "then": "For Instance"
+          },
+          {
+            "condition": "Boşluktan sonra yüklemi olmayan tek bir isim öbeği varsa: bu öbek belirsiz bırakılan şeyin tamamını veriyorsa namely, birçok olasılıktan yalnızca birini veriyorsa for instance, aynı şeyi başka bir adla söylüyorsa in other words",
+            "then": "Namely / For Instance / In Other Words"
           }
         ]
       }
@@ -649,7 +653,7 @@
             "then": "By Then"
           },
           {
-            "condition": "Boşluk, anılan ana kadar süren bir durumu değil, o ana gelindiğinde çoktan geçerli olmuş durumu bildiriyorsa",
+            "condition": "Boşluk, anılan ana kadar süren bir durumu (until then) değil, o ana gelindiğinde çoktan geçerli olmuş durumu bildiriyorsa",
             "then": "By Then"
           },
           {
@@ -769,7 +773,7 @@
         "heading": "Önce son cümlenin işini adlandır, sonra kelimeyi seç",
         "rules": [
           {
-            "condition": "Son cümle, sayılanların üstüne bir madde daha koyup onu en önemlisi diye işaretliyorsa ya da sayılanlardan birini diğerlerinden önemli diye ayırıyorsa",
+            "condition": "Son cümle, sayılanlarla aynı türden bir madde daha ekleyip onu en önemlisi diye öne çıkarıyorsa ya da sayılanlardan birini diğerlerinden önemli diye ayırıyorsa; madde anlatım sırasında sonuncu bile olsa önem sırasında birinci olduğu için first of all elenir",
             "then": "Above All"
           },
           {
@@ -777,7 +781,7 @@
             "then": "Above All"
           },
           {
-            "condition": "Son cümle yeni bir olgu eklemeden, sayılanların tamamını tek bir sonuçta topluyorsa",
+            "condition": "Son cümle yeni bir olgu eklemeden, aynı yöndeki ayrıntıların tamamını tek bir sonuçta topluyorsa",
             "then": "In Short"
           },
           {

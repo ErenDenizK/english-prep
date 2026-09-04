@@ -407,7 +407,7 @@
             "note": "Zaman ifadesi + arkası eksiksiz → when"
           },
           {
-            "sentence": "I never understood the reason why he refused.",
+            "sentence": "Nobody knows the reason why he refused.",
             "note": "Ana isim 'the reason' ve arkası eksiksiz → why"
           },
           {
@@ -679,7 +679,7 @@
             "note": "'anyone who wishes' cümlesinin kısası → V-ing"
           },
           {
-            "sentence": "The parcel delivered this morning was damaged.",
+            "sentence": "The parcel delivered on Tuesday was damaged.",
             "note": "Paketi getiren başkası, eylem pakete yapılmış → V3"
           },
           {
@@ -837,8 +837,8 @@
       },
       {
         "type": "pitfall",
-        "wrong": "The flat has four rooms, two of them face the street.",
-        "right": "The flat has four rooms, two of which face the street.",
+        "wrong": "The house has three doors, two of them face the street.",
+        "right": "The house has three doors, two of which face the street.",
         "why": "İngilizcede virgül iki tam cümleyi bağlayamaz. 'Them' yerine 'which' konduğunda ikinci cümle bir ilgi cümlesine dönüşür ve bağ kurulmuş olur."
       },
       {
