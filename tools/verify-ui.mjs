@@ -17,8 +17,12 @@
 //
 //   node tools/verify-ui.mjs [baseUrl]
 
+import { readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
+// The app's own id rule, not a copy of it: the harness seeds lesson
+// progress, and progress is stored against these ids.
+import { lessonId } from "../js/topics.js";
 
 const BASE = process.argv[2] ?? "http://localhost:8000";
 
@@ -542,7 +546,7 @@ async function runMistakeBook(browser) {
   const emptied = await page.locator("#test-panel").textContent();
   ok(emptied.includes("bekleyen soru yok"), "ayrı iki günde iki doğru soruyu düşürüyor");
   ok(
-    emptied.includes("bildiğin anlamına değil"),
+    emptied.includes("bildiğin anlamına gelmez"),
     "boş defter bir tebrik değil — doğru olanı söylüyor"
   );
   ok(
@@ -801,11 +805,11 @@ async function runPretest(browser) {
  * screen costs the most.
  */
 async function runIndexStates(browser) {
-  async function open(seed) {
+  async function open(seed, argument) {
     const context = await browser.newContext({ viewport: { width: 320, height: 640 } });
     const page = await context.newPage();
     await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
-    if (seed) await page.evaluate(seed);
+    if (seed) await page.evaluate(seed, argument);
     await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
     await page.reload({ waitUntil: "networkidle" });
     await page.waitForSelector("#view-egitim .surface, #view-egitim .row");
@@ -874,20 +878,129 @@ async function runIndexStates(browser) {
   );
   await auditLayout(view.page, "aradan sonra dönüş", 320);
   await view.context.close();
+
+  // 4 — back after a gap, having finished everything they started. There
+  // is no lesson to resume, which does not make them a new learner: the
+  // card must still offer a way forward, and it must not claim a place
+  // they left off from.
+  view = await open(
+    new Function(
+      `localStorage.setItem("englishPrep.lessonProgress", JSON.stringify({` +
+        `"tenses-present-simple-vs-present-continuous": { read: 1, done: true } }));` +
+        `localStorage.setItem("englishPrep.history", JSON.stringify({ attempts: [${JSON.stringify(
+          attempt("PLACEHOLDER")
+        ).replace('"PLACEHOLDER"', "new Date(Date.now() - 21 * 86400000).toISOString()")}] }));`
+    )
+  );
+  ok(view.text.includes("Kısa bir hatırlatma"), "yarım ders yokken de dönüş kartı çıkıyor");
+  ok(view.text.includes("Sıradaki derse geç"), "yarım ders yokken ileri giden bir yol var");
+  ok(!view.text.includes("Kaldığın yer"), "olmayan bir kaldığın yer iddia edilmiyor");
+  ok(/dersten \d+ tanesi tamamlandı/.test(view.text), "ilerleme kartın içinde, bir gerçek olarak duruyor");
+  await auditLayout(view.page, "dönüş, yarım ders yok", 320);
+  await view.context.close();
+
+  // 5 — test history, no lesson finished, same day. This used to be a bar
+  // reading zero for a learner who had done real work.
+  view = await open(
+    new Function(
+      `localStorage.setItem("englishPrep.history", JSON.stringify({ attempts: [{` +
+        `date: new Date().toISOString(), mode: "mixed",` +
+        `topicBreakdown: { tenses: { correct: 1, total: 6 } },` +
+        `categoryBreakdown: { "Present Simple vs Present Continuous": { correct: 1, total: 6 } },` +
+        `questions: [0,1,2,3,4,5].map((i) => ({ id: "tenses-t" + i, topicId: "tenses",` +
+        `category: "Present Simple vs Present Continuous", correct: i === 0 }))` +
+        `}] }));`
+    )
+  );
+  ok(view.text.includes("Sıradaki adım"), "test geçmişi olana ne yapacağı söyleniyor");
+  ok(view.text.includes("Bu dersi aç"), "tek bir açık eylem var");
+  ok(
+    view.text.includes("Present Simple vs Present Continuous"),
+    "en çok zorlandığı kategorinin dersi öneriliyor"
+  );
+  ok(
+    view.text.indexOf("Bu dersi aç") < view.text.indexOf("tanesi tamamlandı"),
+    "ilerleme sayısı düğmenin altında, başlık değil"
+  );
+  // A recommendation is not a gate: every lesson row stays open.
+  ok(
+    (await view.page.locator("#view-egitim .row").count()) > 5,
+    "öneri kartı ders listesini kilitlemiyor"
+  );
+  await auditLayout(view.page, "sıradaki adım", 320);
+  await view.context.close();
+
+  // 6 — everything read and every question met. The one screen that used
+  // to be a dead end.
+  //
+  // The store is built in Node, from the real manifest and the real
+  // `lessonId`, and handed over as data: a seed that recomputed the id
+  // from the category would be a second implementation of the rule that
+  // decides where progress is stored, and it would agree with the app
+  // right up until one of them changed.
+  const manifest = JSON.parse(await readFile(new URL("../data/manifest.json", import.meta.url), "utf8"));
+  const everything = { progress: {}, questions: [] };
+  for (const topic of manifest.topics.filter((entry) => !entry.comingSoon)) {
+    for (const lesson of topic.lessons ?? []) {
+      everything.progress[lessonId(topic.id, lesson.category)] = { read: 1, done: true };
+    }
+    for (let i = 0; i < topic.questionCount; i += 1) {
+      everything.questions.push({
+        id: `${topic.id}-q${i}`,
+        topicId: topic.id,
+        category: "x",
+        correct: true,
+      });
+    }
+  }
+  view = await open((seed) => {
+    localStorage.setItem("englishPrep.lessonProgress", JSON.stringify(seed.progress));
+    localStorage.setItem(
+      "englishPrep.history",
+      JSON.stringify({
+        attempts: [
+          {
+            date: new Date().toISOString(),
+            mode: "mixed",
+            topicBreakdown: {},
+            categoryBreakdown: {},
+            questions: seed.questions,
+          },
+        ],
+      })
+    );
+  }, everything);
+  ok(view.text.includes("Dersleri bitirdin"), "her şeyi bitirene bir son ekranı var");
+  ok(view.text.includes("Karışık testle tekrar et"), "çıkmaz sokak değil, bir eylem sunuluyor");
+  ok(
+    !/hazırsın|hazırlandın|başardın|tebrik/i.test(view.text),
+    "sınava hazırsın denmiyor — banka sınavın küçük bir parçası"
+  );
+  ok(/okuma \(21 puan\)/.test(view.text), "kapsanmayan bölümler adıyla söyleniyor");
+  ok(
+    !/anlamca en yakın cümle/.test(view.text),
+    "kapsanan bölüm eksik diye sayılmıyor (manifestten okunuyor)"
+  );
+  await auditLayout(view.page, "hepsi bitti", 320);
+  await view.context.close();
 }
 
 /**
  * Leaving a test that is under way.
  *
- * `Çık` was a plain link, so five answered questions went with one tap,
- * nothing was written down, and the learner arrived back on the screen a
- * brand-new learner sees — because from storage's point of view they were
- * one. A link cannot ask; a button can.
+ * `Çık` was a plain link, so five answered questions went with one tap and
+ * nothing was written down — the learner arrived back on the screen a
+ * brand-new learner sees, because from storage's point of view they were
+ * one. Then it was a link plus a confirmation dialog, which made the loss
+ * loud instead of making it not a loss. It now records what was answered
+ * and shows the score, so the check is that the work survives: an attempt
+ * in the history, and the questions that were never reached not counted
+ * as wrong.
  */
 async function runQuizExit(browser) {
   const context = await browser.newContext({ viewport: { width: 320, height: 640 } });
   const page = await context.newPage();
-  const exit = () => page.locator(".btn--quiet", { hasText: "Çık" }).first();
+  const exitButton = () => page.locator(".btn--quiet").first();
 
   async function startTest() {
     await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
@@ -897,37 +1010,142 @@ async function runQuizExit(browser) {
     await page.waitForSelector(".option");
   }
 
-  // Nothing answered is nothing to lose, so nothing to ask about.
+  // Nothing answered is nothing to record, so it is still an exit.
   await startTest();
-  await exit().click();
+  ok((await exitButton().innerText()).trim() === "Çık", "hiç cevap yokken düğme çıkış diyor");
+  await exitButton().click();
   await page.waitForURL(/index\.html/);
-  ok(true, "hiç cevap verilmemişken çıkış sormadan çıkıyor");
+  ok(true, "hiç cevap verilmemişken doğrudan çıkılıyor");
+  ok(
+    (await page.evaluate(
+      () => (JSON.parse(localStorage.getItem("englishPrep.history") ?? "{}").attempts ?? []).length
+    )) === 0,
+    "cevapsız çıkış geçmişe bir şey yazmıyor"
+  );
 
+  // Two answered out of ten, then out. The two are a two-question test.
   await startTest();
+  const total = Number((await page.locator(".t-num").first().innerText()).split("/")[1].trim());
+  ok(total > 2, `test iki sorudan uzun (${total})`);
   for (let i = 0; i < 2; i += 1) {
     await page.waitForSelector(".option");
     await page.locator(".option").first().click();
     await page.locator(".shell__bar .btn").first().click();
   }
   await page.waitForSelector(".option");
-  await exit().click();
-  await page.waitForSelector("#exit-dialog[open]");
-  ok(true, "cevap verdikten sonra çıkış onay istiyor");
   ok(
-    (await page.evaluate(() => document.activeElement?.id)) === "exit-dialog-cancel",
-    "odak en az yıkıcı eyleme düşüyor"
+    (await exitButton().innerText()).trim() === "Bitir",
+    "cevap verildikten sonra çıkış erken bitirmeye dönüşüyor"
   );
-  await page.locator("#exit-dialog-cancel").click();
-  // Not waitForSelector: a closed <dialog> is hidden, and the default
-  // wait is for visibility, so that can never resolve.
-  await page.waitForFunction(() => !document.getElementById("exit-dialog").open);
-  ok(page.url().includes("quiz.html"), "vazgeçince testte kalınıyor");
 
-  await exit().click();
-  await page.waitForSelector("#exit-dialog[open]");
-  await page.locator("#exit-dialog-confirm").click();
-  await page.waitForURL(/index\.html/);
-  ok(true, "onaylayınca çıkılıyor");
+  await exitButton().click();
+  await page.waitForURL(/results\.html/);
+  await page.waitForSelector(".t-display");
+  const score = (await page.locator(".t-display").first().innerText()).trim();
+  ok(
+    score.endsWith("/ 2") || score.endsWith("/2"),
+    `görülmeyen sorular yanlış sayılmıyor (${score})`
+  );
+
+  const history = await page.evaluate(
+    () => JSON.parse(localStorage.getItem("englishPrep.history") ?? "{}").attempts ?? []
+  );
+  ok(history.length === 1, "yarıda bırakılan test geçmişe yazılıyor");
+  ok(history[0]?.questions?.length === 2, "sadece cevaplanan sorular kaydediliyor");
+
+  await context.close();
+}
+
+/**
+ * The numbers on screen, and whether each one answers a question the app
+ * can actually answer.
+ *
+ * All three of these shipped as numbers that meant nothing. "Yeni" marked
+ * every topic on a store that had never seen any of them, and then the
+ * first mixed test consumed all of them at once. The results breakdown
+ * applied no evidence threshold at all, so a ten-question test produced
+ * nine rows sorted worst-first, most of them 0/1, which reads as a
+ * ranking. And the Test tab put a filled button on the mixed test even
+ * when the mistake book — the better mode — was sitting above it.
+ */
+async function runHonestNumbers(browser) {
+  const context = await browser.newContext({ viewport: { width: 320, height: 640 } });
+  const page = await context.newPage();
+
+  // 1 — a fresh store has no baseline, so nothing can be new relative to
+  // it. "Yeni" is a comparison, not a decoration.
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .row");
+  ok(
+    (await page.locator("#test-panel .chip--accent").count()) === 0,
+    "ilk açılışta hiçbir konu Yeni diye işaretlenmiyor"
+  );
+
+  // And a topic the learner HAS seen, at an older version, is.
+  await page.evaluate(() =>
+    localStorage.setItem("englishPrep.seenVersions", JSON.stringify({ tenses: 1 }))
+  );
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .row");
+  const badges = await page.locator("#test-panel .chip--accent").count();
+  ok(badges === 1, `eski sürümü görmüş konu Yeni diye işaretleniyor (${badges})`);
+
+  // 2 — starting a mixed test must not burn the badge for every topic in
+  // the app. Only what the learner was actually asked about counts.
+  await page.locator("#test-panel .btn--primary").click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".option");
+  const marked = await page.evaluate(
+    () => Object.keys(JSON.parse(localStorage.getItem("englishPrep.seenVersions") ?? "{}")).length
+  );
+  ok(marked === 1, `test başlatmak her konuyu görülmüş saymıyor (${marked})`);
+
+  // 3 — ten questions over eight topics is one or two each, and a list
+  // sorted worst-first on one item reads as a finding.
+  for (let i = 0; i < 10; i += 1) {
+    await page.waitForSelector(".option");
+    await page.locator(".option").first().click();
+    await page.locator(".shell__bar .btn").first().click();
+  }
+  await page.waitForURL(/results\.html/);
+  await page.waitForSelector(".t-display");
+  const results = await page.locator("#results-container").innerText();
+  ok(
+    results.includes("bir sıralama, bir sonuç değil"),
+    "az veriyle çıkan dökümün ne olmadığı söyleniyor"
+  );
+  // The rows themselves stay: drop the claim, not the data.
+  ok(
+    (await page.locator("#results-container .row").count()) > 1,
+    "hedge satırları silmiyor — kendi testini görme hakkı duruyor"
+  );
+
+  // The other half of the badge rule: the baseline IS set, here, for
+  // exactly the topics the questions came from. Compared against the
+  // recorded attempt rather than against a number, so it stays true as
+  // the bank grows and a ten-question test stops reaching every topic.
+  const seenMatchesAttempt = await page.evaluate(() => {
+    const attempts = JSON.parse(localStorage.getItem("englishPrep.history") ?? "{}").attempts ?? [];
+    const met = Object.keys(attempts[attempts.length - 1]?.topicBreakdown ?? {}).sort();
+    const seen = Object.keys(JSON.parse(localStorage.getItem("englishPrep.seenVersions") ?? "{}")).sort();
+    return { met, seen };
+  });
+  ok(
+    seenMatchesAttempt.met.length > 0 &&
+      seenMatchesAttempt.met.every((topicId) => seenMatchesAttempt.seen.includes(topicId)),
+    `sorusu çıkan konular görülmüş sayılıyor (${seenMatchesAttempt.met.length})`
+  );
+
+  // 4 — §7.2, one filled button per screen. The mistake book now has
+  // questions in it, so it is the mode the screen recommends.
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .surface");
+  const filled = await page.locator("#test-panel .btn--primary").count();
+  ok(filled === 1, `Test sekmesinde tek dolu düğme var (${filled})`);
+  ok(
+    (await page.locator("#test-panel .btn--primary").innerText()).trim() === "Yanlışları çalış",
+    "dolu düğme daha iyi olan moda ait"
+  );
 
   await context.close();
 }
@@ -1119,11 +1337,14 @@ try {
   console.log("\n=== dersten önce (ön test) ===");
   await runPretest(browser);
 
-  console.log("\n=== Eğitim indeksinin üç hâli ===");
+  console.log("\n=== Eğitim indeksinin altı hâli ===");
   await runIndexStates(browser);
 
   console.log("\n=== testten çıkış ===");
   await runQuizExit(browser);
+
+  console.log("\n=== sayılar ne anlama geliyor ===");
+  await runHonestNumbers(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);

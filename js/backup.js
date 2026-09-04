@@ -60,9 +60,18 @@ export function mergeLessonProgress(mine, theirs) {
         continue;
       }
       const existing = merged[lessonId];
+      // The timestamp is a maximum too, and for the same reason the read
+      // position is: the later of two devices is the one that describes
+      // when this learner was last here. Two records with no timestamp
+      // merge to no timestamp, which stays "unknown".
+      const at = Math.max(
+        existing?.at ?? 0,
+        typeof entry.at === "number" && Number.isFinite(entry.at) ? entry.at : 0
+      );
       merged[lessonId] = {
         read: Math.max(existing?.read ?? 0, typeof entry.read === "number" ? entry.read : 0),
         done: existing?.done === true || entry.done === true,
+        ...(at > 0 ? { at } : {}),
       };
     }
   }

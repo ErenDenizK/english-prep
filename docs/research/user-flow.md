@@ -616,6 +616,44 @@ explain it.
 
 ---
 
+## What has been implemented
+
+**All nine, 2026-09-04**, plus the two decisions items 4 and 5 asked for.
+Written here rather than deleting the recommendations, because what each
+one cost and where it landed is the useful record.
+
+| # | Where it landed | Deviation |
+| --- | --- | --- |
+| 1 | `js/education.js` — one `takeChecks` closure threaded through the pretest | none |
+| 2 | `markSeen` moved from `js/quiz-launch.js` to `js/results.js`; `> 0` guard in `renderTopicRow` | marking moved for **every** mode including `startTopicTest`, so there is one rule in one place rather than two that agree |
+| 3 | `away` lifted out of `if (resumable)`, and `renderReEntryCard` given the no-resumable branch | the heading stays "Kısa bir hatırlatma", not "Kaldığın yer" — there is no place this learner left off, and the card should not invent one |
+| 4 | `Çık` → `Bitir` at one answer, routing to `results.html` with the answered prefix; the dialog and its markup deleted | none |
+| 5 | `renderBreakdown` hedge under the heading | applied to the **topic** breakdown as well as the category one: both are sorted worst-first, so both read as a ranking |
+| 6 | `renderNextStepCard` and `renderAllDoneCard` in `js/education.js`; `renderIndex` now picks exactly one card | none |
+| 7 | `at: Date.now()` on both writers, `getLastActivity` reads it, `mergeLessonProgress` maxes it | none |
+| 8 | `renderMixedTest({primary})`; three card bodies cut to one sentence | the fold cost is unchanged and still stated as unsolved |
+| 9 | `TOPIC_ACCURACY_WINDOW = 20`, whole attempts, floor not cap | windowed over `topicBreakdown` rather than the question list, so a history recorded before questions carried topic ids still counts |
+
+**The two decisions, taken and recorded.** "Çözülen test" now counts an
+abandoned session as a test, because it is a count of what happened
+rather than a target — and the alternative buys a tidier number with a
+special case. And state 5's closing sentence **names** the missing
+sections, from the manifest rather than from a hardcoded list: the day
+`closest-meaning` shipped, every sentence naming it as missing became a
+lie about the app the learner was holding, and `uncoveredSections()` in
+`js/topics.js` is now the single answer that both this card and Profil's
+coverage paragraph read.
+
+Open question 3 answered by the implementation: `renderProgressSummary`
+survives as the fallback when there is no card to show — reachable only
+by running out of both suggestions and lessons — and is otherwise folded
+into whichever card is showing.
+
+Verified by 1051 harness checks at 320/390/768/1280, including six index
+states and a section on what each number on screen means.
+
+---
+
 ## Recommendations, ranked by value per unit of work
 
 Sizes assume no new dependencies, no build step, and no `innerHTML`.

@@ -13,7 +13,6 @@ import { getQuizRequest, setQuizResult } from "./session-state.js";
 import { getItemStats, getSetting } from "./storage.js";
 import { SETTINGS } from "./config.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
-import { createConfirmModal } from "./modal.js";
 import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { el, clear } from "./dom.js";
@@ -48,40 +47,49 @@ function showMessage(text, { withHomeLink = true } = {}) {
   }
 }
 
-/* Built once, on first use: a <dialog> may only be wired up after the
- * document has it, and the quiz screen renders before anyone taps Çık. */
-let exitModal = null;
+/**
+ * How many questions have actually been answered. The quiz is strictly
+ * sequential — there is no skip — so the answers are a prefix, and the
+ * count is where that prefix ends.
+ */
+function answeredCount() {
+  let last = -1;
+  state.selectedAnswers.forEach((answer, index) => {
+    if (answer !== null && answer !== undefined) {
+      last = index;
+    }
+  });
+  return last + 1;
+}
 
-function confirmExit() {
-  if (!exitModal) {
-    exitModal = createConfirmModal({
-      dialogId: "exit-dialog",
-      confirmId: "exit-dialog-confirm",
-      cancelId: "exit-dialog-cancel",
-      onConfirm: () => {
-        window.location.href = "index.html";
-      },
-    });
-  }
-  // Nothing to lose before the first answer, so nothing to ask about.
-  if (state.selectedAnswers.filter(Boolean).length === 0) {
+/**
+ * Leaving mid-test. This was a plain link, then a link plus a
+ * confirmation dialog, and both were wrong in the same way: a dialog
+ * makes the loss loud instead of making it not a loss. Five answered
+ * questions are a five-question test — so the exit records them and
+ * shows the score, exactly as finishing does, and the label says so.
+ * With nothing answered there is nothing to record and it is still Çık.
+ */
+function exitQuiz() {
+  if (answeredCount() === 0) {
     window.location.href = "index.html";
     return;
   }
-  exitModal.open();
+  finishQuiz({ upTo: answeredCount() });
 }
 
 function renderTopStrip() {
   const strip = el("div", "cluster cluster--spread");
 
-  // A button, not a link. It was a link, and a link cannot ask: five
-  // answered questions went with one tap, nothing was written down, and
-  // the learner arrived back on the screen a brand-new learner sees —
-  // because from storage's point of view they were one.
-  const exit = el("button", "btn btn--quiet", "Çık");
+  // A button, not a link, because it does something before it navigates.
+  // Once anything is answered it stops being an exit and becomes an early
+  // finish, and the word has to change with it: "Çık" beside work that is
+  // about to be saved would describe the old behaviour, not this one.
+  const early = answeredCount() > 0;
+  const exit = el("button", "btn btn--quiet", early ? "Bitir" : "Çık");
   exit.type = "button";
-  exit.prepend(icon("close", { size: 20 }));
-  exit.addEventListener("click", confirmExit);
+  exit.prepend(icon(early ? "check" : "close", { size: 20 }));
+  exit.addEventListener("click", exitQuiz);
   strip.appendChild(exit);
 
   strip.appendChild(
@@ -125,15 +133,25 @@ function advance() {
   scrollToTop();
 }
 
-async function finishQuiz() {
+/**
+ * @param {{upTo?: number}} [options] - `upTo` scores only the first N
+ *   questions, which is what an early finish means: the ones that were
+ *   never shown are not wrong answers and must not be scored as any.
+ */
+async function finishQuiz({ upTo } = {}) {
+  const count = upTo ?? state.session.length;
   const manifest = await loadManifest();
   const titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
-  const scored = scoreSession(state.session, state.selectedAnswers);
+  const scored = scoreSession(
+    state.session.slice(0, count),
+    state.selectedAnswers.slice(0, count)
+  );
 
   const request = getQuizRequest();
   setQuizResult({
     date: new Date().toISOString(),
     mode: request?.mode ?? "mixed",
+    partial: count < state.session.length,
     ...scored,
     topicTitles: Object.fromEntries(
       Object.keys(scored.topicBreakdown).map((topicId) => [topicId, titleById.get(topicId) ?? topicId])

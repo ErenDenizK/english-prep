@@ -13,7 +13,7 @@
 
 import { loadManifest, lessonIndex } from "./topics.js";
 import { getQuizResult, setQuizResult } from "./session-state.js";
-import { recordAttempt } from "./storage.js";
+import { recordAttempt, markTopicSeen, MIN_ITEMS_FOR_WEAK_ENTRY } from "./storage.js";
 import { el, clear, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, createActionBar } from "./shell.js";
@@ -67,6 +67,22 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
 
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", heading));
+
+  // Ten questions spread over six categories is one or two each, and a
+  // list sorted worst-first on one item reads as a finding. Drop the
+  // claim, not the data: the rows stay, because a learner is entitled to
+  // see their own test broken down. Same hedge, same threshold and the
+  // same reasoning as the weak-spot list in Profil.
+  const most = Math.max(...keys.map((key) => breakdown[key].total));
+  if (most < MIN_ITEMS_FOR_WEAK_ENTRY) {
+    section.appendChild(
+      el(
+        "p",
+        "t-meta",
+        "Bu testte her başlıktan bir-iki soru çıktı; bu bir sıralama, bir sonuç değil."
+      )
+    );
+  }
 
   // Worst first. A breakdown in whatever order the questions happened to
   // come out is a table; in this order it is a reading list.
@@ -163,9 +179,40 @@ async function init() {
     return;
   }
 
+  let titleById = new Map();
+  let versionById = new Map();
+  let lessonIdByCategory = new Map();
+  try {
+    const manifest = await loadManifest();
+    titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
+    versionById = new Map(manifest.topics.map((topic) => [topic.id, topic.contentVersion]));
+    // The results screen links a wrong answer to the lesson that teaches
+    // it, which needs the mapping and not the lessons themselves.
+    lessonIdByCategory = new Map(lessonIndex(manifest).map((lesson) => [lesson.category, lesson.id]));
+  } catch (error) {
+    // The score itself came through the session handoff, so a failed
+    // content load costs the topic titles and the lesson links, not the
+    // page — and the seen-version baseline simply waits for the next
+    // test, which is the safe direction to fail in: a badge shown twice
+    // beats a badge burned for content nobody saw.
+    console.error(error);
+  }
+
   // Guarded so reloading the results screen doesn't record the same
   // attempt twice and inflate the history.
   if (!result.recorded) {
+    // The seen-version baseline is set here, not at launch, because this
+    // is the first moment it is true. Marking a topic seen when a mixed
+    // test *starts* burns the "Yeni" badge on every topic in the app for
+    // questions the learner may never be shown — one tap, permanently.
+    // `topicBreakdown` names exactly the topics they actually met.
+    Object.keys(result.topicBreakdown).forEach((topicId) => {
+      const version = versionById.get(topicId);
+      if (typeof version === "number") {
+        markTopicSeen(topicId, version);
+      }
+    });
+
     recordAttempt({
       date: result.date,
       mode: result.mode,
@@ -183,21 +230,6 @@ async function init() {
     });
     result.recorded = true;
     setQuizResult(result);
-  }
-
-  let titleById = new Map();
-  let lessonIdByCategory = new Map();
-  try {
-    const manifest = await loadManifest();
-    titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
-    // The results screen links a wrong answer to the lesson that teaches
-    // it, which needs the mapping and not the lessons themselves.
-    lessonIdByCategory = new Map(lessonIndex(manifest).map((lesson) => [lesson.category, lesson.id]));
-  } catch (error) {
-    // The score itself came through the session handoff, so a failed
-    // content load costs the topic titles and the lesson links, not the
-    // page.
-    console.error(error);
   }
 
   clear(container);

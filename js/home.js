@@ -103,9 +103,8 @@ function renderMistakeBook() {
       el(
         "p",
         "t-body",
-        "Şu an defterinde bekleyen soru yok. Bu, yanlışlarını temizlediğin " +
-          "anlamına gelir — soruların hepsini bildiğin anlamına değil. Karışık " +
-          "testle devam et; yeni bir yanlış çıkarsa buraya düşer."
+        "Şu an defterinde bekleyen soru yok — yanlışlarını temizledin, " +
+          "soruların hepsini bildiğin anlamına gelmez."
       )
     );
     surface.appendChild(intro);
@@ -116,10 +115,8 @@ function renderMistakeBook() {
     el(
       "p",
       "t-body",
-      `Yanlış yaptığın ${book.length} soru burada. Sınavdan önce tekrar ` +
-        "bakman gerekenler bunlar. Bir soru, ayrı iki günde doğru " +
-        "cevapladığın anda listeden çıkar — o yüzden liste bir süre " +
-        "uzamaya devam edebilir, bu normaldir."
+      `Yanlış yaptığın ${book.length} soru burada; bir soru, ayrı iki günde ` +
+        "doğru cevapladığın anda listeden çıkar."
     )
   );
   surface.appendChild(intro);
@@ -134,7 +131,11 @@ function renderMistakeBook() {
   return surface;
 }
 
-function renderMixedTest() {
+/**
+ * @param {{primary?: boolean}} [options] - `primary` false when the
+ *   Yanlış defteri card is above this one and offering the better mode.
+ */
+function renderMixedTest({ primary = true } = {}) {
   const surface = el("section", "surface stack");
 
   const intro = el("div", "stack stack--tight");
@@ -150,9 +151,8 @@ function renderMixedTest() {
     el(
       "p",
       "t-body",
-      "Sorular tüm konulardan karışık gelir — ve karışık çalışmak, tek konuyu " +
-        "arka arkaya çalışmaktan daha iyi öğretir. Hangi kuralın gerektiğini de " +
-        "kendin bulmak zorunda kalırsın; sınavda da öyle olacak."
+      "Sorular tüm konulardan karışık gelir, yani hangi kuralın gerektiğini " +
+        "de kendin bulursun — sınavda da öyle olacak."
     )
   );
   surface.appendChild(intro);
@@ -165,7 +165,12 @@ function renderMixedTest() {
   row.appendChild(listboxHost);
   surface.appendChild(row);
 
-  const start = el("button", "btn btn--primary", "Teste başla");
+  // §7.2: three button levels, one filled per screen. When the mistake
+  // book has questions in it, it is the better mode — the practice
+  // research ranked it first — so it takes the filled button and this
+  // one steps down. Nothing about the mode changes; only which of the
+  // two the screen recommends.
+  const start = el("button", primary ? "btn btn--primary" : "btn btn--secondary", "Teste başla");
   start.type = "button";
   start.addEventListener("click", () => {
     const raw = mixedCount.getValue();
@@ -278,7 +283,13 @@ function renderTopicRow(topic) {
   if (topic.comingSoon) {
     trail.appendChild(el("span", "chip", "Yakında"));
   } else {
-    if (typeof topic.contentVersion === "number" && getSeenVersion(topic.id) < topic.contentVersion) {
+    // `> 0` and not just "less than the current version": on a first run
+    // every topic is unseen, so an unguarded test badges all eight rows
+    // as new to someone who has never seen any of them. "Yeni" is a
+    // comparison, and a learner with no baseline has nothing to compare
+    // to. Same guard, same reason, as the news line in Eğitim.
+    const seen = getSeenVersion(topic.id);
+    if (typeof topic.contentVersion === "number" && seen > 0 && seen < topic.contentVersion) {
       trail.appendChild(el("span", "chip chip--accent", "Yeni"));
     }
     // A percentage, not a fraction. The row already carries one fraction's
@@ -362,7 +373,7 @@ async function renderTestTab() {
     testPanel.appendChild(mistakeBook);
   }
 
-  testPanel.appendChild(renderMixedTest());
+  testPanel.appendChild(renderMixedTest({ primary: getMistakeBook().length === 0 }));
 
   const weakSpots = renderWeakSpots(
     getWeakCategories().filter((entry) => liveCategories.size === 0 || liveCategories.has(entry.category))
