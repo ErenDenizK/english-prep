@@ -101,14 +101,32 @@ preposition is inside the option in three of four preposition items and
 in all four quantifier items. Twelve of twenty-seven rules fired on
 nothing in their own category.
 
-**Still open, and it is the bigger half:** the same audit found the
-lessons hand over their own answers. Category 5's `examples` block gives
-three of its four questions away — one example shares subject, verb,
-participle and adverbial slot with a key and labels the answer in its
-note. Categories 2, 3 and 6 do the same more weakly. `check` blocks draw
-from the same category's questions, so the learner meets the answer a few
-blocks above the question. This needs new English example sentences, not
-new rule conditions, and it is not started.
+**Examples repaired 2026-09-04.** The same audit found the lessons
+handing over their own answers: category 5 gave away three of its four —
+one example shared subject noun, verb, participle and adverbial slot with
+a key and labelled the answer in its note, and the `forms` block carried
+the exact full-versus-reduced pair another item tests, with that item's
+keyed verb. Category 6 was worse in a quieter way: every option shape in
+the category appeared in the prose beside the rule that decides it.
+
+Fixed by replacing the English, not the teaching — every rule is still
+demonstrated, every contrast still has both sides, the Turkish notes were
+re-pointed rather than deleted, and the replacements are short and
+abstract so the question author's concrete scenarios cannot collide with
+them. Measured over 588 lesson-string against own-category-paragraph
+pairs: max content-word Jaccard 0.087 → 0.056, shared word trigrams 0,
+and key-echoes — a lesson string carrying that question's answer *and*
+sharing a content word with its paragraph — 17 → 5. All five remaining
+are `the reason why`, where "reason" is the antecedent the rule keys on
+and the pattern cannot be taught without it.
+
+That pass also caught a 400-character text block pushed over the limit by
+the rule repair before it, which meant the topic could not have shipped
+at all.
+
+**Needs:** a sufficiency re-run. The decision rules were repaired and
+have not been checked since, and on this project's record an unaudited
+repair is where the next defect comes from.
 
 ## quantifiers · 24 questions, 6 lessons
 
