@@ -190,7 +190,7 @@
           {
             "label": "assumption",
             "gloss": "Doğruluğu **sınanmadan** kabul edilen çıkış noktası. Arkasında veri yoktur; olsaydı adı evidence olurdu.",
-            "example": "The model rests on one untested assumption."
+            "example": "Each model carries one untested assumption."
           }
         ]
       },
@@ -201,12 +201,12 @@
           {
             "label": "implication",
             "gloss": "Bir bulgudan **çıkan** sonuç: bunun şu alan için anlamı nedir? Açıkça söylenmemiş, ama söylenenden izlenen şey.",
-            "example": "The finding has implications for future work."
+            "example": "The ruling has implications for the whole sector."
           },
           {
             "label": "consensus",
             "gloss": "Kanıtla değil **insanlarla** ilgilidir: bir grubun ortak görüşe varmış olması. Doğru olduğunu değil, üzerinde anlaşıldığını söyler.",
-            "example": "There is broad consensus among economists."
+            "example": "The two sides reached a consensus at last."
           }
         ]
       },
@@ -218,7 +218,7 @@
             "form": "evidence",
             "use": "Sayılamaz; an almaz, çoğullaşmaz",
             "pattern": "evidence for / of + N",
-            "example": "clear evidence for the claim"
+            "example": "evidence of a leak"
           },
           {
             "form": "indication",
@@ -230,7 +230,7 @@
             "form": "assumption",
             "use": "Sayılabilir",
             "pattern": "the assumption that + clause / on the assumption that",
-            "example": "on the assumption that costs fall"
+            "example": "on the assumption that prices hold"
           },
           {
             "form": "implication",
@@ -242,7 +242,7 @@
             "form": "consensus",
             "use": "Tekil kullanılır",
             "pattern": "consensus on + N / among + N",
-            "example": "consensus among economists"
+            "example": "consensus on the wording"
           }
         ]
       },
@@ -253,23 +253,23 @@
         "type": "examples",
         "items": [
           {
-            "sentence": "The data provide clear evidence for the claim.",
-            "note": "Gözleme dayanan destek → evidence"
+            "sentence": "There is no evidence for either story.",
+            "note": "Gözleme dayanan destek yok → evidence"
           },
           {
-            "sentence": "A rise in complaints is an early indication.",
+            "sentence": "There is every indication that prices will fall.",
             "note": "Henüz kanıt değil, işaret → indication"
           },
           {
-            "sentence": "The model rests on one untested assumption.",
+            "sentence": "A forecast always rests on an assumption.",
             "note": "Sınanmamış çıkış noktası → assumption"
           },
           {
-            "sentence": "The finding has implications for future work.",
+            "sentence": "Nobody had thought through the implications.",
             "note": "Bulgudan çıkan sonuç → implication"
           },
           {
-            "sentence": "There is broad consensus among economists.",
+            "sentence": "There is no consensus on the definition.",
             "note": "İnsanların uzlaşması → consensus"
           }
         ]
@@ -282,9 +282,9 @@
       },
       {
         "type": "pitfall",
-        "wrong": "We started from the implication that costs would fall.",
-        "right": "We started from the assumption that costs would fall.",
-        "why": "implication bir bulgudan sonra gelir, ondan çıkar. Baştan doğru sayılan ve sınanmayan önerme assumption'dır; yön terstir."
+        "wrong": "The whole plan rests on the implication that prices hold.",
+        "right": "The whole plan rests on the assumption that prices hold.",
+        "why": "implication bir bulgudan sonra gelir, ondan çıkar; bir planın üstüne kurulduğu şey olamaz. Baştan doğru sayılan ve sınanmayan önerme assumption'dır."
       },
       {
         "type": "pitfall",
@@ -782,15 +782,15 @@
         "type": "examples",
         "items": [
           {
-            "sentence": "Time constraints shaped the design.",
+            "sentence": "The budget places a real constraint on hiring.",
             "note": "Yapılabileni daraltan şey → constraint"
           },
           {
-            "sentence": "Employers have an obligation to report accidents.",
+            "sentence": "The obligation falls on the landlord, not the tenant.",
             "note": "Yerine getirilmesi gereken borç → obligation"
           },
           {
-            "sentence": "The contract includes a provision on delays.",
+            "sentence": "The clause on late payment is a standard provision.",
             "note": "Belgedeki madde → provision"
           },
           {
@@ -798,11 +798,11 @@
             "note": "İkinci anlam: sağlama, sunma → provision"
           },
           {
-            "sentence": "Applicants must meet three criteria.",
+            "sentence": "Cost is only one criterion.",
             "note": "Değerlendirme ölçütü → criterion, çoğulu criteria"
           },
           {
-            "sentence": "Small firms were granted an exemption.",
+            "sentence": "Charities claim exemption from the tax.",
             "note": "Kuralın dışında tutulma → exemption"
           }
         ]
@@ -815,9 +815,9 @@
       },
       {
         "type": "pitfall",
-        "wrong": "The team worked under tight obligations.",
-        "right": "The team worked under tight constraints.",
-        "why": "obligation yapman gereken şeydir; burada anlatılan, yapabildiğini daraltan şeydir. Daraltan şey constraint'tir ve on edatını alır."
+        "wrong": "A shortage of staff is an obligation the office cannot escape.",
+        "right": "A shortage of staff is a constraint the office cannot escape.",
+        "why": "obligation yerine getirmen gereken bir borçtur; bir eksiklik ya da darlık yükümlülük olamaz. Yapabildiğini kısan şey constraint'tir ve on edatını alır."
       },
       {
         "type": "pitfall",
