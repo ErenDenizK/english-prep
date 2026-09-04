@@ -752,6 +752,32 @@ async function runPretest(browser) {
   );
   await auditLayout(page, "ön test", 320);
 
+  // The pretest and the check blocks must draw from ONE shuffle. Two
+  // independent takers over a four-question pool put the pretest inside
+  // the check set about half the time, and the learner answered a
+  // question, read its explanation, scrolled three blocks and met it
+  // again. Measured at 13 opens in 24 before the fix.
+  {
+    let collisions = 0;
+    const opens = 8;
+    for (let i = 0; i < opens; i += 1) {
+      const fresh = await browser.newContext({ viewport: { width: 390, height: 844 } });
+      const trial = await fresh.newPage();
+      await trial.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+      await trial.waitForSelector(".row");
+      await trial.locator(".row").first().click();
+      await trial.waitForSelector(".shell__scroll .option");
+      const stems = await trial
+        .locator(".shell__scroll .t-lead, .shell__scroll .prose")
+        .evaluateAll((els) =>
+          els.map((e) => e.textContent.replace(/\s+/g, " ").trim()).filter((t) => t.includes("____"))
+        );
+      if (new Set(stems).size !== stems.length) collisions += 1;
+      await fresh.close();
+    }
+    ok(collisions === 0, `ön test ile kontrol soruları çakışmıyor (${opens} açılışta ${collisions})`);
+  }
+
   // It is a pretest, not a quiz: it appears once, and a lesson already
   // read opens on its own first words.
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });

@@ -31,6 +31,7 @@ import {
   countCompletedLessons,
   getHistory,
   getSeenVersion,
+  getWeakCategories,
   RE_ENTRY_DAYS,
 } from "./storage.js";
 import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
@@ -233,24 +234,43 @@ function renderWelcome(firstLesson) {
  */
 function renderReEntryCard(lesson, entry, news) {
   const card = el("section", "surface stack");
-
   const head = el("div", "stack stack--tight");
-  head.appendChild(el("p", "t-label", "Kaldığın yer"));
-  head.appendChild(englishTitle("h2", "t-title t-en", lesson.category));
-  head.appendChild(el("p", "t-meta t-num", `${lesson.topicTitle} · %${Math.round(entry.read * 100)}`));
+
+  if (lesson) {
+    head.appendChild(el("p", "t-label", "Kaldığın yer"));
+    head.appendChild(englishTitle("h2", "t-title t-en", lesson.category));
+    head.appendChild(el("p", "t-meta t-num", `${lesson.topicTitle} · %${Math.round(entry.read * 100)}`));
+  } else {
+    // Someone who finishes what they start, and came back. There is no
+    // half-read lesson to resume, which does not make them a new learner —
+    // it makes them the tidier kind of returner, and the first version of
+    // this card gave them the same-day screen.
+    head.appendChild(el("h2", "t-title", "Kısa bir hatırlatma"));
+    head.appendChild(
+      el("p", "t-body", "Beş soru, doksan saniye. Neyin durduğunu okumaktan daha hızlı gösterir.")
+    );
+  }
   card.appendChild(head);
 
-  const recall = el("button", "btn btn--primary", "Önce 5 soruyla hatırla");
+  // The weakest category when there is one, the abandoned lesson's own
+  // category otherwise, and a short mixed test when the app knows neither.
+  const weakest = getWeakCategories(1)[0] ?? null;
+  const category = lesson ? lesson.category : weakest?.category ?? null;
+
+  const recall = el("button", "btn btn--primary", lesson ? "Önce 5 soruyla hatırla" : "5 soruyla başla");
   recall.type = "button";
   recall.addEventListener("click", () => {
-    startCategoryPractice(lesson.category, 5).catch(console.error);
+    const start = category ? startCategoryPractice(category, 5) : startMixedTest(5);
+    start.catch(console.error);
   });
   card.appendChild(recall);
 
-  const resume = el("button", "btn btn--quiet", "Kaldığın yerden devam et");
-  resume.type = "button";
-  resume.addEventListener("click", () => openLessonByHash(lesson.id));
-  card.appendChild(resume);
+  if (lesson) {
+    const resume = el("button", "btn btn--quiet", "Kaldığın yerden devam et");
+    resume.type = "button";
+    resume.addEventListener("click", () => openLessonByHash(lesson.id));
+    card.appendChild(resume);
+  }
 
   if (news) {
     card.appendChild(el("p", "t-meta", news));
@@ -345,17 +365,26 @@ function renderIndex() {
     const entry = progress[lesson.id];
     return entry && !entry.done && entry.read > 0.02;
   });
-  if (resumable) {
-    // Only when the app actually knows. A learner who has only ever read
-    // lessons has no timestamp anywhere, and guessing from that would
-    // tell someone who has never left that they had been away.
-    const last = getLastActivity();
-    const away = last !== null && Date.now() - last > RE_ENTRY_DAYS * 86_400_000;
+  // Only when the app actually knows. A learner who has only ever read
+  // lessons has no timestamp anywhere, and guessing from that would tell
+  // someone who has never left that they had been away.
+  //
+  // Computed OUT here, not inside the resumable branch: coming back after
+  // three weeks is a fact about the learner, not about whether they
+  // happened to abandon a lesson on the way out.
+  const last = getLastActivity();
+  const away = last !== null && Date.now() - last > RE_ENTRY_DAYS * 86_400_000;
+
+  if (away) {
     indexContainer.appendChild(
-      away
-        ? renderReEntryCard(resumable, progress[resumable.id], newContentNote(lessons))
-        : renderResumeCard(resumable, progress[resumable.id])
+      renderReEntryCard(
+        resumable ?? null,
+        resumable ? progress[resumable.id] : null,
+        newContentNote(lessons)
+      )
     );
+  } else if (resumable) {
+    indexContainer.appendChild(renderResumeCard(resumable, progress[resumable.id]));
   }
 
   const topicIds = [...new Set(lessons.map((lesson) => lesson.topicId))];
@@ -765,7 +794,12 @@ function renderReaderTop() {
 
 function renderLesson() {
   const lesson = currentLesson();
-  const nextCheck = takeChecks(lesson);
+  // The SAME taker the pretest was drawn from, not a second one. Two
+  // independent shuffles of a four-question pool, taking one and then two,
+  // put the pretest inside the check set about half the time — measured at
+  // 13 collisions in 24 opens — so the learner answered a question, read
+  // its explanation, scrolled three blocks and met it again.
+  const nextCheck = state.reader.nextCheck;
   // Decided once per opening rather than per render: answering the pretest
   // re-renders it, and a progress record written in between must not make
   // the block it is inside disappear from under the learner.
@@ -953,10 +987,15 @@ export async function openLesson(lessonId) {
   const lesson = state.lessons[lessonPosition];
   const seen = getLessonProgress(lesson.id);
   const unread = !seen || (!seen.done && (seen.read ?? 0) <= 0.02);
+  // One taker for the whole opening. The pretest takes the first question
+  // and the check blocks take the ones after it, so no question is met
+  // twice on one page.
+  const nextCheck = takeChecks(lesson);
   state.reader = {
     lessonIndex: lessonPosition,
     answers: new Map(),
-    pretest: unread ? takeChecks(lesson)() : null,
+    nextCheck,
+    pretest: unread ? nextCheck() : null,
   };
   setReaderChrome(true);
   announce(lessons[lessonPosition].category);
