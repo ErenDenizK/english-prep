@@ -633,8 +633,8 @@
       },
       {
         "type": "pitfall",
-        "wrong": "A crucial amount of water was lost.",
-        "right": "A substantial amount of water was lost.",
+        "wrong": "A crucial amount of time was wasted.",
+        "right": "A substantial amount of time was wasted.",
         "why": "crucial miktar bildirmez, onsuz olmaz der. Ölçülen bir miktarı büyük göstermek için miktar ekseninden bir sözcük gerekir."
       },
       {
@@ -1017,9 +1017,9 @@
       },
       {
         "type": "pitfall",
-        "wrong": "The wording was reluctant.",
-        "right": "The wording was deliberate.",
-        "why": "Bir metnin ya da eylemin kasten seçildiğini söyleyen sözcük deliberate'tir. reluctant kişinin gönülsüzlüğünü anlatır; bir eylemi kasıtlı diye niteleyemez."
+        "wrong": "The board wanted the merger and was reluctant, so it asked for a second legal opinion.",
+        "right": "The board wanted the merger and was cautious, so it asked for a second legal opinion.",
+        "why": "reluctant yapmayı istememektir; kurul birleşmeyi istiyor, dolayısıyla gönülsüz değil. Ağır davranmasının nedeni istememek değil, hukuki risk — riski tartarak ölçülü ilerlemenin sözcüğü cautious'tır."
       },
       {
         "type": "check"
