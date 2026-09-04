@@ -980,7 +980,7 @@
             "then": "Overshoot"
           },
           {
-            "condition": "Şık \"is said\" yerine \"is known / is proven\" diyorsa: söylenti kesinliğe yükselmiştir",
+            "condition": "Şıkta aktarımın kesinliği yükselmişse: \"is said\" yerine \"is known / is proven / has been established\" denmişse, ya da orijinaldeki bir çekince (\"only rumoured\", \"is thought\") atılmışsa",
             "then": "Re-modalise"
           },
           {
@@ -988,7 +988,7 @@
             "then": "Re-time"
           },
           {
-            "condition": "Orijinal \"is said\" derken şık \"was said\" diyorsa: aktarımın kendisi geçmişe çekilmiştir",
+            "condition": "Aktarımın kendisi başka bir zamana çekilmişse: orijinal şimdiki zamanda aktarırken (\"is said\") şık geçmişte aktarıyorsa (ya da tersi). Orijinal zaten geçmişte aktarıyorsa bu kural ateşlemez",
             "then": "Re-time"
           },
           {
@@ -996,11 +996,11 @@
             "then": "Reverse"
           },
           {
-            "condition": "Aktarım kalıbı doğru ama aktarılan cümlenin içi değişmişse: bir niteleyici başka bir isme bağlanmışsa (\"wrong depot\" → \"wrong consignment\"), ya da bir yön sözcüğü tersine çevrilmişse (\"earlier\" → \"later\", \"above\" → \"below\")",
+            "condition": "Aktarım kalıbı doğru ama aktarılan cümlenin içi değişmişse: bir niteleyici başka bir isme bağlanmışsa (\"wrong depot\" → \"wrong consignment\"), ya da bir sözcük yerine karşıtı konmuşsa (\"above\" → \"below\", \"accepted\" → \"refused\"). Bir sözcüğün kısalması değişiklik değildir (\"weeks earlier than allowed\" ile \"weeks early\" aynı şeyi der), ve taraflar da yer değiştirmişse bu bir tersine çevirme değil, aynı şeyin öbür yönden söylenmesidir",
             "then": "Reverse"
           },
           {
-            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve i̇ki kalıp arasında geçilmiş, kaynak orijinalde ne kadarsa şıkta da o kadar (eklenmemiş, silinmemiş) ve zaman ilişkisi korunmuşsa",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve aktarım kalıbı değişmiş olabilir ama aktarımın kendisi duruyorsa, kaynak orijinalde ne kadarsa şıkta da o kadar (eklenmemiş, silinmemiş) ve zaman ilişkisi korunmuşsa",
             "then": "Same meaning"
           }
         ]
