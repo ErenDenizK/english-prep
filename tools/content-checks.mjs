@@ -1,9 +1,9 @@
-// The four content checks that could not live in the schema validator.
+// The content checks that could not live in the schema validator.
 //
 // They are here rather than in tools/validate-content.mjs for the same
 // reason tools/color.mjs is not inside tools/palette.mjs: a script with a
 // top-level await main() cannot be imported, so nothing in it can be unit
-// tested, and these four are the checks whose thresholds most need a test
+// tested, and these are the checks whose thresholds most need a test
 // around them. tests/content-checks.test.mjs plants each defect and asserts
 // it is caught.
 //
@@ -442,5 +442,124 @@ export function checkOptionNotes(report, where, question, checkTurkish = () => {
       );
     }
     checkTurkish(report, where, `optionNotes["${option}"]`, note);
+  }
+}
+
+/**
+ * Example sentences a lesson prints, from every block type that carries
+ * one. The reader shows these two or three blocks above a `check`, which
+ * is filled from the questions in the same category — so a sentence here
+ * that IS a question's keyed sentence hands the learner the answer.
+ */
+export function lessonSentences(lesson) {
+  const out = [];
+  for (const block of lesson.blocks ?? []) {
+    for (const side of block.sides ?? []) {
+      if (isNonEmptyString(side.example)) out.push(side.example);
+    }
+    for (const row of block.rows ?? []) {
+      if (isNonEmptyString(row.example)) out.push(row.example);
+    }
+    for (const item of block.items ?? []) {
+      if (isNonEmptyString(item.sentence)) out.push(item.sentence);
+    }
+    for (const field of ["wrong", "right"]) {
+      if (isNonEmptyString(block[field])) out.push(block[field]);
+    }
+  }
+  return out;
+}
+
+/** Contractions expanded, punctuation dropped, case folded. "I've already
+ *  finished" and "I have already finished" are the same sentence to a
+ *  learner who has just read one and is being asked the other. */
+function normalizeSentence(text) {
+  return text
+    .toLowerCase()
+    .replace(/[’']ve\b/g, " have")
+    .replace(/[’']s\b/g, " is")
+    .replace(/[’']re\b/g, " are")
+    .replace(/[’']ll\b/g, " will")
+    .replace(/[’']d\b/g, " would")
+    .replace(/n[’']t\b/g, " not")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const GIVEAWAY_RUN = 6;
+
+/** The longest run of consecutive words the two share. */
+function longestSharedRun(a, b) {
+  const left = a.split(" ");
+  const right = new Set();
+  const rightWords = b.split(" ");
+  for (let size = Math.min(left.length, rightWords.length); size >= 1; size -= 1) {
+    right.clear();
+    for (let i = 0; i + size <= rightWords.length; i += 1) {
+      right.add(rightWords.slice(i, i + size).join(" "));
+    }
+    for (let i = 0; i + size <= left.length; i += 1) {
+      if (right.has(left.slice(i, i + size).join(" "))) {
+        return size;
+      }
+    }
+  }
+  return 0;
+}
+
+/**
+ * A question must never be built on a sentence from its own lesson.
+ *
+ * `docs/agents/question-author.md` states the rule and `checkIntroGiveaway`
+ * has enforced it for the intro screen since the intros shipped. It was
+ * never enforced for the lesson itself, and the sufficiency pass of
+ * 2026-09-04 found the consequence: 49 of the 72 questions in the three
+ * oldest topics have their keyed sentence reproduced inside their own
+ * lesson, and in 9 of the 18 lessons all four do. A `check` block draws
+ * from the same category, so the learner meets the answer two blocks
+ * above the question.
+ *
+ * A WARNING rather than an error, for now, and only because of the size
+ * of the backlog: making it an error today would fail CI on fifty items
+ * that a repair pass is working through. It measures the backlog, stops
+ * it growing, and becomes an error when the count reaches zero.
+ */
+export function checkLessonGiveaway(report, file, lesson, questions) {
+  const sentences = lessonSentences(lesson).map((raw) => ({
+    raw,
+    normalized: normalizeSentence(raw),
+  }));
+  if (sentences.length === 0) {
+    return;
+  }
+
+  for (const question of questions) {
+    const stem = question.paragraph ?? question.sentence ?? "";
+    const key = question.options?.[question.correctIndex];
+    if (!isNonEmptyString(stem) || !isNonEmptyString(key)) {
+      continue;
+    }
+    const filled = normalizeSentence(stem.replace(/_{2,}/, key));
+    const normalizedKey = normalizeSentence(key);
+    for (const sentence of sentences) {
+      const run = longestSharedRun(filled, sentence.normalized);
+      // Six words of shared frame is not by itself a giveaway — "by the
+      // end of the week" is six words and belongs to nobody. What makes
+      // it one is the lesson sentence also carrying the keyed form, so
+      // the learner has seen this frame WITH this answer in it. A very
+      // long run is a giveaway on its own: at eight words the two
+      // sentences are the same sentence whatever the key is doing.
+      const carriesKey = sentence.normalized.includes(normalizedKey);
+      if (run >= GIVEAWAY_RUN && (carriesKey || run >= GIVEAWAY_RUN + 2)) {
+        report.warn(
+          `${file} › ${lesson.category}`,
+          `${question.id}'s keyed sentence shares ${run} words with a sentence in its own ` +
+            `lesson ("${sentence.raw}") — a check block draws from this category, so the ` +
+            "learner meets the answer above the question"
+        );
+        break;
+      }
+    }
   }
 }
