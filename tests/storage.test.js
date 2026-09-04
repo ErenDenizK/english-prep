@@ -670,3 +670,34 @@ test("answering the same four questions again does not manufacture evidence", ()
   assert.equal(entry.total, 4);
   assert.equal(entry.confident, false);
 });
+
+test("finishing a lesson twice does not write twice", () => {
+  // The reader calls markLessonDone from a scroll handler, so holding at
+  // the bottom of a lesson used to serialise the whole progress map on
+  // every animation frame — eighty writes in eighty frames.
+  let writes = 0;
+  const real = localStorage.setItem;
+  localStorage.setItem = (...args) => {
+    writes += 1;
+    return real(...args);
+  };
+  try {
+    storage.markLessonDone("tenses-l1");
+    const after = writes;
+    for (let i = 0; i < 20; i += 1) {
+      storage.markLessonDone("tenses-l1");
+    }
+    assert.equal(writes, after, "repeat calls wrote to storage");
+  } finally {
+    localStorage.setItem = real;
+  }
+});
+
+test("finishing again does not move the timestamp", () => {
+  // `at` means when the learner finished this lesson. Scrolling past the
+  // end a week later is not finishing it again.
+  storage.markLessonDone("tenses-l2");
+  const first = storage.getLessonProgress("tenses-l2").at;
+  storage.markLessonDone("tenses-l2");
+  assert.equal(storage.getLessonProgress("tenses-l2").at, first);
+});

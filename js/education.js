@@ -1153,7 +1153,10 @@ function renderCheckBlock(question, blockIndex, { label = "Kontrol" } = {}) {
     wrap.appendChild(el("p", "t-label", label));
   }
 
-  wrap.appendChild(renderPrompt(question));
+  // A lesson can hold a pretest and two checks at once, so the stem's id
+  // is per block or three groups would point at the same paragraph.
+  const stemId = `question-stem-${blockIndex}`;
+  wrap.appendChild(renderPrompt(question, { idSuffix: String(blockIndex) }));
 
   const answered = state.reader.answers.has(blockIndex);
   const selected = state.reader.answers.get(blockIndex) ?? null;
@@ -1162,6 +1165,7 @@ function renderCheckBlock(question, blockIndex, { label = "Kontrol" } = {}) {
     renderOptions(question, {
       selected,
       answered,
+      labelledBy: stemId,
       onSelect: (option) => {
         state.reader.answers.set(blockIndex, option);
         announce(...answerAnnouncement(question, isCorrectAnswer(question, option), option));

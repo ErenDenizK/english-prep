@@ -1679,7 +1679,19 @@ async function runAccessibility(page) {
     await page.locator('[role="tablist"], [role="tab"], [role="tabpanel"]').count() === 0,
     "tablist deseni kullanılmıyor"
   );
-  ok(await page.locator("#live-region[role=status]").count() === 1, "tek kalıcı canlı bölge");
+  // One persistent live region in the shell. A modal is the one
+  // exception and it is written into §8.4: a native <dialog> makes the
+  // rest of the document inert, so announcing into the shell's region
+  // from inside one announces into nothing.
+  ok(
+    (await page.locator("#live-region[role=status]").count()) === 1,
+    "tek kalıcı canlı bölge"
+  );
+  ok(
+    (await page.locator("dialog [role=status]").count()) ===
+      (await page.locator("[role=status]").count()) - 1,
+    "kabuğun dışındaki tek canlı bölge modalın kendi bölgesi"
+  );
 
   await page.keyboard.press("Tab");
   const ring = await page.evaluate(() => getComputedStyle(document.activeElement).outlineWidth);
@@ -1831,6 +1843,35 @@ async function runAccessibility(page) {
   }
 
   ok(await page.locator('.option[aria-disabled="true"]').count() > 0, "cevaplanan seçenekler aria-disabled");
+
+  // §8.7 / WCAG 1.3.1: a question and its options are a group. Without
+  // it a screen reader reads four unrelated buttons and never says what
+  // is being asked or how many there are. Checked on a lesson, because
+  // that screen can hold three question groups at once — a pretest and
+  // two checks — and three groups pointing at one stem is the failure
+  // this is most likely to have.
+  await page.goto(`${BASE}/index.html#egitim/tenses-present-simple-vs-present-continuous`, {
+    waitUntil: "networkidle",
+  });
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector(".option");
+  const groups = await page.evaluate(() =>
+    [...document.querySelectorAll("[role=radiogroup]")].map((group) => {
+      const id = group.getAttribute("aria-labelledby");
+      return {
+        id,
+        resolves: Boolean(id && document.getElementById(id)),
+        options: group.querySelectorAll(".option").length,
+      };
+    })
+  );
+  ok(groups.length > 0, `soru ve şıkları bir grup (${groups.length} grup)`);
+  ok(groups.every((group) => group.resolves), "her grup var olan bir soru metnine işaret ediyor");
+  ok(
+    new Set(groups.map((group) => group.id)).size === groups.length,
+    "aynı sayfadaki gruplar aynı metni göstermiyor"
+  );
+  ok(groups.every((group) => group.options === 4), "her grup dört şıkkını da içeriyor");
   ok(await page.locator(".option[disabled]").count() === 0, "hiçbir yerde disabled kullanılmıyor");
 }
 

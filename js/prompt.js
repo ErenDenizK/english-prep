@@ -23,7 +23,7 @@ const INSTRUCTION = {
  *   question already answered rather than the question itself.
  * @returns {DocumentFragment}
  */
-export function renderPrompt(question, { lead = true } = {}) {
+export function renderPrompt(question, { lead = true, idSuffix = null } = {}) {
   const fragment = document.createDocumentFragment();
 
   const instruction = INSTRUCTION[question.type];
@@ -35,6 +35,12 @@ export function renderPrompt(question, { lead = true } = {}) {
   // "____" in it, so it comes through as plain text.
   const text = el("p", lead ? "t-lead t-en" : "t-body t-en");
   text.lang = "en";
+  // Named so the option group can point at it (§8.7, 1.3.1): a screen
+  // reader then announces what is being asked before "1 of 4", instead
+  // of four unrelated buttons. One id per screen is enough because one
+  // question is on screen at a time — the reader's `check` blocks are
+  // the exception and pass `idSuffix`.
+  text.id = idSuffix ? `question-stem-${idSuffix}` : "question-stem";
   appendBlanked(text, question.prompt);
   fragment.appendChild(text);
 

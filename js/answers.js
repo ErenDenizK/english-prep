@@ -17,10 +17,20 @@ import { isCorrectAnswer } from "./quiz-engine.js";
  * @param {{selected?: string|null, answered?: boolean, onSelect?: (option: string) => void}} [state]
  * @returns {HTMLDivElement}
  */
-export function renderOptions(question, { selected = null, answered = false, onSelect } = {}) {
+export function renderOptions(question, { selected = null, answered = false, onSelect, labelledBy = "question-stem" } = {}) {
   // Full bleed: on a phone the viewport is already the frame, and an
   // option that runs to the gutter is a bigger target for free.
   const wrap = el("div", "bleed");
+
+  // §8.7, WCAG 1.3.1: a question and its options are a group. Without
+  // this a screen reader reads four unrelated buttons and never says
+  // what is being asked or how many there are; with it, "Present Simple
+  // vs Present Continuous, 1 of 4". `radiogroup` rather than `radio`
+  // children, because these are buttons that commit an answer and do not
+  // come back — arrow keys moving a selection would promise an undo the
+  // app does not have.
+  wrap.setAttribute("role", "radiogroup");
+  wrap.setAttribute("aria-labelledby", labelledBy);
 
   question.options.forEach((option, index) => {
     const button = el("button", "option");
