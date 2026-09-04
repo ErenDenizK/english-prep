@@ -268,7 +268,7 @@
   {
     "id": "academic-nouns-adjectives-t15",
     "category": "Significance & Priority (crucial / substantial / marginal / negligible / considerable)",
-    "paragraph": "Fitting the whole fleet with the new tyres cut fuel use by four tenths of one per cent — a saving the depot could measure, but only just. Beside the driver-training scheme that took seven per cent off the same bill the tyre figure looked ____ ; even so, it was those four tenths that carried the depot under its emissions cap in November, and the finance office has kept them in the accounts ever since.",
+    "paragraph": "Fitting the whole fleet with the new tyres cut fuel use by four tenths of one per cent. The depot's auditors call that a ____ saving: anything the fuel meters can separate from ordinary week-to-week variation has to be carried in the annual return, so the four tenths are entered in full rather than rounded away.",
     "options": [
       "marginal",
       "negligible",
@@ -276,12 +276,12 @@
       "considerable"
     ],
     "correctIndex": 0,
-    "explanation": "Kazanç küçük ama gerçek: binde dört ölçülebiliyor, yüzde yedilik eğitim tasarrufunun yanında sönük kalıyor, yine de depoyu kasımda emisyon sınırının altına taşıyan şey o binde dört ve rakam hâlâ hesapta duruyor. Ölçülen, hesaba giren ama zar zor sayılan büyüklük 'marginal'dır. En yakın yanlış seçenek 'negligible'dır; o 'hesaba katmaya gerek yok' demektir, oysa bu kazanç hesaptan çıkarılamaz — çıkarılsaydı sınır aşılmış olurdu.",
+    "explanation": "Miktar çok küçük — binde dört — ama paragraf o küçüklüğün hesap dışında bırakılmadığını söylüyor: yakıt sayaçlarının haftalık dalgalanmadan ayırabildiği her şey yıllık beyana giriyor ve bu binde dört yuvarlanıp atılmıyor, olduğu gibi kaydediliyor. Ölçülen, hesaba giren, yine de zar zor sayılan büyüklük 'marginal'dır. En yakın yanlış seçenek 'negligible'dır; o 'hesaba katmaya gerek yok, çıkarılabilir' demektir ve cümlenin devamıyla doğrudan çelişir.",
     "tip": "'Marginal' ölçülen ve hesaba giren ama zar zor sayılan küçüklüktür; hesabın dışında bırakılabilecek kadar küçük olan ise 'negligible'dır.",
     "optionNotes": {
-      "negligible": "Hesaba katılmasına gerek olmayan. Binde dörtlük kazanç hesaptan çıkarılamaz: depoyu kasımda sınırın altına taşıyan ve hâlâ hesapta tutulan şey odur.",
-      "substantial": "Miktarca büyük, ciddi. Yüzde yedinin yanında binde dörtlük bir yakıt tasarrufu bu sözcüğü karşılamaz.",
-      "considerable": "Hatırı sayılır ölçüde çok. Paragraf kazancın yüzde yedilik tasarrufun yanında sönük kaldığını söylüyor."
+      "negligible": "Hesaba katılmasına gerek olmayan, yuvarlanıp atılabilen. Paragraf tam tersini söylüyor: binde dörtlük tasarruf yıllık beyana olduğu gibi giriyor.",
+      "substantial": "Miktarca büyük, ciddi. Yakıt tüketiminde binde dörtlük bir düşüş bu sözcüğü karşılamaz.",
+      "considerable": "Hatırı sayılır ölçüde çok. Yuvarlanıp atılma sınırında duran bir binde dört bunun tersidir."
     }
   },
   {
@@ -409,11 +409,11 @@
       "persistent"
     ],
     "correctIndex": 0,
-    "explanation": "Gecikme yalnızca en çok itiraz eden üç haneye denk geliyor, üç zarf aynı gün aynı postaneden damgalanmış ve o hafta başka hiçbir bildirim gecikmemiş: paragraf hem rastlantıyı hem de ihmali eliyor. Bilerek yapılan bir şey 'deliberate'tir. En yakın yanlış seçenek 'indifferent'tır; umursamazlık dağınık gecikmeler üretirdi, oysa 'not careless' ifadesi kusurun dikkatsizlik olmadığını açıkça söylüyor.",
-    "tip": "'Deliberate' bilerek yapılmış demektir; anlatılan şey dikkatsizlik ya da aldırmazlıksa aranan sözcük 'indifferent' olur.",
+    "explanation": "Gecikme yalnızca en çok itiraz eden üç haneye denk geliyor, üç zarf aynı gün aynı postaneden damgalanmış ve o hafta başka hiçbir bildirim gecikmemiş: paragraf rastlantıyı bu üç kanıtla eliyor, ihmali de 'not careless' diyerek eliyor. Bilerek yapılan bir şey 'deliberate'tir. En yakın yanlış seçenek 'indifferent'tır; umursamazlık dağınık, rastgele gecikmeler üretirdi — oysa buradaki gecikme tam hedefine oturuyor ve başka hiçbir bildirimi tutmuyor.",
+    "tip": "'Deliberate' bir eylemin kaza ya da rastlantı değil, seçim olduğunu söyler: paragraf rastlantıyı eliyorsa aranan sözcük odur.",
     "optionNotes": {
       "cautious": "Riske karşı temkinli davranan. Ortada korunulan bir risk yok; geciktirilmiş üç itiraz var.",
-      "indifferent": "Umursamayan. Umursamazlık bir dikkatsizlik biçimidir ve cümle 'not careless' diyerek bunu eliyor; ayrıca gecikme rastgele değil, tam o üç haneye denk geliyor.",
+      "indifferent": "Umursamayan. Umursamazlık dağınık gecikmeler üretirdi; oysa o hafta başka hiçbir bildirim gecikmiyor, gecikenler tam en çok itiraz eden üç hane.",
       "persistent": "Vazgeçmeden sürdüren. Tek bir öğleden sonraya sığmış tek seferlik bir işlem için kullanılmaz."
     }
   },

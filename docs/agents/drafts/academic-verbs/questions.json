@@ -401,7 +401,7 @@
   {
     "id": "academic-verbs-t22",
     "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
-    "paragraph": "Nobody on the desk was competing for the flood story; it meant two days in the rain. The editor ____ it to the one who had spent two summers on that stretch of coast, and gave the others the planning meeting and the school inspection.",
+    "paragraph": "The inquiry into the sluice gates needed somebody who could read a tide table, and Selin was the only reporter on the paper who could. The editor ____ her to the hearings the same afternoon, and the planning meeting waited until she was back from the coast.",
     "options": [
       "assigned",
       "allocated",
@@ -409,18 +409,18 @@
       "retained"
     ],
     "correctIndex": 0,
-    "explanation": "Ortada kapışılan bir kaynak yok: kimsenin istemediği bir iş, o kıyıyı bilen muhabire veriliyor. Bir görevi ya da rolü belirli bir kişiye vermek 'assign'dır. 'Allocated' sınırlı ve bölüşülebilir bir kaynağın bir amaca ayrılmasını anlatır — parayı, süreyi, yeri; bir haber bu anlamda pay edilen bir kaynak değil, birine verilen bir iştir.",
-    "tip": "'Assign' bir işi ya da rolü bir kişiye verir; 'allocate' para, süre, yer gibi bölüşülebilir kaynakları bir amaca ayırır.",
+    "explanation": "Ortada bölüştürülecek bir şey yok: gazetede bu işi yapabilecek tek muhabir var ve editör onu belirli bir işe gönderiyor. Bir kişiyi belirli bir göreve ya da yere görevlendirmek 'assign'dır. 'Allocated' sınırlı bir kaynaktan bir payın ayrılmasını anlatır; nesnesi para, süre, kontenjan gibi bölüştürülebilir bir miktardır — adı anılan tek bir insan değil.",
+    "tip": "'Assign' bir işi bir kişiye ya da bir kişiyi bir işe bağlar; 'allocate'in nesnesi para, süre, kontenjan gibi bölüştürülebilir bir miktardır — bir kişi değil.",
     "optionNotes": {
-      "allocated": "Bölüşülebilir bir kaynağı bir amaca ayırmak. Burada ayrılan para ya da süre değil, bir kişiye verilen bir iş var.",
-      "withheld": "Hak edilen bir şeyi bilerek vermemek; alıcıyı 'from' ile alır. Haber esirgenmiyor, bir muhabire veriliyor.",
-      "retained": "Kendinde tutmak, elden çıkarmamak. Editör haberi kendine saklamıyor, bir muhabire devrediyor."
+      "allocated": "Sınırlı bir kaynaktan bir payı bir amaca ayırmak. Burada bölüştürülen bir miktar yok; bir kişi belirli bir işe gönderiliyor.",
+      "withheld": "Hak edilen bir şeyi bilerek vermemek; alıcıyı 'from' ile alır. Muhabir bir işten alıkonmuyor, tersine o işe gönderiliyor.",
+      "retained": "Zaten elde olanı bırakmayıp tutmak; 'to' almaz. Muhabir zaten kadroda; soru onu tutmak değil, hangi işe göndereceği."
     }
   },
   {
     "id": "academic-verbs-t23",
     "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
-    "paragraph": "The insurer has not said that the claim is invalid, and it does not dispute that the money is owed. It has simply ____ the last part of the payment until the garage sends the photographs it asked for in March, and the family has been driving a hire car ever since.",
+    "paragraph": "The insurer has not said that the claim is invalid, and it does not dispute that the repairs are covered. It has simply ____ its authorisation until the garage sends the photographs it asked for in March, and the family has been driving a hire car ever since.",
     "options": [
       "withheld",
       "assigned",
@@ -428,12 +428,12 @@
       "distributed"
     ],
     "correctIndex": 0,
-    "explanation": "Para aileye borçlu ve şirket bunu tartışmıyor bile; yalnızca bir koşul yerine gelene kadar ödemeyi bilerek yapmıyor. Karşı tarafın hak ettiği, borçlu olunan bir şeyi vermemek 'withhold'dur. 'Retained' elde tutulan şeyin zaten öznenin kendisinin olduğunu varsayar; oysa bu para şirketin değil, ailenin alacağıdır.",
-    "tip": "'Withhold' karşı tarafın hak ettiği, borçlu olunan bir şeyi bilerek vermemektir; 'retain' ise zaten kendinin olan bir şeyi elde tutmaktır.",
+    "explanation": "Şirket ödemeyi tartışmıyor: onarımın kapsamda olduğunu kabul ediyor, ama ailenin hak ettiği onayı bir koşul yerine gelene kadar bilerek vermiyor. Karşı tarafın hak ettiği bir şeyi kasten vermemek 'withhold'dur. 'Retained' öznenin elinde tuttuğu bir şeyi gerektirir; oysa onay verilmiş değil, hiç verilmemiş bir karardır — elde tutulan bir nesne yok.",
+    "tip": "'Withhold' verilmesi beklenen ve karşı tarafın hak ettiği bir şeyi bilerek vermemektir; 'retain' ise öznenin zaten elinde olan bir şeyi bırakmamasıdır.",
     "optionNotes": {
-      "assigned": "Bir işi ya da hakkı birine vermek. Burada verilen değil, kasıtlı olarak verilmeyen bir ödeme var.",
-      "retained": "Zaten kendinin olan bir şeyi elde tutmak. Bu para şirketin değil; borçlu olduğu ve ailenin hak ettiği bir ödeme.",
-      "distributed": "Birçok alıcıya paylaştırmak. Tek bir aileye yapılacak tek bir ödeme söz konusu."
+      "assigned": "Bir görevi ya da rolü belirli birine vermek. Burada verilen bir iş değil, verilmeyen bir onay var.",
+      "retained": "Elde olan bir şeyi bırakmayıp tutmak. Onay hiç verilmemiş bir karardır; ortada elde tutulan bir nesne yok.",
+      "distributed": "Aynı şeyi birçok alıcıya paylaştırmak. Tek bir dosya ve tek bir aileye verilecek tek bir onay var."
     }
   },
   {
