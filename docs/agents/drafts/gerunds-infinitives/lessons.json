@@ -14,12 +14,12 @@
           {
             "label": "Verb + V-ing",
             "gloss": "Bazı fiiller kendinden sonraki eylemi hazır bir etkinlik gibi alır: hoşlanma, kaçınma ve sürdürme fiillerinin neredeyse tamamı bu gruptadır.",
-            "example": "She avoids driving at night."
+            "example": "He postponed calling."
           },
           {
             "label": "Verb + to V",
             "gloss": "Bazı fiiller kendinden sonraki eylemi henüz gerçekleşmemiş bir hedef gibi alır: karar, plan, söz ve ret fiilleri bu gruptadır.",
-            "example": "She refuses to drive at night."
+            "example": "He promised to call."
           }
         ]
       },
@@ -49,6 +49,12 @@
             "use": "Sürdürme, bitirme",
             "pattern": "keep / finish / postpone + V-ing",
             "example": "They kept talking."
+          },
+          {
+            "form": "Verb + V-ing",
+            "use": "İtiraf, inkâr",
+            "pattern": "admit / deny + V-ing",
+            "example": "He admitted taking it."
           },
           {
             "form": "Verb + to V",
@@ -131,7 +137,7 @@
       },
       {
         "type": "decision",
-        "heading": "Boşluktan önceki fiile bak",
+        "heading": "Şıkkı boşluğa koy, sonra fiile bak",
         "rules": [
           {
             "signals": [
@@ -142,7 +148,8 @@
               "consider",
               "deny",
               "postpone",
-              "risk"
+              "risk",
+              "admit"
             ],
             "then": "V-ing"
           },
@@ -186,8 +193,12 @@
             "then": "V-ing"
           },
           {
-            "condition": "Fiil listelerde yoksa ve ileriye dönük bir karar, niyet ya da söz anlatıyorsa (son çare tahmin)",
+            "condition": "Fiil yukarıdaki listelerin hiçbirinde yoksa ve bir karar, bir söz ya da bir ret bildiriyorsa (decide, promise, refuse ailesi; son çare tahmin). Bir **öneri** bildiriyorsa bu kural işlemez: suggest, recommend, propose ileriye baksa da -ing alır.",
             "then": "to V"
+          },
+          {
+            "condition": "Yukarıdaki kurallar şıkları tek bir tanesine indirmediyse ve elde iki farklı fiilin doğru biçimi kaldıysa, soru artık biçim sorusu değildir: paragrafın anlattığı olay hangi fiili gerektiriyorsa o. Sessiz bir alışkanlıkla ilan edilmiş bir tavır (avoid / refuse), zorlukla başarmakla keyif almak (manage / enjoy), reddetmekle kabul etmek (refuse / admit) aynı şey değildir.",
+            "then": "Context, not form"
           }
         ]
       }
@@ -195,24 +206,24 @@
   },
   {
     "category": "Both, With a Meaning Change: Remember / Stop / Try / Regret",
-    "summary": "İkinci eylem çoktan oldu mu, yoksa daha önünde mi?",
+    "summary": "İkinci eylem ana fiilden önce mi, sonra mı?",
     "blocks": [
       {
         "type": "text",
-        "body": "Türkçe bu farkı iki ayrı fiille kurar: \"sigarayı bıraktı\" ile \"sigara içmek için durdu\" arasında karışacak bir şey yoktur. İngilizcede ikisinin de fiili **stop**; değişen tek şey ikinci fiilin biçimidir. Bu yüzden fark Türkçe konuşan biri için görünmez. Tek bir soru bütün kategoriyi çözer: ikinci eylem çoktan oldu mu, yoksa henüz olmadı mı?"
+        "body": "Türkçe bu farkı iki ayrı fiille kurar: \"sigarayı bıraktı\" ile \"sigara içmek için durdu\" arasında karışacak bir şey yoktur. İngilizcede ikisinin de fiili **stop**; değişen tek şey ikinci fiilin biçimidir. Bu yüzden fark Türkçe konuşan biri için görünmez. Tek bir soru bütün kategoriyi çözer: ikinci eylem ana fiilden önce mi başlamıştır, yoksa ondan sonra mı gelir?"
       },
       {
         "type": "contrast",
-        "heading": "Tek soru: ikinci eylem gerçekleşti mi?",
+        "heading": "Tek soru: ana fiil anına göre ikinci eylem nerede?",
         "sides": [
           {
             "label": "Verb + V-ing",
-            "gloss": "İkinci eylem gerçektir: olmuş, oluyor ya da gerçekten uygulanıyordur. Ana fiil ona geriye doğru bakar; hatırlar, bırakır, pişman olur, dener.",
+            "gloss": "İkinci eylem ana fiilden **önce** başlamıştır: ya çoktan olup bitmiştir, ya o sırada sürmektedir, ya da denenmek için gerçekten uygulanmıştır. Ana fiil ona geriye bakar.",
             "example": "He stopped taking the pills."
           },
           {
             "label": "Verb + to V",
-            "gloss": "İkinci eylem henüz gerçekleşmemiştir: yapılacak, amaçlanan ya da sonucu belirsiz bir çabadır. Ana fiil ona ileriye doğru bakar.",
+            "gloss": "İkinci eylem ana fiilden **sonra** gelir: ana fiil onun için yapılır ya da onu haber verir. O anda henüz başlamamıştır; sonradan gerçekleşmiş olması bunu değiştirmez.",
             "example": "He stopped to take the pills."
           }
         ]
@@ -266,7 +277,7 @@
             "form": "regret",
             "use": "İleriye: kötü haber verilmek üzere",
             "pattern": "regret + to V",
-            "example": "We regret to inform you."
+            "example": "We regret to announce a delay."
           }
         ]
       },
@@ -321,35 +332,48 @@
       },
       {
         "type": "decision",
-        "heading": "İkinci eylem gerçekleşti mi?",
+        "heading": "Şıkkı boşluğa koy: ikinci eylem nereye düşüyor?",
         "rules": [
-          {
-            "condition": "İkinci eylem gerçekten yaşanıyor ya da yaşanmışsa: hatırlanan, bırakılan, pişman olunan ya da uygulanıp sonucuna bakılan şey",
-            "then": "V-ing"
-          },
-          {
-            "condition": "İkinci eylem gerçekleşmemişse: yalnızca hatırlatılan bir iş, duruşun amacı ya da sonucu belirsiz bir çaba",
-            "then": "to V"
-          },
-          {
-            "condition": "**stop**'tan sonra \"ne için durdu?\" sorusunun cevabı geliyorsa",
-            "then": "to V"
-          },
-          {
-            "condition": "**try**'dan sonra bir sorunu çözmek için önerilen yöntem geliyorsa (işe yarıyor mu diye)",
-            "then": "V-ing"
-          },
-          {
-            "condition": "**try**'dan sonra zor bir işi başarma çabası geliyorsa; devamında çoğu zaman \"but\" gelir",
-            "then": "to V"
-          },
           {
             "signals": [
               "regret to inform you",
               "regret to say",
-              "regret to tell you"
+              "regret to tell you",
+              "regret to announce"
             ],
             "then": "to V"
+          },
+          {
+            "condition": "**regret** pişmanlık değil de o anda verilen bir kötü haberi duyuruyorsa — arkasından **that** ile haberin kendisi geliyorsa — kalıp sabittir ve -ing almaz",
+            "then": "to V"
+          },
+          {
+            "condition": "**stop**'tan sonra gelen eylem, durmadan önce sürmüyorduysa — duruşun sebebi, yani \"ne için durdu?\" sorusunun cevabıysa — o eylemin arkasından gerçekleşmiş olması hiçbir şeyi değiştirmez",
+            "then": "to V"
+          },
+          {
+            "condition": "**stop**'tan sonra gelen eylem durmadan önce zaten sürüyorduysa ve sona eriyorsa",
+            "then": "V-ing"
+          },
+          {
+            "condition": "**try**'dan sonra gelen şey, bir sorunu çözmek için gerçekten uygulanan bir yöntemse: zor değildir, uygulanır ve sonucuna bakılır",
+            "then": "V-ing"
+          },
+          {
+            "condition": "**try**'dan sonra gelen şey zor bir işi başarma çabasıysa ve başarıldığı söylenmiyorsa; devamında çoğu zaman \"but\" gelir",
+            "then": "to V"
+          },
+          {
+            "condition": "**remember** ya da **regret**'ten sonra gelen eylem, hatırlama ya da pişmanlık anından önce yapılmışsa",
+            "then": "V-ing"
+          },
+          {
+            "condition": "**remember**'dan sonra gelen eylem henüz yapılmamış, yapılması hatırlatılan bir işse",
+            "then": "to V"
+          },
+          {
+            "condition": "Yukarıdaki kurallar birden fazla şıkkı ayakta bıraktıysa, geriye kalan soru biçim değil fiil sorusudur: paragraf bir hatırlamadan mı, bir pişmanlıktan mı, bir duruştan mı, yoksa bir denemeden mi söz ediyor?",
+            "then": "Context, not form"
           }
         ]
       }
@@ -370,17 +394,17 @@
           {
             "label": "make + O + V",
             "gloss": "Zorlama: kişi istemese de yapar. Nesneden sonra fiil yalın gelir, 'to' almaz.",
-            "example": "The teacher made us rewrite the essay."
+            "example": "They made her wait."
           },
           {
             "label": "let + O + V",
             "gloss": "İzin: engel kaldırılır, kişi kendi ister. Bu da yalın fiil ister.",
-            "example": "They let me leave early."
+            "example": "They let her wait."
           },
           {
             "label": "get + O + to V",
             "gloss": "İkna etme ya da ayarlama: kişi razı edilir. Dördünün içinde 'to'lu mastar alan tek fiil budur.",
-            "example": "I got my brother to help me."
+            "example": "They got her to wait."
           }
         ]
       },
@@ -492,19 +516,27 @@
       },
       {
         "type": "decision",
-        "heading": "Boşluktan sonrasına bak",
+        "heading": "Şıkkı oku: nesneden sonra ne geliyor?",
         "rules": [
           {
-            "condition": "Nesneden sonra 'to'suz yalın fiil varsa (me go, us rewrite), üç aday kalır",
+            "condition": "Şıkta nesneden sonra 'to'suz yalın fiil varsa **ve nesne bir kişiyse** (made us read, let him drive, had the plumber check), üç aday kalır",
             "then": "make / let / have"
           },
           {
-            "condition": "Nesneden sonra 'to'lu mastar varsa (my brother to help)",
+            "condition": "Şıkta nesne bir **eşya** ve ardından yalın fiil geliyorsa (had the file print): bir eşya işi kendisi yapamaz, bu şık elenir",
+            "then": "have + O + V3"
+          },
+          {
+            "condition": "Şıkta nesneden sonra 'to'lu mastar geliyorsa (my brother to help), tek aday kalır",
             "then": "get"
           },
           {
-            "condition": "Nesneden sonra fiilin üçüncü hâli varsa (my car repaired)",
+            "condition": "Şıkta nesneden sonra fiilin üçüncü hâli geliyorsa (my car repaired)",
             "then": "have / get"
+          },
+          {
+            "condition": "Şıkta fiilin üçüncü hâli nesneden **önce** yazılmışsa (had printed the file), kalıbın sırası bozulmuştur; bu yapıda nesne her zaman fiilden önce gelir",
+            "then": "have + O + V3"
           },
           {
             "condition": "Kişi istemediği hâlde bir şeye zorlanıyorsa",
@@ -513,6 +545,10 @@
           {
             "condition": "Kişiye izin veriliyor ya da önündeki engel kaldırılıyorsa",
             "then": "let"
+          },
+          {
+            "condition": "Direnen ya da isteksiz biri ikna, rica ya da uzun bir uğraşla razı edilmişse",
+            "then": "get"
           },
           {
             "condition": "İşi yapması zaten beklenen biri görevlendiriliyorsa (usta, asistan, garson)",
@@ -524,15 +560,15 @@
   },
   {
     "category": "Adjective + Infinitive vs Preposition + Gerund",
-    "summary": "Boşluğun solunda sıfat mı var, edat mı?",
+    "summary": "Sıfat kendi edatını taşıyor mu, taşımıyor mu?",
     "blocks": [
       {
         "type": "text",
-        "body": "Türkçede \"yüzmekte iyiyim\" ile \"yüzmek kolay\" aynı ekle kurulur. İngilizcede bu iki cümlenin biri bir edatla (good **at**), diğeri doğrudan sıfatla (easy) devam eder ve bu fark fiilin biçimini değiştirir. İyi haber: burada ezber yok, istisnasız tek bir kural var. Edattan sonra fiil daima -ing alır."
+        "body": "Türkçede \"yüzmekte iyiyim\" ile \"yüzmek kolay\" aynı ekle kurulur. İngilizcede bu iki cümlenin biri bir edatla (good **at**), diğeri doğrudan sıfatla (easy) devam eder ve bu fark fiilin biçimini değiştirir. Kuralın bir yarısı ezbersiz: edattan sonra fiil istisnasız -ing alır. Diğer yarısı ezberdir: hangi sıfat kendi edatını taşır (capable **of**), hangisi taşımaz (able **to**)."
       },
       {
         "type": "contrast",
-        "heading": "Boşluktan önceki kelime ne?",
+        "heading": "Sıfat mı, edat mı?",
         "sides": [
           {
             "label": "Adjective + to V",
@@ -568,10 +604,22 @@
             "example": "They are ready to start."
           },
           {
+            "form": "Adjective + to V",
+            "use": "İsteklilik, hız",
+            "pattern": "eager / reluctant / quick / slow + to V",
+            "example": "She was reluctant to answer."
+          },
+          {
             "form": "Adjective + preposition + V-ing",
             "use": "Sıfat kendi edatını taşır",
             "pattern": "good at / afraid of / interested in + V-ing",
             "example": "He is interested in learning Arabic."
+          },
+          {
+            "form": "Adjective + preposition + V-ing",
+            "use": "Edatı sabit olan sıfatlar",
+            "pattern": "capable of / responsible for / tired of + V-ing",
+            "example": "She is responsible for closing up."
           },
           {
             "form": "Verb + preposition + V-ing",
@@ -583,7 +631,7 @@
             "form": "Preposition 'to' + V-ing",
             "use": "Mastar değil, edat olan 'to'",
             "pattern": "look forward to / object to + V-ing",
-            "example": "We look forward to hearing from you."
+            "example": "They objected to paying in advance."
           }
         ]
       },
@@ -610,7 +658,7 @@
             "note": "Fiilin edatı 'for' → for + V-ing"
           },
           {
-            "sentence": "We are looking forward to seeing the results.",
+            "sentence": "He is committed to finishing on time.",
             "note": "Buradaki 'to' mastar değil edat → to + V-ing"
           }
         ]
@@ -634,48 +682,84 @@
         "why": "Sıfattan sonra edat yoksa mastar gelir. -ing kuralı öğrenildikten sonra sıfatlara da taşınıyor, oysa \"difficult\" kendi edatını taşımaz."
       },
       {
+        "type": "pitfall",
+        "wrong": "She is capable to finish it alone.",
+        "right": "She is capable of finishing it alone.",
+        "why": "**able** ile **capable** aynı anlama gelir ama biçimleri farklıdır: 'able to do' der, 'capable of doing' der. Sıfatın kendi edatı varsa kararı sıfat değil o edat verir."
+      },
+      {
         "type": "check"
       },
       {
         "type": "decision",
-        "heading": "Önce boşluğun solundaki kelimeye bak",
+        "heading": "Şıkkı boşluğa koy, sonra fiilin soluna bak",
         "rules": [
           {
-            "condition": "Boşluğun hemen solunda bir edat varsa (of, in, at, about, for, on, without, by)",
+            "signals": [
+              "capable of",
+              "afraid of",
+              "tired of",
+              "interested in",
+              "good at",
+              "responsible for",
+              "insist on",
+              "succeed in"
+            ],
             "then": "V-ing"
           },
           {
-            "condition": "Boşluğun hemen solunda bir sıfat varsa ve araya edat girmiyorsa",
+            "condition": "Şıktaki sıfat **capable, afraid, interested, good, responsible, tired** gibi kendi edatını taşıyan bir sıfatsa, o sıfat edatsız kurulamaz: 'capable to finish' diye bir biçim yoktur",
+            "then": "V-ing"
+          },
+          {
+            "condition": "Kalıbın edatı değiştirilmiş ya da düşürülmüşse (look forward **for** hearing, look forward hearing): 'look forward to, object to, committed to' kalıplarının edatı sabittir, ne değişir ne düşer",
+            "then": "look forward to / object to + V-ing"
+          },
+          {
+            "condition": "Sıfata, taşımadığı bir edat eklenmişse (reluctant **of**, quick **at**, eager **for**): bir sıfatın edatı ya vardır ya yoktur, sonradan eklenemez",
             "then": "to V"
           },
           {
             "signals": [
               "look forward to",
               "object to",
+              "committed to",
               "in addition to",
-              "committed to"
+              "be used to"
             ],
             "then": "V-ing"
           },
           {
             "signals": [
-              "easy",
-              "difficult",
-              "hard",
+              "able",
               "ready",
               "willing",
               "likely",
-              "able"
+              "easy",
+              "difficult",
+              "hard",
+              "eager",
+              "reluctant",
+              "quick",
+              "slow"
             ],
             "then": "to V"
           },
           {
-            "condition": "'to' edat mı mastar mı belli değilse arkasına \"it\" koy: \"look forward to it\" oluyorsa edattır",
+            "condition": "Şıkkı boşluğa koyduğunda fiilin hemen solunda o fiile ait bir edat varsa (of, in, at, about, for, on, without, by)",
             "then": "V-ing"
           },
           {
-            "condition": "Sıfattan sonra bir edat yazılmışsa (good at, afraid of, tired of), kararı sıfat değil edat verir",
+            "condition": "Şıkta fiilin solunda bir sıfat var ve araya hiçbir edat girmiyorsa",
+            "then": "to V"
+          },
+          {
+            "condition": "'to' edat mı mastar mı belli değilse arkasına \"it\" koy: \"look forward to it\" oluyorsa edattır. Edattan sonra ne yalın fiil ne de mastar gelir (interested in to learn)",
             "then": "V-ing"
+          },
+          {
+            "condition": "Kurallar birden fazla şıkkı ayakta bıraktıysa, geriye kalan soru biçim değil sıfat sorusudur: paragraf hangi sıfatı gerektiriyor — istekli mi isteksiz mi, hızlı mı yavaş mı?",
+            "then": "Context, not form"
           }
         ]
       }
@@ -683,25 +767,25 @@
   },
   {
     "category": "Infinitive of Purpose vs For + Gerund",
-    "summary": "Bir kişinin amacı mı, bir nesnenin işlevi mi?",
+    "summary": "Amaç mı bildiriliyor, yoksa bir gerekçe mi?",
     "blocks": [
       {
         "type": "text",
-        "body": "Türkçede amaç tek kalıpla kurulur: \"-mek için\". Sınavda bu kalıp iki farklı İngilizce yapıya bölünür ve \"için\" kelimesi öğrenciyi doğrudan **for**'a çeker. Oysa \"for buying bread\" hatalıdır. Ayrım şudur: bir kişinin bir işi neden yaptığını mı söylüyorsun, yoksa bir nesnenin ne işe yaradığını mı?"
+        "body": "Türkçede amaç tek kalıpla kurulur: \"-mek için\". Sınavda bu kalıp iki farklı İngilizce yapıya bölünür ve \"için\" kelimesi öğrenciyi doğrudan **for**'a çeker. Oysa \"for buying bread\" hatalıdır. Ayrım şudur: bir kişinin bir işi hangi amaçla yaptığını mı söylüyorsun, yoksa bir cezanın, bir teşekkürün, bir özrün gerekçesini mi veriyorsun?"
       },
       {
         "type": "contrast",
-        "heading": "Amaç kimin?",
+        "heading": "Amaç mı, gerekçe mi?",
         "sides": [
           {
             "label": "to + V",
             "gloss": "Bir kişinin eylemi neden yaptığını söyler; amacın sahibi cümlenin öznesidir.",
-            "example": "I use this app to book tickets."
+            "example": "She rang to explain."
           },
           {
             "label": "for + V-ing",
-            "gloss": "Bir nesnenin ne işe yaradığını, işlevini söyler; ortada belirli bir kişi ve tek bir olay yoktur.",
-            "example": "This app is for booking tickets."
+            "gloss": "Bir eylemin **gerekçesini** verir ve bu 'for' bir öncekine aittir: onu isteyen fiil ya da isim cümlede yazılıdır (fine ... for, thank ... for, an apology for). Burada amaç değil, sebep vardır.",
+            "example": "She was thanked for helping."
           }
         ]
       },
@@ -731,6 +815,18 @@
             "use": "Nesnenin işlevi",
             "pattern": "N + is for + V-ing",
             "example": "This key is for opening the back door."
+          },
+          {
+            "form": "verb + for + V-ing",
+            "use": "Fiilin gerekçesi",
+            "pattern": "thank / blame / fine + O + for + V-ing",
+            "example": "They blamed him for leaving."
+          },
+          {
+            "form": "noun + for + V-ing",
+            "use": "İsmin gerekçesi",
+            "pattern": "an apology / a reason / an excuse + for + V-ing",
+            "example": "There is no excuse for lying."
           },
           {
             "form": "for + noun",
@@ -765,6 +861,10 @@
           {
             "sentence": "We went out for a quick coffee.",
             "note": "Amacın ardından fiil değil isim var → for + noun"
+          },
+          {
+            "sentence": "She was blamed for missing the deadline.",
+            "note": "Gerekçeyi 'blame' fiili istiyor → for + V-ing"
           }
         ]
       },
@@ -782,36 +882,52 @@
       },
       {
         "type": "pitfall",
-        "wrong": "This machine is for make coffee.",
-        "right": "This machine is for making coffee.",
-        "why": "'for' bir edattır ve edattan sonra fiil daima -ing alır. Cümlede 'for' gördüğün anda mastar seçeneği elenir."
+        "wrong": "They thanked him for wait.",
+        "right": "They thanked him for waiting.",
+        "why": "'for' bir edattır ve edattan sonra fiil daima -ing alır; yalın fiil hiçbir zaman gelmez."
       },
       {
         "type": "check"
       },
       {
         "type": "decision",
-        "heading": "Amaç kimin, ne için?",
+        "heading": "Şıkkı boşluğa koy: amaç mı, gerekçe mi?",
         "rules": [
           {
-            "condition": "Bir kişinin bir eylemi neden yaptığı anlatılıyorsa",
+            "signals": [
+              "fine ... for",
+              "thank ... for",
+              "blame ... for",
+              "apologise for",
+              "an apology for",
+              "a reason for",
+              "an excuse for"
+            ],
+            "then": "for + V-ing"
+          },
+          {
+            "condition": "Boşluktan önceki fiil ya da isim kendi edatı olarak 'for' istiyorsa — ceza kesen, teşekkür eden, suçlayan bir fiil ya da apology, reason, excuse gibi bir isim — cümle amaç değil **gerekçe** kuruyordur. 'to + fiil' burada olayı tersine çevirir: ceza, bir şey olsun diye değil, olduğu için kesilir.",
+            "then": "for + V-ing"
+          },
+          {
+            "condition": "Böyle bir fiil ya da isim yoksa ve anlatılan, bir kişinin eylemi hangi amaçla yaptığıysa",
             "then": "to V"
-          },
-          {
-            "condition": "Bir nesnenin ne işe yaradığı, işlevi anlatılıyorsa",
-            "then": "for + V-ing"
-          },
-          {
-            "condition": "Boşluktan hemen önce 'for' yazılıysa, ardından mastar gelemez",
-            "then": "for + V-ing"
           },
           {
             "condition": "Amaç olumsuzsa (bir şey olmasın diye)",
             "then": "so as not to / in order not to + V"
           },
           {
-            "condition": "Amacın ardından fiil değil bir isim geliyorsa",
+            "condition": "Amacı bildiren şey bir eylem değil bir şeyse (a walk, the conference)",
             "then": "for + noun"
+          },
+          {
+            "condition": "'for'dan sonra hiçbir zaman yalın fiil ya da 'to' gelmez: edattan sonra fiil daima -ing alır",
+            "then": "for + V-ing"
+          },
+          {
+            "condition": "Amaç bildiren 'to'dan sonra -ing gelmez; mastar her zaman fiilin yalın hâliyle kurulur",
+            "then": "to V"
           }
         ]
       }
@@ -823,7 +939,7 @@
     "blocks": [
       {
         "type": "text",
-        "body": "Türkçe bu üçünü ayırır: \"eskiden sigara içerdim\", \"sigara dumanına alışkınım\", \"dumana alışıyorum\". İngilizce üçünü de aynı iki kelimeyle, **used to** ile kurar; değişen tek şey önündeki fiil ve arkasından gelen biçimdir. Yani zorluk anlamda değil, kalıbı tanımaktadır: 'used to'nun önünde bir **be** ya da **get** var mı?"
+        "body": "Türkçe bu üçünü ayırır: \"eskiden sigara içerdim\", \"sigara dumanına alışkınım\", \"dumana alışıyorum\". İngilizce üçünü de aynı iki kelimeyle, **used to** ile kurar; değişen tek şey önündeki fiil ve arkasından gelen biçimdir. Yani zorluk anlamda değil, hangi kalıbın kurulduğunu görmektedir: paragraf kapanmış bir geçmişten mi, yerleşmiş bir alışkınlıktan mı, yoksa alışma sürecinden mi söz ediyor?"
       },
       {
         "type": "contrast",
@@ -871,25 +987,37 @@
             "form": "be used to + V-ing",
             "use": "Olumlu",
             "pattern": "S + am/is/are/was + used to + V-ing",
-            "example": "She is used to working nights."
+            "example": "She is used to waiting."
           },
           {
             "form": "be used to + V-ing",
             "use": "Olumsuz",
             "pattern": "S + isn't/wasn't + used to + V-ing",
-            "example": "She isn't used to working nights."
+            "example": "She isn't used to waiting."
           },
           {
             "form": "get used to + V-ing",
             "use": "Olumlu",
             "pattern": "S + get/got/will get + used to + V-ing",
-            "example": "He got used to working nights."
+            "example": "He got used to waiting."
           },
           {
             "form": "get used to + V-ing",
             "use": "Olumsuz",
             "pattern": "S + can't get used to + V-ing",
-            "example": "He can't get used to working nights."
+            "example": "He can't get used to waiting."
+          },
+          {
+            "form": "be used to + V",
+            "use": "Alışkanlık değil: 'kullanılmak'",
+            "pattern": "S + was/is + used + to + V",
+            "example": "The hall was used to hold meetings."
+          },
+          {
+            "form": "be used to + noun",
+            "use": "Alışkınlık, isimle",
+            "pattern": "S + am/is/are + used to + N",
+            "example": "He is used to the cold."
           }
         ]
       },
@@ -912,7 +1040,7 @@
             "note": "Olumsuzda 'used' değil 'use' yazılır → didn't use to + V"
           },
           {
-            "sentence": "It took me a month to get used to the night shift.",
+            "sentence": "It took her a while to get used to the dark.",
             "note": "Alışma süreci; kalıp isimle de kurulur → get used to + noun"
           },
           {
@@ -929,42 +1057,56 @@
       },
       {
         "type": "pitfall",
-        "wrong": "I didn't used to like coffee.",
-        "right": "I didn't use to like coffee.",
-        "why": "\"didn't\" geçmişi zaten taşır; ardından gelen fiil yalın kalır, bu yüzden 'used' değil 'use' yazılır."
+        "wrong": "The cellar was used to storing the files.",
+        "right": "The cellar was used to store the files.",
+        "why": "Burada **used** 'alışkın' değil, **use** fiilinin edilgenidir: kiler dosya saklamak için kullanılıyordu. Bir eşya hiçbir şeye alışamaz; öznesi eşya olan ya da içinde **by ...** geçen cümlelerde kalıp 'be used to + yalın fiil'dir."
       },
       {
         "type": "pitfall",
-        "wrong": "At first the noise was terrible, but I was used to it after a month.",
-        "right": "At first the noise was terrible, but I got used to it after a month.",
-        "why": "\"Bir ay sonra alıştım\" bir süreçtir. **be used to** ulaşılmış durumu anlatır, değişimi değil; değişimi anlatan fiil **get**'tir."
+        "wrong": "At first the water was cold, but I was used to it.",
+        "right": "At first the water was cold, but I got used to it.",
+        "why": "\"Sonunda alıştım\" bir süreçtir. **be used to** ulaşılmış durumu anlatır, değişimi değil; değişimi anlatan fiil **get**'tir."
       },
       {
         "type": "check"
       },
       {
         "type": "decision",
-        "heading": "Önce 'used to'nun önüne bak",
+        "heading": "Şıkkı boşluğa koy, sonra 'used'ın anlamına bak",
         "rules": [
           {
-            "condition": "'used to'nun önünde am / is / are / was / were varsa",
-            "then": "be used to + V-ing"
+            "condition": "Cümlede **by ...** öbeği varsa ya da özne bir eşyaysa ve o eşyaya bir iş yapılıyorsa: buradaki **used** 'alışkın' değil, 'kullanılmak'tır",
+            "then": "be used to + V"
           },
           {
-            "condition": "'used to'nun önünde get / got / getting varsa",
-            "then": "get used to + V-ing"
-          },
-          {
-            "condition": "Anlam \"eskiden yapardım, artık yapmıyorum\" ise",
+            "condition": "Cümle **There ___** ile kuruluyorsa: 'there' bir kişi değildir, hiçbir şeye alışamaz; geriye yalnızca geçmiş durum kalır",
             "then": "used to + V"
           },
           {
-            "condition": "Anlam \"benim için artık normal, zorlanmıyorum\" ise",
+            "signals": [
+              "little by little",
+              "gradually",
+              "slowly",
+              "after a while",
+              "by the third month"
+            ],
+            "then": "get used to + V-ing"
+          },
+          {
+            "condition": "Alışma bir **değişim** olarak anlatılıyorsa (önce zordu, sonra alıştı)",
+            "then": "get used to + V-ing"
+          },
+          {
+            "condition": "Durum yerleşmişse ve bir değişimden değil, kişiye artık normal gelen bir şeyden söz ediliyorsa",
             "then": "be used to + V-ing"
           },
           {
-            "condition": "Anlam \"yavaş yavaş alışıyorum\" ya da \"sonunda alıştım\" ise",
-            "then": "get used to + V-ing"
+            "condition": "Anlam \"eskiden böyleydi, artık değil\" ise ve şimdiki durumun sürdüğünü söyleyen bir cümle yoksa",
+            "then": "used to + V"
+          },
+          {
+            "condition": "Karar verdikten sonra şıkkı denetle: 'be used to' ya da 'get used to' **alışkınlık** anlamındaysa ardından yalın fiil değil -ing (ya da isim) gelir; yalın fiil ancak 'used to' tek başınayken ya da **kullanılmak** anlamındayken gelir",
+            "then": "V-ing"
           },
           {
             "condition": "Geçmiş alışkanlık olumsuz ya da soru cümlesindeyse (didn't, did ... ?)",
