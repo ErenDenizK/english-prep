@@ -107,23 +107,11 @@
         "heading": "Önce isme, sonra devamına bak",
         "rules": [
           {
-            "signals": [
-              "people",
-              "students",
-              "friends",
-              "mistakes",
-              "days"
-            ],
+            "condition": "Birinci adım: boşluktan sonraki isim sayılabilir çoğulsa (colonies, residents, mistakes, days)",
             "then": "A Few / Few"
           },
           {
-            "signals": [
-              "time",
-              "money",
-              "water",
-              "information",
-              "advice"
-            ],
+            "condition": "Birinci adım: boşluktan sonraki isim sayılamayansa — oil, evidence, time, money, information, advice gibi",
             "then": "A Little / Little"
           },
           {
@@ -135,7 +123,7 @@
             "then": "Few / Little"
           },
           {
-            "condition": "Boşluğun hemen önünde very varsa (a very few diye bir kalıp yoktur)",
+            "condition": "Boşluğun hemen önünde very varsa (very a little / very a few denmez)",
             "then": "Few / Little"
           }
         ]
@@ -167,7 +155,7 @@
           {
             "label": "Plenty Of",
             "gloss": "Sadece çok değil, yetecek kadar çok; cümle genelde 'endişelenme, yeter de artar' diye devam eder.",
-            "example": "There is plenty of time, so nobody needs to rush."
+            "example": "There is plenty of room for the boxes."
           }
         ]
       },
@@ -287,7 +275,7 @@
             "then": "Much / Many"
           },
           {
-            "condition": "Cümle olumsuzsa ya da soruysa",
+            "condition": "Boşluğun bulunduğu cümlecik olumsuzsa ya da soruysa — fiilde not / n't olabilir, ya da no longer, never, hardly gibi bir sözcük olabilir. Başka bir cümlecikteki olumsuzluk (Don't rush ...) sayılmaz",
             "then": "Much / Many"
           },
           {
@@ -305,6 +293,10 @@
           {
             "condition": "Cümle miktarın yeteceğini, kimsenin sıkıntı çekmeyeceğini söylüyorsa",
             "then": "Plenty Of"
+          },
+          {
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve cümle düz olumluysa, miktarın yeteceğine dair bir işaret de yoksa",
+            "then": "A Lot Of"
           }
         ]
       }
@@ -454,7 +446,7 @@
             "then": "Any"
           },
           {
-            "condition": "Cümle bilgi soran bir soruysa",
+            "condition": "Cümle bilgi soran bir soruysa — teklif ya da rica sorusu değilse",
             "then": "Any"
           },
           {
@@ -462,7 +454,7 @@
             "then": "Some"
           },
           {
-            "condition": "Düz olumlu bir cümlede belirsiz bir miktar söyleniyorsa",
+            "condition": "Düz olumlu bir cümlede belirsiz bir miktar söyleniyorsa — anlam 'hiç yok' değilse",
             "then": "Some"
           },
           {
@@ -470,7 +462,7 @@
             "then": "No"
           },
           {
-            "condition": "Anlam 'hiç' ama boşluktan sonra isim yoksa — cümle orada bitiyorsa ya da of the geliyorsa",
+            "condition": "Anlam 'hiç' ama boşluğun hemen arkasında isim yoksa — boşluk tek başına özne ya da nesne konumundaysa: cümle orada bitebilir, arkasından 'of the ...' gelebilir, ya da grup 'Of the six pumps, ____' gibi boşluktan önce söylenmiş olabilir",
             "then": "None"
           }
         ]
@@ -623,15 +615,15 @@
         "heading": "Önce fiile, sonra sayıya bak",
         "rules": [
           {
-            "condition": "Fiil tekilse (has, is, was) ve boşluktan sonra sayılabilir tekil bir isim geliyorsa",
+            "condition": "Boşluktan sonra sayılabilir tekil bir isim geliyor ve fiil tekilse (has, is, was; 'had' iki tarafa da uyar, o zaman isme bak)",
             "then": "Each / Every"
           },
           {
-            "condition": "Boşluktan sonra 'of the + çoğul isim' geliyor ve fiil tekilse",
+            "condition": "Boşluktan sonra 'of' geliyorsa — of the + çoğul isim ya da of them / of us / of these — ve fiil tekilse",
             "then": "Each"
           },
           {
-            "condition": "Fiil çoğulsa (have, are, were)",
+            "condition": "Fiil çoğulsa (have, are, were), ya da boşluk isimsiz tek başına özne konumundaysa ve çoğul fiil alıyorsa",
             "then": "Both / All"
           },
           {
@@ -639,12 +631,16 @@
             "then": "All"
           },
           {
-            "condition": "Each / Every'ye karar verdiysen: gruptaki herkese ayrı ayrı bir şey düşüyorsa",
-            "then": "Each"
+            "condition": "Boşluktan sonra the, this, my gibi bir belirleyici geliyorsa (the plasterwork, the machines) — each ve every böyle bir öbeğin önüne gelmez",
+            "then": "All / Both"
           },
           {
-            "condition": "Each / Every'ye karar verdiysen: istisnasız bütün grup kastediliyorsa (almost / nearly ile de bu gelir)",
+            "condition": "Each / Every'ye karar verdiysen: boşluğun hemen önünde almost, nearly, practically ya da virtually varsa, ya da istisnasız bütün grup kastediliyorsa",
             "then": "Every"
+          },
+          {
+            "condition": "Each / Every'ye karar verdiysen: gruptaki her bir birime ayrı ayrı bir şey düşüyorsa ve önünde almost / nearly / practically yoksa",
+            "then": "Each"
           },
           {
             "condition": "Both / All'a karar verdiysen: söz edilen şey tam olarak ikiyse",
@@ -779,7 +775,7 @@
         "type": "pitfall",
         "wrong": "My brother doesn't drive, and I don't neither.",
         "right": "My brother doesn't drive, and I don't either.",
-        "why": "Cümlede zaten don't var. 'Ben de' anlamını olumsuz bir cümlenin sonunda **either** verir; neither ancak fiil olumluyken ve devrik yapıyla gelir: *Neither do I*."
+        "why": "Cümlede zaten don't var. 'Ben de' anlamını olumsuz bir cümlenin sonunda **either** verir; 'Ben de' anlamını olumsuz bir cümlenin sonunda either verir; bu anlamda neither ancak devrik yapıyla gelir: *Neither do I*."
       },
       {
         "type": "check"
@@ -789,7 +785,7 @@
         "heading": "Eşini ara, sonra fiile bak",
         "rules": [
           {
-            "condition": "Cümlenin başında neither varsa, ikinci öğenin önüne",
+            "condition": "Cümlede boşluktan önce bir neither geçmişse ve boşluk ikinci öğenin önündeyse — neither cümlenin başında da olabilir, fiilden sonra da: 'takes neither coins ____ notes'",
             "then": "Nor"
           },
           {
@@ -809,7 +805,7 @@
             "then": "Either"
           },
           {
-            "condition": "Fiil olumlu ama anlam 'ikisi de değil' ise",
+            "condition": "Fiil olumlu, anlam 'ikisi de değil' ve cümlede boşluktan önce başka bir neither yoksa",
             "then": "Neither"
           }
         ]
@@ -840,7 +836,7 @@
           },
           {
             "label": "The Most",
-            "gloss": "Miktar değil üstünlük: karşılaştırmada en yüksek olan.",
+            "gloss": "Bir oran değil, üstünlük: karşılaştırmada en yüksek olan — derece olarak (the most expensive) ya da sayıca (the most complaints).",
             "example": "Physics attracts the most students in the faculty."
           }
         ]
@@ -939,15 +935,15 @@
         "heading": "Boşluktan sonrasına bak",
         "rules": [
           {
-            "condition": "Boşluktan sonra bir sıfat ya da zarf var ve cümle tek bir şeyi bir grubun tepesine koyuyorsa (en pahalı, en zor)",
+            "condition": "Cümle tek bir şeyi bir grubun tepesine koyuyorsa — boşluktan sonra bir sıfat/zarf (en pahalı, en zor) ya da bir isim gelebilir; 'of any ...', 'in the ...', 'than any other' gibi bir karşılaştırma çerçevesi varsa bu kural işler",
             "then": "The Most"
           },
           {
-            "condition": "Boşluktan hemen sonra the, this, these, my, our ya da them / us gibi bir zamir geliyorsa",
+            "condition": "Boşluktan hemen sonra bir belirleyici ya da zamir geliyorsa — the, this, these, that, my, our, its, their ya da them / us / it",
             "then": "Most Of"
           },
           {
-            "condition": "Boşluktan sonra belirleyicisiz çoğul ya da sayılamayan bir isim geliyorsa (araya sıfat girse bile: most young people)",
+            "condition": "Boşluktan sonra çıplak, belirleyicisiz bir çoğul ya da sayılamayan isim geliyorsa (araya yalnızca sıfat girebilir: most young people) ve cümlede bir üstünlük çerçevesi yoksa",
             "then": "Most"
           },
           {

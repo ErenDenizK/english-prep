@@ -241,6 +241,34 @@ write the real rule as a `condition` — "İki geçmiş olaydan hangisinin
 önce olduğunu belirtmen gerekiyorsa" is longer than a chip and worth
 more. Three or four rules that always hold beat eight that mostly do.
 
+**And a word list must be checked against the items, not against your own
+examples.** This is the failure mode that has cost this project the most.
+One audit found twelve signal-shaped rules across six lessons — a
+`signals` array, or a closed list of words inside a `condition` — of
+which **eight missed the exact token their own category's items use**.
+Both countability lists in one lesson contained none of the four nouns
+that lesson's questions turn on. The agreement rules listed `has, is,
+was` and `have, are, were` and omitted `had`, which half a category uses.
+A determiner list omitted `its`, which was the single word one item was
+built on. An adverb list had `almost` and `nearly` and not
+`practically` — the only one of the three that appears in the corpus.
+
+Every one of those lists was written from the lesson's own examples. The
+questions were never consulted, so the rule tested the lesson instead of
+the language.
+
+**The one signal rule in that lesson set that worked was scoped by
+position rather than by membership**: *"boşluğun **hemen önünde** too,
+so, as ya da how varsa"*. The scoping is what saved it — the same
+lesson's own example sentence contains a result-clause `so`, and an
+unscoped list would have fired on it. Its unscoped twin, one rule below,
+is what broke that category.
+
+So: prefer a stated condition to a list; when a list really is right,
+scope it to a position — immediately before the blank, inside the blank's
+own clause — and before you hand the file over, check every word in every
+list against the paragraphs your questions actually use.
+
 ### `check` — a question, here
 
 ```json
