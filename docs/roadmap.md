@@ -161,18 +161,36 @@ both need roughly 15–20 items per category, against 4 today.
 
 ---
 
-## Decisions the owner has to make
+## Decisions the owner has made
 
-1. **Is the v1 definition above the right one?** Specifically: is 39 of
-   60 points, with reading named as out of scope, a thing you are willing
-   to call 1.0.
-2. **The exam date.** Still open, and it changes the order of everything
-   below the first stretch — `docs/research/the-last-week.md` is written
-   and cannot be acted on without it.
-3. **`optionNotes` content budget.** The field ships; whether 291 notes
-   get written against the existing corpus, or only against vocabulary
-   where they are the minimum honest explanation, is a budget call.
-4. **The dev-note banner.** "Geliştirme aşamasındayız" is the first thing
+**The v1 definition above is accepted** (2026-09-04), and with it that
+reading is named as out of scope rather than silently missing.
+
+**Grammar finishes first, and in one or two sittings.** That reorders the
+list above: the five grammar drafts clear their review debt and ship
+before anything else starts, and the two vocabulary topics queue behind
+them rather than beside them. `so / such` and paragraph completion follow
+the grammar ship, not the vocabulary one.
+
+**`optionNotes` is not a budget item now.** The field exists and the
+vocabulary topics use it, because there one gloss per wrong option is the
+minimum honest explanation. Writing 291 notes against the existing
+grammar corpus is not scheduled: completing the app's features is worth
+more than deepening content that already teaches.
+
+**A content roadmap becomes a feature, later.** Once the app itself is
+done in outline, the thing to build is a visible checklist — which
+topics, lessons, questions and notes exist and which are coming — shown
+to the learner as well as kept for us. It is how a content update gets
+announced instead of just appearing. Not a priority; recorded so it is
+not re-invented.
+
+## Still open
+
+1. **The exam date.** It changes the order of everything below the first
+   stretch, and `docs/research/the-last-week.md` is written and cannot be
+   acted on without it.
+2. **The dev-note banner.** "Geliştirme aşamasındayız" is the first thing
    a new learner reads. Right for friends today, wrong the day you call
    it 1.0. It is a one-line change and it should be a decision rather
    than a leftover.

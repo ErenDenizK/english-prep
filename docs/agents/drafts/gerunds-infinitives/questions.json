@@ -2,7 +2,7 @@
   {
     "id": "gerunds-infinitives-t1",
     "category": "Verb + Gerund vs Verb + Infinitive",
-    "paragraph": "The one-way system in the old quarter has beaten him since the day he passed his test. He has never announced a rule about it, but he quietly ____ through it at rush hour, and takes the ring road even when that doubles the journey.",
+    "paragraph": "The one-way system in the old quarter has beaten him since the day he passed his test. He would take it without complaint if the ring road were ever shut, but at rush hour he quietly ____ through it, and goes the long way round even when that doubles the journey.",
     "options": [
       "avoids to drive",
       "avoids driving",
@@ -10,7 +10,7 @@
       "refuses driving"
     ],
     "correctIndex": 1,
-    "explanation": "'avoid' fiili kendinden sonra mutlaka -ing ister: avoid driving. 'avoids to drive' bu listeyi bilmeyen öğrencinin ürettiği biçimdir; bu fiilden sonra 'to' gelmez. 'refuses to drive' ise biçim olarak doğrudur ama anlamı tutmaz: metin 'has never announced a rule about it' diyor, yani adam açıkça reddetmiyor, sessizce kaçınıyor. Reddetmek ilan edilen bir tavırdır; kaçınmak bir alışkanlıktır.",
+    "explanation": "'avoid' fiili kendinden sonra mutlaka -ing ister: avoid driving. 'avoids to drive' bu listeyi bilmeyen öğrencinin ürettiği biçimdir; bu fiilden sonra 'to' gelmez. En yakın çeldirici 'refuses to drive': biçimi doğrudur ama anlamı tutmaz, çünkü reddetmek koşulsuzdur — cümle adamın çevre yolu kapansa oradan şikâyetsiz geçeceğini söylüyor, yani reddetmiyor, kaçınıyor. 'refuses driving' ise hem anlamca hem biçimce yanlıştır: 'refuse' -ing almaz.",
     "tip": "'avoid, enjoy, deny, suggest, postpone' fiillerinden sonra -ing gelir; bu türetilebilir bir kural değil, ezberlenecek bir listedir."
   },
   {
