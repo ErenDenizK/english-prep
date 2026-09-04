@@ -114,6 +114,28 @@ function main() {
   mkdirSync(outDir, { recursive: true });
   const blindPath = join(outDir, `${topic}-blind.json`);
   const keyPath = join(dirname(source), `${topic}-key.json`);
+
+  // The key never goes into a served directory.
+  //
+  // Blinding a LIVE topic — `npm run blind -- data/tenses/tenses.json …`
+  // — is a legitimate thing to do, and it is what the pre-exam review of
+  // the three oldest topics needed. But this tool writes the key back
+  // beside its source, so that run dropped three `*-key.json` files into
+  // `data/`, where GitHub Pages would have published them. They leak no
+  // answer the app does not already serve, but they are dead weight
+  // shipped to a learner, which is the exact class of thing the
+  // validator now warns about inside a topic file.
+  //
+  // A refusal rather than a redirect: writing the key somewhere the
+  // caller did not ask for is how a key ends up somewhere nobody
+  // remembers to look.
+  if (/(^|[\\/])data([\\/]|$)/.test(dirname(source))) {
+    console.error(
+      `✗ refusing to write an answer key into a served directory:\n    ${keyPath}\n` +
+        `  Copy the topic file somewhere outside data/ and blind that instead.`
+    );
+    process.exit(1);
+  }
   writeFileSync(blindPath, JSON.stringify(blind, null, 2) + "\n");
   writeFileSync(keyPath, JSON.stringify(key, null, 2) + "\n");
   console.log(`${blind.length} item(s) blinded\n  reviewer gets: ${blindPath}\n  keep back:     ${keyPath}`);
