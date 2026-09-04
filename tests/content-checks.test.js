@@ -15,6 +15,7 @@ import {
   checkOptionForms,
   checkOptionNotes,
   checkScenarioReuse,
+  checkLessonGiveaway,
 } from "../tools/content-checks.mjs";
 
 /** A stand-in for the validator's Report. */
@@ -389,4 +390,102 @@ test("an array is rejected — a parallel list is exactly what this field is not
   checkOptionNotes(r, "t1", noted(["a", "b", "c", "d"]));
   assert.equal(r.errors.length, 1);
   assert.match(r.text, /keyed by option text/);
+});
+
+/* ---- A question built on a sentence from its own lesson ----
+   docs/agents/question-author.md's rule, which had been enforced for the
+   intro screen since intros shipped and never for the lesson itself. The
+   sufficiency pass of 2026-09-04 found the consequence across the three
+   oldest topics; this is the check that stops it growing, plus a ratchet
+   over the real corpus so the backlog can only shrink. */
+
+test("a lesson example that is a question's keyed sentence is caught", () => {
+  const found = report();
+  checkLessonGiveaway(
+    found,
+    "data/x/x.json",
+    {
+      category: "C",
+      blocks: [{ type: "examples", items: [{ sentence: "She had her hair cut before the wedding.", note: "n" }] }],
+    },
+    [
+      {
+        id: "x-t1",
+        category: "C",
+        paragraph: "She ____ her hair cut before the wedding.",
+        options: ["had", "did", "made", "took"],
+        correctIndex: 0,
+      },
+    ]
+  );
+  assert.equal(found.errors.length, 0, "it is a warning, not an error, while a backlog exists");
+  assert.equal(found.warnings.length, 1);
+  assert.match(found.warnings[0].message, /x-t1/);
+});
+
+test("a contraction does not hide the giveaway", () => {
+  const found = report();
+  checkLessonGiveaway(
+    found,
+    "data/x/x.json",
+    { category: "C", blocks: [{ type: "pitfall", wrong: "w", right: "I have already finished the assignment.", why: "y" }] },
+    [
+      {
+        id: "x-t1",
+        category: "C",
+        paragraph: "I've ____ finished the assignment.",
+        options: ["already", "yet", "since", "ago"],
+        correctIndex: 0,
+      },
+    ]
+  );
+  assert.equal(found.warnings.length, 1);
+});
+
+test("a shared frame without the key is not a giveaway", () => {
+  const found = report();
+  checkLessonGiveaway(
+    found,
+    "data/x/x.json",
+    { category: "C", blocks: [{ type: "examples", items: [{ sentence: "Send it by the end of the week.", note: "n" }] }] },
+    [
+      {
+        id: "x-t1",
+        category: "C",
+        paragraph: "The form ____ by the end of the week.",
+        options: ["must be submitted", "must submit", "submits", "submitting"],
+        correctIndex: 0,
+      },
+    ]
+  );
+  assert.equal(found.warnings.length, 0);
+});
+
+test("the corpus backlog only shrinks", async () => {
+  // A ratchet. 32 was the count on 2026-09-04, the day the check was
+  // written; a repair pass is working through them. Lower this number
+  // when it drops, and when it reaches zero the check becomes an error.
+  const CEILING = 32;
+  const { readFile } = await import("node:fs/promises");
+  const manifest = JSON.parse(
+    await readFile(new URL("../data/manifest.json", import.meta.url), "utf8")
+  );
+  const found = report();
+  for (const topic of manifest.topics.filter((entry) => !entry.comingSoon)) {
+    const data = JSON.parse(await readFile(new URL(`../${topic.file}`, import.meta.url), "utf8"));
+    for (const lesson of data.lessons ?? []) {
+      checkLessonGiveaway(
+        found,
+        topic.file,
+        lesson,
+        data.questions.filter((question) => question.category === lesson.category)
+      );
+    }
+  }
+  assert.ok(
+    found.warnings.length <= CEILING,
+    `${found.warnings.length} questions are built on a sentence from their own lesson, ` +
+      `up from ${CEILING}. A new one is a defect; lower the ceiling when the count drops.`
+  );
+  assert.equal(found.errors.length, 0);
 });

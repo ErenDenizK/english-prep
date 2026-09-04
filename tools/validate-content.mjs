@@ -25,6 +25,7 @@ import {
   checkOptionForms,
   checkScenarioReuse,
   checkOptionNotes,
+  checkLessonGiveaway,
 } from "./content-checks.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -585,7 +586,7 @@ function validateBlocks(report, where, blocks, categoryQuestionCount) {
  * and how the page is paced, is the app's decision (see js/education.js) —
  * so nothing here describes a screen.
  */
-function validateLesson(report, file, lesson, index, seenIds, questionCategories, topicId, questionsByCategory) {
+function validateLesson(report, file, lesson, index, seenIds, questionCategories, topicId, questionsByCategory, questionsFor) {
   const where = `${file} › lessons[${index}]${lesson?.category ? ` (${lesson.category})` : ""}`;
 
   if (!lesson || typeof lesson !== "object") {
@@ -627,6 +628,10 @@ function validateLesson(report, file, lesson, index, seenIds, questionCategories
   }
 
   validateBlocks(report, where, lesson.blocks, categoryQuestionCount);
+
+  if (isNonEmptyString(lesson.category)) {
+    checkLessonGiveaway(report, file, lesson, questionsFor(lesson.category));
+  }
 }
 
 async function readJson(relativePath) {
@@ -761,7 +766,8 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
       seenLessonIds,
       questionCategories,
       topic.id,
-      questionsByCategory
+      questionsByCategory,
+      (category) => data.questions.filter((question) => question.category === category)
     )
   );
 
