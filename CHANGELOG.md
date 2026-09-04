@@ -36,8 +36,30 @@ weak by testing it, and it tests it after the lesson. It now says so and
 offers practice in that category, which is what the weak-spot rows on
 the Test tab have always offered.
 
-Three checks in the sweep were added with them (1193 total), and the
-dead `clearQuizState` export went.
+Three checks in the sweep were added with them, and the dead
+`clearQuizState` export went.
+
+**The coverage claim was four times out, and it was on a screen.**
+`exam-spec.md` said the app addressed ~7 of the paper's ~100 points — true
+when three topics had shipped and none of them was what the sample cloze
+tests, and quietly false from the day five more went live. Profil,
+meanwhile, named two section point totals — "(15 puan) ve … (15 puan)" —
+in a sentence about what the app practises, which reads as 30 of Session
+I's 60. It practises *parts* of both.
+
+The parts are counted now instead of asserted: `CLOZE_BLANKS` in
+`js/topics.js` is the sample passage blank by blank, from the paper, each
+tagged with the topic that would cover it, and `clozeCoverage` derives
+"7 of 10, missing vocabulary and `so / such`" from the manifest — so it
+moves when a topic ships, the way `uncoveredSections` already did.
+`npm run validate` fails if one of those topic ids stops matching the
+manifest, because a rename would make the number fall silently, and
+silently-too-low is the one direction an honesty line must not fail in.
+`exam-spec.md` now carries both columns and the derivation; the two
+research documents arguing from the 7 carry a dated note rather than an
+edit.
+
+1198 sweep checks, 121 unit tests.
 
 ## v0.26 — 2026-09-04
 

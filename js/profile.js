@@ -15,6 +15,7 @@ import {
   lessonIndex,
   uncoveredSections,
   sectionListPhrase,
+  clozeCoverage,
 } from "./topics.js";
 import {
   getProfileName,
@@ -290,15 +291,29 @@ function renderSettings() {
  * coverage claim does. The section point values come from
  * docs/exam-spec.md and change only if the paper does.
  */
+/** "a, b ve c" — the conjunction Turkish wants, for a plain list. */
+function listPhrase(parts) {
+  if (parts.length <= 1) {
+    return parts[0] ?? "";
+  }
+  return `${parts.slice(0, -1).join(", ")} ve ${parts[parts.length - 1]}`;
+}
+
 function renderCoverage(topics) {
   const hasRestatement = topics.some((topic) => topic.id === "closest-meaning" && !topic.comingSoon);
 
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", "Sınavın hangi kısmı burada"));
 
+  // "15 puan" next to a section the app practises reads as fifteen points
+  // earned. It means fifteen points *attempted*, and not all of them: of
+  // the sample cloze's ten blanks, two are vocabulary and one is
+  // `so / such`, and no lesson here teaches any of the three. The count
+  // is derived, so it moves on its own when a topic ships.
+  const cloze = clozeCoverage(topics);
   const covered = hasRestatement
-    ? "paragraf içindeki dilbilgisi ve kelime boşlukları (15 puan) ve anlamca en yakın cümle (15 puan)"
-    : "paragraf içindeki dilbilgisi ve kelime boşlukları (15 puan)";
+    ? "paragraf içindeki boşluklar (15 puan) ve anlamca en yakın cümle (15 puan)"
+    : "paragraf içindeki boşluklar (15 puan)";
   // Built from the manifest, not written out: the day `closest-meaning`
   // shipped, a hardcoded list naming it as missing became a lie about the
   // app the learner was holding, and the next topic to ship would do the
@@ -314,6 +329,17 @@ function renderCoverage(topics) {
         `çalıştırıyor. ${missing}. Session II'nin tamamı dinleme ve not alma; o da yok.`
     )
   );
+  if (cloze.missing.length > 0) {
+    section.appendChild(
+      el(
+        "p",
+        "t-meta",
+        `Çalıştırdığı bölümleri de bütünüyle değil: örnek sınavdaki ` +
+          `${cloze.total} boşluktan ${cloze.covered} tanesinin dersi burada var, ` +
+          `${listPhrase(cloze.missing)} yok.`
+      )
+    );
+  }
   section.appendChild(
     el(
       "p",

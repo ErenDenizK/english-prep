@@ -274,6 +274,59 @@ export function uncoveredSections(topics) {
 }
 
 /**
+ * The sample cloze passage, blank by blank, each tagged with the topic
+ * that would cover it.
+ *
+ * `docs/exam-spec.md` §"Cloze test" is the source, and it is a reading of
+ * the paper rather than an opinion: ten blanks, ten different things
+ * tested, listed there with the options as printed. What changes over
+ * time is not that list but which of those things this app teaches — so
+ * the mapping is fixed data and the *count* is derived from the manifest,
+ * for exactly the reason `uncoveredSections` is.
+ *
+ * `topicId: null` is a blank no grammar topic could cover — the two
+ * vocabulary items. `so-such` has no topic yet; if one ships under a
+ * different id the validator says so rather than letting this quietly
+ * under-report.
+ */
+export const CLOZE_BLANKS = [
+  { topicId: "connectors", label: "bağlaçlar" },
+  { topicId: "modals", label: "modallar" },
+  { topicId: "gerunds-infinitives", label: "ettirgen yapı" },
+  { topicId: "modals", label: "modallar" },
+  { topicId: null, label: "kelime bilgisi" },
+  { topicId: "closest-meaning", label: "karşılaştırmalar" },
+  { topicId: "so-such", label: "so / such" },
+  { topicId: "relative-clauses", label: "ilgi zamirleri" },
+  { topicId: "quantifiers", label: "miktar belirteçleri" },
+  { topicId: null, label: "kelime bilgisi" },
+];
+
+/**
+ * How much of the cloze section the app actually practises.
+ *
+ * The screen used to say the app covers "paragraf içindeki dilbilgisi ve
+ * kelime boşlukları (15 puan)", which is a section's point total in a
+ * sentence about coverage — it reads as fifteen points earned when it
+ * means fifteen points attempted. Three of the ten blanks are things no
+ * lesson here teaches, and two of those three are vocabulary.
+ *
+ * @param {Array<{id: string, comingSoon?: boolean}>} topics
+ * @returns {{total: number, covered: number, missing: string[]}}
+ */
+export function clozeCoverage(topics) {
+  const live = new Set(topics.filter((topic) => !topic.comingSoon).map((topic) => topic.id));
+  const covered = CLOZE_BLANKS.filter((blank) => blank.topicId && live.has(blank.topicId));
+  const missing = [];
+  for (const blank of CLOZE_BLANKS) {
+    if ((!blank.topicId || !live.has(blank.topicId)) && !missing.includes(blank.label)) {
+      missing.push(blank.label);
+    }
+  }
+  return { total: CLOZE_BLANKS.length, covered: covered.length, missing };
+}
+
+/**
  * "Okuma (21 puan) ve paragraf tamamlama (9 puan)" — the same list as a
  * Turkish phrase, with the conjunction the count calls for.
  *

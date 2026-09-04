@@ -18,6 +18,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { TIER_ORDER } from "../js/tiers.js";
+import { CLOZE_BLANKS } from "../js/topics.js";
 import {
   checkExplanationsNameDistractors,
   checkNearDuplicates,
@@ -934,6 +935,34 @@ function validateIntro(report, file, intro) {
  * degrades to no list if the file is unreachable, so a missing file is
  * not an error; a malformed one is.
  */
+/**
+ * The cloze map in `js/topics.js` names a topic per blank of the sample
+ * passage, and Profil derives "how much of this section is here" from it.
+ * A topic id that matches nothing is not a crash — the coverage number
+ * just silently drops, which is the one direction an honesty line must
+ * never fail in. So a blank must point at a live topic, a coming-soon
+ * one, or a grammar point that has no topic yet and is listed here.
+ */
+const CLOZE_TOPICS_NOT_YET_WRITTEN = new Set(["so-such"]);
+
+function validateClozeMap(report, manifest) {
+  const known = new Set(manifest.topics.map((topic) => topic.id));
+  CLOZE_BLANKS.forEach((blank, index) => {
+    if (blank.topicId === null || known.has(blank.topicId)) {
+      return;
+    }
+    if (CLOZE_TOPICS_NOT_YET_WRITTEN.has(blank.topicId)) {
+      return;
+    }
+    report.error(
+      "js/topics.js",
+      `CLOZE_BLANKS[${index}] "${blank.topicId}" manifestte yok. Konu ` +
+        "yeniden adlandırıldıysa haritayı da taşı; henüz yazılmadıysa " +
+        "CLOZE_TOPICS_NOT_YET_WRITTEN'a ekle."
+    );
+  });
+}
+
 async function validateRoadmap(report) {
   let roadmap;
   try {
@@ -1089,6 +1118,7 @@ async function main() {
   checkNearDuplicates(report, corpus);
   checkScenarioReuse(report, corpus);
 
+  validateClozeMap(report, manifest);
   const roadmapItems = await validateRoadmap(report);
 
   console.log(

@@ -74,6 +74,14 @@ nothing it would buy for the anxiety. It also survives the storage
 problem: WebKit's seven-day eviction (`onboarding.md`) means a stored date
 can silently vanish inside the exact window it exists for.
 
+> **Superseded on 2026-09-04.** The 7% below was recomputed after five
+> more topics shipped: it is now **~22 of ~100**
+> (`exam-spec.md` §"What the app covers", derivation in
+> `research/quality-of-life.md` §5.1). The direction of §4's advice
+> survives — half the paper is still untouched — but the proportional
+> allocation it derives from the number does not: 40–50 minutes of a
+> three-hour day, not twenty. Nothing else in this document was edited.
+
 And the finding that outranks all five, because it is about hours rather
 than mechanics: **the app addresses about 7% of this paper**
 (`exam-spec.md`). In the last week, the most valuable true thing it can
@@ -683,6 +691,12 @@ than blocking a whole day on one.
 That is 3 hours and it deliberately gives the app **11% of the time**,
 which is close to its 7% of the marks. If that reads as an odd
 recommendation to put in this repository, it is the honest one.
+
+> **Superseded on 2026-09-04**, along with the headline above: at ~22 of
+> ~100 the proportional line is 40–50 minutes, and the row above should
+> read **40**, taken from the two rows whose material the app now covers.
+> The rest of the table stands — the sections it cannot touch are still
+> half the paper.
 
 **Day 1 — the day before.** No new material. One short mixed test in the
 app, re-read the error notes from day 7 and from the week, pack the
