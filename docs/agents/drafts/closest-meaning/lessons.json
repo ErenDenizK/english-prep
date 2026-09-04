@@ -141,7 +141,7 @@
             "then": "Re-time"
           },
           {
-            "condition": "Şık olayı gerçekten olmuş gibi anlatıyorsa, oysa şart kolu — her iki tipte de — tam tersini söyler",
+            "condition": "Şık olayı gerçekten olmuş gibi anlatıyorsa, oysa şart kolu — her iki tipte de — tam tersini söyler. Olumsuz şartta (\"Had she not applied\") şart kolunun söylediği tersi, olayın **olduğu**dur",
             "then": "Drop a condition"
           },
           {
@@ -465,7 +465,7 @@
             "then": "Reverse"
           },
           {
-            "condition": "Şık, engelin hiç yaşanmadığını ya da hiçbir etkisinin olmadığını söylüyorsa",
+            "condition": "Şık, orijinalin söylemediği bir olay ya da sebep ekliyorsa, bir miktarı \"hiç / hepsi\"ne çeviriyorsa, ya da engelin hiç yaşanmadığını veya hiçbir etkisinin olmadığını söylüyorsa",
             "then": "Overshoot"
           },
           {
@@ -473,11 +473,11 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve i̇ki cümle de aynı rolde duruyor ama biri başka bir zamana taşınmışsa",
+            "condition": "İki cümle de aynı rolde duruyor ama biri başka bir zamana taşınmışsa",
             "then": "Re-time"
           },
           {
-            "condition": "İki cümle de aynı rolde duruyor ve yalnızca edat / bağlaç / zarf değişmişse",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve iki cümle de aynı rolde, aynı içerikle duruyorsa — yalnızca edat / bağlaç / zarf değişmiş olabilir",
             "then": "Same meaning"
           }
         ]
@@ -641,7 +641,7 @@
             "then": "Reverse"
           },
           {
-            "condition": "Korelatifin yarılarından yalnızca birinin yönü değişmişse: orijinal \"arttıkça azalıyor\" derken şık \"arttıkça artıyor\" diyorsa",
+            "condition": "Korelatifin yarılarından yalnızca birinin yönü değişmişse: orijinal \"arttıkça azalıyor\" derken şık \"arttıkça artıyor\" diyorsa. Aynı yönü karşıt bir sözcükle söylemek yön değişikliği değildir: \"less convinced\" ile \"more doubtful\" aynı şeyi der",
             "then": "Reverse"
           },
           {
@@ -657,7 +657,7 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "Kalıp \"not as ... as\" ile \"less ... than\" arasında dönmüş ve taraflar aynı sırada kalmışsa: fazlası el değiştirmez",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve kalıp \"not as ... as\" ile \"less ... than\" arasında dönmüş ve taraflar aynı sırada kalmışsa: fazlası el değiştirmez",
             "then": "Same meaning"
           },
           {
@@ -811,7 +811,7 @@
             "then": "Reverse"
           },
           {
-            "condition": "Sebep ile sonuç yer değiştirmişse: orijinalde dereceye yol açan şey şıkta derecenin sonucu olmuşsa",
+            "condition": "Sebep ile sonuç yer değiştirmişse — hangi yönde olursa olsun: orijinalde dereceye yol açan şey şıkta derecenin sonucu olmuşsa, ya da orijinalde derecenin sonucu olan şey şıkta ona yol açan sebep olmuşsa",
             "then": "Reverse"
           },
           {
@@ -984,7 +984,7 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "Orijinal \"to have + V3\" derken şık \"to + V\" diyorsa (ya da tersi): olayın zamanı kaymıştır",
+            "condition": "Olayın aktarıma göre zamanı değişmişse: orijinalde aktarımdan önce olmuş bir olay şıkta aktarımla aynı zamana ya da geleceğe kaymışsa (ya da tersi)",
             "then": "Re-time"
           },
           {
@@ -993,6 +993,10 @@
           },
           {
             "condition": "Kim kime ne yapmış yer değiştirmişse, ya da bir olumsuzluk eklenip çıkarılmışsa",
+            "then": "Reverse"
+          },
+          {
+            "condition": "Aktarım kalıbı doğru ama aktarılan cümlenin içi değişmişse: bir niteleyici başka bir isme bağlanmışsa (\"wrong depot\" → \"wrong consignment\"), ya da bir yön sözcüğü tersine çevrilmişse (\"earlier\" → \"later\", \"above\" → \"below\")",
             "then": "Reverse"
           },
           {

@@ -116,8 +116,10 @@ function renderMistakeBook() {
     el(
       "p",
       "t-body",
-      `Yanlış yaptığın ${book.length} soru burada bekliyor. Bir soru, ayrı ` +
-        "iki günde doğru cevaplandığında defterden düşer."
+      `Yanlış yaptığın ${book.length} soru burada. Sınavdan önce tekrar ` +
+        "bakman gerekenler bunlar. Bir soru, ayrı iki günde doğru " +
+        "cevapladığın anda listeden çıkar — o yüzden liste bir süre " +
+        "uzamaya devam edebilir, bu normaldir."
     )
   );
   surface.appendChild(intro);
