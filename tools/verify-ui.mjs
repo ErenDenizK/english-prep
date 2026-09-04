@@ -1019,12 +1019,26 @@ async function runIndexStates(browser) {
     `tanıtım satırları tek satırlık (en uzun ${Math.max(...glosses.map((g) => g.length))})`
   );
   ok(view.text.includes("bu telefonda kalıyor"), "veri nerede duruyor, ilk ekranda söyleniyor");
-  ok(view.text.includes("İlk dersi aç"), "tek bir açık ilk eylem var");
+  ok(
+    (await view.page.locator("#lesson-index .btn--primary").count()) === 1,
+    "tek bir açık ilk eylem var"
+  );
   ok(!view.text.includes("İlerlemen"), "sıfırı gösteren ilerleme çubuğu karşılama kartıyla birlikte çıkmıyor");
+  // The whole complaint this round started from: every lesson is a
+  // contrast, so opening one before the learner has the category drops
+  // them into an argument about a word they have not met. Start means
+  // start at the beginning.
   await auditLayout(view.page, "ilk açılış", 320, { maxScreens: LANDING_BUDGET_SCREENS });
-  await view.page.locator("button", { hasText: "İlk dersi aç" }).click();
-  await view.page.waitForSelector(".shell__scroll .option, .shell__scroll .prose");
-  ok(true, "ilk dersi aç bir derse giriyor");
+  await view.page.locator("#lesson-index .btn--primary").click();
+  await view.page.waitForSelector("#lesson-reader h1");
+  ok(
+    /#egitim\/konu\//.test(view.page.url()),
+    "başla düğmesi ilk derse değil, konunun kendisine giriyor"
+  );
+  ok(
+    (await view.page.locator("#lesson-bar .btn--primary").innerText()).trim() === "Derslere geç",
+    "konu ekranı oradan derslere devrediyor"
+  );
   await view.context.close();
 
   const partway = () => {
