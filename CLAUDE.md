@@ -45,6 +45,7 @@ npm test            # unit tests (node:test): quiz engine, storage, backup, cont
 npm run check       # all four (format as a --check)
 npm run serve       # static server on :8000 (fetch() needs an HTTP origin)
 npm run verify      # drives the real app in Chromium — needs `serve` running
+npm run audit       # measures each screen against §7 — height, rows, filled buttons
 npm run icons       # redraws the app icons and the link-preview card
 npm run draft -- docs/agents/drafts/<topic>          # checks a topic that is not shipped yet
 npm run blind -- docs/agents/drafts/<topic>/questions.json <outDir>   # unkeys a set for review
