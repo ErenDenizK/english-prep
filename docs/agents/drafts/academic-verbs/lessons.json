@@ -13,7 +13,7 @@
         "sides": [
           {
             "label": "emerge",
-            "gloss": "Daha önce görünmeyen ya da bilinmeyen bir şey ilk kez ortaya çıkar. Öncesinde ortada o şey yoktur.",
+            "gloss": "Görünmeyen ya da bilinmeyen bir şey görünür hâle gelir: ilk kez ortaya çıkabilir, ya da onu örten şey kalktığı için yeniden. Belirleyici olan, öncesinde görünmüyor olmasıdır — var olmaması değil.",
             "example": "A new approach emerged."
           },
           {
@@ -132,7 +132,7 @@
         "type": "pitfall",
         "wrong": "A new research area evolved in the 1990s.",
         "right": "A new research area emerged in the 1990s.",
-        "why": "evolve var olan bir şeyin kademeli dönüşümüdür, ilk kez ortaya çıkışı değil. Öncesinde o şey yoksa emerge kullanılır."
+        "why": "evolve var olan bir şeyin kademeli dönüşümüdür: bir şey başka bir şeye dönüşür ve cümle neye dönüştüğünü verir. Burada dönüşen bir şey değil, görünür hâle gelen bir şey anlatılıyor; o da emerge'dir."
       },
       {
         "type": "pitfall",
@@ -148,7 +148,7 @@
         "heading": "Sınavda ne yapacaksın",
         "rules": [
           {
-            "condition": "Cümle, öncesinde ortada olmayan bir şeyin ilk kez göründüğünü söylüyorsa (bir kaynaktan, bir çalışmadan, bir dönemden)",
+            "condition": "Cümle bir şeyin görünür ya da bilinir hâle geldiğini söylüyorsa — ilk kez, ya da onu örten şey ortadan kalktığı için yeniden — ve boşluğun öznesi görünür hâle gelen şeyin kendisiyse",
             "then": "emerge"
           },
           {
@@ -160,7 +160,7 @@
             "then": "evolve"
           },
           {
-            "condition": "Cümle ölçülebilir bir miktar, oran ya da eski bir düzeyle karşılaştırma veriyorsa ve yön aşağıysa",
+            "condition": "Cümle ölçülebilir bir miktar, oran ya da eski bir düzeyle karşılaştırma veriyorsa, yön aşağıysa ve boşluğun öznesi o miktarın kendisiyse",
             "then": "decline"
           },
           {
