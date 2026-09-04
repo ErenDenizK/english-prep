@@ -1,0 +1,266 @@
+{
+  "academic-nouns-adjectives-t1": {
+    "answer": "magnitude",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      3,
+      2,
+      0,
+      1
+    ]
+  },
+  "academic-nouns-adjectives-t2": {
+    "answer": "scope",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "academic-nouns-adjectives-t3": {
+    "answer": "margin",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      2,
+      3,
+      0,
+      1
+    ]
+  },
+  "academic-nouns-adjectives-t4": {
+    "answer": "threshold",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      3,
+      0,
+      1,
+      2
+    ]
+  },
+  "academic-nouns-adjectives-t5": {
+    "answer": "evidence",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      1,
+      2
+    ]
+  },
+  "academic-nouns-adjectives-t6": {
+    "answer": "assumption",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "academic-nouns-adjectives-t7": {
+    "answer": "implication",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      1,
+      3,
+      0
+    ]
+  },
+  "academic-nouns-adjectives-t8": {
+    "answer": "consensus",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      2,
+      1
+    ]
+  },
+  "academic-nouns-adjectives-t9": {
+    "answer": "conclusive",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      2,
+      1,
+      3
+    ]
+  },
+  "academic-nouns-adjectives-t10": {
+    "answer": "plausible",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      1,
+      2
+    ]
+  },
+  "academic-nouns-adjectives-t11": {
+    "answer": "questionable",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      1,
+      0,
+      3,
+      2
+    ]
+  },
+  "academic-nouns-adjectives-t12": {
+    "answer": "tentative",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      1,
+      3,
+      2
+    ]
+  },
+  "academic-nouns-adjectives-t13": {
+    "answer": "crucial",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      1,
+      3,
+      0
+    ]
+  },
+  "academic-nouns-adjectives-t14": {
+    "answer": "substantial",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "academic-nouns-adjectives-t15": {
+    "answer": "marginal",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "academic-nouns-adjectives-t16": {
+    "answer": "negligible",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      2,
+      1,
+      3
+    ]
+  },
+  "academic-nouns-adjectives-t17": {
+    "answer": "constraint",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      3,
+      2,
+      0,
+      1
+    ]
+  },
+  "academic-nouns-adjectives-t18": {
+    "answer": "obligation",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      3,
+      1,
+      0,
+      2
+    ]
+  },
+  "academic-nouns-adjectives-t19": {
+    "answer": "criterion",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "academic-nouns-adjectives-t20": {
+    "answer": "exemption",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      2,
+      0,
+      1,
+      3
+    ]
+  },
+  "academic-nouns-adjectives-t21": {
+    "answer": "reluctant",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      2,
+      3,
+      0,
+      1
+    ]
+  },
+  "academic-nouns-adjectives-t22": {
+    "answer": "deliberate",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      2,
+      0,
+      3,
+      1
+    ]
+  },
+  "academic-nouns-adjectives-t23": {
+    "answer": "persistent",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      2,
+      1
+    ]
+  },
+  "academic-nouns-adjectives-t24": {
+    "answer": "indifferent",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      1,
+      2,
+      3,
+      0
+    ]
+  }
+}
