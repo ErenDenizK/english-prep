@@ -225,6 +225,7 @@
     {
       "id": "academic-nouns-adjectives",
       "title": "Academic Nouns & Adjectives",
+      "gloss": "Akademik metnin döndüğü isim ve sıfatlar: aynı Türkçe karşılığa çıkan dört sözcükten doğrusunu seçmek.",
       "tier": "vocabulary",
       "file": "data/academic-nouns-adjectives/academic-nouns-adjectives.json",
       "questionCount": 24,
@@ -260,7 +261,47 @@
           "category": "Stance & Disposition (reluctant / deliberate / cautious / persistent / indifferent)",
           "summary": "İstemiyor mu, riskten mi çekiniyor, umursamıyor mu?"
         }
-      ]
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "academic-verbs",
+      "title": "Academic Verbs",
+      "gloss": "Akademik metnin yükünü taşıyan fiiller: aynı karşılığa çıkan dört fiilden paragrafın seçtiğini bulmak.",
+      "tier": "vocabulary",
+      "file": "data/academic-verbs/academic-verbs.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Change & Emergence (emerge / evolve / shift / decline / fade)",
+        "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+        "Claim & Concede (assert / imply / concede / dispute / acknowledge)",
+        "Examine & Establish (assess / determine / verify / estimate / monitor)",
+        "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+        "Allocate & Withhold (allocate / distribute / assign / withhold / retain)"
+      ],
+      "lessons": [
+        { "category": "Change & Emergence (emerge / evolve / shift / decline / fade)", "summary": "Yeni mi çıktı, biçim mi değiştirdi, yoksa sönüyor mu?" },
+        {
+          "category": "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+          "summary": "Yeni mi başlattı, hızlandırdı mı, yoksa var olanı mı sarstı?"
+        },
+        { "category": "Claim & Concede (assert / imply / concede / dispute / acknowledge)", "summary": "Açıkça mı söyledi, sezdirdi mi, yoksa kabul mü etti?" },
+        {
+          "category": "Examine & Establish (assess / determine / verify / estimate / monitor)",
+          "summary": "Yargı mı verildi, kesin cevap mı bulundu, kontrol mü edildi?"
+        },
+        {
+          "category": "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+          "summary": "Aynı düzeyde mi tutuldu, geçici mi durdu, büsbütün mü bırakıldı?"
+        },
+        {
+          "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
+          "summary": "Pay mı verildi, görev mi — yoksa hiç verilmedi mi?"
+        }
+      ],
+      "hasIntro": true
     }
   ]
 }
