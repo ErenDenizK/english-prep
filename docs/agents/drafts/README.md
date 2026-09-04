@@ -15,9 +15,11 @@ npm run blind -- docs/agents/drafts/<topic>/questions.json <dir>  # unkey for re
 node tools/ship-topic.mjs <topic> && npm run format && npm run check
 ```
 
-`npm run draft` is clean on all five topics below. That says the files
-are well formed and the taxonomy lines up. It says nothing about whether
-the teaching is right, which is what the two review passes are for.
+`npm run draft` is clean on five of the seven topics below, and the two
+warnings it does leave are explained where they occur. Either way it says
+only that the files are well formed and the taxonomy lines up. It says
+nothing about whether the teaching is right, which is what the two review
+passes are for — and which is why every topic here is still here.
 
 ---
 
@@ -128,10 +130,9 @@ only grammatical option, so a student who knows nothing but *which of
 these is real English* scores a third without reading a paragraph. That
 survives shuffling. It is concentrated in categories 4 and 5.
 
-## academic-verbs · 24 questions, 6 lessons
-## academic-nouns-adjectives · 24 questions, 6 lessons
+## academic-verbs and academic-nouns-adjectives · 48 questions, 12 lessons
 
-**Neither pass has run.** Written 2026-09-04 against
+**Neither pass has run on either topic.** Written 2026-09-04 against
 `docs/agents/kickoff-vocabulary.md`, after a learner sitting the Bilkent
 paper asked for vocabulary. First content in the app that is not grammar,
 and the first to use `optionNotes`, which is mandatory here: every wrong
