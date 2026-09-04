@@ -81,7 +81,7 @@
         "type": "pitfall",
         "wrong": "The software is free, moreover it runs on old computers.",
         "right": "The software is free. Moreover, it runs on old computers.",
-        "why": "Moreover bir bağlaç değil, zarftır: iki cümleciği tek başına virgülle bağlayamaz. Türkçede **ayrıca** virgülden sonra rahatça gelir, İngilizcede ise yeni bir cümle başlatır. Sınavda boşluktan önce nokta mı virgül mü olduğuna bak."
+        "why": "Moreover bir bağlaç değil, zarftır: iki cümleciği tek başına virgülle bağlayamaz. Türkçede **ayrıca** virgülden sonra rahatça gelir, İngilizcede ise kendi cümlesini başlatır: önünde nokta ya da noktalı virgül olur. Cümlenin ortasında da durabilir (It is, moreover, cheap), ama iki cümleciği tek başına birleştiremez."
       },
       {
         "type": "check"
@@ -221,7 +221,11 @@
         "heading": "Önce ilişkiyi adlandır, sonra kelimeyi seç",
         "rules": [
           {
-            "condition": "İki cümle aynı şeyin **iyi ve kötü yanını** (ya da iki ayrı seçeneği) veriyor ve ikisi de o şeyin bir özelliğiyse",
+            "condition": "Boşluktan önce nokta ya da noktalı virgül yok ve boşluk iki tam cümleciği tek başına birleştiriyorsa, bu üç zarf oraya giremez",
+            "then": "but / while / whereas"
+          },
+          {
+            "condition": "Boşluktan önce nokta var; iki cümle aynı şeyin ya da aynı seçeneğin iki yüzünü tartıyor, ikisi de aynı anda doğru ve ikinci cümle birincinin iddiasını yalanlamıyorsa",
             "then": "On the Other Hand"
           },
           {
@@ -229,12 +233,8 @@
             "then": "Nevertheless"
           },
           {
-            "condition": "Yukarıdaki iki koşul da yoksa ve ilişki düz bir zıtlık ya da önceki iddiaya konan bir sınırsa",
+            "condition": "Yukarıdaki koşulların hiçbiri yoksa ve ikinci cümle birinci cümlenin kurduğu beklentiyi ya da iddiayı yalanlıyor veya sınırlıyorsa",
             "then": "However"
-          },
-          {
-            "condition": "Boşluktan önce bağlaç yok ve boşluk iki tam cümleciği tek başına birleştiriyorsa, bu üç zarf oraya giremez",
-            "then": "but / while / whereas"
           }
         ]
       }
@@ -260,7 +260,7 @@
           {
             "label": "So That",
             "gloss": "**Amaç**: eylem, ardından gelen durumun gerçekleşmesi için yapılır. Ardından özneli bir cümlecik gelir, çoğunlukla can, could ya da would ile.",
-            "example": "She left early so that she could catch the bus."
+            "example": "She kept the receipt so that she could claim the fare back."
           },
           {
             "label": "In Order To",
@@ -278,6 +278,12 @@
             "use": "Sonuç, yeni cümle",
             "pattern": "S + V. Therefore, + S + V.",
             "example": "It rained. Therefore, we stayed in."
+          },
+          {
+            "form": "Therefore",
+            "use": "Yardımcı fiil ile asıl fiilin arasında",
+            "pattern": "S + have/has + therefore + V3",
+            "example": "The council has therefore raised the fee."
           },
           {
             "form": "Thus",
@@ -359,7 +365,11 @@
         "heading": "Önce ilişkiyi adlandır, sonra boşluktan sonrasına bak",
         "rules": [
           {
-            "condition": "İkinci bölüm eylemin **hedeflediği** durumu değil, ondan **çıkan** sonucu anlatıyorsa (olay olmuş bitmiş)",
+            "condition": "Boşluktan önce nokta ya da noktalı virgül yok, boşluk iki tam cümleciği virgülle birleştiriyor ve ikinci cümlecik birincisinin gerçekleşmiş sonucuysa; therefore ile thus oraya giremez",
+            "then": "so"
+          },
+          {
+            "condition": "Boşluktan önce nokta ya da noktalı virgül var ve ikinci cümle eylemin hedeflediği durumu değil, ondan çıkan gerçekleşmiş sonucu anlatıyorsa",
             "then": "Therefore / Thus"
           },
           {
@@ -371,8 +381,8 @@
             "then": "In Order To"
           },
           {
-            "condition": "Boşluktan önce bağlaç yok ve boşluk iki tam cümleciği tek başına birleştiriyorsa, therefore ve thus oraya giremez",
-            "then": "so"
+            "condition": "İkinci bölüm eylemin hedefini değil, eylemden önce zaten var olan sebebini veriyorsa amaç bağlacı giremez",
+            "then": "because"
           }
         ]
       }
@@ -434,6 +444,12 @@
             "use": "Tam bir cümleyle yeniden ifade",
             "pattern": "S + V. In other words, + S + V.",
             "example": "The data is limited. In other words, we cannot be sure."
+          },
+          {
+            "form": "for instance",
+            "use": "Özne ile yüklemin arasında",
+            "pattern": "S, + for instance, + V",
+            "example": "The steering gear, for instance, needed replacing."
           }
         ]
       },
@@ -465,7 +481,7 @@
         "type": "pitfall",
         "wrong": "The test has two parts, in other words reading and writing.",
         "right": "The test has two parts, namely reading and writing.",
-        "why": "Türkçede ikisi de **yani** ile karşılanır, ama in other words aynı şeyi yeniden ifade eder ve ardından tam bir cümle ister. Burada belirsiz bırakılan **two parts**ın hangileri olduğu eksiksiz sayılıyor; bu namely işidir."
+        "why": "Türkçede ikisi de **yani** ile karşılanır, ama in other words aynı şeyi yeniden ifade eder ve burada istenen, belirsiz bırakılan şeyin eksiksiz karşılığıdır. Burada belirsiz bırakılan **two parts**ın hangileri olduğu eksiksiz sayılıyor; bu namely işidir."
       },
       {
         "type": "pitfall",
@@ -487,7 +503,7 @@
         "heading": "Önce ilişkiyi adlandır, sonra kelimeyi seç",
         "rules": [
           {
-            "condition": "Boşluktan sonra **tam bir cümle** var ve bu cümle hiç yeni bilgi eklemeden birincinin söylediğini yeniden ifade ediyorsa",
+            "condition": "Boşluktan sonra tam bir cümle var ve bu cümle birincinin söylediğini yeni bir olgu ya da örnek getirmeden, daha yalın sözcüklerle yeniden söylüyorsa (arkasına eklenen sonuç cümleciği bunu bozmaz)",
             "then": "In Other Words"
           },
           {
@@ -499,7 +515,7 @@
             "then": "For Instance"
           },
           {
-            "condition": "Boşluktan sonra yüklemi olmayan tek bir isim öbeği varsa in other words elenir; kalan ikisi arasında listenin eksiksiz olup olmadığına bak",
+            "condition": "Boşluktan sonra yüklemi olmayan tek bir isim öbeği varsa, listenin eksiksiz mi yoksa açık uçlu mu olduğuna bak",
             "then": "Namely / For Instance"
           }
         ]
@@ -562,6 +578,12 @@
             "use": "O ana kadar bitmiş olay",
             "pattern": "By then, + S + had + V3",
             "example": "By then, the work had finished."
+          },
+          {
+            "form": "By Then",
+            "use": "O ana kadar geçerli olmuş durum",
+            "pattern": "By then, + S + was/were + ...",
+            "example": "By then, it was too late."
           }
         ]
       },
@@ -605,7 +627,7 @@
         "type": "pitfall",
         "wrong": "The train left at six. By then, we arrived at the station.",
         "right": "The train left at six. By then, we had arrived at the station.",
-        "why": "By then bir ana kadar tamamlanmış olmayı anlatır, o yüzden yanındaki fiil had + V3 olur. Past Simple ile cümle *tam o anda oldu* demeye başlar ve by then anlamsız kalır."
+        "why": "By then bir ana kadar tamamlanmış olmayı anlatır; anlatılan şey bir olaysa yanındaki fiil had + V3 olur. Durum bildiren cümlelerde Past Simple doğaldır: By then it was too late."
       },
       {
         "type": "check"
@@ -624,6 +646,10 @@
           },
           {
             "condition": "Metinde geçen bir ana kadar bir şeyin çoktan tamamlandığı söyleniyorsa (yanında genelde had + V3 vardır)",
+            "then": "By Then"
+          },
+          {
+            "condition": "Boşluk, anılan ana kadar süren bir durumu değil, o ana gelindiğinde çoktan geçerli olmuş durumu bildiriyorsa",
             "then": "By Then"
           },
           {
@@ -648,7 +674,7 @@
         "sides": [
           {
             "label": "Above All",
-            "gloss": "Sayılan birkaç şeyden **birini** öne çıkarır: hepsi önemli ama asıl olan budur. Ardından o tek madde gelir.",
+            "gloss": "Sayılanlar arasından ya da onlara eklenen yeni bir madde olarak, en önemli olanı öne çıkarır: hepsi önemli ama asıl olan budur.",
             "example": "Many factors delayed the work. Above all, the weather was bad."
           },
           {
@@ -721,7 +747,7 @@
         "type": "pitfall",
         "wrong": "The plan is late, costly and unclear. Above all, it is not ready.",
         "right": "The plan is late, costly and unclear. In short, it is not ready.",
-        "why": "Son cümle listeden bir maddeyi öne çıkarmıyor; üçünü birden tek cümlede topluyor. Above all ancak sayılanlardan biri diğerlerinden önemliyse gelir."
+        "why": "Son cümle listeden bir maddeyi ya da listeye eklenen yeni bir maddeyi 'asıl olan bu' diye ayırmıyor; üçünü birden tek cümlede topluyor."
       },
       {
         "type": "pitfall",
@@ -743,7 +769,7 @@
         "heading": "Önce son cümlenin işini adlandır, sonra kelimeyi seç",
         "rules": [
           {
-            "condition": "Son cümle, sayılan maddelerden **birini** diğerlerinden önemli diye ayırıyorsa",
+            "condition": "Son cümle, sayılanların üstüne bir madde daha koyup onu en önemlisi diye işaretliyorsa ya da sayılanlardan birini diğerlerinden önemli diye ayırıyorsa",
             "then": "Above All"
           },
           {
@@ -751,12 +777,16 @@
             "then": "Above All"
           },
           {
-            "condition": "Son cümle yeni bilgi eklemeden, söylenenleri daha kısa biçimde tekrar ediyorsa",
+            "condition": "Son cümle yeni bir olgu eklemeden, sayılanların tamamını tek bir sonuçta topluyorsa",
             "then": "In Short"
           },
           {
             "condition": "Önce hem olumlu hem olumsuz ayrıntılar verilmiş ve son cümle bunları tartıp genel bir yargı veriyorsa",
             "then": "Overall"
+          },
+          {
+            "condition": "Öne çıkarılan madde, anlatım sırasında ilk gelen değil, önem sırasında birinci olansa; first of all elenir",
+            "then": "Above All"
           }
         ]
       }
