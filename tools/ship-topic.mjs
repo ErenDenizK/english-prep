@@ -71,6 +71,18 @@ const TOPICS = {
     level: "B2-C1",
     note: "Written to docs/agents/gerunds-infinitives-spec.md.",
   },
+  "academic-verbs": {
+    title: "Academic Verbs",
+    tier: "vocabulary",
+    level: "B2-C1",
+    note: "Two of the sample cloze's ten blanks are vocabulary, and every reading text carries a vocabulary-in-context item. Written to docs/agents/kickoff-vocabulary.md.",
+  },
+  "academic-nouns-adjectives": {
+    title: "Academic Nouns & Adjectives",
+    tier: "vocabulary",
+    level: "B2-C1",
+    note: "The other half of the vocabulary the paper rewards: the nouns and adjectives an academic passage turns on. Written to docs/agents/kickoff-vocabulary.md.",
+  },
 };
 
 const [topicId, ...flags] = process.argv.slice(2);
