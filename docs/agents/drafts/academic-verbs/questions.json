@@ -78,7 +78,7 @@
   {
     "id": "academic-verbs-t5",
     "category": "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
-    "paragraph": "Nothing in a switchyard waits for a person to decide: the protection relays open the instant a line touches anything. On the hottest evening of the year a sagging conductor brushed a poplar branch and ____ a cascade of shutdowns that had reached the coast before an engineer could pick up a telephone.",
+    "paragraph": "Nothing in a substation waits for a person to decide: the protective switches open the instant a line touches anything. On the hottest evening of the year a sagging power line brushed a poplar branch and ____ a cascade of shutdowns that had reached the coast before an engineer could pick up a telephone.",
     "options": [
       "triggered",
       "prompted",
@@ -86,10 +86,10 @@
       "undermined"
     ],
     "correctIndex": 0,
-    "explanation": "Küçük bir temas, kimsenin karar vermesine gerek kalmadan zincirleme bir kesinti başlatıyor: röleler kendiliğinden açıyor. Olmayan bir tepkiyi anında başlatmak 'trigger'dır. 'Prompted' burada yanlıştır, çünkü prompt bir kişiyi ya da kurumu düşünüp harekete geçmeye yöneltir; oysa paragraf şalt sahasında hiçbir şeyin bir insanın kararını beklemediğini söylüyor.",
+    "explanation": "Küçük bir temas, kimsenin karar vermesine gerek kalmadan zincirleme bir kesinti başlatıyor: şalterler kendiliğinden açıyor. Olmayan bir tepkiyi anında başlatmak 'trigger'dır. 'Prompted' burada yanlıştır, çünkü prompt bir kişiyi ya da kurumu düşünüp harekete geçmeye yöneltir; oysa paragraf trafo merkezinde hiçbir şeyin bir insanın kararını beklemediğini söylüyor.",
     "tip": "'Trigger' kimsenin karar vermediği, kendiliğinden başlayan bir tepkiyi başlatır; 'prompt' ise düşünüp adım atan bir kişi ya da kurum ister.",
     "optionNotes": {
-      "prompted": "Bir kişiyi ya da kurumu düşünülmüş bir adım atmaya yöneltmek. Burada karar veren kimse yok; röleler kendiliğinden açıyor.",
+      "prompted": "Bir kişiyi ya da kurumu düşünülmüş bir adım atmaya yöneltmek. Burada karar veren kimse yok; şalterler kendiliğinden açıyor.",
       "accelerated": "Zaten süren bir süreci hızlandırmak. Kesinti zinciri temastan önce yok; onunla başlıyor.",
       "undermined": "Bir savın, güvenin ya da otoritenin altını oymak. Burada zayıflatılan değil, sıfırdan başlatılan bir zincir var."
     }
@@ -192,7 +192,7 @@
   {
     "id": "academic-verbs-t11",
     "category": "Claim & Concede (assert / imply / concede / dispute / acknowledge)",
-    "paragraph": "For three days the minister had insisted that the delay had nothing to do with the new software. Under questioning on the Thursday afternoon she ____ that two of her department's deadlines had gone because the system could not read the old files — a point she gave the committee for the sake of argument and withdrew the next morning.",
+    "paragraph": "For three days the minister had insisted that the delay had nothing to do with the new software. Under questioning on the Thursday afternoon she ____ that two of her department's deadlines had gone because the system could not read the old files — a sentence she offered for the sake of argument and withdrew the next morning.",
     "options": [
       "conceded",
       "acknowledged",
@@ -203,7 +203,7 @@
     "explanation": "Bakan üç gün direndiği bir noktayı, baskı altında ve kendi aleyhine olacak biçimde karşı tarafa veriyor; üstelik onu benimsemiş değil, ertesi sabah geri alıyor. Tartışmada karşı tarafa böyle verilen puan 'concede'dir. 'Acknowledged' bir şeyin doğruluğunu benimseyerek teslim etmek olurdu; oysa paragraf bu kabulün yalnızca tartışma uğruna yapıldığını ve geri alındığını söylüyor.",
     "tip": "'Concede' direndikten sonra karşı tarafa verilen bir puandır; özne onu benimsemek zorunda değildir. 'Acknowledge' ise doğruluğunu benimseyerek teslim etmektir.",
     "optionNotes": {
-      "acknowledged": "Bir şeyin doğru olduğunu benimseyerek teslim etmek. Bakan o noktayı benimsemiyor; tartışma uğruna verip ertesi sabah geri alıyor.",
+      "acknowledged": "Bir şeyin doğru olduğunu benimseyerek teslim etmek. Bakan bunu benimsemiyor; tartışma uğruna söyleyip ertesi sabah geri alıyor.",
       "asserted": "Kendi görüşünü kesin bir dille ileri sürmek. Söylenen şey bakanın kendi savını çürütüyor; ortada onun bir iddiası yok.",
       "implied": "Söylemeden sezdirmek. Bakan bunu sorgu sırasında açıkça söylüyor; ortada ima değil, dile getirilmiş bir kabul var."
     }
