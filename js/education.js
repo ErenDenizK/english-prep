@@ -48,7 +48,7 @@ import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { startTopicTest, startCategoryPractice, startMixedTest } from "./quiz-launch.js";
 import { TOPIC_INTRO_PREFIX } from "./config.js";
-import { el, clear, appendProse, appendInline } from "./dom.js";
+import { el, clear, appendProse, appendInline, sectionHeading } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
 
@@ -550,44 +550,162 @@ function renderIndex() {
   // and lessons. The summary is what it always was.
   indexContainer.appendChild(card ?? renderProgressSummary(lessons, completed));
 
+  indexContainer.appendChild(renderIndexFilter(lessons, progress));
+  const list = el("div");
+  list.id = "index-list";
+  list.appendChild(renderTopicIndex(lessons, progress));
+  indexContainer.appendChild(list);
+}
+
+/**
+ * Turkish-safe folding for the filter.
+ *
+ * `toLowerCase()` is wrong here and wrong in a way that only bites
+ * Turkish: it maps `I` to `i` when the Turkish pair is `I`/`ı` and
+ * `İ`/`i`, so a learner typing `ilgi` would not match `İlgi`. Diacritics
+ * fold too, because a phone keyboard set to English cannot produce `ş`
+ * and the learner should not have to.
+ */
+function fold(text) {
+  return text
+    .toLocaleLowerCase("tr")
+    .replace(/ı/g, "i")
+    .replace(/ş/g, "s")
+    .replace(/ğ/g, "g")
+    .replace(/ü/g, "u")
+    .replace(/ö/g, "o")
+    .replace(/ç/g, "c");
+}
+
+/**
+ * What pays back the tap the topic index costs.
+ *
+ * Turning 48 lesson rows into 8 topic rows takes the learner who knew
+ * exactly which lesson he wanted from one tap to three. That learner is
+ * the one who uses the app most, so the structural change is only honest
+ * if he can still get there in one move: typing two letters puts the
+ * lesson rows back, filtered, and the topic level disappears.
+ *
+ * A `field`, not a search screen. There is nothing to search but 48
+ * strings the app already has in memory.
+ */
+function renderIndexFilter(lessons, progress) {
+  const wrap = el("div", "stack stack--tight");
+
+  const field = el("input", "field");
+  field.type = "search";
+  field.id = "index-filter";
+  field.placeholder = "Ders ara";
+  field.setAttribute("aria-label", "Dersler arasında ara");
+  field.autocomplete = "off";
+
+  field.addEventListener("input", () => {
+    const query = fold(field.value.trim());
+    const host = document.getElementById("index-list");
+    if (!host) {
+      return;
+    }
+    clear(host);
+    if (query.length === 0) {
+      host.appendChild(renderTopicIndex(lessons, progress));
+      return;
+    }
+    // Category and summary, because those are the two things a learner
+    // could be remembering: the English name of the contrast, or the
+    // Turkish question the lesson answers.
+    const hits = lessons.filter(
+      (lesson) =>
+        fold(lesson.category).includes(query) ||
+        fold(lesson.summary ?? "").includes(query) ||
+        fold(lesson.topicTitle).includes(query)
+    );
+    const section = el("section", "stack stack--tight");
+    section.appendChild(
+      sectionHeading(
+        "Arama",
+        hits.length === 0
+          ? "Eşleşen ders yok."
+          : `${hits.length} ders eşleşti.`
+      )
+    );
+    if (hits.length) {
+      const rows = el("div");
+      for (const lesson of hits) {
+        rows.appendChild(renderLessonRow(lesson, statusOf(lesson, progress)));
+      }
+      section.appendChild(rows);
+    }
+    host.appendChild(section);
+    announce(hits.length === 0 ? "Eşleşen ders yok." : `${hits.length} ders eşleşti.`);
+  });
+
+  wrap.appendChild(field);
+  return wrap;
+}
+
+/**
+ * Eight topic rows, not forty-eight lesson rows.
+ *
+ * The index used to list every lesson in the app, flat. That was a
+ * deliberate decision — `docs/education-notes.md` records the index
+ * "going flat" instead of gaining a topic level — and it outgrew itself:
+ * measured at 320 it was **5,332px, 8.3 screens**, two and a half times
+ * the next-longest screen, and a learner reported it as the topics
+ * piling up. It grows with the content: 60 rows once the vocabulary
+ * topics ship.
+ *
+ * The destination already existed. `#egitim/konu/<topicId>` renders the
+ * topic's orientation AND its six lesson rows, so making the index a
+ * list of topics costs no new screen, no schema change and no storage
+ * change — the lessons simply live one level down, where the thing that
+ * explains them already is.
+ *
+ * What this costs is the learner who knew exactly which lesson he
+ * wanted: one tap became three. `renderIndexFilter` is what pays that
+ * back, and the two must ship together or this is a regression for the
+ * person who uses the app most.
+ */
+function renderTopicIndex(lessons, progress) {
+  const section = el("section", "stack stack--tight");
+  // The one place at runtime the app says what it is for. It used to be
+  // on the welcome card only, so the learner's first test destroyed it;
+  // a permanent structural heading is somewhere it can live.
+  section.appendChild(
+    sectionHeading("Konular", "Her konu, önce ne olduğunu anlatır; dersler içinde.")
+  );
+
+  const list = el("div");
   const topicIds = [...new Set(lessons.map((lesson) => lesson.topicId))];
   for (const topicId of topicIds) {
     const inTopic = lessons.filter((lesson) => lesson.topicId === topicId);
-    const section = el("section", "stack stack--tight");
-    // With one topic the heading would label the only group there is.
-    if (topicIds.length > 1) {
-      section.appendChild(englishTitle("h2", "t-label", inTopic[0].topicTitle));
-      // The smaller half of "the lessons go straight at X vs Y": every
-      // lesson in this app is a contrast, and nothing anywhere said what
-      // a relative clause IS before offering to distinguish three of
-      // them. This does not teach the category — it says what the group
-      // is, on the screen where the question arises, for one line.
-      if (inTopic[0].topicGloss) {
-        section.appendChild(el("p", "t-meta", inTopic[0].topicGloss));
-      }
-      // The way in, and a quiet button rather than a row. A row is
-      // 62–82px and eight of them would add 520–650px to an index that
-      // is already 4,564px at 320; this is one 44px tap target — the
-      // minimum a tap target may be — so about 400px across eight
-      // topics, and it sits directly under the line that has just
-      // raised the question it answers.
-      if (inTopic[0].hasIntro) {
-        const open = el("button", "btn btn--quiet", "Bu konu nedir?");
-        open.type = "button";
-        open.appendChild(icon("chevron-right", { size: 20 }));
-        open.addEventListener("click", () => openIntroByHash(inTopic[0].topicId));
-        section.appendChild(open);
-      }
+    const done = inTopic.filter((lesson) => progress[lesson.id]?.done).length;
+
+    const row = el("button", "row");
+    row.type = "button";
+
+    const main = el("span", "row__main");
+    main.appendChild(englishTitle("span", "row__title t-en", inTopic[0].topicTitle));
+    // The gloss becomes the row's secondary line rather than a paragraph
+    // of its own. §7.1: one line, always — the CSS clips it, and that is
+    // the point, because eight two-line glosses is 256px of nothing.
+    main.appendChild(el("span", "row__sub", inTopic[0].topicGloss ?? `${inTopic.length} ders`));
+    row.appendChild(main);
+
+    const trail = el("span", "row__trail");
+    if (done === inTopic.length) {
+      trail.appendChild(el("span", "chip chip--ok", "Tamamlandı"));
     } else {
-      section.appendChild(el("h2", "t-label", "Dersler"));
+      trail.appendChild(el("span", "t-num", `${done}/${inTopic.length}`));
     }
-    const list = el("div");
-    for (const lesson of inTopic) {
-      list.appendChild(renderLessonRow(lesson, statusOf(lesson, progress)));
-    }
-    section.appendChild(list);
-    indexContainer.appendChild(section);
+    trail.appendChild(icon("chevron-right", { size: 20 }));
+    row.appendChild(trail);
+
+    row.addEventListener("click", () => openIntroByHash(topicId));
+    list.appendChild(row);
   }
+  section.appendChild(list);
+
+  return section;
 }
 
 /* ---- Topic intro ---- */
@@ -758,7 +876,19 @@ export async function openTopicIntro(topicId) {
   document.title = `${entry.title} — English Prep`;
   announce(`${entry.title} genel bakış.`);
 
-  actionBar.set([{ label: "Derslere dön", level: "secondary", onClick: showIndexByHash }]);
+  // A primary, because a screen that ends in lesson rows and offers only a
+  // way backwards routes nobody. The forward action opens the first lesson
+  // the learner has not finished in THIS topic — which on a first visit is
+  // lesson 1, and on a return is where they actually stopped.
+  const progress = getAllLessonProgress();
+  const inTopic = lessons.filter((lesson) => lesson.topicId === topicId);
+  const next = inTopic.find((lesson) => !progress[lesson.id]?.done) ?? inTopic[0] ?? null;
+  actionBar.set([
+    { label: "Derslere dön", level: "secondary", onClick: showIndexByHash },
+    ...(next
+      ? [{ label: "Derslere geç", level: "primary", onClick: () => openLessonByHash(next.id) }]
+      : []),
+  ]);
 }
 
 /* ---- Reader: the blocks ---- */
@@ -1014,19 +1144,26 @@ function renderCheckBlock(question, blockIndex, { label = "Kontrol" } = {}) {
  */
 function renderPretestBlock(question) {
   const wrap = el("section", "stack stack--tight");
-  const intro = el("div", "stack stack--tight");
-  intro.appendChild(el("h3", "t-label", "Önce bir dene"));
-  intro.appendChild(
+  wrap.appendChild(el("h3", "t-label", "Önce bir dene"));
+  wrap.appendChild(renderCheckBlock(question, PRETEST_INDEX, { label: null }));
+
+  // The reason goes UNDER the question, not over it.
+  //
+  // Above it, three sentences of rationale pushed the first tappable
+  // option below the 320px fold — on the very first interaction the app
+  // ever asks for, from someone who has not yet decided it is worth the
+  // trouble. The learner does not need to be sold on the pretesting
+  // effect before answering; they need it explained if they get it wrong,
+  // which is exactly where this now sits.
+  wrap.appendChild(
     el(
       "p",
-      "t-body",
-      "Bu dersi henüz okumadın. Bilmiyorsan sorun değil — asıl işe yarayan " +
-        "denemenin kendisi: bir tahminde bulunup yanılmak, sonra okuduğunu " +
-        "daha iyi aklında tutmanı sağlıyor. İstersen atla."
+      "t-meta",
+      "Bu dersi henüz okumadın, bilmiyorsan sorun değil: asıl işe yarayan " +
+        "denemenin kendisi. Tahmin edip yanılmak, sonra okuduğunu daha iyi " +
+        "aklında tutmanı sağlıyor."
     )
   );
-  wrap.appendChild(intro);
-  wrap.appendChild(renderCheckBlock(question, PRETEST_INDEX, { label: null }));
   return wrap;
 }
 

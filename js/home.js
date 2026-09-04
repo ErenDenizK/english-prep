@@ -30,7 +30,7 @@ import { createListbox } from "./listbox.js";
 import { showLessonIndex, openLesson, openTopicIntro, closeReader } from "./education.js";
 import { initProfileTab } from "./profile.js";
 import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook } from "./quiz-launch.js";
-import { el, clear } from "./dom.js";
+import { el, clear, sectionHeading } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX } from "./config.js";
@@ -58,15 +58,6 @@ const views = Object.fromEntries(VIEW_IDS.map((id) => [id, document.getElementBy
 let mixedCount;
 
 /* ---- Test tab ---- */
-
-function sectionHeading(text, hint) {
-  const head = el("div", "stack stack--tight");
-  head.appendChild(el("h2", "t-label", text));
-  if (hint) {
-    head.appendChild(el("p", "t-meta", hint));
-  }
-  return head;
-}
 
 /**
  * Yanlış defteri — the questions this learner has got wrong and not yet
