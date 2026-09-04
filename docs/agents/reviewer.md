@@ -54,6 +54,26 @@ Answer all of them. Do not skip an item because it looks obvious; an item
 that looks obvious to you and is keyed differently is exactly the find
 this pass is for.
 
+**If the file you are given is not blind, say so first and keep going.**
+The pass is still worth running — the "does another option also work"
+column is an independent judgement about the paragraph and survives
+knowing the key — but your agreement rate no longer measures anything,
+and you must say that in your own report rather than let it be read as
+evidence.
+
+This has happened, on both corpora reviewed the same night. `tip` is a
+standalone rule written *for the item it belongs to*, so it names the
+keyed form outright in most items: *"…ilgi zamiri öznedir ve 'who'
+kullanılır"* — twenty-two of twenty-four. A category spec is worse: its
+per-item table has the key in the second column. Both reviewers had to
+discount their own pass.
+
+The supervisor's side of this is now `tools/blind-corpus.mjs`, which
+works by allow-list — a field nobody has thought about is withheld rather
+than leaked — shuffles the options, and writes the key back beside the
+source rather than into the directory the reviewer is pointed at. Use it;
+do not hand-roll a blind file.
+
 ### Pass B — cue
 
 Given the same items, with the key. For each:

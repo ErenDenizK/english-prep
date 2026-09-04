@@ -13,6 +13,8 @@
     "check": "npm run format:check && npm run validate && npm run color && npm test",
     "serve": "python3 -m http.server 8000",
     "verify": "node tools/verify-ui.mjs",
-    "icons": "node tools/make-icons.mjs"
+    "icons": "node tools/make-icons.mjs",
+    "blind": "node tools/blind-corpus.mjs",
+    "draft": "node tools/check-draft.mjs"
   }
 }

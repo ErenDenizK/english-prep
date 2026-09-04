@@ -389,7 +389,14 @@ cannot tell a lucky guess from secure knowledge — and the honest way to
 get that signal is more items per category, not a second control per
 question.
 
-### Neden yanlış? — one line per distractor (open, for the owner)
+### Neden yanlış? — one line per distractor (the field exists; the content is open)
+
+**The schema and the rendering landed 2026-09-04.** `optionNotes` is an
+optional per-question object keyed by option text; the validator refuses
+a key that is not an option and a key that is the answer; the feedback
+block shows the note for the option the learner actually chose, and the
+live region says the same thing. Authoring can start whenever the owner
+decides it should. What follows is the decision that is still his.
 
 Not refused, and not scheduled: it needs a decision that is the owner's.
 `practice-modes.md` §8.4 makes the case that this is **the cheapest way
@@ -412,6 +419,18 @@ pool this small.
    relevant to a mock-exam mode: the writing task's format and weight, the
    pass mark, and the session durations — none of the three appears on the
    sample papers.
+
+   **Three unverified numbers, 2026-09-04.** The reading arm found Turkish
+   prep-course pages that independently corroborate the sample papers'
+   structure and add all three of the missing figures: a **60/100 pass
+   mark**, a **Session I threshold of 25**, and a writing task of **≥250
+   words**. None is from an official source — the YTÜ domains are blocked
+   by this environment's egress proxy — so none of them is in
+   `exam-spec.md`. They need an hour of the owner's time against the real
+   regulation. If the Session I threshold of 25 is real it is the single
+   most consequential unknown in this document: it would mean a candidate
+   can fail on Session I alone, which changes the ranking of every stage
+   below.
 2. **The exam date.** The answer given was ambiguous — "we have a week"
    and "there is time to add enough content" point in opposite directions.
    Stage 0 and stage 1 are correct under either reading and are being
@@ -421,3 +440,18 @@ pool this small.
 4. **How many sections to attempt.** Stage 3's arithmetic says shipping
    reading and restatement properly beats shipping six sections thinly.
    Which sections is a decision about the exam, not about software.
+5. **The reading section is not a week's work, and the arm says so with
+   arithmetic.** Re-derived cost is **2.5–3.5 hours of review per
+   passage**, and a passage is single-use — once read, all seven of its
+   items are spent — so ten passages is five sittings and 25–35 hours.
+   Reading is a supply to be replenished, not a project to be finished.
+   The arm also measured the screen: a 770-word passage is 7.7 screens at
+   320px, and a split passage/question view needs 1,244px into a 500px
+   region, so the split view is refused on measurement rather than taste.
+   The recommendation is a passage page first, then the normal Test screen
+   with a full-height `<dialog>` passage sheet. See
+   `docs/research/reading.md`.
+6. **`optionNotes` content.** The field now exists (above). Whether 291
+   notes get written against the existing corpus, or only against
+   vocabulary items where they are the minimum honest explanation, is a
+   budget decision.
