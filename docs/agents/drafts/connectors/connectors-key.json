@@ -1,0 +1,266 @@
+{
+  "connectors-t1": {
+    "answer": "Moreover",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      3,
+      1,
+      0
+    ]
+  },
+  "connectors-t2": {
+    "answer": "Similarly",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      2,
+      0,
+      3,
+      1
+    ]
+  },
+  "connectors-t3": {
+    "answer": "Likewise",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      2,
+      0,
+      3,
+      1
+    ]
+  },
+  "connectors-t4": {
+    "answer": "Moreover",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      1,
+      2,
+      3,
+      0
+    ]
+  },
+  "connectors-t5": {
+    "answer": "Nevertheless",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "connectors-t6": {
+    "answer": "On the other hand",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      1,
+      3,
+      2
+    ]
+  },
+  "connectors-t7": {
+    "answer": "However",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      3,
+      0,
+      2,
+      1
+    ]
+  },
+  "connectors-t8": {
+    "answer": "whereas",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      1,
+      3,
+      0
+    ]
+  },
+  "connectors-t9": {
+    "answer": "therefore",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      1,
+      3,
+      0
+    ]
+  },
+  "connectors-t10": {
+    "answer": "so that",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      2,
+      3,
+      0,
+      1
+    ]
+  },
+  "connectors-t11": {
+    "answer": "in order to",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      3,
+      1,
+      0,
+      2
+    ]
+  },
+  "connectors-t12": {
+    "answer": "so",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      3,
+      1,
+      0
+    ]
+  },
+  "connectors-t13": {
+    "answer": "For instance",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      2,
+      0,
+      3
+    ]
+  },
+  "connectors-t14": {
+    "answer": "namely",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      2,
+      1,
+      3
+    ]
+  },
+  "connectors-t15": {
+    "answer": "In other words",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      3,
+      1,
+      0
+    ]
+  },
+  "connectors-t16": {
+    "answer": "for instance",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      1,
+      3,
+      0
+    ]
+  },
+  "connectors-t17": {
+    "answer": "Meanwhile",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      1,
+      2
+    ]
+  },
+  "connectors-t18": {
+    "answer": "Subsequently",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      2,
+      1
+    ]
+  },
+  "connectors-t19": {
+    "answer": "by then",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      3,
+      0,
+      1,
+      2
+    ]
+  },
+  "connectors-t20": {
+    "answer": "meanwhile",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "connectors-t21": {
+    "answer": "Above all",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      3,
+      1,
+      2,
+      0
+    ]
+  },
+  "connectors-t22": {
+    "answer": "In short",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      3,
+      0,
+      1,
+      2
+    ]
+  },
+  "connectors-t23": {
+    "answer": "Overall",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "connectors-t24": {
+    "answer": "Above all",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      1,
+      3,
+      2,
+      0
+    ]
+  }
+}

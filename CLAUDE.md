@@ -46,6 +46,8 @@ npm run check       # all four (format as a --check)
 npm run serve       # static server on :8000 (fetch() needs an HTTP origin)
 npm run verify      # drives the real app in Chromium — needs `serve` running
 npm run icons       # redraws the app icons and the link-preview card
+npm run draft -- docs/agents/drafts/<topic>          # checks a topic that is not shipped yet
+npm run blind -- docs/agents/drafts/<topic>/questions.json <outDir>   # unkeys a set for review
 ```
 
 `check` runs in CI on every push and PR to `main` and `test`. `verify`
@@ -193,6 +195,16 @@ from `docs/agents/`. The supervisor fixes the category taxonomy first —
 that's the one thing the two agents must agree on, and the thing the app
 uses to link a wrong answer on the results screen to the lesson that
 teaches it. See `docs/agents/README.md` for the loop.
+
+**Blind a corpus with `npm run blind`, never by hand.** The first
+hand-rolled attempt hid `correctIndex` and `explanation` and left `tip`
+— and a tip is a standalone rule written for the item it belongs to, so
+it names the keyed form outright in twenty-two items out of
+twenty-four. Two reviewers opened their reports by saying so and had to
+discount their own agreement rate, which is the one number a blind pass
+exists to produce. `tools/blind-corpus.mjs` works by allow-list, shuffles
+the options, and writes the key back beside the source rather than into
+the directory the reviewer is pointed at.
 
 **Content is reviewed by a session that has not seen the key.** The one
 controlled comparison in the literature found teacher-plus-AI items
