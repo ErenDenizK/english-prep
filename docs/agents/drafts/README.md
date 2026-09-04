@@ -112,11 +112,26 @@ new rule conditions, and it is not started.
 
 ## quantifiers · 24 questions, 6 lessons
 
-**Neither pass has run.** The blind review and the lesson-sufficiency
-audit both died on the session rate limit before producing anything.
-The author's own self-check is clean and the twelve items it rejected for
-having two acceptable answers are logged in `docs/agents/quantifiers-spec.md`
-§7 — which is a good sign and is not a review.
+**Items: reviewed 2026-09-04, SHIPS on all six categories.** Nothing
+blocking, no miskey, and — the number the pass exists for — **no item
+with a second answer a competent teacher would accept**, on a properly
+blind file this time. That is unusually clean for quantifiers, and it is
+the spec's honest bounds working: `a lot of` never appears in an
+affirmative list beside `plenty of`, `much` never meets `a lot of` under
+negation, `some`/`any` is never keyed inside a question, and `each`/
+`every` is keyed only where the grammar forces it.
+
+Two things recorded rather than fixed. `t13` and `t17` are a near-
+duplicate the automated check cannot see — two pieces of infrastructure
+broken by weather, users taking the longer route, keyed `both` and
+`neither`; trigram overlap is under 8%, so `checkNearDuplicates` will
+never flag it. And two categories test structure where their names
+promise meaning: a learner can score 4/4 on *Each vs Every* while still
+believing the two are semantically identical, and *Much vs A Lot Of*
+never puts `plenty of` against `a lot of` at all. Neither is an item
+defect; both are things the lessons must not promise.
+
+**Lessons: sufficiency audit running.**
 
 ## gerunds-infinitives · 24 questions, 6 lessons
 
