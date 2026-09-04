@@ -23,7 +23,7 @@ const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
 const DEV_NOTE_DISMISSED_KEY = "englishPrep.devNoteDismissed";
 const SETTINGS_KEY = "englishPrep.settings";
 /** Distinct questions that must have been met before a group is ranked. */
-const MIN_ITEMS_FOR_WEAK_ENTRY = 3;
+export const MIN_ITEMS_FOR_WEAK_ENTRY = 3;
 
 /** And before the app is willing to *state* that something is a weakness. */
 const MIN_ITEMS_FOR_WEAK_CLAIM = 6;
@@ -259,14 +259,27 @@ export function getCategoryTotals() {
 }
 
 /**
- * How the learner is doing in one topic, across everything they have ever
- * answered in it.
+ * Roughly one pass through a topic. Whole attempts, floor not cap, the
+ * same way `ACCURACY_WINDOW` works — the two numbers on screen answer the
+ * same question and so they are computed the same way.
+ */
+const TOPIC_ACCURACY_WINDOW = 20;
+
+/**
+ * How the learner is doing in one topic, lately.
  *
  * This used to return the most recent attempt's slice of the topic, which
  * is a different and much worse number. A ten-question mixed test touches
  * three topics, so it leaves every topic row reading `0/3` — directly
  * beside the row's own subtitle saying the topic has 24 questions. Two
  * fractions on one line, and the wrong one is the bigger type.
+ *
+ * Then it was a lifetime average, which fixed that and introduced the
+ * other half of the same problem: Profil's headline is windowed, the topic
+ * chip was not, and a learner who improved watched one number move while
+ * the other sat still. Two percentages that disagree are worse than
+ * either, because neither says which question it is answering. Both are
+ * now "how are you doing lately", for the reasons in `getOverallStats`.
  *
  * Accumulated and returned as a ratio rather than a fraction, so the
  * caller has nothing to render that could be read as a question count.
@@ -278,15 +291,25 @@ export function getCategoryTotals() {
  *   number to mean anything.
  */
 export function getTopicAccuracy(topicId) {
-  const totals = sumBreakdowns(getHistory(), "topicBreakdown")[topicId];
-  if (!totals || totals.total < MIN_ITEMS_FOR_WEAK_ENTRY) {
+  const attempts = getHistory();
+  let correct = 0;
+  let answered = 0;
+  // Newest first, and over the attempt's own breakdown rather than its
+  // per-question list: the breakdown is the one part of an attempt every
+  // version of the app has written, so a history recorded before the
+  // question list carried topic ids still counts.
+  for (let i = attempts.length - 1; i >= 0 && answered < TOPIC_ACCURACY_WINDOW; i -= 1) {
+    const slice = attempts[i].topicBreakdown?.[topicId];
+    if (slice) {
+      correct += slice.correct;
+      answered += slice.total;
+    }
+  }
+
+  if (answered < MIN_ITEMS_FOR_WEAK_ENTRY) {
     return null;
   }
-  return {
-    correct: totals.correct,
-    answered: totals.total,
-    accuracy: totals.correct / totals.total,
-  };
+  return { correct, answered, accuracy: correct / answered };
 }
 
 /**
@@ -473,6 +496,16 @@ export function getLastActivity() {
       latest = time;
     }
   }
+  // Lessons count too. Without this a learner who reads and never tests
+  // has no last activity at all, so the Eğitim index can never notice
+  // they have been away — which is exactly the learner most likely to
+  // have been. Records written before the timestamp existed have no `at`
+  // and simply do not vote, the way a missing `read` reads as zero.
+  for (const entry of Object.values(getAllLessonProgress())) {
+    if (typeof entry.at === "number" && (latest === null || entry.at > latest)) {
+      latest = entry.at;
+    }
+  }
   return latest;
 }
 
@@ -560,6 +593,11 @@ export function getAllLessonProgress() {
       normalized[lessonId] = {
         read: clampRead(entry.read),
         done: entry.done === true,
+        // When this lesson was last touched. Absent on every record
+        // written before the field existed, and absence is a legitimate
+        // answer — "unknown", not "never" — so it stays undefined rather
+        // than defaulting to now or to zero.
+        ...(typeof entry.at === "number" && Number.isFinite(entry.at) ? { at: entry.at } : {}),
       };
     }
   }
@@ -595,7 +633,7 @@ export function recordLessonRead(lessonId, read) {
   if (existing && existing.read >= value) {
     return;
   }
-  progress[lessonId] = { read: value, done: existing?.done === true };
+  progress[lessonId] = { read: value, done: existing?.done === true, at: Date.now() };
   writeJson(LESSON_PROGRESS_KEY, progress);
 }
 
@@ -604,7 +642,7 @@ export function recordLessonRead(lessonId, read) {
  */
 export function markLessonDone(lessonId) {
   const progress = getAllLessonProgress();
-  progress[lessonId] = { read: 1, done: true };
+  progress[lessonId] = { read: 1, done: true, at: Date.now() };
   writeJson(LESSON_PROGRESS_KEY, progress);
 }
 

@@ -90,6 +90,17 @@ test("malformed lesson entries are skipped rather than written through", () => {
   });
 });
 
+test("the later timestamp wins, and two records without one stay without one", () => {
+  const merged = mergeLessonProgress(
+    { l1: { read: 0.5, done: false, at: 100 }, l2: { read: 1, done: true } },
+    { l1: { read: 0.2, done: false, at: 900 }, l2: { read: 1, done: true } }
+  );
+  assert.equal(merged.l1.at, 900);
+  // "Unknown" must survive a merge as unknown. Defaulting it to 0 or to
+  // now would make a restore claim a date that never happened.
+  assert.equal("at" in merged.l2, false);
+});
+
 /* ---- Seen versions ---- */
 
 test("seen versions take the higher mark, and ignore nonsense", () => {

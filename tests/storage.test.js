@@ -82,12 +82,40 @@ test("attempts recorded before category history existed are skipped, not fatal",
   assert.deepEqual(storage.getTopicTotals(), { tenses: { correct: 1, total: 2 } });
 });
 
-test("topic accuracy accumulates every attempt, not just the last one", () => {
+test("topic accuracy spans attempts, not just the last one", () => {
   storage.recordAttempt(attempt({ topics: { tenses: { correct: 1, total: 5 } } }));
   storage.recordAttempt(attempt({ topics: { tenses: { correct: 4, total: 5 } } }));
 
   assert.deepEqual(storage.getTopicAccuracy("tenses"), { correct: 5, answered: 10, accuracy: 0.5 });
   assert.equal(storage.getTopicAccuracy("articles"), null);
+});
+
+test("the topic percentage is windowed, so an improving learner sees it move", () => {
+  // Twenty-four answers at 25%, then twenty at 100%. A lifetime average
+  // would read 59% and keep the learner looking at their worst week;
+  // Profil's headline is windowed for exactly that reason, and two
+  // percentages on screen that disagree are worse than either.
+  for (let i = 0; i < 6; i += 1) {
+    storage.recordAttempt(attempt({ topics: { tenses: { correct: 1, total: 4 } } }));
+  }
+  for (let i = 0; i < 5; i += 1) {
+    storage.recordAttempt(attempt({ topics: { tenses: { correct: 4, total: 4 } } }));
+  }
+
+  assert.equal(storage.getTopicAccuracy("tenses").accuracy, 1);
+});
+
+test("the window is a floor, so one long test is never chopped in half", () => {
+  storage.recordAttempt(attempt({ topics: { tenses: { correct: 0, total: 4 } } }));
+  storage.recordAttempt(attempt({ topics: { tenses: { correct: 12, total: 24 } } }));
+
+  // The 24-answer attempt alone fills the window, so the older one is out
+  // — but the long attempt is counted whole rather than trimmed to 20.
+  assert.deepEqual(storage.getTopicAccuracy("tenses"), {
+    correct: 12,
+    answered: 24,
+    accuracy: 0.5,
+  });
 });
 
 /* A ten-question mixed test touches three topics, so the old
@@ -310,7 +338,9 @@ test("lesson progress only ever moves forward", () => {
   storage.recordLessonRead("tenses-l1", 0.7);
   storage.recordLessonRead("tenses-l1", 0.4);
 
-  assert.deepEqual(storage.getLessonProgress("tenses-l1"), { read: 0.7, done: false });
+  const progress = storage.getLessonProgress("tenses-l1");
+  assert.equal(progress.read, 0.7);
+  assert.equal(progress.done, false);
 });
 
 test("a read fraction is clamped to 0…1 however it arrives", () => {
@@ -320,17 +350,63 @@ test("a read fraction is clamped to 0…1 however it arrives", () => {
   // A read of 0 still records the lesson as opened — the index shows a
   // lesson you have been into differently from one you have not.
   storage.recordLessonRead("tenses-l2", -1);
-  assert.deepEqual(storage.getLessonProgress("tenses-l2"), { read: 0, done: false });
+  assert.equal(storage.getLessonProgress("tenses-l2").read, 0);
+  assert.equal(storage.getLessonProgress("tenses-l2").done, false);
 
   storage.recordLessonRead("tenses-l3", Number.NaN);
-  assert.deepEqual(storage.getLessonProgress("tenses-l3"), { read: 0, done: false });
+  assert.equal(storage.getLessonProgress("tenses-l3").read, 0);
+  assert.equal(storage.getLessonProgress("tenses-l3").done, false);
+});
+
+test("lesson progress carries when it happened, and a record without one stays unknown", () => {
+  const before = Date.now();
+  storage.recordLessonRead("tenses-l1", 0.3);
+  const at = storage.getLessonProgress("tenses-l1").at;
+  assert.ok(at >= before && at <= Date.now());
+
+  storage.markLessonDone("tenses-l2");
+  assert.ok(typeof storage.getLessonProgress("tenses-l2").at === "number");
+
+  // A record written before the field existed. Absence is a real answer —
+  // "unknown", not "never" — so it must not be invented on read.
+  localStorage.setItem(
+    "englishPrep.lessonProgress",
+    JSON.stringify({ "tenses-l9": { read: 1, done: true } })
+  );
+  assert.equal("at" in storage.getLessonProgress("tenses-l9"), false);
+});
+
+test("a learner who has only ever read lessons still has a last activity", () => {
+  // The whole point of the timestamp: before it, getLastActivity read
+  // only the attempt history, so someone who reads and never tests could
+  // never be noticed as having been away.
+  assert.equal(storage.getLastActivity(), null);
+
+  const before = Date.now();
+  storage.recordLessonRead("tenses-l1", 0.5);
+  const activity = storage.getLastActivity();
+  assert.ok(activity >= before && activity <= Date.now());
+});
+
+test("the later of a test and a lesson is the last activity", () => {
+  storage.recordLessonRead("tenses-l1", 0.5);
+  const afterLesson = storage.getLastActivity();
+
+  storage.recordAttempt({
+    date: new Date(Date.now() + 60_000).toISOString(),
+    mode: "mixed",
+    topicBreakdown: {},
+    questions: [],
+  });
+  assert.ok(storage.getLastActivity() > afterLesson);
 });
 
 test("completing a lesson marks it read to the end", () => {
   storage.recordLessonRead("tenses-l1", 0.3);
   storage.markLessonDone("tenses-l1");
 
-  assert.deepEqual(storage.getLessonProgress("tenses-l1"), { read: 1, done: true });
+  assert.equal(storage.getLessonProgress("tenses-l1").read, 1);
+  assert.equal(storage.getLessonProgress("tenses-l1").done, true);
 
   // Re-reading a finished lesson must not un-finish it.
   storage.recordLessonRead("tenses-l1", 0.1);

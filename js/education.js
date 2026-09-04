@@ -21,7 +21,13 @@
 // what a scrolling page has, and because it stays meaningful when an
 // author adds a block to a lesson someone is halfway through.
 
-import { loadManifest, loadLessonsForTopics, lessonIndex } from "./topics.js";
+import {
+  loadManifest,
+  loadLessonsForTopics,
+  lessonIndex,
+  uncoveredSections,
+  sectionListPhrase,
+} from "./topics.js";
 import {
   getAllLessonProgress,
   getLastActivity,
@@ -30,6 +36,7 @@ import {
   markLessonDone,
   countCompletedLessons,
   getHistory,
+  getItemStats,
   getSeenVersion,
   getWeakCategories,
   RE_ENTRY_DAYS,
@@ -52,6 +59,12 @@ const actionBar = createActionBar("lesson-bar");
 const state = {
   /** @type {Array<object>|null} */
   lessons: null,
+  /** How many questions the app has in total — the denominator behind
+   * "you have seen all of them", and the only thing the index needs from
+   * the manifest that the lesson list does not already carry. */
+  questionCount: 0,
+  /** The scored sections still not practisable, as a Turkish phrase. */
+  uncovered: "",
   /** @type {Promise<Array<object>>|null} */
   loading: null,
   /** @type {{lessonIndex: number, answers: Map<number, string>}|null} */
@@ -71,6 +84,10 @@ function loadLessons() {
     .then((manifest) => {
       const lessons = lessonIndex(manifest);
       state.lessons = lessons;
+      state.questionCount = manifest.topics
+        .filter((topic) => !topic.comingSoon)
+        .reduce((total, topic) => total + (topic.questionCount ?? 0), 0);
+      state.uncovered = sectionListPhrase(uncoveredSections(manifest.topics));
       state.loading = null;
       return lessons;
     })
@@ -232,7 +249,7 @@ function renderWelcome(firstLesson) {
  * verdict on them: new content. It is news about the app, and it is the
  * only message that gets better the longer they were gone.
  */
-function renderReEntryCard(lesson, entry, news) {
+function renderReEntryCard(lesson, entry, news, nextUnread, totals) {
   const card = el("section", "surface stack");
   const head = el("div", "stack stack--tight");
 
@@ -244,10 +261,16 @@ function renderReEntryCard(lesson, entry, news) {
     // Someone who finishes what they start, and came back. There is no
     // half-read lesson to resume, which does not make them a new learner —
     // it makes them the tidier kind of returner, and the first version of
-    // this card gave them the same-day screen.
+    // this card gave them the same-day screen. The heading stays "a short
+    // reminder" rather than "where you left off", because for this learner
+    // there is no place they left off; what they get instead of the resume
+    // button is the next lesson they have not read.
     head.appendChild(el("h2", "t-title", "Kısa bir hatırlatma"));
     head.appendChild(
       el("p", "t-body", "Beş soru, doksan saniye. Neyin durduğunu okumaktan daha hızlı gösterir.")
+    );
+    head.appendChild(
+      el("p", "t-meta t-num", `${totals.lessons} dersten ${totals.completed} tanesi tamamlandı`)
     );
   }
   card.appendChild(head);
@@ -270,11 +293,122 @@ function renderReEntryCard(lesson, entry, news) {
     resume.type = "button";
     resume.addEventListener("click", () => openLessonByHash(lesson.id));
     card.appendChild(resume);
+  } else if (nextUnread) {
+    const next = el("button", "btn btn--quiet", "Sıradaki derse geç");
+    next.type = "button";
+    next.addEventListener("click", () => openLessonByHash(nextUnread.id));
+    card.appendChild(next);
+    card.appendChild(el("p", "t-meta", `${nextUnread.topicTitle} · ${nextUnread.category}`));
   }
 
   if (news) {
     card.appendChild(el("p", "t-meta", news));
   }
+
+  return card;
+}
+
+/**
+ * The next-step card: the state the Eğitim index spends most of its life
+ * in, and the one it used to have nothing for.
+ *
+ * A learner who has taken tests but finished no lesson used to land on a
+ * bar reading zero and the line "18 dersten 0 tanesi tamamlandı" — a
+ * number that is true, means nothing, and represents none of the work
+ * they have actually done. Everything the app knew about them was on two
+ * other screens.
+ *
+ * So the card answers "what now" with the one thing the app is in a
+ * position to know: the category they have got most wrong, and the lesson
+ * that teaches it. The progress line survives, below the button, as a
+ * fact rather than as the headline.
+ *
+ * It suggests and never locks. Every lesson row below stays open and in
+ * the same order — a recommendation is not a gate, which is what
+ * `docs/education-notes.md` settled and what `practice-modes.md` refuses
+ * under "unlock progression".
+ */
+function renderNextStepCard(lessons, progress, completed) {
+  // The weakest category that this app actually has a lesson for. A weak
+  // category always has one today, because lessons and questions share
+  // one taxonomy — but the fallback is what keeps that a property of the
+  // content rather than an assumption in the code.
+  const weakest = getWeakCategories(1)[0] ?? null;
+  const weakLesson = weakest ? lessons.find((lesson) => lesson.category === weakest.category) : null;
+  const target = weakLesson ?? lessons.find((lesson) => !progress[lesson.id]?.done) ?? null;
+  if (!target) {
+    return null;
+  }
+
+  const card = el("section", "surface stack");
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("p", "t-label", "Sıradaki adım"));
+  head.appendChild(englishTitle("h2", "t-title t-en", target.category));
+
+  if (weakLesson) {
+    // A ranking, not a verdict — the same hedge the weak-spot list on the
+    // Test tab carries, for the same reason: on four questions the app
+    // knows which one went worst, not that the learner cannot do it.
+    head.appendChild(
+      el(
+        "p",
+        "t-body",
+        "Son testlerinde en çok bu sorularda zorlandın. Dersi okumak, aynı " +
+          "soruları tekrar çözmekten daha çok işine yarar."
+      )
+    );
+  } else {
+    head.appendChild(el("p", "t-body", "Buradan devam edebilirsin."));
+  }
+  card.appendChild(head);
+
+  const open = el("button", "btn btn--primary", "Bu dersi aç");
+  open.type = "button";
+  open.addEventListener("click", () => openLessonByHash(target.id));
+  card.appendChild(open);
+
+  card.appendChild(
+    el("p", "t-meta t-num", `${target.topicTitle} · ${lessons.length} dersten ${completed} tanesi tamamlandı`)
+  );
+
+  return card;
+}
+
+/**
+ * Everything read, every question met.
+ *
+ * This screen used to be a dead end: a full bar, a full list of ticks and
+ * nothing offered. What is honest to say here is short — from here on it
+ * is revision, and revision teaches less than a first pass — and it has
+ * to be a statement about the app rather than a verdict on the learner.
+ * There is deliberately no "you are ready": the bank is a fraction of the
+ * paper, and the closing line says which parts of the exam are missing
+ * rather than leaving %100 to be read as coverage.
+ */
+function renderAllDoneCard(lessons, missingSections) {
+  const card = el("section", "surface stack");
+
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("h2", "t-title", "Dersleri bitirdin"));
+  head.appendChild(
+    el(
+      "p",
+      "t-body",
+      `${lessons.length} dersin hepsini okudun ve bankadaki soruların hepsini ` +
+        "gördün. Buradan sonrası tekrar — gördüğün bir soruyu yeniden çözmek, " +
+        "ilk seferki kadar öğretmez."
+    )
+  );
+  card.appendChild(head);
+
+  const revise = el("button", "btn btn--primary", "Karışık testle tekrar et");
+  revise.type = "button";
+  revise.addEventListener("click", () => {
+    startMixedTest(20).catch(console.error);
+  });
+  card.appendChild(revise);
+
+  card.appendChild(el("p", "t-meta", missingSections));
 
   return card;
 }
@@ -354,38 +488,53 @@ function renderIndex() {
   const completed = countCompletedLessons(lessons.map((lesson) => lesson.id));
   const untouched = completed === 0 && Object.keys(progress).length === 0 && getHistory().length === 0;
 
-  if (untouched) {
-    // The welcome card replaces the summary rather than joining it.
-    indexContainer.appendChild(renderWelcome(lessons[0] ?? null));
-  } else {
-    indexContainer.appendChild(renderProgressSummary(lessons, completed));
-  }
-
   const resumable = lessons.find((lesson) => {
     const entry = progress[lesson.id];
     return entry && !entry.done && entry.read > 0.02;
   });
   // Only when the app actually knows. A learner who has only ever read
-  // lessons has no timestamp anywhere, and guessing from that would tell
-  // someone who has never left that they had been away.
+  // lessons had no timestamp anywhere until `recordLessonRead` started
+  // writing one, and guessing from an absent timestamp would tell someone
+  // who has never left that they had been away.
   //
   // Computed OUT here, not inside the resumable branch: coming back after
   // three weeks is a fact about the learner, not about whether they
   // happened to abandon a lesson on the way out.
   const last = getLastActivity();
   const away = last !== null && Date.now() - last > RE_ENTRY_DAYS * 86_400_000;
+  const seenEverything =
+    state.questionCount > 0 &&
+    completed === lessons.length &&
+    Object.keys(getItemStats()).length >= state.questionCount;
 
-  if (away) {
-    indexContainer.appendChild(
-      renderReEntryCard(
-        resumable ?? null,
-        resumable ? progress[resumable.id] : null,
-        newContentNote(lessons)
-      )
-    );
-  } else if (resumable) {
-    indexContainer.appendChild(renderResumeCard(resumable, progress[resumable.id]));
-  }
+  // Exactly one card, always, and its content is a function of what the
+  // app knows. It used to be three mutually exclusive branches plus a bare
+  // progress line for everyone who fell through — which was most
+  // returners, and which is how a learner with real test history came to
+  // land on a bar reading zero.
+  //
+  // Order matters: the more specific a state is, the earlier it is tested.
+  // Finishing everything outranks having been away, because a returner who
+  // has nothing left to read should not be sent to look for it.
+  const card = untouched
+    ? renderWelcome(lessons[0] ?? null)
+    : seenEverything
+      ? renderAllDoneCard(lessons, state.uncovered)
+      : away
+        ? renderReEntryCard(
+            resumable ?? null,
+            resumable ? progress[resumable.id] : null,
+            newContentNote(lessons),
+            lessons.find((lesson) => !progress[lesson.id]?.done) ?? null,
+            { lessons: lessons.length, completed }
+          )
+        : resumable
+          ? renderResumeCard(resumable, progress[resumable.id])
+          : renderNextStepCard(lessons, progress, completed);
+
+  // A screen this app can reach only by running out of both suggestions
+  // and lessons. The summary is what it always was.
+  indexContainer.appendChild(card ?? renderProgressSummary(lessons, completed));
 
   const topicIds = [...new Set(lessons.map((lesson) => lesson.topicId))];
   for (const topicId of topicIds) {

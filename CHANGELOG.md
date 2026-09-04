@@ -5,6 +5,64 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.19 — 2026-09-04
+
+**The user flow, all nine recommendations.** `docs/research/user-flow.md`
+walked five journeys end to end and ranked what it found; this is the
+whole list, and the two decisions it left open.
+
+**Leaving a test no longer costs you the test.** `Çık` was a link, so five
+answered questions went with one tap and nothing was written down — the
+learner landed on the screen a brand-new learner sees, because from
+storage's point of view they were one. It then became a link plus a
+confirmation dialog, which was wrong in the same way: a dialog makes the
+loss loud instead of making it not a loss. Five answered questions are a
+five-question test, so the control now reads **Bitir**, records what was
+answered and shows the score. Questions never reached are not scored as
+wrong. The dialog is gone.
+
+**One card at the top of Eğitim, always.** There were three mutually
+exclusive branches and a bare progress line for everyone who fell through
+— which was most returners, and which is how a learner with real test
+history came to land on a bar reading `18 dersten 0 tanesi tamamlandı`.
+Six states now, one surface, one primary action each: the welcome card, a
+next-step card that points at the lesson for the category you have got
+most wrong, the resume card, the re-entry card (now with a way forward for
+someone who finishes what they start), and an end state for a learner who
+has read everything — which used to be a dead end with nothing offered but
+a replay.
+
+**That end state does not say you are ready**, because the bank is a
+fraction of the paper. It names which sections are missing instead, read
+from the manifest: the day `closest-meaning` shipped, every sentence
+naming it as missing became a lie about the app the learner was holding.
+Profil's coverage paragraph now reads the same single answer.
+
+**Numbers that meant nothing.** `Yeni` marked every topic on a store that
+had never seen any of them, and the first mixed test then consumed all
+of them at once — the badge is a comparison, and a learner with no
+baseline has nothing to compare to. The baseline is now set where the
+questions were actually delivered, not where the test was launched. The
+results breakdown applied no evidence threshold at all, so a ten-question
+test produced nine rows sorted worst-first, most of them `0/1`: the rows
+stay, the claim goes. And Profil's headline percentage was windowed while
+the topic percentage was a lifetime average — two bare percentages, one
+screen apart, answering different questions. Both are now "lately".
+
+**Lesson progress records when it happened.** A learner who reads and
+never tests had no timestamp anywhere, so the app could never notice they
+had been away — which is exactly the learner most likely to have been.
+One field, absent on old records, and absence stays "unknown" rather than
+becoming a date that never happened.
+
+**One filled button per screen** on the Test tab: when the mistake book
+has questions in it, it is the better mode and it takes the filled
+button. Three card bodies cut to one sentence. The third mode is still
+below the fold at 320×640 and copy cannot fix that; saying so is better
+than claiming the trim solved it.
+
+107 unit tests, 1051 verification checks.
+
 ## v0.18 — 2026-09-04
 
 **Grammar is finished.** Five topics shipped together — `closest-meaning`,

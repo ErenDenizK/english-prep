@@ -9,7 +9,7 @@
 // lists on the Test tab start practice instead. One row, one action, and
 // which action it is follows from which screen you are on.
 
-import { loadManifest, lessonIndex } from "./topics.js";
+import { loadManifest, lessonIndex, uncoveredSections, sectionListPhrase } from "./topics.js";
 import {
   getProfileName,
   setProfileName,
@@ -293,9 +293,12 @@ function renderCoverage(topics) {
   const covered = hasRestatement
     ? "paragraf içindeki dilbilgisi ve kelime boşlukları (15 puan) ve anlamca en yakın cümle (15 puan)"
     : "paragraf içindeki dilbilgisi ve kelime boşlukları (15 puan)";
-  const missing = hasRestatement
-    ? "Okuma (21 puan) ve paragraf tamamlama (9 puan) burada yok"
-    : "Anlamca en yakın cümle (15 puan), okuma (21 puan) ve paragraf tamamlama (9 puan) burada yok";
+  // Built from the manifest, not written out: the day `closest-meaning`
+  // shipped, a hardcoded list naming it as missing became a lie about the
+  // app the learner was holding, and the next topic to ship would do the
+  // same thing again.
+  const phrase = sectionListPhrase(uncoveredSections(topics));
+  const missing = `${phrase.charAt(0).toLocaleUpperCase("tr")}${phrase.slice(1)} burada yok`;
 
   section.appendChild(
     el(

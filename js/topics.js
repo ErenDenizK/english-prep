@@ -204,3 +204,44 @@ export async function loadLessonsForTopics(topics) {
   );
   return lessonSets.flat();
 }
+
+/**
+ * Which scored sections of the paper the app still does not practise.
+ *
+ * Read from the manifest rather than written down, because the answer
+ * changes when content ships and a hardcoded list is a promise that goes
+ * stale silently — the day `closest-meaning` went live, every sentence
+ * naming it as missing became a lie about the app the learner was holding.
+ *
+ * The section ids are the topic ids that would cover them, which is why a
+ * section is "covered" by a live topic of the same name. Reading is 21
+ * points and paragraph completion is 9, from the two sample papers in
+ * `docs/exam-spec.md`; Session II is listening and is not on this list
+ * because no topic id could ever cover it.
+ *
+ * @param {Array<{id: string, comingSoon?: boolean}>} topics
+ * @returns {Array<{label: string, points: number}>}
+ */
+export function uncoveredSections(topics) {
+  const live = new Set(topics.filter((topic) => !topic.comingSoon).map((topic) => topic.id));
+  return [
+    { id: "closest-meaning", label: "anlamca en yakın cümle", points: 15 },
+    { id: "reading", label: "okuma", points: 21 },
+    { id: "paragraph-completion", label: "paragraf tamamlama", points: 9 },
+  ].filter((section) => !live.has(section.id));
+}
+
+/**
+ * "Okuma (21 puan) ve paragraf tamamlama (9 puan)" — the same list as a
+ * Turkish phrase, with the conjunction the count calls for.
+ *
+ * @param {Array<{label: string, points: number}>} sections
+ * @returns {string}
+ */
+export function sectionListPhrase(sections) {
+  const parts = sections.map((section) => `${section.label} (${section.points} puan)`);
+  if (parts.length <= 1) {
+    return parts[0] ?? "";
+  }
+  return `${parts.slice(0, -1).join(", ")} ve ${parts[parts.length - 1]}`;
+}

@@ -1,21 +1,19 @@
 // Starting a test is the one action reachable from several places — a
-// topic card, the mixed-test hero, and the end of an Eğitim lesson — and
-// each one has to do the same three things in the same order: record that
-// the learner has now seen the topic's current content version (which is
-// what clears the "new questions added" badge), stash the request for
-// quiz.html to pick up, and navigate. Keeping that here means a new entry
-// point can't quietly skip a step.
+// topic card, the mixed-test hero, and the end of an Eğitim lesson — so
+// resolving the topics, stashing the request for quiz.html and navigating
+// live here rather than at each entry point.
+//
+// What used to live here as well was marking a topic seen, which is what
+// clears the "new questions added" badge. It has moved to js/results.js,
+// where the attempt is recorded and `topicBreakdown` names the topics the
+// learner actually met. Starting a mixed test marked every topic in the
+// app as seen — including ones the shuffle never reached — so one tap on
+// the hero permanently burned every badge in the app.
 
 import { loadManifest } from "./topics.js";
-import { markTopicSeen, getMistakeBook } from "./storage.js";
+import { getMistakeBook } from "./storage.js";
 import { setQuizRequest } from "./session-state.js";
 import { TOPIC_TEST_DEFAULT_COUNT } from "./config.js";
-
-function markSeen(topic) {
-  if (typeof topic.contentVersion === "number") {
-    markTopicSeen(topic.id, topic.contentVersion);
-  }
-}
 
 function go(request) {
   setQuizRequest(request);
@@ -33,7 +31,6 @@ export async function startTopicTest(topicId, count = TOPIC_TEST_DEFAULT_COUNT) 
   if (!topic) {
     return false;
   }
-  markSeen(topic);
   go({ mode: "topic", topicIds: [topic.id], count: Math.min(count, topic.questionCount) });
   return true;
 }
@@ -48,7 +45,6 @@ export async function startTopicTest(topicId, count = TOPIC_TEST_DEFAULT_COUNT) 
 export async function startCategoryPractice(category, count = TOPIC_TEST_DEFAULT_COUNT) {
   const manifest = await loadManifest();
   const topics = manifest.topics.filter((topic) => !topic.comingSoon);
-  topics.forEach(markSeen);
   go({ mode: "category", topicIds: topics.map((topic) => topic.id), category, count });
 }
 
@@ -58,7 +54,6 @@ export async function startCategoryPractice(category, count = TOPIC_TEST_DEFAULT
 export async function startMixedTest(count) {
   const manifest = await loadManifest();
   const topics = manifest.topics.filter((topic) => !topic.comingSoon);
-  topics.forEach(markSeen);
   go({ mode: "mixed", topicIds: topics.map((topic) => topic.id), count });
 }
 
@@ -78,7 +73,6 @@ export async function startMistakeBook(count = "all") {
   }
   const manifest = await loadManifest();
   const topics = manifest.topics.filter((topic) => !topic.comingSoon);
-  topics.forEach(markSeen);
   go({ mode: "mistakes", topicIds: topics.map((topic) => topic.id), ids, count });
   return true;
 }
