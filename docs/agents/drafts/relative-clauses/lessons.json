@@ -1,0 +1,863 @@
+[
+  {
+    "category": "Who vs Whom vs Whose",
+    "summary": "Kişi yan cümlede özne mi, nesne mi, yoksa sahip mi?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede ilgi cümlesi ismin **önüne** gelir ve ortada hiçbir zamir yoktur: 'okuduğum kitap', 'bizi arayan adam'. İngilizce bunu tersine çevirir: cümle ismin **arkasına** gelir ve ismin yerini tutan bir zamirle başlar. O zamiri iki şey birlikte seçer — ismin ne olduğu (insan mı, değil mi) ve yan cümlenin içinde hangi işi yaptığı. Bu ders ikinci soruyu ayırt etmeyi öğretir."
+      },
+      {
+        "type": "contrast",
+        "heading": "Aynı kişi, üç ayrı iş",
+        "sides": [
+          {
+            "label": "Who",
+            "gloss": "Kişi yan cümlenin öznesidir: eylemi kendisi yapar. Zamirden hemen sonra fiil gelir, çünkü cümlenin öznesi zaten odur.",
+            "example": "The lawyer who defended us is retiring."
+          },
+          {
+            "label": "Whom",
+            "gloss": "Kişi yan cümlenin nesnesidir: eylem ona yapılır ya da bir edat onu alır. Zamirden sonra cümlenin kendi öznesi gelir.",
+            "example": "The lawyer whom we hired is retiring."
+          },
+          {
+            "label": "Whose",
+            "gloss": "Kişi bir şeyin sahibidir. Yan cümlenin içinde geçen o kişinin kendisi değil, ona ait olan şeydir.",
+            "example": "The lawyer whose office we visited is retiring."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "Who",
+            "use": "Özne",
+            "pattern": "N + who + V",
+            "example": "the neighbour who complained"
+          },
+          {
+            "form": "Whom",
+            "use": "Nesne",
+            "pattern": "N + whom + S + V",
+            "example": "the neighbour whom we called"
+          },
+          {
+            "form": "Whom",
+            "use": "Edattan sonra",
+            "pattern": "N + preposition + whom + S + V",
+            "example": "the neighbour to whom we wrote"
+          },
+          {
+            "form": "Whose",
+            "use": "Sahiplik",
+            "pattern": "N + whose + noun + V",
+            "example": "the neighbour whose dog barks"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The engineer who designed the bridge lives in Izmir.",
+            "note": "Eylemi kişinin kendisi yapıyor → who"
+          },
+          {
+            "sentence": "The candidate whom the committee selected has arrived.",
+            "note": "Yan cümlenin öznesi 'the committee', kişi seçilen taraf → whom"
+          },
+          {
+            "sentence": "The author whose novels we studied will speak tonight.",
+            "note": "Romanlar yazara ait → whose"
+          },
+          {
+            "sentence": "The colleague with whom I share an office is on leave.",
+            "note": "Zamirin önünde edat var → whom"
+          },
+          {
+            "sentence": "The child who broke the window apologised.",
+            "note": "Zamirden hemen sonra fiil, kişi eylemi yapıyor → who"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The woman lives next door is a dentist.",
+        "right": "The woman who lives next door is a dentist.",
+        "why": "Türkçede ilgi cümlesi zamirsiz kurulduğu için ('yan komşuda oturan kadın') zamiri düşürmek çok yaygın bir hatadır. İngilizcede özne görevindeki ilgi zamiri asla atılamaz."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I know a student who her father teaches physics.",
+        "right": "I know a student whose father teaches physics.",
+        "why": "'Who + iyelik zamiri' diye bir yapı yoktur. Sahiplik tek kelimeyle, 'whose' ile kurulur ve hemen ardından sahip olunan isim gelir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The professor to who I sent my paper replied at once.",
+        "right": "The professor to whom I sent my paper replied at once.",
+        "why": "Bir edat doğrudan zamirin önüne geçtiğinde 'who' kullanılamaz; o konumdaki tek biçim 'whom'dur. Bu, kuralın gerçekten karar verdiği ve kimsenin itiraz etmediği yerlerden biridir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda sırayla bunlara bak",
+        "rules": [
+          {
+            "condition": "Ana isim bir insan değilse üçü de elenir",
+            "then": "Which / That"
+          },
+          {
+            "condition": "Boşluktan sonra gelen isim ana kişiye ait bir şeyse, yani 'his car', 'her father' yerine geçiyorsa",
+            "then": "Whose"
+          },
+          {
+            "condition": "Boşluktan hemen önce bir edat varsa (to, with, for, about)",
+            "then": "Whom"
+          },
+          {
+            "condition": "Yan cümleyi ayrı bir cümle olarak yazdığında boşluğun yerine **he** ya da **she** koyabiliyorsan",
+            "then": "Who"
+          },
+          {
+            "condition": "Aynı denemede boşluğun yerine **him** ya da **her** koymak gerekiyorsa (yazılı sınav üslubu bunu ister)",
+            "then": "Whom"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Defining vs Non-defining: That vs Which",
+    "summary": "Virgül var mı? Cümlenin anlamı orada değişiyor.",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçe tanımlayan ve tanımlamayan ilgi cümlesini ayırmaz; ikisi de aynı ekle kurulur. İngilizcede farkı **virgül** taşır ve bu bir noktalama süsü değil, anlam farkıdır: virgülsüz cümle hangi X'ten söz edildiğini söyler, virgüllü cümle zaten belli olan X hakkında fazladan bilgi verir."
+      },
+      {
+        "type": "contrast",
+        "heading": "Virgülün söylediği şey",
+        "sides": [
+          {
+            "label": "Defining",
+            "gloss": "Virgül yoktur. Yan cümle hangi X olduğunu seçer; atarsan cümle kimden söz ettiğini kaybeder. Birden fazla X olduğunu ima eder — burada birkaç kardeş var.",
+            "example": "My brother who lives in Ankara is a dentist."
+          },
+          {
+            "label": "Non-defining",
+            "gloss": "İki virgül arasındadır. X zaten bellidir, yan cümle onun hakkında ek bilgi verir ve atılsa cümle ayakta kalır. Tek bir kardeş var demektir.",
+            "example": "My brother, who lives in Ankara, is a dentist."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "That ile which nerede ayrışır",
+        "sides": [
+          {
+            "label": "That",
+            "gloss": "Yalnızca virgülsüz cümlede kullanılır. Virgülden sonra ve bir edattan sonra asla gelmez.",
+            "example": "The train that leaves at six is always full."
+          },
+          {
+            "label": "Which",
+            "gloss": "Nesneler için her iki yapıda da kullanılır; virgüllü cümlede ve edattan sonra tek seçenek odur.",
+            "example": "The six o'clock train, which is always full, has extra carriages."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "body": "Dürüst sınır: virgülsüz bir cümlede hem 'that' hem 'which' dilbilgisel olarak doğrudur ve buna kimse itiraz etmez. Kuralın gerçekten karar verdiği yerler bellidir — virgülden sonra, edattan sonra ve zamir bütün bir cümleyi karşılıyorken 'that' kullanılamaz. Bu yüzden önce virgüle bakılır."
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "That",
+            "use": "Tanımlayan, virgülsüz",
+            "pattern": "N + that + V",
+            "example": "the report that arrived today"
+          },
+          {
+            "form": "Which",
+            "use": "Tanımlayan, virgülsüz",
+            "pattern": "N + which + V",
+            "example": "the report which arrived today"
+          },
+          {
+            "form": "Which",
+            "use": "Tanımlamayan, virgüllü",
+            "pattern": "N, which + V, ...",
+            "example": "the report, which arrived today, is short"
+          },
+          {
+            "form": "Which",
+            "use": "Bütün bir cümleyi karşılar",
+            "pattern": "..., which + V",
+            "example": "He arrived late, which annoyed everyone."
+          },
+          {
+            "form": "Who",
+            "use": "Tanımlamayan, insan",
+            "pattern": "N, who + V, ...",
+            "example": "Ayşe, who studies law, is my cousin"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The novel that won the prize sold out in a week.",
+            "note": "Hangi roman olduğunu söylüyor, virgül yok → that"
+          },
+          {
+            "sentence": "Anna Karenina, which we read last term, is very long.",
+            "note": "Kitap zaten belli, fazladan bilgi → which"
+          },
+          {
+            "sentence": "The flight was cancelled, which ruined our plans.",
+            "note": "Zamir tek bir ismi değil, bütün cümleyi karşılıyor → which"
+          },
+          {
+            "sentence": "Students who arrive late will not be admitted.",
+            "note": "Hangi öğrenciler olduğunu belirliyor, virgül yok → who (insanlar için that da olur)"
+          },
+          {
+            "sentence": "Professor Demir, who taught us statistics, has retired.",
+            "note": "Kişi zaten belli, virgüller arasında ek bilgi → who"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Ankara, that is the capital, has a population of six million.",
+        "right": "Ankara, which is the capital, has a population of six million.",
+        "why": "Virgülle ayrılmış bir ilgi cümlesi 'that' ile kurulamaz. Özel isim zaten tek bir şeyi gösterir, yani cümle her zaman tanımlamayan tiptedir ve 'which' ister."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The article which I read it last night was misleading.",
+        "right": "The article which I read last night was misleading.",
+        "why": "Türkçede 'okuduğum makale' derken nesne ekin içinde saklıdır; İngilizcede nesnenin kendisi 'which'tir. Bir de 'it' eklemek aynı nesneyi iki kez söylemek olur."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The passengers, who had no tickets, were asked to leave.",
+        "right": "The passengers who had no tickets were asked to leave.",
+        "why": "Virgüllü hâli 'yolcuların hepsinin bileti yoktu ve hepsi indirildi' der. Anlatılmak istenen 'yalnızca bileti olmayanlar' ise virgüller kalkar: tanımlayan cümle hangi yolcular olduğunu seçer."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda sırayla bunlara bak",
+        "rules": [
+          {
+            "condition": "Boşluktan hemen önce virgül var, ana isim bir insan değil ve boşluktan sonra bir fiil ya da yeni bir özne geliyorsa",
+            "then": "Which"
+          },
+          {
+            "condition": "Aynı durumda, yani virgül var ve arkası fiil ya da yeni bir özne, ama ana isim bir insansa",
+            "then": "Who"
+          },
+          {
+            "condition": "Zamir tek bir ismi değil, kendinden önceki bütün cümleyi karşılıyorsa",
+            "then": "Which"
+          },
+          {
+            "condition": "Boşluktan hemen önce bir edat (in, for, of, about) var ve ana isim bir insan değilse",
+            "then": "Which"
+          },
+          {
+            "condition": "Virgül yok ve ana ismin başında all, everything, the only ya da bir en üstünlük ifadesi (the first, the best) varsa",
+            "then": "That"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Where vs When vs Why vs Which",
+    "summary": "Boşluktan sonrası eksiksiz mi, bir öğe mi eksik?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede yer, zaman ve sebep ilgi cümlelerinin hepsi aynı ekle kurulur: 'oturduğum ev', 'tanıştığımız gün', 'gitme sebebi'. İngilizce burada iki soru sorar: ana isim ne (yer mi, zaman mı, sebep mi) ve yan cümlede eksik bir öğe var mı? Öğrencilerin atladığı ve puanı belirleyen soru ikincisidir."
+      },
+      {
+        "type": "contrast",
+        "heading": "Ana isim neyi gösteriyor",
+        "sides": [
+          {
+            "label": "Where",
+            "gloss": "Ana isim bir yer ya da kurumdur; yan cümlede o yerden 'in it', 'at it' diye söz edilirdi.",
+            "example": "the café where we first met"
+          },
+          {
+            "label": "When",
+            "gloss": "Ana isim bir zaman ifadesidir: the day, the year, the moment, the period.",
+            "example": "the day when we first met"
+          },
+          {
+            "label": "Why",
+            "gloss": "Ana isim yalnızca 'the reason' olabilir; başka hiçbir isimle kullanılmaz.",
+            "example": "the reason why we first met"
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "Asıl ayrım: yan cümle eksiksiz mi",
+        "sides": [
+          {
+            "label": "Where / When",
+            "gloss": "Zamirden sonraki cümlede eksik yoktur: öznesi var, fiilin istediği nesne de var. Zamir cümlenin bir öğesi değil, çerçevesidir.",
+            "example": "the office where she works"
+          },
+          {
+            "label": "Which",
+            "gloss": "Zamirden sonraki cümlede bir öğe eksiktir: ya öznesi yoktur ya da fiilin nesnesi. Zamir o eksik öğenin yerini tutar.",
+            "example": "the office which she rented"
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "Where",
+            "use": "Yer",
+            "pattern": "N + where + S + V",
+            "example": "the town where I grew up"
+          },
+          {
+            "form": "Where",
+            "use": "Yer, resmî uzun biçim",
+            "pattern": "N + in/at which + S + V",
+            "example": "the town in which I grew up"
+          },
+          {
+            "form": "When",
+            "use": "Zaman",
+            "pattern": "N + when + S + V",
+            "example": "the year when I graduated"
+          },
+          {
+            "form": "Why",
+            "use": "Sebep",
+            "pattern": "the reason + why + S + V",
+            "example": "the reason why I left"
+          },
+          {
+            "form": "Which",
+            "use": "Özne eksik",
+            "pattern": "N + which + V",
+            "example": "the town which attracts tourists"
+          },
+          {
+            "form": "Which",
+            "use": "Nesne eksik",
+            "pattern": "N + which + S + V",
+            "example": "the town which I visited"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "This is the library where I study every evening.",
+            "note": "Yer + arkası eksiksiz cümle → where"
+          },
+          {
+            "sentence": "This is the library which the university built last year.",
+            "note": "Yer ama nesne eksik: neyi inşa etti? → which"
+          },
+          {
+            "sentence": "I still remember the day when the results came out.",
+            "note": "Zaman ifadesi + arkası eksiksiz → when"
+          },
+          {
+            "sentence": "The reason why she resigned is still unclear.",
+            "note": "Ana isim 'the reason' ve arkası eksiksiz → why"
+          },
+          {
+            "sentence": "Monday is the day which suits me best.",
+            "note": "Zaman ifadesi ama 'suits' fiilinin öznesi eksik → which"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "This is the village where I was born in.",
+        "right": "This is the village where I was born.",
+        "why": "'Where' zaten 'in which' demektir, yani edatı içinde taşır. Cümlenin sonuna bir de 'in' eklemek aynı edatı iki kez kullanmaktır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The hotel where we booked online was fully renovated.",
+        "right": "The hotel which we booked online was fully renovated.",
+        "why": "'Book' bir nesne ister ve o nesne eksiktir: neyi rezerve ettik? Ana ismin bir yer olması yetmez; yan cümlede boş bir öğe varsa 'which' gelir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "That is the reason because he resigned.",
+        "right": "That is the reason why he resigned.",
+        "why": "'Because' iki cümleyi bağlar; bir ismin ardından ilgi cümlesi açmaz. 'The reason'dan sonra gelen ilgi zarfı 'why'dır."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda sırayla bunlara bak",
+        "rules": [
+          {
+            "condition": "Önce boşluktan sonrasını oku: ana isim insan değilse ve fiilin öznesi ya da nesnesi eksikse — sonda boşta kalmış bir edat da (lived in, told you about) eksik demektir",
+            "then": "Which"
+          },
+          {
+            "condition": "Yan cümle eksiksiz ve ana isim bir yer ya da kurumsa (the city, the office, the country)",
+            "then": "Where"
+          },
+          {
+            "condition": "Yan cümle eksiksiz ve ana isim bir zaman ifadesiyse (the day, the year, the moment)",
+            "then": "When"
+          },
+          {
+            "condition": "Yan cümle eksiksiz ve ana isim 'the reason' ise",
+            "then": "Why"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Preposition + Relative Pronoun: In Which / For Whom / Of Which",
+    "summary": "Edat öne geçtiğinde who ve that neden elenir?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede edat yoktur; ilişkiyi ekler taşır ve hepsi fiilin üstünde toplanır: 'çalıştığım şirket'. İngilizcede o ilişkiyi ayrı bir kelime taşır ve bu kelime iki yere konabilir: yan cümlenin sonunda ('the company I work for') ya da zamirin önünde ('the company for which I work'). Sınavın ölçtüğü ikinci biçimdir ve orada kural katıdır."
+      },
+      {
+        "type": "contrast",
+        "heading": "Edat cümlenin neresinde duruyor",
+        "sides": [
+          {
+            "label": "Preposition + whom / which",
+            "gloss": "Resmî yazı ve sınav üslubu: edat zamirin önüne geçer. Bu konumda yalnızca 'whom' ve 'which' kullanılabilir, zamir de asla düşmez.",
+            "example": "the colleague with whom I share an office"
+          },
+          {
+            "label": "who / that ... preposition",
+            "gloss": "Günlük İngilizce: edat yan cümlenin sonunda kalır, zamir 'who', 'that' olabilir ya da hiç yazılmaz. Yanlış değildir, ama soru bu biçimi ölçmez.",
+            "example": "the colleague I share an office with"
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "In which",
+            "use": "Yer ya da durum",
+            "pattern": "N + in which + S + V",
+            "example": "the department in which she works"
+          },
+          {
+            "form": "To whom",
+            "use": "Yöneltilen kişi",
+            "pattern": "N + to whom + S + V",
+            "example": "the officer to whom I spoke"
+          },
+          {
+            "form": "For whom",
+            "use": "Adına iş yapılan kişi",
+            "pattern": "N + for whom + S + V",
+            "example": "the client for whom we prepared it"
+          },
+          {
+            "form": "With whom",
+            "use": "Birlikte olunan kişi",
+            "pattern": "N + with whom + S + V",
+            "example": "the friends with whom I travelled"
+          },
+          {
+            "form": "On which",
+            "use": "Dayanak",
+            "pattern": "N + on which + S + V",
+            "example": "the data on which the claim rests"
+          },
+          {
+            "form": "Of which",
+            "use": "Bir nesnenin parçası ya da özelliği",
+            "pattern": "N, the ... of which + V",
+            "example": "the house, the roof of which had collapsed"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The village in which they settled has no post office.",
+            "note": "Yer bildiren edat + insan olmayan isim → in which"
+          },
+          {
+            "sentence": "The professor to whom I addressed my question smiled.",
+            "note": "Edattan sonra insan → to whom"
+          },
+          {
+            "sentence": "The theory on which the study is based has been challenged.",
+            "note": "Fiilin edatı 'base on' → on which"
+          },
+          {
+            "sentence": "The company for which my sister works is hiring.",
+            "note": "Fiilin edatı 'work for' → for which"
+          },
+          {
+            "sentence": "They bought an old flat, the windows of which were broken.",
+            "note": "Nesnenin bir parçasından söz ediliyor → of which"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The manager to who I complained never answered.",
+        "right": "The manager to whom I complained never answered.",
+        "why": "Edat öne alındığında 'who' kullanılamaz; o konumdaki tek biçim 'whom'dur. Günlük dilde 'who ... to' denebilir, ama edat başa geçtiğinde denemez."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The report about that we argued has been withdrawn.",
+        "right": "The report about which we argued has been withdrawn.",
+        "why": "'That' bir edattan sonra asla gelmez. İnsan olmayan isimler için edattan sonraki tek ilgi zamiri 'which'tir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The company for which she works for is in Ankara.",
+        "right": "The company for which she works is in Ankara.",
+        "why": "Edat öne taşındığında yan cümlenin sonunda kopyası bırakılmaz. Edat ya başta olur ya sonda, ikisinde birden değil."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda sırayla bunlara bak",
+        "rules": [
+          {
+            "condition": "Boşluktan hemen önce bir edat var ve ana isim bir insansa (edattan sonra 'who' gelmez)",
+            "then": "Whom"
+          },
+          {
+            "condition": "Boşluktan hemen önce bir edat var ve ana isim insan değilse (edattan sonra 'that' gelmez)",
+            "then": "Which"
+          },
+          {
+            "condition": "Hangi edatın geleceğine yan cümlenin fiili karar verir: cümleyi düz yaz (She works for the company), oradaki edatı zamirin önüne taşı",
+            "then": "Preposition + which / whom"
+          },
+          {
+            "condition": "İnsan olmayan bir ismin parçasından ya da özelliğinden söz ediliyorsa (its roof, its price, its author); günlük dilde 'whose' de duyulur, resmî biçim budur",
+            "then": "Of which"
+          },
+          {
+            "condition": "Aynı sahiplik ilişkisi bir insan için kuruluyorsa",
+            "then": "Whose"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Reduced Relative Clauses: -ing vs -ed",
+    "summary": "İsim eylemi kendisi mi yapıyor, eylem ona mı yapılıyor?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Burası Türkçenin yardım ettiği tek yer: 'bekleyen adam' ile 'gönderilen mektup' arasındaki farkı zaten kuruyorsun. İngilizce aynı ayrımı **-ing** ve **V3 (-ed)** ile yapar. Tuzak anlamda değil, yerde: tek kelimelik ortaç ismin önünde durur (a broken window), ama ortaç yanına bir tümleç aldığı anda ismin arkasına geçer."
+      },
+      {
+        "type": "contrast",
+        "heading": "İsim mi yapıyor, isme mi yapılıyor",
+        "sides": [
+          {
+            "label": "V-ing",
+            "gloss": "Eylemi ana ismin kendisi yapar. Açılımı 'who/which is + V-ing' ya da 'who/which + V' olan etken bir cümledir.",
+            "example": "the committee reviewing the applications"
+          },
+          {
+            "label": "V3 (-ed)",
+            "gloss": "Eylem ana isme başkası tarafından yapılır. Açılımı 'which/who was + V3' olan edilgen bir cümledir.",
+            "example": "the applications reviewed by the committee"
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "V-ing",
+            "use": "Tam hâli",
+            "pattern": "N + who/which + is + V-ing",
+            "example": "the man who is waiting outside"
+          },
+          {
+            "form": "V-ing",
+            "use": "İndirgenmiş hâli",
+            "pattern": "N + V-ing",
+            "example": "the man waiting outside"
+          },
+          {
+            "form": "V3",
+            "use": "Tam hâli",
+            "pattern": "N + who/which + was + V3",
+            "example": "the letter which was sent yesterday"
+          },
+          {
+            "form": "V3",
+            "use": "İndirgenmiş hâli",
+            "pattern": "N + V3",
+            "example": "the letter sent yesterday"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The passengers waiting at gate 12 were told to board.",
+            "note": "Bekleme eylemini yolcular yapıyor → V-ing"
+          },
+          {
+            "sentence": "The luggage left at gate 12 was collected by security.",
+            "note": "Bagajı başkası bırakmış, eylem ona yapılmış → V3"
+          },
+          {
+            "sentence": "Anyone wishing to apply should send an email.",
+            "note": "'anyone who wishes' cümlesinin kısası → V-ing"
+          },
+          {
+            "sentence": "The money raised last night will fund two scholarships.",
+            "note": "Parayı toplayan başkası, para toplanan taraf → V3"
+          },
+          {
+            "sentence": "The woman sitting next to me works at the ministry.",
+            "note": "Oturma eylemini kadının kendisi yapıyor → V-ing"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The students attended the seminar received a certificate.",
+        "right": "The students attending the seminar received a certificate.",
+        "why": "Semineri takip eden taraf öğrencilerdir; eylemi yapan isim V-ing alır. 'Attended' yazınca cümle 'öğrenciler katıldı' diye okunur ve asıl fiil 'received' ile çakışır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The questions asking in the interview were unfair.",
+        "right": "The questions asked in the interview were unfair.",
+        "why": "Soruları soran sorular değildir; sorular sorulan taraftır. Eylem isme yapılıyorsa ortaç V3 olur."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The waiting outside man is my uncle.",
+        "right": "The man waiting outside is my uncle.",
+        "why": "Türkçede ortaç, tümleciyle birlikte ismin önünde durur ('dışarıda bekleyen adam'). İngilizcede ortaç yanına bir tümleç aldığı anda ismin arkasına geçer; önünde yalnızca tek kelimelik hâli kalabilir (a waiting room)."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda sırayla bunlara bak",
+        "rules": [
+          {
+            "condition": "Boşluktan sonra yan cümlenin kendi öznesi varsa (the book I read gibi) indirgeme yapılamaz, tam ilgi cümlesi gerekir",
+            "then": "That / Which + S + V"
+          },
+          {
+            "condition": "Eylemi ana isim kendisi yapıyor ve eylem sürüyor ya da genel bir durumu anlatıyorsa",
+            "then": "V-ing"
+          },
+          {
+            "condition": "Eylem ana isme başkası tarafından yapılıyorsa; çoğu zaman arkasından 'by ...' ya da bir edat öbeği gelir",
+            "then": "V3 (-ed)"
+          },
+          {
+            "condition": "Fiil nesne almayan bir fiilse ve bitmiş bir sonucu anlatıyorsa (fallen leaves, retired teachers), edilgen olmasa da",
+            "then": "V3 (-ed)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom",
+    "summary": "İki cümleyi 'some of them' bağlamaz — peki ne bağlar?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede 'kırk öğrenci vardı, bir kısmı geç kaldı' demek yeterlidir; iki cümleyi virgül rahatça bağlar. İngilizcede virgül iki tam cümleyi bağlayamaz. Miktar bildiren bu ilişkiyi kurmanın yolu bellidir: virgül + miktar ifadesi + **of whom** (insanlar) ya da **of which** (insan olmayanlar)."
+      },
+      {
+        "type": "contrast",
+        "heading": "'Of' edatından sonra ne gelir",
+        "sides": [
+          {
+            "label": "Of whom",
+            "gloss": "Ana isim insansa. 'Of' bir edattır ve edattan sonra 'who' gelemez.",
+            "example": "The course had forty students, ten of whom had failed the first exam."
+          },
+          {
+            "label": "Of which",
+            "gloss": "Ana isim nesne, kurum ya da kavramsa. 'That' bu konumda hiç kullanılmaz.",
+            "example": "The report had five chapters, two of which dealt with Turkey."
+          },
+          {
+            "label": "Of them",
+            "gloss": "Ayrı bir cümlede ya da 'and' bağlacından sonra doğrudur; tek başına virgülden sonra gelemez, çünkü ortada bağ kalmaz.",
+            "example": "The report had five chapters, and two of them dealt with Turkey."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "Of whom",
+            "use": "Miktar",
+            "pattern": "N, some/many/most of whom + V",
+            "example": "the guests, most of whom were students"
+          },
+          {
+            "form": "Of whom",
+            "use": "Sayı",
+            "pattern": "N, one/two of whom + V",
+            "example": "three doctors, one of whom was Turkish"
+          },
+          {
+            "form": "Of whom",
+            "use": "En üstünlük",
+            "pattern": "N, the oldest of whom + V",
+            "example": "four brothers, the oldest of whom is a pilot"
+          },
+          {
+            "form": "Of which",
+            "use": "Miktar",
+            "pattern": "N, some/none of which + V",
+            "example": "the files, none of which were saved"
+          },
+          {
+            "form": "Of which",
+            "use": "Sayı",
+            "pattern": "N, one/two of which + V",
+            "example": "six machines, two of which are broken"
+          },
+          {
+            "form": "Of which",
+            "use": "En üstünlük",
+            "pattern": "N, the largest of which + V",
+            "example": "three halls, the largest of which seats 400"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "She has three sisters, all of whom live abroad.",
+            "note": "İnsan + miktar ifadesi → of whom"
+          },
+          {
+            "sentence": "The museum owns 200 paintings, few of which are on display.",
+            "note": "İnsan olmayan isim + miktar ifadesi → of which"
+          },
+          {
+            "sentence": "We interviewed twelve candidates, none of whom had experience.",
+            "note": "Olumsuz miktar ama yine insan → of whom"
+          },
+          {
+            "sentence": "The council published two reports, neither of which was read.",
+            "note": "İki nesneden hiçbiri → of which"
+          },
+          {
+            "sentence": "He wrote four novels, the last of which won a prize.",
+            "note": "En üstünlük ifadesi + insan olmayan isim → of which"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The report had five chapters, two of them were about Turkey.",
+        "right": "The report had five chapters, two of which were about Turkey.",
+        "why": "İngilizcede virgül iki tam cümleyi bağlayamaz. 'Them' yerine 'which' konduğunda ikinci cümle bir ilgi cümlesine dönüşür ve bağ kurulmuş olur."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "She interviewed ten candidates, none of who spoke French.",
+        "right": "She interviewed ten candidates, none of whom spoke French.",
+        "why": "'Of' bir edattır ve edattan sonra 'who' kullanılamaz. Bu yapıda insanlar için tek biçim 'whom'dur."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "There were forty guests, some of which were children.",
+        "right": "There were forty guests, some of whom were children.",
+        "why": "'Which' insanları karşılamaz. Ana isim insan olduğunda miktar ifadesinden sonra 'of whom' gelir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda sırayla bunlara bak",
+        "rules": [
+          {
+            "condition": "İki tam cümle 'and' olmadan yalnızca virgülle bağlanıyorsa boşluk bir ilgi zamiri ister; 'them' oraya giremez",
+            "then": "Of whom / Of which"
+          },
+          {
+            "condition": "Boşluktan hemen önce 'of' var ve ana isim insansa ('who' ve 'that' bu konumda kullanılmaz)",
+            "then": "Of whom"
+          },
+          {
+            "condition": "Boşluktan hemen önce 'of' var ve ana isim nesne, kurum ya da kavramsa",
+            "then": "Of which"
+          },
+          {
+            "condition": "İkinci cümle 'and' ile bağlanmışsa ya da noktayla ayrılmış bağımsız bir cümleyse",
+            "then": "Of them"
+          }
+        ]
+      }
+    ]
+  }
+]
