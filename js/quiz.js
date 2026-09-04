@@ -13,6 +13,7 @@ import { getQuizRequest, setQuizResult } from "./session-state.js";
 import { getItemStats, getSetting } from "./storage.js";
 import { SETTINGS } from "./config.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
+import { createConfirmModal } from "./modal.js";
 import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { el, clear } from "./dom.js";
@@ -47,12 +48,40 @@ function showMessage(text, { withHomeLink = true } = {}) {
   }
 }
 
+/* Built once, on first use: a <dialog> may only be wired up after the
+ * document has it, and the quiz screen renders before anyone taps Çık. */
+let exitModal = null;
+
+function confirmExit() {
+  if (!exitModal) {
+    exitModal = createConfirmModal({
+      dialogId: "exit-dialog",
+      confirmId: "exit-dialog-confirm",
+      cancelId: "exit-dialog-cancel",
+      onConfirm: () => {
+        window.location.href = "index.html";
+      },
+    });
+  }
+  // Nothing to lose before the first answer, so nothing to ask about.
+  if (state.selectedAnswers.filter(Boolean).length === 0) {
+    window.location.href = "index.html";
+    return;
+  }
+  exitModal.open();
+}
+
 function renderTopStrip() {
   const strip = el("div", "cluster cluster--spread");
 
-  const exit = el("a", "btn btn--quiet", "Çık");
-  exit.href = "index.html";
+  // A button, not a link. It was a link, and a link cannot ask: five
+  // answered questions went with one tap, nothing was written down, and
+  // the learner arrived back on the screen a brand-new learner sees —
+  // because from storage's point of view they were one.
+  const exit = el("button", "btn btn--quiet", "Çık");
+  exit.type = "button";
   exit.prepend(icon("close", { size: 20 }));
+  exit.addEventListener("click", confirmExit);
   strip.appendChild(exit);
 
   strip.appendChild(

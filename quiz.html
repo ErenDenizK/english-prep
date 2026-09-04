@@ -49,6 +49,25 @@
 
   <p class="visually-hidden" id="live-region" role="status"></p>
 
+  <!-- Leaving mid-test. The exit used to be a plain link, so five answered
+       questions vanished with no dialog and nothing written down — and the
+       learner landed on the screen a brand-new learner sees, because
+       nothing had been recorded to prove otherwise. -->
+  <dialog class="dialog" id="exit-dialog" aria-labelledby="exit-dialog-title">
+    <div class="stack stack--tight">
+      <h2 class="t-title" id="exit-dialog-title">Testten çık</h2>
+      <p class="t-body" id="exit-dialog-text">
+        Şu ana kadar verdiğin cevaplar kaydedilmeyecek.
+      </p>
+    </div>
+    <!-- Equal weight, and the safe action takes focus: the same reasoning
+         as the reset dialog on the index page. -->
+    <div class="dialog__actions">
+      <button class="btn btn--secondary" type="button" id="exit-dialog-cancel">Teste dön</button>
+      <button class="btn btn--secondary" type="button" id="exit-dialog-confirm">Çık</button>
+    </div>
+  </dialog>
+
   <script type="module" src="js/quiz.js"></script>
 </body>
 </html>

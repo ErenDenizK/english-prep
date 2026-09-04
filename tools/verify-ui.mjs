@@ -873,6 +873,62 @@ async function runIndexStates(browser) {
   await view.context.close();
 }
 
+/**
+ * Leaving a test that is under way.
+ *
+ * `Çık` was a plain link, so five answered questions went with one tap,
+ * nothing was written down, and the learner arrived back on the screen a
+ * brand-new learner sees — because from storage's point of view they were
+ * one. A link cannot ask; a button can.
+ */
+async function runQuizExit(browser) {
+  const context = await browser.newContext({ viewport: { width: 320, height: 640 } });
+  const page = await context.newPage();
+  const exit = () => page.locator(".btn--quiet", { hasText: "Çık" }).first();
+
+  async function startTest() {
+    await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+    await page.waitForSelector("#test-panel .btn--primary");
+    await page.locator("#test-panel .btn--primary").click();
+    await page.waitForURL(/quiz\.html/);
+    await page.waitForSelector(".option");
+  }
+
+  // Nothing answered is nothing to lose, so nothing to ask about.
+  await startTest();
+  await exit().click();
+  await page.waitForURL(/index\.html/);
+  ok(true, "hiç cevap verilmemişken çıkış sormadan çıkıyor");
+
+  await startTest();
+  for (let i = 0; i < 2; i += 1) {
+    await page.waitForSelector(".option");
+    await page.locator(".option").first().click();
+    await page.locator(".shell__bar .btn").first().click();
+  }
+  await page.waitForSelector(".option");
+  await exit().click();
+  await page.waitForSelector("#exit-dialog[open]");
+  ok(true, "cevap verdikten sonra çıkış onay istiyor");
+  ok(
+    (await page.evaluate(() => document.activeElement?.id)) === "exit-dialog-cancel",
+    "odak en az yıkıcı eyleme düşüyor"
+  );
+  await page.locator("#exit-dialog-cancel").click();
+  // Not waitForSelector: a closed <dialog> is hidden, and the default
+  // wait is for visibility, so that can never resolve.
+  await page.waitForFunction(() => !document.getElementById("exit-dialog").open);
+  ok(page.url().includes("quiz.html"), "vazgeçince testte kalınıyor");
+
+  await exit().click();
+  await page.waitForSelector("#exit-dialog[open]");
+  await page.locator("#exit-dialog-confirm").click();
+  await page.waitForURL(/index\.html/);
+  ok(true, "onaylayınca çıkılıyor");
+
+  await context.close();
+}
+
 /** The parts of §8 that do not vary with the viewport. */
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
@@ -1056,6 +1112,9 @@ try {
 
   console.log("\n=== Eğitim indeksinin üç hâli ===");
   await runIndexStates(browser);
+
+  console.log("\n=== testten çıkış ===");
+  await runQuizExit(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);
