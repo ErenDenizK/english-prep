@@ -132,6 +132,9 @@ by `npm run color`, which is in CI.
 
 ## Where the project is going
 
+`docs/roadmap.md` is the shorter, newer document: what ships next, in what
+order, and the proposed definition of 1.0. Read it first.
+
 `docs/v1-plan.md` is the plan of record for v1, and `docs/research/` holds
 the six research arms it was synthesised from. Read the plan before
 proposing work: the round found that the app is preparing for the wrong
