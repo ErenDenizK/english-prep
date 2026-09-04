@@ -1,0 +1,266 @@
+{
+  "modals-t1": {
+    "answer": "must",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      2,
+      0,
+      1,
+      3
+    ]
+  },
+  "modals-t2": {
+    "answer": "has to",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      2,
+      3,
+      1
+    ]
+  },
+  "modals-t3": {
+    "answer": "mustn't",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      2,
+      1,
+      0,
+      3
+    ]
+  },
+  "modals-t4": {
+    "answer": "don't have to",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      1,
+      0,
+      3,
+      2
+    ]
+  },
+  "modals-t5": {
+    "answer": "Can",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "modals-t6": {
+    "answer": "may",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      3,
+      1,
+      2,
+      0
+    ]
+  },
+  "modals-t7": {
+    "answer": "might",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      2,
+      0,
+      1,
+      3
+    ]
+  },
+  "modals-t8": {
+    "answer": "Could",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "modals-t9": {
+    "answer": "must",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      3,
+      2,
+      0,
+      1
+    ]
+  },
+  "modals-t10": {
+    "answer": "can't",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "modals-t11": {
+    "answer": "might",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "modals-t12": {
+    "answer": "must",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      3,
+      1,
+      0,
+      2
+    ]
+  },
+  "modals-t13": {
+    "answer": "must have",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      3,
+      2,
+      1,
+      0
+    ]
+  },
+  "modals-t14": {
+    "answer": "can't have",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      1,
+      2
+    ]
+  },
+  "modals-t15": {
+    "answer": "should have",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      2,
+      0,
+      3,
+      1
+    ]
+  },
+  "modals-t16": {
+    "answer": "needn't have",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "modals-t17": {
+    "answer": "should",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      1,
+      2,
+      3,
+      0
+    ]
+  },
+  "modals-t18": {
+    "answer": "had better",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "modals-t19": {
+    "answer": "ought to",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      3,
+      1,
+      0
+    ]
+  },
+  "modals-t20": {
+    "answer": "shouldn't",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      3,
+      1,
+      0,
+      2
+    ]
+  },
+  "modals-t21": {
+    "answer": "can",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      1,
+      2
+    ]
+  },
+  "modals-t22": {
+    "answer": "could",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      3,
+      1,
+      0
+    ]
+  },
+  "modals-t23": {
+    "answer": "was able to",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      2,
+      0,
+      1,
+      3
+    ]
+  },
+  "modals-t24": {
+    "answer": "will be able to",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      2,
+      3,
+      0,
+      1
+    ]
+  }
+}

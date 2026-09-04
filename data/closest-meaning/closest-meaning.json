@@ -836,7 +836,12 @@
       ],
       "correctIndex": 1,
       "explanation": "Üçüncü tip koşul gerçekleşmemiş bir geçmişi anlatır: çelik mart ayında sipariş edilmedi, bu yüzden köprü de festivalden önce açılmadı; sonuç geçmişte kalır. \"The council ordered the steel in March, so the bridge reopened before the summer festival.\" seçeneği koşulu olmuş bir olay gibi aktarıp cümlenin anlamını tersine çevirir. Kalan seçeneklerden biri sebeple sonucun yerini değiştirir, diğeri olmamış bir geçmişi açık bir geleceğe taşır.",
-      "tip": "Üçüncü tip koşulda anlatılan şey olmamıştır; doğru yeniden ifade genellikle hem koşulun hem sonucun kutbunu tersine çevirir."
+      "tip": "Üçüncü tip koşulda anlatılan şey olmamıştır; doğru yeniden ifade genellikle hem koşulun hem sonucun kutbunu tersine çevirir.",
+      "optionNotes": {
+        "If the bridge had reopened before the festival, the council would have ordered the steel in March.": "Koşul ile sonuç yer değiştirmiş: siparişin verilmesi köprünün açılmasının sebebi, sonucu değil. Sebep 'if' kolunda kalmalı.",
+        "The council ordered the steel in March, so the bridge reopened before the summer festival.": "Koşulu olmuş bir olay gibi anlatıyor. Üçüncü tip koşul iki önermenin de gerçekleşmediğini söyler: sipariş verilmedi, köprü de açılmadı.",
+        "The bridge will reopen before the festival if the council orders the steel in March.": "Kapanmış bir geçmişi hâlâ açık bir geleceğe taşıyor. Mart geçti; cümle olmamış bir şeyi anlatıyor, hâlâ yapılabilecek bir şeyi değil."
+      }
     },
     {
       "id": "closest-meaning-t2",
@@ -851,7 +856,12 @@
       ],
       "correctIndex": 0,
       "explanation": "Koşul geçmişte (had trained), sonuç bugünde (would be climbing ... today): bu bir karışık tip koşuldur. Kışın çalışılmadı ve sonucu bugün görülüyor. \"Deniz did not train through the winter, so she climbed the pass behind the leaders last year.\" seçeneği koşulu doğru okur ama sonucu geçmişe taşır; cümle geçen yılın tırmanışından değil, bugünkünden söz ediyor. Kışın liderlerden az çalıştığını söyleyen seçenek de cümlenin kurmadığı bir karşılaştırma ekler.",
-      "tip": "Koşul 'had + V3', sonuç 'would + V1' ise sonuç bugüne aittir; sonucu geçmişe çeken bir yeniden ifade bu yüzden yanlış olur."
+      "tip": "Koşul 'had + V3', sonuç 'would + V1' ise sonuç bugüne aittir; sonucu geçmişe çeken bir yeniden ifade bu yüzden yanlış olur.",
+      "optionNotes": {
+        "Deniz did not train through the winter, so she climbed the pass behind the leaders last year.": "Koşulu doğru okuyor ama sonucu geçmişe taşıyor. Cümlenin sonucu bugüne ait: 'would be climbing ... today' bugünkü tırmanıştan söz ediyor.",
+        "Deniz trained hard through the winter and is climbing the pass with the leaders today.": "Koşul kolunun tersini söylüyor: 'had trained' burada gerçekleşmemiş bir geçmiştir, yani Deniz kış boyunca çalışmadı.",
+        "Deniz trained less through the winter than the leaders did, and today she is behind them.": "Cümlede olmayan bir karşılaştırma ekliyor: Deniz'in çalışması liderlerinkiyle ölçülmüyor, hiç çalışmadığı söyleniyor."
+      }
     },
     {
       "id": "closest-meaning-t3",
@@ -866,7 +876,12 @@
       ],
       "correctIndex": 1,
       "explanation": "Devrik koşulda olumsuzluk koşulun içindedir: 'Had the sky not cleared' = 'If the sky had not cleared'. Demek ki gökyüzü gerçekten açıldı ve astronom kuyruklu yıldızı kaçırmadı; olumsuz kurulmuş bir üçüncü tip koşulda iki önerme de gerçekleşmiştir. \"The sky did not clear before midnight, so the astronomer missed the comet on its only pass over the town.\" seçeneği bu 'not'u görmezden gelip her iki yanı da tersine çeviriyor. 'If the sky does not clear' ile başlayan seçenek ise olmamış bir geçmişi açık bir geleceğe taşıyor.",
-      "tip": "Devrik koşulu önce 'if'li hâline çevirin: 'Had + özne + not + V3' varsa gerçekte olan şey olumludur, yani koşul da sonuç da yaşanmıştır."
+      "tip": "Devrik koşulu önce 'if'li hâline çevirin: 'Had + özne + not + V3' varsa gerçekte olan şey olumludur, yani koşul da sonuç da yaşanmıştır.",
+      "optionNotes": {
+        "The sky did not clear before midnight, so the astronomer missed the comet on its only pass over the town.": "Devrik koşuldaki 'not'u gerçekte olan sanıyor. 'Had the sky not cleared' gökyüzünün açılmadığını değil, açıldığını anlatır.",
+        "If the sky does not clear before midnight, the astronomer will miss the comet on its only pass over the town.": "Kapanmış bir geçmişi açık bir geleceğe çeviriyor: kuyruklu yıldızın tek geçişi olup bitti, koşul artık askıda değil.",
+        "The sky cleared just before midnight, and the astronomer's photographs were the only record of the comet's single pass over the town.": "Koşulu doğru çözüyor ama cümlede olmayan bir bilgi ekliyor: fotoğraflardan ve tek kayıt olmaktan hiç söz edilmiyor."
+      }
     },
     {
       "id": "closest-meaning-t4",
@@ -881,7 +896,12 @@
       ],
       "correctIndex": 3,
       "explanation": "Gerçek bir geçmiş koşul cümlesine çevriliyor: sebep fırtına, sonuç töreni kaçırmak. \"If the delegation had not missed the ceremony, the ferry would have sailed on Tuesday.\" seçeneği sebeple sonucun yerini değiştiriyor — törene yetişmek vapuru kaldırmaz. Sonucu 'would be ... now' ile bugüne taşıyan seçenek de yanlıştır, çünkü tören sonraki sefer varmadan bitmişti; bütün seferlerin iptal edildiğini söyleyen seçenek ise cümlede olmayan bir bilgi ekler.",
-      "tip": "Bir geçmiş olayı koşula çevirirken sebep 'if' cümlesinde, sonuç 'would have' cümlesinde kalır; ikisi yer değiştirirse anlam ters döner."
+      "tip": "Bir geçmiş olayı koşula çevirirken sebep 'if' cümlesinde, sonuç 'would have' cümlesinde kalır; ikisi yer değiştirirse anlam ters döner.",
+      "optionNotes": {
+        "If the delegation had not missed the ceremony, the ferry would have sailed on Tuesday.": "Sebep ile sonucu takas ediyor: törene yetişmek vapuru kaldırmaz. Sebep fırtına, sonuç töreni kaçırmaktır.",
+        "If the storm had not stopped the ferry, the delegation would be at the ceremony now.": "Sonucu bugüne taşıyor. Oysa tören, sonraki sefer varmadan bitmişti; kaçırılan şey şu anda sürmüyor.",
+        "The storm stopped every sailing that week, so the delegation had no chance of reaching the ceremony.": "Cümlenin söylediğinden fazlasını söylüyor: yalnızca salı seferi engellendi. 'Bütün seferler' ve 'hiç şans yoktu' cümlede yok."
+      }
     },
     {
       "id": "closest-meaning-t5",
@@ -896,7 +916,12 @@
       ],
       "correctIndex": 1,
       "explanation": "'Otherwise' koşul yerine getirilmezse ne olacağını söyler; cümle 'unless' ile kurulunca ana cümlenin kutbu da değişir: onarım yapılmazsa depozito geri alınamaz. \"The landlord will keep the deposit, so the tenants do not need to repair the kitchen floor.\" seçeneği 'otherwise'ı koşula bağlıyor ve sonucu gerekçeye çeviriyor. Onarımdan sonra bile bir kesinti yapılacağını söyleyen seçenek ise cümlenin vermediği bir bilgi ekler.",
-      "tip": "'X; otherwise Y' cümlesini 'unless' ile kurarken koşul olduğu gibi kalır, sonucun kutbu ise tersine döner."
+      "tip": "'X; otherwise Y' cümlesini 'unless' ile kurarken koşul olduğu gibi kalır, sonucun kutbu ise tersine döner.",
+      "optionNotes": {
+        "The landlord will keep the deposit, so the tenants do not need to repair the kitchen floor.": "Koşulu siliyor: depozitonun tutulması, onarım yapılmazsa olacak şeydir; onarımı gereksiz kılan bir gerekçe değil.",
+        "The landlord kept the deposit because the tenants had left the kitchen floor damaged.": "Koşullu bir uyarıyı olmuş bitmiş bir olaya çeviriyor. Kiracılar henüz çıkmadı, kesinti de yapılmış değil.",
+        "The landlord will keep part of the deposit even after the tenants repair the kitchen floor.": "Cümlenin vermediği bir bilgi ekliyor: onarım yapılırsa depozito geri alınır; kısmi bir kesintiden hiç söz edilmiyor."
+      }
     },
     {
       "id": "closest-meaning-t6",
@@ -911,7 +936,12 @@
       ],
       "correctIndex": 2,
       "explanation": "'If ... does not' ile 'unless' aynı koşulu kurar, ana cümlenin anlamı ise korunur: 'haziranı geçmeyecek' ile 'haziran sonunda duracak' aynı şeydir. \"If the council settles the compensation claims, work on the tram line will stop at the end of June.\" seçeneği koşuldaki olumsuzluğu düşürüyor; oysa çalışmayı durduran şey ödemenin yapılmamasıdır. 'Unless' ile başlayan diğer iki seçenekten biri koşulla sonucu takas ediyor, öteki de ana cümleyi olumluya çevirip çalışmanın süreceğini söylüyor.",
-      "tip": "'Unless' olumsuzluğu kendi içinde taşır: 'if ... does not' bu kelimenin içine geçer, ana cümleye ikinci bir 'not' eklenmez."
+      "tip": "'Unless' olumsuzluğu kendi içinde taşır: 'if ... does not' bu kelimenin içine geçer, ana cümleye ikinci bir 'not' eklenmez.",
+      "optionNotes": {
+        "If the council settles the compensation claims, work on the tram line will stop at the end of June.": "Koşuldaki olumsuzluğu düşürüyor. Çalışmayı haziran sonunda durduran şey ödemelerin yapılmamasıdır, yapılması değil.",
+        "Unless work on the tram line stops at the end of June, the council will not settle the compensation claims.": "Koşul ile sonucu takas ediyor: şart olan ödemelerin yapılması, işin durması değil. Hangi yanın koşul olduğu değişmiş.",
+        "Unless the council settles the compensation claims, work on the tram line will continue past June.": "Koşulu doğru kuruyor ama ana cümlenin kutbunu çeviriyor: ödeme yapılmazsa iş haziranı geçmez, sürmez."
+      }
     },
     {
       "id": "closest-meaning-t7",
@@ -926,7 +956,12 @@
       ],
       "correctIndex": 0,
       "explanation": "'X unless Y' demek 'Y olmazsa X' demektir: evrakta hata çıkmazsa sevkiyat cuma günü yola çıkar. \"The shipment will still be released on Friday if the border office finds an error in the paperwork.\" seçeneği 'unless'ı 'if' sanıp koşulun kutbunu düşürüyor; oysa hata bulunması sevkiyatı durduran şeydir. Koşulla sonucu takas eden 'unless' seçeneği hangi yanın şart olduğunu kaybediyor; çıkışı kesinleşmiş gibi sunan seçenek ise koşulu tümden atıyor.",
-      "tip": "'Ana cümle + unless + olumlu koşul' yapısını çevirirken koşulun kutbu ters döner: 'if not Y, X'. 'Unless' ile 'if' aynı şey değildir."
+      "tip": "'Ana cümle + unless + olumlu koşul' yapısını çevirirken koşulun kutbu ters döner: 'if not Y, X'. 'Unless' ile 'if' aynı şey değildir.",
+      "optionNotes": {
+        "The shipment will still be released on Friday if the border office finds an error in the paperwork.": "'Unless'ı 'if' sanıp koşulun kutbunu düşürüyor. Hata bulunması sevkiyatı durduran şeydir, onu değiştirmeden bırakan şey değil.",
+        "Unless the depot releases the shipment on Friday, the border office will find an error in the paperwork.": "Koşul ile sonucu takas ediyor: şart olan hata bulunması, sevkiyatın yapılmaması değil.",
+        "The paperwork has been checked at the border, so the shipment will certainly leave the depot on Friday.": "Koşulu tümden atıp çıkışı kesinleştiriyor. Cümle sevkiyatı hata çıkmamasına bağlıyor ve evrakın denetlendiğini söylemiyor."
+      }
     },
     {
       "id": "closest-meaning-t8",
@@ -941,7 +976,12 @@
       ],
       "correctIndex": 0,
       "explanation": "'X, or Y' kalıbı 'otherwise' gibi çalışır: imza cuma gününe kadar atılmazsa binayı başka bir talip alır. Seçeneklerin çoğu 'unless' dönüşümünü doğru kuruyor, karar başka yerde: \"Unless the bakery signs the lease by Friday, another bidder may take the building.\" seçeneği kesin olan sonucu bir ihtimale indiriyor. Bir seçenek koşulla sonucu takas ediyor, bir başkası da koşulu düşürüp imzayı olmuş bitmiş gibi anlatıyor.",
-      "tip": "'... or ...' ve 'otherwise' kesin bir sonuç bildirir; 'unless' ile yeniden kurarken 'will' 'may' olmaz — kipi değiştiren bir yeniden ifade aynı şeyi söylemez."
+      "tip": "'... or ...' ve 'otherwise' kesin bir sonuç bildirir; 'unless' ile yeniden kurarken 'will' 'may' olmaz — kipi değiştiren bir yeniden ifade aynı şeyi söylemez.",
+      "optionNotes": {
+        "Unless the bakery signs the lease by Friday, another bidder may take the building.": "Dönüşümü doğru kuruyor ama kesin olan sonucu bir ihtimale indiriyor: '... or ...' kalıbı 'may' değil, 'will' bildirir.",
+        "Unless another bidder takes the building, the bakery will have to sign the lease by Friday.": "Koşul ile sonucu takas ediyor: şart olan sözleşmenin cumaya kadar imzalanması, binanın başkasına gitmesi değil.",
+        "The bakery will sign the lease by Friday, so the building will not go to another bidder.": "Koşulu düşürüp imzayı olmuş bitmiş sayıyor. Cümle imzanın atılacağını değil, atılması gerektiğini söylüyor."
+      }
     },
     {
       "id": "closest-meaning-t9",
@@ -956,7 +996,12 @@
       ],
       "correctIndex": 0,
       "explanation": "'Despite + isim öbeği' beklentiye aykırı olan yanı işaret eder: övgüye rağmen satış düşük kaldı. \"Although the translated novel sold well, its first reviewers were not enthusiastic about it.\" seçeneği iki yanı takas ediyor; hem satışı yüksek, hem eleştirmenleri soğuk göstererek cümlenin tam tersini söylüyor. Hiç okur bulunmadığını söyleyen seçenek ise cümleyi abartıyor: üç yüzden az satmak ile hiç satmamak aynı şey değildir.",
-      "tip": "'Despite X, Y' cümlesinde asıl bilgi Y'dir, X ise ona rağmen olan yandır; yeniden ifade ederken bu ikisinin yeri değişmemelidir."
+      "tip": "'Despite X, Y' cümlesinde asıl bilgi Y'dir, X ise ona rağmen olan yandır; yeniden ifade ederken bu ikisinin yeri değişmemelidir.",
+      "optionNotes": {
+        "Although the translated novel sold well, its first reviewers were not enthusiastic about it.": "İki yanı da takas ediyor: satış yüksek, eleştirmenler soğuk gösterilerek cümlenin tam tersi söyleniyor.",
+        "Despite the enthusiasm of its first reviewers, the publisher withdrew the translated novel after its poor sales.": "Zıtlık yerinde ama cümlede olmayan bir olay ekliyor: kitabın yayından çekilmesinden hiç söz edilmiyor.",
+        "The first reviewers were enthusiastic about the translated novel, but it found no readers at all outside the review pages.": "Bir miktarı 'hiç'e çeviriyor. Üç yüzden az satmak ile inceleme sayfaları dışında hiç okur bulamamak aynı şey değil."
+      }
     },
     {
       "id": "closest-meaning-t10",
@@ -971,7 +1016,12 @@
       ],
       "correctIndex": 2,
       "explanation": "'However' iki bilgiyi karşıtlık içinde bağlar; 'although' ile kurulan seçenek aynı karşıtlığı korur: tablo temizlendi, ressam ise hâlâ doğrulanmadı. \"The museum will confirm who painted the picture once the cleaning and re-hanging are finished.\" seçeneği bitmiş bir işi geleceğe ait bir söze çeviriyor, üstelik cümlede böyle bir vaat yok. Doğrulananla temizleneni takas eden seçenek ise iki yanı yer değiştiriyor.",
-      "tip": "'X; however, Y' ile 'Although X, Y' aynı karşıtlığı kurar; değişmemesi gereken şey hangi bilginin ana bilgi olduğudur."
+      "tip": "'X; however, Y' ile 'Although X, Y' aynı karşıtlığı kurar; değişmemesi gereken şey hangi bilginin ana bilgi olduğudur.",
+      "optionNotes": {
+        "The museum will confirm who painted the picture once the cleaning and re-hanging are finished.": "Bitmiş bir işi geleceğe taşıyor ve cümlede olmayan bir söz veriyor: temizlik yapıldı, doğrulama için bir vaat yok.",
+        "The museum has confirmed who painted the picture, although it has not yet cleaned or re-hung it.": "İki bilgiyi takas ediyor: yapılan şey temizlik ve yeniden asma, yapılmamış olan ise ressamın doğrulanması.",
+        "The museum cleaned and re-hung the painting even though it knows the attribution is false.": "Doğrulanmamış olmayı, yanlış olduğunun bilinmesine çeviriyor. Cümle yalnızca ressamın kim olduğunun doğrulanmadığını söylüyor."
+      }
     },
     {
       "id": "closest-meaning-t11",
@@ -986,7 +1036,12 @@
       ],
       "correctIndex": 1,
       "explanation": "Cümle iki şey söyler: ciddi yan etki bildirilmedi (kesin) ve durdurmanın mali nedenli olması bir ihtimaldir. Doğru seçenek 'although' yapısını 'despite + isim öbeği' ile kurar ve bu ihtimali olduğu gibi taşır. \"No volunteer reported serious side effects, so the sponsor stopped the trial in order to save money.\" seçeneği ise ihtimali kesin bir gerekçeye çeviriyor. Kalan bir seçenek de 'may' işaretini yanlış cümleye takıyor: kesin olan yan etkilerin bildirilmemesidir.",
-      "tip": "Belirsizliğin hangi cümlede durduğuna bakın: 'may / might' işaretini koruyan değil, doğru cümlede koruyan seçenek aranır."
+      "tip": "Belirsizliğin hangi cümlede durduğuna bakın: 'may / might' işaretini koruyan değil, doğru cümlede koruyan seçenek aranır.",
+      "optionNotes": {
+        "No volunteer reported serious side effects, so the sponsor stopped the trial in order to save money.": "İhtimali kesinliğe çeviriyor: 'may have halted' durdurmanın mali nedenli olmasını bir olasılık olarak bırakır, gerekçe olarak vermez.",
+        "Although the sponsor had financial difficulties, the trial was halted because volunteers reported side effects.": "İki yanı ters çeviriyor: cümle ciddi yan etki bildirilmediğini söylüyor, durdurmanın nedeni de mali olabilir.",
+        "Some volunteers may have reported serious side effects, although the trial was halted for financial reasons.": "'May' işaretini yanlış cümleye takıyor. Kesin olan yan etkilerin bildirilmemesi, ihtimalli olan mali gerekçedir."
+      }
     },
     {
       "id": "closest-meaning-t12",
@@ -1001,7 +1056,12 @@
       ],
       "correctIndex": 3,
       "explanation": "'Despite + -ing' bir engeli tanır, onu sebep yapmaz: elektrik yirmi dakika yoktu, buna rağmen stat açık kaldı ve maç seyircinin önünde tamamlandı. \"Because the stadium had no power for twenty minutes, the spectators were sent home before the end of the match.\" seçeneği tavizi sebebe çevirip sonucu da tersine döndürüyor. Jeneratörlerden söz eden seçenek ise cümlede hiç geçmeyen bir açıklama ekliyor: dünyada doğru olabilir, ama cümlenin söylediği bu değildir.",
-      "tip": "'Despite / in spite of' bir engeli kabul eder ama onu gerekçeye dönüştürmez; 'because' ile kurulan bir yeniden ifade karşıtlığı yok eder."
+      "tip": "'Despite / in spite of' bir engeli kabul eder ama onu gerekçeye dönüştürmez; 'because' ile kurulan bir yeniden ifade karşıtlığı yok eder.",
+      "optionNotes": {
+        "The stadium's back-up generators worked so well that the crowd never noticed the twenty-minute power cut.": "Cümlede geçmeyen bir açıklama ekliyor: jeneratörlerden de, seyircinin kesintiyi fark etmemesinden de söz edilmiyor.",
+        "Because the stadium had no power for twenty minutes, the spectators were sent home before the end of the match.": "Engeli sebebe çeviriyor ve sonucu da tersine döndürüyor: maç son düdüğe kadar oynandı, seyirci eve gönderilmedi.",
+        "If the stadium loses power again, the match will be abandoned and the spectators sent home.": "Olmuş bir olayı koşullu bir geleceğe çeviriyor. Cümle yaşananı anlatıyor, bir daha olursa ne olacağını değil."
+      }
     },
     {
       "id": "closest-meaning-t13",
@@ -1016,7 +1076,12 @@
       ],
       "correctIndex": 1,
       "explanation": "'not as steep as' kuzey rotasının daha az dik olduğunu söyler; yani dik olan eski yoldur. 'but it is a good deal longer' ise uzun olanın kuzey rotası, dolayısıyla kısa olanın eski yol olduğunu ekler. 'The old road is steeper than the northern route, and it is longer as well.' seçeneği ilk karşılaştırmayı doğru kurar ama uzunluk yönünü ters çevirir; karar veren bilgi ikinci yan cümlede saklıdır.",
-      "tip": "'not as X as' 'daha az X' demektir; bir karşılaştırmayı yeniden yazarken üstün tarafın hangisi olduğunu iki yön için ayrı ayrı denetle."
+      "tip": "'not as X as' 'daha az X' demektir; bir karşılaştırmayı yeniden yazarken üstün tarafın hangisi olduğunu iki yön için ayrı ayrı denetle.",
+      "optionNotes": {
+        "The northern route is steeper than the old road, though the old road is longer.": "Her iki yönü de ters çeviriyor: 'not as steep as' kuzey rotasının daha az dik olduğunu, ikinci yarı da onun daha uzun olduğunu söylüyor.",
+        "The old road is steeper than the northern route, and it is longer as well.": "İlk karşılaştırmayı doğru kuruyor ama uzunluğun yönünü çeviriyor: 'but it is a good deal longer' kuzey rotasını anlatıyor.",
+        "The old road is the steepest and the shortest of all the routes up the pass.": "İki yol arasındaki karşılaştırmayı bütün yollar içinde bir üstünlük derecesine çeviriyor; cümlede başka yol geçmiyor."
+      }
     },
     {
       "id": "closest-meaning-t14",
@@ -1031,7 +1096,12 @@
       ],
       "correctIndex": 3,
       "explanation": "'just under twice as much … as' yeni dükkânın önde olduğunu söyler; oranı ters çevirdiğinizde eski fırın, yeni dükkânın sattığının yarısından biraz fazlasını satıyor demektir. 'On Saturdays the new shop sells a little over half as much bread as the original bakery.' seçeneği aynı oranı kurar ama önde olan tarafı değiştirir. Kalan seçeneklerden biri cumartesiye bağlı bilgiyi haftanın her gününe genişletir, diğeri olup biten bir satışı beklentiye çevirir.",
-      "tip": "Bir katsayıyı ters çevirirken hangi tarafın çarpan hangi tarafın bölünen olduğunu işaretle; 'iki katı' ilişkisi karşı yönden 'yarısı kadar' diye okunur."
+      "tip": "Bir katsayıyı ters çevirirken hangi tarafın çarpan hangi tarafın bölünen olduğunu işaretle; 'iki katı' ilişkisi karşı yönden 'yarısı kadar' diye okunur.",
+      "optionNotes": {
+        "On Saturdays the new shop sells a little over half as much bread as the original bakery.": "Oranı doğru çeviriyor ama tarafları değiştirmiyor: yarısından biraz fazlasını satan taraf eski fırındır, yeni dükkân değil.",
+        "The new shop sells just under twice as much bread as the original bakery on every day of the week.": "Yalnızca cumartesiler için verilen bilgiyi haftanın her gününe genişletiyor; cümle diğer günler hakkında bir şey söylemiyor.",
+        "The new shop is expected to sell just under twice as much bread on Saturdays as the original bakery does.": "Olup biten bir satışı beklentiye çeviriyor: cümle düzenli olarak olanı bildiriyor, tahmin yürütmüyor."
+      }
     },
     {
       "id": "closest-meaning-t15",
@@ -1046,7 +1116,12 @@
       ],
       "correctIndex": 0,
       "explanation": "'almost as warmly as' çeviriye gösterilen övgünün özgün romana gösterilenin biraz altında kaldığını söyler; yan cümle ise bu övgüyü paylaşmayan ayrı ve küçük bir grubu ekler. 'The original novel was praised by critics less warmly than the translation, although a few early reviewers dismissed the new version.' seçeneği üstün tarafı değiştirir: daha çok övülen özgün romandır. Bir diğeri övgüyü eleştirmenlerden alıp ilk okuyuculara verir, bir başkası olup bitmiş övgüyü beklentiye taşır.",
-      "tip": "'almost / nearly as … as' eşitlik değil çok küçük bir fark bildirir; ilk anılan taraf genellikle azıcık geride kalır."
+      "tip": "'almost / nearly as … as' eşitlik değil çok küçük bir fark bildirir; ilk anılan taraf genellikle azıcık geride kalır.",
+      "optionNotes": {
+        "The original novel was praised by critics less warmly than the translation, although a few early reviewers dismissed the new version.": "Üstün tarafı değiştiriyor: 'almost as warmly as' çeviriye gösterilen övgüyü biraz geride bırakır, daha çok övülen özgün romandır.",
+        "A few early reviewers were nearly as warm about the translation as they were about the original novel, although the critics dismissed the new version as flat.": "Öven ile küçümseyeni takas ediyor: öven eleştirmenler, çeviriyi yavan bulan ise küçük bir ilk okur grubu.",
+        "The translation is expected to be praised by critics almost as warmly as the original novel was.": "Olup bitmiş bir övgüyü beklentiye taşıyor ve yan cümledeki karşıt görüşü tümden siliyor."
+      }
     },
     {
       "id": "closest-meaning-t16",
@@ -1061,7 +1136,12 @@
       ],
       "correctIndex": 3,
       "explanation": "Cümlede iki değişken birlikte hareket ediyor: inceleme yakınlaştıkça tabloya duyulan güven azalıyor. 'The more closely the panel examined the brushwork, the surer they became that the painting was genuine.' seçeneği ikinci yarının yönünü tersine çevirir ve azalan güveni artan güven yapar. Bir diğer seçenek iki yan cümlenin yerini değiştirip şüpheyi incelemenin nedeni gibi gösterir; bir başkası ise azalan güveni verilmiş bir sahtelik kararına dönüştürür.",
-      "tip": "Korelatif karşılaştırmada iki yarının yönünü ayrı ayrı oku: birinin artarken diğerinin artması ile azalması tümüyle farklı iki cümledir."
+      "tip": "Korelatif karşılaştırmada iki yarının yönünü ayrı ayrı oku: birinin artarken diğerinin artması ile azalması tümüyle farklı iki cümledir.",
+      "optionNotes": {
+        "The more the panel doubted the painting, the more closely they examined its brushwork.": "Korelatifin iki yarısını takas ediyor: şüphe, incelemenin sebebi değil sonucu. İlk yarı sebebi, ikinci yarı sonucu taşır.",
+        "The more closely the panel examined the brushwork, the surer they became that the painting was genuine.": "İkinci yarının yönünü çeviriyor: inceleme yakınlaştıkça tablonun gerçekliğine duyulan güven azalıyor, artmıyor.",
+        "The panel decided that the painting was a forgery after examining the brushwork closely.": "Giderek azalan bir güveni verilmiş bir sahtelik kararına çeviriyor. Cümle bir karardan değil, süren bir şüpheden söz ediyor."
+      }
     },
     {
       "id": "closest-meaning-t17",
@@ -1076,7 +1156,12 @@
       ],
       "correctIndex": 1,
       "explanation": "'heavy enough to keep … in port' gerçekleşen bir sonucu bildirir: rüzgâr düşünceye kadar bu boydaki tekneler limandan çıkamamıştır. Aynı durum engelleyen taraftan 'too heavy … to leave the harbour' diye yazılır. 'The swell was too heavy on Thursday afternoon for boats the size of the ferry to stay in the harbour until the wind dropped.' seçeneği aynı kalıbı kurar ama sonucun yönünü çevirir. Kalan ikisinden biri sınırı bütün limana genişletir, diğeri olup bitmiş durumu beklentiye taşır.",
-      "tip": "'enough' gerçekleşen, 'too' engellenen bir dereceyi bildirir; birinden diğerine geçerken sonuç cümlesinin olumlu-olumsuz yönü de dönmek zorundadır."
+      "tip": "'enough' gerçekleşen, 'too' engellenen bir dereceyi bildirir; birinden diğerine geçerken sonuç cümlesinin olumlu-olumsuz yönü de dönmek zorundadır.",
+      "optionNotes": {
+        "The swell was too heavy on Thursday afternoon for boats the size of the ferry to stay in the harbour until the wind dropped.": "'Too ... to' engellenen şeyi verir. Burada engellenen limanda kalmak değil, limandan çıkmaktı; sonucun yönü ters çevrilmiş.",
+        "The swell was so heavy on Thursday afternoon that the harbour was closed to boats of every size until the wind dropped.": "Sınırı bütün teknelere genişletiyor: cümle yalnızca vapur boyundaki tekneleri kapsıyor ve limanın kapatıldığını söylemiyor.",
+        "The swell is expected to be heavy enough on Thursday afternoon to keep boats the size of the ferry in the harbour.": "Olup bitmiş bir durumu beklentiye çeviriyor: perşembe öğleden sonrası yaşandı, tahmin edilmiyor."
+      }
     },
     {
       "id": "closest-meaning-t18",
@@ -1091,7 +1176,12 @@
       ],
       "correctIndex": 0,
       "explanation": "'well enough for lorries to cross' yeterli bir dereceyi ve pazartesiden itibaren gerçekleşen bir sonucu bildirir; 'so well that lorries can use it again from Monday' aynı şeyi söyler. 'The bridge has been repaired well enough for lorries to start crossing it several days before Monday.' seçeneği dereceyi doğru okur ama sonucu pazartesiden öne çeker. Kalan seçeneklerden biri 'enough'u 'too'ya çevirip geçişi engellenmiş gösterir, diğeri de cümlenin vermediği bir ayrıcalığı, ağırlık sınırının kalkmasını ekler.",
-      "tip": "'enough' gerçekleşen bir sonucu, 'too' engellenen bir sonucu bildirir; derece doğru olsa bile sonucun ne zaman geçerli olduğunu ayrıca denetle."
+      "tip": "'enough' gerçekleşen bir sonucu, 'too' engellenen bir sonucu bildirir; derece doğru olsa bile sonucun ne zaman geçerli olduğunu ayrıca denetle.",
+      "optionNotes": {
+        "The bridge has been repaired well enough for lorries to start crossing it several days before Monday.": "Dereceyi doğru okuyor ama sonucun zamanını öne çekiyor: geçiş pazartesiden itibaren, pazartesiden günler önce değil.",
+        "The bridge is still too badly damaged for lorries to cross it, even after Monday.": "'Enough'u 'too'ya çevirip gerçekleşen sonucu engellenmiş gösteriyor. Onarım kamyonların geçmesine yetmiştir.",
+        "The engineers have repaired the bridge so thoroughly that lorries of any weight can cross it from Monday.": "Cümlenin vermediği bir ayrıcalık ekliyor: ağırlık sınırının kalktığı, her tonajın geçebileceği söylenmiyor."
+      }
     },
     {
       "id": "closest-meaning-t19",
@@ -1106,7 +1196,12 @@
       ],
       "correctIndex": 2,
       "explanation": "'so completely that the ground went dark and the referee stopped the match' gerçekleşmiş bir sonucu bildirir; aynı olay, engellenen taraftan bakılarak 'too dark for the match to go on' diye yazılabilir. 'The floodlights failed so completely that the referee should have stopped the match before half-time.' seçeneği olguyu bir öğüde çevirir: hakem maçı zaten durdurmuştur, durdurması gerektiği söylenmiyor. Bir diğer seçenek neden ile sonucun yerini değiştirip karanlığı hakemin kararına bağlar.",
-      "tip": "'so … that' olan bir sonucu, 'too … to' engellenen bir sonucu bildirir; ancak sonuç olumsuza çevrildiğinde ikisi aynı anlama gelir."
+      "tip": "'so … that' olan bir sonucu, 'too … to' engellenen bir sonucu bildirir; ancak sonuç olumsuza çevrildiğinde ikisi aynı anlama gelir.",
+      "optionNotes": {
+        "The referee's decision to stop the match before half-time left the ground in darkness.": "Sebep ile sonucu takas ediyor: karanlık hakemin kararının sonucu değil, sebebidir.",
+        "The floodlights failed so completely that the referee should have stopped the match before half-time.": "Olguyu öğüde çeviriyor: hakem maçı zaten durdurdu; durdurması gerektiği, yani yapmadığı bir şey söylenmiyor.",
+        "The floodlights failed so completely that the match was abandoned before half-time and never replayed.": "Cümlede olmayan bir bilgi ekliyor: maçın bir daha hiç oynanmadığından söz edilmiyor."
+      }
     },
     {
       "id": "closest-meaning-t20",
@@ -1121,7 +1216,12 @@
       ],
       "correctIndex": 3,
       "explanation": "'so clean that … had no reason to hold back any of the deposit' temizliği, depozitoyu tutmak için gerekçe bırakmayan bir derece yapar; 'clean enough that the landlord had no grounds for withholding any of the deposit' bu bağı olduğu gibi korur. 'The landlord never keeps any of the deposit, no matter what state the tenants leave the flat in.' seçeneği dereceyi tümden atıp iadeyi her koşulda işleyen bir alışkanlığa çevirir. Kalan seçeneklerden biri neden ile sonucun yerini değiştirir, diğeri olup bitmiş temizliği henüz gerçekleşmemiş bir koşula taşır.",
-      "tip": "Bir sonucu bir dereceye bağlayan cümlede o dereceyi atmak anlamı bozar; 'so … that' genel bir alışkanlığı değil tek bir nedeni anlatır."
+      "tip": "Bir sonucu bir dereceye bağlayan cümlede o dereceyi atmak anlamı bozar; 'so … that' genel bir alışkanlığı değil tek bir nedeni anlatır.",
+      "optionNotes": {
+        "The landlord had no reason to keep the deposit, so the tenants left the flat spotlessly clean.": "Sebep ile sonucu takas ediyor: temizlik, gerekçe kalmamasının sebebi; ev sahibinin gerekçesizliği temizliğin sebebi değil.",
+        "The landlord never keeps any of the deposit, no matter what state the tenants leave the flat in.": "Dereceyi tümden atıyor: iade bu kez temizliğe bağlı, ev sahibinin her koşulda işleyen bir alışkanlığına değil.",
+        "Once the flat has been cleaned, the landlord will have no reason to hold back the deposit.": "Olup bitmiş bir temizliği henüz gerçekleşmemiş bir koşula çeviriyor. Daire çoktan temiz bırakıldı."
+      }
     },
     {
       "id": "closest-meaning-t21",
@@ -1136,7 +1236,12 @@
       ],
       "correctIndex": 1,
       "explanation": "'It is thought that + geçmiş zaman' kişisel kalıba 'is thought to have been' ile geçer; mastarın perfect olması gerekir, çünkü görülme olayı aktarımdan öncedir. 'Staff at the national observatory have confirmed that an amateur observer saw the comet first.' seçeneği cümlenin vermediği bir kaynak uydurur ve 'düşünülüyor'u 'doğruladı' yapar. Bir diğer seçenek de geçmişteki olayı geleceğe taşır.",
-      "tip": "Aktarımdan önce olmuş bir olay kişisel kalıpta 'is said / is thought to have + V3' ister; yalın mastar olayı aktarımla aynı zamana çeker."
+      "tip": "Aktarımdan önce olmuş bir olay kişisel kalıpta 'is said / is thought to have + V3' ister; yalın mastar olayı aktarımla aynı zamana çeker.",
+      "optionNotes": {
+        "The comet is expected to be spotted by an amateur observer before the official announcement.": "Geçmişte olmuş bir görülmeyi geleceğe taşıyor ve 'düşünülüyor'u bir beklentiye çeviriyor.",
+        "Staff at the national observatory have confirmed that an amateur observer saw the comet first.": "Cümlede olmayan bir kaynak uyduruyor ve aktarımı doğrulanmış bir olguya yükseltiyor: düşünülen bir şey doğrulanmış değildir.",
+        "An amateur observer is thought to have announced the comet weeks before anyone actually spotted it.": "Kimin ne yaptığını değiştiriyor: gözlemci kuyruklu yıldızı duyurmadı; resmî duyurudan haftalar önce onu ilk gören oydu."
+      }
     },
     {
       "id": "closest-meaning-t22",
@@ -1151,7 +1256,12 @@
       ],
       "correctIndex": 2,
       "explanation": "'It is only rumoured that' aktarılanın doğrulanmadığını söyler; kişisel kalıba geçilirken bu belirsizliği 'is rumoured to have been unloaded' kalıbının kendisi taşır, ayrıca söylenmesi gerekmez. 'It has now been established that the consignment was unloaded at the wrong depot on Friday.' seçeneği söylentiyi kanıtlanmış bir olguya yükseltir. Kalan seçeneklerden biri yanlış olanın depo değil sevkiyat olduğunu söyler, diğeri de ortada bir söylenti bulunduğunu tümden yok sayar.",
-      "tip": "Aktarımın kesinlik derecesi de anlamın parçasıdır: 'only rumoured' bir söylentiyi, 'has been established' kanıtlanmış bir olguyu bildirir ve biri diğerinin yerine geçmez."
+      "tip": "Aktarımın kesinlik derecesi de anlamın parçasıdır: 'only rumoured' bir söylentiyi, 'has been established' kanıtlanmış bir olguyu bildirir ve biri diğerinin yerine geçmez.",
+      "optionNotes": {
+        "It has now been established that the consignment was unloaded at the wrong depot on Friday.": "Söylentiyi kanıtlanmış bir olguya yükseltiyor. 'Only rumoured' aktarılanın doğrulanmadığını söylüyor.",
+        "The wrong consignment is rumoured to have been unloaded at the depot on Friday night.": "Niteleyiciyi başka isme bağlıyor: yanlış olan sevkiyat değil, boşaltıldığı depo.",
+        "There is no suggestion at all that the consignment went to the wrong depot on Friday night.": "Söylentinin varlığını yok sayıyor. Cümle böyle bir söylenti bulunduğunu söylüyor, doğru olmadığını değil."
+      }
     },
     {
       "id": "closest-meaning-t23",
@@ -1166,7 +1276,12 @@
       ],
       "correctIndex": 0,
       "explanation": "'had abandoned' aktarımdan önce bitmiş bir olaydır, bu yüzden kişisel kalıpta mastar 'to have abandoned' olur; bildiren kaynak cümlede anıldığı için doğru şıkta 'by the regional newspaper' olarak kalır. 'The council was reported by the regional newspaper to be abandoning the tram line in order to save money.' seçeneği olayı aktarımla aynı ana çekip kararın hâlâ sürdüğünü söyler. Kalan seçeneklerden biri bildiren ile bildirileni yer değiştirir, diğeri de adı geçen gazeteyi silip aktarımı kaynaksız bir kanaate çevirir.",
-      "tip": "Edilgen aktarımda mastarın zamanı olayın aktarımdan önce mi onunla aynı anda mı olduğunu belirler; cümlede adı geçen kaynak da paraphrase'de yerinde kalmalıdır."
+      "tip": "Edilgen aktarımda mastarın zamanı olayın aktarımdan önce mi onunla aynı anda mı olduğunu belirler; cümlede adı geçen kaynak da paraphrase'de yerinde kalmalıdır.",
+      "optionNotes": {
+        "The council was reported by the regional newspaper to be abandoning the tram line in order to save money.": "Mastarın zamanını kaydırıyor: 'had abandoned' aktarımdan önce kapanmış bir karardır, hâlâ sürmekte olan bir iş değil.",
+        "The council told the regional newspaper at the time that it had abandoned the tram line to save money.": "Bildiren ile bildirileni takas ediyor: haberi gazete verdi; belediyenin gazeteye bir açıklama yaptığı söylenmiyor.",
+        "It was widely believed at the time that the council had abandoned the tram line to save money.": "Adı geçen kaynağı siliyor: tek bir gazetenin haberini herkesin paylaştığı yaygın bir kanıya çeviriyor."
+      }
     },
     {
       "id": "closest-meaning-t24",
@@ -1181,7 +1296,12 @@
       ],
       "correctIndex": 1,
       "explanation": "Kaynak cümlede açıkça anılıyor, bu yüzden doğru şık onu 'are said by the trial's independent monitors to have been given' kalıbı içinde korur. 'The volunteers are said by the monitors to have been given their second dose later than the protocol allowed.' seçeneği aktarımı doğru kurar ama 'erken' ile 'geç'i yer değiştirir. Bir diğer seçenek tek bir kurulun sözünü herkesin kabul ettiği bir gerçek gibi sunar, bir başkası da kimin bildirdiğini değiştirir.",
-      "tip": "Aktarımı yeniden yazarken kaynağın cümlede olup olmadığına bak: adı geçen bir kaynağı silmek de, olmayan bir kaynağı eklemek de anlamı değiştirir."
+      "tip": "Aktarımı yeniden yazarken kaynağın cümlede olup olmadığına bak: adı geçen bir kaynağı silmek de, olmayan bir kaynağı eklemek de anlamı değiştirir.",
+      "optionNotes": {
+        "The volunteers say the trial's independent monitors gave them the second dose weeks too early.": "Kimin bildirdiğini değiştiriyor: bunu söyleyen bağımsız gözlem kurulu, gönüllüler değil.",
+        "It is now accepted that the volunteers were given their second dose weeks earlier than the protocol allowed.": "Tek bir kurulun sözünü herkesin kabul ettiği bir gerçek gibi sunuyor ve adı geçen kaynağı siliyor.",
+        "The volunteers are said by the monitors to have been given their second dose later than the protocol allowed.": "Aktarımı doğru kuruyor ama 'erken' ile 'geç'i takas ediyor: ikinci doz protokolün izin verdiğinden haftalarca önce verilmiş."
+      }
     }
   ]
 }

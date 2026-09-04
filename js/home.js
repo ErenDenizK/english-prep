@@ -421,6 +421,28 @@ function refreshProfileTrigger() {
   }
 }
 
+/**
+ * Offline. Registered here rather than inline in the HTML so the three
+ * shells cannot drift, and after load so it never competes with the
+ * first paint for bandwidth.
+ *
+ * Failure is silent and must be: a browser with no service worker
+ * support, a private window that refuses one, or a page served from
+ * `file://` all end up here, and none of them is a reason to tell a
+ * learner anything. The app works exactly as it did before; it simply
+ * does not work without a network.
+ */
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) {
+    return;
+  }
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {
+      // Nothing to say and nothing to do. Online still works.
+    });
+  });
+}
+
 /* ---- Routing ---- */
 
 function parseRoute() {
@@ -509,6 +531,7 @@ function init() {
     applyRoute();
   });
 
+  registerServiceWorker();
   return applyRoute();
 }
 

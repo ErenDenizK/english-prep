@@ -21,6 +21,18 @@ const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
 const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
 const SETTINGS_KEY = "englishPrep.settings";
+const BACKUP_NUDGE_KEY = "englishPrep.backupNudgeDismissed";
+
+/**
+ * Attempts before the app mentions that a backup exists.
+ *
+ * Three, because before that there is nothing worth losing and the line
+ * would be noise charged to someone still deciding whether to bother.
+ * After it there is a week of real work living in one browser, and the
+ * only thing that knows how to save it is a button in Profil the learner
+ * has never had a reason to look at.
+ */
+const BACKUP_NUDGE_AFTER = 3;
 /** Distinct questions that must have been met before a group is ranked. */
 export const MIN_ITEMS_FOR_WEAK_ENTRY = 3;
 
@@ -764,3 +776,46 @@ export function requestPersistentStorage() {
    coming, where there is room to say it properly. `englishPrep.devNoteDismissed`
    is left in storage rather than deleted — an unread key costs nothing,
    and clearing one on upgrade is a migration this app has no need of. */
+
+/* ---- The backup nudge ----
+   Kept out of both history and the profile, like the old development
+   note: dismissing a one-off notice is not progress, so resetting
+   history must not bring it back. */
+
+/**
+ * Whether to mention, once, that a backup exists.
+ *
+ * Everything a learner does lives in one browser's localStorage. The
+ * app has always been able to export it and has never said so anywhere
+ * except on a button in Profil, which is a screen someone revising for
+ * an exam has no reason to open. A phone left in a taxi is not an edge
+ * case over a month of daily use.
+ *
+ * Once, and dismissible for ever: a reminder that returns is a nag, and
+ * this project has no streaks, no notifications and nothing that taxes
+ * an arrival.
+ *
+ * @returns {boolean}
+ */
+export function shouldOfferBackup() {
+  if (isBackupNudgeDismissed()) {
+    return false;
+  }
+  return getHistory().length >= BACKUP_NUDGE_AFTER;
+}
+
+export function isBackupNudgeDismissed() {
+  try {
+    return localStorage.getItem(BACKUP_NUDGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+export function dismissBackupNudge() {
+  try {
+    localStorage.setItem(BACKUP_NUDGE_KEY, "1");
+  } catch {
+    // Storage unavailable; the line simply shows again next visit.
+  }
+}

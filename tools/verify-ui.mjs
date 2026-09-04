@@ -1527,7 +1527,16 @@ async function runTopicBoundary(browser) {
  * arrived truncated in a group chat.
  */
 async function runFailurePaths(browser) {
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  // Service workers blocked on purpose. These checks are about what a
+  // learner meets when the network fails and there is nothing cached —
+  // a first visit on a bad connection. With the worker running, the
+  // aborted topic file is served from the cache and the failure never
+  // happens, which is the worker doing its job and this section not
+  // doing its own. Offline-with-a-cache is `runOffline`, below.
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    serviceWorkers: "block",
+  });
   const page = await context.newPage();
 
   // 1 · A malformed hash. This app is distributed by pasting a URL into a
@@ -1605,6 +1614,58 @@ async function runFailurePaths(browser) {
   );
   ok(attempts === 1, `bitirilen test bir kez kaydediliyor (${attempts})`);
 
+  await context.close();
+}
+
+/**
+ * With no network at all.
+ *
+ * Until `sw.js` there was none of this: a reload offline was a blank
+ * page, and a month of revision sat behind a network error. The owner
+ * revises on a bus.
+ *
+ * The service worker keeps the app's own rules — plain ES, registered
+ * directly, no build step, no dependency — and splits the difference the
+ * content forces: cache-first for the shell, which changes only on a
+ * deploy, network-first for `data/`, because a topic file gains
+ * questions between deploys and a learner who has a connection should
+ * get them.
+ */
+async function runOffline(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#index-list .row");
+  const registered = await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    return Boolean(await navigator.serviceWorker.getRegistration());
+  });
+  ok(registered, "service worker kaydediliyor");
+
+  // Open a lesson online first: content is cached on demand rather than
+  // pre-fetched, because pre-caching every topic file would download the
+  // whole corpus to someone who opened the app once.
+  const manifest = JSON.parse(await readFile(new URL("../data/manifest.json", import.meta.url), "utf8"));
+  const first = manifest.topics.filter((topic) => !topic.comingSoon)[0];
+  const id = lessonId(first.id, first.lessons[0].category);
+  await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "networkidle" });
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#lesson-reader .reader__top");
+
+  await context.setOffline(true);
+
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("#index-list .row", { timeout: 8000 });
+  const rows = await page.locator("#index-list .row").count();
+  ok(rows > 0, `ağ yokken indeks açılıyor (${rows} konu)`);
+
+  await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("#lesson-reader .reader__top", { timeout: 8000 });
+  const blocks = await page.locator("#lesson-reader article > *").count();
+  ok(blocks > 3, `ağ yokken okunmuş bir ders açılıyor (${blocks} blok)`);
+
+  await context.setOffline(false);
   await context.close();
 }
 
@@ -1812,6 +1873,9 @@ try {
 
   console.log("\n=== bir şeyler ters gittiğinde ===");
   await runFailurePaths(browser);
+
+  console.log("\n=== ağ yokken ===");
+  await runOffline(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);

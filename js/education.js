@@ -40,6 +40,8 @@ import {
   getItemStats,
   getSeenVersion,
   getWeakCategories,
+  shouldOfferBackup,
+  dismissBackupNudge,
   RE_ENTRY_DAYS,
 } from "./storage.js";
 import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
@@ -570,11 +572,55 @@ function renderIndex() {
   // and lessons. The summary is what it always was.
   indexContainer.appendChild(card ?? renderProgressSummary(lessons, completed));
 
+  const nudge = renderBackupNudge();
+  if (nudge) {
+    indexContainer.appendChild(nudge);
+  }
+
   indexContainer.appendChild(renderIndexFilter(lessons, progress));
   const list = el("div");
   list.id = "index-list";
   list.appendChild(renderTopicIndex(lessons, progress));
   indexContainer.appendChild(list);
+}
+
+/**
+ * One line, once, saying that a backup exists.
+ *
+ * Everything a learner does lives in one browser's localStorage. The app
+ * has always been able to export it and has never said so anywhere but a
+ * button in Profil — a screen someone revising for an exam has no reason
+ * to open. Over a month of daily use, a phone left in a taxi or a browser
+ * cleared by someone else is not an edge case.
+ *
+ * It waits until there are three attempts, because before that there is
+ * nothing worth losing and the line would be noise charged to someone
+ * still deciding whether to bother. It disappears for ever when
+ * dismissed: a reminder that comes back is a nag, and this project has no
+ * streaks, no notifications and nothing that taxes an arrival.
+ */
+function renderBackupNudge() {
+  if (!shouldOfferBackup()) {
+    return null;
+  }
+
+  const row = el("div", "cluster cluster--spread");
+  row.appendChild(
+    el("p", "t-meta", "Çalıştıkların yalnızca bu tarayıcıda. Profil'den yedek alabilirsin.")
+  );
+
+  const dismiss = el("button", "btn btn--quiet btn--icon");
+  dismiss.type = "button";
+  dismiss.setAttribute("aria-label", "Bu notu kapat");
+  dismiss.appendChild(icon("close", { size: 20 }));
+  dismiss.addEventListener("click", () => {
+    dismissBackupNudge();
+    row.remove();
+    announce("Not kapatıldı.");
+  });
+  row.appendChild(dismiss);
+
+  return row;
 }
 
 /**

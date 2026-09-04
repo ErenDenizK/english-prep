@@ -605,7 +605,12 @@
       "options": ["few", "a few", "little", "a little"],
       "correctIndex": 1,
       "explanation": "Cümle hayatta kalan kolonileri olumlu değerlendiriyor: sayı arıcının umduğundan fazla ve kovanları yeniden kurmaya yetiyor. Sayılabilir çoğul bir isimle bu 'birkaç tane var ve yeterli' anlamı 'a few' ile verilir. 'few' ise 'neredeyse hiç kalmadı' demektir ve 'enough to rebuild' ifadesiyle çelişir. 'a little' ile 'little' yalnızca sayılamayan isimlerle kullanılır; 'colonies' sayılabilir çoğuldur.",
-      "tip": "Sayılabilir isimlerde 'a few' = birkaç tane var ve yeter, 'few' = neredeyse hiç yok; farkı yaratan tek şey baştaki 'a'dır."
+      "tip": "Sayılabilir isimlerde 'a few' = birkaç tane var ve yeter, 'few' = neredeyse hiç yok; farkı yaratan tek şey baştaki 'a'dır.",
+      "optionNotes": {
+        "few": "Sayılabilir isim doğru ama anlam ters: 'neredeyse hiç' demektir. Cümle ise sayının umulandan fazla ve kovanları kurmaya yeter olduğunu söylüyor.",
+        "little": "Sayılamayan isimlerin sözcüğü; 'colonies' sayılabilir çoğuldur. Sayılabilir tarafta 'yok denecek kadar az'ı 'few' söyler.",
+        "a little": "Anlam yönü doğru — az ama yeterli — ama 'a little' sayılamayan isimlerle gelir; 'colonies' sayılabilir çoğuldur."
+      }
     },
     {
       "id": "quantifiers-t2",
@@ -614,7 +619,12 @@
       "options": ["a few", "few", "much", "little"],
       "correctIndex": 1,
       "explanation": "Broşürler her eve gittiği hâlde kurs ikinci haftada iptal ediliyor; 'so' ile bağlanan bu sonucun nedeni kayıt sayısının yetersizliğidir, dolayısıyla olumsuz değerlendirme taşıyan 'few' gerekir. 'a few' 'birkaç kişi kaydoldu' anlamına gelir ve iptali açıklamaz. 'little' ve 'much' sayılamayan isimler içindir; 'residents' sayılabilir çoğul olduğu için ikisi de dilbilgisel olarak yanlıştır.",
-      "tip": "'so' ile gelen olumsuz bir sonucu açıklayan azlıkta sayılabilir isimle 'few', sayılamayanla 'little' kullanılır."
+      "tip": "'so' ile gelen olumsuz bir sonucu açıklayan azlıkta sayılabilir isimle 'few', sayılamayanla 'little' kullanılır.",
+      "optionNotes": {
+        "a few": "Sayılabilir isim doğru ama baştaki 'a' onu olumlu yapar: 'birkaç kişi kaydoldu'. O zaman kursun iptali açıklanmadan kalır.",
+        "much": "Sayılamayan isimlerle kullanılır; 'residents' sayılabilir çoğul bir isimdir, önüne 'much' gelmez.",
+        "little": "'Yok denecek kadar az' anlamı doğru, ama 'little' sayılamayan isimlerle gelir; sayılabilir çoğulda aynı anlamı 'few' verir."
+      }
     },
     {
       "id": "quantifiers-t3",
@@ -623,7 +633,12 @@
       "options": ["a little", "little", "few", "hardly any"],
       "correctIndex": 0,
       "explanation": "'that was enough to get the tractor as far as the workshop' kalan yağın yeterli olduğunu söylüyor; sayılamayan bir isimle bu olumlu 'biraz var' anlamı 'a little' ile kurulur. 'little' 'yok denecek kadar az' demektir ve 'enough' ile çelişir; 'hardly any' de aynı olumsuz anlamı taşır. 'few' ise yalnızca sayılabilir çoğul isimlerle kullanılır, 'oil' sayılamaz.",
-      "tip": "Sayılamayan isimlerde 'a little' = az ama yeterli, 'little' = yok denecek kadar az."
+      "tip": "Sayılamayan isimlerde 'a little' = az ama yeterli, 'little' = yok denecek kadar az.",
+      "optionNotes": {
+        "little": "Sayılamayan isim doğru ama 'little' 'yok denecek kadar az' der; cümle ise kalanın traktörü götürmeye yettiğini söylüyor.",
+        "few": "Sayılabilir çoğul isimlerle kullanılır; 'oil' ölçülen, sayılamayan bir isimdir.",
+        "hardly any": "'Neredeyse hiç yok' demektir; 'that was enough to get the tractor' bunun tam tersini söylüyor."
+      }
     },
     {
       "id": "quantifiers-t4",
@@ -632,7 +647,12 @@
       "options": ["a bit of", "few", "little", "a little"],
       "correctIndex": 2,
       "explanation": "Üç haftanın sonunda çıkan tek şey üç çömlek parçası ve bir çivi; sponsorun kazının kapatılmasını sorması da bulgunun yetersiz olduğunu gösteriyor, bu yüzden olumsuz anlam taşıyan 'little' gerekir. 'a little' 'az da olsa kanıt çıktı' anlamına gelir ve bu tabloyla çelişir; 'a bit of' da aynı olumlu anlamı taşır. Türkçedeki 'kanıtlar'ın aksine 'evidence' sayılamayan bir isimdir, bu yüzden 'few' kullanılamaz.",
-      "tip": "'evidence, advice, information, progress' İngilizcede sayılamaz; bunlarla 'few' değil 'little' kullanılır."
+      "tip": "'evidence, advice, information, progress' İngilizcede sayılamaz; bunlarla 'few' değil 'little' kullanılır.",
+      "optionNotes": {
+        "a bit of": "Sayılamayan isimle dilbilgisel olarak doğru, ama 'biraz var, sorun değil' der; sponsorun kazıyı kapatmayı sorması yetersizliği anlatıyor.",
+        "few": "Sayılabilir çoğul isimlerle kullanılır. Türkçedeki 'kanıtlar'ın aksine 'evidence' İngilizcede sayılamayan bir isimdir.",
+        "a little": "Baştaki 'a' miktarı yeterli sayar: 'az da olsa kanıt çıktı'. Üç çömlek parçası ve bir çivi bunu karşılamıyor."
+      }
     },
     {
       "id": "quantifiers-t5",
@@ -641,7 +661,12 @@
       "options": ["many", "much", "plenty of", "a few"],
       "correctIndex": 1,
       "explanation": "Cümle olumsuz ('no longer receives') ve 'silt' sayılamayan bir isim; bu ortamda doğru belirleyici 'much'tır. 'many' yalnızca sayılabilir çoğul isimlerle kullanılır, oysa mil ölçülen bir maddedir. 'plenty of' bolluk bildirir ve olumsuz cümlelerde kullanılmaz — burada bir bolluğun yokluğu değil, maddenin gelmemesi anlatılıyor. 'a few' de sayılabilir isimler içindir.",
-      "tip": "Olumsuz cümlelerde ve sorularda sayılamayan isimle 'much', sayılabilir çoğulla 'many' kullanılır."
+      "tip": "Olumsuz cümlelerde ve sorularda sayılamayan isimle 'much', sayılabilir çoğulla 'many' kullanılır.",
+      "optionNotes": {
+        "many": "Olumsuz ortam doğru ama 'many' sayılabilir çoğul ister; 'silt' ölçülen, sayılamayan bir maddedir.",
+        "plenty of": "'Yetecek kadar çok' der ve düz olumlu cümlelere aittir; burada cümle olumsuz: 'no longer receives'.",
+        "a few": "Sayılabilir çoğul isimler içindir; 'silt' sayılamayan bir isimdir."
+      }
     },
     {
       "id": "quantifiers-t6",
@@ -650,7 +675,12 @@
       "options": ["much", "many", "a lot of", "plenty of"],
       "correctIndex": 1,
       "explanation": "'as ... as' kalıbının içine yalnızca 'much' veya 'many' girebilir ve 'crossings' sayılabilir çoğul olduğu için 'many' doğrudur. 'a lot of' anlamca 'many'ye çok yakındır, ama 'as ... as', 'too', 'so' ve 'how' gibi derece yapılarının içinde kullanılamaz: 'as a lot of crossings as' dilbilgisel değildir. Aynı kısıt 'plenty of' için de geçerlidir. 'much' ise sayılamayan isimler içindir.",
-      "tip": "'as ... as', 'too', 'so' ve 'how' kalıplarının içinde yalnızca 'much/many' bulunur; 'a lot of' ve 'plenty of' buraya girmez."
+      "tip": "'as ... as', 'too', 'so' ve 'how' kalıplarının içinde yalnızca 'much/many' bulunur; 'a lot of' ve 'plenty of' buraya girmez.",
+      "optionNotes": {
+        "much": "'as ... as' kalıbının içine girebilir, ama sayılamayan isimlerle; 'crossings' sayılabilir çoğuldur.",
+        "a lot of": "Anlamca 'many'ye yakın, ama 'as ... as', 'too', 'so' ve 'how' kalıplarının içine girmez: 'as a lot of crossings as' kurulmaz.",
+        "plenty of": "Aynı kısıt: 'as ... as' gibi derece kalıplarının içinde yalnızca 'much' ve 'many' bulunur."
+      }
     },
     {
       "id": "quantifiers-t7",
@@ -659,7 +689,12 @@
       "options": ["plenty of", "much", "few", "little"],
       "correctIndex": 0,
       "explanation": "Cümle 'acele etme' diyor ve sergiye kadar gereğinden fazla zaman olduğunu anlatıyor; olumlu bir cümlede sayılamayan isimle bu bolluk 'plenty of' ile verilir. 'much' olumlu düz cümlelerde tek başına belirleyici olarak kullanılmaz — 'there is much time' doğal bir cümle değildir; 'much' olumsuz, soru ya da 'too/so' ile gelir. 'little' zamanın az olduğunu söyler ve öğütle çelişir, 'few' ise sayılabilir isimler içindir.",
-      "tip": "Olumlu düz cümlelerde 'much' yerine 'a lot of', 'yeterinden fazla' vurgusu için 'plenty of' kullanılır."
+      "tip": "Olumlu düz cümlelerde 'much' yerine 'a lot of', 'yeterinden fazla' vurgusu için 'plenty of' kullanılır.",
+      "optionNotes": {
+        "much": "Sayılamayan isim doğru, ama 'much' düz olumlu bir cümlede kulağa yanlış gelir; yeri olumsuz cümle, soru ve 'too/so/as' sonrasıdır.",
+        "few": "Sayılabilir çoğul isimler içindir; buradaki 'time' ölçülen, sayılamayan bir isimdir.",
+        "little": "Zamanın az olduğunu söyler; oysa cümle 'acele etme' diyor, yani zaman bol."
+      }
     },
     {
       "id": "quantifiers-t8",
@@ -668,7 +703,12 @@
       "options": ["a few", "many", "much", "a lot of"],
       "correctIndex": 3,
       "explanation": "Cümle olumlu ve 'traffic' sayılamayan bir isim; bu durumda doğal seçim 'a lot of'tur. 'much' olumsuz cümlede ve soruda kullanılır; olumlu düz bir cümlede 'still gets much traffic' denmez. 'many' sayılabilir çoğul ister, oysa 'traffic' tıpkı Türkçedeki 'trafik' gibi tekil ve ölçülen bir isimdir. 'a few' de yalnızca sayılabilir isimlerle kullanılır.",
-      "tip": "'traffic, luggage, furniture, homework' sayılamaz; olumlu cümlede bunlarla 'much' değil 'a lot of' kullanılır."
+      "tip": "'traffic, luggage, furniture, homework' sayılamaz; olumlu cümlede bunlarla 'much' değil 'a lot of' kullanılır.",
+      "optionNotes": {
+        "a few": "Sayılabilir çoğul isimlerle gelir; 'traffic' tıpkı Türkçedeki 'trafik' gibi ölçülen, sayılamayan bir isimdir.",
+        "many": "Sayılabilir çoğul ister ve 'traffic' çoğul yapılamaz; 'many traffics' diye bir öbek yoktur.",
+        "much": "Sayılamayanla doğru eşleşiyor, ama düz olumlu bir cümlede 'much' kulağa yanlış gelir: yeri olumsuz cümle, soru ve 'too/so/as' sonrasıdır."
+      }
     },
     {
       "id": "quantifiers-t9",
@@ -677,7 +717,12 @@
       "options": ["any", "no", "some", "much"],
       "correctIndex": 0,
       "explanation": "'hardly' cümleyi anlamca olumsuz yapar ve olumsuz ortam 'any' ister: 'hardly any snow' = neredeyse hiç kar yok. 'no' seçilirse 'hardly no snow' olur; Türkçede 'neredeyse hiç kar yok' iki olumsuz taşıdığı için bu hata sık yapılır, ama İngilizcede aynı cümlede iki olumsuz bulunmaz. 'much' olumsuz ortamda kullanılsa da 'hardly much' kalıbı yoktur, 'some' ise olumlu cümleler içindir.",
-      "tip": "'hardly, scarcely, rarely, without' cümleyi olumsuz sayar; bunlardan sonra 'no' değil 'any' gelir."
+      "tip": "'hardly, scarcely, rarely, without' cümleyi olumsuz sayar; bunlardan sonra 'no' değil 'any' gelir.",
+      "optionNotes": {
+        "no": "'hardly' cümleyi zaten olumsuz yapıyor; 'hardly no' iki olumsuzluk olur. Türkçe bu tekrarı ister, İngilizce yasaklar.",
+        "some": "Düz olumlu cümlelerin sözcüğü; 'hardly' ile kurulan olumsuz ortamda 'some' durmaz.",
+        "much": "Olumsuz ortamlarda kullanılır, ama 'hardly much' diye bir kalıp yoktur; 'hardly'nin eşi 'any'dir."
+      }
     },
     {
       "id": "quantifiers-t10",
@@ -686,7 +731,12 @@
       "options": ["no", "some", "any", "none"],
       "correctIndex": 1,
       "explanation": "Veteriner şişliği bulduğu için eklemi sarıyor ve bir hafta dinlendirme veriyor; olumlu bir cümlede belirsiz bir miktar 'some' ile anlatılır. 'no' seçilirse 'hiç şişlik bulmadı' olur ve hemen ardından gelen tedavi anlamsız kalır. 'any' olumsuz cümlelerin, soruların ve koşul cümlelerinin belirleyicisidir, olumlu bir bulgunun değil. 'none' ise isimden önce kullanılamaz; 'none of the swelling' gibi bir yapı gerekirdi.",
-      "tip": "Olumlu cümlede belirsiz miktar 'some' ile verilir; 'any' olumsuz, soru ve koşul ortamlarına aittir."
+      "tip": "Olumlu cümlede belirsiz miktar 'some' ile verilir; 'any' olumsuz, soru ve koşul ortamlarına aittir.",
+      "optionNotes": {
+        "no": "'Hiç şişlik bulmadı' demek olurdu; hemen ardından eklemi sarması ve bir hafta dinlendirmesi bununla çelişir.",
+        "any": "Olumsuz cümlelerin, soruların ve koşul cümlelerinin sözcüğü; burada fiil olumlu ve bir bulgudan söz ediliyor.",
+        "none": "Arkasına isim almaz: tek başına ya da 'none of the ...' biçiminde durur. Burada hemen ardından 'swelling' geliyor."
+      }
     },
     {
       "id": "quantifiers-t11",
@@ -695,7 +745,12 @@
       "options": ["every", "some", "no", "any"],
       "correctIndex": 2,
       "explanation": "Fiil olumlu biçimde kurulmuş ('gave'), bu yüzden olumsuzluğu belirleyicinin taşıması gerekir: 'gave no reason' = hiçbir gerekçe göstermedi. 'any' ancak fiil olumsuzken kullanılabilirdi ('did not give any reason'); 'gave any reason' dilbilgisel değildir. 'some' seçilseydi bir gerekçe verilmiş olurdu, oysa mimarlar neyi değiştireceklerini tahmin etmeye çalışıyor; 'every' ise tam tersini, bütün gerekçelerin sayıldığını söylerdi.",
-      "tip": "'no + isim' olumlu fiille, 'not ... any' olumsuz fiille kullanılır; ikisi aynı cümlede birlikte bulunmaz."
+      "tip": "'no + isim' olumlu fiille, 'not ... any' olumsuz fiille kullanılır; ikisi aynı cümlede birlikte bulunmaz.",
+      "optionNotes": {
+        "every": "'Bütün gerekçeleri saydı' demek olurdu; oysa mimarlar neyi değiştireceklerini tahmin etmeye çalışıyor.",
+        "some": "Bir gerekçe verilmiş olurdu; cümlenin devamı tam tersini, hiçbir gerekçe verilmediğini söylüyor.",
+        "any": "Olumsuzluğu fiilin taşımasını ister: 'did not give any reason'. Fiil olumlu kurulduğu için ('gave') burada duramaz."
+      }
     },
     {
       "id": "quantifiers-t12",
@@ -704,7 +759,12 @@
       "options": ["neither", "none", "no", "any"],
       "correctIndex": 1,
       "explanation": "Boşluk bir isimden önce değil, tek başına özne konumunda; bu yüzden zamir olan 'none' gerekir ve altı pompanın hiçbirinin çalışmadığını anlatır. 'no' bir belirleyicidir ve arkasına isim ister ('no pump is still working'), tek başına özne olamaz. 'any' olumlu bir cümlede bu anlamı veremez. 'neither' ise yalnızca iki şey için kullanılır, burada altı pompa var.",
-      "tip": "'no' isimden önce gelir, 'none' tek başına ya da 'none of ...' biçiminde kullanılır; ikiden fazlası için 'neither' değil 'none' denir."
+      "tip": "'no' isimden önce gelir, 'none' tek başına ya da 'none of ...' biçiminde kullanılır; ikiden fazlası için 'neither' değil 'none' denir.",
+      "optionNotes": {
+        "neither": "Yalnızca tam olarak iki şey için kullanılır; burada altı pompa var.",
+        "no": "Bir belirleyicidir ve arkasına isim ister ('no pump is still working'); burada boşluk tek başına özne konumunda.",
+        "any": "Olumsuz ve soru ortamlarına ait; olumlu kurulmuş bu cümlede 'hiçbiri' anlamını veremez."
+      }
     },
     {
       "id": "quantifiers-t13",
@@ -713,7 +773,12 @@
       "options": ["each", "every", "both", "neither"],
       "correctIndex": 2,
       "explanation": "İstasyonda tam olarak iki asansör var ve yolcular bavullarını merdivenden çıkarmak zorunda kaldığına göre ikisi de bozuk; iki şeyin tamamı için çoğul fiille 'both' kullanılır. 'neither' tam tersini söyler, yani ikisinin de bozuk olmadığını, ve merdiven ayrıntısıyla çelişir. 'each' ve 'every' tekil isim ve tekil fiil ister; 'were' ile kullanılamaz, üstelik 'every' üç ve daha fazlası içindir.",
-      "tip": "İki şeyin tamamı için 'both' + çoğul fiil; 'each' ve 'every' tekil fiil alır."
+      "tip": "İki şeyin tamamı için 'both' + çoğul fiil; 'each' ve 'every' tekil fiil alır.",
+      "optionNotes": {
+        "each": "Tekil fiil ister ('was'), oysa cümlede 'were' var; ayrıca ikisini birlikte değil, tek tek ele alır.",
+        "every": "Tekil fiil ister ve tek başına özne olamaz; üstelik 'every' üç ve daha fazlası içindir, burada iki asansör var.",
+        "neither": "'İkisi de değil' der, yani ikisinin de bozuk olmadığını; yolcuların merdiven çıkması bunun tersini söylüyor."
+      }
     },
     {
       "id": "quantifiers-t14",
@@ -722,7 +787,12 @@
       "options": ["both", "each", "all", "every"],
       "correctIndex": 3,
       "explanation": "Blokta istisnasız denecek kadar çok daire boşaltılmış; 'practically, nearly, almost' gibi sözcükler yalnızca 'every' ile birleşir çünkü 'every' bir bütünün oranını verir. 'each' bu zarflarla kullanılmaz — 'practically each flat' denmez — çünkü 'each' teker teker ele almayı anlatır. 'all' tekil isimle gelemez ('all flats' olurdu), 'both' ise yalnızca iki şey içindir, oysa blokta çok sayıda daire var.",
-      "tip": "'almost, nearly, practically' yalnızca 'every' ile kullanılır; 'all' çoğul isim, 'both' tam iki şey ister."
+      "tip": "'almost, nearly, practically' yalnızca 'every' ile kullanılır; 'all' çoğul isim, 'both' tam iki şey ister.",
+      "optionNotes": {
+        "both": "Tam olarak iki şey için kullanılır; blokta çok sayıda zemin kat dairesi var.",
+        "each": "Tekil isimle doğru kurulur, ama 'practically / almost / nearly' 'each' ile birleşmez: bunlar bir bütünün oranını verir, 'each' tek tek ele alır.",
+        "all": "Çoğul ya da sayılamayan isim ister; buradaki isim tekil — 'all flats' denebilirdi."
+      }
     },
     {
       "id": "quantifiers-t15",
@@ -731,7 +801,12 @@
       "options": ["every", "each", "either", "both"],
       "correctIndex": 1,
       "explanation": "İki nüsha var ve her birinde ayrı bir tarih yazıyor; teker teker ele alınan bu anlamı ve tekil fiil 'carries' yapısını 'each of them' karşılar. 'both of them' çoğul fiil ister ('carry') ve ikisini birlikte anar, farklılığı değil ortaklığı vurgular. 'every' hiçbir zaman 'of' ile kullanılmaz; 'every one of them' demek gerekirdi. 'either of them' ise 'ikisinden biri' anlamına gelir.",
-      "tip": "'each of' ve 'either of' vardır, 'every of' yoktur; 'each/either' tekil, 'both' çoğul fiil alır."
+      "tip": "'each of' ve 'either of' vardır, 'every of' yoktur; 'each/either' tekil, 'both' çoğul fiil alır.",
+      "optionNotes": {
+        "every": "'of' ile kullanılmaz: 'every of them' yoktur. Aynı anlam için 'every one of them' demek gerekirdi.",
+        "either": "'İkisinden biri' demektir; oysa cümle iki nüshanın da ayrı bir tarih taşıdığını söylüyor.",
+        "both": "Çoğul fiil ister ('carry'), oysa cümlede 'carries' var; ayrıca ikisini birlikte anar, aradaki farkı değil."
+      }
     },
     {
       "id": "quantifiers-t16",
@@ -740,7 +815,12 @@
       "options": ["most of", "all", "every", "each"],
       "correctIndex": 1,
       "explanation": "Son cümle sıvanın bir parçasının bile kurtarılamadığını söylüyor, yani tamamı sökülmüş; bütünlük 'all the ...' ile anlatılır. 'most of' 'büyük bölümü' demektir ve bir kısmının yerinde kaldığını ima eder, bu da 'not a patch of it could be saved' ifadesiyle çelişir. 'plasterwork' sayılamayan bir isim olduğu için 'every' ve 'each' kullanılamaz; ayrıca bu ikisi 'the' ile başlayan bir isim öbeğinin önüne gelmez.",
-      "tip": "Sayılamayan bir ismin tamamı için 'all (of) the ...' kullanılır; 'every/each' sayılabilir tekil isim ister."
+      "tip": "Sayılamayan bir ismin tamamı için 'all (of) the ...' kullanılır; 'every/each' sayılabilir tekil isim ister.",
+      "optionNotes": {
+        "most of": "'Büyük bölümü' der, yani bir kısmının yerinde kaldığını ima eder; 'not a patch of it could be saved' bunu dışlıyor.",
+        "every": "Sayılabilir tekil isim ister; 'plasterwork' sayılamayan bir isim, üstelik önünde 'the' var — 'every' böyle bir öbeğin önüne gelmez.",
+        "each": "Aynı engel: sayılamayan bir ismin ve 'the' ile başlayan bir öbeğin önüne gelmez; sıva tek tek sayılan bir şey değil."
+      }
     },
     {
       "id": "quantifiers-t17",
@@ -749,7 +829,12 @@
       "options": ["either", "none", "both", "neither"],
       "correctIndex": 3,
       "explanation": "Köyde iki köprü var ve servis hâlâ dolambaçlı yoldan gittiğine göre hiçbiri onarılmamış; iki şeyi birden olumsuzlayan belirleyici 'neither'dır ve tekil isimle kullanılır. 'either' olumlu bir cümlede 'ikisinden biri' anlamı verir, yani en az birinin onarıldığını söylerdi. 'none' tek başına isimden önce gelemez; 'none of the bridges' gerekirdi. 'both' ise çoğul isim ve çoğul fiil ister.",
-      "tip": "İki şey için olumsuzluk 'neither + tekil isim'; üç ve daha fazlası için 'none of ...'."
+      "tip": "İki şey için olumsuzluk 'neither + tekil isim'; üç ve daha fazlası için 'none of ...'.",
+      "optionNotes": {
+        "either": "Olumlu bir cümlede 'ikisinden biri' der, yani en az birinin onarıldığını söylerdi; servisin hâlâ dolambaçlı gitmesi bunu yalanlıyor.",
+        "none": "Tek başına ya da 'none of the ...' biçiminde durur, isimden önce gelmez; burada hemen ardından 'bridge' var.",
+        "both": "Çoğul isim ve çoğul fiil ister ('both bridges have'), oysa burada tekil 'bridge ... has' var."
+      }
     },
     {
       "id": "quantifiers-t18",
@@ -758,7 +843,12 @@
       "options": ["or", "nor", "neither", "either"],
       "correctIndex": 1,
       "explanation": "'neither' ile başlayan ikili kalıp ikinci ögesini 'nor' ile bağlar: 'neither coins nor notes'. 'or' Türkçedeki 'ne ... ya da' benzetmesiyle çok seçilir, ama standart dilde 'neither ... or' kabul edilmez; 'or' yalnızca 'either' ile eşleşir. 'neither' ikinci kez tekrarlanmaz, 'either' de olumsuz eşleşmenin ikinci ögesi olamaz.",
-      "tip": "İkili kalıplar sabittir: 'either ... or', 'neither ... nor', 'both ... and'."
+      "tip": "İkili kalıplar sabittir: 'either ... or', 'neither ... nor', 'both ... and'.",
+      "optionNotes": {
+        "or": "Yalnızca 'either' ile eşleşir; cümledeki 'neither'ın eşi 'nor'dur. Türkçedeki 'ne ... ya da' benzetmesi buraya çekiyor.",
+        "neither": "Kalıbın ilk ayağıdır ve ikinci ayakta tekrarlanmaz; 'neither ... neither' diye bir eşleşme yoktur.",
+        "either": "İkili kalıplar sabittir: 'either' ancak 'or' ile eşleşir, 'neither'ın ikinci ayağı olamaz."
+      }
     },
     {
       "id": "quantifiers-t19",
@@ -767,7 +857,12 @@
       "options": ["each", "both", "either", "neither"],
       "correctIndex": 2,
       "explanation": "Fiil zaten olumsuz ('did not accept'), bu yüzden ikinci bir olumsuz sözcük kullanılamaz; iki teklifin de kabul edilmediği 'not ... either' ile anlatılır. 'neither' seçilirse 'did not accept neither tender' olur — Türkçede 'ne birini ne diğerini kabul etti' derken fiil olumsuz kaldığı için bu hata çok yaygındır. 'both' çoğul isim ister ve olumsuz fiille bulanık bir anlam verir; 'each' ise tekliflerin tek tek ele alınıp onaylandığını ima ederdi.",
-      "tip": "Olumsuz fiille 'neither' değil 'either' kullanılır; 'neither' cümledeki tek olumsuzluk olduğunda gelir."
+      "tip": "Olumsuz fiille 'neither' değil 'either' kullanılır; 'neither' cümledeki tek olumsuzluk olduğunda gelir.",
+      "optionNotes": {
+        "each": "Teker teker ele almayı anlatır; olumsuz fiille 'her birini ayrı ayrı kabul etmedi' gibi bulanık bir okuma verir.",
+        "both": "Çoğul isim ister ('both tenders'), oysa boşluktan sonra tekil 'tender' var.",
+        "neither": "Fiil zaten olumsuz ('did not accept'); 'neither' ikinci bir olumsuzluk getirir. Türkçe bu tekrarı ister, İngilizce yasaklar."
+      }
     },
     {
       "id": "quantifiers-t20",
@@ -776,7 +871,12 @@
       "options": ["none", "either", "neither", "each"],
       "correctIndex": 2,
       "explanation": "İki görüntü setinin de ölçüm yapmaya yetmediği, ekibin yeni bir geçiş istemesinden anlaşılıyor; iki şeyi birden olumsuzlayan zamir 'neither of the two'dur ve tekil fiil alır. 'none' üç ve daha fazlası için kullanılır, 'none of the two' denmez. 'either of the two' olumlu bir cümlede 'ikisinden biri yetiyor' anlamına gelirdi; 'each of the two' ise ikisinin de yeterli olduğunu söylerdi ve yeni geçiş isteği anlamsız kalırdı.",
-      "tip": "İki şey için 'neither of', üç ve üzeri için 'none of'; ikisi de tekil fiille kullanılabilir."
+      "tip": "İki şey için 'neither of', üç ve üzeri için 'none of'; ikisi de tekil fiille kullanılabilir.",
+      "optionNotes": {
+        "none": "Üç ve daha fazlası için kullanılır; 'none of the two' denmez, tam olarak iki şeyin sözcüğü 'neither'dır.",
+        "either": "Olumlu bir cümlede 'ikisinden biri yetiyor' derdi; oysa ekip yeni bir geçiş istiyor, yani ikisi de yetmemiş.",
+        "each": "'İkisi de ayrı ayrı yeterince net gösteriyor' demek olurdu; yeni bir geçiş istenmesi bununla çelişir."
+      }
     },
     {
       "id": "quantifiers-t21",
@@ -785,7 +885,12 @@
       "options": ["most of", "the most", "most", "almost all"],
       "correctIndex": 2,
       "explanation": "Belirli bir gruptan değil, genel olarak yolculardan söz ediliyor; genelleme yapılırken 'most' doğrudan çıplak çoğul isimle kullanılır. 'most of' ancak arkasından 'the, my, these' gibi bir belirleyici ya da bir zamir gelirse doğrudur: 'most of travellers' yanlış, 'most of the travellers' doğru olurdu. 'the most' üstünlük bildirir, oran değil. 'almost all' ise 'neredeyse hepsi' demektir; yüzde elli sekiz bunu karşılamaz.",
-      "tip": "Genel bir çoğunluk için 'most + isim'; belirli bir grup için 'most of the / my / them'."
+      "tip": "Genel bir çoğunluk için 'most + isim'; belirli bir grup için 'most of the / my / them'.",
+      "optionNotes": {
+        "most of": "'of' ancak arkasından 'the, my, these' gibi bir belirleyici ya da bir zamir gelirse durur; burada çıplak 'travellers' var.",
+        "the most": "Üstünlük bildirir — 'en çok' — oysa burada karşılaştırma değil, bir oran söyleniyor.",
+        "almost all": "'Neredeyse hepsi' demektir; yüzde elli sekiz bunu karşılamaz."
+      }
     },
     {
       "id": "quantifiers-t22",
@@ -794,7 +899,12 @@
       "options": ["most", "none of", "most of", "the most"],
       "correctIndex": 2,
       "explanation": "Boşluktan sonra 'its' belirleyicisi geliyor; bir belirleyiciden ya da zamirden önce 'most of' kullanılır. 'most' tek başına yalnızca çıplak isimle gelebilir, 'most its funding' dilbilgisel değildir. 'the most' 'en çok' demektir, oysa burada bir karşılaştırma yok. 'none of' seçilseydi tek bir vakıftan hiç para gelmiyor olurdu; oysa 'the rest' ifadesi paranın geri kalanından söz ederek büyük bölümünün oradan geldiğini söylüyor.",
-      "tip": "'the, my, its, this' gibi bir belirleyici ya da zamir varsa 'most of', yoksa yalın 'most'."
+      "tip": "'the, my, its, this' gibi bir belirleyici ya da zamir varsa 'most of', yoksa yalın 'most'.",
+      "optionNotes": {
+        "most": "Tek başına yalnızca çıplak isimle gelir; boşluktan sonra 'its' belirleyicisi var, 'most its funding' kurulmaz.",
+        "none of": "Tek bir vakıftan hiç para gelmediğini söylerdi; 'the rest' ifadesi paranın geri kalanından söz ederek bunun tersini kuruyor.",
+        "the most": "'En çok' demektir ve bir karşılaştırma ister; burada karşılaştırılan ikinci bir şey yok."
+      }
     },
     {
       "id": "quantifiers-t23",
@@ -803,7 +913,12 @@
       "options": ["most", "the most", "more", "most of"],
       "correctIndex": 1,
       "explanation": "Otuz bir şikâyet tek bir servis için en yüksek sayı; 'en çok' anlamındaki üstünlük 'the most' ile kurulur ve 'of any single ward' kalıbı da bunu ister. 'most complaints' 'şikâyetlerin çoğu' demek olurdu, oysa son cümle diğer üç servisin birlikte çoğunluğu aldığını söylüyor — St Anne's çoğunluğu almamıştır. 'more' karşılaştırma için 'than' ister; 'most of' ise arkasına belirleyici alır.",
-      "tip": "'the most + isim' = en çok (üstünlük); 'most + isim' = çoğu (çoğunluk) — anlamı değiştiren 'the'dir."
+      "tip": "'the most + isim' = en çok (üstünlük); 'most + isim' = çoğu (çoğunluk) — anlamı değiştiren 'the'dir.",
+      "optionNotes": {
+        "most": "'Şikâyetlerin çoğu' demek olurdu; oysa son cümle diğer üç servisin birlikte çoğunluğu aldığını söylüyor.",
+        "more": "Karşılaştırma için 'than' ister; burada 'of any single ward' var, bu bir üstünlük çerçevesidir.",
+        "most of": "Arkasına belirleyici ya da zamir alır ('most of the complaints'); burada çıplak 'complaints' geliyor."
+      }
     },
     {
       "id": "quantifiers-t24",
@@ -812,7 +927,12 @@
       "options": ["all", "most of", "most", "the most"],
       "correctIndex": 1,
       "explanation": "Boşluktan sonra 'the animals' geliyor; belirli bir gruptan söz edildiği için 'most of the' kullanılır. 'most' tek başına yalnızca genelleme yaparken çıplak isimle gelir, 'most the animals' yanlıştır. 'all' seçilseydi hayvanların hepsinin zayıf olması gerekirdi, oysa cümle zayıf olmayanların yaralarla geldiğini söylüyor. 'the most' ise 'en çok' anlamındaki üstünlük biçimidir.",
-      "tip": "'most' ile 'the' arasına her zaman 'of' girer: 'most of the animals', asla 'most the animals'."
+      "tip": "'most' ile 'the' arasına her zaman 'of' girer: 'most of the animals', asla 'most the animals'.",
+      "optionNotes": {
+        "all": "Hayvanların hepsinin zayıf olması gerekirdi; oysa cümle zayıf olmayanların yaralarla geldiğini söylüyor.",
+        "most": "Tek başına yalnızca çıplak, belirleyicisiz isimle gelir; 'the animals' belirleyicili bir öbek, araya 'of' girer.",
+        "the most": "Üstünlük biçimidir — 'en çok' — ve bir karşılaştırma ister; burada bir grubun oranı söyleniyor."
+      }
     }
   ]
 }
