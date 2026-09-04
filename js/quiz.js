@@ -77,7 +77,7 @@ function handleOptionSelected(question, selectedOption) {
   state.selectedAnswers[state.currentIndex] = selectedOption;
 
   const correct = isCorrectAnswer(question, selectedOption);
-  announce(...answerAnnouncement(question, correct));
+  announce(...answerAnnouncement(question, correct, selectedOption));
   // 4.1.3 is explicit that a status message arrives "without receiving
   // focus", and moving focus here would take the learner away from the
   // button they are about to press.

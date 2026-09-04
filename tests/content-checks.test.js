@@ -13,6 +13,7 @@ import {
   checkExplanationsNameDistractors,
   checkNearDuplicates,
   checkOptionForms,
+  checkOptionNotes,
   checkScenarioReuse,
 } from "../tools/content-checks.mjs";
 
@@ -344,4 +345,83 @@ test("a restatement whose answer is lifted from its own stem is reported", () =>
     })
   );
   assert.match(r.text, /also appears in the question's own text/);
+});
+
+/* ---- optionNotes ----
+ *
+ * The field is keyed by option TEXT because the engine shuffles options
+ * and scores against the answer string. That decision is only worth
+ * anything if the key set is actually checked against the option set, so
+ * these tests pin the three ways a note can be wrong: a key that is not
+ * an option, a key that IS the answer, and an empty gloss.
+ */
+
+function noted(optionNotes) {
+  return {
+    id: "t1",
+    category: "Present Simple vs Present Continuous",
+    paragraph: "Every morning she ____ to the library before her first class begins.",
+    options: ["goes", "is going", "has gone", "went"],
+    correctIndex: 0,
+    explanation: "x",
+    optionNotes,
+  };
+}
+
+test("a note keyed to something that is not an option is an error", () => {
+  const r = report();
+  checkOptionNotes(r, "t1", noted({ "is gone": "Böyle bir seçenek yok." }));
+  assert.equal(r.errors.length, 1);
+  assert.match(r.text, /not an option/);
+});
+
+test("a note on the correct answer is an error", () => {
+  const r = report();
+  checkOptionNotes(r, "t1", noted({ goes: "Doğru cevap bu." }));
+  assert.equal(r.errors.length, 1);
+  assert.match(r.text, /correct answer/);
+});
+
+test("an empty gloss is an error", () => {
+  const r = report();
+  checkOptionNotes(r, "t1", noted({ "is going": "   " }));
+  assert.equal(r.errors.length, 1);
+});
+
+test("an over-long gloss warns but does not block", () => {
+  const r = report();
+  checkOptionNotes(r, "t1", noted({ "is going": "ç".repeat(161) }));
+  assert.equal(r.errors.length, 0);
+  assert.equal(r.warnings.length, 1);
+  assert.match(r.text, /competes with the explanation/);
+});
+
+test("a partial set of notes on real wrong options is clean", () => {
+  const r = report();
+  checkOptionNotes(
+    r,
+    "t1",
+    noted({
+      "is going": "Şu an sürmekte olan bir eylem; burada tekrar eden bir alışkanlık var.",
+      went: "Geçmişte bitmiş bir eylem.",
+    })
+  );
+  assert.equal(r.errors.length, 0);
+  assert.equal(r.warnings.length, 0);
+});
+
+test("no optionNotes at all is clean — the field is optional", () => {
+  const r = report();
+  const question = noted(undefined);
+  delete question.optionNotes;
+  checkOptionNotes(r, "t1", question);
+  assert.equal(r.errors.length, 0);
+  assert.equal(r.warnings.length, 0);
+});
+
+test("an array is rejected — a parallel list is exactly what this field is not", () => {
+  const r = report();
+  checkOptionNotes(r, "t1", noted(["a", "b", "c", "d"]));
+  assert.equal(r.errors.length, 1);
+  assert.match(r.text, /keyed by option text/);
 });

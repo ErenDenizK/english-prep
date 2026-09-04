@@ -383,3 +383,64 @@ export function checkScenarioReuse(report, questions) {
     report.warn(MANIFEST_PATH, `the corpus keeps returning to one setting: ${overused.join(", ")}`);
   }
 }
+
+// An option note is a gloss, not a second explanation: what this one word
+// means and why the paragraph does not select it. Past this it is
+// competing with the explanation it sits under.
+const MAX_OPTION_NOTE_LENGTH = 160;
+
+/* An optional per-option gloss, keyed BY THE OPTION TEXT.
+ *
+ * Not an array parallel to `options`, because the quiz engine shuffles
+ * options for display (js/quiz-engine.js) and scores against the answer
+ * STRING rather than an index. A parallel array would be permuted apart
+ * from its own options on every attempt, silently. A keyed object cannot
+ * drift, and the key set can be checked against the option set here — so
+ * an alignment error is impossible rather than invisible.
+ *
+ * It is optional and may be partial: one grammar distractor sometimes
+ * needs a word of its own and the other two fail for the reason the
+ * explanation already gives. It becomes the minimum honest explanation
+ * for a vocabulary set, where every wrong option is a different word.
+ *
+ * `checkTurkish` is injected rather than imported: it is the validator's
+ * own prose heuristic, and it carries the validator's word lists. A test
+ * that only cares about the key/option alignment can leave it out.
+ */
+export function checkOptionNotes(report, where, question, checkTurkish = () => {}) {
+  const notes = question.optionNotes;
+  if (notes === undefined) {
+    return;
+  }
+  if (typeof notes !== "object" || notes === null || Array.isArray(notes)) {
+    report.error(where, "optionNotes must be an object keyed by option text");
+    return;
+  }
+  if (!Array.isArray(question.options)) {
+    return;
+  }
+  const correct = question.options[question.correctIndex];
+  for (const [option, note] of Object.entries(notes)) {
+    if (!question.options.includes(option)) {
+      report.error(where, `optionNotes has a key that is not an option: "${option}"`);
+      continue;
+    }
+    if (option === correct) {
+      report.error(
+        where,
+        "optionNotes covers the correct answer — the explanation already argues for it, and a note beside it reads as a second key"
+      );
+    }
+    if (typeof note !== "string" || note.trim() === "") {
+      report.error(where, `optionNotes["${option}"] must be a non-empty string`);
+      continue;
+    }
+    if (note.trim().length > MAX_OPTION_NOTE_LENGTH) {
+      report.warn(
+        where,
+        `optionNotes["${option}"] is ${note.trim().length} chars — past ${MAX_OPTION_NOTE_LENGTH} it competes with the explanation it sits under`
+      );
+    }
+    checkTurkish(report, where, `optionNotes["${option}"]`, note);
+  }
+}

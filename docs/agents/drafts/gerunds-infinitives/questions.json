@@ -1,0 +1,338 @@
+[
+  {
+    "id": "gerunds-infinitives-t1",
+    "category": "Verb + Gerund vs Verb + Infinitive",
+    "paragraph": "The one-way system in the old quarter has beaten him since the day he passed his test. He has never announced a rule about it, but he quietly ____ through it at rush hour, and takes the ring road even when that doubles the journey.",
+    "options": [
+      "avoids to drive",
+      "avoids driving",
+      "refuses to drive",
+      "refuses driving"
+    ],
+    "correctIndex": 1,
+    "explanation": "'avoid' fiili kendinden sonra mutlaka -ing ister: avoid driving. 'avoids to drive' bu listeyi bilmeyen öğrencinin ürettiği biçimdir; bu fiilden sonra 'to' gelmez. 'refuses to drive' ise biçim olarak doğrudur ama anlamı tutmaz: metin 'has never announced a rule about it' diyor, yani adam açıkça reddetmiyor, sessizce kaçınıyor. Reddetmek ilan edilen bir tavırdır; kaçınmak bir alışkanlıktır.",
+    "tip": "'avoid, enjoy, deny, suggest, postpone' fiillerinden sonra -ing gelir; bu türetilebilir bir kural değil, ezberlenecek bir listedir."
+  },
+  {
+    "id": "gerunds-infinitives-t2",
+    "category": "Verb + Gerund vs Verb + Infinitive",
+    "paragraph": "The bakery's oven died on a Friday night with forty orders still on the board. Nobody could reach an engineer before Monday, but the owner's brother took the back panel off, found a burnt wire and ____ it before the first tray was due.",
+    "options": [
+      "managed repairing",
+      "enjoyed repairing",
+      "managed to repair",
+      "enjoyed to repair"
+    ],
+    "correctIndex": 2,
+    "explanation": "'manage' zorlukla da olsa bir işi başarmak demektir ve kendinden sonra 'to + fiil' ister: managed to repair. Metindeki 'Nobody could reach an engineer before Monday' bu zorluğu kuruyor. 'managed repairing' yanlış biçimdir. 'enjoyed repairing' ise biçimce doğrudur ama anlamı bozar: burada tamir etmekten keyif almaktan değil, işin ilk tepsiye yetişmesinden söz ediliyor.",
+    "tip": "'manage, decide, refuse, offer, promise, afford' fiillerinden sonra 'to + fiil' gelir."
+  },
+  {
+    "id": "gerunds-infinitives-t3",
+    "category": "Verb + Gerund vs Verb + Infinitive",
+    "paragraph": "The two of them had been arguing about the rent for a month. At the end of the meeting the older brother ____ the whole business to the quieter street behind the market, and to everyone's surprise the landlord agreed.",
+    "options": [
+      "suggested to move",
+      "suggested them to move",
+      "suggested to moving",
+      "suggested moving"
+    ],
+    "correctIndex": 3,
+    "explanation": "'suggest' Türkçedeki 'önermek' gibi kurulmaz: nesne + 'to' almaz, doğrusu suggest + -ing'dir. 'suggested them to move' tam olarak 'taşımalarını önerdi' yapısının birebir aktarımıdır ve İngilizcede yoktur; 'suggested to move' de aynı hatanın kısa hâlidir. Önerinin geleceğe bakması biçimi değiştirmez — 'to' burada geleceğin işareti değildir.",
+    "tip": "'suggest' asla 'suggest somebody to do' biçiminde kurulmaz: ya 'suggest doing' ya da 'suggest that somebody (should) do' denir."
+  },
+  {
+    "id": "gerunds-infinitives-t4",
+    "category": "Verb + Gerund vs Verb + Infinitive",
+    "paragraph": "The sofa arrived with a torn arm and a leg that would not screw in straight. The customer had already signed for the delivery, but he ____ the balance until the retailer agreed to send a replacement, and ten days later one came.",
+    "options": [
+      "refused to pay",
+      "refused paying",
+      "admitted paying",
+      "admitted to pay"
+    ],
+    "correctIndex": 0,
+    "explanation": "'refuse' kendinden sonra 'to + fiil' ister: refused to pay. 'refused paying' bu listeyi bilmeyenin ürettiği biçimdir ve İngilizcede yoktur. 'admitted paying' biçimce doğrudur, çünkü 'admit' -ing alır; ama anlamı tersine çevirir: itiraf etmek, parayı ödediğini kabul etmek demektir, oysa metinde müşteri kalan tutarı ödemiyor ve mağazayı bekletiyor.",
+    "tip": "Bir fiilin -ing mi 'to' mu aldığı anlamından değil kendisinden belli olur: refuse to do, admit doing."
+  },
+  {
+    "id": "gerunds-infinitives-t5",
+    "category": "Both, With a Meaning Change: Remember / Stop / Try / Regret",
+    "paragraph": "Weeks later, in the witness box, she ____ the envelope on the hall table: she could still picture the blue stamp and the cat asleep beside it. What she could not say was what time it had been.",
+    "options": [
+      "remembered to leave",
+      "remembered leaving",
+      "regretted leaving",
+      "tried leaving"
+    ],
+    "correctIndex": 1,
+    "explanation": "'remember + -ing' geçmişte yapılmış bir eylemin hatırlanmasıdır; 'she could still picture the blue stamp' tam olarak bir hatırlama görüntüsüdür. 'remembered to leave' ise unutmayıp yapmak demektir ve önceden verilmiş bir görev gerektirir — metinde kimse ondan bir şey istememiştir. 'regretted leaving' pişmanlık bildirir; tanık pişman değil, yalnızca hatırlıyor.",
+    "tip": "'remember + -ing' geriye, 'remember + to' ileriye bakar: birincisi yapılmış bir eylemin anısı, ikincisi unutulmaması gereken bir görevdir."
+  },
+  {
+    "id": "gerunds-infinitives-t6",
+    "category": "Both, With a Meaning Change: Remember / Stop / Try / Regret",
+    "paragraph": "The two of them had been climbing for four hours and had not touched their bottles since dawn. At the fountain below the pass they ____ them, and with the water running freely both were full in a minute; then they rode on.",
+    "options": [
+      "stopped filling",
+      "tried to fill",
+      "stopped to fill",
+      "tried filling"
+    ],
+    "correctIndex": 2,
+    "explanation": "'stop + to' bir işi bırakıp başka bir iş yapmak için durmaktır: bisikletten inip mataraları doldurdular. 'stopped filling' doldurma eylemini sona erdirmek demektir, oysa metin 'had not touched their bottles since dawn' diyor — bitecek bir doldurma eylemi hiç başlamamıştı. 'tried to fill' de uymaz: su rahatça akıyor ve bir dakikada doluyor, yani ortada ne bir zorluk ne de bir deneme var.",
+    "tip": "'stop + -ing' eylemi sona erdirir; 'stop + to' başka bir eylem için ara verir. Hangisinin doğru olduğunu paragraftaki olay sırası söyler."
+  },
+  {
+    "id": "gerunds-infinitives-t7",
+    "category": "Both, With a Meaning Change: Remember / Stop / Try / Regret",
+    "paragraph": "The projector in the lecture theatre kept losing the signal, and swapping the cable had changed nothing. Then the technician ____ the socket on the other wall, just to see whether it made any difference, and the picture held steady for the rest of the hour.",
+    "options": [
+      "tried to use",
+      "stopped using",
+      "tried using",
+      "stopped to use"
+    ],
+    "correctIndex": 2,
+    "explanation": "'try + -ing' bir sonucu görmek için bir yöntemi denemektir; 'just to see whether it made any difference' bunu açıkça söyler ve kablo değiştirme denemesi zaten öncesinde anlatılıyor. 'tried to use' ise bir şeyi yapmakta zorlanmak, uğraşmak demektir; oysa prize takmak hiç zor değildi ve ilk seferde işe yaradı. 'stopped using' de uymaz: teknisyen o prizi zaten kullanmıyordu.",
+    "tip": "'try + -ing' = bir yöntemi dene; 'try + to' = zor bir şeyi başarmaya çalış. Ortada zorluk yoksa -ing gelir."
+  },
+  {
+    "id": "gerunds-infinitives-t8",
+    "category": "Both, With a Meaning Change: Remember / Stop / Try / Regret",
+    "paragraph": "The letter from the faculty office was four lines long and signed by the dean himself. 'We ____ you that your appeal has not been successful,' it began, 'and that the committee's decision is final.'",
+    "options": [
+      "regret informing",
+      "remember to inform",
+      "regret to inform",
+      "remember informing"
+    ],
+    "correctIndex": 2,
+    "explanation": "'regret + to inform/tell/say' kalıbı kötü haberi tam o anda verirken kullanılır ve resmi yazışmanın standart biçimidir. 'regret informing' ise haber verdiğine pişman olmak demektir; oysa mektup haberi o cümlede veriyor, verdiğine pişman olmuyor. 'remember to inform' ve 'remember informing' hatırlama bildirir, mektupta hatırlanan bir şey yok.",
+    "tip": "'regret + -ing' yapılmış bir şeye duyulan pişmanlıktır; 'regret to inform/tell' ise kötü haberi o anda vermenin kalıbıdır."
+  },
+  {
+    "id": "gerunds-infinitives-t9",
+    "category": "Causative Verb Patterns: Make / Let / Have / Get",
+    "paragraph": "Their old literature teacher never explained a poem twice. At the start of every term she ____ the whole first page aloud, one line each, until the rhythm was in their heads and nobody dared read it flatly again.",
+    "options": [
+      "made us to read",
+      "got us read",
+      "made us read",
+      "had us to read"
+    ],
+    "correctIndex": 2,
+    "explanation": "'make' zorlama bildirir ve nesneden sonra 'to'suz yalın fiil ister: made us read. 'made us to read' Türkçedeki 'okumamızı sağladı' yapısının birebir aktarımıdır ve İngilizcede yoktur; sınavlarda en sık test edilen hata budur. 'got us read' de yanlıştır, çünkü 'get' tam tersine 'to' ister (got us to read); 'had us to read' ise 'have' kalıbına olmayan bir 'to' ekler.",
+    "tip": "make ve let nesneden sonra yalın fiil alır (make her wait, let her wait); get ise 'to' alır (get her to wait)."
+  },
+  {
+    "id": "gerunds-infinitives-t10",
+    "category": "Causative Verb Patterns: Make / Let / Have / Get",
+    "paragraph": "Her grandfather had not seen a doctor in two years, and nobody in the family could talk him round. It took three weeks of phone calls and one long Sunday lunch, but his granddaughter finally ____ to the clinic.",
+    "options": [
+      "got him go",
+      "got him to go",
+      "made him to go",
+      "let him go"
+    ],
+    "correctIndex": 1,
+    "explanation": "'get' ikna ederek bir şey yaptırmaktır ve nesneden sonra 'to + fiil' ister: got him to go. Üç haftalık telefon trafiği tam olarak bir ikna sürecidir. 'got him go' yalın fiil kullanır, oysa yalın fiil yalnızca 'make' ve 'let' içindir. 'let him go' ise izin vermek demektir ve anlamı tersine çevirir: gitmeyi reddeden kişi dedenin kendisiydi, izin bekleyen değil.",
+    "tip": "'get somebody to do' ikna ederek yaptırmak, 'make somebody do' zorlamak, 'let somebody do' izin vermektir."
+  },
+  {
+    "id": "gerunds-infinitives-t11",
+    "category": "Causative Verb Patterns: Make / Let / Have / Get",
+    "paragraph": "The photographs in the barber's window had faded almost to white over twenty summers. Rather than take them down, he found the old negatives in a drawer and ____ at a lab two streets away, and the new set went up the same week.",
+    "options": [
+      "had them reprint",
+      "had reprinted them",
+      "made them reprint",
+      "had them reprinted"
+    ],
+    "correctIndex": 3,
+    "explanation": "Nesne bir eşya olduğunda kalıp 'have + nesne + V3'tür: had them reprinted, yani işi başkasına yaptırdı. 'had them reprint' fotoğrafların kendilerinin baskı yaptığı anlamına gelir; yalın fiilli kalıp yalnızca bir kişiye iş verirken kullanılır. 'had reprinted them' ise present perfect sanılarak kurulmuş bir sıra hatasıdır — bu kalıpta nesne fiilden önce gelir.",
+    "tip": "Bir işi başkasına yaptırıyorsan ve nesne bir eşyaysa kalıp şudur: have/get + nesne + V3 (have the car repaired)."
+  },
+  {
+    "id": "gerunds-infinitives-t12",
+    "category": "Causative Verb Patterns: Make / Let / Have / Get",
+    "paragraph": "The boy had been asking since the hay was cut in June. On his tenth birthday his father finally ____ the tractor as far as the gate, walking beside it with one hand on the wheel the whole way.",
+    "options": [
+      "let him drive",
+      "let him to drive",
+      "made him drive",
+      "had him to drive"
+    ],
+    "correctIndex": 0,
+    "explanation": "'let' izin vermektir ve nesneden sonra 'to'suz yalın fiil ister: let him drive. Metin izin olduğunu söylüyor — çocuk haziran ayından beri istiyor ve doğum gününde nihayet oluyor. 'made him drive' biçimce kusursuzdur ama anlamı tersine çevirir: zorlama demektir, oysa isteyen çocuğun kendisidir. 'let him to drive' ve 'had him to drive' ise kalıba olmayan bir 'to' ekler.",
+    "tip": "let ve make'ten sonra 'to' gelmez; ikisini ayıran şey biçim değil bağlamdır: let = izin, make = zorlama."
+  },
+  {
+    "id": "gerunds-infinitives-t13",
+    "category": "Adjective + Infinitive vs Preposition + Gerund",
+    "paragraph": "The flat had been left spotless and the inventory matched, yet the deposit did not come back for eleven weeks. The landlord was ____ over anything at all until the tenant printed the photographs she had taken on the day she moved out.",
+    "options": [
+      "eager to hand",
+      "reluctant of handing",
+      "reluctant to hand",
+      "eager for handing"
+    ],
+    "correctIndex": 2,
+    "explanation": "'reluctant' sıfatı doğrudan 'to + fiil' alır: reluctant to hand over. 'reluctant of handing' sıfattan sonra bir edat gerektiği sanılarak kurulur, oysa bu sıfat edat almaz. 'eager to hand' biçimce doğrudur ama anlamı tersine çevirir: on bir haftalık gecikme ve fotoğraf gösterme zorunluluğu isteksizliği anlatır, hevesi değil.",
+    "tip": "Bir sıfattan sonra doğrudan eylem geliyorsa çoğunlukla 'to + fiil' gelir; araya bir edat girerse (of, for, about, at) fiil mutlaka -ing olur."
+  },
+  {
+    "id": "gerunds-infinitives-t14",
+    "category": "Adjective + Infinitive vs Preposition + Gerund",
+    "paragraph": "Nobody who had heard her stumble through the first rehearsal believed she was ____ the whole part from memory, but on the opening night she did not glance at the score once.",
+    "options": [
+      "capable to sing",
+      "capable of singing",
+      "able of singing",
+      "capable of sing"
+    ],
+    "correctIndex": 1,
+    "explanation": "'capable' her zaman 'of' edatıyla gelir ve edattan sonra fiil -ing olur: capable of singing. 'capable to sing' hatası 'able to do' kalıbından bulaşır; iki sıfat aynı anlama gelse de biçimleri farklıdır, 'able of singing' de aynı karışıklığın ters yönüdür. 'capable of sing' ise edattan sonra yalın fiil kullanır; edattan sonra yalın fiil hiçbir zaman gelmez.",
+    "tip": "Edattan sonra fiil daima -ing biçimindedir: good at swimming, interested in learning, capable of finishing."
+  },
+  {
+    "id": "gerunds-infinitives-t15",
+    "category": "Adjective + Infinitive vs Preposition + Gerund",
+    "paragraph": "She had been away for two academic years, and the messages had thinned to a line at New Year. Walking up from the station with her case, she realised how much she was ____ the same faces round the same table.",
+    "options": [
+      "looking forward to see",
+      "looking forward seeing",
+      "looking forward to seeing",
+      "looking forward for seeing"
+    ],
+    "correctIndex": 2,
+    "explanation": "'look forward to' kalıbındaki 'to' mastar eki değil bir edattır, ve edattan sonra fiil -ing olur: looking forward to seeing. 'looking forward to see' tam bu tuzağa düşer, çünkü öğrenci her 'to'yu mastar sanar. 'looking forward seeing' edatı büsbütün düşürür; 'looking forward for seeing' ise kalıbın sabit edatını değiştirir.",
+    "tip": "'look forward to, object to, be used to, get used to' kalıplarındaki 'to' bir edattır ve kendinden sonra -ing ister."
+  },
+  {
+    "id": "gerunds-infinitives-t16",
+    "category": "Adjective + Infinitive vs Preposition + Gerund",
+    "paragraph": "The report ran to ninety pages, and the one sentence everybody quoted was in a footnote: the survey had been paid for by the developer. Within an hour of publication the committee was ____ this out, and by the evening the chairman had lost the vote.",
+    "options": [
+      "slow to point",
+      "quick at pointing",
+      "quick to point",
+      "slow at pointing"
+    ],
+    "correctIndex": 2,
+    "explanation": "'quick', 'slow', 'ready', 'keen' gibi sıfatlar edat almaz, doğrudan 'to + fiil' alır: quick to point out. 'quick at pointing' hatası 'good at' kalıbından bulaşır. 'slow to point' biçimce doğrudur ama anlamı tutmaz: metin tepkinin yayından bir saat sonra geldiğini ve akşama başkanın oyu kaybettiğini söylüyor, yani komite hiç gecikmemiş.",
+    "tip": "'be quick/slow to do something' kalıbında hız bildiren sıfatlar edat değil doğrudan 'to + fiil' alır."
+  },
+  {
+    "id": "gerunds-infinitives-t17",
+    "category": "Infinitive of Purpose vs For + Gerund",
+    "paragraph": "The queue outside the passport office at six in the morning was not for stamps or forms; those people had come ____ their names on a list that would close at nine, and half of them would still be turned away.",
+    "options": [
+      "for putting",
+      "to put",
+      "for to put",
+      "to putting"
+    ],
+    "correctIndex": 1,
+    "explanation": "Bir eylemin amacı İngilizcede 'to + fiil' ile anlatılır: had come to put their names on a list. 'for putting' Türkçedeki 'için' edatının doğrudan aktarılmasıdır ve amaç cümlesinde kullanılmaz. Cümlenin başındaki 'not for stamps or forms' farkı gösteriyor: 'for' bir ismin önüne gelebilir, bir fiilin önüne gelemez. 'for to put' ise iki işareti birden koyar.",
+    "tip": "Amaç bildirirken 'for + fiil' asla kullanılmaz: 'to + fiil' ya da 'in order to + fiil' denir; 'for' yalnızca isimle gelir."
+  },
+  {
+    "id": "gerunds-infinitives-t18",
+    "category": "Infinitive of Purpose vs For + Gerund",
+    "paragraph": "The café had been putting two extra tables on the pavement every lunchtime since the spring. In June the council fined it ____ the footway without a licence, and by July the tables were back inside.",
+    "options": [
+      "to block",
+      "for blocking",
+      "in order to block",
+      "for to block"
+    ],
+    "correctIndex": 1,
+    "explanation": "Buradaki 'for' cezanın gerekçesini bağlayan edattır (fine somebody for doing something) ve edattan sonra fiil -ing olur: fined it for blocking. 'to block' cümleyi bir amaç cümlesine çevirir ve saçmalar: belediye kaldırımın kapanmasını isteyerek ceza kesmiş olurdu. 'in order to block' aynı yanlış okumanın açık hâlidir, 'for to block' ise 'için' kalıbının birebir çevirisidir.",
+    "tip": "'fine, thank, blame, apologise' gibi fiiller gerekçeyi 'for + -ing' ile alır; bu bir amaç yapısı değildir."
+  },
+  {
+    "id": "gerunds-infinitives-t19",
+    "category": "Infinitive of Purpose vs For + Gerund",
+    "paragraph": "He had walked the two miles to the record shop for a single album, and then stayed until closing ____ every sleeve in the jazz rack, though he did not buy anything else.",
+    "options": [
+      "to read",
+      "for reading",
+      "to reading",
+      "for to read"
+    ],
+    "correctIndex": 0,
+    "explanation": "Kalmasının amacı anlatılıyor, bu yüzden 'to + fiil' gerekir: stayed until closing to read every sleeve. Cümlenin başındaki 'for a single album' doğru bir kullanımdır, çünkü 'for' bir ismin önündedir; fiilin önüne geçemez, dolayısıyla 'for reading' tam olarak bu ayrımı kaçırır. 'to reading' ise 'look forward to' gibi kalıpları yeni öğrenmiş öğrencinin aşırı düzeltmesidir.",
+    "tip": "'for + isim' amaç için doğrudur (come for the conference); ama fiil geldiğinde 'to + fiil' kullanılır."
+  },
+  {
+    "id": "gerunds-infinitives-t20",
+    "category": "Infinitive of Purpose vs For + Gerund",
+    "paragraph": "The cricket club's fence came down in the storm, but it was the contractor's lorry, reversing at speed, that finished it off. The committee wanted a written apology ____ it, as well as a share of the cost of the new posts.",
+    "options": [
+      "for to flatten",
+      "to flatten",
+      "for flattening",
+      "for flatten"
+    ],
+    "correctIndex": 2,
+    "explanation": "'apology' ismi gerekçesini 'for' edatıyla alır (an apology for doing something) ve edattan sonra fiil -ing olur: an apology for flattening it. 'to flatten' burada kurulamaz, çünkü özür bir amaç taşımaz, bir gerekçe taşır. 'for to flatten' Türkçedeki 'için' kalıbının aktarımıdır; 'for flatten' ise edattan sonra yalın fiil kullanır ki bu hiçbir zaman olmaz.",
+    "tip": "Bazı isimler de gerekçelerini edatla alır: an apology for, a reason for, a talent for — hepsinden sonra -ing gelir."
+  },
+  {
+    "id": "gerunds-infinitives-t21",
+    "category": "Used To vs Be Used To vs Get Used To",
+    "paragraph": "My mother still gives directions by the old landmarks. There ____ a cinema on the corner where the bank is now, and a coal merchant behind it, and she has never quite accepted that they are gone.",
+    "options": [
+      "was used to being",
+      "used to be",
+      "got used to being",
+      "is used to being"
+    ],
+    "correctIndex": 1,
+    "explanation": "'used to + yalın fiil' artık sürmeyen geçmiş bir durumu anlatır: There used to be a cinema. Metin de bunu söylüyor — şimdi orada banka var. 'was used to being' ise 'alışkın olmak' demektir ve burada imkânsızdır: 'there' yapısının alışkın olabileceği bir öznesi yoktur. 'got used to being' de aynı nedenle kurulamaz; o bir alışma sürecini anlatır.",
+    "tip": "'used to + yalın fiil' artık olmayan geçmiş bir alışkanlık ya da durumdur; 'be used to + -ing' ise şimdi alışkın olmaktır."
+  },
+  {
+    "id": "gerunds-infinitives-t22",
+    "category": "Used To vs Be Used To vs Get Used To",
+    "paragraph": "Eleven years of night shifts have rearranged her week completely. She ____ at four in the afternoon with the curtains open and the traffic going past, and a quiet room would probably keep her awake.",
+    "options": [
+      "is used to sleep",
+      "used to sleep",
+      "is used to sleeping",
+      "gets used to sleeping"
+    ],
+    "correctIndex": 2,
+    "explanation": "'be used to' alışkın olmayı anlatır ve buradaki 'to' bir edattır, bu yüzden fiil -ing olur: is used to sleeping. 'is used to sleep' bu seviyedeki en sık hatadır ve 'to'yu mastar eki sanmaktan doğar. 'used to sleep' ise alışkanlığın bittiğini söylerdi; oysa paragraf şimdiki zamanda ve 'a quiet room would probably keep her awake' diyerek durumun sürdüğünü gösteriyor.",
+    "tip": "'be used to' kalıbındaki 'to' edattır: be used to + -ing ya da isim (be used to the noise)."
+  },
+  {
+    "id": "gerunds-infinitives-t23",
+    "category": "Used To vs Be Used To vs Get Used To",
+    "paragraph": "The first month in the flat above the bus station was miserable, and she lay awake counting the minutes between departures. Little by little, though, she ____ them, and now she notices the buses only when the timetable changes.",
+    "options": [
+      "got used to hear",
+      "was used to hearing",
+      "got used to hearing",
+      "used to hear"
+    ],
+    "correctIndex": 2,
+    "explanation": "'get used to' alışma sürecini anlatır ve 'Little by little' tam olarak bir süreç ifadesidir; edattan sonra fiil -ing olur: got used to hearing. 'was used to hearing' ise zaten alışkın olmayı, yani bir durumu anlatır ve 'little by little' ile birlikte kurulamaz. 'got used to hear' 'to'yu mastar sanan yaygın hatadır; 'used to hear' ise artık duymadığını söylerdi.",
+    "tip": "'be used to' bir durumdur, 'get used to' bir süreçtir: gradually, little by little, after a while gibi ifadeler 'get' ister."
+  },
+  {
+    "id": "gerunds-infinitives-t24",
+    "category": "Used To vs Be Used To vs Get Used To",
+    "paragraph": "Until the locks were changed in the nineties, the same brass key ____ the cabinet at the back of the chemist's every morning by whichever assistant opened up. Nobody has seen it since the shop was sold.",
+    "options": [
+      "was used to opening",
+      "used to open",
+      "was used to open",
+      "got used to opening"
+    ],
+    "correctIndex": 2,
+    "explanation": "Burada 'be used to' alışkanlık kalıbı değil, 'use' fiilinin edilgen hâlidir: anahtar dolabı açmak için kullanılıyordu. Cümledeki 'by whichever assistant opened up' bunu kanıtlar, çünkü faili olan yapı edilgen yapıdır. 'was used to opening' alışkın olmak demektir, oysa bir anahtar bir şeye alışamaz. 'used to open' ise fail bildiren 'by' öbeğiyle birlikte kurulamaz.",
+    "tip": "'be used to + -ing' alışkın olmaktır; 'be used to + yalın fiil' ise 'use' fiilinin edilgenidir, yani bir şey için kullanılmak. Cümlede 'by ...' varsa ikincisidir."
+  }
+]
