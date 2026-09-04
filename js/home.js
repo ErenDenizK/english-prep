@@ -202,7 +202,16 @@ function renderWeakSpots(entries) {
   // has got most wrong; on four questions it does not know that they
   // *cannot do* them, and the heading should not claim otherwise. The
   // hint says which of the two this is.
-  const confident = entries.some((entry) => entry.confident);
+  //
+  // `every`, not `some`: the hint describes the whole list, so one
+  // category with enough evidence must not drop the hedge from four rows
+  // that are still guesses. And today it never can — every category in
+  // the app has four or five questions against a six-item threshold, so
+  // this branch is unreachable by construction. That is the honest
+  // outcome rather than a bug, but it is worth knowing it is the content
+  // that decides it: a category would have to grow past six items before
+  // this app could ever say a learner *cannot* do something.
+  const confident = entries.every((entry) => entry.confident);
   section.appendChild(
     sectionHeading(
       "En çok zorlandıkların",
