@@ -738,8 +738,10 @@ hours including a test and a sweep assertion.
 | 7 | **Remember the mixed-test count** | 2.7 | 30m | Ten taps saved, but it needs a non-boolean setting; do it last or not at all |
 | 8 | **A test action on the topic overview** | 2.8 | 1h | Closes the one launcher that is reachable from one tab and not the other |
 
-**Shipped in v0.27 (2026-09-04): items 1–4**, with three sweep sections
-covering them. Item 5 is next; 6–8 stand as written.
+**Shipped in v0.27 (2026-09-04): items 1–5.** Items 1–4 came with three
+sweep sections; item 5 came with a derived count (`clozeCoverage`), a
+validator check behind it, and a dated note on each document that argued
+from the 7. Items 6–8 stand as written.
 
 **Stop after 4.** Items 1–4 are **three hours**, they are the whole of the
 day-2-through-day-5 payoff, and each one is a change to a screen that

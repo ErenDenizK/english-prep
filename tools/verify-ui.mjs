@@ -1559,6 +1559,35 @@ async function runHonestNumbers(browser) {
     "dolu düğme daha iyi olan moda ait"
   );
 
+  // 5 — the coverage paragraph, which is the one line on the honesty
+  // layer that another person plans a week around. It used to name two
+  // section point totals and nothing else, which reads as 30 of Session
+  // I's 60; the app practises parts of both sections, and the count of
+  // the parts is derived from the manifest rather than written down.
+  await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await page.locator("#profile-trigger").click();
+  await page.waitForSelector("#profile-container .surface");
+  const profile = await page.locator("#profile-container").innerText();
+  const expected = await page.evaluate(async () => {
+    const { clozeCoverage } = await import("./js/topics.js");
+    const manifest = await (await fetch("data/manifest.json")).json();
+    return clozeCoverage(manifest.topics);
+  });
+  ok(
+    profile.includes(`${expected.total} boşluktan ${expected.covered} tanesinin dersi burada var`),
+    `kapsanan boşluk sayısı manifestten türetiliyor (${expected.covered}/${expected.total})`
+  );
+  ok(
+    expected.missing.every((label) => profile.includes(label)),
+    `eksik boşluk türleri adıyla söyleniyor (${expected.missing.join(", ")})`
+  );
+  ok(
+    !/dilbilgisi ve kelime boşlukları \(15 puan\) ve anlamca en yakın cümle \(15 puan\)$/m.test(
+      profile
+    ),
+    "iki bölüm puanı tek başına bir kapsama iddiası olarak durmuyor"
+  );
+
   await context.close();
 }
 

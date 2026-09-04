@@ -136,18 +136,42 @@ arithmetic rather than evidence and should not be built on.
 Counting only what is *directly* targeted — grammar knowledge helps
 everywhere, and that is not what this table measures:
 
-| Section | Points | Covered |
-| --- | --- | --- |
-| Cloze | 15 | ~3.75 (2 modal blanks, one causative) |
-| Closest meaning | 15 | ~3 (modal perfects, passive reporting) |
-| Reading | 21 | 0 |
-| Paragraph completion | 9 | 0 |
-| Listening | 20 | 0 |
-| Writing | ~20 | 0 |
-| **Total** | **~100** | **~7** |
+| Section | Points | At three topics | Now (8 topics) |
+| --- | --- | --- | --- |
+| Cloze | 15 | ~3.75 (2 modal blanks, one causative) | **~10** — 7 of the 10 blanks have a lesson |
+| Closest meaning | 15 | ~3 (modal perfects, passive reporting) | **~12** — very nearly the sample's own list |
+| Reading | 21 | 0 | 0 |
+| Paragraph completion | 9 | 0 | 0 |
+| Listening | 20 | 0 | 0 |
+| Writing | ~20 | 0 | 0 |
+| **Total** | **~100** | **~7** | **~22** |
 
-The research arm estimated 12–19%; the real paper puts it lower, because
-the cloze section turned out to test grammar the app does not teach.
+The `~7` column is the number this document shipped with, and it was
+right when it was written: three topics, none of which the sample cloze
+tests. Five more shipped on 2026-09-04 and it stopped being right without
+anything being said, which is how a coverage claim usually goes wrong.
+
+**The `Now` column is arithmetic over this document and the manifest, not
+a second reading of the paper.** Blank by blank, from the §Cloze table
+above: discourse markers (`connectors`), two modal blanks (`modals`), the
+causative (`gerunds-infinitives`), comparatives (`closest-meaning`),
+relative pronouns (`relative-clauses`) and quantifiers (`quantifiers`)
+all have a lesson — seven blanks, ~10.5 points. The three left are the
+two vocabulary items and `so / such`, and none of them is close to
+shipping. For closest meaning, the sample turns on future perfect, third
+conditional, passive reporting, modal perfects, `unless`, correlative
+comparatives, `as … as`, `enough to` and concession; every one of those
+now has a lesson, so the honest figure is "most of 15" and ~12 is the
+conservative end of it.
+
+`js/topics.js` holds the blank-by-blank map (`CLOZE_BLANKS`) so that
+Profil can *derive* the covered count rather than repeat a number, and
+`npm run validate` fails if one of those topic ids stops matching the
+manifest. The point totals per section are still written down, because
+those change only when the paper does.
+
+The research arm estimated 12–19% before any paper was available. The
+first reading of the real paper put it lower; eight topics put it above.
 
 ## What this changes
 
