@@ -476,7 +476,7 @@ async function runMistakeBook(browser) {
 
   const panel = await page.locator("#test-panel").textContent();
   ok(panel.includes("Yanlış defteri"), "yanlıştan sonra defter kartı çıkıyor");
-  ok(/1 soru burada bekliyor/.test(panel), "defter yalnızca yanlış olanı sayıyor");
+  ok(/Yanlış yaptığın 1 soru burada/.test(panel), "defter yalnızca yanlış olanı sayıyor");
   await auditLayout(page, "yanlış defteri", 390);
 
   await page.locator("button", { hasText: "Yanlışları çalış" }).click();
@@ -507,7 +507,7 @@ async function runMistakeBook(browser) {
   await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
   await page.waitForSelector("#test-panel");
   ok(
-    /1 soru burada bekliyor/.test(await page.locator("#test-panel").textContent()),
+    /Yanlış yaptığın 1 soru burada/.test(await page.locator("#test-panel").textContent()),
     "tek doğru cevap soruyu defterden düşürmüyor"
   );
 
@@ -724,6 +724,32 @@ async function runAccessibility(page) {
   ok(await page.title() === "Test — English Prep", "yönlendirme document.title'ı güncelliyor");
   ok(await page.evaluate(() => document.activeElement.id) === "view-test", "odak yeni görünüme taşınıyor");
   ok((await page.locator("#live-region").textContent()) === "Test", "görünüm adı duyuruluyor");
+
+  // ...and paints nothing when it gets there. The view is the whole
+  // screen, so a focus ring on it is a box around 1,400px of content
+  // drawn over whatever sits at its edges — which is what a learner
+  // reported as "menüye tıklayınca büyük sarı kutu". :focus-visible was
+  // supposed to prevent it: its heuristic is per-engine and WebKit
+  // matches it on a programmatically focused tabindex="-1" element, so
+  // this never reproduced in Chromium and the CSS is asserted directly.
+  ok(
+    await page.evaluate(() => {
+      const view = document.querySelector(".view:not([hidden])");
+      view.focus();
+      return getComputedStyle(view).outlineStyle === "none";
+    }),
+    "görünüm kabı odaklandığında çerçeve çizmiyor"
+  );
+  // And the suppression is scoped: a control a keyboard reached still
+  // shows its ring, which is the half 2.4.7 is actually about.
+  await page.keyboard.press("Tab");
+  ok(
+    await page.evaluate(() => {
+      const active = document.activeElement;
+      return active.matches(":focus-visible") && getComputedStyle(active).outlineStyle === "solid";
+    }),
+    "klavyeyle ulaşılan denetim odak halkasını koruyor"
+  );
 
   // §8.2 — a select-only combobox, with focus staying on the trigger.
   await page.locator(".listbox__trigger").focus();

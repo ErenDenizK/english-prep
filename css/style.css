@@ -1028,6 +1028,26 @@
     outline-offset: 2px;
   }
 
+  /* Except on a container that is focused only to move the reading
+     position. Changing tab focuses the whole <section class="view">
+     (js/home.js) so the next Tab resumes on the new screen instead of
+     wherever the old one left off — right and required by 2.4.3. But the
+     section is the entire screen, so a ring on it is a two-pixel box
+     around 1,400px of content, drawn over whatever sits at its edges.
+
+     `:focus-visible` is supposed to prevent that and does not: its
+     heuristic is per-browser, and WebKit matches it on a programmatically
+     focused tabindex="-1" element, which is why this showed up on a phone
+     and never in the harness.
+
+     Suppressing it costs nothing under 2.4.7, which is about controls a
+     keyboard can reach. tabindex="-1" means this one cannot be tabbed to
+     — it is a destination, not a stop. */
+  .view:focus,
+  .view:focus-visible {
+    outline: none;
+  }
+
   .stack {
     display: grid;
     gap: var(--s-5);

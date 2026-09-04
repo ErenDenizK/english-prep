@@ -259,19 +259,34 @@ export function getCategoryTotals() {
 }
 
 /**
- * Returns the most recent attempt's score for a single topic, if any.
+ * How the learner is doing in one topic, across everything they have ever
+ * answered in it.
+ *
+ * This used to return the most recent attempt's slice of the topic, which
+ * is a different and much worse number. A ten-question mixed test touches
+ * three topics, so it leaves every topic row reading `0/3` — directly
+ * beside the row's own subtitle saying the topic has 24 questions. Two
+ * fractions on one line, and the wrong one is the bigger type.
+ *
+ * Accumulated and returned as a ratio rather than a fraction, so the
+ * caller has nothing to render that could be read as a question count.
+ * `answered` is there for the threshold, not for display.
+ *
  * @param {string} topicId
- * @returns {{correct: number, total: number} | null}
+ * @returns {{correct: number, answered: number, accuracy: number} | null}
+ *   null when the learner has not answered enough in this topic for the
+ *   number to mean anything.
  */
-export function getLastTopicScore(topicId) {
-  const attempts = getHistory();
-  for (let i = attempts.length - 1; i >= 0; i -= 1) {
-    const breakdown = attempts[i].topicBreakdown[topicId];
-    if (breakdown) {
-      return breakdown;
-    }
+export function getTopicAccuracy(topicId) {
+  const totals = sumBreakdowns(getHistory(), "topicBreakdown")[topicId];
+  if (!totals || totals.total < MIN_ITEMS_FOR_WEAK_ENTRY) {
+    return null;
   }
-  return null;
+  return {
+    correct: totals.correct,
+    answered: totals.total,
+    accuracy: totals.correct / totals.total,
+  };
 }
 
 /**

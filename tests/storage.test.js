@@ -23,8 +23,8 @@ function installLocalStorage() {
 const entries = installLocalStorage();
 const storage = await import("../js/storage.js");
 
-function attempt({ topics = {}, categories = {}, questions = [], date = "2026-01-01T00:00:00.000Z" }) {
-  return { date, mode: "mixed", topicBreakdown: topics, categoryBreakdown: categories, questions };
+function attempt({ topics = {}, categories = {}, questions = [], date = "2026-01-01T00:00:00.000Z", mode = "mixed" }) {
+  return { date, mode, topicBreakdown: topics, categoryBreakdown: categories, questions };
 }
 
 const answers = (correct, wrong) => [
@@ -39,7 +39,7 @@ test("an empty store reports empty stats rather than throwing", () => {
   assert.deepEqual(storage.getTopicTotals(), {});
   assert.deepEqual(storage.getCategoryTotals(), {});
   assert.deepEqual(storage.getWeakTopics(), []);
-  assert.equal(storage.getLastTopicScore("tenses"), null);
+  assert.equal(storage.getTopicAccuracy("tenses"), null);
   assert.deepEqual(storage.getOverallStats(), {
     testsCompleted: 0,
     totalQuestions: 0,
@@ -82,14 +82,40 @@ test("attempts recorded before category history existed are skipped, not fatal",
   assert.deepEqual(storage.getTopicTotals(), { tenses: { correct: 1, total: 2 } });
 });
 
-test("getLastTopicScore returns the most recent attempt that covers the topic", () => {
+test("topic accuracy accumulates every attempt, not just the last one", () => {
   storage.recordAttempt(attempt({ topics: { tenses: { correct: 1, total: 5 } } }));
   storage.recordAttempt(attempt({ topics: { tenses: { correct: 4, total: 5 } } }));
-  storage.recordAttempt(attempt({ topics: { modals: { correct: 2, total: 2 } } }));
 
-  assert.deepEqual(storage.getLastTopicScore("tenses"), { correct: 4, total: 5 });
-  assert.deepEqual(storage.getLastTopicScore("modals"), { correct: 2, total: 2 });
-  assert.equal(storage.getLastTopicScore("articles"), null);
+  assert.deepEqual(storage.getTopicAccuracy("tenses"), { correct: 5, answered: 10, accuracy: 0.5 });
+  assert.equal(storage.getTopicAccuracy("articles"), null);
+});
+
+/* A ten-question mixed test touches three topics, so the old
+ * last-attempt-wins reading left a 24-question topic showing "0/3" beside
+ * its own subtitle saying it has 24 questions. The fraction is gone from
+ * the screen, and the number behind it is no longer the last slice. */
+test("a mixed test's slice of a topic does not become that topic's score", () => {
+  storage.recordAttempt(attempt({ topics: { "passive-voice": { correct: 8, total: 10 } } }));
+  storage.recordAttempt(
+    attempt({
+      mode: "mixed",
+      topics: { tenses: { correct: 2, total: 4 }, "passive-voice": { correct: 0, total: 3 } },
+    })
+  );
+
+  const passive = storage.getTopicAccuracy("passive-voice");
+  assert.equal(passive.answered, 13);
+  assert.equal(passive.correct, 8);
+});
+
+/* Below the threshold the app says nothing rather than reporting a
+ * percentage computed from two answers. */
+test("a topic answered fewer than three times reports no accuracy at all", () => {
+  storage.recordAttempt(attempt({ mode: "mixed", topics: { modals: { correct: 0, total: 2 } } }));
+  assert.equal(storage.getTopicAccuracy("modals"), null);
+
+  storage.recordAttempt(attempt({ mode: "mixed", topics: { modals: { correct: 1, total: 1 } } }));
+  assert.deepEqual(storage.getTopicAccuracy("modals"), { correct: 1, answered: 3, accuracy: 1 / 3 });
 });
 
 /** One answered question, as an attempt records it. */
