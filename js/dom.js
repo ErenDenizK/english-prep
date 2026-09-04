@@ -88,3 +88,24 @@ export function appendBlanked(parent, text) {
     }
   });
 }
+
+/**
+ * A section's label, with an optional line under it saying what the
+ * section is for.
+ *
+ * Shared because two screens grew the same shape independently: the Test
+ * tab's weak-spot list and the Eğitim index's topic list both need a
+ * label that can carry a hedge or an explanation without becoming a
+ * heading level of its own.
+ *
+ * @param {string} text
+ * @param {string} [hint]
+ */
+export function sectionHeading(text, hint) {
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("h2", "t-label", text));
+  if (hint) {
+    head.appendChild(el("p", "t-meta", hint));
+  }
+  return head;
+}

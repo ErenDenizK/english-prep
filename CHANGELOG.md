@@ -5,6 +5,66 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.22 — 2026-09-04
+
+**The Eğitim index is eight topic rows instead of forty-eight lesson
+rows. 5,332px → 1,116px, 8.3 screens → 1.7.**
+
+A learner reported that the topics pile up. He was right, and the number
+is worse than it sounds: the index was two and a half times the
+next-longest screen and grew with the content — 60 rows once the
+vocabulary topics ship. The flat list was a deliberate decision, recorded
+in `docs/education-notes.md` as the index "going flat" rather than
+gaining a topic level, and it outgrew itself.
+
+The destination already existed. `#egitim/konu/<topicId>` renders a
+topic's orientation *and* its six lesson rows, so the lessons simply live
+one level down, on the screen that already explained them. No schema
+change, no storage change, no new primitive, and the card and all six
+index states are untouched.
+
+**768 of those pixels were mine, and the reason is worth writing down.**
+v0.21 put a one-line gloss and a "Bu konu nedir?" button under each topic
+heading. I chose the quiet button over a `Genel bakış` row *because* a row
+would have cost 520–650px. Measured: gloss 32px + button 48px + two 8px
+gaps = 96px × 8 topics = **exactly 768px**. The cheaper option was the
+more expensive one, and I shipped it without measuring.
+
+**So the sweep now measures height.** It audited horizontal overflow on
+every screen and passed 1,051 checks while the index grew by 768px, which
+is how the pile-up came to be found by a friend using the app instead of
+by the build. Budgets are opt-in per screen: three screens for a list a
+learner scans on the way somewhere, four for the topic screen, none for a
+lesson or the results review, which are long because the learner chose to
+read them. The first version of that check applied one budget everywhere
+and immediately fired on all three — a check that fires on correct
+content is one nobody finishes reading.
+
+**What this costs, and what pays it back.** The learner who knew exactly
+which lesson he wanted went from one tap to three. So the index has a
+filter: two letters put the lesson rows back and the topic level
+disappears. Turkish folding is not `toLowerCase()`, which is wrong here
+and wrong only in Turkish — `I`/`ı` and `İ`/`i` are different pairs — so
+`ilgi` and `İLGİ` find the same two lessons, and `gecmis` finds `geçmiş`
+for a phone keyboard set to English.
+
+**The topic screen now routes.** It ended in lesson rows and offered only
+a way backwards, which routes nobody; it has a primary action opening the
+first lesson of that topic the learner has not finished. Its journey is
+in the sweep: index → topic → lesson.
+
+**The pretest's rationale moved below its question.** Three sentences of
+explanation pushed the first tappable option below the fold at 320, on
+the very first interaction the app asks for, from someone who has not yet
+decided it is worth the trouble.
+
+`npm run audit` is new: it measures each screen against §7 rather than
+reading the stylesheet and guessing. Its own first pass was wrong —
+localStorage survived between screens, so it reported the mistake book on
+a store that had never been used.
+
+107 unit tests, 1159 verification checks.
+
 ## v0.21 — 2026-09-04
 
 **Every topic now says what it is**, before any of its lessons offers to

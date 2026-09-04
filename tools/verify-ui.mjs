@@ -26,6 +26,34 @@ import { lessonId } from "../js/topics.js";
 
 const BASE = process.argv[2] ?? "http://localhost:8000";
 
+/**
+ * Height budgets, in 640px screens at 320, for the screens a learner
+ * LANDS on. Opt-in per call site, and that is the whole design.
+ *
+ * The first version of this check applied one budget everywhere
+ * `auditLayout` runs and immediately fired on the lesson reader, a check
+ * screen and the results review — all of which are long by design: a
+ * lesson is prose the learner chose to open, and the results screen
+ * carries every question again with its explanation. A check that fires
+ * on correct content is one nobody finishes reading, which is the same
+ * argument this repo makes about reviewers, and it would have been the
+ * second time this file learned it.
+ *
+ * So the budget is passed where length is a defect rather than a
+ * property: the index and the topic screen, which are lists.
+ */
+const LANDING_BUDGET_SCREENS = 3;
+
+/**
+ * The topic screen gets its own, larger budget, because it is a different
+ * kind of screen: the index is a list a learner scans on the way
+ * somewhere, and length there is the defect the friend reported. This one
+ * is orientation the learner chose to open, plus that topic's six lesson
+ * rows. Still budgeted, because it is the obvious place for the next
+ * unmeasured 768px to land.
+ */
+const TOPIC_BUDGET_SCREENS = 4;
+
 const VIEWPORTS = [
   { name: "320 (dar telefon)", width: 320, height: 640 },
   { name: "390 (telefon)", width: 390, height: 844 },
@@ -114,7 +142,11 @@ function ok(condition, message) {
  * than inferred from the CSS. Only visible controls count: a control
  * inside a `hidden` view has no box to measure.
  */
-async function auditLayout(page, label, width) {
+/**
+ * @param {{maxScreens?: number}} [options] - assert a height budget. Only
+ *   for screens a learner lands on; see `LANDING_BUDGET_SCREENS`.
+ */
+async function auditLayout(page, label, width, { maxScreens } = {}) {
   const report = await page.evaluate(
     ({ minHit, minAxis }) => {
       const root = document.documentElement;
@@ -136,6 +168,7 @@ async function auditLayout(page, label, width) {
       return {
         overflow: root.scrollWidth > root.clientWidth ? `${root.scrollWidth}px` : null,
         small,
+        height: Math.round(document.getElementById("shell-scroll")?.scrollHeight ?? 0),
       };
     },
     { minHit: MIN_HIT, minAxis: MIN_AXIS }
@@ -143,7 +176,39 @@ async function auditLayout(page, label, width) {
 
   ok(!report.overflow, `${label}: yatay taşma yok${report.overflow ? ` (${report.overflow} > ${width})` : ""}`);
   ok(report.small.length === 0, `${label}: dokunma hedefleri yeterli${report.small.length ? ` — ${report.small.join("; ")}` : ""}`);
+
+  // Vertical length — the axis this sweep never measured. It audited
+  // horizontal overflow on every screen it visited and passed 1,051
+  // checks while the Eğitim index grew by 768px, which is how the pile-up
+  // came to be found by a friend using the app rather than by the build.
+  // The unit is screens, because that is the unit the complaint arrives
+  // in: "it never ends".
+  if (maxScreens && width === 320 && report.height > 0) {
+    const screens = report.height / 640;
+    ok(
+      screens <= maxScreens,
+      `${label}: ${report.height}px = ${screens.toFixed(1)} ekran` +
+        (screens > maxScreens ? ` — bütçe ${maxScreens}` : "")
+    );
+  }
 }
+
+/**
+ * Index → topic → first lesson.
+ *
+ * The Eğitim index lists topics now, not lessons, so "click the first row
+ * and you are in a lesson" stopped being true. Three sections assumed it
+ * and broke at once, which is the argument for a helper: the next change
+ * to the route has one place to land rather than three.
+ */
+async function openFirstLesson(page) {
+  await page.waitForSelector("#index-list .row");
+  await page.locator("#index-list .row").first().click();
+  await page.waitForSelector("#lesson-bar .btn--primary");
+  await page.locator("#lesson-bar .btn--primary").click();
+  await page.waitForSelector("#lesson-reader .reader__top");
+}
+
 
 /** Walks one full learner journey, auditing each screen it lands on. */
 async function runFlow(page, viewport) {
@@ -158,9 +223,20 @@ async function runFlow(page, viewport) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
   await page.waitForSelector(".row");
   ok(await page.title() === "Eğitim — English Prep", "Eğitim varsayılan görünüm");
-  await auditLayout(page, "Eğitim indeksi", viewport.width);
+  await auditLayout(page, "Eğitim indeksi", viewport.width, { maxScreens: LANDING_BUDGET_SCREENS });
 
-  await page.locator(".row").first().click();
+  // The journey now has a topic level: index → topic → lesson. That is
+  // the routing the index change bought — a first row that used to open
+  // a contrast the learner had no name for now opens the screen that
+  // gives them the name, and hands them on.
+  await page.locator("#index-list .row").first().click();
+  await page.waitForSelector("#lesson-reader h1");
+  ok(/#egitim\/konu\//.test(page.url()), "konu satırı konu ekranını açıyor");
+  const introBar = page.locator("#lesson-bar .btn--primary");
+  ok(await introBar.count() === 1, "konu ekranı ileri götüren bir eylem sunuyor");
+  await auditLayout(page, "konu ekranı", viewport.width, { maxScreens: TOPIC_BUDGET_SCREENS });
+  await introBar.click();
+
   await page.waitForSelector("#lesson-reader .reader__top");
   ok(await page.locator("#shell-header").isHidden(), "okuyucuda başlık gizli (odaklı mod)");
   ok(await page.locator("#bottom-nav").isHidden(), "okuyucuda alt navigasyon gizli");
@@ -351,15 +427,30 @@ async function runEveryLesson(page) {
   });
   page.on("pageerror", (error) => errors.push(String(error)));
 
-  await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
-  await page.waitForSelector(".row");
-  const lessons = await page.locator("#lesson-index .row").count();
-  ok(lessons > 0, `${lessons} ders bulundu`);
+  // Driven from the ids rather than by clicking rows. The index lists
+  // topics now, so "the nth row is the nth lesson" is no longer true —
+  // and addressing each lesson by its own URL is what this section was
+  // always really doing.
+  const manifest = JSON.parse(await readFile(new URL("../data/manifest.json", import.meta.url), "utf8"));
+  const lessonIds = manifest.topics
+    .filter((topic) => !topic.comingSoon)
+    .flatMap((topic) => (topic.lessons ?? []).map((lesson) => lessonId(topic.id, lesson.category)));
+  ok(lessonIds.length > 0, `${lessonIds.length} ders bulundu`);
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
 
-  for (let index = 0; index < lessons; index += 1) {
-    await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
-    await page.waitForSelector(".row");
-    await page.locator("#lesson-index .row").nth(index).click();
+  for (const id of lessonIds) {
+    // Set the hash rather than goto-then-reload. The app routes on
+    // hashchange, so a reload is unnecessary — and it aborted the topic
+    // file the previous navigation had already started fetching, which
+    // reached the console as "TypeError: Failed to fetch" and looked
+    // exactly like an app defect.
+    await page.evaluate((hash) => {
+      window.location.hash = hash;
+    }, `egitim/${id}`);
+    await page.waitForFunction(
+      (wanted) => decodeURIComponent(window.location.hash) === `#${wanted}`,
+      `egitim/${id}`
+    );
     await page.waitForSelector("#lesson-reader .reader__top");
 
     const title = (await page.locator("#lesson-reader h1").textContent())?.trim() ?? `#${index}`;
@@ -661,7 +752,7 @@ async function runBackupRoundTrip(browser) {
 
   // Read a lesson to the end and sit one whole test, so there is real
   // progress of both kinds to carry.
-  await first.locator(".row").first().click();
+  await openFirstLesson(first);
   await first.waitForSelector("#lesson-reader .reader__top");
   await first.evaluate(() => {
     const region = document.getElementById("shell-scroll");
@@ -770,8 +861,7 @@ async function runPretest(browser) {
   const page = await context.newPage();
 
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-  await page.waitForSelector(".row");
-  await page.locator(".row").first().click();
+  await openFirstLesson(page);
   await page.waitForSelector(".shell__scroll .option");
 
   const body = await page.locator(".shell__scroll").innerText();
@@ -816,7 +906,7 @@ async function runPretest(browser) {
       const trial = await fresh.newPage();
       await trial.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
       await trial.waitForSelector(".row");
-      await trial.locator(".row").first().click();
+      await openFirstLesson(trial);
       await trial.waitForSelector(".shell__scroll .option");
       const stems = await trial
         .locator(".shell__scroll .t-lead, .shell__scroll .prose")
@@ -863,6 +953,54 @@ async function runIndexStates(browser) {
   // 1 — never opened. No tour, and no progress bar reading zero.
   let view = await open(null);
   ok(view.text.includes("English Prep"), "ilk açılışta uygulamanın ne olduğu yazıyor");
+
+  // The index is eight topic rows, not forty-eight lesson rows. It was
+  // 5,332px — 8.3 screens — and a learner reported it as the topics
+  // piling up; the lessons now live one level down, on the screen that
+  // already explained them.
+  const topicRows = await view.page.locator("#index-list .row").count();
+  const liveTopics = await view.page.evaluate(async () => {
+    const manifest = await (await fetch("data/manifest.json")).json();
+    return manifest.topics.filter((topic) => !topic.comingSoon).length;
+  });
+  ok(topicRows === liveTopics, `indeks konu satırı gösteriyor (${topicRows}/${liveTopics})`);
+  ok(
+    await view.page.locator("#index-list .row").first().locator(".row__sub").count() === 1,
+    "her konu satırı ne olduğunu tek satırda söylüyor"
+  );
+
+  // And what pays back the tap that costs: the learner who knew which
+  // lesson he wanted goes from one tap to three without this.
+  const filter = view.page.locator("#index-filter");
+  ok(await filter.count() === 1, "ders filtresi indekste");
+  await filter.fill("ilgi");
+  await view.page.waitForTimeout(120);
+  const lower = await view.page.locator("#index-list .row").count();
+  await filter.fill("İLGİ");
+  await view.page.waitForTimeout(120);
+  const upper = await view.page.locator("#index-list .row").count();
+  // toLowerCase() is wrong here and wrong only in Turkish: I/ı and İ/i
+  // are different pairs, so a learner typing "ilgi" would not match
+  // "İlgi" under the default mapping.
+  ok(lower > 0 && lower === upper, `Türkçe büyük/küçük harf doğru katlanıyor (${lower}/${upper})`);
+  await filter.fill("gecmis");
+  await view.page.waitForTimeout(120);
+  ok(
+    (await view.page.locator("#index-list .row").count()) > 0,
+    "diyakritiksiz yazım da eşleşiyor (gecmis → geçmiş)"
+  );
+  await filter.fill("zzzz");
+  await view.page.waitForTimeout(120);
+  ok(
+    (await view.page.locator("#index-list").innerText()).includes("Eşleşen ders yok"),
+    "sonuç yoksa öyle söyleniyor"
+  );
+  await filter.fill("");
+  await view.page.waitForTimeout(120);
+  ok(
+    (await view.page.locator("#index-list .row").count()) === liveTopics,
+    "filtre temizlenince konu listesi geri geliyor"
+  );
   // Every lesson in this app is a contrast, so the index used to offer
   // "Relative Clauses" and then, one line down, "Who vs Whom vs Whose",
   // with nothing anywhere saying what a relative clause is. One Turkish
@@ -883,7 +1021,7 @@ async function runIndexStates(browser) {
   ok(view.text.includes("bu telefonda kalıyor"), "veri nerede duruyor, ilk ekranda söyleniyor");
   ok(view.text.includes("İlk dersi aç"), "tek bir açık ilk eylem var");
   ok(!view.text.includes("İlerlemen"), "sıfırı gösteren ilerleme çubuğu karşılama kartıyla birlikte çıkmıyor");
-  await auditLayout(view.page, "ilk açılış", 320);
+  await auditLayout(view.page, "ilk açılış", 320, { maxScreens: LANDING_BUDGET_SCREENS });
   await view.page.locator("button", { hasText: "İlk dersi aç" }).click();
   await view.page.waitForSelector(".shell__scroll .option, .shell__scroll .prose");
   ok(true, "ilk dersi aç bir derse giriyor");
@@ -937,7 +1075,7 @@ async function runIndexStates(browser) {
     !/\b\d+\s*gün\b|uzun zaman|bir süredir|geri döndün/i.test(card),
     "kaç gün geçtiği söylenmiyor, suçlayan bir söz yok"
   );
-  await auditLayout(view.page, "aradan sonra dönüş", 320);
+  await auditLayout(view.page, "aradan sonra dönüş", 320, { maxScreens: LANDING_BUDGET_SCREENS });
   await view.context.close();
 
   // 4 — back after a gap, having finished everything they started. There
@@ -957,7 +1095,7 @@ async function runIndexStates(browser) {
   ok(view.text.includes("Sıradaki derse geç"), "yarım ders yokken ileri giden bir yol var");
   ok(!view.text.includes("Kaldığın yer"), "olmayan bir kaldığın yer iddia edilmiyor");
   ok(/dersten \d+ tanesi tamamlandı/.test(view.text), "ilerleme kartın içinde, bir gerçek olarak duruyor");
-  await auditLayout(view.page, "dönüş, yarım ders yok", 320);
+  await auditLayout(view.page, "dönüş, yarım ders yok", 320, { maxScreens: LANDING_BUDGET_SCREENS });
   await view.context.close();
 
   // 5 — test history, no lesson finished, same day. This used to be a bar
@@ -985,10 +1123,10 @@ async function runIndexStates(browser) {
   );
   // A recommendation is not a gate: every lesson row stays open.
   ok(
-    (await view.page.locator("#view-egitim .row").count()) > 5,
-    "öneri kartı ders listesini kilitlemiyor"
+    (await view.page.locator("#index-list .row").count()) > 1,
+    "öneri kartı konu listesini kilitlemiyor"
   );
-  await auditLayout(view.page, "sıradaki adım", 320);
+  await auditLayout(view.page, "sıradaki adım", 320, { maxScreens: LANDING_BUDGET_SCREENS });
   await view.context.close();
 
   // 6 — everything read and every question met. The one screen that used
@@ -1048,7 +1186,7 @@ async function runIndexStates(browser) {
     !/anlamca en yakın cümle/.test(doneCard),
     "kapsanan bölüm eksik diye sayılmıyor (manifestten okunuyor)"
   );
-  await auditLayout(view.page, "hepsi bitti", 320);
+  await auditLayout(view.page, "hepsi bitti", 320, { maxScreens: LANDING_BUDGET_SCREENS });
   await view.context.close();
 }
 
@@ -1243,7 +1381,7 @@ async function runTopicIntro(browser) {
 
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
   await page.waitForSelector("#view-egitim .row");
-  const ways = await page.locator("#view-egitim button", { hasText: "Bu konu nedir?" }).count();
+  const ways = await page.locator("#index-list .row").count();
   ok(ways === live.length, `indekste her konu için bir giriş yolu var (${ways})`);
 
   // Every one of them, not just the first: an intro that renders for
@@ -1282,7 +1420,7 @@ async function runTopicIntro(browser) {
     ok(untagged === 0, `${topic.id}: İngilizce dizeler lang="en" taşıyor`);
   }
 
-  await auditLayout(page, "konu girişi", 320);
+  await auditLayout(page, "konu girişi", 320, { maxScreens: TOPIC_BUDGET_SCREENS });
 
   // Focused mode, and a way out of it.
   ok(await page.locator("#shell-header").isHidden(), "giriş ekranı odaklı modda");

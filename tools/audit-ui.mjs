@@ -51,7 +51,11 @@ async function report(label, root) {
     const scope = document.querySelector(sel);
     if (!scope) return null;
     const vis = (el) => el.offsetParent !== null || el === document.body;
-    const filled = [...scope.querySelectorAll(".btn--primary")].filter(vis);
+    // Screen-level, not container-level: "one filled button per screen"
+    // (§7.2) counts the shell's action bar too, and the first version of
+    // this audit scoped it to the content root and reported the topic
+    // screen as having no primary when its primary was in the bar.
+    const filled = [...document.querySelectorAll(".btn--primary")].filter(vis);
     const surfaces = [...scope.querySelectorAll(".surface")].filter(vis);
     const nested = surfaces.filter((s) => s.parentElement.closest(".surface"));
     // A row's secondary line must be ONE line (§7.1).
