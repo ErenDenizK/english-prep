@@ -980,7 +980,7 @@
             "then": "Overshoot"
           },
           {
-            "condition": "Şıkta aktarımın kesinliği yükselmişse: söylenti bir bilgiye çevrilmiş ve aktarım fiili yerini \"is known / is proven / has been established / is now accepted\" gibi bir kesinlik fiiline bırakmışsa. Aktarım fiili duruyorsa kesinlik de duruyor demektir — \"It is only rumoured that ...\" ile \"is rumoured to ...\" aynı kesinliktedir, \"only\" modalite değil vurgu taşır",
+            "condition": "Şıkta aktarımın kesinliği yükselmişse: söylenti bir bilgiye çevrilmiş ve aktarım fiili yerini \"is known / is proven / has been established / is now accepted\" gibi bir kesinlik fiiline bırakmışsa. Aktarım fiili duruyorsa kesinlik de duruyor demektir; yanındaki bir vurgu sözcüğünün düşmesi kesinliği yükseltmez, çünkü kesinliği taşıyan o sözcük değil fiilin kendisidir",
             "then": "Re-modalise"
           },
           {
@@ -988,7 +988,7 @@
             "then": "Re-time"
           },
           {
-            "condition": "Aktarımın kendisi başka bir zamana çekilmişse: orijinal şimdiki zamanda aktarırken şık geçmişte aktarıyorsa, ya da tersi. Yalnızca çatı değişmişse (\"The newspaper reported\" → \"was reported by the newspaper\") aktarımın zamanı yerinde durur; bu bir kalıp değişikliğidir, zaman kayması değil",
+            "condition": "Aktarımın kendisi başka bir zamana çekilmişse: orijinal şimdiki zamanda aktarırken şık geçmişte aktarıyorsa, ya da tersi. Yalnızca çatı değişmişse — aktarım etken iken edilgen olmuşsa — aktarımın zamanı yerinde durur; bu bir kalıp değişikliğidir, zaman kayması değil",
             "then": "Re-time"
           },
           {

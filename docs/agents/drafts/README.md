@@ -46,14 +46,26 @@ that contradicted another rule four lines above it was deleted rather
 than reworded. Traced by hand afterwards: no rule fires on a key, and
 `Same meaning` certifies exactly one option per item, always the key.
 
-**That hand-trace is not an independent pass, and on this block's
-history a hand-trace is not enough.** One clean independent
-re-verification and it ships.
+**Independently re-verified 2026-09-04: SHIPS.** No rule fires on a key;
+all twelve distractors fire a rule before the last one; `Same meaning`
+certifies exactly one option per item and it is the key in all four. Each
+key survives on a guard doing real work — the emphasis-word clause, the
+voice-only clause, the fewer-words clause — and the deleted tail turned
+out not to be load-bearing for any key, so removing it closed the
+contradiction with the rule above it without opening a gap.
 
-One residual, recorded rather than fixed: read from memory rather than
-from the page, the interior-change rule's headline ("the inside of the
-reported clause changed → Reverse") would eliminate three keys, and the
-exemption that saves them is the rule's second sentence.
+That pass also found the string-quoting anti-pattern only half closed:
+the previous commit de-quoted one rule and left two others quoting
+verbatim strings from their own items. An illustration lifted from a live
+item goes stale silently the moment that item is reworded, which is how
+the last two regressions happened. Both now state relations only.
+
+One residual, recorded rather than fixed. Read from memory rather than
+from the page, four rules would each eliminate a key — the sharpest is
+the role-swap rule, because two keys restate by passivising the reporting
+verb and that moves the reported party into subject position, which *is*
+the operation the items test. It is mitigated by adjacency: the voice-only
+carve-out sits one line above it. No rule is unusable without its guard.
 
 ## connectors · 24 questions, 6 lessons
 
