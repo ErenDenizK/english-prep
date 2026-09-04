@@ -5,6 +5,26 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.30 — 2026-09-04
+
+**The service worker had shipped one cache name since the day it was
+written.** `english-prep-v1`, across every deploy. Nothing was broken —
+the shell is served stale-while-revalidate, so a change reached a
+returning learner on their *second* open. That is a fair trade for a
+topic file and a bad one for a fix shipped four days before an exam, and
+the mechanism that was supposed to prevent it was a comment saying
+"bump it in the same commit". A rule like that is forgotten once and then
+stays forgotten.
+
+It is the app's own version now, and a test fails when `sw.js` and the
+top of this file disagree. Bumping it means `activate` deletes the old
+cache, so the modules had to be pre-cached as well: they were cached on
+demand, which was safe only while the cache was never deleted — a learner
+who went offline between the new worker taking over and the next page
+load would have had three HTML files and no code. A second test checks
+that list against `js/`, because a module added later and not listed is
+the kind of omission nobody finds until they are on a bus.
+
 ## v0.29 — 2026-09-04
 
 **The app remembers how long a test you want.** Both count listboxes —
