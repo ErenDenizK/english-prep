@@ -37,7 +37,7 @@ choice (`docs/exam-spec.md`, from the two sample papers).
 
 | Section | Items | Points | Where the app stands |
 | --- | --- | --- | --- |
-| Cloze test | 10 | 15 | **8 of the 10 blank types shipped**; the other two are the vocabulary blanks, drafted |
+| Cloze test | 10 | 15 | **7 of the 10 blank types shipped.** Two are the vocabulary blanks (drafted, in review); the tenth is `so / such`, which nothing covers |
 | Closest meaning | 10 | 15 | **shipped** |
 | Reading — 2 texts | 14 | 21 | **not covered, and out of v1** — see below |
 | Paragraph completion | 6 | 9 | **not covered, no schema, not started** |
@@ -93,7 +93,7 @@ sitting the owner asked for.
 | 5 | `gerunds-infinitives`: blocking item fixed, lessons audited, re-verified twice | shipped |
 
 That was **+120 questions and +30 lessons**, taking the app to 193
-questions across 8 topics and closing 8 of the 10 cloze blank types.
+questions across 8 topics and closing 7 of the 10 cloze blank types.
 
 The cost is worth recording, because it is the argument for the pipeline:
 across the five, the passes found roughly one item with two defensible
@@ -142,9 +142,20 @@ Four criteria, each measurable:
    60 points**.
 2. **Quality.** Every shipped item has passed a blind pass and every
    shipped lesson a sufficiency pass, with zero known blocking defects.
-   This is the one criterion that is currently *false of shipped content
-   too* — the 73 live questions have been through it, but the pipeline
-   has tightened since.
+
+   **This sentence means two different things and the difference is
+   about twenty hours of work.** Read as *passed the pipeline as it
+   stood when it shipped*, the 193 live questions already satisfy it.
+   Read as *passed the pipeline as it stands today*, they do not: the
+   pipeline has tightened four times since `tenses`, `modals` and
+   `passive-voice` went out — the blind-corpus tool, the calibration
+   file, the category spec, and the independent re-audit that has since
+   caught a defect in five of six repairs. Those three topics have never
+   met the current bar.
+
+   Recorded as open rather than decided, because it is the owner's call
+   and it is the difference between v1 being close and v1 being a week
+   away.
 3. **Honesty.** Nothing on screen claims more than the data supports.
    This is already true and has to stay true: the weak-category claim is
    hedged, the topic score is a percentage over everything answered, the
