@@ -269,8 +269,9 @@ commissioned as one: the exam spec's blank-by-blank breakdown of the
 sample cloze says the paper rewards discourse markers, modals, causatives,
 relative pronouns, quantifiers and vocabulary, and **not one of its ten
 blanks tests a tense or the passive** — which is what the app shipped
-first. Eight of the ten blank types are now practisable. The remaining two
-are vocabulary, drafted and queued; `so / such` is covered by nothing.
+first. Seven of the ten blank types are now practisable. Two of the rest are
+vocabulary, drafted and queued; the tenth is `so / such`, which is
+covered by nothing.
 
 **Closest meaning is live**, which is fifteen of Session I's sixty points
 the app previously had a schema for and no content behind.
