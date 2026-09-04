@@ -898,6 +898,92 @@ async function runMistakeRuns(browser) {
 }
 
 /**
+ * The one branch of the results screen's forward action that the ordinary
+ * path cannot reach: a mistakes run that empties the book.
+ *
+ * "Yeni test" is rebuilt from the book after the attempt is recorded, so
+ * when the last item graduates there is nothing to rebuild from. Offering
+ * a repeat of nothing would be the same defect the rebuild was written to
+ * fix, one step later.
+ *
+ * Reachable only by answering correctly on purpose, which means reading
+ * the key out of the content file — so this is also the one place the
+ * sweep knows an answer.
+ */
+async function runEmptiedBook(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  // Wrong three days ago, right two days ago. One more correct answer,
+  // today, is the second separate day and graduates it.
+  await page.evaluate(() => {
+    const day = 86_400_000;
+    const question = { id: "tenses-t1", topicId: "tenses", category: "Present Simple vs Present Continuous" };
+    localStorage.setItem(
+      "englishPrep.history",
+      JSON.stringify({
+        attempts: [
+          {
+            date: new Date(Date.now() - 3 * day).toISOString(),
+            mode: "mixed",
+            topicBreakdown: { tenses: { correct: 0, total: 1 } },
+            categoryBreakdown: {},
+            questions: [{ ...question, correct: false }],
+          },
+          {
+            date: new Date(Date.now() - 2 * day).toISOString(),
+            mode: "mistakes",
+            topicBreakdown: { tenses: { correct: 1, total: 1 } },
+            categoryBreakdown: {},
+            questions: [{ ...question, correct: true }],
+          },
+        ],
+      })
+    );
+  });
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .surface");
+  ok(
+    /Yanlış yaptığın 1 soru burada/.test(await page.locator("#test-panel").innerText()),
+    "tek soruluk defter kuruldu"
+  );
+
+  await page.locator("button", { hasText: "Yanlışları çalış" }).click();
+  await page.waitForSelector(".option");
+
+  const answer = await page.evaluate(async () => {
+    const data = await (await fetch("data/tenses/tenses.json")).json();
+    const question = data.questions.find((entry) => entry.id === "tenses-t1");
+    return question.options[question.correctIndex];
+  });
+  await page.locator(".option", { hasText: answer }).first().click();
+  await page.waitForSelector(".feedback--ok");
+  await page.locator("#quiz-bar button").click();
+  await page.waitForURL(/results\.html/);
+  await page.waitForSelector(".t-display");
+
+  ok(
+    (await page.evaluate(async () => {
+      const storage = await import("/js/storage.js");
+      return storage.getMistakeBook().length;
+    })) === 0,
+    "ikinci ayrı gün soruyu defterden düşürdü"
+  );
+  const forward = page.locator("#results-bar .btn--primary");
+  const label = (await forward.innerText()).trim();
+  ok(label === "Karışık test", `boşalan defterde ileri eylem yeni bir tur değil (${label})`);
+  await forward.click();
+  await page.waitForSelector("#test-panel .surface");
+  ok(
+    (await page.locator("#test-panel").innerText()).includes("bekleyen soru yok"),
+    "ileri eylem Test sekmesine, boş defterin yanına götürüyor"
+  );
+
+  await context.close();
+}
+
+/**
  * The option note — the line under a wrong answer that says what THAT
  * option would have meant.
  *
@@ -2344,6 +2430,9 @@ try {
 
   console.log("\n=== yanlış defteri ===");
   await runMistakeBook(browser);
+
+  console.log("\n=== defteri boşaltan tur ===");
+  await runEmptiedBook(browser);
 
   console.log("\n=== şık notları ===");
   await runOptionNotes(browser);
