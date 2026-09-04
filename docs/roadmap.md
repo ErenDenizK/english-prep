@@ -202,19 +202,21 @@ minimum honest explanation. Writing 291 notes against the existing
 grammar corpus is not scheduled: completing the app's features is worth
 more than deepening content that already teaches.
 
-**A content roadmap becomes a feature, later.** Once the app itself is
-done in outline, the thing to build is a visible checklist — which
-topics, lessons, questions and notes exist and which are coming — shown
-to the learner as well as kept for us. It is how a content update gets
-announced instead of just appearing. Not a priority; recorded so it is
-not re-invented.
+**A content roadmap became a feature, in small.** Shipped 2026-09-04 as a
+section in Profil: what exists, counted from the manifest so it cannot go
+stale, over a short editorial list in `data/roadmap.json` of what is done,
+next and planned. It replaced the "Geliştirme aşamasındayız" banner
+rather than joining it. The larger version the owner described — down to
+which questions and which `optionNotes` exist — is still later; this is
+the version that fits on a phone and tells the truth today.
 
 ## Still open
 
 1. **The exam date.** It changes the order of everything below the first
    stretch, and `docs/research/the-last-week.md` is written and cannot be
    acted on without it.
-2. **The dev-note banner.** "Geliştirme aşamasındayız" is the first thing
-   a new learner reads. Right for friends today, wrong the day you call
-   it 1.0. It is a one-line change and it should be a decision rather
-   than a leftover.
+2. ~~**The dev-note banner.**~~ **Decided 2026-09-04: retired.** It sat
+   above every screen, was the first thing a stranger read, cost 48px of
+   the 320px fold on every arrival, and said something no learner could
+   act on. Its one useful sentence is now on the first-run card, and what
+   it was gesturing at is a real list in Profil.

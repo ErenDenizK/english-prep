@@ -20,6 +20,7 @@
 // options are shuffled for display).
 
 const MANIFEST_URL = "data/manifest.json";
+const ROADMAP_URL = "data/roadmap.json";
 
 // A topic file holds both its questions and its lessons, so the Test tab
 // and the Eğitim tab would otherwise fetch and parse the same file twice.
@@ -50,6 +51,21 @@ function loadJson(url) {
  */
 export function loadManifest() {
   return loadJson(MANIFEST_URL);
+}
+
+/**
+ * What is built and what is coming, as the learner is shown it.
+ *
+ * A separate file from the manifest on purpose. The manifest is the
+ * content index and the validator holds it to a strict shape; this is a
+ * short editorial list that changes every time something ships, and it
+ * has no business failing a content check. It is also the only file in
+ * `data/` that is not content, which is why nothing else reads it.
+ *
+ * @returns {Promise<{note?: string, items: Array<{status: string, title: string, detail?: string}>}>}
+ */
+export function loadRoadmap() {
+  return loadJson(ROADMAP_URL);
 }
 
 /** The item types the app can draw. Absent in a file means CLOZE. */

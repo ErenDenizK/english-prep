@@ -100,6 +100,8 @@ css/style.css         Single stylesheet, in cascade layers
 css/fonts.css         The three subset faces + metric-matched fallbacks
 fonts/                Self-hosted woff2 subsets
 data/manifest.json    Topic index
+data/roadmap.json     What is built and what is coming — the one file in
+                        data/ that is not content. Shown in Profil.
 data/<topic>/         One JSON file per topic: its lessons and questions
 tools/
   validate-content.mjs  Content schema + cross-file consistency
@@ -136,11 +138,12 @@ by `npm run color`, which is in CI.
 order, and the proposed definition of 1.0. Read it first.
 
 `docs/v1-plan.md` is the plan of record for v1, and `docs/research/` holds
-the six research arms it was synthesised from. Read the plan before
-proposing work: the round found that the app is preparing for the wrong
-*shape* of exam — there is no discrete grammar section on the paper this
-targets — and that four questions per category is the constraint binding
-everything else. The next thing to build is not a seventh grammar topic.
+the research arms it was synthesised from. Read the plan before proposing
+work: the round found that the app was preparing for the wrong *shape* of
+exam — there is no discrete grammar section on the paper this targets —
+and that four questions per category is the constraint binding everything
+else. The grammar the paper *does* reward shipped on 2026-09-04; what is
+left is vocabulary, `so / such`, and paragraph completion.
 
 ## Conventions
 

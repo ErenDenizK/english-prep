@@ -28,6 +28,10 @@ import {
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const MANIFEST_PATH = "data/manifest.json";
+const ROADMAP_PATH = "data/roadmap.json";
+
+/** The three states a roadmap row may be in, and the only three. */
+const ROADMAP_STATUSES = ["done", "next", "planned"];
 
 const OPTIONS_PER_QUESTION = 4;
 const MIN_EXPLANATION_LENGTH = 40;
@@ -740,6 +744,60 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
   }
 }
 
+/**
+ * `data/roadmap.json` — the one file in `data/` that is not content.
+ *
+ * It is checked here anyway, and lightly: a typo in `status` would ship a
+ * row whose chip says the wrong thing about whether something exists,
+ * which is the single claim this file is on screen to make. The app
+ * degrades to no list if the file is unreachable, so a missing file is
+ * not an error; a malformed one is.
+ */
+async function validateRoadmap(report) {
+  let roadmap;
+  try {
+    roadmap = await readJson(ROADMAP_PATH);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return 0;
+    }
+    report.error(ROADMAP_PATH, `could not be read: ${error.message}`);
+    return 0;
+  }
+
+  if (!Array.isArray(roadmap.items)) {
+    report.error(ROADMAP_PATH, "items must be an array");
+    return 0;
+  }
+  if (roadmap.note !== undefined && typeof roadmap.note !== "string") {
+    report.error(ROADMAP_PATH, "note must be a string when present");
+  }
+
+  roadmap.items.forEach((item, index) => {
+    const where = `items[${index}]`;
+    if (!ROADMAP_STATUSES.includes(item.status)) {
+      report.error(
+        ROADMAP_PATH,
+        `${where}: status must be one of ${ROADMAP_STATUSES.join(", ")} (got ${JSON.stringify(item.status)})`
+      );
+    }
+    if (typeof item.title !== "string" || item.title.trim() === "") {
+      report.error(ROADMAP_PATH, `${where}: title must be a non-empty string`);
+    }
+    if (item.detail !== undefined && typeof item.detail !== "string") {
+      report.error(ROADMAP_PATH, `${where}: detail must be a string when present`);
+    }
+    // The row's subtitle is one line on a 320px screen before it wraps
+    // into a paragraph inside a row, which is the box-in-box failure the
+    // design system refuses.
+    if (typeof item.detail === "string" && item.detail.length > 160) {
+      report.warn(ROADMAP_PATH, `${where}: detail is ${item.detail.length} chars; keep it under 160`);
+    }
+  });
+
+  return roadmap.items.length;
+}
+
 async function main() {
   const report = new Report();
 
@@ -829,10 +887,13 @@ async function main() {
   checkNearDuplicates(report, corpus);
   checkScenarioReuse(report, corpus);
 
+  const roadmapItems = await validateRoadmap(report);
+
   console.log(
     `Checked ${manifest.topics.length} manifest topic(s): ` +
       `${liveTopics.length} live, ${manifest.topics.length - liveTopics.length} coming soon. ` +
-      `${seenQuestionIds.size} question(s), ${seenLessonIds.size} lesson(s).`
+      `${seenQuestionIds.size} question(s), ${seenLessonIds.size} lesson(s), ` +
+      `${roadmapItems} roadmap row(s).`
   );
 
   process.exit(report.print() ? 0 : 1);

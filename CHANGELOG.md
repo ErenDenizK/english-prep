@@ -5,6 +5,38 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.20 — 2026-09-04
+
+**The app now says what is built and what is coming**, in Profil, as a
+section rather than a banner.
+
+There was a banner. It sat above every screen, it was the first thing a
+stranger read, it cost 48px of the 320px fold on every single arrival,
+and what it said — "geliştirme aşamasındayız, yeni konular ekleniyor" —
+is not something a learner can do anything with. It is retired.
+
+What replaces it is in two halves, and they are deliberately different
+kinds of thing. What **exists** is counted from the manifest — "Şu an 8
+konu, 48 ders, 193 soru" — so shipping a topic updates it and nothing has
+to remember to. What is **coming** is a short editorial list in
+`data/roadmap.json`, three states (Bitti / Sırada / Planlandı) and no
+dates: this app has no schedule to promise and would not keep one. The
+rows are not tappable, because a roadmap row that looked like a control
+would be promising a screen that does not exist.
+
+It went in Profil because Profil is already the honest-metadata screen —
+which part of the exam this covers, how the content was written, where
+the data lives. A roadmap is the same species of fact, it is not a
+content mode, and the navigation stays two destinations.
+
+The banner's one useful sentence survives on the first-run card, where a
+learner meets it once before they judge the app, and nowhere else. The
+`.note` primitive it was the only user of is gone from the stylesheet and
+from the design system's inventory: an unused primitive that was not even
+on the components page is dead code, not a spare part.
+
+107 unit tests, 1073 verification checks.
+
 ## v0.19 — 2026-09-04
 
 **The user flow, all nine recommendations.** `docs/research/user-flow.md`

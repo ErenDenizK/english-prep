@@ -21,8 +21,6 @@ import {
   getWeakCategories,
   getSeenVersion,
   getProfileName,
-  isDevNoteDismissed,
-  dismissDevNote,
   requestPersistentStorage,
   getMistakeBook,
   getHistory,
@@ -54,7 +52,6 @@ const NAV_ICONS = {
 const testPanel = document.getElementById("test-panel");
 const profileTrigger = document.getElementById("profile-trigger");
 const profileFace = document.getElementById("profile-trigger-face");
-const devNote = document.getElementById("dev-note");
 const navItems = Array.from(document.querySelectorAll(".nav__item"));
 const views = Object.fromEntries(VIEW_IDS.map((id) => [id, document.getElementById(`view-${id}`)]));
 
@@ -433,19 +430,6 @@ function refreshProfileTrigger() {
   }
 }
 
-function initDevNote() {
-  if (isDevNoteDismissed()) {
-    return;
-  }
-  devNote.hidden = false;
-  const dismiss = document.getElementById("dev-note-dismiss");
-  dismiss.appendChild(icon("close", { size: 20 }));
-  dismiss.addEventListener("click", () => {
-    devNote.hidden = true;
-    dismissDevNote();
-  });
-}
-
 /* ---- Routing ---- */
 
 function parseRoute() {
@@ -512,7 +496,6 @@ function init() {
   // that one-way rather than making the two modules import each other.
   document.addEventListener("profile:namechange", refreshProfileTrigger);
   refreshProfileTrigger();
-  initDevNote();
 
   window.addEventListener("hashchange", () => {
     applyRoute();

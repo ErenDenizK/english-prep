@@ -229,6 +229,18 @@ function renderWelcome(firstLesson) {
   });
   card.appendChild(test);
 
+  // The one thing the dismissible banner above every screen was for. It
+  // belongs here and only here: a first-time learner should know the app
+  // is still being built before they judge it, and everyone else has
+  // already been told once. Profil carries the list itself.
+  card.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "Uygulama hâlâ yazılıyor. Neyin bitip neyin sırada olduğunu Profil'de görebilirsin."
+    )
+  );
+
   return card;
 }
 

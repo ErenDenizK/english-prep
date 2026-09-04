@@ -9,7 +9,13 @@
 // lists on the Test tab start practice instead. One row, one action, and
 // which action it is follows from which screen you are on.
 
-import { loadManifest, lessonIndex, uncoveredSections, sectionListPhrase } from "./topics.js";
+import {
+  loadManifest,
+  loadRoadmap,
+  lessonIndex,
+  uncoveredSections,
+  sectionListPhrase,
+} from "./topics.js";
 import {
   getProfileName,
   setProfileName,
@@ -346,10 +352,96 @@ function renderAbout() {
   return section;
 }
 
+/**
+ * "Neler var, neler geliyor" — the app's own roadmap, shown to the
+ * learner rather than only kept for us.
+ *
+ * This replaces the banner that used to sit above every screen saying
+ * "Geliştirme aşamasındayız". That banner was the first thing a stranger
+ * read, cost 48px of the 320px fold on every single arrival, and said
+ * almost nothing: a learner cannot act on "new topics are being added".
+ * A list they can go and look at says the same thing properly, costs
+ * nothing until they open it, and is somewhere a real answer fits.
+ *
+ * Profil is where it belongs because Profil is already the honest-
+ * metadata screen — what part of the exam this covers, how the content
+ * was written, where the data lives. A roadmap is the same species of
+ * fact, and it is not a content mode, so it is not a third tab.
+ *
+ * Two halves, and they are different kinds of thing. What EXISTS is
+ * counted from the manifest, so it cannot go stale and cannot be
+ * overstated. What is COMING is the editorial list in
+ * `data/roadmap.json`, which is a short honest list and never a date:
+ * this app has no schedule to promise and would not keep one.
+ *
+ * @param {Array<object>} topics - from the manifest
+ * @param {{note?: string, items?: Array<object>}|null} roadmap
+ */
+const ROADMAP_STATUS = {
+  done: { label: "Bitti", chip: "chip chip--ok" },
+  next: { label: "Sırada", chip: "chip chip--accent" },
+  planned: { label: "Planlandı", chip: "chip" },
+};
+
+function renderRoadmap(topics, roadmap) {
+  const live = topics.filter((topic) => !topic.comingSoon);
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Neler var, neler geliyor"));
+
+  if (roadmap?.note) {
+    section.appendChild(el("p", "t-meta", roadmap.note));
+  }
+
+  // Counted, not claimed. Every one of these numbers is the manifest's
+  // own answer, so shipping a topic updates this line and nothing else
+  // has to remember to.
+  const questions = live.reduce((total, topic) => total + (topic.questionCount ?? 0), 0);
+  const lessons = live.reduce((total, topic) => total + (topic.lessonCount ?? 0), 0);
+  section.appendChild(
+    el(
+      "p",
+      "t-meta t-num",
+      `Şu an ${live.length} konu, ${lessons} ders, ${questions} soru.`
+    )
+  );
+
+  const items = Array.isArray(roadmap?.items) ? roadmap.items : [];
+  if (items.length === 0) {
+    return section;
+  }
+
+  const list = el("div");
+  for (const item of items) {
+    const status = ROADMAP_STATUS[item.status] ?? ROADMAP_STATUS.planned;
+    // A div, not a button: nothing here is tappable. A roadmap row that
+    // looked like a control would be promising a screen that does not
+    // exist, which is the one thing a roadmap must not do.
+    const row = el("div", "row");
+
+    const main = el("span", "row__main");
+    main.appendChild(el("span", "row__title", item.title));
+    if (item.detail) {
+      main.appendChild(el("span", "row__sub", item.detail));
+    }
+    row.appendChild(main);
+
+    const trail = el("span", "row__trail");
+    trail.appendChild(el("span", status.chip, status.label));
+    row.appendChild(trail);
+
+    list.appendChild(row);
+  }
+  section.appendChild(list);
+
+  return section;
+}
+
 async function render() {
   let titleById = new Map();
   let lessons = [];
   let topics = [];
+  /** @type {{note?: string, items?: Array<object>}|null} */
+  let roadmap = null;
   try {
     const manifest = await loadManifest();
     topics = manifest.topics;
@@ -361,6 +453,15 @@ async function render() {
     // Stats come from local storage and are still worth showing, so a
     // failed content load degrades the lesson counter and the
     // category-to-lesson links rather than the whole tab.
+    console.error(error);
+  }
+
+  try {
+    // Its own load and its own catch: the roadmap is the one file in
+    // `data/` that is not content, and a learner who cannot reach it has
+    // lost a paragraph, not their statistics.
+    roadmap = await loadRoadmap();
+  } catch (error) {
     console.error(error);
   }
 
@@ -409,6 +510,7 @@ async function render() {
   container.appendChild(renderData());
   container.appendChild(renderSettings());
   container.appendChild(renderCoverage(topics));
+  container.appendChild(renderRoadmap(topics, roadmap));
   container.appendChild(renderAbout());
 }
 
