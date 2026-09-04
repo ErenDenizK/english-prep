@@ -1357,15 +1357,29 @@ function renderLesson() {
  */
 function renderLessonEnd(lesson) {
   const nextLesson = state.lessons[state.reader.lessonIndex + 1] ?? null;
+  // Finishing the last lesson of a topic is a different event from
+  // finishing any other lesson, and the app had no concept of it: the
+  // card said "Sıradaki ders" either way and the button walked straight
+  // from the end of Tenses into `Must vs Have to vs Mustn't vs Don't
+  // Have to` — a contrast, in a topic whose intro the learner had never
+  // seen. That is the whole complaint this round began with, surviving
+  // in the one journey nobody had designed.
+  const crossesTopic = nextLesson !== null && nextLesson.topicId !== lesson.topicId;
 
   const card = el("section", "surface stack");
   const head = el("div", "stack stack--tight");
-  head.appendChild(el("p", "t-label", "Ders bitti"));
+  head.appendChild(el("p", "t-label", crossesTopic ? "Konu bitti" : "Ders bitti"));
   head.appendChild(
     el(
       "p",
       "t-body",
-      "Öğrendiğini pekiştirmenin en hızlı yolu birkaç soru çözmek. Ya da sıradaki derse geç."
+      crossesTopic
+        ? // A fact, not a congratulation: it says what was finished and
+          // what comes next, and names the next topic so the learner is
+          // choosing rather than being carried.
+          `${lesson.topicTitle} konusundaki derslerin sonuncusuydu. ` +
+            `Sırada ${nextLesson.topicTitle} var — önce onun ne olduğuna bakabilirsin.`
+        : "Öğrendiğini pekiştirmenin en hızlı yolu birkaç soru çözmek. Ya da sıradaki derse geç."
     )
   );
   card.appendChild(head);
@@ -1378,7 +1392,22 @@ function renderLessonEnd(lesson) {
   });
   card.appendChild(test);
 
-  if (nextLesson) {
+  if (crossesTopic) {
+    // Into the next topic's overview when it has one, and only into its
+    // first lesson when it does not: the point is that a topic boundary
+    // is where the orientation is worth most, not where it is skipped.
+    const onward = el("button", "btn btn--primary", `Sıradaki konu: ${nextLesson.topicTitle}`);
+    onward.type = "button";
+    onward.addEventListener("click", () => {
+      markLessonDone(lesson.id);
+      if (nextLesson.hasIntro) {
+        openIntroByHash(nextLesson.topicId);
+      } else {
+        openLessonByHash(nextLesson.id);
+      }
+    });
+    card.appendChild(onward);
+  } else if (nextLesson) {
     const next = el("button", "btn btn--primary", "Sıradaki ders");
     next.type = "button";
     next.addEventListener("click", () => {

@@ -5,6 +5,26 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.24 — 2026-09-04
+
+**Finishing a topic is now a thing that happens.** It was not: the
+end-of-lesson card said "Ders bitti · Sıradaki ders" whether you had just
+finished lesson 1 of Tenses or its last one, and the button walked
+straight from the end of Tenses into `Must vs Have to vs Mustn't vs Don't
+Have to` — a contrast, in a topic whose intro the learner had never seen.
+
+That is the complaint this whole round began with, surviving in the one
+journey nobody had designed, and it was found by using the app rather
+than by reading it. At a topic boundary the card now says which topic
+just ended, names the next one, and its primary opens **that topic's
+overview** rather than its first contrast.
+
+It stays a fact rather than a congratulation — no "tebrik", no
+"hazırsın". The app says what happened; it does not claim a readiness it
+cannot measure.
+
+107 unit tests, 1154 verification checks.
+
 ## v0.23 — 2026-09-04
 
 **"Başla" now starts at the beginning.** The welcome card's one action

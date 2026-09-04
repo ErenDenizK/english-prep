@@ -1454,6 +1454,69 @@ async function runTopicIntro(browser) {
   await context.close();
 }
 
+/**
+ * The topic boundary — the one journey in the app that had no design.
+ *
+ * Finishing the last lesson of a topic said "Ders bitti · Sıradaki ders",
+ * exactly like finishing any other lesson, and the button walked from the
+ * end of Tenses straight into `Must vs Have to vs Mustn't vs Don't Have
+ * to`: a contrast, in a topic whose intro the learner had never seen.
+ * That is the complaint this whole round began with, surviving in the
+ * only place nobody had looked.
+ */
+async function runTopicBoundary(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+
+  const manifest = JSON.parse(await readFile(new URL("../data/manifest.json", import.meta.url), "utf8"));
+  const live = manifest.topics.filter((topic) => !topic.comingSoon);
+  const first = live[0];
+  const second = live[1];
+  const lastOfFirst = lessonId(first.id, first.lessons[first.lessons.length - 1].category);
+  const midOfFirst = lessonId(first.id, first.lessons[0].category);
+
+  async function endCardOf(id) {
+    await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "networkidle" });
+    await page.reload({ waitUntil: "networkidle" });
+    await page.waitForSelector("#lesson-reader .reader__top");
+    for (let i = 0; i < 40; i += 1) {
+      const atEnd = await page.evaluate(() => {
+        const region = document.getElementById("shell-scroll");
+        const done = region.scrollTop + region.clientHeight >= region.scrollHeight - 4;
+        region.scrollBy({ top: 900 });
+        return done;
+      });
+      await page.waitForTimeout(50);
+      if (atEnd) break;
+    }
+    return page.locator("#lesson-reader .surface").last();
+  }
+
+  // Mid-topic is unchanged: the boundary card must not fire everywhere.
+  const mid = await (await endCardOf(midOfFirst)).innerText();
+  ok(mid.includes("Ders bitti"), "konu ortasında kart 'Ders bitti' diyor");
+  ok(!mid.includes("Konu bitti"), "konu ortasında konu-sonu kartı çıkmıyor");
+
+  const end = await (await endCardOf(lastOfFirst)).innerText();
+  ok(end.includes("Konu bitti"), "konunun son dersi bittiğinde kart bunu söylüyor");
+  ok(end.includes(second.title), `sıradaki konu adıyla anılıyor (${second.title})`);
+  // A fact, never a congratulation: this project states what happened and
+  // never a readiness it cannot measure.
+  ok(
+    !/tebrik|harika|başardın|hazırsın/i.test(end),
+    "konu sonu bir tebrik değil, olan biteni söylüyor"
+  );
+
+  await page.locator("#lesson-reader button", { hasText: "Sıradaki konu" }).click();
+  await page.waitForSelector("#lesson-reader h1");
+  ok(
+    decodeURIComponent(page.url()).includes(`egitim/konu/${second.id}`),
+    "sıradaki konuya geçiş, o konunun ilk karşılaştırmasına değil tanıtımına gidiyor"
+  );
+
+  await context.close();
+}
+
 /** The parts of §8 that do not vary with the viewport. */
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
@@ -1652,6 +1715,9 @@ try {
 
   console.log("\n=== konu girişleri ===");
   await runTopicIntro(browser);
+
+  console.log("\n=== konu sınırı ===");
+  await runTopicBoundary(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);
