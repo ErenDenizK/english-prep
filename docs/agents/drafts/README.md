@@ -149,7 +149,14 @@ believing the two are semantically identical, and *Much vs A Lot Of*
 never puts `plenty of` against `a lot of` at all. Neither is an item
 defect; both are things the lessons must not promise.
 
-**Lessons: sufficiency audit running.**
+**Lessons: audited, repaired, re-audited, repaired again, third pass
+running.** The first audit found four of six categories unshippable, all
+one way: twelve signal-shaped rules, eight of them missing the exact
+token their own items use. The re-audit cleared five and found one
+blocking defect plus three things the repair had introduced — including
+five rules and glosses that had been fixed by quoting the very item that
+exposed them, two with the blank still in and one ending in an item's
+answer. All applied; the third pass is the gate.
 
 ## gerunds-infinitives · 24 questions, 6 lessons
 
