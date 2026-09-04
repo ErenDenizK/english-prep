@@ -15,14 +15,20 @@ that call.
 
 | | Shipped | Drafted, not shipped |
 | --- | --- | --- |
-| Topics | 3 | 7 |
-| Questions | 73 | 168 |
-| Lessons | 18 | 42 |
-| Questions per category | 4.1 | 4.0 |
+| Topics | 8 | 2 |
+| Questions | 193 | 48 |
+| Lessons | 48 | 12 |
+| Questions per category | 4.0 | 4.0 |
 
-Everything drafted is in `docs/agents/drafts/`, and
-`docs/agents/drafts/README.md` records exactly what each topic still owes
-before it can ship. Nothing there is served.
+**Grammar is finished** (2026-09-04). The five drafted grammar topics
+cleared their review debt and shipped together, as the owner asked and
+for the reason the queue existed: they were commissioned to close one
+gap, and shipping them one at a time would have meant five partial
+answers to the cloze section instead of one whole one.
+
+What remains drafted is the two vocabulary topics, in
+`docs/agents/drafts/`; `docs/agents/drafts/README.md` records what each
+still owes. Neither review pass has run on either, so neither is served.
 
 ## What the paper actually pays for
 
@@ -31,8 +37,8 @@ choice (`docs/exam-spec.md`, from the two sample papers).
 
 | Section | Items | Points | Where the app stands |
 | --- | --- | --- | --- |
-| Cloze test | 10 | 15 | 9 of the 10 blank *types* are covered once the drafts ship |
-| Closest meaning | 10 | 15 | drafted, one verification from shipping |
+| Cloze test | 10 | 15 | **8 of the 10 blank types shipped**; the other two are the vocabulary blanks, drafted |
+| Closest meaning | 10 | 15 | **shipped** |
 | Reading — 2 texts | 14 | 21 | **not covered, and out of v1** — see below |
 | Paragraph completion | 6 | 9 | **not covered, no schema, not started** |
 
@@ -43,18 +49,20 @@ now exists:
 
 | Blank | Tests | Covered by |
 | --- | --- | --- |
-| 1 | discourse markers | `connectors` (drafted) |
-| 2, 4 | modals | `modals` (shipped) |
-| 3 | causative `make + object + bare` | `gerunds-infinitives` (drafted) |
+| 1 | discourse markers | `connectors` ✓ |
+| 2, 4 | modals | `modals` ✓ |
+| 3 | causative `make + object + bare` | `gerunds-infinitives` ✓ |
 | 5, 10 | vocabulary | `academic-verbs`, `academic-nouns-adjectives` (drafted) |
-| 6 | comparatives | `closest-meaning` (drafted, partly) |
+| 6 | comparatives | `closest-meaning` ✓ (partly) |
 | 7 | `so` / `such` | **nothing** |
-| 8 | relative pronouns | `relative-clauses` (drafted) |
-| 9 | quantifiers | `quantifiers` (drafted) |
+| 8 | relative pronouns | `relative-clauses` ✓ |
+| 9 | quantifiers | `quantifiers` ✓ |
 
 Two of ten blanks are modals and **not one tests a tense or the passive**
 — which is what the app shipped first. The seven drafts were commissioned
-to close exactly that gap, and they do, with one hole: `so / such`.
+to close exactly that gap. Five of them are now served; the two
+vocabulary topics close blanks 5 and 10, and one hole is left over:
+`so / such`.
 
 ---
 
@@ -71,25 +79,35 @@ Three things decide it, in this priority:
    answers per twelve written, and roughly one untrue claim about English
    per lesson. Neither is visible to `npm run check`.
 
-### Now — clear the queue
+### Done — the grammar queue
 
-**The five grammar topics, together, in one or two sittings** — the
-owner's call, and the right one: they are one queue, they were
-commissioned to close one gap, and shipping them one at a time means five
-partial answers to the cloze section instead of one whole one.
+**The five grammar topics shipped together, 2026-09-04**, in the one
+sitting the owner asked for.
 
-| # | Work | Cost |
+| # | Work | Outcome |
 | --- | --- | --- |
-| 1 | `closest-meaning`: one independent re-verification of the reporting block | hours |
-| 2 | `connectors`: sufficiency re-run on the repaired lessons | hours |
-| 3 | `relative-clauses`: lesson examples that hand over their own questions, then re-audit | hours |
-| 4 | `quantifiers`: both passes, never run | hours |
-| 5 | `gerunds-infinitives`: blocking item fixed; lessons audit never ran | hours |
+| 1 | `closest-meaning`: independent re-verification of the reporting block | shipped |
+| 2 | `connectors`: sufficiency re-run on the repaired lessons | shipped |
+| 3 | `relative-clauses`: lesson examples that hand over their own questions, then re-audit | shipped |
+| 4 | `quantifiers`: both passes, never run | shipped |
+| 5 | `gerunds-infinitives`: blocking item fixed, lessons audited, re-verified twice | shipped |
 
-That is **+120 questions and +30 lessons**, taking the app to 193
-questions across 8 topics, and it closes 8 of the 10 cloze blank types on
-its own. Then the two vocabulary topics, which close the other two, take
-it to 241 across 10.
+That was **+120 questions and +30 lessons**, taking the app to 193
+questions across 8 topics and closing 8 of the 10 cloze blank types.
+
+The cost is worth recording, because it is the argument for the pipeline:
+across the five, the passes found roughly one item with two defensible
+answers per twelve written and roughly one untrue claim about English per
+lesson — and **five of the repairs introduced a new defect**, each caught
+only by an independent re-audit and none of them visible to
+`npm run check`. A repair is not a fix until someone who did not write it
+has re-read it.
+
+### Now — the two vocabulary topics
+
+`academic-verbs` and `academic-nouns-adjectives`: 48 questions and 12
+lessons, neither review pass run on either. They close cloze blanks 5 and
+10 and take the app to 241 questions across 10 topics.
 
 ### Next — the two real holes
 

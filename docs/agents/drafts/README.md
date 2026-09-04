@@ -1,11 +1,18 @@
 # Drafts
 
 **Shipped 2026-09-04: `closest-meaning`, `connectors`, `quantifiers`,
-`relative-clauses`** — 96 questions and 24 lessons, taking the app to 7
-topics, 169 questions and 42 lessons. Each cleared a blind pass on its items and a sufficiency
-pass on its lessons, and each of the three lesson repairs went back for
-an independent re-audit rather than being trusted. Their sections below
-are kept as the record of what those passes found.
+`relative-clauses`, `gerunds-infinitives`** — 120 questions and 30
+lessons, taking the app to 8 topics, 193 questions and 48 lessons. That
+is the whole grammar queue: every topic commissioned to close the cloze
+gap is now served, and 8 of the paper's 10 blank types are practisable.
+Each cleared a blind pass on its items and a sufficiency pass on its
+lessons, and every lesson repair went back for an independent re-audit
+rather than being trusted — which is the only reason five repair-
+introduced defects were caught. Their sections below are kept as the
+record of what those passes found.
+
+**Still drafted, not served: the two vocabulary topics.** Neither review
+pass has run on either.
 
 Nothing else in here is served. A topic is shipped by putting it in `data/`
 and in `data/manifest.json`, which is what `tools/ship-topic.mjs` does —
@@ -178,27 +185,49 @@ answer. All applied; the third pass is the gate.
 
 ## gerunds-infinitives · 24 questions, 6 lessons
 
-**Items: reviewed. One blocking, and four more that are lesson-side.**
-`t1` has two defensible answers: *he quietly ____ through it at rush
-hour* takes `refuses to drive` as readily as `avoids driving`, and
-*quietly refuses* is the stronger collocation — a refusal can be silent,
-which is what *quietly* says.
+**Items: reviewed, one repaired, passed.** `t1` was the blocking one —
+*he quietly ____ through it at rush hour* took `refuses to drive` as
+readily as `avoids driving`, and *quietly refuses* is the stronger
+collocation, because a refusal can be silent and that is what *quietly*
+says. Repaired and re-read.
 
-Lesson 6 tells the learner to answer `t24` wrongly: its first rule sends
-*was used to* to `+ V-ing`, and that item's key is the passive of *use*,
-`was used to open`. Lesson 5 is on a different axis from its own items —
-it teaches `for + -ing` only as an object's function, which the spec
-itself calls unkeyable and which no item tests, while both of the
-category's `for + -ing` keys are preposition-governed complements the
-lesson never mentions. Its first rule actively routes one of them to the
-wrong answer. Five lesson examples give their own questions away.
+**Lessons: audited, repaired, and independently re-verified twice.**
+The audit is kept in full at `AUDIT.md` (732 lines) because it is the
+clearest worked record of the failure class this project keeps hitting:
+rules written against the lesson's own examples rather than against the
+items they have to decide.
 
-**Lessons: audit did not run** (rate limit). Nothing repaired yet.
+Lesson 6 was the worst of it — its first rule sent *was used to* to
+`+ V-ing`, while its own category's key is the passive of *use*,
+`was used to open`. Lesson 5 was on a different axis from its items
+entirely: it taught `for + -ing` only as an object's function, which the
+spec calls unkeyable and no item tests, while both of the category's
+`for + -ing` keys are preposition-governed complements the lesson never
+mentioned, and its first rule actively routed one of them to the wrong
+answer. Five lesson examples gave away their own questions.
 
-One number worth the supervisor's eye: in 8 of 24 items the key is the
-only grammatical option, so a student who knows nothing but *which of
-these is real English* scores a third without reading a paragraph. That
-survives shuffling. It is concentrated in categories 4 and 5.
+**Re-verified 2026-09-04: SHIPS.** Lesson 6 traced option by option:
+16/16 get a verdict, every key certified, no distractor certified. The
+repaired R1 now excludes adverbial `little by little` by name — the
+gerunds repair's own defect was an unguarded `by ...` string test that
+fired on it, rejecting a key and pointing at its distractor — while
+`t24` is still caught because *by whichever assistant opened up* names
+who performs the action. That trace also found the fix had quietly
+repaired something the audit never recorded: `t21`'s paragraph carries a
+bare `by ...` string ("gives directions by the old landmarks") that the
+old rule stalled on too.
+
+One residual, recorded rather than fixed and the thinnest margin in the
+block: in `t22`, R4 sits above R5 and *have rearranged her week
+completely* is change-shaped; R4's parenthetical guard
+(*önce zordu, sonra alıştı*) is the whole of what keeps it silent.
+
+One number worth the supervisor's eye, unchanged by the repairs: in 8 of
+24 items the key is the only grammatical option, so a student who knows
+nothing but *which of these is real English* scores a third without
+reading a paragraph. That survives shuffling, and it is concentrated in
+categories 4 and 5. It is an argument for the sixth item per category,
+not a blocker. **Shipped.**
 
 ## academic-verbs and academic-nouns-adjectives · 48 questions, 12 lessons
 
