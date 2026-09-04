@@ -555,6 +555,14 @@ function renderIndex() {
     // With one topic the heading would label the only group there is.
     if (topicIds.length > 1) {
       section.appendChild(englishTitle("h2", "t-label", inTopic[0].topicTitle));
+      // The smaller half of "the lessons go straight at X vs Y": every
+      // lesson in this app is a contrast, and nothing anywhere said what
+      // a relative clause IS before offering to distinguish three of
+      // them. This does not teach the category — it says what the group
+      // is, on the screen where the question arises, for one line.
+      if (inTopic[0].topicGloss) {
+        section.appendChild(el("p", "t-meta", inTopic[0].topicGloss));
+      }
     } else {
       section.appendChild(el("h2", "t-label", "Dersler"));
     }

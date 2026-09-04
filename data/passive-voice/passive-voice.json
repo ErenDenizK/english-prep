@@ -3,19 +3,6 @@
   "title": "Passive Voice",
   "level": "B2-C1",
   "note": "Her soru YTU IYS ve Bilkent hazirlik sinavi tarzinda: kisa paragraf + tek bosluk + 4 secenek. Aciklamalar ve tuyolar Turkce, ogrenme materyali Ingilizce.",
-  "overview": {
-    "title": "Edilgen Çatı (Passive Voice) Nedir?",
-    "body": [
-      "Aktif cümlede eylemi yapan (fail) özneyi oluşturur: 'The chef cooked the meal.' Edilgen (passive) çatıda ise odak eylemi yapan değil, eylemden etkilenen üzerindedir: 'The meal was cooked (by the chef).' Türkçe'de de edilgen çatı var ('-il, -in, -n' ekleriyle: 'yemek pişirildi') ama İngilizce'de edilgen çatı çok daha sık ve farklı amaçlarla kullanılır: bilimsel/akademik yazıda, haberlerde, resmi kurallarda, ya da failin kim olduğu bilinmediğinde/önemli olmadığında.",
-      "Edilgen çatının en can alıcı noktası şu: fiilin zamanı değişmez, sadece yapısı değişir — 'be + V3' kalıbı, aktif cümlede hangi zaman kullanılmışsa onunla eşleşir. Yani edilgen çatıyı öğrenmek yeni bir zaman öğrenmek değildir; zaten bildiğin zamanları yeni bir kalıba dökmektir.",
-      "Bu konuda edilgen çatıyı altı başlıkta işleyeceğiz: temel zaman formları, modallerle birleşimi, geçmişe dönük modal + edilgen kalıpları, bir işi başkasına yaptırma (causative), söylenti/haber aktarma yapıları, ve failin ne zaman belirtilip ne zaman belirtilmeyeceği."
-    ],
-    "keyPoints": [
-      "Edilgen çatı yeni bir zaman değil, mevcut zamanların 'be + V3' kalıbına dökülmüş halidir.",
-      "Edilgen çatı, kimin yaptığından çok neyin yapıldığını/olduğunu vurgulamak istendiğinde tercih edilir.",
-      "Fail (by + kişi) sadece önemliyse ya da şaşırtıcıysa belirtilir; aksi halde cümleden çıkarılır."
-    ]
-  },
   "questions": [
     {
       "id": "passive-voice-t1",

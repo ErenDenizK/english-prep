@@ -70,6 +70,7 @@ should name a confusable pair or triad wherever the grammar allows it
     {
       "id": "tenses",
       "title": "Tenses",
+      "gloss": "Olayın ne zaman olduğundan çok nasıl görüldüğü: bitti mi, sürüyor mu, bugüne mi uzanıyor?",
       "tier": "foundations",
       "file": "data/tenses/tenses.json",
       "questionCount": 24,
@@ -85,6 +86,7 @@ should name a confusable pair or triad wherever the grammar allows it
 | --- | --- | --- |
 | `id` | yes | Lowercase slug. Prefixes every question and lesson id in the topic. |
 | `title` | yes | English. Shown on topic cards. |
+| `gloss` | no | **Turkish, one line, under 110 characters.** What this group of six lessons *is*, shown under the topic heading on the Eğitim index. Every lesson in this app is a contrast, so a learner who does not already have the category met `Relative Clauses` and then, immediately, `Who vs Whom vs Whose`. It does not teach the category and must not try: it is one line, and the evidence for the short form over the long one is in `docs/research/orientation.md` §1.1 and §1.3. Omit it and the heading simply stands alone. |
 | `tier` | yes | One of the ids in `js/tiers.js`. A display grouping only — topics can be authored in any order. |
 | `file` | live topics | Path to the topic file. |
 | `questionCount` | live topics | Must equal the number of questions in the file. |
@@ -110,6 +112,13 @@ should name a confusable pair or triad wherever the grammar allows it
 ```
 
 `topicId` and `title` must match the manifest entry.
+
+**Those six keys are the whole list, and the validator now warns on any
+other.** A key nothing reads is content the learner downloads and never
+sees: three topic files carried a 1,400–1,800 character `overview` object
+for months after the reader redesign orphaned it, invisible precisely
+because unknown keys were ignored. They are in
+`docs/agents/overviews/` now.
 
 ---
 

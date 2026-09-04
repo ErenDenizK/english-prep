@@ -4,8 +4,27 @@
 answer key to the set used to grade reviewers, and a reviewer who has read
 it cannot be graded. `docs/agents/reviewer.md` says so too.
 
-Ten items: five with known defects, five verified sound. A reviewer is run
-against these ten before its findings on anything else are believed.
+**How to actually run it, because pointing a reviewer at this file has
+now failed twice:**
+
+```bash
+npm run calibrate -- <outDir>                          # assembles from data/
+npm run blind -- <outDir>/calibration-source.json <outDir>
+#   hand the reviewer ONLY <outDir>/calibration-source-blind.json
+```
+
+On 2026-09-04 two reviewer briefs said "work the calibration set" and
+named *this file*. Both reviewers did as they were told, read the
+answers, and — correctly — refused to report a score. Two review passes
+lost their only measurement to a two-word ambiguity in a prompt, and the
+lesson is the same one `tools/blind-corpus.mjs` already taught: a
+blinding done by instruction is a blinding that has not happened. The ids
+live in `tools/make-calibration.mjs`, so generating the corpus never
+opens this file.
+
+Ten items: five with known defects, five verified sound (thirteen rows —
+the L5 finding is one defect spread over four items). A reviewer is run
+against these before its findings on anything else are believed.
 
 Why bother: a reviewer that finds nothing is indistinguishable from a
 clean corpus, and a reviewer that flags everything is indistinguishable

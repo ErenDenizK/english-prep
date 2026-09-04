@@ -3,6 +3,7 @@
     {
       "id": "tenses",
       "title": "Tenses",
+      "gloss": "Olayın ne zaman olduğundan çok nasıl görüldüğü: bitti mi, sürüyor mu, bugüne mi uzanıyor?",
       "tier": "foundations",
       "file": "data/tenses/tenses.json",
       "questionCount": 25,
@@ -28,6 +29,7 @@
     {
       "id": "modals",
       "title": "Modals",
+      "gloss": "can, must, should gibi yardımcı fiiller — zorunluluk, izin, ihtimal ve tahmin.",
       "tier": "core-grammar",
       "file": "data/modals/modals.json",
       "questionCount": 24,
@@ -53,6 +55,7 @@
     {
       "id": "passive-voice",
       "title": "Passive Voice",
+      "gloss": "İşi kimin yaptığını söylemeden kurulan cümle: fail değil, eylemin kendisi öne çıkar.",
       "tier": "core-grammar",
       "file": "data/passive-voice/passive-voice.json",
       "questionCount": 24,
@@ -78,6 +81,7 @@
     {
       "id": "closest-meaning",
       "title": "Closest Meaning",
+      "gloss": "Aynı şeyi başka bir yapıyla söyleme — sınavın 'anlamca en yakın cümle' bölümü.",
       "tier": "compound-structures",
       "file": "data/closest-meaning/closest-meaning.json",
       "questionCount": 24,
@@ -103,6 +107,7 @@
     {
       "id": "connectors",
       "title": "Connectors & Discourse Markers",
+      "gloss": "Cümleleri birbirine bağlayan sözcükler: ekleme mi, zıtlık mı, sonuç mu, örnek mi?",
       "tier": "compound-structures",
       "file": "data/connectors/connectors.json",
       "questionCount": 24,
@@ -134,6 +139,7 @@
     {
       "id": "quantifiers",
       "title": "Quantifiers & Determiners",
+      "gloss": "Miktar belirten sözcükler — ve çoğu, ismin sayılabilir olup olmadığına göre değişir.",
       "tier": "core-grammar",
       "file": "data/quantifiers/quantifiers.json",
       "questionCount": 24,
@@ -159,6 +165,7 @@
     {
       "id": "relative-clauses",
       "title": "Relative Clauses",
+      "gloss": "Bir ismi arkasından gelen bir cümleyle tanımlama: who, which, that, whose.",
       "tier": "compound-structures",
       "file": "data/relative-clauses/relative-clauses.json",
       "questionCount": 24,
@@ -184,6 +191,7 @@
     {
       "id": "gerunds-infinitives",
       "title": "Gerunds & Infinitives",
+      "gloss": "Bir fiilden sonraki ikinci fiil: -ing mi, 'to' mu — ve bu seçim anlamı değiştirir mi?",
       "tier": "core-grammar",
       "file": "data/gerunds-infinitives/gerunds-infinitives.json",
       "questionCount": 24,

@@ -340,6 +340,12 @@ const MAX_SUMMARY = 70;
 const MIN_BLOCKS = 6;
 const MAX_BLOCKS = 14;
 const MAX_GLOSS = 200;
+
+/** A topic gloss is one t-meta line under a heading at 320px. */
+const MAX_TOPIC_GLOSS = 110;
+
+/** Every top-level key a topic file may carry. Anything else is dead weight. */
+const TOPIC_FILE_KEYS = new Set(["topicId", "title", "level", "note", "questions", "lessons"]);
 const MIN_EXAMPLE_ITEMS = 3;
 const MAX_EXAMPLE_ITEMS = 6;
 
@@ -632,6 +638,21 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
     report.warn(file, "level is missing (e.g. \"B2-C1\")");
   }
 
+  // A key nothing reads is content the learner downloads and never sees.
+  // Three topic files carried a 1,400–1,800 character `overview` object
+  // for months after the reader redesign orphaned it, and it was
+  // invisible precisely because the validator ignored what it did not
+  // recognise. Silence about an unknown key is not neutrality.
+  for (const key of Object.keys(data)) {
+    if (!TOPIC_FILE_KEYS.has(key)) {
+      report.warn(
+        file,
+        `"${key}" is not a key the app reads — it ships to the learner and nothing renders it. ` +
+          `Use it or drop it (docs/CONTENT_GUIDE.md lists the topic file's keys).`
+      );
+    }
+  }
+
   if (!Array.isArray(data.questions) || data.questions.length === 0) {
     report.error(file, "questions must be a non-empty array");
     return;
@@ -840,6 +861,24 @@ async function main() {
       seenTopicIds.add(topic.id);
     }
     if (!isNonEmptyString(topic.title)) report.error(where, "title is required");
+    // Optional, because a topic can ship before someone has written its
+    // line. Capped because it renders as one `t-meta` line under the
+    // topic heading on the Eğitim index, and a paragraph there is a
+    // lesson wearing a costume — the same reasoning, and the same
+    // failure, as a contrast side's gloss.
+    if (topic.gloss !== undefined) {
+      if (!isNonEmptyString(topic.gloss)) {
+        report.error(where, "gloss must be a non-empty string when present");
+      } else {
+        checkTurkish(report, where, "gloss", topic.gloss);
+        if (topic.gloss.length > MAX_TOPIC_GLOSS) {
+          report.warn(
+            where,
+            `gloss is ${topic.gloss.length} chars — it is one line under a heading at 320px, so keep it under ${MAX_TOPIC_GLOSS}`
+          );
+        }
+      }
+    }
     if (!TIER_ORDER.includes(topic.tier)) {
       report.error(where, `tier must be one of ${TIER_ORDER.join(", ")} (found ${JSON.stringify(topic.tier)})`);
     }

@@ -3,19 +3,6 @@
   "title": "Modals",
   "level": "B2-C1",
   "note": "Her soru YTU IYS ve Bilkent hazirlik sinavi tarzinda: kisa paragraf + tek bosluk + 4 secenek. Aciklamalar ve tuyolar Turkce, ogrenme materyali Ingilizce.",
-  "overview": {
-    "title": "Modallar (Modal Verbs) Nedir?",
-    "body": [
-      "Modal fiiller (can, could, may, might, must, should, will, would, ought to, need, had better gibi) İngilizce'de bir eylemin gerçekleşme olasılığını, zorunluluğunu, iznini ya da tavsiye niteliğini anlatan yardımcı fiillerdir. Diğer fiillerden farklı olarak çekimlenmezler (he/she/it ile bile '-s' almazlar: 'he can', asla 'he cans' değil), ve kendilerinden sonra her zaman fiilin yalın hali (base form) gelir: 'she must go', asla 'she must going' ya da 'she must to go' değil.",
-      "Türkçe'de zorunluluk, izin ve olasılık genelde ayrı kelimelerle (gerekmek, gerekiyor, -abilir, izin var gibi) ama daha esnek bir şekilde ifade edilir. İngilizce'de ise her modal, çok spesifik bir anlam ve ton taşır: 'must' ile 'have to' ikisi de 'zorunlu' demek gibi görünse de, biri içsel/kişisel bir zorunluluğu, diğeri dışarıdan gelen bir kuralı ifade eder. Bu ince farklar, sınavlarda en sık test edilen noktalardır.",
-      "Bu konuda modalleri altı ana kullanım alanına göre işleyeceğiz: zorunluluk/gereklilik, izin/olasılık, şimdiki zamana dair çıkarımlar, geçmişe dair çıkarımlar (modal perfects), tavsiye, ve yetenek. Her biri kendi mantığıyla ayrı bir makale."
-    ],
-    "keyPoints": [
-      "Modal fiiller çekimlenmez ve kendilerinden sonra her zaman fiilin yalın hali gelir.",
-      "Aynı Türkçe karşılığa sahip görünen modaller (must/have to gibi) çoğu zaman farklı bir tonu ya da kaynağı ima eder.",
-      "Modalleri doğru kullanmak, kelimenin kendisinden çok, cümlenin bağlamındaki ipuçlarını (kural mı kişisel görüş mü, kesin mi belirsiz mi) okumakla ilgilidir."
-    ]
-  },
   "questions": [
     {
       "id": "modals-t1",
