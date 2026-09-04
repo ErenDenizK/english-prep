@@ -899,3 +899,183 @@ consent / its approval* is fixed institutional English.
 ---
 
 *No file other than this one was written. Nothing was committed or pushed.*
+
+---
+
+## 9 · Supervisor's two edits, verified
+
+Appended after the audit above, at the supervisor's request. The two edits
+act on §7.1 and §7.2; I did not write them.
+
+**Scope, checked first.** `git diff` shows exactly two strings changed,
+both in the `Allocate & Withhold` lesson — block 1 (`contrast`, the
+`assign` gloss) and block 3 (`forms`, the new row's example). Nothing else
+in `lessons.json`, and `questions.json` is untouched, so §3's option
+substitutions still stand on the text they judged. Every `decision` block
+in the file is byte-identical to what §2 traced, and the file still
+reserializes to canonical 2-space JSON.
+
+**Verdict: both edits are sound. §7.1 and §7.2 are closed. Do not revert
+either.** One cost is recorded below, in edit 1, with an optional
+refinement; it is not a defect and does not affect §0's verdict table,
+which is unchanged.
+
+### 9.1 The `forms` example — `"The registrar assigned two interpreters to the appeal court."`
+
+**Does it still teach the frame?** Yes. *The registrar* is S, *two
+interpreters* is the human object, *to the appeal court* is `to + N` —
+`S + assign + person + to + N` instantiated exactly, with a place
+destination that the row's own `use` (*"kişi bir göreve ya da yere
+verilir"*) names.
+
+**Does the giveaway span go?** Yes. Re-run rather than eyeballed — the
+full shared-run distribution, every item against every sentence of its own
+lesson:
+
+| longest shared run | items | changed by this edit? |
+| --- | --- | --- |
+| 3 words, carries the key | t11 (*"she conceded that"*) | no — pre-existing, now the corpus maximum |
+| 2 words | **t22** and 17 others | **yes — t22 was 4** |
+| 1 word | 5 items | no |
+
+t22 drops from 4 to 2, and it is no longer the most coupled item in the
+topic. The four-word span that made §7.1 — *assigned her to the*, the key
+inside it and the item's own pronoun — is gone.
+
+Two further measurements the supervisor asked for:
+
+- **The new example against all 24 filled items in the topic:** longest run
+  **2 words**, and in every case it is *"to the"*. Nothing else reaches 2.
+- **The new example against every other lesson sentence in the topic:**
+  longest run **2 words**, again *"to the"*.
+- `checkLessonGiveaway` still reports **0**, which it also did before the
+  edit — as the supervisor says, that measure was never the one that
+  caught this, which is why the distribution above is the answer.
+
+*Named so a later pass does not rediscover it:* t22 still shares two words
+with a lesson sentence — *"assigned her"*, against the **pre-existing**
+ditransitive row *"They assigned her the case."*, which repair 2 did not
+add and this edit does not touch. Two words is the corpus noise floor (18
+of 24 items sit there), and the two frames differ, so the shape-match that
+made §7.1 is not reconstructible from it. Not a finding.
+
+**Collisions.** None that matter.
+
+- No content word of the new sentence — *registrar*, *interpreters*,
+  *appeal*, *court* — appears in any item paragraph in the topic.
+- The only lexical-family contact in the corpus is *registrar* here against
+  *registry* in t14. Different word, different lesson, different category,
+  different verb, no shared decision. Cosmetic.
+- Against other lesson sentences: the closest are *"The permit restricts
+  fishing to the winter months."* and *"They withheld the information to
+  the committee."*, both at *"to the"*. No conflict — neither is about
+  `assign`.
+- **No `decision` rule fires differently.** The rules are byte-identical,
+  and they are evaluated against item paragraphs rather than lesson
+  examples, so a changed example cannot reach them. §2.6's trace stands
+  verbatim: 4/4 keys, 0 distractors certified, the widened R1 firing at t22
+  and nowhere else.
+
+**One cost, recorded, and it does not warrant a revert.** The replacement
+sentence sits in the one place where `assign` and `allocate` genuinely
+overlap: an **indefinite plural** human object dispatched to an
+institutional slot. *"The registrar allocated two interpreters to the
+appeal court"* is acceptable English — court interpreters are a pooled
+resource a listing office allocates, which is the scheme reading §3.1
+identified as what licenses `allocate` with human objects. The sentence it
+replaced (*"her to the Ankara office"* — a definite individual, a staff
+posting) sat outside that overlap.
+
+Why this is not a defect and why I would not revert:
+
+- nothing is keyed on a `forms` row; its job is to show that `assign` takes
+  the pattern, not that no other verb does;
+- no item in the category has that shape, so no learner can be sent to a
+  wrong answer by it;
+- t22's exclusion of `allocated` is untouched — it rests on t22's own
+  paragraph (active, named individual, no pool, chosen on fitness), not on
+  this example;
+- and the giveaway it removes was the larger problem by a wide margin.
+
+**Optional refinement, zero cost, offered rather than required:** a
+definite singular human chosen on fitness exemplifies the frame at a point
+where the lesson's own contrast is sharp instead of blurred — e.g. *"The
+coach assigned the youngest runner to the final leg."*, which no rival
+verb in the block takes and which shares no vocabulary with any item or
+lesson sentence in the topic. Either way, the edit as made is a net
+improvement and closes §7.1.
+
+### 9.2 The `assign` `contrast` gloss
+
+> *"Bir görev, rol ya da yer belirli bir kişiye veya ekibe verilir; nesne
+> bu görev de olabilir, göreve gönderilen kişi de. Nesne hiçbir zaman bir
+> miktar değildir."*
+
+**One correction to the request before the answer:** there are **three**
+`assign` rows in that `forms` block, not five — the block has seven rows
+across five verbs. I checked the gloss against all three.
+
+**Against the three `assign` `forms` rows:**
+
+| row | gloss covers it? |
+| --- | --- |
+| `S + assign + N + to + N` — *"They assigned the case to a team."* | yes — the first disjunct, object = the task |
+| `S + assign + person + to + N` — the new row | **yes — this is the disagreement §7.2 named, and it is closed** |
+| `S + assign + N + N` — *"They assigned her the case."* | yes for its direct object (the task). The person in a ditransitive is a recipient rather than *"göreve gönderilen kişi"*, so the gloss describes that row loosely rather than wrongly — and `CONTENT_GUIDE.md` caps a `gloss` at one or two sentences, which rules out enumerating ditransitive roles. No contradiction |
+
+**Against `decision` R1.** Exact agreement, which it did not have before:
+the gloss now mirrors both of R1's disjuncts (*a task to a person* / *a
+person to a task or place*) and repeats R1's first discriminator, *bir
+miktar değil*. The block and the procedure now say the same thing about
+the same verb.
+
+**Against all four items:**
+
+- **t21** — `assign` is not on the paper; the *"never an amount"* sentence
+  correctly keeps it away from *"two hundred thousand lira"* anyway.
+- **t22** — the key's frame is licensed by the `contrast` block for the
+  first time. This is the whole point of the edit and it lands.
+- **t23** and **t24** — `assigned` / `assigns` are distractors, and their
+  objects (*its authorisation*, *the rights*) are neither a task nor a
+  person, so the gloss's positive enumeration excludes them exactly as R4
+  and R1 do. The exclusion is no weaker than under the old wording.
+
+**Does it still draw the line the block exists to draw?** Yes, and more
+honestly than before.
+
+- **Against `distribute`** — untouched: *"belirli bir kişiye veya ekibe"*
+  against *"aynı şey çok sayıda alıcıya yayılır"*. The new example's plural
+  object does not blur this, because `distribute` is about many
+  *recipients*, not many objects.
+- **Against `allocate`** — the line is now *a task or a person* against
+  *"sınırlı bir kaynağın bir bölümü … vurgu payın büyüklüğündedir"*, and
+  the `allocate` gloss's own wording carries it: a person is not a portion
+  of a resource whose size is the point.
+
+The honest consequence, stated because it is the substance of the edit:
+widening `assign`'s object to include persons does move it one step toward
+`allocate`, since English does allocate people. The old gloss drew the line
+crisply and **falsely** — it excluded the very frame t22's key uses, which
+is what made it §7.2. The new one draws it where the line actually is:
+slightly less crisp, true instead of false. For a lesson that is the right
+trade, and it is the same trade §4.1 credited the `withhold` gloss with.
+
+**Schema.** 158 characters, under the 200-character `gloss` warning; two
+sentences; Turkish; no markup. `npm run draft` is clean, and the full
+`tools/validate-content.mjs`, re-run in the scratch harness described in
+§6, reports **0 findings attributable to the draft** — the same seven
+harness artifacts as before and nothing else.
+
+### 9.3 What this changes in the report above
+
+- **§7.1 — closed** by the `forms` example. One residual recorded in §9.1,
+  non-blocking, with an optional refinement.
+- **§7.2 — closed** by the gloss.
+- **§7.3 and §7.4 — still open.** Neither edit touches t22's context/frame
+  balance or t23's collision with `pitfall` b7, and neither was expected to.
+- **§0's verdict table — unchanged.** `Allocate & Withhold` shipped before
+  these edits and ships after them; the edits remove two of the four
+  worth-fixing findings rather than any blocking one.
+
+*Nothing was committed. `lessons.json` is left exactly as the supervisor
+edited it; the only file this session has written is this one.*

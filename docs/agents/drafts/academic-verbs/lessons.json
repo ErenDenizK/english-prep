@@ -918,7 +918,7 @@
             "form": "assign",
             "use": "Ters yön: kişi bir göreve ya da yere verilir",
             "pattern": "S + assign + person + to + N",
-            "example": "The registrar assigned two interpreters to the appeal court."
+            "example": "The coach assigned the youngest runner to the final leg."
           },
           {
             "form": "withhold",

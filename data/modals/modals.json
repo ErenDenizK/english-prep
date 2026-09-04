@@ -38,52 +38,52 @@
     {
       "id": "modals-t2",
       "category": "Must vs Have to vs Mustn't vs Don't Have to",
-      "paragraph": "According to the university's regulations, every student ____ submit a health report before moving into the dormitory.",
-      "options": ["has to", "must", "doesn't have to", "mustn't"],
+      "paragraph": "I had promised to meet friends at six, but the shift supervisor rewrote the rota that morning without warning anyone, so I ____ stay at the shop until closing time and missed them completely.",
+      "options": ["had to", "must", "didn't have to", "mustn't"],
       "correctIndex": 0,
-      "explanation": "'According to the university's regulations' ifadesi dışarıdan (kurum tarafından) belirlenen bir kuralı gösteriyor, bu yüzden 'have to' (has to) kullanılır. Anlamca 'must'a yakın olsa da, resmi kurumsal kural bağlamında sınavlarda 'have to' tercih edilir.",
-      "tip": "Resmi kurallar, yasalar ve kurumsal zorunluluklar için genelde 'have to' tercih edilir.",
+      "explanation": "Zorunluluğu koyan konuşmacı değil, vardiya sorumlusu: dışarıdan gelen bir kural. Üstelik cümlenin tamamı geçmişte kuruluyor ('had promised', 'rewrote ... that morning', 'missed them'), ve geçmişteki zorunluluk yalnızca 'had to' ile anlatılır. En yakın çeldirici 'must'ın geçmiş biçimi yoktur; 'I must stay' ancak şimdi ya da gelecek için kurulur ve anlatının zamanıyla çelişir. 'didn't have to' ise kalma zorunluluğunun hiç olmadığını söylerdi, oysa konuşmacı arkadaşlarını tam da bu yüzden kaçırmış.",
+      "tip": "Geçmişteki zorunluluk için tek seçenek 'had to'dur; 'must' yalnızca şimdi ve gelecek için kullanılır.",
       "optionNotes": {
-        "must": "Zorunluluğu konuşmacının kendisi koyduğunda, kendi kararı ya da vicdanı olduğunda gelir. Buradaki kuralı koyan üniversitenin yönetmeliği.",
-        "doesn't have to": "Gerek olmadığını söyler: sağlık raporu isteğe bağlı olurdu. Yönetmelik ise bunu her öğrenciden istiyor.",
-        "mustn't": "Yasak bildirir: rapor vermek serbest olmazdı. Yönetmelik burada bir şeyi yasaklamıyor, kayıt için şart koşuyor."
+        "must": "Şimdiki ya da gelecekteki bir zorunluluğu bildirir ve geçmiş biçimi yoktur. Cümle ise o sabah olup bitmiş bir işi anlatıyor.",
+        "didn't have to": "Kalma zorunluluğunun hiç olmadığını söyler. Oysa konuşmacı kapanışa kadar kalmış ve arkadaşlarını bu yüzden kaçırmış.",
+        "mustn't": "Yasak bildirir: dükkânda kalmak serbest olmazdı. Vardiya sorumlusunun yaptığı şey kalmayı yasaklamak değil, zorunlu kılmak."
       }
     },
     {
       "id": "modals-t3",
       "category": "Must vs Have to vs Mustn't vs Don't Have to",
       "paragraph": "Passengers ____ use their phones during takeoff and landing; it's strictly forbidden by the airline for safety reasons.",
-      "options": ["mustn't", "don't have to", "don't need to", "may not need to"],
+      "options": ["mustn't", "don't have to", "have to", "shouldn't"],
       "correctIndex": 0,
-      "explanation": "'Strictly forbidden' (kesinlikle yasak) ifadesi bir yasağı gösteriyor, bu yüzden 'mustn't' (yapmamalı/yasak) kullanılır. 'Don't have to' ise bir şeyin gerekli olmadığını, yasak olduğunu değil, ifade eder — anlamca tamamen farklıdır.",
+      "explanation": "'Strictly forbidden' bir yasağı gösteriyor; yasak 'mustn't' ile kurulur. En yakın çeldirici 'don't have to' bir şeyin gerekli olmadığını söyler — telefonu kullanmak serbest olurdu, yalnızca zorunlu olmazdı — ve bu, yasağın tam tersidir. 'have to' ise zorunluluk bildirir: cümlenin ikinci yarısıyla açıkça çelişir. 'shouldn't' de yalnızca bir tavsiyedir; havayolunun güvenlik gerekçesiyle koyduğu kesin bir yasağı karşılayacak kadar güçlü değildir.",
       "tip": "'Mustn't' = yasak (yapma!); 'don't have to' = gerekli değil (istersen yapabilirsin). Bu ikisini karıştırmak sınavlarda en sık test edilen modal hatalarından biridir.",
       "optionNotes": {
         "don't have to": "Zorunlu olmadığını söyler, yani isteyen yine telefonunu kullanabilirdi. 'Strictly forbidden' ise bu serbestliği tamamen kaldırıyor.",
-        "don't need to": "İhtiyaç olmadığını bildirir; ortada bir yasak değil, boşa çıkmış bir gereklilik olurdu. Havayolunun koyduğu şey ise açık bir yasak.",
-        "may not need to": "İhtimalli bir gereksizlik: 'belki gerekmez' der. Cümlede belirsizlik değil, güvenlik gerekçesiyle konmuş kesin bir kural var."
+        "have to": "Zorunluluk bildirir: telefon kullanmak mecburi olurdu. Cümlenin devamı ise bunun kesinlikle yasak olduğunu söylüyor.",
+        "shouldn't": "Tavsiye bildirir: 'kullanmasan iyi olur'. Havayolunun güvenlik gerekçesiyle koyduğu şey ise öğüt değil, kesin bir yasak."
       }
     },
     {
       "id": "modals-t4",
       "category": "Must vs Have to vs Mustn't vs Don't Have to",
       "paragraph": "You ____ bring your own textbook to the seminar — the professor said she'll provide printed copies for everyone.",
-      "options": ["don't have to", "mustn't", "can't", "shouldn't"],
+      "options": ["don't have to", "mustn't", "must", "had to"],
       "correctIndex": 0,
-      "explanation": "Profesörün herkese basılı kopya sağlayacağını söylemesi, kitap getirmenin **gerekli olmadığını** gösteriyor; getirmek isteyen yine getirebilir, bu yüzden 'don't have to' kullanılır. En yakın çeldirici 'mustn't' bir yasaktır: onu seçersen cümle \"kitap getirmen yasak\" anlamına gelir, oysa profesör kimseye bir şey yasaklamıyor, sadece gereğini ortadan kaldırıyor. 'shouldn't' de bir tavsiye bildirir (\"getirmesen iyi olur\"), burada ise ortada ne yasak ne öğüt var, sadece gereksizlik var.",
+      "explanation": "Profesörün herkese basılı kopya sağlayacağını söylemesi, kitap getirmenin gerekli olmadığını gösteriyor; getirmek isteyen yine getirebilir, bu yüzden 'don't have to' kullanılır. En yakın çeldirici 'mustn't' bir yasaktır: onu seçersen cümle \"kitap getirmen yasak\" anlamına gelir, oysa profesör kimseye bir şey yasaklamıyor, sadece gereğini ortadan kaldırıyor. 'must' tam ters yöne gider ve getirmeyi şart koşar; 'had to' ise geçmişte kalmış bir zorunluluğu anlatır ve profesörün henüz gerçekleşmemiş seminere dair sözüyle uyuşmaz.",
       "tip": "Bir şeyin yapılmasına gerek olmadığını (ama yasak olmadığını) belirtmek için 'don't have to' veya 'don't need to' kullanılır.",
       "optionNotes": {
         "mustn't": "Yasak bildirir: kitap getirmek serbest olmazdı. Profesör kimseye bir şey yasaklamıyor, sadece getirme gereğini ortadan kaldırıyor.",
-        "can't": "İzin verilmediğini söyler, yani kitap getirmek mümkün olmazdı. Basılı kopya sağlanması getirmeyi engellemez, yalnızca gereksiz kılar.",
-        "shouldn't": "Getirmemeni öğütler, yani getirmeyi kötü bir fikir sayar. Cümlede öğüt yok; sadece kitabın artık gerekmediği söyleniyor."
+        "must": "Getirmeyi şart koşar: kitabı yanında taşımak zorunlu olurdu. Profesörün sözü ise tam tersini, kitaba gerek kalmadığını söylüyor.",
+        "had to": "Geçmişte kalmış bir zorunluluğu anlatır. Cümle ise henüz yapılmamış bir semineri ve profesörün verdiği sözü konuşuyor."
       }
     },
     {
       "id": "modals-t5",
       "category": "Can vs Could vs May vs Might",
-      "paragraph": "\"____ I borrow your notes from yesterday's lecture? I missed the class because I was sick,\" Ayşe asked her friend casually.",
+      "paragraph": "Ayşe leaned over to the friend sitting beside her a few minutes before the seminar started. \"____ I borrow your notes from yesterday, if you don't need them? I was off sick and I have nothing written down.\"",
       "options": ["Can", "Must", "Should", "Will"],
       "correctIndex": 0,
-      "explanation": "Arkadaşça, gündelik bir izin isteme durumu söz konusu, bu yüzden 'can' uygundur. 'Must', 'should' ve 'will' izin isteme anlamı taşımaz.",
+      "explanation": "Ayşe yanındaki arkadaşından bir şey istiyor: bu gündelik, samimi bir izin isteme ve İngilizcede bunun standart biçimi 'can'dir. 'Must' zorunluluk sorar ('almak zorunda mıyım?'), oysa Ayşe kendi üstündeki bir görevi değil, arkadaşının iznini soruyor. 'Should' fikir sorar ('alsam iyi olur mu?'), 'will' ise geleceğe dair bir tahmin ya da isteklilik bildirir; hiçbiri izin isteme işini yapmaz.",
       "tip": "Gündelik, samimi izin istemelerinde 'can', daha resmi durumlarda 'may' kullanılır.",
       "optionNotes": {
         "Must": "Zorunluluk sorar: 'notlarını ödünç almak zorunda mıyım?' Ayşe ise arkadaşından izin istiyor, kendi üstündeki bir görevi sormuyor.",
@@ -94,28 +94,28 @@
     {
       "id": "modals-t6",
       "category": "Can vs Could vs May vs Might",
-      "paragraph": "The meeting ____ be postponed to next week if the director doesn't manage to finish reviewing the budget in time.",
-      "options": ["may", "must", "should", "can"],
+      "paragraph": "The last marker handed in her scripts this morning; the results ____ announced before the weekend, though the office has not put up a notice yet.",
+      "options": ["may be", "can be", "must be", "maybe"],
       "correctIndex": 0,
-      "explanation": "Burada kesin olmayan, olası bir gelecek durumdan bahsediliyor ('postponed... if... doesn't manage'), bu da 'may' (belki/olabilir) ile ifade edilen bir olasılığı gösterir. 'Must' kesinlik, 'should' tavsiye/beklenti, 'can' ise genel yetenek/izin anlamı taşır.",
-      "tip": "Kesin olmayan, orta düzey bir olasılık için 'may' veya 'might' kullanılır; 'can' olasılık belirtmek için kullanılmaz.",
+      "explanation": "Cümle gerçekleşmesi makul görünen bir ihtimalden söz ediyor: puanlama bitmiş ama duyuru henüz yok. Belirli bir olayın gerçekleşme ihtimali 'may' ile kurulur, yani boşluğa 'may be' girer. 'can be' bunu yapamaz; genel bir imkânı anlatır ('sonuçların açıklanması mümkündür' gibi bir kural cümlesi olurdu), belirli bir duyurunun gerçekleşme ihtimalini değil. 'must be' kesinlik bildirir ve ofisin henüz ilan asmamış olmasıyla çelişir. 'maybe' ise ayrı bir kelimedir: modal değil zarftır, cümlenin başına gelir.",
+      "tip": "Belirli bir olayın gerçekleşme ihtimali 'may' ya da 'might' ile kurulur; 'can' bu iş için kullanılmaz. 'Maybe' ise modal değil zarftır — 'may be' ile karıştırma.",
       "optionNotes": {
-        "must": "Kesinlik bildirir: toplantı mutlaka ertelenmiş olur. Cümle ise ertelemeyi bir koşula bağlıyor, yani sonuç henüz belli değil.",
-        "should": "Beklenti bildirir: 'normalde ertelenmesi lazım'. Burada beklenen bir şey değil, gerçekleşip gerçekleşmeyeceği belirsiz bir ihtimal anlatılıyor.",
-        "can": "Genel bir imkânı ya da izni anlatır. Belirli bir toplantının ertelenme ihtimali bu kelimeyle kurulmaz."
+        "can be": "Genel bir imkânı ya da yeteneği anlatır. Belirli bir duyurunun bu hafta gerçekleşme ihtimali bu kelimeyle kurulmaz.",
+        "must be": "Kesinlik bildirir: duyurunun yapılmış olması kaçınılmaz olurdu. Cümle ise ofisin henüz bir ilan asmadığını söylüyor.",
+        "maybe": "Tek kelimelik bir zarftır ve cümlenin başına gelir. Boşluğa giren yapı ise iki kelimedir: 'may be announced'."
       }
     },
     {
       "id": "modals-t7",
       "category": "Can vs Could vs May vs Might",
       "paragraph": "I'm not sure yet, but I ____ come to the party later tonight if I finish my assignment early.",
-      "options": ["might", "must", "have to", "can't"],
+      "options": ["might", "must", "might not", "can't"],
       "correctIndex": 0,
-      "explanation": "'I'm not sure yet' ifadesi düşük kesinlikli bir olasılığı gösteriyor, bu yüzden 'might' (belki, zayıf olasılık) kullanılır. 'Must' ve 'have to' zorunluluk, 'can't' ise imkansızlığı ifade eder.",
+      "explanation": "'I'm not sure yet' düşük kesinlikli bir ihtimali işaret ediyor; ödevin erken bitmesi koşuluna bağlanan bu açık ihtimal 'might' ile kurulur. 'must' kendi üstüne alınan kesin bir zorunluluktur ve cümlenin açılışındaki belirsizlikle çelişir. 'might not' ihtimali ters çevirir: ödevi erken bitirmek gelmeyi kolaylaştıran bir koşul, engelleyen bir koşul değil. 'can't' ise imkânsızlık bildirir ve gelme ihtimalini tamamen kapatır.",
       "tip": "'Might', 'may'e göre biraz daha düşük bir olasılık derecesini ifade eder; belirsizlik vurgulanmak istendiğinde tercih edilir.",
       "optionNotes": {
         "must": "Kendi üstüne aldığın kesin bir zorunluluk: partiye gitmek zorunda olurdun. Cümle 'I'm not sure yet' ile açılıyor, yani ortada belirsizlik var.",
-        "have to": "Dışarıdan gelen bir zorunluluk: bir kural ya da başkası seni partiye gitmeye mecbur ediyor olurdu. Cümlede böyle bir baskı yok.",
+        "might not": "İhtimali ters yöne çevirir, gelmeme ihtimalini öne çıkarır. Oysa ödevi erken bitirmek burada gelmeyi kolaylaştıran bir koşul.",
         "can't": "İmkânsızlık bildirir: gelmen mümkün olmazdı. Cümle ise gelme ihtimalini ödevin erken bitmesi koşuluna bağlıyor, kapatmıyor."
       }
     },
@@ -123,13 +123,13 @@
       "id": "modals-t8",
       "category": "Can vs Could vs May vs Might",
       "paragraph": "\"____ you possibly lend me your charger for a few minutes? Mine just died,\" she asked the stranger next to her politely.",
-      "options": ["Could", "Must", "Shall", "Need"],
+      "options": ["Could", "May", "Must", "Need"],
       "correctIndex": 0,
-      "explanation": "'Possibly' ve 'politely' kelimeleri kibar bir rica olduğunu gösteriyor; 'could' bu tarz kibar isteklerde standart kullanımdır. 'Must' bir zorunluluk ifade eder ve bağlama uymaz.",
-      "tip": "Kibar ricalarda 'could you...?' kalıbı 'can you...?'den daha resmi ve naziktir.",
+      "explanation": "'Possibly' ve 'politely' kibar bir rica olduğunu gösteriyor; tanımadığı birine yöneltilen bu tür isteklerde standart biçim 'could you...?'dur. 'May' izin isterken kullanılır ama daima konuşmacının kendisi için: 'May I borrow...' kurulur, 'May you...' bir rica biçimi değildir. 'Must' karşısındakine zorunluluk yükler ('vermek zorunda mısın?'), 'Need' ise gereklilik sorar; ikisi de rica etmez.",
+      "tip": "'May' ricada yalnızca 'May I...?' kalıbında kullanılır; karşındakine yöneltilen kibar rica 'Could you...?' ile kurulur.",
       "optionNotes": {
+        "May": "İzin isterken kullanılır ama daima konuşmacının kendisi için: 'May I borrow...' kurulur. 'May you...' bir rica biçimi değildir.",
         "Must": "Zorunluluk sorar: 'şarj aletini vermek zorunda mısın?' Cümle ricanın kibarca yapıldığını söylüyor, karşıdakine bir mecburiyet yüklemiyor.",
-        "Shall": "Teklif ve öneri sorar, üstelik 'Shall I / Shall we' kalıbında. 'Shall you' diye bir rica biçimi yoktur.",
         "Need": "Gereklilik sorar: 'vermen gerekir mi?' Tanımadığı birine kibarca yönelen bu cümle gereklilik sormuyor, rica ediyor."
       }
     },
@@ -178,15 +178,15 @@
     {
       "id": "modals-t12",
       "category": "Must vs Can't vs Might/Could",
-      "paragraph": "He hasn't answered any of my messages in three days, and his phone goes straight to voicemail — something ____ be wrong.",
-      "options": ["must", "should", "can", "will"],
+      "paragraph": "The kettle in the staff kitchen is still warm and somebody's jacket is over a chair, but people leave things behind here all the time, so there is no way of knowing — a colleague ____ still be in the building.",
+      "options": ["could", "must", "can't", "should"],
       "correctIndex": 0,
-      "explanation": "Güçlü kanıtlara (üç gündür cevap vermemesi, telefonun kapalı olması) dayanan kesin bir çıkarım yapılıyor, bu yüzden 'must' kullanılır. 'Should' beklenti/tavsiye anlamı taşır, çıkarım için uygun değildir.",
-      "tip": "'Should' bir beklentiyi ('normalde böyle olmalı') ifade eder, kesin bir çıkarımı değil — 'must' ile karıştırılmamalı.",
+      "explanation": "Kanıt iki türlü de okunabilir: su ısıtıcısı sıcak ve ceket duruyor, ama insanlar eşyalarını sürekli unutuyor. Cümle bunu açıkça söylüyor ('there is no way of knowing'), yani ortada zayıf bir ihtimal var ve bunun modalı 'could'dur. 'must' kanıtın tek bir açıklaması kaldığında kullanılır; burada tam tersi söyleniyor. 'can't' ihtimali tamamen kapatırdı, oysa hâlâ sıcak duran su ısıtıcısı onu açık bırakıyor. 'should' ise beklenti bildirir, kanıta dayalı bir tahmini değil.",
+      "tip": "Aynı kanıt birden fazla açıklamaya izin veriyorsa çıkarım zayıftır: 'might' ya da 'could' kullanılır, 'must' değil.",
       "optionNotes": {
-        "should": "Beklenti bildirir: 'normalde bir şeyin ters olması lazım'. Üç gündür cevap gelmemesi ve telefonun kapalı olması beklenti değil, kanıt.",
-        "can": "Genel bir imkânı anlatır: 'bazen işler ters gider'. Bu cümlede ise belirli bir durum hakkında kanıta dayanan bir çıkarım yapılıyor.",
-        "will": "Gelecekte olacak bir şeyi bildirir. Cümledeki kanıt ise şu anda süren bir durumu açıklıyor, ileriye dönük bir tahmin kurmuyor."
+        "must": "Kanıtın tek bir açıklaması kaldığında kullanılır: 'kesin biri kalmıştır'. Cümle ise aynı izlerin unutulmuş eşyalardan da gelebileceğini söylüyor.",
+        "can't": "İhtimali tamamen kapatır: binada kimsenin kalmış olması mümkün olmazdı. Hâlâ sıcak duran su ısıtıcısı ise tam tersini gösteriyor.",
+        "should": "Beklenti bildirir: 'normalde birinin orada olması lazım'. Burada beklenti değil, kanıta bakılarak yürütülen zayıf bir tahmin var."
       }
     },
     {
@@ -234,14 +234,14 @@
     {
       "id": "modals-t16",
       "category": "Modal Perfects: Must / Can't / Should / Needn't Have",
-      "paragraph": "We ____ brought umbrellas after all — the forecast said rain, but the sky was clear the whole afternoon.",
+      "paragraph": "We ____ brought umbrellas after all — the forecast said rain, but the sky stayed clear the whole afternoon and they were no trouble to carry.",
       "options": ["needn't have", "must have", "shouldn't have", "can't have"],
       "correctIndex": 0,
-      "explanation": "Şemsiye getirilmiş (yapılmış bir eylem) ama gereksiz olduğu ortaya çıkmış; bu durumu anlatmak için 'needn't have + V3' (yapmaya gerek yoktu ama yapıldı) kullanılır. 'Shouldn't have' ise yanlış/pişmanlık duyulan bir eylemi ima eder, burada durum sadece gereksizlik, hata değil.",
+      "explanation": "Şemsiyeler getirilmiş, yani eylem gerçekleşmiş, ama sonradan gereksiz olduğu anlaşılmış; bunun kalıbı 'needn't have + V3'tür. En yakın çeldirici 'shouldn't have' yapılan işi bir hata sayar, oysa cümle taşımanın hiç zahmet olmadığını söylüyor: ortada hata değil, boşa çıkmış bir hazırlık var. 'must have' geçmişe dair bir çıkarımdır ve şemsiyelerin getirildiği zaten biliniyor; 'can't have' ise getirilmiş olmalarını imkânsız sayardı.",
       "tip": "'Needn't have + V3' = yapıldı ama gereksizmiş; 'shouldn't have + V3' = yapılmamalıydı, hataydı. İkisi farklı anlamlar taşır.",
       "optionNotes": {
         "must have": "Geçmişe dair çıkarım: 'şemsiye getirmiş olmalıyız'. Şemsiyelerin getirildiği zaten biliniyor; cümlenin söylediği şey bunun boşa gittiği.",
-        "shouldn't have": "Yapılan işi bir hata sayar: şemsiye getirmek yanlıştı. Havanın açık çıkması getirmeyi hata yapmaz, yalnızca gereksiz kılar.",
+        "shouldn't have": "Yapılan işi bir hata sayar: şemsiye getirmek yanlıştı. Cümle ise taşımanın hiç zahmet olmadığını söylüyor, yani ortada hata yok.",
         "can't have": "İmkânsızlık bildirir: şemsiye getirmiş olamayız. Oysa şemsiyeler getirilmiş, cümle sadece gerekmediğini söylüyor."
       }
     },
@@ -262,15 +262,15 @@
     {
       "id": "modals-t18",
       "category": "Should vs Ought To vs Had Better",
-      "paragraph": "You ____ finish that assignment tonight — if you hand it in late again, the teacher said she won't accept it at all.",
-      "options": ["had better", "should", "ought to", "might"],
+      "paragraph": "The last ferry leaves in ten minutes and there is nothing after it until the morning, so we ____ start walking down to the pier — otherwise we will be sleeping in the car.",
+      "options": ["had better", "had better to", "had better not", "ought"],
       "correctIndex": 0,
-      "explanation": "Cümlede net bir tehdit/olumsuz sonuç bulunuyor (ödev kabul edilmeyecek), bu yüzden acil ve sonuç odaklı tavsiye bildiren 'had better' kullanılır. 'Should' daha genel ve hafif bir tavsiyedir, bu aciliyeti taşımaz.",
-      "tip": "'Had better', genellikle belirtilen olumsuz bir sonuçtan kaçınmak için verilen acil tavsiyelerde kullanılır.",
+      "explanation": "Uyulmazsa doğacak sonuç cümlede yazılı ('otherwise we will be sleeping in the car'), yani ortada sıradan bir tavsiye değil acil bir uyarı var: bunun modalı 'had better'dır. Asıl tuzak kalıptadır. 'had better to' kurulamaz, çünkü 'had better'dan sonra 'to' gelmez, doğrudan yalın fiil gelir. 'ought' ters yönde hatalıdır: o kendisinden sonra mutlaka 'to' ister ('ought to start'). 'had better not' ise kalıbı doğru kurar ama tavsiyeyi tersine çevirir.",
+      "tip": "'Had better' ardından yalın fiil alır ('to' yok), 'ought' ise mutlaka 'to' alır; olumsuzu da 'hadn't better' değil 'had better not'tır.",
       "optionNotes": {
-        "should": "Sıradan bir tavsiye: 'bitirsen iyi olur', uyulmazsa bir şey olacağı ima edilmez. Cümle ise ödevin hiç kabul edilmeyeceğini söylüyor.",
-        "ought to": "Sorumluluk tonu taşıyan, resmî ve sakin bir tavsiye. Cümle ise sonucu yazılı bir uyarı yapıyor: ödev bir daha geç kalırsa kabul edilmeyecek.",
-        "might": "İhtimal bildirir: 'belki bu gece bitirirsin'. Cümle bir tahmin yürütmüyor, öğrenciye ne yapması gerektiğini söylüyor."
+        "had better to": "Anlam doğru ama kalıp bozuk: 'had better'dan sonra 'to' gelmez, doğrudan fiilin yalın hâli gelir.",
+        "had better not": "Kalıbı doğru ama tavsiyeyi tersine çevirir: yürümeye başlamamayı öğütler. Cümle ise yürümezlerse arabada yatacaklarını söylüyor.",
+        "ought": "'Ought' kendisinden sonra mutlaka 'to' ister: 'ought to start'. Üstelik sakin, resmî bir sorumluluk tonu taşır, buradaki aciliyeti değil."
       }
     },
     {
@@ -291,14 +291,14 @@
       "id": "modals-t20",
       "category": "Should vs Ought To vs Had Better",
       "paragraph": "You ____ leave your valuables visible in the car like that; it's basically an invitation for someone to break in.",
-      "options": ["shouldn't", "mustn't have", "don't have to", "needn't"],
+      "options": ["shouldn't", "don't have to", "hadn't better", "had better"],
       "correctIndex": 0,
-      "explanation": "Bu, olumsuz bir tavsiye durumu ('yapmaman iyi olur') — 'shouldn't' bu bağlamda doğru kullanımdır. 'Mustn't have' standart bir yapı değildir ve bu bağlamda kullanılmaz.",
-      "tip": "'Shouldn't', bir şeyin yapılmasının iyi bir fikir olmadığını belirten olumsuz tavsiyede kullanılır.",
+      "explanation": "Cümle riskli bir alışkanlığa karşı uyarıyor ama kesin ve yakın bir sonuç vermiyor: soyulma bir ihtimal olarak sunuluyor. Böyle bir olumsuz tavsiyenin modalı 'shouldn't'tır. 'had better' tavsiyeyi tersine çevirir: değerli eşyaları görünür bırakmayı öğütlemiş olurdun. 'hadn't better' diye bir kalıp yoktur; bu yapının olumsuzu 'had better not'tır. 'don't have to' ise gereksizlik bildirir — bırakmak zorunda değilsin — oysa cümle bunun kötü bir fikir olduğunu söylüyor.",
+      "tip": "'Had better'ın olumsuzu 'hadn't better' değil 'had better not'tır; sonucu kesin olmayan olumsuz tavsiye ise 'shouldn't' ile kurulur.",
       "optionNotes": {
-        "mustn't have": "İngilizcede böyle bir kalıp kurulmaz: 'mustn't', geçmişe bakan 'have + V3' ile birleşmez.",
         "don't have to": "Gerek olmadığını söyler: değerli eşyaları görünür bırakmak zorunda değilsin. Cümle ise bunu yapmanın kötü bir fikir olduğunu anlatıyor.",
-        "needn't": "Gereksizlik bildirir: yapmana gerek yok, ama serbest. Cümledeki uyarı gereksizlikten değil, arabanın soyulma riskinden söz ediyor."
+        "hadn't better": "'Had better' bu şekilde olumsuzlanmaz; olumsuzu 'had better not'tır. Anlamı doğru olsa da kalıp kurulamaz.",
+        "had better": "Tavsiyeyi tersine çevirir: eşyaları görünür bırakmayı öğütlemiş olurdun. Üstelik 'had better' kesin ve yakın bir sonuç varken kullanılır."
       }
     },
     {
@@ -373,7 +373,7 @@
           "sides": [
             {
               "label": "Must",
-              "gloss": "Konuşmacının kendi koyduğu zorunluluk: kendi kararı, kendi verdiği söz, kendi vicdanı. Kimse onu zorlamıyordur.",
+              "gloss": "Konuşmacının kendi koyduğu zorunluluk: kendi kararı, kendi verdiği söz, kendi vicdanı. Kimse onu zorlamıyordur. Bu ayrım yalnızca olumlu cümleler içindir.",
               "example": "I must call my mother tonight — I promised her."
             },
             {
@@ -386,8 +386,8 @@
         {
           "type": "forms",
           "rows": [
-            { "form": "Must", "use": "Olumlu", "pattern": "S + must + V", "example": "You must wear a helmet." },
-            { "form": "Must", "use": "Olumsuz", "pattern": "S + mustn't + V", "example": "You mustn't park here." },
+            { "form": "Must", "use": "Olumlu", "pattern": "S + must + V", "example": "I must remember to renew my passport." },
+            { "form": "Must", "use": "Olumsuz", "pattern": "S + mustn't + V", "example": "You mustn't lend this card to anyone." },
             { "form": "Have to", "use": "Olumlu", "pattern": "S + have/has to + V", "example": "She has to wear a uniform." },
             { "form": "Have to", "use": "Olumsuz", "pattern": "S + don't/doesn't have to + V", "example": "She doesn't have to wear a uniform." },
             { "form": "Have to", "use": "Geçmiş", "pattern": "S + had to + V", "example": "We had to wait two hours." }
@@ -400,13 +400,13 @@
           "sides": [
             {
               "label": "Mustn't",
-              "gloss": "Yasak: yapmak serbest değil. Bir kapıya asılmış \"yapmayın\" levhası gibi düşün.",
-              "example": "You mustn't use your phone during takeoff."
+              "gloss": "Yasak: yapmak serbest değil. Bir kapıya asılmış \"yapmayın\" levhası gibi düşün. Yasağı kimin koyduğu fark etmez; olumlu taraftaki içsel/dışsal ayrımı burada işlemez.",
+              "example": "You mustn't tell anyone what we discussed."
             },
             {
               "label": "Don't have to",
               "gloss": "Gerek yok: yapmak tamamen serbest, sadece zorunlu değil. Yasak anlamı hiç yoktur.",
-              "example": "You don't have to bring a book — she'll provide copies."
+              "example": "You don't have to dress up — it's a very casual place."
             }
           ]
         },
@@ -438,7 +438,12 @@
           "heading": "Sınavda sırayla bunlara bak",
           "rules": [
             { "signals": ["forbidden", "not allowed", "prohibited", "against the rules"], "then": "Mustn't" },
-            { "signals": ["optional", "there is no need", "if you want to", "we'll provide them"], "then": "Don't have to" },
+            { "signals": ["optional", "there is no need", "if you want to", "it's up to you"], "then": "Don't have to" },
+            {
+              "condition": "Cümledeki bir bilgi işi yapma gereğini ortadan kaldırıyor: ihtiyaç zaten karşılanmış ya da başkası hallediyor",
+              "then": "Don't have to"
+            },
+            { "condition": "Zorunluluk geçmişte kalmış bir olaya ait — kim koymuş olursa olsun, 'must'ın geçmiş biçimi yoktur", "then": "Had to" },
             { "signals": ["according to the regulations", "the law", "company policy", "the rules say"], "then": "Have to" },
             { "condition": "Zorunluluğu koyan konuşmacının kendisi: kendi kararı, verdiği bir söz, ve kimse onu zorlamıyor", "then": "Must" }
           ]
@@ -460,12 +465,12 @@
             {
               "label": "Can",
               "gloss": "Gündelik ve samimi. Arkadaşına, kardeşine, sınıf arkadaşına sorarken bunu kullanırsın.",
-              "example": "Can I borrow your notes from yesterday?"
+              "example": "Can I use your bike this afternoon?"
             },
             {
               "label": "Could",
               "gloss": "Kibar. Tanımadığın biri, bir görevli ya da bir üst söz konusuysa standart tercih budur.",
-              "example": "Could you possibly lend me your charger?"
+              "example": "Could you keep an eye on my bag for a moment?"
             },
             {
               "label": "May",
@@ -479,7 +484,7 @@
           "heading": "Hangi tonu seçeceksin",
           "rules": [
             { "condition": "Ortam samimi: arkadaş, aile ya da sınıf arkadaşı", "then": "Can" },
-            { "signals": ["politely", "possibly", "please", "a stranger"], "then": "Could" },
+            { "signals": ["please", "possibly", "if you don't mind", "I'm sorry to bother you"], "then": "Could" },
             { "condition": "Ortam resmî ve muhatap bir otorite figürü (Professor, Sir, Madam)", "then": "May" }
           ]
         },
@@ -491,7 +496,7 @@
             {
               "label": "May",
               "gloss": "Makul bir ihtimal: olabilir de olmayabilir, ama konuşmacı bunu ciddi bir seçenek olarak görüyor.",
-              "example": "The results may be announced tomorrow."
+              "example": "Her flight may be delayed because of the fog."
             },
             {
               "label": "Might",
@@ -516,7 +521,7 @@
             { "sentence": "Can I sit here?", "note": "Gündelik izin isteme → can" },
             { "sentence": "Could you say that again, please?", "note": "Kibar bir rica → could" },
             { "sentence": "May I leave the room, Mr Yılmaz?", "note": "Resmî bir izin isteme → may" },
-            { "sentence": "The meeting may be postponed to next week.", "note": "Makul bir ihtimal → may" },
+            { "sentence": "There may be a strike at the airport next month.", "note": "Makul bir ihtimal → may" },
             { "sentence": "Take an umbrella; it might rain later.", "note": "Zayıf, belirsiz ihtimal → might" }
           ]
         },
@@ -528,8 +533,8 @@
         },
         {
           "type": "pitfall",
-          "wrong": "She maybe comes to the party tonight.",
-          "right": "She may come to the party tonight.",
+          "wrong": "He maybe knows the answer.",
+          "right": "He may know the answer.",
           "why": "'Maybe' tek kelimelik bir zarftır ve cümlenin başına gelir; fiili değiştiremez. Modal olan 'may'dir ve ardından fiilin yalın hâli gelir."
         },
         { "type": "check" },
@@ -541,9 +546,9 @@
               "condition": "Cümle soru biçiminde ve birinden bir şey istiyor: konu ihtimal değil, izin — yukarıdaki ton kuralına dön",
               "then": "Can / Could / May"
             },
-            { "signals": ["I'm not sure", "perhaps", "it's possible", "nothing is confirmed yet"], "then": "May / Might" },
-            { "condition": "Belirsizlik cümlede özellikle vurgulanıyorsa ikisinden zayıf olanı seç", "then": "Might" },
-            { "condition": "Belirli bir olayın gerçekleşme ihtimali söz konusuysa 'can' şıkkını ele", "then": "May / Might" }
+            { "signals": ["I'm not sure", "perhaps", "I doubt it", "it depends"], "then": "Might" },
+            { "condition": "İhtimal ciddi bir seçenek olarak sunuluyor ve belirsizlik ayrıca vurgulanmıyor", "then": "May" },
+            { "condition": "Belirli bir olayın gerçekleşme ihtimali söz konusuysa 'can' şıkkını ele; 'can' genel imkân bildirir", "then": "May / Might" }
           ]
         }
       ]
@@ -590,9 +595,9 @@
         {
           "type": "examples",
           "items": [
-            { "sentence": "The lights are on, so someone must be home.", "note": "Somut kanıta dayanan güçlü çıkarım → must" },
+            { "sentence": "Her bike is chained up outside, so she must be in the library.", "note": "Somut kanıta dayanan güçlü çıkarım → must" },
             { "sentence": "This can't be the right address; the building doesn't even exist.", "note": "Mantıken imkânsız → can't" },
-            { "sentence": "Someone is knocking. It might be the courier.", "note": "Zayıf tahmin, kanıt yok → might" },
+            { "sentence": "She hasn't texted back. She might be asleep.", "note": "Zayıf tahmin, kanıt yok → might" },
             { "sentence": "She could be stuck in traffic, but I don't know.", "note": "Zayıf tahmin, alternatif bir seçenek → could" }
           ]
         },
@@ -619,9 +624,10 @@
           "type": "decision",
           "heading": "Sınavda sırayla bunlara bak",
           "rules": [
-            { "condition": "Cümlede somut bir kanıt var ve tek makul açıklama bu", "then": "Must" },
-            { "condition": "Kanıt tam tersini gösteriyor; durum mantıken imkânsız", "then": "Can't" },
-            { "signals": ["I'm not sure", "I'm not expecting", "maybe", "perhaps"], "then": "Might / Could" },
+            { "condition": "Kanıt söylenen şeyi doğruluyor ve başka açıklama bırakmıyor", "then": "Must" },
+            { "condition": "Kanıt söylenen şeyi çürütüyor; durum mantıken imkânsız", "then": "Can't" },
+            { "condition": "Aynı kanıt birden fazla açıklamaya izin veriyor ya da konuşmacı emin olmadığını söylüyor", "then": "Might / Could" },
+            { "signals": ["I'm not sure", "I'm not expecting", "perhaps", "it's hard to say"], "then": "Might / Could" },
             { "condition": "Ortada yasak yoksa 'mustn't' şıkkını ele; imkânsızlık için 'can't' vardır", "then": "Can't" },
             { "condition": "'Should' beklenti bildirir, çıkarım değil; kanıta dayalı kesinlik için seçme", "then": "Must" }
           ]
@@ -648,7 +654,7 @@
             {
               "label": "Can't have + V3",
               "gloss": "Geçmişe dair imkânsızlık: \"öyle olmuş olamaz\". Çıkarımın olumsuz ucu.",
-              "example": "He can't have finished the marathon in three hours."
+              "example": "She can't have read the whole report in ten minutes."
             },
             {
               "label": "Should have + V3",
@@ -680,7 +686,7 @@
             {
               "label": "Needn't have + V3",
               "gloss": "Eylem yine yapıldı, ama hata değildi: sadece sonradan gereksiz olduğu anlaşıldı.",
-              "example": "We needn't have brought umbrellas — it didn't rain."
+              "example": "You needn't have queued — the tickets were free at the door."
             }
           ]
         },
@@ -708,9 +714,9 @@
         },
         {
           "type": "pitfall",
-          "wrong": "We shouldn't have brought umbrellas — it turned out to be unnecessary.",
-          "right": "We needn't have brought umbrellas — it turned out to be unnecessary.",
-          "why": "'Shouldn't have' yapılan işin bir hata olduğunu söyler. Şemsiye getirmek hata değil, sadece gereksiz çıkmış; bunun kalıbı 'needn't have'dir."
+          "wrong": "I shouldn't have printed the slides — the lecturer put them online anyway.",
+          "right": "I needn't have printed the slides — the lecturer put them online anyway.",
+          "why": "'Shouldn't have' yapılan işin bir hata olduğunu söyler. Slaytları basmak hata değil, sadece gereksiz çıkmış; bunun kalıbı 'needn't have'dir."
         },
         { "type": "check" },
         {
@@ -746,7 +752,7 @@
             {
               "label": "Ought to",
               "gloss": "Anlamca 'should' ile neredeyse aynı, ama daha resmî ve daha çok bir sorumluluk/beklenti tonu taşır.",
-              "example": "As the eldest, she ought to set a good example."
+              "example": "A guide ought to warn visitors about the currents."
             },
             {
               "label": "Had better",
@@ -770,8 +776,8 @@
         {
           "type": "examples",
           "items": [
-            { "sentence": "In my opinion, you should try that new bakery.", "note": "Kişisel görüşe dayanan hafif tavsiye → should" },
-            { "sentence": "You shouldn't leave your valuables visible in the car.", "note": "Olumsuz tavsiye, bir uyarı değil → shouldn't" },
+            { "sentence": "In my opinion, you should ask for a second quote before you sign.", "note": "Kişisel görüşe dayanan hafif tavsiye → should" },
+            { "sentence": "You shouldn't reply to messages when you are angry.", "note": "Riskli bir alışkanlığa karşı olumsuz tavsiye → shouldn't" },
             { "sentence": "Doctors ought to explain the risks to their patients.", "note": "Resmî ton, ahlaki bir sorumluluk → ought to" },
             { "sentence": "We'd better leave now if we want to catch the train.", "note": "Sonuç belli, aciliyet var → had better ('we'd better' kısaltması)" },
             { "sentence": "You'd better not tell him about the surprise.", "note": "Olumsuz uyarı; 'not' better'dan sonra gelir → had better not" }
@@ -800,11 +806,15 @@
           "type": "decision",
           "heading": "Sınavda sırayla bunlara bak",
           "rules": [
-            { "signals": ["or you'll ...", "otherwise", "or else", "before it's too late"], "then": "Had better" },
-            { "condition": "Tavsiyeye uyulmazsa ne olacağı cümlede açıkça yazıyorsa (ceza, kaçırılan tren, kabul edilmeyen ödev)", "then": "Had better" },
+            { "signals": ["otherwise", "or else", "or you'll ...", "before it's too late"], "then": "Had better" },
+            { "condition": "Uyulmazsa doğacak kötü sonuç kesin ve yakın: bu durumda, şimdi gerçekleşecek", "then": "Had better" },
+            {
+              "condition": "Ortada bir risk ya da kötü bir alışkanlık var ama sonuç kesin değil; söylenen şey uyarı değil, olumsuz tavsiye",
+              "then": "Shouldn't"
+            },
+            { "condition": "Kişinin rolünden, konumundan ya da mesleğinden doğan süregelen bir sorumluluk anlatılıyor; ton resmî", "then": "Ought to" },
             { "signals": ["in my opinion", "I think", "if you ask me"], "then": "Should" },
-            { "condition": "Genel bir sorumluluk, ahlaki beklenti ya da resmî bir ton varsa", "then": "Ought to" },
-            { "condition": "Ortada aciliyet ya da tehdit yoksa varsayılan tavsiye modali budur", "then": "Should" }
+            { "condition": "Ortada aciliyet, tehdit ya da resmî bir sorumluluk yoksa varsayılan tavsiye modali budur", "then": "Should" }
           ]
         }
       ]
@@ -850,23 +860,23 @@
         {
           "type": "examples",
           "items": [
-            { "sentence": "My brother can solve a Rubik's cube in under a minute.", "note": "Şu anki genel yetenek → can" },
-            { "sentence": "At five, she could already read entire novels.", "note": "Geçmişte süregelen genel yetenek → could" },
+            { "sentence": "I can touch-type without looking at the keyboard.", "note": "Şu anki genel yetenek → can" },
+            { "sentence": "As a child, I could name every player in the squad.", "note": "Geçmişte süregelen genel yetenek → could" },
             { "sentence": "The exit was blocked, but they were able to get out.", "note": "Tek seferlik somut başarı → was/were able to" },
-            { "sentence": "After this course, you will be able to speak more confidently.", "note": "Gelecekte kazanılacak yetenek → will be able to" },
+            { "sentence": "By September, she will be able to drive on the motorway.", "note": "Gelecekte kazanılacak yetenek → will be able to" },
             { "sentence": "She couldn't understand the instructions at first.", "note": "Olumsuzda bu ayrım aranmaz → couldn't serbesttir" }
           ]
         },
         {
           "type": "pitfall",
-          "wrong": "Despite the traffic, she could arrive on time.",
-          "right": "Despite the traffic, she was able to arrive on time.",
+          "wrong": "Despite the power cut, we could finish the experiment.",
+          "right": "Despite the power cut, we were able to finish the experiment.",
           "why": "Anlatılan şey belirli bir gündeki tek bir başarı. Olumlu cümlede bu anlam için 'could' değil, 'was/were able to' kullanılır."
         },
         {
           "type": "pitfall",
-          "wrong": "Next year, you can speak English fluently if you keep practising.",
-          "right": "Next year, you will be able to speak English fluently if you keep practising.",
+          "wrong": "Next month, you can cook without a recipe.",
+          "right": "Next month, you will be able to cook without a recipe.",
           "why": "'Can' bir modaldir ve gelecekteki bir yeteneği anlatamaz; 'will can' de kurulamaz, çünkü iki modal yan yana gelmez. Gelecek için 'will be able to' vardır."
         },
         {
@@ -881,7 +891,8 @@
           "heading": "Sınavda sırayla bunlara bak",
           "rules": [
             { "signals": ["despite", "in the end", "finally", "after a long struggle"], "then": "Was / were able to" },
-            { "signals": ["next year", "once you finish", "by the time you graduate", "in the future"], "then": "Will be able to" },
+            { "signals": ["next year", "by the time you graduate", "in the future", "one day"], "then": "Will be able to" },
+            { "condition": "Yetenek henüz yok; cümle onu bir kursun, bir eğitimin ya da bir sürecin bitmesine bağlıyor", "then": "Will be able to" },
             { "condition": "Cümlede zaten 'will' ya da başka bir modal varsa 'can' kullanılamaz", "then": "Be able to" },
             { "condition": "Geçmişte bir dönem boyunca süren genel bir yetenek (çocukken, o yıllarda)", "then": "Could" },
             { "condition": "Şu anki genel bir yetenek", "then": "Can" }
