@@ -28,7 +28,15 @@ answers to the cloze section instead of one whole one.
 
 What remains drafted is the two vocabulary topics, in
 `docs/agents/drafts/`; `docs/agents/drafts/README.md` records what each
-still owes. Neither review pass has run on either, so neither is served.
+still owes. Both have now been through a blind item review, a lesson
+sufficiency pass, a repair and an **independent re-audit** — and the
+re-audit is why neither is served yet: it blocked two of six categories
+in each, with named defects rather than a general doubt. `academic-verbs`
+is held by a `decision` rule that certifies a distractor and by two
+second-defensible answers; `academic-nouns-adjectives` by an item that is
+its own lesson's `pitfall` block and by a `pitfall` that marks as wrong a
+use the rest of its lesson licenses. A second repair round is under way
+against exactly those four.
 
 ## What the paper actually pays for
 
@@ -104,11 +112,40 @@ only by an independent re-audit and none of them visible to
 `npm run check`. A repair is not a fix until someone who did not write it
 has re-read it.
 
+### Done — the three oldest topics, reviewed at last (2026-09-04)
+
+`tenses`, `modals` and `passive-voice` predate the pipeline and had never
+had a blind pass; `data/roadmap.json` had at one point implied otherwise,
+and that claim was corrected before this one was made. All three have now
+been through it, and the results are worth separating:
+
+- **73 of 73 agreement with the key.** No item in the three is
+  mis-keyed. That was the open question and it is closed.
+- **What the passes did find is discrimination.** Two items cannot
+  discriminate at all (`modals-t2`, `modals-t18`); eight more carry a
+  second answer that survives the paragraph; nine are answerable with the
+  paragraph deleted, and across the twelve passive-structure items nine
+  keys are the only well-formed option — a student who reads nothing
+  scores 9/12.
+- **49 of 72 questions have their keyed sentence inside their own
+  lesson.** A `check` block draws from the same category, so the learner
+  meets the answer two blocks above the question. This one is now a
+  validator warning (`checkLessonGiveaway`) with a ratchet, so it can
+  only shrink.
+- **Five `decision` blocks hand a learner following them a distractor.**
+  The worst class of defect in the corpus: the lesson's own checklist,
+  run literally, returns a wrong option.
+
+A repair round is under way on all three, and will be re-audited
+independently before it is called done.
+
 ### Now — the two vocabulary topics
 
 `academic-verbs` and `academic-nouns-adjectives`: 48 questions and 12
-lessons, neither review pass run on either. They close cloze blanks 5 and
-10 and take the app to 241 questions across 10 topics.
+lessons, both through both review passes, a repair and an independent
+re-audit. Eight of the twelve categories are cleared to ship; four are
+held by named defects and are in a second repair round. They close cloze
+blanks 5 and 10 and take the app to 241 questions across 10 topics.
 
 ### Next — the two real holes
 
