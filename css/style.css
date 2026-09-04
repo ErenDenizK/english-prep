@@ -691,18 +691,6 @@
   .chip--ok { background: var(--c-ok-tint); color: var(--c-ok); }
   .chip--accent { background: rgb(239 176 92 / 0.14); color: var(--c-accent-text); }
 
-  /* -- Note. A tinted band, full bleed, no left-border accent. -- */
-  .note {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--s-4);
-    padding-block: var(--s-4);
-    background: var(--c-surface-1);
-    font-size: var(--t-meta);
-    line-height: 20px;
-    color: var(--c-text-2);
-  }
-
   /* -- Field. 16px is the whole fix for iOS focus-zoom. -- */
   .field {
     width: 100%;
@@ -1082,13 +1070,6 @@
   .divider {
     height: 1px;
     background: var(--c-hairline);
-  }
-
-  /* Focused mode. The lesson reader takes the whole shell, so anything
-     sitting above the views — today, the development note — steps out of
-     the way with the header and the nav. */
-  .is-reading .shell__scroll > .page > .note {
-    display: none;
   }
 
   /* For a glyph, never for a sentence: neither hue clears APCA Lc 75 as

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "note": "Uygulama hâlâ yazılıyor. Eğitim ve Test kullanıma hazır; aşağıdaki liste neyin bittiğini ve sırada neyin olduğunu olduğu gibi gösteriyor.",
+  "items": [
+    {
+      "status": "done",
+      "title": "Gramer",
+      "detail": "Sınavın boşluk doldurma bölümünün ödüllendirdiği sekiz konu. Her ders ve her soru, cevabı görmemiş ayrı bir denetimden geçti."
+    },
+    {
+      "status": "done",
+      "title": "Anlamca en yakın cümle",
+      "detail": "Session I'in 15 puanı. Aynı anlamı taşıyan cümleyi seçme soruları."
+    },
+    {
+      "status": "done",
+      "title": "Yanlış defteri",
+      "detail": "Yanlış yaptığın sorular, ayrı iki günde doğru cevaplayana kadar burada bekler."
+    },
+    {
+      "status": "next",
+      "title": "Kelime",
+      "detail": "Akademik fiiller, isimler ve sıfatlar. Yazıldı, denetimi bekliyor."
+    },
+    {
+      "status": "next",
+      "title": "Konu girişleri",
+      "detail": "Her konunun başında 'bu nedir' anlatan kısa bir bölüm. Şu an dersler doğrudan karşılaştırmayla başlıyor."
+    },
+    {
+      "status": "planned",
+      "title": "Paragraf tamamlama",
+      "detail": "Session I'in 9 puanı. Henüz hiç sorusu yok."
+    },
+    {
+      "status": "planned",
+      "title": "Okuma parçaları",
+      "detail": "21 puanla en büyük bölüm, ve en pahalısı: her parça tek kullanımlık. v1'den sonra, teker teker."
+    }
+  ]
+}

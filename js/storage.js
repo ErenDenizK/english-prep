@@ -20,7 +20,6 @@ const HISTORY_KEY = "englishPrep.history";
 const SEEN_VERSIONS_KEY = "englishPrep.seenVersions";
 const PROFILE_NAME_KEY = "englishPrep.profileName";
 const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
-const DEV_NOTE_DISMISSED_KEY = "englishPrep.devNoteDismissed";
 const SETTINGS_KEY = "englishPrep.settings";
 /** Distinct questions that must have been met before a group is ranked. */
 export const MIN_ITEMS_FOR_WEAK_ENTRY = 3;
@@ -702,7 +701,6 @@ export function exportState() {
     lessonProgress: loadLessonProgress(),
     seenVersions: readJson(SEEN_VERSIONS_KEY, {}, isPlainObject),
     profileName: getProfileName(),
-    devNoteDismissed: isDevNoteDismissed(),
     settings: getSettings(),
   };
 }
@@ -735,9 +733,6 @@ export function importState(backup) {
   if (!getProfileName() && typeof theirs.profileName === "string") {
     setProfileName(theirs.profileName);
   }
-  if (theirs.devNoteDismissed === true) {
-    dismissDevNote();
-  }
   // The device being held wins on a preference, the same way the name
   // does; a restore only fills in what has never been chosen here.
   if (isPlainObject(theirs.settings)) {
@@ -762,25 +757,10 @@ export function requestPersistentStorage() {
   }
 }
 
-/* ---- "Still in development" note ----
-   Kept out of both the history and the profile: dismissing a one-off
-   notice is not progress, so resetting history must not bring it back. */
-
-/**
- * @returns {boolean} whether the learner has dismissed the note
- */
-export function isDevNoteDismissed() {
-  try {
-    return localStorage.getItem(DEV_NOTE_DISMISSED_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-export function dismissDevNote() {
-  try {
-    localStorage.setItem(DEV_NOTE_DISMISSED_KEY, "1");
-  } catch {
-    // Storage may be unavailable; the note just shows again next visit.
-  }
-}
+/* The "still in development" banner is gone: it sat above every screen,
+   was the first thing a stranger read, cost 48px of the 320px fold on
+   every arrival and said something no learner could act on. What it was
+   trying to say now lives in Profil, as a list of what exists and what is
+   coming, where there is room to say it properly. `englishPrep.devNoteDismissed`
+   is left in storage rather than deleted — an unread key costs nothing,
+   and clearing one on upgrade is a migration this app has no need of. */

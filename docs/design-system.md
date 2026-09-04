@@ -499,7 +499,6 @@ is the point of the rebuild.
 | **Stat** | `stat-tile`, `stat-grid` | Figures use tabular numerals |
 | **Button** | `btn`, `option-btn`, `profile-trigger`, `quiz-nav__exit` | Three levels, one filled per screen |
 | **Chip** | `badge`, `category-chip` | Pill radius, never interactive |
-| **Note** | `dev-note`, `callout` | Tinted band, full bleed, no left-border accent |
 | **Field** | `text-input` | 16px minimum, always |
 | **Listbox** | `dropdown` | Combobox pattern — §8.2 |
 | **Dialog** | `modal`, `modal-overlay` | Native `<dialog>` — §8.3 |

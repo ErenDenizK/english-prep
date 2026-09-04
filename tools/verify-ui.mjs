@@ -288,6 +288,50 @@ async function runFlow(page, viewport) {
   ok(/okuma \(21 puan\)/i.test(profileText), "kapsanmayan bölümler puanıyla adlandırılıyor");
   ok(/dinleme/.test(profileText), "Session II'nin kapsanmadığı söyleniyor");
 
+  // The roadmap. Its "what exists" line is counted from the manifest, so
+  // the check compares it to the manifest rather than to a number — the
+  // whole point of counting it is that shipping a topic updates it and
+  // nothing else has to remember to.
+  ok(profileText.includes("Neler var, neler geliyor"), "yol haritası Profil'de");
+  const expected = await page.evaluate(async () => {
+    const manifest = await (await fetch("data/manifest.json")).json();
+    const live = manifest.topics.filter((topic) => !topic.comingSoon);
+    return {
+      topics: live.length,
+      lessons: live.reduce((total, topic) => total + (topic.lessonCount ?? 0), 0),
+      questions: live.reduce((total, topic) => total + (topic.questionCount ?? 0), 0),
+    };
+  });
+  ok(
+    profileText.includes(
+      `Şu an ${expected.topics} konu, ${expected.lessons} ders, ${expected.questions} soru.`
+    ),
+    `var olan içerik manifestten sayılıyor (${expected.topics}/${expected.lessons}/${expected.questions})`
+  );
+  // A roadmap row must not look like a control: it would be promising a
+  // screen that does not exist, which is the one thing it must not do.
+  const roadmapRows = page.locator("#profile-container section", {
+    hasText: "Neler var, neler geliyor",
+  });
+  ok((await roadmapRows.locator(".row").count()) > 0, "yol haritası satırları çiziliyor");
+  ok(
+    (await roadmapRows.locator("button.row, a.row").count()) === 0,
+    "yol haritası satırları tıklanabilir görünmüyor"
+  );
+  // And no date is promised anywhere in it.
+  const roadmapText = await roadmapRows.first().innerText();
+  ok(
+    !/\b(20\d\d|ocak|şubat|mart|nisan|mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık)\b/i.test(
+      roadmapText
+    ),
+    "yol haritası tarih sözü vermiyor"
+  );
+
+  // The banner that used to sit above every screen is gone, on every
+  // screen: it cost 48px of the 320 fold on every arrival to say
+  // something no learner could act on.
+  ok((await page.locator("#dev-note").count()) === 0, "üstteki geliştirme bandı kalktı");
+
   ok(errors.length === 0, `konsol temiz${errors.length ? ` — ${[...new Set(errors)].join(" | ")}` : ""}`);
 }
 
