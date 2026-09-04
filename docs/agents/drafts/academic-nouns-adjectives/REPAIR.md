@@ -457,3 +457,22 @@ review report was edited.
 
 Unrelated and not mine: `docs/agents/drafts/academic-verbs/questions.json`
 carries an uncommitted edit to t11 that predates this session.
+
+---
+
+## Where this repair lives in the history
+
+Commit boundaries for this round are wrong, and the record is here rather
+than in them. Two repair agents wrote concurrently while a stop hook
+committed the working tree whenever this session paused, so:
+
+| commit | title says | actually contains |
+| --- | --- | --- |
+| `1632abc` | the topic intro screens | those, plus both drafts mid-repair |
+| `94b8e6a` | the nouns/adjectives lesson examples, WIP | that, correctly |
+| `23f1302` | the academic-verbs repair | **both** repairs' final state and both `REPAIR.md` files |
+
+Nothing was lost and every intermediate state passed `npm run draft`, but
+a reader following `git log` will not find a commit whose message
+describes the `academic-nouns-adjectives` repair. These two files are the
+record; the history is only where the bytes are.
