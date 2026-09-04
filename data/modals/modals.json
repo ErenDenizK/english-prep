@@ -3,6 +3,23 @@
   "title": "Modals",
   "level": "B2-C1",
   "note": "Her soru YTU IYS ve Bilkent hazirlik sinavi tarzinda: kisa paragraf + tek bosluk + 4 secenek. Aciklamalar ve tuyolar Turkce, ogrenme materyali Ingilizce.",
+  "intro": {
+    "title": "Modal nedir?",
+    "what": "Bir eylemin kendisini değil, o eyleme dair *tutumunu* söyleyen küçük bir fiil grubu. Türkçede bunu ek ve yardımcı sözcüklerle yaparsın: *gitmeliyim*, *gidebilirim*, *gitmiş olmalı*.\n\nİngilizcede bu iş ayrı bir kelimeye düşer ve o kelime fiilin önüne gelir. Kelime değişmez: kişiye göre çekilmez, sonuna *-s* almaz, ve arkasından gelen fiil daima yalın hâldedir.",
+    "examples": [
+      { "en": "You must show your passport.", "note": "Gerçek dünyada bir kural koyuyor: zorunluluk." },
+      { "en": "She must be on the rooftop.", "note": "Aynı kelime, bu kez tahmin: kesin oradadır." }
+    ],
+    "partsHeading": "Bir modal cümlesinin parçaları",
+    "parts": [
+      { "name": "Modal", "gloss": "tutumu taşıyan değişmez kelime", "en": "can · must · should · may · might" },
+      { "name": "Yalın fiil", "gloss": "modaldan sonra gelen, çekimsiz fiil", "en": "must cycle, not must to cycle" },
+      { "name": "Geçmişe bakan biçim", "gloss": "modal + have + V3; olmuş bir şey hakkında tutum", "en": "must have cycled" }
+    ],
+    "choice": "Aynı modal iki ayrı iş görür: gerçek dünyada bir kural koyar (*izin var, zorunlu, yasak*) ya da bir tahmin yürütür (*kesin, mümkün, imkânsız*). Türkçede bu ikisi genelde ayrı sözcüklerle söylenir; İngilizcede aynı kelime ikisini de yapar, ve hangisi olduğunu cümlenin geri kalanı belirler.",
+    "lessons": "Altı dersin ilk üçü bu iki işi ayırır: zorunluluk ve izin bir yanda, tahminin gücü öbür yanda. Dördüncü ders geçmişe bakan biçimi alır, kalan ikisi de tavsiyenin ve yeteneğin kendi içindeki derecelerini. İlk ders diğerlerinin varsaydığı temeldir.",
+    "exam": "Örnek kâğıdın boşluk doldurma bölümünde on boşluğun ikisi modal soruyor — tek bir konu için en yüksek pay."
+  },
   "questions": [
     {
       "id": "modals-t1",

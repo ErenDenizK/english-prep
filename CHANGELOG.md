@@ -5,6 +5,68 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.21 — 2026-09-04
+
+**Every topic now says what it is**, before any of its lessons offers to
+distinguish three things inside it.
+
+The owner's report was that the lessons are good but suffocating for a
+first arrival, because they go straight at the important headings. He was
+right on the facts: all 48 lessons across 8 topics are contrasts, and
+nothing anywhere said what a relative clause *is*. The index offered
+`Relative Clauses` and then, one line down, `Who vs Whom vs Whose`.
+
+Two things ship, and they are the same content at two lengths. Under each
+topic heading on the Eğitim index there is now **one Turkish line**; under
+that, a **"Bu konu nedir?"** button opening a real screen at
+`#egitim/konu/<topicId>` — what the thing is in function terms with a
+Turkish example the learner already produces, its parts named, the choice
+English makes that Turkish does not, what the six lessons divide between
+them, and what the exam does with it. Then the topic's own lesson rows,
+so it is a topic page rather than a leaflet.
+
+**It is a screen you choose to open, and that is the whole design.** The
+expertise-reversal literature decides it: across 60 studies and 5,924
+participants, the same support that helped novices (+0.505) measurably
+*hurt* people who already had the schema (−0.428). The effect is
+asymmetrical, so one screen a learner can ignore is licensed and 48
+unavoidable paragraphs are not. Someone who knows what a relative clause
+is never sees this and pays nothing for its existence.
+
+**Its shape is evidence too.** The parts list is the part that earns the
+page: Mayer's pre-training principle — the strongest result in that
+literature, median d = 0.92 — is about knowing the *names and
+characteristics* of the main concepts, which in the experiments is a
+parts list rather than prose. Pulling the other way, the coherence
+principle found added interesting-but-inessential material hurting
+learning across 50 studies, so the validator caps the Turkish and
+everything except the parts is one or two sentences.
+
+**Typed fields, not one prose blob**, because English has to sit in its
+own field to carry `lang="en"` — a Turkish prose field cannot, and
+`text-transform: uppercase` would turn SIMPLE into SİMPLE.
+
+**A new check caught something on its first run.** An orientation must
+not print a phrase that appears in one of its own questions — it sits one
+screen above them, so a collision there is worse than one in a lesson.
+The `passive-voice` intro listed `has been` among the auxiliaries, and
+`has been` is an option in `passive-voice-t4`. The research arm had
+predicted exactly that failure, because an orientation is written last
+and about the same material.
+
+**Honest about what this does not fix.** The owner expected it to improve
+onboarding. Measured, it mostly does not: the first-run screen is a 384px
+welcome card and one button, and the suffocation is at the *second*
+screen — a 5,807px lesson. This helps re-entry and navigation, and the
+lesson-level fix is a separate job.
+
+**The intros have not had a content review.** They have a schema check, a
+giveaway check and 1,128 browser checks; nobody independent has read them
+for whether the teaching is true. That is the same gap the two review
+passes close for lessons and items, and it is open.
+
+107 unit tests, 1128 verification checks.
+
 ## v0.20 — 2026-09-04
 
 **The app now says what is built and what is coming**, in Profil, as a

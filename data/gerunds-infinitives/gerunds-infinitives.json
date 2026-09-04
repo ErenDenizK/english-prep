@@ -3,6 +3,23 @@
   "title": "Gerunds & Infinitives",
   "level": "B2-C1",
   "note": "Written to docs/agents/gerunds-infinitives-spec.md.",
+  "intro": {
+    "title": "Gerund ve infinitive nedir?",
+    "what": "Bir cümlede iki fiil arka arkaya geldiğinde, ikincisinin hangi biçime gireceği sorusu. Türkçede bunu ekle çözersin: *koşmayı sevmek*, *koşmaya karar vermek* — ek değişir ama düşünmeden kurarsın.\n\nİngilizcede ikinci fiil ya **-ing** alır, ya önüne **to** gelir, ya da hiçbiri olmadan yalın kalır. Hangisi olacağını ikinci fiil değil, ondan **önce** gelen kelime belirler.",
+    "examples": [
+      { "en": "She enjoys jogging before work.", "note": "Önündeki fiil -ing istiyor." },
+      { "en": "She decided to repaint the hallway.", "note": "Başka bir fiil, bu kez 'to' istiyor." }
+    ],
+    "partsHeading": "Biçimi belirleyen üç şey",
+    "parts": [
+      { "name": "Önceki fiil", "gloss": "çoğu durumda kural değil liste: her fiil birini alır", "en": "enjoy + -ing · decide + to" },
+      { "name": "Edat", "gloss": "bir edattan sonra fiil daima -ing alır", "en": "good at jogging" },
+      { "name": "Anlam değiştiren çiftler", "gloss": "birkaç fiil ikisini de alır ve anlam değişir", "en": "stopped smoking · stopped to smoke" }
+    ],
+    "choice": "Türkçede ek fiilin sonuna gelir ve seçimi cümlenin anlamı yapar. İngilizcede biçim, önündeki kelimenin bir özelliğidir — yani öğrenilecek şey çoğu zaman bir mantık değil, hangi kelimenin hangisini istediğidir. Birkaç fiilde ise seçim gerçekten anlamı değiştirir, ve sınav en çok orayı sorar.",
+    "lessons": "İlk ders listeyi kurar, ikincisi anlamı değiştiren çiftleri alır. Kalan dördü biçimi belirleyen öbür kaynakları ayırır: yaptırma yapıları, sıfat ve edat sonrası, amaç bildiren kuruluşlar, ve alışkanlık anlatan üç benzer yapı.",
+    "exam": "Örnek kâğıdın boşluk doldurma bölümünde bir boşluk yaptırma yapısını soruyor; bu konunun geri kalanı okuma ve yeniden ifade sorularının içinde geçiyor."
+  },
   "lessons": [
     {
       "category": "Verb + Gerund vs Verb + Infinitive",

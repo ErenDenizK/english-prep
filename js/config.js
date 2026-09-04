@@ -8,6 +8,17 @@ export const TOPIC_TEST_DEFAULT_COUNT = 15;
 export const MIXED_TEST_DEFAULT_COUNT = "10";
 
 /**
+ * The route namespace for a topic's overview screen: `#egitim/konu/<id>`.
+ *
+ * A prefix rather than a bare topic id, because a lesson id is
+ * `<topicId>-<slug>` and lives in the same slot — without a namespace,
+ * `#egitim/modals` would be ambiguous the moment a topic and a lesson
+ * could share a spelling. Both the router and the links use this, so the
+ * two cannot drift.
+ */
+export const TOPIC_INTRO_PREFIX = "konu/";
+
+/**
  * Names of the learner-chosen settings, so a typo in one screen cannot
  * silently disagree with another.
  */

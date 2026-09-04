@@ -167,7 +167,7 @@
     "optionNotes": {
       "tentative": "Geçici, sonradan değişebilecek. Delillerin geçici olması değil, meseleyi kapatamaması söz konusu.",
       "questionable": "Şüphe uyandıran, güvenilmeyen. Paragraf delillerin sahteliğini değil, yetersizliğini anlatıyor.",
-      "apparent": "Ya 'açıkça görülen' ya da 'görünüşte öyle olan' demektir; cümle hangisi olduğunu söylemez ve ikisi de buraya oturmaz."
+      "apparent": "İki anlamı da bir yer ister: It became apparent that, ya da isimden önce. Boşluk ikisi de değil, ve tartışılan şey delilin görünürlüğü değil yeterliliği."
     }
   },
   {
@@ -186,7 +186,7 @@
     "optionNotes": {
       "conclusive": "Kesin sonuca götüren, tartışmayı kapatan. Kayıt 1699'da bittiği için ateş açıklaması kanıtlanamıyor.",
       "questionable": "Şüpheli, güvenilmeyen. Paragraf açıklamayı çürüten hiçbir şey bulunmadığını söylüyor; ortada şüphe nedeni yok.",
-      "apparent": "İki anlamı var: 'gözle görülür' ve 'görünüşte, aslında öyle olmayabilir'. Cümle hangisi olduğunu söylemiyor, ikisi de oturmuyor."
+      "apparent": "İki anlamı da bir yer ister: It is apparent that, ya da isimden önce. 'is ____ as an explanation' ikisi de değil; ölçülen şey inandırıcılık."
     }
   },
   {
@@ -205,7 +205,7 @@
     "optionNotes": {
       "plausible": "İnandırıcı, doğru olabilir. Metin sonuçların inandırıcılığını değil, tarafsızlığını sorguluyor.",
       "tentative": "Geçici, sonradan değişebilir. Sorun sonuçların taslak olması değil, kimin neyi seçtiğinin bilinmemesi.",
-      "apparent": "Ya 'açıkça görülen' ya da 'göründüğü kadarıyla' demektir. Denetçilerin itirazı sonuçların görünürlüğüyle ilgili değil."
+      "apparent": "Bir şeyin görünür olduğunu ya da göründüğü gibi olmadığını söyler. Denetçilerin itirazı görünüşe değil, kimin ürettiğine ve verilmeyen ham veriye."
     }
   },
   {
@@ -224,7 +224,7 @@
     "optionNotes": {
       "conclusive": "Kesin, tartışmayı kapatan. Dalgıçlar tarihi kendileri değiştirmeyi beklediğine göre kapanmış bir şey yok.",
       "plausible": "İnandırıcı, doğru olabilir. Cümle tarihin inandırıcılığını değil, geçiciliğini vurguluyor.",
-      "apparent": "'Açıkça görülen' ya da 'görünüşteki' demek. İki anlamı da raporun sayısının neden değişeceğini açıklamıyor."
+      "apparent": "Ortaya çıkan ya da yalnızca öyle görünen demektir; ikisinde de geçicilik yoktur. Paragraf ise sayının sonradan değiştirileceğini baştan söylüyor."
     }
   },
   {
@@ -268,20 +268,20 @@
   {
     "id": "academic-nouns-adjectives-t15",
     "category": "Significance & Priority (crucial / substantial / marginal / negligible / considerable)",
-    "paragraph": "Fitting the whole fleet with the new tyres cut fuel use by four tenths of one per cent — a saving the depot could measure, but only just. Beside the driver-training scheme that took seven per cent off the same bill, the tyre gain looked ____ , and within a year it had dropped out of the monthly report altogether.",
+    "paragraph": "Fitting the whole fleet with the new tyres cut fuel use by four tenths of one per cent — a saving the depot could measure, but only just. Beside the driver-training scheme that took seven per cent off the same bill the tyre figure looked ____ ; even so, it was those four tenths that carried the depot under its emissions cap in November, and the finance office has kept them in the accounts ever since.",
     "options": [
       "marginal",
-      "crucial",
+      "negligible",
       "substantial",
       "considerable"
     ],
     "correctIndex": 0,
-    "explanation": "Kazanç var ve ölçülebiliyor, ama yüzde yedilik eğitim tasarrufunun yanında anılmaya değmeyecek kadar sönük kalıyor; bu yüzden rapordan da çıkıyor. Ölçülebilir ama sınırda kalan bu büyüklük 'marginal'dır. 'considerable' en yakın yanlış seçenek olurdu ama tam tersini söyler: hatırı sayılır bir miktar demektir, oysa buradaki oran binde dörttür.",
-    "tip": "'Marginal' ölçülebilen ama başka bir şeyin yanında kayda değmeyen küçüklüktür; büyük miktar için 'considerable' kullanılır.",
+    "explanation": "Kazanç küçük ama gerçek: binde dört ölçülebiliyor, yüzde yedilik eğitim tasarrufunun yanında sönük kalıyor, yine de depoyu kasımda emisyon sınırının altına taşıyan şey o binde dört ve rakam hâlâ hesapta duruyor. Ölçülen, hesaba giren ama zar zor sayılan büyüklük 'marginal'dır. En yakın yanlış seçenek 'negligible'dır; o 'hesaba katmaya gerek yok' demektir, oysa bu kazanç hesaptan çıkarılamaz — çıkarılsaydı sınır aşılmış olurdu.",
+    "tip": "'Marginal' ölçülen ve hesaba giren ama zar zor sayılan küçüklüktür; hesabın dışında bırakılabilecek kadar küçük olan ise 'negligible'dır.",
     "optionNotes": {
-      "crucial": "Olmazsa olmaz, sonucu belirleyen. Bir yıl içinde rapordan çıkarılan bir kazanç için kullanılamaz.",
-      "substantial": "Miktarca büyük, ciddi. Binde dörtlük bir yakıt tasarrufu bu sözcüğü karşılamaz.",
-      "considerable": "Hatırı sayılır ölçüde çok. Paragraf kazancın yüzde yedinin yanında sönük kaldığını söylüyor."
+      "negligible": "Hesaba katılmasına gerek olmayan. Binde dörtlük kazanç hesaptan çıkarılamaz: depoyu kasımda sınırın altına taşıyan ve hâlâ hesapta tutulan şey odur.",
+      "substantial": "Miktarca büyük, ciddi. Yüzde yedinin yanında binde dörtlük bir yakıt tasarrufu bu sözcüğü karşılamaz.",
+      "considerable": "Hatırı sayılır ölçüde çok. Paragraf kazancın yüzde yedilik tasarrufun yanında sönük kaldığını söylüyor."
     }
   },
   {
@@ -401,7 +401,7 @@
   {
     "id": "academic-nouns-adjectives-t22",
     "category": "Stance & Disposition (reluctant / deliberate / cautious / persistent / indifferent)",
-    "paragraph": "The three households that had objected loudest to the car park were the three whose notices arrived four days after the deadline, all franked at the same office on the same afternoon. The ombudsman decided the clerks had been ____ about it, and ordered the consultation to be run a second time.",
+    "paragraph": "The three households that had objected loudest to the car park were the three whose notices arrived four days after the deadline, all franked at the same office on the same afternoon. Every other notice posted that week reached the council on time. The ombudsman decided the clerks had been ____ , not careless, and ordered the consultation to be run a second time.",
     "options": [
       "deliberate",
       "cautious",
@@ -409,11 +409,11 @@
       "persistent"
     ],
     "correctIndex": 0,
-    "explanation": "Aynı gün, aynı postaneden ve tam da en çok itiraz eden üç haneye: paragraf gecikmenin rastlantı olamayacağını gösteriyor. Bilerek ve isteyerek yapılan bir şey 'deliberate'tir. En yakın yanlış seçenek 'indifferent'tır — memurların işi umursamadığını düşünmek makul bir okuma olurdu, ama umursamazlık mektupların neden yalnızca o üç haneye geciktiğini açıklamaz.",
-    "tip": "'Deliberate' bilerek yapılmış demektir; anlatılan şey ihmal ya da aldırmazlıksa aranan sözcük 'indifferent' olur.",
+    "explanation": "Gecikme yalnızca en çok itiraz eden üç haneye denk geliyor, üç zarf aynı gün aynı postaneden damgalanmış ve o hafta başka hiçbir bildirim gecikmemiş: paragraf hem rastlantıyı hem de ihmali eliyor. Bilerek yapılan bir şey 'deliberate'tir. En yakın yanlış seçenek 'indifferent'tır; umursamazlık dağınık gecikmeler üretirdi, oysa 'not careless' ifadesi kusurun dikkatsizlik olmadığını açıkça söylüyor.",
+    "tip": "'Deliberate' bilerek yapılmış demektir; anlatılan şey dikkatsizlik ya da aldırmazlıksa aranan sözcük 'indifferent' olur.",
     "optionNotes": {
-      "cautious": "Riske karşı temkinli davranan. Ortada korunulan bir risk yok, geciktirilmiş üç itiraz var.",
-      "indifferent": "Umursamayan. Umursamazlık gecikmeyi açıklardı, ama gecikmenin neden tam o üç haneye denk geldiğini açıklamaz.",
+      "cautious": "Riske karşı temkinli davranan. Ortada korunulan bir risk yok; geciktirilmiş üç itiraz var.",
+      "indifferent": "Umursamayan. Umursamazlık bir dikkatsizlik biçimidir ve cümle 'not careless' diyerek bunu eliyor; ayrıca gecikme rastgele değil, tam o üç haneye denk geliyor.",
       "persistent": "Vazgeçmeden sürdüren. Tek bir öğleden sonraya sığmış tek seferlik bir işlem için kullanılmaz."
     }
   },

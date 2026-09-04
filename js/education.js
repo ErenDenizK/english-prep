@@ -24,6 +24,7 @@
 import {
   loadManifest,
   loadLessonsForTopics,
+  loadTopicFile,
   lessonIndex,
   uncoveredSections,
   sectionListPhrase,
@@ -46,6 +47,7 @@ import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { startTopicTest, startCategoryPractice, startMixedTest } from "./quiz-launch.js";
+import { TOPIC_INTRO_PREFIX } from "./config.js";
 import { el, clear, appendProse, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
@@ -563,6 +565,19 @@ function renderIndex() {
       if (inTopic[0].topicGloss) {
         section.appendChild(el("p", "t-meta", inTopic[0].topicGloss));
       }
+      // The way in, and a quiet button rather than a row. A row is
+      // 62–82px and eight of them would add 520–650px to an index that
+      // is already 4,564px at 320; this is one 44px tap target — the
+      // minimum a tap target may be — so about 400px across eight
+      // topics, and it sits directly under the line that has just
+      // raised the question it answers.
+      if (inTopic[0].hasIntro) {
+        const open = el("button", "btn btn--quiet", "Bu konu nedir?");
+        open.type = "button";
+        open.appendChild(icon("chevron-right", { size: 20 }));
+        open.addEventListener("click", () => openIntroByHash(inTopic[0].topicId));
+        section.appendChild(open);
+      }
     } else {
       section.appendChild(el("h2", "t-label", "Dersler"));
     }
@@ -573,6 +588,177 @@ function renderIndex() {
     section.appendChild(list);
     indexContainer.appendChild(section);
   }
+}
+
+/* ---- Topic intro ---- */
+
+/**
+ * The topic screen: what this group of six lessons IS, before any of them
+ * offers to distinguish three things inside it.
+ *
+ * Every lesson in this app is a contrast, which is the right shape for
+ * the exam and the wrong shape for a first arrival — the index offered
+ * "Relative Clauses" and then, one line down, "Who vs Whom vs Whose",
+ * with nothing anywhere saying what a relative clause is.
+ *
+ * It is a SCREEN and not a block inside every lesson, and that is the
+ * whole design. `docs/research/orientation.md` settles it on the
+ * expertise-reversal literature: across 60 studies, giving support to
+ * novices helped (+0.505) while giving the same support to people who
+ * already had the schema HURT them (−0.428). The effect is asymmetrical,
+ * so one screen a learner can choose to open is licensed and forty-eight
+ * unavoidable paragraphs are not. Someone who knows what a relative
+ * clause is never has to see this, and pays nothing for its existence.
+ *
+ * Its shape is not free prose either. Mayer's pre-training principle —
+ * the strongest thing in that literature, median d = 0.92 — is about
+ * knowing the NAMES AND CHARACTERISTICS of the main concepts, which in
+ * the experiments is a parts list. The coherence principle pulls the
+ * other way: added interesting-but-inessential material measurably hurt
+ * across 50 studies. So `parts` is the part that earns the page, and
+ * everything else is one or two sentences.
+ *
+ * The typed fields are also what lets the English carry `lang="en"`. A
+ * Turkish prose field cannot: `js/dom.js` builds text nodes and bold
+ * spans and has no `lang` handling, so English inside one inherits the
+ * page's `lang="tr"` and `text-transform: uppercase` turns "SIMPLE" into
+ * "SİMPLE". The lessons already solve this by putting English in
+ * structural slots; an intro written as one prose blob could not.
+ */
+function renderIntro(topic, lessons, progress) {
+  const page = el("div", "stack stack--loose");
+  const intro = topic.intro;
+
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("p", "t-label", "Genel bakış"));
+  head.appendChild(el("h1", "t-title", intro.title));
+  page.appendChild(head);
+
+  const what = el("div", "stack stack--tight");
+  appendProse(what, intro.what, "t-body");
+  page.appendChild(what);
+
+  if (intro.examples?.length) {
+    const list = el("ul", "stack stack--tight");
+    for (const item of intro.examples) {
+      const entry = el("li", "stack stack--tight");
+      entry.appendChild(englishTitle("p", "t-lead t-en", item.en));
+      if (item.note) {
+        const note = el("p", "t-meta");
+        appendInline(note, item.note);
+        entry.appendChild(note);
+      }
+      list.appendChild(entry);
+    }
+    page.appendChild(list);
+  }
+
+  if (intro.parts?.length) {
+    const section = el("section", "stack stack--tight");
+    section.appendChild(el("h2", "t-label", intro.partsHeading ?? "Parçaları"));
+    const list = el("ul", "stack stack--tight");
+    for (const part of intro.parts) {
+      const entry = el("li", "stack stack--tight");
+      const name = el("p", "t-ui");
+      name.appendChild(el("strong", null, part.name));
+      if (part.gloss) {
+        name.appendChild(document.createTextNode(` — ${part.gloss}`));
+      }
+      entry.appendChild(name);
+      if (part.en) {
+        entry.appendChild(englishTitle("p", "t-meta t-en", part.en));
+      }
+      list.appendChild(entry);
+    }
+    section.appendChild(list);
+    page.appendChild(section);
+  }
+
+  for (const [heading, body] of [
+    ["İngilizcenin istediği seçim", intro.choice],
+    ["Bu konudaki dersler", intro.lessons],
+    ["Sınavda", intro.exam],
+  ]) {
+    if (!body) continue;
+    const section = el("section", "stack stack--tight");
+    section.appendChild(el("h2", "t-label", heading));
+    appendProse(section, body, "t-body");
+    page.appendChild(section);
+  }
+
+  // The lesson rows, so this is a topic page and not a leaflet. They are
+  // the same rows as the index, built by the same function: a second
+  // implementation of a lesson row is a second thing to keep in step.
+  const list = el("section", "stack stack--tight");
+  list.appendChild(el("h2", "t-label", "Dersler"));
+  const rows = el("div");
+  for (const lesson of lessons) {
+    rows.appendChild(renderLessonRow(lesson, statusOf(lesson, progress)));
+  }
+  list.appendChild(rows);
+  page.appendChild(list);
+
+  return page;
+}
+
+/**
+ * @param {string} topicId - from the URL hash, so it may be stale or
+ *   hand-typed; anything unknown falls back to the index without leaving
+ *   a dead entry in the history.
+ */
+export async function openTopicIntro(topicId) {
+  let lessons;
+  let manifest;
+  try {
+    lessons = await ensureLessons();
+    manifest = await loadManifest();
+  } catch (error) {
+    console.error(error);
+    await showLessonIndex();
+    return;
+  }
+
+  const entry = manifest.topics.find((item) => item.id === topicId && !item.comingSoon);
+  if (!entry) {
+    history.replaceState(null, "", "#egitim");
+    await showLessonIndex();
+    return;
+  }
+
+  let topic;
+  try {
+    topic = await loadTopicFile(entry);
+  } catch (error) {
+    console.error(error);
+    await showLessonIndex();
+    return;
+  }
+
+  // A topic whose file carries no intro is not an error and must not cost
+  // the learner a dead screen: the manifest flag and the file can drift
+  // while a topic is being written.
+  if (!topic?.intro) {
+    history.replaceState(null, "", "#egitim");
+    await showLessonIndex();
+    return;
+  }
+
+  state.reader = null;
+  setReaderChrome(true);
+  clear(readerContainer);
+  readerContainer.appendChild(
+    renderIntro(
+      topic,
+      lessons.filter((lesson) => lesson.topicId === topicId),
+      getAllLessonProgress()
+    )
+  );
+  scrollToTop();
+
+  document.title = `${entry.title} — English Prep`;
+  announce(`${entry.title} genel bakış.`);
+
+  actionBar.set([{ label: "Derslere dön", level: "secondary", onClick: showIndexByHash }]);
 }
 
 /* ---- Reader: the blocks ---- */
@@ -1066,6 +1252,10 @@ function openLessonByHash(lessonId) {
   window.location.hash = `egitim/${lessonId}`;
 }
 
+function openIntroByHash(topicId) {
+  window.location.hash = `egitim/${TOPIC_INTRO_PREFIX}${topicId}`;
+}
+
 function setReaderChrome(active) {
   shellHeader.hidden = active;
   bottomNav.hidden = active;
@@ -1078,10 +1268,8 @@ function setReaderChrome(active) {
     progressFill = null;
     readout = null;
   }
-  // The dev note sits above the views rather than inside one, so it needs
-  // hiding too or it survives into the reader's focused mode. A class, not
-  // `hidden`: that attribute belongs to the dismissal logic in home.js,
-  // and two owners would fight over it.
+  // A class rather than `hidden`, because focused mode is a state of the
+  // whole shell and CSS is what knows which parts step out of the way.
   document.body.classList.toggle("is-reading", active);
 }
 

@@ -137,6 +137,15 @@ async function buildLessonIndex(manifest) {
     } else {
       delete topic.lessons;
     }
+
+    // Whether the topic file carries an overview. Generated for the same
+    // reason as the lesson index: the Eğitim index has to know whether to
+    // offer the way in, and it must not fetch a topic file to find out.
+    if (data.intro) {
+      topic.hasIntro = true;
+    } else {
+      delete topic.hasIntro;
+    }
   }
   return manifest;
 }

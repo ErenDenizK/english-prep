@@ -23,9 +23,9 @@
       "detail": "Akademik fiiller, isimler ve sıfatlar. Yazıldı, denetimi bekliyor."
     },
     {
-      "status": "next",
+      "status": "done",
       "title": "Konu girişleri",
-      "detail": "Her konunun başında 'bu nedir' anlatan kısa bir bölüm. Şu an dersler doğrudan karşılaştırmayla başlıyor."
+      "detail": "Her konunun başında, o konunun ne olduğunu anlatan bir bölüm. Dersler doğrudan karşılaştırmayla başlıyordu."
     },
     {
       "status": "planned",

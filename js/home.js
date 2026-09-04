@@ -27,13 +27,13 @@ import {
 } from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createListbox } from "./listbox.js";
-import { showLessonIndex, openLesson, closeReader } from "./education.js";
+import { showLessonIndex, openLesson, openTopicIntro, closeReader } from "./education.js";
 import { initProfileTab } from "./profile.js";
 import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook } from "./quiz-launch.js";
 import { el, clear } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop } from "./shell.js";
-import { MIXED_TEST_DEFAULT_COUNT } from "./config.js";
+import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX } from "./config.js";
 
 const VIEW_IDS = ["egitim", "test", "profil"];
 const DEFAULT_VIEW = "egitim";
@@ -465,6 +465,14 @@ async function applyRoute() {
   routed = true;
 
   if (view === "egitim") {
+    // `konu/<topicId>` cannot collide with a lesson id: lesson ids are
+    // `<topicId>-<slug>` and carry no slash, so the prefix is a real
+    // namespace rather than a convention that holds until someone names
+    // a category "konu".
+    if (param?.startsWith(TOPIC_INTRO_PREFIX)) {
+      await openTopicIntro(param.slice(TOPIC_INTRO_PREFIX.length));
+      return;
+    }
     await (param ? openLesson(param) : showLessonIndex());
     return;
   }

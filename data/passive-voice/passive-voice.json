@@ -3,6 +3,23 @@
   "title": "Passive Voice",
   "level": "B2-C1",
   "note": "Her soru YTU IYS ve Bilkent hazirlik sinavi tarzinda: kisa paragraf + tek bosluk + 4 secenek. Aciklamalar ve tuyolar Turkce, ogrenme materyali Ingilizce.",
+  "intro": {
+    "title": "Passive nedir?",
+    "what": "İşi yapanı cümlenin öznesi olmaktan çıkarıp, işin yapıldığı şeyi öne alan kuruluş. Türkçede bunu fiile bir ek getirerek yaparsın: *çiti boyadılar* → *çit boyandı*.\n\nİngilizcede ek yoktur; cümle iki parçayla yeniden kurulur — *be* fiili ve ana fiilin üçüncü hâli. Failin adı söylenmek zorunda değildir, ve söylenmemesi çoğu zaman asıl sebeptir.",
+    "examples": [
+      { "en": "The fence was repainted last spring.", "note": "Kimin boyadığı konu değil; çite ne olduğu konu." },
+      { "en": "The fence was repainted by the council.", "note": "Fail gerçekten bir bilgi taşıyorsa eklenir." }
+    ],
+    "partsHeading": "Bir edilgen cümlenin parçaları",
+    "parts": [
+      { "name": "be", "gloss": "zamanı taşıyan yardımcı fiil; aktif cümlenin zamanı buraya geçer", "en": "is repainted · was repainted · will be repainted" },
+      { "name": "V3", "gloss": "ana fiilin üçüncü hâli, hiç değişmez", "en": "repainted · built · taken" },
+      { "name": "by + fail", "gloss": "isteğe bağlı; sadece yeni bir bilgi veriyorsa", "en": "by the council" }
+    ],
+    "choice": "Türkçede edilgen yapmak bir ek meselesidir ve cümlenin zamanı yerinde kalır. İngilizcede zaman *be* fiiline taşınır, ana fiil ise donar — yani zamanı doğru kurmak edilgende ayrı bir iştir, ve asıl zorluk oradadır.",
+    "lessons": "İlk üç ders zamanı taşımanın üç katmanıdır: düz zamanlar, modallı yapılar, sonra geçmişe bakan modallı yapılar. Dördüncü ders başkasına yaptırmayı, beşinci kaynağı belirtmeden bilgi aktarmayı alır. Son ders tek bir soruya bakar: *by* ne zaman gerekli, ne zaman fazlalık.",
+    "exam": "Örnek kâğıdın boşluk doldurma bölümünde doğrudan edilgen soran bir boşluk yok; edilgen, uzun cümleleri doğru okuyabilmen için gerekiyor."
+  },
   "questions": [
     {
       "id": "passive-voice-t1",

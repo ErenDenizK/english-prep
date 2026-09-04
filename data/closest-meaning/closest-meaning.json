@@ -3,6 +3,23 @@
   "title": "Closest Meaning",
   "level": "B2-C1",
   "note": "The exam's sentence-restatement section: fifteen of Session I's sixty points. Written to docs/agents/closest-meaning-spec.md.",
+  "intro": {
+    "title": "Anlamca en yakın cümle nedir?",
+    "what": "Bir gramer konusu değil, sınavın bir bölümü. Sana bir cümle verilir ve dört cümle arasından *aynı şeyi söyleyeni* seçersin.\n\nDört seçenek de düzgün İngilizcedir. Yanlış olanlar dilbilgisinden değil, anlamın bir yerinden kayar: bir koşul gerçekleşmiş sayılır, bir kesinlik bir olasılığa döner, bir zıtlık ters cümleye asılır.",
+    "examples": [
+      { "en": "The captain refused to sail because of the fog.", "note": "Verilen cümle." },
+      { "en": "The fog was the reason the captain would not sail.", "note": "Aynı olay, aynı kesinlik, farklı yapı." }
+    ],
+    "partsHeading": "Neyin aynı kalması gerekir",
+    "parts": [
+      { "name": "Kim ne yaptı", "gloss": "özne ve eylem yer değiştirmemeli", "en": "the captain refused" },
+      { "name": "Kesinlik derecesi", "gloss": "kesin olan olasıya, olası olan kesine dönmemeli", "en": "would not · might not" },
+      { "name": "Zaman ve yön", "gloss": "olmuş bir şey olmamış hâle gelmemeli", "en": "refused · had refused" }
+    ],
+    "choice": "Burada seçilecek bir kural yok; karşılaştırılacak iki cümle var. Yöntem de ondan farklıdır: kuralı hatırlamak yerine, verilen cümleyle seçeneği yan yana koyup neyin değiştiğini bulursun.",
+    "lessons": "Altı ders, sınavda en sık yeniden ifade edilen altı yapıyı alır: koşul cümleleri, olumsuzluğun hangi yana düştüğü, zıtlık, karşılaştırma, derece-sonuç, ve kaynağı belirtilmeden aktarılan bilgi. Aralarında sıra yoktur; her biri kendi başına çalışılabilir.",
+    "exam": "Kâğıtta ayrı bir bölüm: on soru, 15 puan. Her soruda bir cümle ve dört tam cümlelik seçenek var."
+  },
   "lessons": [
     {
       "category": "Third Conditional vs Mixed Conditional",

@@ -75,8 +75,8 @@ results.html          Score, breakdown, review
 js/
   home.js             The hash router (#egitim, #test, #profil,
                         #egitim/<lessonId>), the nav, and the Test tab
-  education.js        Eğitim: lesson index, and the focused reader that
-                        paces an authored article into steps
+  education.js        Eğitim: lesson index, the topic overview screen
+                        (#egitim/konu/<id>), and the focused lesson reader
   quiz.js             Test screen
   results.js          Results screen
   profile.js          Profil tab

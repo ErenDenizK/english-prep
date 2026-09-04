@@ -3,6 +3,23 @@
   "title": "Relative Clauses",
   "level": "B2-C1",
   "note": "Written to docs/agents/relative-clauses-spec.md.",
+  "intro": {
+    "title": "Relative clause nedir?",
+    "what": "Bir ismi tarif eden, ama tek başına cümle olmayan bir yan cümle. Türkçede bunu her gün kurarsın: *dün aldığımız harita*, *bu ağaçları diken kadın*.\n\nİngilizce aynı işi görür, iki farkla: yan cümle ismin **arkasına** geçer, ve araya ismin yerini tutan bir kelime girer.",
+    "examples": [
+      { "en": "the map that we bought", "note": "Türkçede tarif önde, İngilizcede arkada." },
+      { "en": "the gardener who planted these trees", "note": "Araya giren kelime, tarif edilen ismin yerini tutar." }
+    ],
+    "partsHeading": "Her ilgi cümlesinin üç parçası",
+    "parts": [
+      { "name": "Öncül", "gloss": "tarif edilen isim", "en": "the map" },
+      { "name": "İlgi zamiri", "gloss": "öncülün yerine geçen kelime", "en": "that · who · which · whose · where · when" },
+      { "name": "Yan cümle", "gloss": "zamirden sonra gelen, öncülü tarif eden kısım", "en": "we bought" }
+    ],
+    "choice": "Türkçede seçilecek bir şey yoktur; ek ne olursa olsun aynıdır. İngilizce her seferinde bir seçim ister ve bu seçimi iki soru birlikte yapar: öncül **ne** (insan mı, yer mi, zaman mı, nesne mi), ve öncül yan cümlenin **içinde ne iş yapıyor** (özne mi, nesne mi, sahip mi).",
+    "lessons": "Altı ders bu iki sorunun ayrı ayrı cevaplarıdır. İlk ikisi diğer dördünün varsaydığı temeldir, o yüzden sırayla okumak işine yarar; kalanlar edatın nereye gittiğini, cümlenin kısaltılabildiği durumları ve miktar sözcüğüyle kurulan biçimi alır.",
+    "exam": "Örnek kâğıdın boşluk doldurma bölümünde bir boşluk doğrudan bunu soruyor ve dört seçeneğin dördü de ilgi zamiri."
+  },
   "lessons": [
     {
       "category": "Who vs Whom vs Whose",
