@@ -333,6 +333,6 @@
     ],
     "correctIndex": 2,
     "explanation": "Burada 'be used to' alışkanlık kalıbı değil, 'use' fiilinin edilgen hâlidir: anahtar dolabı açmak için kullanılıyordu. Cümledeki 'by whichever assistant opened up' bunu kanıtlar, çünkü faili olan yapı edilgen yapıdır. 'was used to opening' alışkın olmak demektir, oysa bir anahtar bir şeye alışamaz. 'used to open' ise fail bildiren 'by' öbeğiyle birlikte kurulamaz.",
-    "tip": "'be used to + -ing' alışkın olmaktır; 'be used to + yalın fiil' ise 'use' fiilinin edilgenidir, yani bir şey için kullanılmak. Cümlede 'by ...' varsa ikincisidir."
+    "tip": "Öznesi eşya olan ya da eylemi yapanı 'by ...' ile veren cümlelerde 'be used to' alışkınlık değil, 'kullanılmak' demektir ve ardından yalın fiil gelir. 'little by little' gibi zarf öbekleri bu kurala girmez."
   }
 ]

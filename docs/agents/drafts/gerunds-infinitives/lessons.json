@@ -13,12 +13,12 @@
         "sides": [
           {
             "label": "Verb + V-ing",
-            "gloss": "Bazı fiiller kendinden sonraki eylemi hazır bir etkinlik gibi alır: hoşlanma, kaçınma ve sürdürme fiillerinin neredeyse tamamı bu gruptadır.",
+            "gloss": "Bu grubun üyeleri ezberlenir, anlamdan çıkarılmaz: hoşlanma, kaçınma, sürdürme ve öneri fiilleri buradadır.",
             "example": "He postponed calling."
           },
           {
             "label": "Verb + to V",
-            "gloss": "Bazı fiiller kendinden sonraki eylemi henüz gerçekleşmemiş bir hedef gibi alır: karar, plan, söz ve ret fiilleri bu gruptadır.",
+            "gloss": "Bu grupta karar, plan, söz ve ret fiilleri vardır. İleriye bakmak tek başına 'to' getirmez: suggest de ileriye bakar ama -ing alır.",
             "example": "He promised to call."
           }
         ]
@@ -336,7 +336,6 @@
         "rules": [
           {
             "signals": [
-              "regret to inform you",
               "regret to say",
               "regret to tell you",
               "regret to announce"
@@ -372,7 +371,7 @@
             "then": "to V"
           },
           {
-            "condition": "Yukarıdaki kurallar birden fazla şıkkı ayakta bıraktıysa, geriye kalan soru biçim değil fiil sorusudur: paragraf bir hatırlamadan mı, bir pişmanlıktan mı, bir duruştan mı, yoksa bir denemeden mi söz ediyor?",
+            "condition": "Yukarıdaki kurallar birden fazla şıkkı ayakta bıraktıysa, geriye kalan soru biçim değil fiil sorusudur: paragraf bir hatırlamadan mı, bir pişmanlıktan mı, bir duruştan mı, bir denemeden mi, yoksa o anda verilen bir haberden mi söz ediyor?",
             "then": "Context, not form"
           }
         ]
@@ -519,7 +518,7 @@
         "heading": "Şıkkı oku: nesneden sonra ne geliyor?",
         "rules": [
           {
-            "condition": "Şıkta nesneden sonra 'to'suz yalın fiil varsa **ve nesne bir kişiyse** (made us read, let him drive, had the plumber check), üç aday kalır",
+            "condition": "Şıkta nesneden sonra 'to'suz yalın fiil varsa **ve nesne bir kişiyse** (made her wait, let her wait, had the plumber check), üç aday kalır",
             "then": "make / let / have"
           },
           {
@@ -708,7 +707,7 @@
             "then": "V-ing"
           },
           {
-            "condition": "Şıktaki sıfat **capable, afraid, interested, good, responsible, tired** gibi kendi edatını taşıyan bir sıfatsa, o sıfat edatsız kurulamaz: 'capable to finish' diye bir biçim yoktur",
+            "condition": "Şıktaki sıfat **capable, afraid, interested, good, responsible, tired** gibi kendi edatını taşıyan bir sıfatsa, o sıfat edatsız kurulamaz: 'capable to finish' diye bir biçim yoktur. **able** bu listede değildir: aynı anlama gelse de 'able to do' der.",
             "then": "V-ing"
           },
           {
@@ -872,13 +871,13 @@
         "type": "pitfall",
         "wrong": "I went to the pharmacy for buying vitamins.",
         "right": "I went to the pharmacy to buy vitamins.",
-        "why": "\"için\" kelimesi doğrudan 'for'u çağırır, ama bir kişinin eylem amacı 'to + fiil' ile kurulur. 'for + V-ing' bir nesnenin işlevini anlatır, bir kişinin gerekçesini değil."
+        "why": "\"için\" kelimesi doğrudan 'for'u çağırır, ama bir kişinin eylem amacı 'to + fiil' ile kurulur. 'for + V-ing' ancak onu isteyen bir fiil ya da isim varsa (thank ... for, an apology for) ya da bir nesnenin işlevi anlatılıyorsa gelir; burada ikisi de yok."
       },
       {
         "type": "pitfall",
         "wrong": "She went to the bank for to change money.",
         "right": "She went to the bank to change money.",
-        "why": "\"for to\" diye bir kalıp yoktur; amaç bildiren mastar tek başına 'to' ile kurulur."
+        "why": "\"for to\" diye bir kalıp yoktur; amaç bildiren mastar tek başına 'to' ile kurulur. Bu 'to' bir edat değildir: ardından -ing de gelmez ('to changing' olmaz)."
       },
       {
         "type": "pitfall",
@@ -1032,7 +1031,7 @@
             "note": "Geçmişte öyleydi, artık değil → used to + V"
           },
           {
-            "sentence": "She is used to driving in heavy traffic.",
+            "sentence": "She is used to eating late.",
             "note": "Alışkınlık durumu, artık zorlanmıyor → be used to + V-ing"
           },
           {
@@ -1059,7 +1058,7 @@
         "type": "pitfall",
         "wrong": "The cellar was used to storing the files.",
         "right": "The cellar was used to store the files.",
-        "why": "Burada **used** 'alışkın' değil, **use** fiilinin edilgenidir: kiler dosya saklamak için kullanılıyordu. Bir eşya hiçbir şeye alışamaz; öznesi eşya olan ya da içinde **by ...** geçen cümlelerde kalıp 'be used to + yalın fiil'dir."
+        "why": "Burada **used** 'alışkın' değil, **use** fiilinin edilgenidir: kiler dosya saklamak için kullanılıyordu. Bir eşya hiçbir şeye alışamaz; öznesi eşya olan ya da içinde **by ...** geçen cümlelerde kalıp 'be used to + yalın fiil'dir. Aynı nedenle **there** ile kurulan cümlelerde de alışkınlık kalıpları kurulamaz: alışan bir kişi gerekir."
       },
       {
         "type": "pitfall",
@@ -1075,7 +1074,7 @@
         "heading": "Şıkkı boşluğa koy, sonra 'used'ın anlamına bak",
         "rules": [
           {
-            "condition": "Cümlede **by ...** öbeği varsa ya da özne bir eşyaysa ve o eşyaya bir iş yapılıyorsa: buradaki **used** 'alışkın' değil, 'kullanılmak'tır",
+            "condition": "Cümlede eylemi kimin yaptığını söyleyen bir **by ...** öbeği varsa (by the assistant, by the council) ya da özne bir eşyaysa ve o eşyaya bir iş yapılıyorsa: buradaki **used** 'alışkın' değil, 'kullanılmak'tır. 'little by little' gibi zarf öbeklerindeki 'by' bu kurala girmez; onlar alışma sürecinin işaretidir.",
             "then": "be used to + V"
           },
           {
