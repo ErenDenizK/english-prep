@@ -73,17 +73,23 @@ Three things decide it, in this priority:
 
 ### Now — clear the queue
 
+**The five grammar topics, together, in one or two sittings** — the
+owner's call, and the right one: they are one queue, they were
+commissioned to close one gap, and shipping them one at a time means five
+partial answers to the cloze section instead of one whole one.
+
 | # | Work | Cost |
 | --- | --- | --- |
-| 1 | `closest-meaning`: one independent re-verification of the reporting block, then ship | hours |
-| 2 | `connectors`, `relative-clauses`: sufficiency re-run on the repaired lessons, then ship | ~a day |
-| 3 | `quantifiers`: both passes, never run | ~a day |
-| 4 | `gerunds-infinitives`: one blocking item, two lessons that contradict their own questions | ~a day |
-| 5 | `academic-verbs`, `academic-nouns-adjectives`: both passes, never run | ~a day |
+| 1 | `closest-meaning`: one independent re-verification of the reporting block | hours |
+| 2 | `connectors`: sufficiency re-run on the repaired lessons | hours |
+| 3 | `relative-clauses`: lesson examples that hand over their own questions, then re-audit | hours |
+| 4 | `quantifiers`: both passes, never run | hours |
+| 5 | `gerunds-infinitives`: blocking item fixed; lessons audit never ran | hours |
 
-That is **+168 questions and +42 lessons**, taking the app to 241
-questions across 10 topics, and it closes 9 of the 10 cloze blank types.
-It is the whole of the next stretch and it needs no new authoring.
+That is **+120 questions and +30 lessons**, taking the app to 193
+questions across 8 topics, and it closes 8 of the 10 cloze blank types on
+its own. Then the two vocabulary topics, which close the other two, take
+it to 241 across 10.
 
 ### Next — the two real holes
 
@@ -105,7 +111,7 @@ half.
 
 ## Where v1 is
 
-**Proposed definition, for the owner to accept or move:**
+**Accepted by the owner, 2026-09-04:**
 
 > The app is 1.0 when every part of the exam it can honestly practise is
 > practisable with reviewed content, and the app never tells a learner
