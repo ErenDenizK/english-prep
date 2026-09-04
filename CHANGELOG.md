@@ -5,6 +5,43 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.18 — 2026-09-04
+
+**Grammar is finished.** Five topics shipped together — `closest-meaning`,
+`connectors`, `quantifiers`, `relative-clauses`, `gerunds-infinitives` —
+taking the app from 3 topics, 73 questions and 18 lessons to **8 topics,
+193 questions and 48 lessons**.
+
+They shipped as one queue rather than one at a time because they were
+commissioned as one: the exam spec's blank-by-blank breakdown of the
+sample cloze says the paper rewards discourse markers, modals, causatives,
+relative pronouns, quantifiers and vocabulary, and **not one of its ten
+blanks tests a tense or the passive** — which is what the app shipped
+first. Eight of the ten blank types are now practisable. The remaining two
+are vocabulary, drafted and queued; `so / such` is covered by nothing.
+
+**Closest meaning is live**, which is fifteen of Session I's sixty points
+the app previously had a schema for and no content behind.
+
+What the reviews cost, recorded because it is the whole argument for
+having them: across the five topics the two passes found roughly one item
+with two defensible answers per twelve written, and roughly one untrue
+claim about English per lesson. Neither is visible to `npm run check`.
+Five of the repairs **introduced a new defect while fixing another**, and
+every one of those was caught only by an independent re-audit — among them
+a rule reported deleted that was still in the file, an example lifted from
+a live item one rule below the one just de-quoted, and an unguarded string
+test that rejected a key and pointed at its distractor. A repair is not a
+fix until someone who did not write it has re-read it.
+
+One number carried forward rather than solved: in 8 of the 24
+`gerunds-infinitives` items the key is the only grammatical option, so a
+student who knows nothing but *which of these is real English* scores a
+third without reading the paragraph. It survives shuffling. It is an
+argument for a sixth item per category, not a blocker.
+
+101 unit tests, 1018 verification checks.
+
 ## v0.17 — 2026-09-04
 
 **Yanlış defteri.** The mode the practice-modes research ranked first on

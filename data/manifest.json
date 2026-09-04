@@ -180,6 +180,31 @@
         { "category": "Reduced Relative Clauses: -ing vs -ed", "summary": "İsim eylemi kendisi mi yapıyor, eylem ona mı yapılıyor?" },
         { "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom", "summary": "İki cümleyi 'some of them' bağlamaz — peki ne bağlar?" }
       ]
+    },
+    {
+      "id": "gerunds-infinitives",
+      "title": "Gerunds & Infinitives",
+      "tier": "core-grammar",
+      "file": "data/gerunds-infinitives/gerunds-infinitives.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Verb + Gerund vs Verb + Infinitive",
+        "Both, With a Meaning Change: Remember / Stop / Try / Regret",
+        "Causative Verb Patterns: Make / Let / Have / Get",
+        "Adjective + Infinitive vs Preposition + Gerund",
+        "Infinitive of Purpose vs For + Gerund",
+        "Used To vs Be Used To vs Get Used To"
+      ],
+      "lessons": [
+        { "category": "Verb + Gerund vs Verb + Infinitive", "summary": "Kural değil liste: hangi fiil -ing, hangisi 'to' istiyor?" },
+        { "category": "Both, With a Meaning Change: Remember / Stop / Try / Regret", "summary": "İkinci eylem ana fiilden önce mi, sonra mı?" },
+        { "category": "Causative Verb Patterns: Make / Let / Have / Get", "summary": "Yaptırma cümlesinde nesneden sonra 'to' var mı, yok mu?" },
+        { "category": "Adjective + Infinitive vs Preposition + Gerund", "summary": "Sıfat kendi edatını taşıyor mu, taşımıyor mu?" },
+        { "category": "Infinitive of Purpose vs For + Gerund", "summary": "Amaç mı bildiriliyor, yoksa bir gerekçe mi?" },
+        { "category": "Used To vs Be Used To vs Get Used To", "summary": "Eskiden mi yapardın, alışkın mısın, yoksa alışıyor musun?" }
+      ]
     }
   ]
 }
