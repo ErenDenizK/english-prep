@@ -980,7 +980,7 @@
             "then": "Overshoot"
           },
           {
-            "condition": "Şıkta aktarımın kesinliği yükselmişse: \"is said\" yerine \"is known / is proven / has been established\" denmişse, ya da orijinaldeki bir çekince (\"only rumoured\", \"is thought\") atılmışsa",
+            "condition": "Şıkta aktarımın kesinliği yükselmişse: söylenti bir bilgiye çevrilmiş ve aktarım fiili yerini \"is known / is proven / has been established / is now accepted\" gibi bir kesinlik fiiline bırakmışsa. Aktarım fiili duruyorsa kesinlik de duruyor demektir — \"It is only rumoured that ...\" ile \"is rumoured to ...\" aynı kesinliktedir, \"only\" modalite değil vurgu taşır",
             "then": "Re-modalise"
           },
           {
@@ -988,7 +988,7 @@
             "then": "Re-time"
           },
           {
-            "condition": "Aktarımın kendisi başka bir zamana çekilmişse: orijinal şimdiki zamanda aktarırken (\"is said\") şık geçmişte aktarıyorsa (ya da tersi). Orijinal zaten geçmişte aktarıyorsa bu kural ateşlemez",
+            "condition": "Aktarımın kendisi başka bir zamana çekilmişse: orijinal şimdiki zamanda aktarırken şık geçmişte aktarıyorsa, ya da tersi. Yalnızca çatı değişmişse (\"The newspaper reported\" → \"was reported by the newspaper\") aktarımın zamanı yerinde durur; bu bir kalıp değişikliğidir, zaman kayması değil",
             "then": "Re-time"
           },
           {
@@ -996,7 +996,7 @@
             "then": "Reverse"
           },
           {
-            "condition": "Aktarım kalıbı doğru ama aktarılan cümlenin içi değişmişse: bir niteleyici başka bir isme bağlanmışsa (\"wrong depot\" → \"wrong consignment\"), ya da bir sözcük yerine karşıtı konmuşsa (\"above\" → \"below\", \"accepted\" → \"refused\"). Bir sözcüğün kısalması değişiklik değildir (\"weeks earlier than allowed\" ile \"weeks early\" aynı şeyi der), ve taraflar da yer değiştirmişse bu bir tersine çevirme değil, aynı şeyin öbür yönden söylenmesidir",
+            "condition": "Aktarım kalıbı doğru ama aktarılan cümlenin içi değişmişse: bir niteleyici başka bir isme bağlanmışsa (yanlış olan depo değil, gönderi olmuşsa), ya da bir sözcüğün yerine karşıtı konmuşsa (erken/geç, üstünde/altında, kabul/ret). Aynı ilişkiyi daha az sözcükle söylemek değişiklik değildir: kısaltma, silme ya da genişletme ilişkiyi bozmadığı sürece bu kural ateşlemez",
             "then": "Reverse"
           },
           {
