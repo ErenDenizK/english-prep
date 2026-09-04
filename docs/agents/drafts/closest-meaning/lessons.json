@@ -133,15 +133,15 @@
         "heading": "Şıkkı denetle: zaman kaymış mı?",
         "rules": [
           {
-            "condition": "Sonucun zamanı kaymışsa: orijinal bugünkü bir durumu anlatırken şık \"would have + V3\" diyorsa, ya da orijinal geçmişte kapanmış bir sonucu anlatırken şık onu bugüne ya da geleceğe taşıyorsa",
+            "condition": "Sonucun zamanı kaymışsa: orijinal bugünkü bir durumu anlatırken şık \"would have + V3\" diyorsa, ya da orijinal geçmişte kapanmış bir sonucu anlatırken şık onu bugüne ya da geleceğe taşıyorsa, ya da orijinal bugünkü bir sonucu anlatırken şık onu geçmişte olmuş bitmiş gibi söylüyorsa",
             "then": "Re-time"
           },
           {
-            "condition": "Orijinal \"If + had + V3\" derken şık \"If + past simple ... would + V\" diyorsa: kapanmış geçmiş, açık bir ihtimale çevrilmiş",
+            "condition": "Orijinal \"If + had + V3\" derken şık \"If + present ... will + V\" diyorsa: kapanmış geçmiş, hâlâ açık bir ihtimale çevrilmiş",
             "then": "Re-time"
           },
           {
-            "condition": "Şık olayı gerçekten olmuş gibi anlatıyorsa, oysa üçüncü tip şart tam tersini söyler",
+            "condition": "Şık olayı gerçekten olmuş gibi anlatıyorsa, oysa şart kolu — her iki tipte de — tam tersini söyler",
             "then": "Drop a condition"
           },
           {
@@ -157,7 +157,7 @@
             "then": "Overshoot"
           },
           {
-            "condition": "Şık, koşulun gerçekleşip gerçekleşmediğini orijinaldeki gibi bırakmışsa — olumlu şartta \"olmadı\", olumsuz şartta (\"Had she not ...\") \"oldu\" — sonucu aynı zamana koyuyorsa ve koşul yine aynı cümleyse",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve şık, koşulun gerçekleşip gerçekleşmediğini orijinaldeki gibi bırakmışsa — olumlu şartta \"olmadı\", olumsuz şartta (\"Had she not ...\") \"oldu\" — sonuç orijinaldeki sonucun aynısıysa, aynı zamanda duruyorsa ve koşul yine aynı önermeyse",
             "then": "Same meaning"
           }
         ]
@@ -226,6 +226,12 @@
             "use": "İki ayrı cümle hâlinde",
             "pattern": "Cümle. Otherwise, sonuç cümlesi.",
             "example": "Enter the code. Otherwise, the door stays locked."
+          },
+          {
+            "form": "or",
+            "use": "Uyarı hâlinde: yapılmazsa şu olur",
+            "pattern": "Emir / must cümlesi, or + sonuç cümlesi",
+            "example": "Sign it by Friday, or the offer goes to someone else."
           }
         ]
       },
@@ -307,7 +313,7 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "Koşul yerinde duruyor, olumsuzlanan önerme aynı ve sonuç değişmemişse — \"unless\" olumsuzluğu kendi içinde taşıdığı için cümlede yazılı bir \"not\" aramak gerekmez",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve koşul yerinde duruyor, olumsuzlanan önerme aynı ve sonuç değişmemişse — \"unless\" olumsuzluğu kendi içinde taşıdığı için cümlede yazılı bir \"not\" aramak gerekmez",
             "then": "Same meaning"
           }
         ]
@@ -467,7 +473,7 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "İki cümle de aynı rolde duruyor ama biri başka bir zamana taşınmışsa",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve i̇ki cümle de aynı rolde duruyor ama biri başka bir zamana taşınmışsa",
             "then": "Re-time"
           },
           {
@@ -527,7 +533,7 @@
             "form": "as ... as",
             "use": "Kat olarak eşitsizlik",
             "pattern": "A + V + twice / half as much + as + B",
-            "example": "A sells twice as much bread as B."
+            "example": "A holds twice as much water as B."
           },
           {
             "form": "Comparative",
@@ -580,8 +586,8 @@
             "note": "\"less ... than\" ile \"not as ... as\" eşdeğerdir; ikisi de aynı yönü gösterir"
           },
           {
-            "sentence": "B sells half as much bread as A.",
-            "note": "\"A, B'nin iki katı\" ile \"B, A'nın yarısı\" aynı şeyi söyler; kat tersine çevrilirken taraflar da yer değiştirir"
+            "sentence": "B holds half as much water as A.",
+            "note": "\"A, B'nin iki katı\" ile \"B, A'nın yarısı\" aynı şeyi söyler; kat tersine çevrilirken taraflar da yer değiştirir. Yaklaşıklık da ters döner: \"just under twice\" karşılığı \"a little over half\"tır"
           },
           {
             "sentence": "The more he explained, the more confused we became.",
@@ -635,6 +641,10 @@
             "then": "Reverse"
           },
           {
+            "condition": "Korelatifin yarılarından yalnızca birinin yönü değişmişse: orijinal \"arttıkça azalıyor\" derken şık \"arttıkça artıyor\" diyorsa",
+            "then": "Reverse"
+          },
+          {
             "condition": "Karşılaştırılan taraflar değil, karşılaştırmayı yapanlar yer değiştirmişse: kim kimi övmüş, kim kimi ölçmüş",
             "then": "Reverse"
           },
@@ -643,7 +653,7 @@
             "then": "Overshoot"
           },
           {
-            "condition": "Orijinal kesin bir karşılaştırma yaparken şık \"probably / may be\" gibi bir ihtimal eklemişse",
+            "condition": "Orijinal kesin bir karşılaştırma yaparken şık \"probably / may be\" gibi bir ihtimal eklemişse, ya da olmuş bir karşılaştırmayı \"is expected to / is likely to\" ile bir beklentiye çeviriyorsa",
             "then": "Re-modalise"
           },
           {
@@ -651,7 +661,7 @@
             "then": "Same meaning"
           },
           {
-            "condition": "Fazlası hâlâ aynı tarafta, karşılaştırmayı yapan da yapılan da aynı kişiler ve karşılaştırma hâlâ bir karşılaştırmaysa — cümledeki sıra değişmiş olabilir, bakılacak olan kimde fazla olduğudur",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve fazlası hâlâ aynı tarafta, karşılaştırmayı yapan da yapılan da aynı kişiler, kapsam ile kesinlik aynı ve karşılaştırma hâlâ bir karşılaştırmaysa — cümledeki sıra değişmiş olabilir",
             "then": "Same meaning"
           }
         ]
@@ -710,6 +720,12 @@
             "example": "It is bright enough to read."
           },
           {
+            "form": "enough that",
+            "use": "Sonuç tam cümle hâlindeyse",
+            "pattern": "adj + enough + that + clause",
+            "example": "The room was warm enough that nobody complained."
+          },
+          {
             "form": "enough",
             "use": "İsimle",
             "pattern": "enough + noun + to + V",
@@ -740,7 +756,7 @@
             "note": "Derece engelledi, içilmedi → too ... to"
           },
           {
-            "sentence": "The swell was heavy enough to keep the boats in port, so it was too heavy for them to leave.",
+            "sentence": "The box was heavy enough to need two people, so it was too heavy for one person to lift.",
             "note": "Bir dereceyi \"enough\" ile engelin **sebebi**, \"too\" ile engelin **kendisi** olarak söyleyebilirsin; ikisi aynı olayı anlatır"
           },
           {
@@ -795,6 +811,10 @@
             "then": "Reverse"
           },
           {
+            "condition": "Sebep ile sonuç yer değiştirmişse: orijinalde dereceye yol açan şey şıkta derecenin sonucu olmuşsa",
+            "then": "Reverse"
+          },
+          {
             "condition": "Şık \"too\"yu \"very\" ile değiştirip engeli kaldırmışsa: imkânsızlık sıradan bir dereceye inmiştir",
             "then": "Re-modalise"
           },
@@ -811,7 +831,7 @@
             "then": "Re-time"
           },
           {
-            "condition": "Şık sonucu olduğu gibi koruyorsa ve derece ile sonuç arasındaki ilişki bozulmamışsa: \"too ... to\" ile \"so ... that not\" arasında olumsuzluk kaybolmamış, ya da \"enough to\" ile olumlu \"so ... that\" arasında sonuç yine gerçekleşiyorsa, ya da bir engel \"enough to\" ile sebebinden, \"too ... to\" ile kendisinden söylenmişse",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve şık sonucu olduğu gibi koruyorsa ve derece ile sonuç arasındaki ilişki bozulmamışsa: \"too ... to\" ile \"so ... that not\" arasında olumsuzluk kaybolmamış, ya da \"enough to\" ya da \"enough that\" ile olumlu \"so ... that\" arasında sonuç yine gerçekleşiyorsa, ya da bir engel \"enough to\" ile sebebinden, \"too ... to\" ile kendisinden söylenmişse",
             "then": "Same meaning"
           }
         ]
@@ -976,7 +996,7 @@
             "then": "Reverse"
           },
           {
-            "condition": "İki kalıp arasında geçilmiş, kaynak orijinalde ne kadarsa şıkta da o kadar (eklenmemiş, silinmemiş) ve zaman ilişkisi korunmuşsa",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve i̇ki kalıp arasında geçilmiş, kaynak orijinalde ne kadarsa şıkta da o kadar (eklenmemiş, silinmemiş) ve zaman ilişkisi korunmuşsa",
             "then": "Same meaning"
           }
         ]
