@@ -23,7 +23,7 @@
           },
           {
             "label": "Whose",
-            "gloss": "Kişi bir şeyin sahibidir. Yan cümlenin içinde geçen o kişinin kendisi değil, ona ait olan şeydir.",
+            "gloss": "Öncüle ait bir şeyden söz eder: onun arabası, onun yazarı, onun çatısı. Öncül insan olmak zorunda değildir — bir binanın da, bir raporun da 'whose'u olur.",
             "example": "The lawyer whose office we visited is retiring."
           }
         ]
@@ -111,15 +111,19 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
-            "condition": "Ana isim bir insan değilse üçü de elenir",
+            "condition": "Ana isim bir insan değilse ve boşluktan sonra ona ait bir isim de gelmiyorsa",
             "then": "Which / That"
           },
           {
-            "condition": "Boşluktan sonra gelen isim ana kişiye ait bir şeyse, yani 'his car', 'her father' yerine geçiyorsa",
+            "condition": "Boşluktan sonra gelen isim öncüle ait bir şeyse, yani 'his car', 'her father', 'its roof' yerine geçiyorsa — öncülün insan olması gerekmez",
             "then": "Whose"
           },
           {
             "condition": "Boşluktan hemen önce bir edat varsa (to, with, for, about)",
+            "then": "Whom"
+          },
+          {
+            "condition": "Boşluktan sonra bir isim var ama o isim öncüle ait değilse, boşluk sahiplik değil nesne bildirir",
             "then": "Whom"
           },
           {
@@ -129,6 +133,10 @@
           {
             "condition": "Aynı denemede boşluğun yerine **him** ya da **her** koymak gerekiyorsa (yazılı sınav üslubu bunu ister)",
             "then": "Whom"
+          },
+          {
+            "condition": "Şıkta kesme işaretli 'who's' varsa: bu 'who is / who has' kısaltmasıdır, sahiplik bildiremez",
+            "then": "Whose"
           }
         ]
       }
@@ -176,7 +184,7 @@
       },
       {
         "type": "text",
-        "body": "Dürüst sınır: virgülsüz bir cümlede hem 'that' hem 'which' dilbilgisel olarak doğrudur ve buna kimse itiraz etmez. Kuralın gerçekten karar verdiği yerler bellidir — virgülden sonra, edattan sonra ve zamir bütün bir cümleyi karşılıyorken 'that' kullanılamaz. Bu yüzden önce virgüle bakılır."
+        "body": "Dürüst sınır: virgülsüz bir cümlede hem 'that' hem 'which' dilbilgisel olarak doğrudur ve sınavda ikisini birbirine karşı anahtarlamak haksızlık olur. Kuralın gerçekten karar verdiği yerler bunlar: virgülden sonra, edattan sonra, zamir bütün bir cümleyi karşılarken, all / everything / the only ve en üstünlük ifadelerinden sonra, ve öncül insanla nesneyi birlikte kapsadığında. Bu yüzden önce virgüle bakılır."
       },
       {
         "type": "forms",
@@ -267,6 +275,10 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
+            "condition": "Zamir tek bir ismi değil, kendinden önceki bütün cümleyi karşılıyorsa",
+            "then": "Which"
+          },
+          {
             "condition": "Boşluktan hemen önce virgül var, ana isim bir insan değil ve boşluktan sonra bir fiil ya da yeni bir özne geliyorsa",
             "then": "Which"
           },
@@ -275,15 +287,15 @@
             "then": "Who"
           },
           {
-            "condition": "Zamir tek bir ismi değil, kendinden önceki bütün cümleyi karşılıyorsa",
-            "then": "Which"
-          },
-          {
             "condition": "Boşluktan hemen önce bir edat (in, for, of, about) var ve ana isim bir insan değilse",
             "then": "Which"
           },
           {
-            "condition": "Virgül yok ve ana ismin başında all, everything, the only ya da bir en üstünlük ifadesi (the first, the best) varsa",
+            "condition": "Virgül yok ve öncül **all**, **everything**, **the only** ile başlıyorsa ya da bir en üstünlük ifadesi (the first, the best) taşıyorsa — öncül tek başına 'all' ya da 'everything' olabilir",
+            "then": "That"
+          },
+          {
+            "condition": "Virgül yok ve öncül bir insanla bir nesneyi birlikte kapsıyorsa (the volunteers and the equipment) — 'which' gönüllüleri, 'who' ekipmanı dışarıda bırakır",
             "then": "That"
           }
         ]
@@ -304,7 +316,7 @@
         "sides": [
           {
             "label": "Where",
-            "gloss": "Ana isim bir yer ya da kurumdur; yan cümlede o yerden 'in it', 'at it' diye söz edilirdi.",
+            "gloss": "Ana isim bir yer, bir kurum ya da bir alan / durum bildirir ve yan cümlede eksik bir öge yoktur: the city where we met, the craft where patience matters.",
             "example": "the café where we first met"
           },
           {
@@ -430,11 +442,15 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
+            "condition": "Öncül, boşluğun hemen solundaki isimdir; paragrafın başka bir yerindeki yer ya da zaman sözcüğü değil",
+            "then": "Where / When / Why / Which"
+          },
+          {
             "condition": "Önce boşluktan sonrasını oku: ana isim insan değilse ve fiilin öznesi ya da nesnesi eksikse — sonda boşta kalmış bir edat da (lived in, told you about) eksik demektir",
             "then": "Which"
           },
           {
-            "condition": "Yan cümle eksiksiz ve ana isim bir yer ya da kurumsa (the city, the office, the country)",
+            "condition": "Yan cümle eksiksiz ve ana isim bir yer, kurum ya da bir alan / durum bildiriyorsa (the city, the office, the industry, the craft, the case)",
             "then": "Where"
           },
           {
@@ -442,7 +458,7 @@
             "then": "When"
           },
           {
-            "condition": "Yan cümle eksiksiz ve ana isim 'the reason' ise",
+            "condition": "Yan cümle eksiksiz ve ana ismin çekirdeği 'reason' ise (the reason, the real reason, the main reason)",
             "then": "Why"
           }
         ]
@@ -568,23 +584,23 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
-            "condition": "Boşluktan hemen önce bir edat var ve ana isim bir insansa (edattan sonra 'who' gelmez)",
+            "condition": "Boşluğun içinde ya da hemen önünde bir edat varsa (to, with, for, at, in) ve ana isim bir insansa — edattan sonra 'who' gelmez",
             "then": "Whom"
           },
           {
-            "condition": "Boşluktan hemen önce bir edat var ve ana isim insan değilse (edattan sonra 'that' gelmez)",
+            "condition": "Boşluğun içinde ya da hemen önünde bir edat varsa ve ana isim insan değilse — edattan sonra 'that' gelmez",
             "then": "Which"
           },
           {
-            "condition": "Hangi edatın geleceğine yan cümlenin fiili karar verir: cümleyi düz yaz (She works for the company), oradaki edatı zamirin önüne taşı",
+            "condition": "Hangi edatın geleceğini cümleyi düz yazınca görürsün (She works for the company / It is losing ice at that rate): edatı bazen fiil, bazen öncül ismin kendisi seçer; o edatı zamirin önüne taşı",
             "then": "Preposition + which / whom"
           },
           {
-            "condition": "İnsan olmayan bir ismin parçasından ya da özelliğinden söz ediliyorsa (its roof, its price, its author); günlük dilde 'whose' de duyulur, resmî biçim budur",
+            "condition": "İnsan olmayan bir ismin parçasından ya da özelliğinden söz ediliyor ve o parçanın adı boşluktan **önce** yazılmışsa (the purpose ___, the roof ___)",
             "then": "Of which"
           },
           {
-            "condition": "Aynı sahiplik ilişkisi bir insan için kuruluyorsa",
+            "condition": "Aynı sahiplik ilişkisi kuruluyor ama parçanın adı boşluktan **sonra** geliyorsa (___ purpose, ___ roof); öncül insan da olabilir, nesne de",
             "then": "Whose"
           }
         ]
@@ -698,8 +714,12 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
-            "condition": "Boşluktan sonra yan cümlenin kendi öznesi varsa (the book I read gibi) indirgeme yapılamaz, tam ilgi cümlesi gerekir",
+            "condition": "Boşluktan sonra gelen isim, arkasındaki çekimli fiilin öznesiyse (the book I read gibi) indirgeme yapılamaz",
             "then": "That / Which + S + V"
+          },
+          {
+            "condition": "Ana cümlenin çekimli fiili zaten varsa boşluğa ikinci bir çekimli fiil giremez: indirgemede 'was / were / had' düşer, geriye yalnızca ortaç kalır",
+            "then": "V-ing / V3 (-ed)"
           },
           {
             "condition": "Eylemi ana isim kendisi yapıyor ve eylem sürüyor ya da genel bir durumu anlatıyorsa",
@@ -845,12 +865,16 @@
             "then": "Of whom / Of which"
           },
           {
-            "condition": "Boşluktan hemen önce 'of' var ve ana isim insansa ('who' ve 'that' bu konumda kullanılmaz)",
+            "condition": "Boşlukta ya da boşluktan hemen önce 'of' varsa ve ana isim insansa — 'of'tan sonra ne 'who' ne 'that' gelir",
             "then": "Of whom"
           },
           {
-            "condition": "Boşluktan hemen önce 'of' var ve ana isim nesne, kurum ya da kavramsa",
+            "condition": "Boşlukta ya da boşluktan hemen önce 'of' varsa ve ana isim nesne, kurum ya da kavramsa",
             "then": "Of which"
+          },
+          {
+            "condition": "Öncül tam olarak iki ögeyse 'neither', ikiden fazlaysa 'none' kullanılır; sayı çoğu zaman bir önceki cümlededir",
+            "then": "None of which / None of whom"
           },
           {
             "condition": "İkinci cümle 'and' ile bağlanmışsa ya da noktayla ayrılmış bağımsız bir cümleyse",
