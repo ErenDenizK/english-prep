@@ -132,7 +132,7 @@
         "type": "pitfall",
         "wrong": "A new research area evolved in the 1990s.",
         "right": "A new research area emerged in the 1990s.",
-        "why": "evolve var olan bir şeyin kademeli dönüşümüdür: bir şey başka bir şeye dönüşür ve cümle neye dönüştüğünü verir. Burada dönüşen bir şey değil, görünür hâle gelen bir şey anlatılıyor; o da emerge'dir."
+        "why": "evolve, bir şeyin daha önceki hâlinden kademe kademe gelişmesini anlatır. Yeni kurulan bir araştırma alanının öncesinde bir hâli yoktur; burada anlatılan bir gelişme değil, ortaya çıkıştır — o da emerge'dir."
       },
       {
         "type": "pitfall",
