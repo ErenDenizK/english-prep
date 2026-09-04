@@ -128,6 +128,44 @@ only grammatical option, so a student who knows nothing but *which of
 these is real English* scores a third without reading a paragraph. That
 survives shuffling. It is concentrated in categories 4 and 5.
 
+## academic-verbs · 24 questions, 6 lessons
+## academic-nouns-adjectives · 24 questions, 6 lessons
+
+**Neither pass has run.** Written 2026-09-04 against
+`docs/agents/kickoff-vocabulary.md`, after a learner sitting the Bilkent
+paper asked for vocabulary. First content in the app that is not grammar,
+and the first to use `optionNotes`, which is mandatory here: every wrong
+option is a different word, so one explanation cannot cover three.
+
+Validated against the school's own published word list: **0 of the 60
+target words appear in its elementary band** (`docs/exam/wordlists/`), so
+both topics sit above what the school treats as assumed knowledge.
+
+`npm run draft` leaves one warning on each, and **both are forced rather
+than careless.** Each category is five words and each item shows four, so
+there are only five possible option sets — and in these two categories one
+member cannot be shown at all:
+
+- *Cause & Consequence*: `trigger` and `prompt` are interchangeable with
+  an event object (`triggered / prompted an independent survey`), so
+  neither item keyed on one may show the other. Both must therefore omit
+  `trigger`, and two items land on the same four options.
+- *Significance & Priority*: `marginal` is defensible wherever
+  `negligible` is, so it cannot enter either of those items. Same
+  arithmetic, same collision.
+
+The alternative in both cases was to weaken a distractor that is doing
+real teaching — `negligible` is the *named* closest trap in its item's
+explanation, and the whole point of that item is that a quantity can be
+negligible while its consequence is not. Recorded rather than fixed.
+
+One thing was fixed: `eleven` was the arbitrary quantity in six of the
+nouns/adjectives paragraphs — votes, lira, flats, days, per cent, years.
+An author's tic rather than a defect in any item, but six of them in one
+session reads as one voice. Only the numerals changed; the arithmetic in
+every paragraph still holds. `years` remains at 4/24, which is four
+ordinary time spans rather than a rut.
+
 ---
 
 ## What the reviews cost, and what they caught
