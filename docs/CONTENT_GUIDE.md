@@ -154,6 +154,37 @@ should name a confusable pair or triad wherever the grammar allows it
 - **`tip`** — Turkish, a short standalone rule the learner can carry to
   other questions. Distinct from the explanation: the explanation is
   situational, the tip is transferable.
+- **`optionNotes`** — optional, Turkish, and keyed **by the option text**:
+
+  ```json
+  "optionNotes": {
+    "is going": "Şu an sürmekte olan bir eylem. Burada tekrar eden bir alışkanlık var.",
+    "has gone": "Gidip henüz dönmemiş olmak — paragraf bir sonuçtan söz etmiyor."
+  }
+  ```
+
+  One short gloss for a wrong option: what it means, and why this
+  paragraph does not select it. The validator warns past 160 characters,
+  because past that it competes with the explanation it sits under.
+
+  It may cover one wrong option, or all three, or none. It may **not**
+  cover the correct answer — the explanation already argues for that, and
+  a note beside it reads as a second key — and every key must be one of
+  the question's own options. Both are validator errors.
+
+  **Keyed by text, never by index.** The engine shuffles options for
+  display and scores against the answer string, so an array parallel to
+  `options` would be permuted apart from its own options on every attempt,
+  silently. A keyed object cannot drift, and the validator can check the
+  key set against the option set — so an alignment error is impossible
+  rather than invisible.
+
+  The app shows only the note for the option the learner actually chose.
+  For a grammar item that is usually all that is needed: the explanation
+  names the closest wrong option and the other two fail for the same
+  reason. It becomes the minimum honest explanation for a **vocabulary
+  set**, where every wrong option is a different word and the learner who
+  chose `gratitude` needs to be told what `gratitude` means.
 
 ---
 

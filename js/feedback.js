@@ -19,11 +19,12 @@ import { buildReport, sendReport, REPORT_RESULT } from "./report.js";
 import { announce } from "./shell.js";
 
 /**
- * @param {{id: string, category: string, paragraph: string, correctAnswer: string, explanation: string, tip?: string}} question
+ * @param {{id: string, category: string, paragraph: string, correctAnswer: string, explanation: string, tip?: string, optionNotes?: Record<string, string>|null}} question
  * @param {boolean} correct
  * @param {{withTip?: boolean, selected?: string|null}} [options] - Eğitim
  *   checks omit the tip: the lesson has just spent several blocks stating
- *   the rule. `selected` only travels into the problem report.
+ *   the rule. `selected` picks the option note and travels into the
+ *   problem report.
  * @returns {HTMLDivElement}
  */
 export function renderAnswerFeedback(question, correct, { withTip = true, selected = null } = {}) {
@@ -44,6 +45,26 @@ export function renderAnswerFeedback(question, correct, { withTip = true, select
   const explanation = el("p", "feedback__body");
   appendInline(explanation, question.explanation);
   block.appendChild(explanation);
+
+  // The note for the option the learner actually chose, when there is one.
+  //
+  // Only that one. For a grammar item the explanation names the closest
+  // wrong option and the other two usually fail for the same reason; for
+  // a vocabulary set every wrong option is a different word, and the
+  // learner who chose it needs to be told what IT means — not what the
+  // other two mean. Showing all three would treble a block that sits in
+  // a fixed-height shell and would say nothing at all to the learner who
+  // was right.
+  const note = !correct && selected ? question.optionNotes?.[selected] : null;
+  if (note) {
+    const line = el("p", "feedback__body");
+    const word = el("strong", "t-en", selected);
+    word.lang = "en";
+    line.appendChild(word);
+    line.appendChild(document.createTextNode(": "));
+    appendInline(line, note);
+    block.appendChild(line);
+  }
 
   if (withTip && question.tip) {
     const tip = el("p", "feedback__body");
@@ -96,12 +117,23 @@ function renderReportButton(question, selected) {
 /**
  * The same verdict as spoken text, for the shell's live region. Returns
  * `announce`-shaped parts so the English answer keeps its `lang`.
- * @param {{correctAnswer: string, explanation: string}} question
+ *
+ * It says what the block says, including the chosen option's note: a
+ * screen-reader user who is told less than the screen shows has been
+ * given a different app.
+ * @param {{correctAnswer: string, explanation: string, optionNotes?: Record<string, string>|null}} question
  * @param {boolean} correct
+ * @param {string|null} [selected]
  * @returns {Array<string|{en: string}>}
  */
-export function answerAnnouncement(question, correct) {
-  return correct
-    ? ["Doğru. ", question.explanation]
-    : ["Yanlış. Doğru cevap: ", { en: question.correctAnswer }, ". ", question.explanation];
+export function answerAnnouncement(question, correct, selected = null) {
+  if (correct) {
+    return ["Doğru. ", question.explanation];
+  }
+  const parts = ["Yanlış. Doğru cevap: ", { en: question.correctAnswer }, ". ", question.explanation];
+  const note = selected ? question.optionNotes?.[selected] : null;
+  if (note) {
+    parts.push(" ", { en: selected }, ": ", note);
+  }
+  return parts;
 }

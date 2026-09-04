@@ -4,9 +4,9 @@
 //
 // Authored schema (what topic files contain — see docs/CONTENT_GUIDE.md
 // for the full spec): { id, type, category, paragraph | sentence, options,
-// correctIndex, explanation, tip }
+// correctIndex, explanation, tip, optionNotes? }
 // Internal shape (what this module returns): { id, type, category, prompt,
-// options, correctAnswer, explanation, tip }
+// options, correctAnswer, explanation, tip, optionNotes }
 //
 // `prompt` is whichever the item type carries: a cloze item's `paragraph`,
 // with its blank, or a restatement's `sentence`, without one. The screens
@@ -71,6 +71,10 @@ function normalizeQuestion(question) {
     correctAnswer: question.options[question.correctIndex],
     explanation: question.explanation,
     tip: question.tip,
+    // Keyed by option TEXT, never by index: the engine shuffles options
+    // for display, so an index would point at a different option on every
+    // attempt. Optional and often partial.
+    optionNotes: question.optionNotes ?? null,
   };
 }
 

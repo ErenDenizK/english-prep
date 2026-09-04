@@ -23,6 +23,7 @@ import {
   checkNearDuplicates,
   checkOptionForms,
   checkScenarioReuse,
+  checkOptionNotes,
 } from "./content-checks.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -304,6 +305,7 @@ function validateQuestion(report, file, question, index, seenIds, topicId) {
     }
     checkTurkish(report, where, "tip", question.tip);
   }
+  checkOptionNotes(report, where, question, checkTurkish);
 }
 
 /** Mirrors lessonId() in js/topics.js — lesson ids are derived, not authored. */

@@ -416,7 +416,7 @@ function renderCheckBlock(question, blockIndex) {
       answered,
       onSelect: (option) => {
         state.reader.answers.set(blockIndex, option);
-        announce(...answerAnnouncement(question, isCorrectAnswer(question, option)));
+        announce(...answerAnnouncement(question, isCorrectAnswer(question, option), option));
         // Pin the scroll position across the swap. The feedback is added
         // *below* the options, so nothing the learner is looking at has
         // moved — but the browser's own scroll anchoring picks an anchor
