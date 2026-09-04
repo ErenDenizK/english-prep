@@ -512,3 +512,59 @@ test("a backup restored out of order still graduates correctly", () => {
 test("an empty store has an empty book rather than throwing", () => {
   assert.deepEqual(storage.getMistakeBook(), []);
 });
+
+/* ---- The weakness claim, and what the content lets it say ----
+ *
+ * `confident` gates the difference between "these are your weakest" and
+ * "you cannot do these". It needs six distinct items in one category, and
+ * every category in the app ships four or five — so the confident branch
+ * is unreachable by construction today. These tests pin both halves, so
+ * that if a category ever grows past six the behaviour is a decision
+ * rather than a surprise.
+ */
+
+test("a category is not claimed as a weakness on four items", () => {
+  for (let i = 0; i < 4; i += 1) {
+    storage.recordAttempt(
+      attempt({
+        date: `2026-02-0${i + 1}T09:00:00.000Z`,
+        questions: [{ id: `q${i}`, topicId: "tenses", category: "A vs B", correct: false }],
+      })
+    );
+  }
+  const [entry] = storage.getWeakCategories();
+  assert.equal(entry.category, "A vs B");
+  assert.equal(entry.total, 4, "it is still ranked");
+  assert.equal(entry.confident, false, "but not claimed");
+});
+
+test("six distinct items in one category do support the claim", () => {
+  for (let i = 0; i < 6; i += 1) {
+    storage.recordAttempt(
+      attempt({
+        date: `2026-02-0${i + 1}T09:00:00.000Z`,
+        questions: [{ id: `q${i}`, topicId: "tenses", category: "A vs B", correct: false }],
+      })
+    );
+  }
+  assert.equal(storage.getWeakCategories()[0].confident, true);
+});
+
+test("answering the same four questions again does not manufacture evidence", () => {
+  // Six *distinct* items, not six answers: re-answering the same four
+  // questions is the same four data points, and the threshold has to
+  // count questions rather than attempts or it inflates itself.
+  for (let round = 0; round < 3; round += 1) {
+    for (let i = 0; i < 4; i += 1) {
+      storage.recordAttempt(
+        attempt({
+          date: `2026-03-0${round + 1}T09:00:00.000Z`,
+          questions: [{ id: `q${i}`, topicId: "tenses", category: "A vs B", correct: false }],
+        })
+      );
+    }
+  }
+  const [entry] = storage.getWeakCategories();
+  assert.equal(entry.total, 4);
+  assert.equal(entry.confident, false);
+});

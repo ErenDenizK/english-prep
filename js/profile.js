@@ -325,7 +325,10 @@ async function render() {
   const weakCategories = getWeakCategories();
   const weakCategoryList = renderWeakList(
     "En çok zorlandığın kategoriler",
-    weakCategories.some((entry) => entry.confident)
+    // `every`, not `some` — see the note in js/home.js: the hint is about
+    // the whole list, and one well-evidenced row must not speak for four
+    // that are not.
+    weakCategories.every((entry) => entry.confident)
       ? "Dokunduğunda o kategoriyi anlatan ders açılır."
       : "Şimdilik az veriyle sıralandı. Dokunduğunda o kategoriyi anlatan ders açılır.",
     weakCategories.map((entry) => ({
