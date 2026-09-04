@@ -5,6 +5,46 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.26 — 2026-09-04
+
+**A corrupt attempt no longer takes Profil down — and it was hiding the
+backup button.** One history row without a `questions` array threw inside
+`getOverallStats`, and the render died after the name field, *before* the
+one control that could have saved the data. A store can hold a malformed
+attempt for ordinary reasons: a truncated restore, an older version of
+the app, a hand-edited store. `getHistory` now normalises at the
+boundary, so no caller has to defend itself, and a row is repaired rather
+than dropped — an attempt with a date is still a test the learner sat.
+
+**A question and its options are a group now** (§8.7, WCAG 1.3.1). A
+screen reader read four unrelated buttons and never said what was being
+asked or how many there were. `role="radiogroup"` with
+`aria-labelledby` on the stem — and the stem id is per block, because a
+lesson can hold a pretest and two checks at once and three groups
+pointing at one paragraph would be worse than none.
+
+**The portrait lock is gone** from the web manifest. §8.7 forbids it in
+so many words — 1.3.4 Orientation, AA — and the app had shipped it since
+the manifest was written.
+
+**Finishing a lesson twice no longer writes twice.** The reader calls
+`markLessonDone` from a scroll handler, so holding at the bottom of a
+lesson serialised the whole progress map on every animation frame:
+eighty writes in eighty frames. `recordLessonRead` has always refused to
+go backwards; this one had no such guard. The timestamp does not move
+either — `at` means when the lesson was finished, and scrolling past the
+end a week later is not finishing it again.
+
+**One audit finding was not a defect, and the spec was wrong instead.**
+Three `role="status"` nodes were counted against §8.4's "one persistent
+live region". Two of them are the shell's, on different pages; the third
+is inside the restore `<dialog>`, which makes the rest of the document
+inert — announcing into the shell's region from in there announces into
+nothing. §8.4 now states the exception, because a rule that reads as
+forbidding a correct thing gets "fixed" by the next person.
+
+113 unit tests, 1171 verification checks.
+
 ## v0.25 — 2026-09-04
 
 Four defects a real learner meets, found by an audit that drove the app

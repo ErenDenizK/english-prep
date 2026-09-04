@@ -103,8 +103,32 @@ export function recordAttempt(attempt) {
   saveHistory(history);
 }
 
+/**
+ * Every attempt, normalised at the boundary.
+ *
+ * The shape is checked here so that no caller has to defend itself, and
+ * because one that did not took the whole Profil screen down: an attempt
+ * with no `questions` array reached `getOverallStats`, threw on
+ * `attempt.questions.length`, and killed the render **before the backup
+ * buttons** — hiding the one escape hatch at exactly the moment it was
+ * needed. A store can hold a malformed attempt for ordinary reasons: a
+ * restore that was truncated, a version of the app that wrote a
+ * different shape, a hand-edited store.
+ *
+ * Missing arrays become empty ones rather than the row being dropped,
+ * because an attempt with a date and a breakdown still counts as a test
+ * the learner sat, and silently deleting their history is worse than
+ * counting zero questions in it.
+ */
 export function getHistory() {
-  return loadHistory().attempts;
+  return loadHistory()
+    .attempts.filter(isPlainObject)
+    .map((attempt) => ({
+      ...attempt,
+      questions: Array.isArray(attempt.questions) ? attempt.questions.filter(isPlainObject) : [],
+      topicBreakdown: isPlainObject(attempt.topicBreakdown) ? attempt.topicBreakdown : {},
+      categoryBreakdown: isPlainObject(attempt.categoryBreakdown) ? attempt.categoryBreakdown : {},
+    }));
 }
 
 function sumBreakdowns(attempts, breakdownKey) {
@@ -653,6 +677,19 @@ export function recordLessonRead(lessonId, read) {
  */
 export function markLessonDone(lessonId) {
   const progress = getAllLessonProgress();
+  // Already done is already done. `recordLessonRead` has always refused
+  // to go backwards; this one had no such guard, and the reader calls it
+  // from a scroll handler — so holding at the bottom of a lesson wrote
+  // the same object to localStorage on every animation frame, eighty
+  // times in eighty frames, each write serialising the whole progress
+  // map. Nothing was corrupted and everything was wasted.
+  //
+  // The timestamp is deliberately not refreshed either: `at` means when
+  // the learner finished this lesson, and scrolling past the end again a
+  // week later is not finishing it again.
+  if (progress[lessonId]?.done) {
+    return;
+  }
   progress[lessonId] = { read: 1, done: true, at: Date.now() };
   writeJson(LESSON_PROGRESS_KEY, progress);
 }

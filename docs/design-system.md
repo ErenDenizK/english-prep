@@ -640,6 +640,16 @@ is replaced. Not a node built and appended with its content — screen
 readers register live regions when they appear, and a region injected
 together with its text is frequently missed.
 
+**One exception, and only one: a modal gets its own.** A native
+`<dialog>` makes the rest of the document inert, so the shell's region is
+unreachable from inside it — announcing into it would announce into
+nothing. The restore dialog therefore has `#restore-message`, which obeys
+every other part of this rule: persistent in the markup, `textContent`
+replaced, polite. This is written down because an audit counted the
+regions, called it a violation, and was right to look — a rule that reads
+as forbidding a correct thing gets "fixed" by the next person to read
+it.
+
 `polite`, never `assertive`. Answer feedback is a status message
 (**4.1.3**), not an emergency; `assertive` interrupts a learner who is
 still hearing the option they chose. Announce the outcome and the answer —
