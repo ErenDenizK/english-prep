@@ -28,7 +28,12 @@
       "options": ["must", "have to", "don't have to", "mustn't"],
       "correctIndex": 0,
       "explanation": "Burada dışarıdan dayatılan bir kural değil, konuşmacının kendi hissettiği kişisel bir zorunluluk/sorumluluk söz konusu ('kimse zorlamıyor ama söz verdim'), bu yüzden 'must' kullanılır. 'Have to' dışarıdan gelen bir kural/otorite için kullanılırdı.",
-      "tip": "'Must', konuşmacının kendi görüşüne dayanan içsel bir zorunluluğu; 'have to' ise dışarıdan gelen bir kural veya otoriteyi ifade eder."
+      "tip": "'Must', konuşmacının kendi görüşüne dayanan içsel bir zorunluluğu; 'have to' ise dışarıdan gelen bir kural veya otoriteyi ifade eder.",
+      "optionNotes": {
+        "have to": "Zorunluluğu dışarıdan bir kural ya da otorite koyduğunda gelir. Cümle ise 'nobody is forcing me' diyor: zorunluluğu koyan konuşmacının kendisi.",
+        "don't have to": "Gerek olmadığını söyler: rapor bu gece bitmese de olurdu. Konuşmacı ise verdiği sözü hatırlatıp kendi üstüne bir sorumluluk alıyor.",
+        "mustn't": "Yasak bildirir: raporu bu gece bitirmek serbest olmazdı. Cümlede yasaklayan kimse yok, tersine bitirmeye kararlı bir konuşmacı var."
+      }
     },
     {
       "id": "modals-t2",
@@ -37,7 +42,12 @@
       "options": ["has to", "must", "doesn't have to", "mustn't"],
       "correctIndex": 0,
       "explanation": "'According to the university's regulations' ifadesi dışarıdan (kurum tarafından) belirlenen bir kuralı gösteriyor, bu yüzden 'have to' (has to) kullanılır. Anlamca 'must'a yakın olsa da, resmi kurumsal kural bağlamında sınavlarda 'have to' tercih edilir.",
-      "tip": "Resmi kurallar, yasalar ve kurumsal zorunluluklar için genelde 'have to' tercih edilir."
+      "tip": "Resmi kurallar, yasalar ve kurumsal zorunluluklar için genelde 'have to' tercih edilir.",
+      "optionNotes": {
+        "must": "Zorunluluğu konuşmacının kendisi koyduğunda, kendi kararı ya da vicdanı olduğunda gelir. Buradaki kuralı koyan üniversitenin yönetmeliği.",
+        "doesn't have to": "Gerek olmadığını söyler: sağlık raporu isteğe bağlı olurdu. Yönetmelik ise bunu her öğrenciden istiyor.",
+        "mustn't": "Yasak bildirir: rapor vermek serbest olmazdı. Yönetmelik burada bir şeyi yasaklamıyor, kayıt için şart koşuyor."
+      }
     },
     {
       "id": "modals-t3",
@@ -46,7 +56,12 @@
       "options": ["mustn't", "don't have to", "don't need to", "may not need to"],
       "correctIndex": 0,
       "explanation": "'Strictly forbidden' (kesinlikle yasak) ifadesi bir yasağı gösteriyor, bu yüzden 'mustn't' (yapmamalı/yasak) kullanılır. 'Don't have to' ise bir şeyin gerekli olmadığını, yasak olduğunu değil, ifade eder — anlamca tamamen farklıdır.",
-      "tip": "'Mustn't' = yasak (yapma!); 'don't have to' = gerekli değil (istersen yapabilirsin). Bu ikisini karıştırmak sınavlarda en sık test edilen modal hatalarından biridir."
+      "tip": "'Mustn't' = yasak (yapma!); 'don't have to' = gerekli değil (istersen yapabilirsin). Bu ikisini karıştırmak sınavlarda en sık test edilen modal hatalarından biridir.",
+      "optionNotes": {
+        "don't have to": "Zorunlu olmadığını söyler, yani isteyen yine telefonunu kullanabilirdi. 'Strictly forbidden' ise bu serbestliği tamamen kaldırıyor.",
+        "don't need to": "İhtiyaç olmadığını bildirir; ortada bir yasak değil, boşa çıkmış bir gereklilik olurdu. Havayolunun koyduğu şey ise açık bir yasak.",
+        "may not need to": "İhtimalli bir gereksizlik: 'belki gerekmez' der. Cümlede belirsizlik değil, güvenlik gerekçesiyle konmuş kesin bir kural var."
+      }
     },
     {
       "id": "modals-t4",
@@ -55,7 +70,12 @@
       "options": ["don't have to", "mustn't", "can't", "shouldn't"],
       "correctIndex": 0,
       "explanation": "Profesörün herkese basılı kopya sağlayacağını söylemesi, kitap getirmenin **gerekli olmadığını** gösteriyor; getirmek isteyen yine getirebilir, bu yüzden 'don't have to' kullanılır. En yakın çeldirici 'mustn't' bir yasaktır: onu seçersen cümle \"kitap getirmen yasak\" anlamına gelir, oysa profesör kimseye bir şey yasaklamıyor, sadece gereğini ortadan kaldırıyor. 'shouldn't' de bir tavsiye bildirir (\"getirmesen iyi olur\"), burada ise ortada ne yasak ne öğüt var, sadece gereksizlik var.",
-      "tip": "Bir şeyin yapılmasına gerek olmadığını (ama yasak olmadığını) belirtmek için 'don't have to' veya 'don't need to' kullanılır."
+      "tip": "Bir şeyin yapılmasına gerek olmadığını (ama yasak olmadığını) belirtmek için 'don't have to' veya 'don't need to' kullanılır.",
+      "optionNotes": {
+        "mustn't": "Yasak bildirir: kitap getirmek serbest olmazdı. Profesör kimseye bir şey yasaklamıyor, sadece getirme gereğini ortadan kaldırıyor.",
+        "can't": "İzin verilmediğini söyler, yani kitap getirmek mümkün olmazdı. Basılı kopya sağlanması getirmeyi engellemez, yalnızca gereksiz kılar.",
+        "shouldn't": "Getirmemeni öğütler, yani getirmeyi kötü bir fikir sayar. Cümlede öğüt yok; sadece kitabın artık gerekmediği söyleniyor."
+      }
     },
     {
       "id": "modals-t5",
@@ -64,7 +84,12 @@
       "options": ["Can", "Must", "Should", "Will"],
       "correctIndex": 0,
       "explanation": "Arkadaşça, gündelik bir izin isteme durumu söz konusu, bu yüzden 'can' uygundur. 'Must', 'should' ve 'will' izin isteme anlamı taşımaz.",
-      "tip": "Gündelik, samimi izin istemelerinde 'can', daha resmi durumlarda 'may' kullanılır."
+      "tip": "Gündelik, samimi izin istemelerinde 'can', daha resmi durumlarda 'may' kullanılır.",
+      "optionNotes": {
+        "Must": "Zorunluluk sorar: 'notlarını ödünç almak zorunda mıyım?' Ayşe ise arkadaşından izin istiyor, kendi üstündeki bir görevi sormuyor.",
+        "Should": "Tavsiye sorar: 'ödünç alsam iyi olur mu?' Buradaki soru fikir almak için değil, arkadaşından izin almak için soruluyor.",
+        "Will": "Gelecek ya da isteklilik sorar: 'ödünç alacak mıyım?' Cümlede bir plan değil, samimi bir ortamda yapılan izin isteği var."
+      }
     },
     {
       "id": "modals-t6",
@@ -73,7 +98,12 @@
       "options": ["may", "must", "should", "can"],
       "correctIndex": 0,
       "explanation": "Burada kesin olmayan, olası bir gelecek durumdan bahsediliyor ('postponed... if... doesn't manage'), bu da 'may' (belki/olabilir) ile ifade edilen bir olasılığı gösterir. 'Must' kesinlik, 'should' tavsiye/beklenti, 'can' ise genel yetenek/izin anlamı taşır.",
-      "tip": "Kesin olmayan, orta düzey bir olasılık için 'may' veya 'might' kullanılır; 'can' olasılık belirtmek için kullanılmaz."
+      "tip": "Kesin olmayan, orta düzey bir olasılık için 'may' veya 'might' kullanılır; 'can' olasılık belirtmek için kullanılmaz.",
+      "optionNotes": {
+        "must": "Kesinlik bildirir: toplantı mutlaka ertelenmiş olur. Cümle ise ertelemeyi bir koşula bağlıyor, yani sonuç henüz belli değil.",
+        "should": "Beklenti bildirir: 'normalde ertelenmesi lazım'. Burada beklenen bir şey değil, gerçekleşip gerçekleşmeyeceği belirsiz bir ihtimal anlatılıyor.",
+        "can": "Genel bir imkânı ya da izni anlatır. Belirli bir toplantının ertelenme ihtimali bu kelimeyle kurulmaz."
+      }
     },
     {
       "id": "modals-t7",
@@ -82,7 +112,12 @@
       "options": ["might", "must", "have to", "can't"],
       "correctIndex": 0,
       "explanation": "'I'm not sure yet' ifadesi düşük kesinlikli bir olasılığı gösteriyor, bu yüzden 'might' (belki, zayıf olasılık) kullanılır. 'Must' ve 'have to' zorunluluk, 'can't' ise imkansızlığı ifade eder.",
-      "tip": "'Might', 'may'e göre biraz daha düşük bir olasılık derecesini ifade eder; belirsizlik vurgulanmak istendiğinde tercih edilir."
+      "tip": "'Might', 'may'e göre biraz daha düşük bir olasılık derecesini ifade eder; belirsizlik vurgulanmak istendiğinde tercih edilir.",
+      "optionNotes": {
+        "must": "Kendi üstüne aldığın kesin bir zorunluluk: partiye gitmek zorunda olurdun. Cümle 'I'm not sure yet' ile açılıyor, yani ortada belirsizlik var.",
+        "have to": "Dışarıdan gelen bir zorunluluk: bir kural ya da başkası seni partiye gitmeye mecbur ediyor olurdu. Cümlede böyle bir baskı yok.",
+        "can't": "İmkânsızlık bildirir: gelmen mümkün olmazdı. Cümle ise gelme ihtimalini ödevin erken bitmesi koşuluna bağlıyor, kapatmıyor."
+      }
     },
     {
       "id": "modals-t8",
@@ -91,7 +126,12 @@
       "options": ["Could", "Must", "Shall", "Need"],
       "correctIndex": 0,
       "explanation": "'Possibly' ve 'politely' kelimeleri kibar bir rica olduğunu gösteriyor; 'could' bu tarz kibar isteklerde standart kullanımdır. 'Must' bir zorunluluk ifade eder ve bağlama uymaz.",
-      "tip": "Kibar ricalarda 'could you...?' kalıbı 'can you...?'den daha resmi ve naziktir."
+      "tip": "Kibar ricalarda 'could you...?' kalıbı 'can you...?'den daha resmi ve naziktir.",
+      "optionNotes": {
+        "Must": "Zorunluluk sorar: 'şarj aletini vermek zorunda mısın?' Cümle ricanın kibarca yapıldığını söylüyor, karşıdakine bir mecburiyet yüklemiyor.",
+        "Shall": "Teklif ve öneri sorar, üstelik 'Shall I / Shall we' kalıbında. 'Shall you' diye bir rica biçimi yoktur.",
+        "Need": "Gereklilik sorar: 'vermen gerekir mi?' Tanımadığı birine kibarca yönelen bu cümle gereklilik sormuyor, rica ediyor."
+      }
     },
     {
       "id": "modals-t9",
@@ -100,7 +140,12 @@
       "options": ["must", "might", "can't", "should"],
       "correctIndex": 0,
       "explanation": "Kanıt cümlenin içinde yazılı: 'since it's always this crowded'. Bu kadar güçlü bir kanıt başka açıklama bırakmıyor, yani kanıta dayalı güçlü çıkarım 'must' ile kurulur. En yakın çeldirici 'might' zayıf bir ihtimaldir — \"belki en iyi yerdir, emin değilim\" der ve cümlenin sunduğu 'always this crowded' gerekçesini boşa çıkarır. 'should' ise beklenti bildirir (\"normalde öyle olması lazım\"), elindeki kanıta dayanan bir çıkarımı değil.",
-      "tip": "Mevcut kanıtlara dayanan güçlü bir çıkarımı belirtmek için 'must' kullanılır."
+      "tip": "Mevcut kanıtlara dayanan güçlü bir çıkarımı belirtmek için 'must' kullanılır.",
+      "optionNotes": {
+        "might": "Zayıf bir ihtimal: 'belki en iyi yerdir, emin değilim'. Cümle ise kalabalığı gerekçe göstererek elindeki kanıtın güçlü olduğunu söylüyor.",
+        "can't": "Çıkarımın olumsuz ucu: en iyi yer olması imkânsız olurdu. Kapıdaki kuyruk ve sürekli kalabalık tam tersini gösteriyor.",
+        "should": "Beklenti bildirir: 'normalde en iyi yer olması lazım'. Burada beklenti değil, gözle görülen kanıta dayanan bir çıkarım var."
+      }
     },
     {
       "id": "modals-t10",
@@ -109,7 +154,12 @@
       "options": ["can't", "must", "might", "mustn't"],
       "correctIndex": 0,
       "explanation": "Arabasının az önce ayrıldığını görmüş olmak, evde olmasını neredeyse imkânsız kılıyor; olumsuz kesin çıkarım için 'can't' kullanılır. 'must' tam tersini, 'mustn't' ise yasak bildirir — çıkarım cümlesinde 'mustn't' hiçbir zaman doğru cevap değildir.",
-      "tip": "Olumsuz kesin çıkarım 'can't' ile kurulur. Şıkta 'mustn't' görürsen ele: o yasak bildirir, imkânsızlık değil."
+      "tip": "Olumsuz kesin çıkarım 'can't' ile kurulur. Şıkta 'mustn't' görürsen ele: o yasak bildirir, imkânsızlık değil.",
+      "optionNotes": {
+        "must": "Kanıta dayanan olumlu çıkarım: 'kesin evdedir'. Oysa eldeki kanıt, arabasının az önce ayrılması, onun evde olmadığını gösteriyor.",
+        "might": "Zayıf bir ihtimal bırakır: 'belki evdedir'. Arabasının on dakika önce çıktığını görmek bu ihtimali açık bırakmıyor.",
+        "mustn't": "Yasak bildirir: evde olmasına izin yok demek olurdu. Burada kimse bir şey yasaklamıyor, kanıta bakılıp bir çıkarım yapılıyor."
+      }
     },
     {
       "id": "modals-t11",
@@ -118,7 +168,12 @@
       "options": ["might", "must", "can't", "have to"],
       "correctIndex": 0,
       "explanation": "'but I'm not really expecting anything today' konuşmacının emin olmadığını söylüyor; bu düşük kesinlik, zayıf ihtimal bildiren 'might' ile karşılanır. En yakın çeldirici 'must' kanıta dayalı güçlü bir çıkarımdır — \"kesinlikle kuryedir\" demek olurdu ve hemen ardından gelen \"aslında bir şey beklemiyorum\" ifadesiyle çelişirdi. 'can't' ise skalanın ters ucudur: kuryenin gelmiş olmasının imkânsız olduğunu söylerdi, oysa konuşmacı bunu bir ihtimal olarak ortaya atıyor.",
-      "tip": "Zayıf, emin olunmayan çıkarımlar için 'might' veya 'could' kullanılır; 'must' çok daha güçlü bir kesinlik ifade eder."
+      "tip": "Zayıf, emin olunmayan çıkarımlar için 'might' veya 'could' kullanılır; 'must' çok daha güçlü bir kesinlik ifade eder.",
+      "optionNotes": {
+        "must": "Kanıta dayanan güçlü bir çıkarım: 'kesin kuryedir'. Cümlenin devamı konuşmacının bugün bir şey beklemediğini, yani emin olmadığını söylüyor.",
+        "can't": "İmkânsızlık bildirir: kapıdakinin kurye olması mümkün olmazdı. Konuşmacı ise kuryeyi bir ihtimal olarak ortaya atıyor.",
+        "have to": "'Başka açıklama yok' demenin zorunluluk tarafındaki biçimi. Konuşmacı ise kapıda kimin olduğunu bilmediğini söylüyor."
+      }
     },
     {
       "id": "modals-t12",
@@ -127,7 +182,12 @@
       "options": ["must", "should", "can", "will"],
       "correctIndex": 0,
       "explanation": "Güçlü kanıtlara (üç gündür cevap vermemesi, telefonun kapalı olması) dayanan kesin bir çıkarım yapılıyor, bu yüzden 'must' kullanılır. 'Should' beklenti/tavsiye anlamı taşır, çıkarım için uygun değildir.",
-      "tip": "'Should' bir beklentiyi ('normalde böyle olmalı') ifade eder, kesin bir çıkarımı değil — 'must' ile karıştırılmamalı."
+      "tip": "'Should' bir beklentiyi ('normalde böyle olmalı') ifade eder, kesin bir çıkarımı değil — 'must' ile karıştırılmamalı.",
+      "optionNotes": {
+        "should": "Beklenti bildirir: 'normalde bir şeyin ters olması lazım'. Üç gündür cevap gelmemesi ve telefonun kapalı olması beklenti değil, kanıt.",
+        "can": "Genel bir imkânı anlatır: 'bazen işler ters gider'. Bu cümlede ise belirli bir durum hakkında kanıta dayanan bir çıkarım yapılıyor.",
+        "will": "Gelecekte olacak bir şeyi bildirir. Cümledeki kanıt ise şu anda süren bir durumu açıklıyor, ileriye dönük bir tahmin kurmuyor."
+      }
     },
     {
       "id": "modals-t13",
@@ -136,7 +196,12 @@
       "options": ["must have", "can't have", "should have", "might"],
       "correctIndex": 0,
       "explanation": "Işıkların hâlâ açık ve kapının kilitsiz olması somut bir kanıt; geçmişe dair tek makul açıklamayı veren güçlü çıkarım 'must have + V3' ile kurulur. En yakın çeldirici 'can't have' çıkarımın olumsuz ucudur: \"kilitlemeyi unutmuş olamaz\" derdi, oysa kanıt tam tersini gösteriyor. 'might' ise tek başına V3 alamaz — bu kalıp her zaman modal + have + V3'tür, yani cümlenin çalışması için 'might have forgotten' yazması gerekirdi.",
-      "tip": "Geçmişte olan bir şey hakkında güçlü bir çıkarım yapmak için 'must have + past participle' kullanılır."
+      "tip": "Geçmişte olan bir şey hakkında güçlü bir çıkarım yapmak için 'must have + past participle' kullanılır.",
+      "optionNotes": {
+        "can't have": "Geçmişe dair imkânsızlık: 'kilitlemeyi unutmuş olamaz'. Açık ışıklar ve kilitsiz kapı tam tersini gösteren bir kanıt.",
+        "should have": "Yapılmamış bir şeye pişmanlık ya da eleştiri yükler: 'unutması gerekirdi'. Kanıt ise kilidin gerçekten unutulduğunu söylüyor.",
+        "might": "Tek başına V3 alamaz: bu kalıp her zaman modal + have + V3'tür, yani cümlenin çalışması için 'might have forgotten' yazması gerekirdi."
+      }
     },
     {
       "id": "modals-t14",
@@ -145,7 +210,12 @@
       "options": ["can't have", "must have", "should have", "needn't have"],
       "correctIndex": 0,
       "explanation": "'he's never run more than five kilometers in his life' bilgisi, maratonu üç saatin altında bitirmiş olmasını mantıken imkânsız kılıyor; geçmişe dair imkânsızlık 'can't have + V3' ile kurulur. En yakın çeldirici 'must have' çıkarımın olumlu ucudur ve \"kesinlikle bitirmiştir\" derdi — cümlenin ikinci yarısıyla taban tabana zıt. 'needn't have' ise eylemin yapıldığını ama sonradan gereksiz çıktığını söyler; burada eylemin hiç gerçekleşmediği savunuluyor.",
-      "tip": "Geçmişte bir şeyin imkansız olduğuna dair güçlü çıkarımlar için 'can't have + past participle' kullanılır."
+      "tip": "Geçmişte bir şeyin imkansız olduğuna dair güçlü çıkarımlar için 'can't have + past participle' kullanılır.",
+      "optionNotes": {
+        "must have": "Geçmişe dair güçlü çıkarımın olumlu ucu: 'kesin bitirmiştir'. Hayatında beş kilometreden fazla koşmamış olması bunun tersini söylüyor.",
+        "should have": "Yapılmamış bir iş için eleştiri getirir: 'bitirmeliydi'. Cümle ondan bir şey beklemiyor, bitirmesinin mümkün olmadığını savunuyor.",
+        "needn't have": "Yapılmış ama sonradan gereksiz çıkmış bir işi anlatır. Cümle ise maratonu o sürede bitirmenin hiç gerçekleşmediğini söylüyor."
+      }
     },
     {
       "id": "modals-t15",
@@ -154,7 +224,12 @@
       "options": ["should have", "must have", "can't have", "may have"],
       "correctIndex": 0,
       "explanation": "Konuşmacı \"daha çok çalışmalıydım ama çalışmadım\" diyor; yapılmamış bir eylem için duyulan pişmanlık 'should have + V3' ile kurulur ve 'I only found out yesterday' bu pişmanlığın sebebini veriyor. En yakın çeldirici 'must have' geçmişe dair bir çıkarımdır — \"herhalde çok çalışmışımdır\" demek olurdu, oysa konuşmacı ne kadar çalıştığını tahmin etmiyor, biliyor. 'can't have' de bir çıkarımdır (imkânsızlık) ve cümledeki pişmanlığı hiç karşılamaz.",
-      "tip": "'Should have + V3' yapılmamış bir eylem için pişmanlık ya da eleştiri bildirir; geçmişe dair bir çıkarım için 'must have' kullanılır."
+      "tip": "'Should have + V3' yapılmamış bir eylem için pişmanlık ya da eleştiri bildirir; geçmişe dair bir çıkarım için 'must have' kullanılır.",
+      "optionNotes": {
+        "must have": "Geçmişe dair bir çıkarım: 'herhalde çok çalışmışımdır'. Konuşmacı kendi çalışmasını tahmin etmiyor, ne kadar çalıştığını zaten biliyor.",
+        "can't have": "Geçmişe dair imkânsızlık: 'daha çok çalışmış olamam'. Cümlede kanıta bakılarak yapılan bir çıkarım değil, bir keşke duygusu var.",
+        "may have": "Zayıf bir geçmiş ihtimali: 'belki daha çok çalışmışımdır'. Konuşmacının kendi çalışması hakkında tahmin yürütmesi için bir sebep yok."
+      }
     },
     {
       "id": "modals-t16",
@@ -163,7 +238,12 @@
       "options": ["needn't have", "must have", "shouldn't have", "can't have"],
       "correctIndex": 0,
       "explanation": "Şemsiye getirilmiş (yapılmış bir eylem) ama gereksiz olduğu ortaya çıkmış; bu durumu anlatmak için 'needn't have + V3' (yapmaya gerek yoktu ama yapıldı) kullanılır. 'Shouldn't have' ise yanlış/pişmanlık duyulan bir eylemi ima eder, burada durum sadece gereksizlik, hata değil.",
-      "tip": "'Needn't have + V3' = yapıldı ama gereksizmiş; 'shouldn't have + V3' = yapılmamalıydı, hataydı. İkisi farklı anlamlar taşır."
+      "tip": "'Needn't have + V3' = yapıldı ama gereksizmiş; 'shouldn't have + V3' = yapılmamalıydı, hataydı. İkisi farklı anlamlar taşır.",
+      "optionNotes": {
+        "must have": "Geçmişe dair çıkarım: 'şemsiye getirmiş olmalıyız'. Şemsiyelerin getirildiği zaten biliniyor; cümlenin söylediği şey bunun boşa gittiği.",
+        "shouldn't have": "Yapılan işi bir hata sayar: şemsiye getirmek yanlıştı. Havanın açık çıkması getirmeyi hata yapmaz, yalnızca gereksiz kılar.",
+        "can't have": "İmkânsızlık bildirir: şemsiye getirmiş olamayız. Oysa şemsiyeler getirilmiş, cümle sadece gerekmediğini söylüyor."
+      }
     },
     {
       "id": "modals-t17",
@@ -172,7 +252,12 @@
       "options": ["should", "had better", "had better not", "would rather"],
       "correctIndex": 0,
       "explanation": "Cümle işin sonucunun önemsiz olduğunu açıkça söylüyor ('nothing depends on it'), yani ortada bir uyarı değil sıradan bir tavsiye var; bunun modalı 'should'dur. 'had better' uyulmadığında kötü bir şey olacağını ima eder ve cümlenin ilk yarısıyla çelişir; 'would rather' ise tavsiye değil, iki seçenek arasında tercih bildirir.",
-      "tip": "'Had better' bir uyarıdır: ardında söylenmiş ya da sezilen bir sonuç vardır. Sonuç yoksa 'should' kullan."
+      "tip": "'Had better' bir uyarıdır: ardında söylenmiş ya da sezilen bir sonuç vardır. Sonuç yoksa 'should' kullan.",
+      "optionNotes": {
+        "had better": "Uyarıdır: uyulmazsa kötü bir sonuç vardır. Cümle 'no rush' ve 'nothing depends on it' diyerek böyle bir sonucun olmadığını söylüyor.",
+        "had better not": "Tavsiyeyi tersine çevirir: fırını denememesini öğütler. Konuşmacı ise pastaları övüp bir ara uğramasını öneriyor.",
+        "would rather": "İki seçenek arasında konuşmacının kendi tercihini bildirir. Buradaki cümle ise karşısındakine bir öneri veriyor."
+      }
     },
     {
       "id": "modals-t18",
@@ -181,7 +266,12 @@
       "options": ["had better", "should", "ought to", "might"],
       "correctIndex": 0,
       "explanation": "Cümlede net bir tehdit/olumsuz sonuç bulunuyor (ödev kabul edilmeyecek), bu yüzden acil ve sonuç odaklı tavsiye bildiren 'had better' kullanılır. 'Should' daha genel ve hafif bir tavsiyedir, bu aciliyeti taşımaz.",
-      "tip": "'Had better', genellikle belirtilen olumsuz bir sonuçtan kaçınmak için verilen acil tavsiyelerde kullanılır."
+      "tip": "'Had better', genellikle belirtilen olumsuz bir sonuçtan kaçınmak için verilen acil tavsiyelerde kullanılır.",
+      "optionNotes": {
+        "should": "Sıradan bir tavsiye: 'bitirsen iyi olur', uyulmazsa bir şey olacağı ima edilmez. Cümle ise ödevin hiç kabul edilmeyeceğini söylüyor.",
+        "ought to": "Sorumluluk tonu taşıyan, resmî ve sakin bir tavsiye. Cümle ise sonucu yazılı bir uyarı yapıyor: ödev bir daha geç kalırsa kabul edilmeyecek.",
+        "might": "İhtimal bildirir: 'belki bu gece bitirirsin'. Cümle bir tahmin yürütmüyor, öğrenciye ne yapması gerektiğini söylüyor."
+      }
     },
     {
       "id": "modals-t19",
@@ -190,7 +280,12 @@
       "options": ["ought to", "had better", "must", "can"],
       "correctIndex": 0,
       "explanation": "'Ought to' anlamca 'should' ile neredeyse aynıdır ve burada bir sorumluluk/beklenti bildiren biraz daha resmi bir tavsiye olarak kullanılır. 'Had better' bu kadar genel/uzun vadeli bir beklenti için uygun değildir.",
-      "tip": "'Ought to', 'should' ile neredeyse aynı anlama gelir ama biraz daha resmi ve yazılı dilde daha sık görülür; sonrasında 'to' almayı unutma."
+      "tip": "'Ought to', 'should' ile neredeyse aynı anlama gelir ama biraz daha resmi ve yazılı dilde daha sık görülür; sonrasında 'to' almayı unutma.",
+      "optionNotes": {
+        "had better": "Acil bir uyarıdır ve uyulmazsa doğacak kötü sonuç genelde cümlede yazılıdır. Burada ise süregelen, tehditsiz bir beklenti anlatılıyor.",
+        "must": "Konuşmacının o an koyduğu kesin bir zorunluluk. Cümlede ise büyük kardeş olmaktan doğan, ondan beklenen bir sorumluluk var.",
+        "can": "Yetenek ya da imkân bildirir: 'iyi bir örnek olabilir'. Cümle onun yapabildiğini değil, yapmasının beklendiğini söylüyor."
+      }
     },
     {
       "id": "modals-t20",
@@ -199,7 +294,12 @@
       "options": ["shouldn't", "mustn't have", "don't have to", "needn't"],
       "correctIndex": 0,
       "explanation": "Bu, olumsuz bir tavsiye durumu ('yapmaman iyi olur') — 'shouldn't' bu bağlamda doğru kullanımdır. 'Mustn't have' standart bir yapı değildir ve bu bağlamda kullanılmaz.",
-      "tip": "'Shouldn't', bir şeyin yapılmasının iyi bir fikir olmadığını belirten olumsuz tavsiyede kullanılır."
+      "tip": "'Shouldn't', bir şeyin yapılmasının iyi bir fikir olmadığını belirten olumsuz tavsiyede kullanılır.",
+      "optionNotes": {
+        "mustn't have": "İngilizcede böyle bir kalıp kurulmaz: 'mustn't', geçmişe bakan 'have + V3' ile birleşmez.",
+        "don't have to": "Gerek olmadığını söyler: değerli eşyaları görünür bırakmak zorunda değilsin. Cümle ise bunu yapmanın kötü bir fikir olduğunu anlatıyor.",
+        "needn't": "Gereksizlik bildirir: yapmana gerek yok, ama serbest. Cümledeki uyarı gereksizlikten değil, arabanın soyulma riskinden söz ediyor."
+      }
     },
     {
       "id": "modals-t21",
@@ -208,7 +308,12 @@
       "options": ["can", "could", "was able to", "will be able to"],
       "correctIndex": 0,
       "explanation": "Kardeşin şu anda sahip olduğu, süregelen genel bir yetenekten söz ediliyor; şimdiki genel yetenek 'can' ile anlatılır ve 'it's honestly one of the most impressive things' ifadesi bu yeteneğin hâlâ geçerli olduğunu gösteriyor. En yakın çeldirici 'could' yeteneği geçmişe taşır — \"eskiden yapabiliyordu\" der ve artık yapamadığı izlenimi bırakır. 'will be able to' ise gelecekte kazanılacak bir yetenek içindir, oysa cümlede geleceğe işaret eden hiçbir ifade yok.",
-      "tip": "Genel, şu anki yetenekler için 'can' kullanılır."
+      "tip": "Genel, şu anki yetenekler için 'can' kullanılır.",
+      "optionNotes": {
+        "could": "Yeteneği geçmişe taşır: 'eskiden yapabiliyordu'. Cümle ise kardeşin bu becerisinden hâlâ sahip olduğu bir şey olarak söz ediyor.",
+        "was able to": "Belirli bir günde, tek seferde başarılan somut bir işi anlatır. Burada tek bir çözüm anı değil, süregelen genel bir beceri var.",
+        "will be able to": "Gelecekte kazanılacak bir yeteneği anlatır. Cümlede geleceğe işaret eden hiçbir ifade yok; konuşmacı beceriyi defalarca görmüş."
+      }
     },
     {
       "id": "modals-t22",
@@ -217,7 +322,12 @@
       "options": ["could", "was able to", "can", "has been able to"],
       "correctIndex": 0,
       "explanation": "'When she was only five years old' bir dönemi işaret ediyor ve o dönem boyunca süren genel bir yetenek anlatılıyor; geçmişteki genel yetenek 'could' ile kurulur. En yakın çeldirici 'was able to' olumlu cümlede belirli bir durumda, tek seferde başarılan somut bir işi anlatır ('despite', 'in the end' gibi ifadelerle gelir) — burada tek bir romanı bitirme anı değil, o yaştaki genel okuma becerisi var. 'can' ise şu anki yeteneği bildirir ve cümlenin geçmiş zaman çerçevesiyle ('was', 'amazed') çelişir.",
-      "tip": "Olumlu cümlelerde geçmişteki genel yetenek için 'could', belirli ve tek seferlik bir başarı için 'was/were able to' kullanılır; olumsuzda 'couldn't' her iki anlamda da serbesttir."
+      "tip": "Olumlu cümlelerde geçmişteki genel yetenek için 'could', belirli ve tek seferlik bir başarı için 'was/were able to' kullanılır; olumsuzda 'couldn't' her iki anlamda da serbesttir.",
+      "optionNotes": {
+        "was able to": "Olumlu cümlede belirli bir durumda tek seferde başarılan işi anlatır. Burada tek bir roman değil, o yaştaki genel okuma becerisi var.",
+        "can": "Şu anki genel yeteneği bildirir. Cümle ise 'when she was five' ve 'amazed' ile tamamen geçmişte kurulmuş.",
+        "has been able to": "Geçmişte başlayıp bugüne uzanan bir yeteneği anlatır. Cümle ise kapanmış bir döneme, beş yaşındaki hâline bakıyor."
+      }
     },
     {
       "id": "modals-t23",
@@ -226,7 +336,12 @@
       "options": ["was able to", "could", "can", "would be able to"],
       "correctIndex": 0,
       "explanation": "Burada belirli, tek seferlik bir başarı anlatılıyor (o gün, o trafiğe rağmen zamanında varması), bu yüzden 'was able to' kullanılır, genel yetenek bildiren 'could' değil.",
-      "tip": "Belirli bir durumda, tek seferlik somut bir başarıyı anlatmak için 'was/were able to' kullanılır, 'could' değil."
+      "tip": "Belirli bir durumda, tek seferlik somut bir başarıyı anlatmak için 'was/were able to' kullanılır, 'could' değil.",
+      "optionNotes": {
+        "could": "Geçmişte bir dönem boyunca süren genel bir yeteneği anlatır. 'Despite the terrible traffic' ise o güne özgü tek bir başarıyı işaret ediyor.",
+        "can": "Şu anki genel yeteneği bildirir. Cümle ise olup bitmiş bir görüşmeyi anlatıyor: varış da, müdürün etkilenmesi de geçmişte.",
+        "would be able to": "Koşula bağlı, gerçekleşmemiş bir yetenek bildirir: 'varabilirdi'. Cümlede ise varış gerçekten olmuş ve müdürü etkilemiş."
+      }
     },
     {
       "id": "modals-t24",
@@ -235,7 +350,12 @@
       "options": ["will be able to", "can", "could", "were able to"],
       "correctIndex": 0,
       "explanation": "Gelecekte kazanılacak bir yetenekten bahsediliyor; 'can' bir modal olduğu için başka bir modal ('will') ile yan yana kullanılamaz, bu yüzden 'will be able to' kullanılır.",
-      "tip": "'Can' başka bir modal ile birlikte kullanılamaz; gelecekteki yetenek için 'will be able to' gerekir."
+      "tip": "'Can' başka bir modal ile birlikte kullanılamaz; gelecekteki yetenek için 'will be able to' gerekir.",
+      "optionNotes": {
+        "can": "Şu an sahip olunan yeteneği bildirir. Cümle ise kurs bittikten sonrasına bakıyor ve 'can' bir modal olduğu için geleceğe taşınamaz.",
+        "could": "Yeteneği geçmişe taşır: 'eskiden daha rahat konuşabiliyordun'. 'Once you finish this course' ise henüz gelmemiş bir zamanı işaret ediyor.",
+        "were able to": "Geçmişte tek seferde başarılan bir işi anlatır. Cümledeki kazanım ise kurs bittikten sonra, ileride ortaya çıkacak."
+      }
     }
   ],
   "lessons": [

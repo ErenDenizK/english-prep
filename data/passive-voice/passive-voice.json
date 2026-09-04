@@ -28,7 +28,12 @@
       "options": ["is baked", "was baked", "has been baked", "is being baked"],
       "correctIndex": 0,
       "explanation": "'Every morning' ve üç kuşaktır değişmeyen tarif, her gün tekrarlanan bir rutini anlatıyor; rutin edilgen eylemler Present Simple Passive ile kurulur ('is baked'). En yakın çeldirici 'is being baked', Present Continuous Passive'tir ve ekmeğin tam şu anda fırında olduğunu, tek seferlik bir olayın sürdüğünü söyler — 'every morning' ile bir arada duramaz. 'was baked' ise olayı geçmişte kapatır, oysa fırın bu işi hâlâ yapıyor.",
-      "tip": "Rutin, tekrar eden edilgen eylemler için Present Simple Passive ('is/are + V3') kullanılır."
+      "tip": "Rutin, tekrar eden edilgen eylemler için Present Simple Passive ('is/are + V3') kullanılır.",
+      "optionNotes": {
+        "was baked": "Ekmeği geçmişte kapanmış bir döneme bağlar. 'Every morning' ve hâlâ kullanılan aile tarifi, fırının bu işi bugün de yaptığını söylüyor.",
+        "has been baked": "Bugüne kadar süren bir dönemi ölçer ve o dönemi cümlede ister; buradaki üç kuşak ise tarife bağlı, ekmeğin pişirilmesine değil.",
+        "is being baked": "Ekmeğin tam şu anda fırında olduğunu söyler. 'Every morning' tek bir ana değil, her gün yinelenen bir işe işaret ediyor."
+      }
     },
     {
       "id": "passive-voice-t2",
@@ -37,7 +42,12 @@
       "options": ["was built", "has been built", "is built", "had been built"],
       "correctIndex": 0,
       "explanation": "'In 1973' belirli ve kapanmış bir geçmiş an veriyor, bu yüzden Past Simple Passive ('was built') kullanılır. En yakın çeldirici 'has been built': Present Perfect Passive olayın ne zaman olduğunu söylemez ve 'in 1973' gibi belirli bir geçmiş zaman ifadesiyle kullanılmaz. 'had been built' de olmaz, çünkü Past Perfect Passive kendisinden daha sonraki bir geçmiş referans anına ihtiyaç duyar — söylenmiş ya da bağlamdan anlaşılan; bu paragrafta öyle bir an yok.",
-      "tip": "Belirli bir geçmiş zaman ifadesi varsa Past Simple Passive kullanılır, Present Perfect Passive değil."
+      "tip": "Belirli bir geçmiş zaman ifadesi varsa Past Simple Passive kullanılır, Present Perfect Passive değil.",
+      "optionNotes": {
+        "has been built": "Olayın ne zaman olduğunu söylemeyen bir yapı. 'In 1973' belirli bir geçmiş an veriyor ve bu ikisi aynı cümlede duramaz.",
+        "is built": "Rutin ya da genel bir gerçek kurar. Burada tek bir köprünün 1973'te tamamlanmış inşası anlatılıyor.",
+        "had been built": "Geçmişteki başka bir ana kadar tamamlanmış olmayı anlatır ve o ikinci anı gerektirir; bu paragrafta yalnızca 1973 var."
+      }
     },
     {
       "id": "passive-voice-t3",
@@ -46,7 +56,12 @@
       "options": ["have been sold", "were sold", "are sold", "had been sold"],
       "correctIndex": 0,
       "explanation": "'Since it was first published' geçmişte başlayıp bugüne uzanan bir süreç kuruyor ve 'sales are still climbing' bu sürecin kapanmadığını söylüyor; bu yüzden Present Perfect Passive ('have been sold') gerekir. En yakın çeldirici 'were sold', Past Simple Passive'dir ve satışı geçmişte bitmiş bir döneme kapatır — 'still climbing' ile açıkça çelişir. 'had been sold' ise Past Perfect Passive'dir: geçmişteki başka bir ana kadarki durumu anlatır, burada anlatılan ise bugüne kadarki toplamdır.",
-      "tip": "Başlangıç noktası bildiren 'since' (since 2010, since it was published) süreci bugüne bağlar ve Present Perfect Passive'i tetikler; 'çünkü' anlamındaki since böyle bir sinyal vermez."
+      "tip": "Başlangıç noktası bildiren 'since' (since 2010, since it was published) süreci bugüne bağlar ve Present Perfect Passive'i tetikler; 'çünkü' anlamındaki since böyle bir sinyal vermez.",
+      "optionNotes": {
+        "were sold": "Satışı geçmişte kapanmış bir döneme hapseder. 'Sales are still climbing' sürecin hâlâ işlediğini söylüyor.",
+        "are sold": "Her zaman geçerli bir rutin bildirir. Verilen üç milyon ise ilk yayımdan bugüne biriken bir toplam.",
+        "had been sold": "Geçmişteki bir ana kadarki toplamı verir ve o anı gerektirir. Buradaki toplam ise bugüne, hâlâ süren satışa kadar."
+      }
     },
     {
       "id": "passive-voice-t4",
@@ -55,7 +70,12 @@
       "options": ["is being", "was", "has been", "is"],
       "correctIndex": 0,
       "explanation": "'This week' şu anda devam eden bir süreci gösteriyor, bu yüzden Present Continuous Passive ('is being renovated') kullanılır.",
-      "tip": "Şu anda devam eden edilgen eylemler için Present Continuous Passive ('is/are being + V3') kullanılır."
+      "tip": "Şu anda devam eden edilgen eylemler için Present Continuous Passive ('is/are being + V3') kullanılır.",
+      "optionNotes": {
+        "was": "Tadilatı geçmişte bitmiş gösterir. Yan girişe yönlendirme ve içerideki gürültü, işin hâlâ sürdüğünü söylüyor.",
+        "has been": "İşin bitip sonucunun ortada olduğunu anlatır. Lobi yenilenmiş olsaydı ne gürültü olurdu ne de yan girişe ihtiyaç.",
+        "is": "Genel ya da yinelenen bir durum kurar: 'lobi yenilenir'. Burada anlatılan, bu hafta süren tek bir tadilat."
+      }
     },
     {
       "id": "passive-voice-t5",
@@ -64,7 +84,12 @@
       "options": ["should be submitted", "should submit", "should be submitting", "should submitted"],
       "correctIndex": 0,
       "explanation": "Formu teslim eden değil, edilen o; fail hiç söylenmiyor, bu yüzden 'modal + be + V3' kalıbı ('should be submitted') gerekir. En yakın çeldirici 'should submit' aktiftir: formun bir şeyi teslim etmesi gerektiğini söyler, oysa 'This form' eylemi kendi yapabilecek bir varlık değil. 'should submitted' ise kural olarak da kurulmuyor: modalden sonra doğrudan V3 gelmez, araya yalın 'be' girmek zorundadır.",
-      "tip": "Modal + edilgen yapı: 'modal + be + V3' şeklinde kurulur (should be submitted, must be checked vb.)."
+      "tip": "Modal + edilgen yapı: 'modal + be + V3' şeklinde kurulur (should be submitted, must be checked vb.).",
+      "optionNotes": {
+        "should submit": "Formun bir şeyi teslim etmesi gerektiğini söyler. Teslim eden değil, edilen o — özne eylemi kendi yapabilecek bir varlık değil.",
+        "should be submitting": "İçinde 'be' geçtiği için edilgen sanılır; oysa 'be + V-ing' aktiftir ve formu teslim eden tarafın yerine koyar.",
+        "should submitted": "Modalden sonra doğrudan V3 gelmez: araya yalın 'be' girmek zorundadır, yoksa yapı ne aktif olur ne edilgen."
+      }
     },
     {
       "id": "passive-voice-t6",
@@ -73,7 +98,12 @@
       "options": ["must be kept", "must keep", "must been kept", "must being kept"],
       "correctIndex": 0,
       "explanation": "Yangın çıkışlarının açık tutulması bir kural olarak veriliyor ve kimin tutacağı söylenmiyor: kalıp 'modal + be + V3' ('must be kept'). 'must been kept' İngilizcenin temel bir kuralını çiğner: modalden sonra fiil daima yalın hâlde gelir, yani 'be'; 'been' yalnızca 'have' ile birlikte yaşar ('must have been kept') ve o da geçmişe bakan ayrı bir kalıptır. 'must keep' ise aktiftir ve çıkışların bir şeyi açık tuttuğunu söyler.",
-      "tip": "'Must be + V3' güçlü bir zorunluluğun edilgen halini ifade eder."
+      "tip": "'Must be + V3' güçlü bir zorunluluğun edilgen halini ifade eder.",
+      "optionNotes": {
+        "must keep": "Çıkışların bir şeyi açık tuttuğunu söyler. Kural çıkışlara uygulanıyor: onlar eylemi yapan değil, eylemin uygulandığı taraf.",
+        "must been kept": "Modalden sonra fiil daima yalın hâlde gelir, yani 'be'. 'been' yalnızca 'have' ile yaşar: 'must have been kept'.",
+        "must being kept": "Kuralın sürekliliğini vermek için 'being' eklenmiş; oysa modalden sonra yalın 'be' gelir ve edilgen parça 'be + V3'tür."
+      }
     },
     {
       "id": "passive-voice-t7",
@@ -82,7 +112,12 @@
       "options": ["can be taken", "can take", "can be take", "can taking"],
       "correctIndex": 0,
       "explanation": "İlacın alınabilir olduğu, kimin alacağı söylenmeden belirtiliyor; imkân bildiren edilgen kalıp 'can be + V3' ('can be taken'). 'can be take' bir kural ihlalidir: edilgen yapıda 'be'den sonra fiilin V3 (past participle) hâli gelir, yani 'taken'; yalın 'take' oraya giremez. 'can take' ise aktiftir ve ilacın bir şeyi aldığını söyler, oysa alınan şey ilacın kendisi.",
-      "tip": "Bir şeyin yapılabilir olduğunu belirtmek için 'can be + V3' kullanılır."
+      "tip": "Bir şeyin yapılabilir olduğunu belirtmek için 'can be + V3' kullanılır.",
+      "optionNotes": {
+        "can take": "İlacın bir şeyi alabildiğini söyler. Alınan şey ilacın kendisi; özne eylemi kendi yapabilecek bir varlık değil.",
+        "can be take": "Edilgen parçada 'be'den sonra fiilin V3 hâli gelir — 'taken'. Yalın 'take' oraya giremez.",
+        "can taking": "Modalden sonra fiil yalın hâlde gelir; 'taking' ne modalin arkasına girebilir ne de edilgen parçayı kurabilir."
+      }
     },
     {
       "id": "passive-voice-t8",
@@ -91,7 +126,12 @@
       "options": ["might be postponed", "might postpone", "might been postponed", "might be postpone"],
       "correctIndex": 0,
       "explanation": "'If the results don't improve' kesin olmayan bir ihtimal kuruyor ve projeyi erteleyecek kişi söylenmiyor: 'might be + V3' ('might be postponed'). 'might been postponed' kural dışıdır: modalden sonra yalın 'be' gelir, 'been' yalnızca 'have' ile kullanılır ('might have been postponed'). 'might be postpone' de bozuktur, çünkü 'be'den sonra V3 gelmek zorundadır — 'postponed', 'postpone' değil.",
-      "tip": "Modal + edilgen: modalden sonra daima yalın 'be', ondan sonra V3 gelir — 'might be postponed'. 'be' düşerse ya da yerine 'been' geçerse yapı bozulur."
+      "tip": "Modal + edilgen: modalden sonra daima yalın 'be', ondan sonra V3 gelir — 'might be postponed'. 'be' düşerse ya da yerine 'been' geçerse yapı bozulur.",
+      "optionNotes": {
+        "might postpone": "Projenin bir şeyi erteleyebileceğini söyler. Ertelenen proje: özne eylemi yapan değil, eylemin uygulandığı taraf.",
+        "might been postponed": "'been' yalnızca 'have' ile birlikte kullanılır ('might have been postponed'); modalden sonra yalın 'be' gelir.",
+        "might be postpone": "'be'den sonra V3 gerekir — 'postponed'. Yalın 'postpone' ile edilgen parça yarım kalır."
+      }
     },
     {
       "id": "passive-voice-t9",
@@ -100,7 +140,12 @@
       "options": ["must have been", "must be", "should be", "can be"],
       "correctIndex": 0,
       "explanation": "Kanıt ortada: paket burada değil ve takip kaydı 'it arrived yesterday' diyor; geçmişte olmuş bir şey hakkında kesine yakın bir çıkarım yapılıyor, bu yüzden 'must have been + V3' kullanılır. En yakın çeldirici 'must be': 'must be delivered' paketin henüz teslim edilmediğini, edilmesi gerektiğini söyler — oysa teslimat çoktan olmuş, sadece yanlış adrese. 'should be' de aynı şekilde şimdiye ya da geleceğe bakan bir beklenti bildirir; burada gereken, geçmişe dönük bir çıkarımdır.",
-      "tip": "Geçmişe dönük güçlü çıkarımların edilgen hali 'must have been + V3' şeklinde kurulur."
+      "tip": "Geçmişe dönük güçlü çıkarımların edilgen hali 'must have been + V3' şeklinde kurulur.",
+      "optionNotes": {
+        "must be": "Paketin henüz teslim edilmediğini, edilmesi gerektiğini söyler. Oysa teslimat çoktan olmuş, sadece yanlış adrese.",
+        "should be": "Şimdiye ya da geleceğe bakan bir beklenti kurar. Takip kaydı olayın dün olup bittiğini söylüyor; burada yapılan geçmişe dönük bir çıkarım.",
+        "can be": "İmkân bildirir: 'teslim edilebilir'. Paragraf bir imkândan değil, kanıta dayanan bir çıkarımdan söz ediyor."
+      }
     },
     {
       "id": "passive-voice-t10",
@@ -109,7 +154,12 @@
       "options": ["should have been", "should be", "must be", "can have been"],
       "correctIndex": 0,
       "explanation": "'Nobody noticed it until the final review' hatayı yakalama fırsatının geçtiğini söylüyor; olması gerekirken olmamış bir şeyi eleştirmek 'should have been + V3' ile olur. En yakın çeldirici 'should be': 'should be caught' hâlâ yapılabilecek bir işi anlatır, oysa 'much earlier' olayın geçmişte kaldığını söylüyor. 'can have been' şıkkı ise görür görmez elenebilir: 'can'in geçmişe dönük hâli yalnızca olumsuz cümlelerde ve sorularda görülür ('can't have been', 'Can it have been…?'), düz olumlu bir cümlede değil.",
-      "tip": "'Should have been + V3', geçmişte olması gerekirken olmayan bir durumu eleştirmek için kullanılır."
+      "tip": "'Should have been + V3', geçmişte olması gerekirken olmayan bir durumu eleştirmek için kullanılır.",
+      "optionNotes": {
+        "should be": "Hâlâ yapılabilecek bir işi anlatır. 'Much earlier' ve son incelemeye kadar fark edilmemiş olması, fırsatın geçtiğini söylüyor.",
+        "must be": "Şimdi için bir zorunluluk kurar. Cümlede kurulan şey bir zorunluluk değil, kaçırılmış bir fırsata duyulan rahatsızlık.",
+        "can have been": "'can have been' olumlu cümlede kullanılmaz; can'in geçmişe dönük hâli yalnızca olumsuzda ve soruda yaşar: 'can't have been'."
+      }
     },
     {
       "id": "passive-voice-t11",
@@ -118,7 +168,12 @@
       "options": ["can't have been", "must have been", "should have been", "might be"],
       "correctIndex": 0,
       "explanation": "Kanıt tam tersini söylüyor — cam zemin katta ve dışarıdan tamamen korunaklı — yani rüzgârın kırmış olması imkânsız; geçmişe dair imkânsızlık 'can't have been + V3' ile kurulur. En yakın çeldirici 'must have been' anlamın tam zıddıdır: kanıta dayanarak 'kesin öyle olmuştur' der, oysa buradaki kanıt olasılığı dışlıyor. 'might be' ise hem geçmişe değil şimdiye bakar hem de bir ihtimal bırakır; cümlede bırakılan bir ihtimal yok.",
-      "tip": "Geçmişe dair imkansızlık bildiren edilgen yapı: 'can't have been + V3'."
+      "tip": "Geçmişe dair imkansızlık bildiren edilgen yapı: 'can't have been + V3'.",
+      "optionNotes": {
+        "must have been": "Kanıta dayanarak 'kesin öyle olmuştur' der. Buradaki kanıt — zemin kat, dışarıdan tamamen korunaklı — tam tersini söylüyor.",
+        "should have been": "Olması gerekirken olmamış bir şeyi eleştirir. Camın rüzgârla kırılması beklenen bir şey değil, dışlanan bir ihtimal.",
+        "might be": "Şimdi için bir ihtimal açık bırakır. Kırılma çoktan olmuş ve paragraf rüzgâr ihtimalini bırakmıyor, kapatıyor."
+      }
     },
     {
       "id": "passive-voice-t12",
@@ -127,7 +182,12 @@
       "options": ["may have been", "may be", "must be", "should be"],
       "correctIndex": 0,
       "explanation": "E-postanın spam klasörüne düşmüş olması geçmişe dair, kesin olmayan bir ihtimaldir: 'may have been + V3'. En yakın çeldirici 'may be': 'may be sent' henüz gönderilmemiş, bundan sonra gönderilebilecek bir e-postayı anlatır — oysa 'before assuming it never arrived' e-postanın çoktan gönderilmiş olduğunu varsayıyor. 'must be' ise hem zamanı kaçırır hem de kesinlik bildirir; 'it's worth checking there' zaten emin olunmadığını gösteriyor.",
-      "tip": "Geçmişe dair zayıf/orta ihtimal bildiren edilgen yapı: 'may/might have been + V3'."
+      "tip": "Geçmişe dair zayıf/orta ihtimal bildiren edilgen yapı: 'may/might have been + V3'.",
+      "optionNotes": {
+        "may be": "Henüz gönderilmemiş, bundan sonra gönderilebilecek bir e-postayı anlatır. Bu e-posta gönderilmiş; sorun nereye düştüğü.",
+        "must be": "Kesinlik bildirir. 'It's worth checking there' emin olunmadığını gösteriyor: ortada bir tahmin var, bir kesinlik değil.",
+        "should be": "Bir beklenti ya da tavsiye kurar. Paragraf ne yapılması gerektiğini değil, olmuş olabilecek bir şeyi anlatıyor."
+      }
     },
     {
       "id": "passive-voice-t13",
@@ -136,7 +196,12 @@
       "options": ["had", "did", "made", "took"],
       "correctIndex": 0,
       "explanation": "Saçını kuaförde kestirdi, kendi kesmedi; bu 'have + nesne + V3' yaptırma kalıbıdır ve 'her hair cut' sırası bunu ele veriyor ('had'). En yakın çeldirici 'made': make bu kalıba girmez, bir kişiyi zorlar ve yalın fiil alır — 'made the hairdresser cut her hair' olurdu, 'made her hair cut' değil. 'did' ve 'took' ise hiç girmez: 'nesne + V3' sırasını İngilizcede yalnızca 'have' ve 'get' alır.",
-      "tip": "'Have + nesne + V3' yapısı, işi bir başkasına yaptırdığımızı anlatır: 'have your hair cut' = saçını kestirmek (kendin kesmiyorsun)."
+      "tip": "'Have + nesne + V3' yapısı, işi bir başkasına yaptırdığımızı anlatır: 'have your hair cut' = saçını kestirmek (kendin kesmiyorsun).",
+      "optionNotes": {
+        "did": "'Do one's hair' saçı yapmak, şekillendirmek demektir ve işi öznenin kendisi yapar; sondaki 'cut' da cümleye bağlanamaz.",
+        "made": "Make bir kişiyi zorlar ve yalın fiil alır: 'made the hairdresser cut her hair'. Saç zorlanacak bir taraf değil.",
+        "took": "Yaptırma anlamını 'take' taşımaz; boşluktan sonraki 'nesne + V3' sırasını İngilizcede yalnızca 'have' ve 'get' alır."
+      }
     },
     {
       "id": "passive-voice-t14",
@@ -145,7 +210,12 @@
       "options": ["got", "made", "did", "took"],
       "correctIndex": 0,
       "explanation": "'The car fixed' sırası yaptırma kalıbını gösteriyor: arabayı kendileri tamir etmedi, tamir ettirdiler. 'Get + nesne + V3', 'have + nesne + V3' ile aynı işi görür; 'finally' ve aylarca süren uğraş get'in gündelik, 'sonunda ayarlayarak' tonuna da tam oturur. En yakın çeldirici 'made': make bu kalıba girmez, bir kişiyi zorlar ve yalın fiil alır ('made the mechanic fix the car'). 'did' ise 'did the car fixed' gibi İngilizcede hiç kurulmayan bir dizi üretir.",
-      "tip": "'Get + nesne + V3' ile 'have + nesne + V3' aynı yaptırma anlamını taşır; get daha gündelik bir tondur ve çoğu zaman uğraşıp ayarlamayı ima eder."
+      "tip": "'Get + nesne + V3' ile 'have + nesne + V3' aynı yaptırma anlamını taşır; get daha gündelik bir tondur ve çoğu zaman uğraşıp ayarlamayı ima eder.",
+      "optionNotes": {
+        "made": "Make zorlama ya da ikna anlatır ve yalın fiil alır. Burada anlatılan, aylarca uğraşıp sonunda ayarlanan bir hizmet.",
+        "did": "Türkçedeki 'yaptırdık' doğrudan karşılanmış; oysa 'do' bir işi başkasına yaptırmayı değil, öznenin kendi yaptığını anlatır.",
+        "took": "'Took the car' arabayı bir yere götürmeyi anlatır ve arkasından gelen 'fixed' boşta kalır; kalıp 'nesne + V3' sırasını ister."
+      }
     },
     {
       "id": "passive-voice-t15",
@@ -154,7 +224,12 @@
       "options": ["have", "do", "make", "let"],
       "correctIndex": 0,
       "explanation": "Kişi işi kendisi yapmıyor, başkasına yaptırıyor; bunun kalıbı 'have + nesne + V3'tür. 'make' yaptırma kalıbına girmez — 'make somebody do' der, 'make something done' demez; 'let' ise izin vermek anlamındadır.",
-      "tip": "Bir işi başkasına yaptırdığında 'have/get something done' kullan; 'make' ve 'let' bu kalıba girmez."
+      "tip": "Bir işi başkasına yaptırdığında 'have/get something done' kullan; 'make' ve 'let' bu kalıba girmez.",
+      "optionNotes": {
+        "do": "'Do the house' evi toparlamak gibi okunur ve arkasındaki 'painted' cümleye bağlanamaz; bu sıra 'do' ile kurulmaz.",
+        "make": "'Make something done' diye bir kalıp yoktur: make bir kişiyi zorlar ve yalın fiil alır ('made the firm repaint it').",
+        "let": "İzin vermek demektir ve yalın fiil alır. Burada anlatılan izin değil, babadan beri aynı firmaya yaptırılan bir iş."
+      }
     },
     {
       "id": "passive-voice-t16",
@@ -163,7 +238,12 @@
       "options": ["had had", "had", "have had", "did have"],
       "correctIndex": 0,
       "explanation": "'By the time we moved in' geçmişte başka bir olaydan önce tamamlanmış bir eylemi gösteriyor, bu yüzden Past Perfect'in causative hali 'had had + nesne + V3' kullanılır.",
-      "tip": "Causative yapı da diğer zamanlar gibi çekimlenebilir: Past Perfect'te 'had had something done' şeklini alır."
+      "tip": "Causative yapı da diğer zamanlar gibi çekimlenebilir: Past Perfect'te 'had had something done' şeklini alır.",
+      "optionNotes": {
+        "had": "Yaptırmayı düz geçmişe koyar, yani mutfak taşınmayla aynı düzleme düşer. 'By the time we moved in' işin ondan önce bitmesini istiyor.",
+        "have had": "Geçmişten bugüne uzanır. Cümlenin referans anı bugün değil, taşındığımız gün: o güne kadar tamamlanmış olmak aranıyor.",
+        "did have": "Vurgu ve soru için kullanılan bir çekimdir ve düz bir geçmiş kurar; burada gereken, taşınmadan önce bitmiş olmak."
+      }
     },
     {
       "id": "passive-voice-t17",
@@ -172,7 +252,12 @@
       "options": ["is said to", "is saying to", "says to", "is telling to"],
       "correctIndex": 0,
       "explanation": "Kaynağı net verilmeden ('according to several former employees') genel bir kanı aktarılıyor ve boşluktan sonra yalın 'be' geliyor: özneyle başlayan edilgen raporlama kalıbı 'S + is said to + V' gerekir. En yakın çeldirici 'is saying to' aktif ve continuous bir yapıdır; CEO'nun kendisinin bir şey söylediğini anlatır, oysa burada söyleyen CEO değil, hakkında söylenen CEO'dur. 'says to' da aktiftir ve 'say to' bir muhatap ister ('says to his staff'); üstelik edilgen raporlamanın parçası 'be + V3'tür, düz 'says' değil.",
-      "tip": "'Is said to + fiil (base form)', bir şeyin genel olarak söylendiğini/düşünüldüğünü, kimin söylediği belirtilmeden aktarmak için kullanılır."
+      "tip": "'Is said to + fiil (base form)', bir şeyin genel olarak söylendiğini/düşünüldüğünü, kimin söylediği belirtilmeden aktarmak için kullanılır.",
+      "optionNotes": {
+        "is saying to": "CEO'nun kendisinin bir şey söylediğini anlatır. Aktarılan bilgi ise onun hakkında: söyleyen değil, hakkında söylenen o.",
+        "says to": "Aktif bir yapı ve 'say to' bir muhatap ister ('says to his staff'); boşluktan sonra ise yalın 'be' geliyor.",
+        "is telling to": "Tell doğrudan bir muhatap ister ('tell someone') ve bu kalıba hiç girmez; aktarma yapısının fiili 'say'dir."
+      }
     },
     {
       "id": "passive-voice-t18",
@@ -181,7 +266,12 @@
       "options": ["It is believed", "It believes", "It is believing", "They believe it"],
       "correctIndex": 0,
       "explanation": "Boşluktan sonra 'that' ile tam bir cümle geliyor ve inanışın sahibi hiç belirtilmiyor: kalıp 'It is believed that + cümle'. En yakın çeldirici 'They believe it': hem 'that'lı yapının önüne fazladan bir 'it' koyup 'they believe it that...' gibi bozuk bir dizi üretir hem de yapının varlık sebebini ortadan kaldırıp olmayan bir özne ('they') icat eder. 'It is believing' de olmaz: 'believe' durum fiilidir, continuous'a girmez, ve bu kalıpta gereken parça 'be + V3'tür.",
-      "tip": "'It is believed/thought/reported that...' yapısı, kaynağı belirtmeden genel bir görüşü aktarmak için kullanılır."
+      "tip": "'It is believed/thought/reported that...' yapısı, kaynağı belirtmeden genel bir görüşü aktarmak için kullanılır.",
+      "optionNotes": {
+        "It believes": "Aktif bir yapı: bir şeyin bir şeye inandığını söyler. Buradaki 'It' anlamsız bir başlangıçtır, inanan taraf değil.",
+        "It is believing": "Believe bir durum fiilidir, continuous'a girmez; kalıbın istediği parça da 'be + V3'tür.",
+        "They believe it": "Kaynağı gizlemek için kurulan cümleye olmayan bir özne icat eder; üstelik 'that'ten önce fazladan bir 'it' bırakır."
+      }
     },
     {
       "id": "passive-voice-t19",
@@ -190,7 +280,12 @@
       "options": ["are reported to have been", "are reporting to be", "report to have been", "are reported to be"],
       "correctIndex": 0,
       "explanation": "'Late last night' görülme olayının aktarımdan önce olduğunu söylüyor ve yürüyüşçüler görüldü, görmedi: hem geçmiş hem edilgen, yani 'are reported to have been + V3'. En yakın çeldirici 'are reported to be': 'to + fiil' aktarımla aynı zamanı anlatır, oysa olay dün geceye ait, aktarım ise bugün yapılıyor. 'are reporting to be' ise aktiftir ve haberi kayıp yürüyüşçülerin kendilerinin verdiğini söyler — 'rescue teams haven't confirmed anything yet' cümlesiyle açıkça çelişir.",
-      "tip": "Geçmiş bir eylemi belirsiz kaynaktan aktarmak için 'is/are reported to have been + V3' kullanılır."
+      "tip": "Geçmiş bir eylemi belirsiz kaynaktan aktarmak için 'is/are reported to have been + V3' kullanılır.",
+      "optionNotes": {
+        "are reporting to be": "Haberi kayıp yürüyüşçülerin kendilerinin verdiğini söyleyen aktif bir yapı; oysa aktarılan bilgi onlar hakkında.",
+        "report to have been": "Aktarımın edilgen parçası ('are reported') düşmüş: bu hâliyle haberi veren taraf yürüyüşçülerin kendisi olur.",
+        "are reported to be": "'to + fiil' olayın aktarımla aynı zamanda olduğunu söyler. Görülme 'late last night'a ait, aktarım ise bugün yapılıyor."
+      }
     },
     {
       "id": "passive-voice-t20",
@@ -199,7 +294,12 @@
       "options": ["is supposed to", "is supposing to", "supposes to", "is supposed"],
       "correctIndex": 0,
       "explanation": "Planlanan ama gerçekleşmeyen bir durum anlatılıyor, bu yüzden 'is supposed to + fiil' (yapılması bekleniyordu ama) kullanılır.",
-      "tip": "'Is supposed to + fiil', bir beklentiyi/planı, genelde tam gerçekleşmemiş bir durumu ima ederek anlatır."
+      "tip": "'Is supposed to + fiil', bir beklentiyi/planı, genelde tam gerçekleşmemiş bir durumu ima ederek anlatır.",
+      "optionNotes": {
+        "is supposing to": "Toplantının bir şey varsaydığını söyleyen aktif bir yapı. Beklentiyi kuran kalıpta ise 'be + V3' parçası bulunur.",
+        "supposes to": "Aktif bir çekim: varsayan taraf toplantının kendisi olur. Oysa saati belirleyen, kapıya asılmış program.",
+        "is supposed": "'be supposed' tek başına kullanılmaz; arkasından gelen yalın fiile ('start') bağlanabilmesi için 'to' gerekir."
+      }
     },
     {
       "id": "passive-voice-t21",
@@ -208,7 +308,12 @@
       "options": ["was stolen", "was stolen by someone", "was stolen by a stranger", "was stolen by a person"],
       "correctIndex": 0,
       "explanation": "'I have no idea who took it' failin bilinmediğini açıkça söylüyor; fail bilinmiyorsa edilgen cümle zaten onu söylememek için kurulur ve 'by' düşer ('was stolen'). En yakın çeldirici 'was stolen by someone': dilbilgisi olarak kurulur ama cümleye sıfır bilgi ekler — 'someone' zaten 'bilmiyorum' demenin uzun hâlidir. 'was stolen by a stranger' daha da kötüsünü yapar: bilinmeyen bir şeyi bilirmiş gibi, hırsızın bir yabancı olduğunu iddia eder.",
-      "tip": "Fail bilinmiyorsa, önemli değilse veya belirsizse (someone, people, they) 'by' ifadesi genelde cümleden çıkarılır."
+      "tip": "Fail bilinmiyorsa, önemli değilse veya belirsizse (someone, people, they) 'by' ifadesi genelde cümleden çıkarılır.",
+      "optionNotes": {
+        "was stolen by someone": "Dilbilgisi olarak kurulur ama cümleye sıfır bilgi ekler: 'someone' zaten 'bilmiyorum' demenin uzun hâlidir.",
+        "was stolen by a stranger": "Bilinmeyen bir şeyi bilirmiş gibi hırsızın bir yabancı olduğunu iddia eder; 'I have no idea who took it' bunu dışlıyor.",
+        "was stolen by a person": "Fail hakkında hiçbir şey söylemez — cüzdanı alan zaten bir insan; böyle bir 'by' cümlede fazladan durur."
+      }
     },
     {
       "id": "passive-voice-t22",
@@ -217,7 +322,12 @@
       "options": ["was written by", "was written", "wrote", "has written"],
       "correctIndex": 0,
       "explanation": "Romanı on beş yaşında bir öğrencinin yazmış olması cümlenin en şaşırtıcı bilgisi — 'which surprised every critic' bunu söylüyor — ve böyle bir bilgi 'by + fail' ile verilir. En yakın çeldirici 'was written': 'by' düşünce 'a fifteen-year-old student' isim öbeği cümleye bağlanamaz ve yapı bozulur; boşluktan hemen sonra faili söyleyen bir isim öbeği varsa 'by' zorunludur. 'wrote' ise aktiftir ve romanın bir öğrenciyi yazdığını söyler.",
-      "tip": "Fail beklenmedik, önemli veya vurgulanmak istenen bir bilgiyse 'by + fail' mutlaka belirtilir."
+      "tip": "Fail beklenmedik, önemli veya vurgulanmak istenen bir bilgiyse 'by + fail' mutlaka belirtilir.",
+      "optionNotes": {
+        "was written": "'By' düşünce arkadaki 'a fifteen-year-old student' öbeği cümleye bağlanamaz; faili söyleyen bir öbek varsa 'by' zorunludur.",
+        "wrote": "Aktif bir çekim, roman ile öğrencinin rollerini değiştirir: romanı öğrencinin değil, öğrenciyi romanın yazdığını söyler.",
+        "has written": "Öğrencinin yazmış olduğunu vurgulamak için seçilir, ama cümlenin öznesi 'the novel'; aktif çekimde yazan taraf o olur."
+      }
     },
     {
       "id": "passive-voice-t23",
@@ -226,7 +336,12 @@
       "options": ["was written with", "was written by", "was written", "wrote"],
       "correctIndex": 0,
       "explanation": "Söylenen şey işi yapan kişi değil, kullanılan araçtır; araç için 'by' değil 'with' kullanılır. 'was written by' kalemi failin kendisi gibi gösterir, 'was written' ise arkasındaki isim öbeğini boşta bırakır.",
-      "tip": "Fail (kim yaptı) için 'by', araç ya da malzeme (neyle yapıldı) için 'with'."
+      "tip": "Fail (kim yaptı) için 'by', araç ya da malzeme (neyle yapıldı) için 'with'.",
+      "optionNotes": {
+        "was written by": "'By' eylemi yapanı gösterir ve kalemi failin kendisi hâline getirir; oysa söylenen, mektubu kimin değil neyle yazdığı.",
+        "was written": "Ne fail ne araç bağlanır: arkadaki 'a modern ballpoint pen' öbeği cümleye tutunacak bir parça bulamaz.",
+        "wrote": "Aktif bir çekim: mektubun bir kalemi yazdığını söyler. Yazılan mektup, kullanılan ise kalem."
+      }
     },
     {
       "id": "passive-voice-t24",
@@ -235,7 +350,12 @@
       "options": ["was developed by", "was developed", "developed", "has developed"],
       "correctIndex": 0,
       "explanation": "Aşıyı geliştiren ekibin kimliği ('a team of researchers at a university in Oxford') cümlenin taşıdığı asıl bilgi, bu yüzden fail 'by' ile açıkça belirtilir. En yakın çeldirici 'was developed': 'by' olmadan arkadaki isim öbeği cümleye bağlanamaz — 'the vaccine was developed a team of researchers' bozuk bir cümledir. 'has developed' ise aktiftir ve aşının bir ekibi geliştirdiğini söyler; ayrıca 'after years of painstaking clinical trials' geçmişte tamamlanmış bir süreci anlatıyor.",
-      "tip": "Başarı/buluş gibi kime ait olduğu önemli olan durumlarda fail 'by' ile mutlaka belirtilir."
+      "tip": "Başarı/buluş gibi kime ait olduğu önemli olan durumlarda fail 'by' ile mutlaka belirtilir.",
+      "optionNotes": {
+        "was developed": "Failin kimliği cümlenin taşıdığı asıl bilgi, ama 'by' düşünce onu cümleye bağlayacak parça kalmıyor.",
+        "developed": "Rolleri ters çevirir: özne geliştiren taraf olur, yani aşı bir araştırma ekibini geliştirmiş olur.",
+        "has developed": "Ekibin işi başardığını söylemek için seçilir, ama cümlenin öznesi aşı; aktif çekimde geliştiren taraf aşı olur."
+      }
     }
   ],
   "lessons": [

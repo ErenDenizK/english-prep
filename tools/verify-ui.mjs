@@ -1522,9 +1522,26 @@ async function runHonestNumbers(browser) {
   await page.waitForURL(/results\.html/);
   await page.waitForSelector(".t-display");
   const results = await page.locator("#results-container").innerText();
+  // Ten questions over eight topics is *usually* one or two each, but a
+  // shuffle can put three in one topic and then the hedge is correctly
+  // absent. Asserting the sentence unconditionally made this check fail
+  // on a fair draw — so it is asserted against the draw that actually
+  // happened, read back from the recorded attempt.
+  const thin = await page.evaluate(() => {
+    const attempts = JSON.parse(localStorage.getItem("englishPrep.history") ?? "{}").attempts ?? [];
+    const last = attempts[attempts.length - 1] ?? {};
+    // Both breakdowns carry the hedge independently, and the category
+    // one is thinner than the topic one on the same test — a ten-item
+    // draw usually gives every category exactly one.
+    return [last.topicBreakdown, last.categoryBreakdown].some((breakdown) => {
+      const totals = Object.values(breakdown ?? {}).map((entry) => entry.total);
+      return totals.length > 1 && Math.max(...totals) < 3;
+    });
+  });
+  const hedged = results.includes("bir sıralama, bir sonuç değil");
   ok(
-    results.includes("bir sıralama, bir sonuç değil"),
-    "az veriyle çıkan dökümün ne olmadığı söyleniyor"
+    hedged === thin,
+    `az veriyle çıkan dökümün ne olmadığı söyleniyor (az veri: ${thin}, uyarı: ${hedged})`
   );
   // The rows themselves stay: drop the claim, not the data.
   ok(
@@ -1624,13 +1641,21 @@ async function runTopicIntro(browser) {
   // `tenses` and throws for `quantifiers` is exactly the failure that
   // reaches a learner and never reaches a test.
   for (const topic of withIntro) {
-    await page.goto(`${BASE}/index.html#egitim/konu/${topic.id}`, { waitUntil: "networkidle" });
-    await page.waitForSelector("#lesson-reader h1");
-    const text = await page.locator("#lesson-reader").innerText();
-
     const data = JSON.parse(
       await readFile(new URL(`../${topic.file}`, import.meta.url), "utf8")
     );
+    await page.goto(`${BASE}/index.html#egitim/konu/${topic.id}`, { waitUntil: "networkidle" });
+    // Two URLs differing only in the hash are ONE document to the
+    // browser, so `goto` here is a hashchange and `networkidle` resolves
+    // on a page that is still showing the previous topic. Waiting for
+    // "an h1" waits for a node that is already there. Wait for THIS
+    // topic's title, or the loop reads the last one's screen and the
+    // failure looks like a rendering bug in whichever topic came last.
+    await page.waitForFunction(
+      (expected) => document.querySelector("#lesson-reader h1")?.textContent === expected,
+      data.intro.title
+    );
+    const text = await page.locator("#lesson-reader").innerText();
     ok(text.includes(data.intro.title), `${topic.id}: başlık çiziliyor`);
     ok(
       data.intro.parts.every((part) => text.includes(part.name)),
@@ -1638,9 +1663,20 @@ async function runTopicIntro(browser) {
     );
     // The parts list is the part that earns the page — Mayer's
     // pre-training principle is a named-components list, not an essay.
+    // The lesson rows, plus the one row that tests the topic. That row is
+    // last, and it is the only way into `startTopicTest` from this half
+    // of the app: before it, a learner revising a topic from Eğitim had
+    // to cross to the Test tab and find the topic again.
+    const rows = await page.locator("#lesson-reader .row").count();
     ok(
-      (await page.locator("#lesson-reader .row").count()) === (topic.lessonCount ?? 0),
-      `${topic.id}: dersleri de listeliyor`
+      rows === (topic.lessonCount ?? 0) + 1,
+      `${topic.id}: dersleri ve konu testini listeliyor (${rows})`
+    );
+    ok(
+      (await page.locator("#lesson-reader .row").last().innerText()).includes(
+        "Bu konudan test çöz"
+      ),
+      `${topic.id}: test satırı derslerden sonra`
     );
     ok(
       await page.title() === `${topic.title} — English Prep`,
@@ -1658,10 +1694,66 @@ async function runTopicIntro(browser) {
 
   await auditLayout(page, "konu girişi", 320, { maxScreens: TOPIC_BUDGET_SCREENS });
 
+  // The test row actually launches the topic's test, and only its own.
+  await page.goto(`${BASE}/index.html#egitim/konu/tenses`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#lesson-reader .row");
+  await page.locator("#lesson-reader .row").last().click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".option");
+  const topicRequest = await page.evaluate(
+    () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
+  );
+  ok(
+    topicRequest.mode === "topic" && topicRequest.topicIds.join() === "tenses",
+    "test satırı yalnızca o konunun testini açıyor"
+  );
+
+  // Every lesson in the topic read. The forward action used to fall back
+  // to lesson 1 — the topic's first page, offered under a label that says
+  // forward, to someone who had just finished the whole thing.
+  const tenses = JSON.parse(
+    await readFile(new URL("../data/tenses/tenses.json", import.meta.url), "utf8")
+  );
+  const allDone = Object.fromEntries(
+    tenses.lessons.map((lesson) => [lessonId("tenses", lesson.category), { read: 1, done: true }])
+  );
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await page.evaluate(
+    (seed) => localStorage.setItem("englishPrep.lessonProgress", JSON.stringify(seed)),
+    allDone
+  );
+  await page.goto(`${BASE}/index.html#egitim/konu/tenses`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#lesson-reader .row");
+  ok(
+    !(await page.locator("#lesson-reader").innerText()).includes("Bu konudan test çöz"),
+    "bitmiş konuda satır çıkmıyor — bar zaten o eylemi taşıyor"
+  );
+  const forwardLabel = (await page.locator("#lesson-bar .btn--primary").innerText()).trim();
+  ok(forwardLabel === "Bu konudan test çöz", `bitmiş konuda ileri eylem test (${forwardLabel})`);
+  await page.locator("#lesson-bar .btn--primary").click();
+  await page.waitForURL(/quiz\.html/);
+  await page.waitForSelector(".option");
+  ok(
+    (await page.evaluate(
+      () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}").mode
+    )) === "topic",
+    "bar da aynı testi açıyor"
+  );
+  await page.evaluate(() => localStorage.clear());
+
+  // Back onto an intro screen: the checks below are about this screen,
+  // and the two launches above left the page on the quiz.
+  await page.goto(`${BASE}/index.html#egitim/konu/tenses`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#lesson-reader h1");
+
   // Focused mode, and a way out of it.
   ok(await page.locator("#shell-header").isHidden(), "giriş ekranı odaklı modda");
   await page.locator(".shell__bar .btn").first().click();
-  await page.waitForSelector("#view-egitim .row");
+  // `#view-egitim .row` is not "back on the index": the reader lives
+  // inside that view, so its own rows match it and the wait returns
+  // before anything has happened.
+  await page.waitForSelector("#lesson-index .row");
+  await page.waitForFunction(() => !document.getElementById("shell-header").hidden);
   ok(await page.locator("#shell-header").isVisible(), "geri dönünce başlık geri geliyor");
 
   // A hand-typed or stale id must not strand the learner on a dead screen.

@@ -5,6 +5,51 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.28 — 2026-09-04
+
+**Every wrong option in the app now says something.** `optionNotes` — the
+line a learner sees when they pick a wrong answer, telling them what
+*that* option would have meant and why this item does not select it — had
+been written for five topics and never for the three oldest. 219 notes
+across `tenses`, `modals` and `passive-voice` close it: **193 of 193
+questions, 579 notes, every wrong option in the corpus.** The method is
+written down now (`docs/agents/option-notes.md`) rather than living in
+three prompts, because the field's one hard constraint is easy to miss:
+`js/feedback.js` shows only the note for the option the learner actually
+chose, so each note is a standalone sentence to one person and may never
+compare the three.
+
+Writing them found things about the items themselves, which is the
+second reason to write them. Reported and not yet repaired, in
+`docs/audit/option-notes-4.md` through `-6.md`: four Tenses items built
+on sentences from their own lesson (the exact thing
+`question-author.md` exists to stop — a `check` block draws from the same
+category, so the learner meets the keyed sentence three blocks above the
+question), several items where two distractors fail for one reason and
+are therefore one distractor, and a handful of options a competent
+teacher would accept. Those are a repair pass with its own reviewer, not
+a quiet fix.
+
+**A topic can be tested from the screen that introduces it.**
+`startTopicTest` was reachable from the Test tab's topic rows and from
+the end of a lesson — so a learner revising a topic from Eğitim had to
+cross to the other tab and find it again. One row, after the lessons,
+where the screen already ends. And when every lesson in the topic is
+finished, the forward action in the bar becomes that test: it used to
+fall back to lesson 1, offering the topic's first page to someone who had
+just read the whole thing, under a label that says forward.
+
+**Three races in the sweep, one of which was hiding behind the other
+two.** Two URLs differing only in the hash are one document, so
+`goto(#egitim/konu/<id>)` is a hashchange and `networkidle` resolves on a
+page still showing the previous topic — the loop then read the last
+topic's screen and blamed whichever topic came last. `#view-egitim .row`
+does not mean "back on the index", because the reader lives inside that
+view. And the small-sample hedge on the results screen was asserted
+unconditionally, so a fair draw that put three questions in one topic
+failed a check about honesty. All three are asserted against what
+actually happened now. 1210 checks.
+
 ## v0.27 — 2026-09-04
 
 **Yanlış defteri asks how many.** It was hard-coded to draw the whole
