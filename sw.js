@@ -15,17 +15,35 @@
 // new ones — so those go to the network first and fall back to whatever
 // was cached the last time there was a connection.
 //
-// The version string is the whole cache-busting mechanism. Bump it in
-// the same commit as any change to the files below, or a returning
-// learner keeps the old shell until their browser decides otherwise.
+// The version string is the whole cache-busting mechanism, and it had
+// been "v1" across every deploy since it was written — so a change to a
+// module reached a returning learner only through the background refresh
+// below, on their *second* open. That is a fair trade for a topic file;
+// it is not one for a bug fix shipped four days before an exam.
+//
+// It is the app's own version now, and `tests/service-worker.test.js`
+// fails when it does not match the top of CHANGELOG.md. A rule that says
+// "remember to bump this" is a rule that gets forgotten once and then
+// silently stays forgotten, which is exactly what happened here.
 
-const VERSION = "english-prep-v1";
+const VERSION = "english-prep-v0.30";
 
 /**
  * The shell. Everything needed to paint a screen with no network at all.
+ *
+ * The modules are listed, and they were not before. They used to be
+ * cached on demand, which was fine while VERSION never changed — but a
+ * bumped VERSION deletes the old cache on activate, so a learner who
+ * went offline in the window between the new worker taking over and the
+ * next page load would have had the three HTML files and none of the
+ * code. `tests/service-worker.test.js` checks this list against `js/`,
+ * because a module added later and not listed here is exactly the kind
+ * of omission nobody notices until they are on a bus.
+ *
  * Content is deliberately absent: it is cached on demand, because
  * pre-caching every topic file would download the whole corpus to a
- * learner who opened the app once.
+ * learner who opened the app once. Fonts too — they fall back to the
+ * metric-matched system stack, which is what they are chosen for.
  */
 const SHELL = [
   "./",
@@ -35,6 +53,29 @@ const SHELL = [
   "./css/style.css",
   "./css/fonts.css",
   "./manifest.webmanifest",
+  "./js/answers.js",
+  "./js/backup-ui.js",
+  "./js/backup.js",
+  "./js/config.js",
+  "./js/dom.js",
+  "./js/education.js",
+  "./js/feedback.js",
+  "./js/home.js",
+  "./js/icons.js",
+  "./js/listbox.js",
+  "./js/modal.js",
+  "./js/profile.js",
+  "./js/prompt.js",
+  "./js/quiz-engine.js",
+  "./js/quiz-launch.js",
+  "./js/quiz.js",
+  "./js/report.js",
+  "./js/results.js",
+  "./js/session-state.js",
+  "./js/shell.js",
+  "./js/storage.js",
+  "./js/tiers.js",
+  "./js/topics.js",
 ];
 
 self.addEventListener("install", (event) => {
