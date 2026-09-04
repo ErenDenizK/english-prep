@@ -451,6 +451,44 @@ function loadSeenVersions() {
  * @param {string} topicId
  * @returns {number} the content version the learner last saw (0 if never)
  */
+/**
+ * When the learner was last here, from the only timestamp the app stores:
+ * `attempt.date`, written on every attempt in results.js and until now
+ * read by nothing.
+ *
+ * Lesson progress carries no timestamp, so a learner who has only ever
+ * read lessons has no last-activity date at all. That is why this returns
+ * null rather than a fallback: a screen that changes on "it has been a
+ * while" must only do so when the app actually knows, and guessing from
+ * the absence of attempts would tell a brand-new learner they had been
+ * away.
+ *
+ * @returns {number|null} epoch milliseconds, or null when unknown.
+ */
+export function getLastActivity() {
+  let latest = null;
+  for (const attempt of getHistory()) {
+    const time = Date.parse(attempt.date);
+    if (!Number.isNaN(time) && (latest === null || time > latest)) {
+      latest = time;
+    }
+  }
+  return latest;
+}
+
+/**
+ * The gap after which the Eğitim index offers a way back in rather than a
+ * plain "carry on from 73%".
+ *
+ * Ten days, and it is not a lapse. Cepeda et al. taught over 1,350 people
+ * and reviewed them at gaps up to 3.5 months: the useful gap scales with
+ * how far off the test is, and for an exam a couple of months out it lands
+ * around one to two weeks. So a fortnight away is roughly what the
+ * literature would have picked, and the screen must not treat it as
+ * something to apologise for.
+ */
+export const RE_ENTRY_DAYS = 10;
+
 export function getSeenVersion(topicId) {
   return loadSeenVersions()[topicId] ?? 0;
 }

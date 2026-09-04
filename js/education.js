@@ -24,16 +24,20 @@
 import { loadManifest, loadLessonsForTopics, lessonIndex } from "./topics.js";
 import {
   getAllLessonProgress,
+  getLastActivity,
   getLessonProgress,
   recordLessonRead,
   markLessonDone,
   countCompletedLessons,
+  getHistory,
+  getSeenVersion,
+  RE_ENTRY_DAYS,
 } from "./storage.js";
 import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
-import { startTopicTest } from "./quiz-launch.js";
+import { startTopicTest, startCategoryPractice, startMixedTest } from "./quiz-launch.js";
 import { el, clear, appendProse, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
@@ -149,6 +153,146 @@ function renderResumeCard(lesson, entry) {
   return card;
 }
 
+/**
+ * What a learner sees the first time, in place of a progress bar reading
+ * zero and a counter saying 0 of 18.
+ *
+ * Not a tour. The strongest evidence against one is a 70-participant
+ * between-subjects test across four iOS apps in which the group that read
+ * the first-launch tutorial rated the app HARDER to use than the group
+ * that skipped it — 4.92 against 5.49 — and NN/g's summary of the wider
+ * work, that tutorials interrupt, do not improve task performance and are
+ * quickly forgotten. The one form that survives is help attached to a
+ * feature at the moment someone first reaches for it, which is not a
+ * first-run flow at all.
+ *
+ * Three reasons specific to this app, on top of that. There are two
+ * destinations and the nav already says their names in Turkish. The
+ * interface is twelve primitives on purpose, and an interface that needs
+ * a tour has a design problem the tour would be hiding. And a first-run
+ * step is a tax on every arrival, charged to the person least invested,
+ * between a link and the thing they came for.
+ *
+ * So this is the empty state doing its job: what the app is, one obvious
+ * first action, and the privacy fact that is otherwise buried in Profil.
+ * It disappears the moment there is any progress, and it REPLACES the
+ * progress summary rather than sitting above it — a bar reading zero and
+ * a card saying "start here" are two ways of saying the same nothing.
+ */
+function renderWelcome(firstLesson) {
+  const card = el("section", "surface stack");
+
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("h2", "t-title", "English Prep"));
+  head.appendChild(
+    el(
+      "p",
+      "t-body",
+      "Üniversite İngilizce yeterlik sınavı için dersler ve paragraf soruları. " +
+        "Hesap açman gerekmiyor; ne yaptığın yalnızca bu telefonda kalıyor."
+    )
+  );
+  card.appendChild(head);
+
+  if (firstLesson) {
+    const start = el("button", "btn btn--primary", "İlk dersi aç");
+    start.type = "button";
+    start.addEventListener("click", () => openLessonByHash(firstLesson.id));
+    card.appendChild(start);
+    card.appendChild(
+      el("p", "t-meta", `${firstLesson.topicTitle} · ${firstLesson.category}`)
+    );
+  }
+
+  const test = el("button", "btn btn--quiet", "Ya da kısa bir testle başla");
+  test.type = "button";
+  test.addEventListener("click", () => {
+    startMixedTest(5).catch(console.error);
+  });
+  card.appendChild(test);
+
+  return card;
+}
+
+/**
+ * The resume card, for someone who has been away.
+ *
+ * A fortnight off is not a lapse to apologise for: for an exam a couple of
+ * months out it is roughly the spacing the literature would have chosen.
+ * So this changes WHAT IS OFFERED and says nothing about the absence — it
+ * never names a number of days and never uses a word that implies fault.
+ * It reads as a menu, not as a greeting from someone who was waiting.
+ *
+ * The second button is the one that matters. Coming back to a lesson you
+ * left at 73% means re-reading something you no longer remember choosing;
+ * five questions takes ninety seconds and tells you what you still have.
+ *
+ * And there is one genuinely good thing to tell a returner that is not a
+ * verdict on them: new content. It is news about the app, and it is the
+ * only message that gets better the longer they were gone.
+ */
+function renderReEntryCard(lesson, entry, news) {
+  const card = el("section", "surface stack");
+
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("p", "t-label", "Kaldığın yer"));
+  head.appendChild(englishTitle("h2", "t-title t-en", lesson.category));
+  head.appendChild(el("p", "t-meta t-num", `${lesson.topicTitle} · %${Math.round(entry.read * 100)}`));
+  card.appendChild(head);
+
+  const recall = el("button", "btn btn--primary", "Önce 5 soruyla hatırla");
+  recall.type = "button";
+  recall.addEventListener("click", () => {
+    startCategoryPractice(lesson.category, 5).catch(console.error);
+  });
+  card.appendChild(recall);
+
+  const resume = el("button", "btn btn--quiet", "Kaldığın yerden devam et");
+  resume.type = "button";
+  resume.addEventListener("click", () => openLessonByHash(lesson.id));
+  card.appendChild(resume);
+
+  if (news) {
+    card.appendChild(el("p", "t-meta", news));
+  }
+
+  return card;
+}
+
+/**
+ * "Passive Voice'a yeni sorular eklendi" — read BEFORE the card renders
+ * its buttons, because every launcher in quiz-launch.js marks every live
+ * topic as seen on its way out. Reading it later would delete the news at
+ * the moment of showing it.
+ */
+function newContentNote(lessons) {
+  const fresh = [];
+  const seen = new Set();
+  for (const lesson of lessons) {
+    if (seen.has(lesson.topicId)) continue;
+    seen.add(lesson.topicId);
+    if (
+      typeof lesson.contentVersion === "number" &&
+      getSeenVersion(lesson.topicId) > 0 &&
+      getSeenVersion(lesson.topicId) < lesson.contentVersion
+    ) {
+      fresh.push(lesson.topicTitle);
+    }
+  }
+  if (fresh.length === 0) {
+    return null;
+  }
+  if (fresh.length === 1) {
+    return `${fresh[0]} konusuna yeni sorular eklendi.`;
+  }
+  if (fresh.length === 2) {
+    return `${fresh.join(" ve ")} konularına yeni sorular eklendi.`;
+  }
+  // Naming two of four and stopping reads as "those two", which is less
+  // true than the count and no shorter.
+  return `${fresh.length} konuya yeni sorular eklendi.`;
+}
+
 function renderLessonRow(lesson, status) {
   const row = el("button", "row");
   row.type = "button";
@@ -188,15 +332,30 @@ function renderIndex() {
 
   const progress = getAllLessonProgress();
   const completed = countCompletedLessons(lessons.map((lesson) => lesson.id));
+  const untouched = completed === 0 && Object.keys(progress).length === 0 && getHistory().length === 0;
 
-  indexContainer.appendChild(renderProgressSummary(lessons, completed));
+  if (untouched) {
+    // The welcome card replaces the summary rather than joining it.
+    indexContainer.appendChild(renderWelcome(lessons[0] ?? null));
+  } else {
+    indexContainer.appendChild(renderProgressSummary(lessons, completed));
+  }
 
   const resumable = lessons.find((lesson) => {
     const entry = progress[lesson.id];
     return entry && !entry.done && entry.read > 0.02;
   });
   if (resumable) {
-    indexContainer.appendChild(renderResumeCard(resumable, progress[resumable.id]));
+    // Only when the app actually knows. A learner who has only ever read
+    // lessons has no timestamp anywhere, and guessing from that would
+    // tell someone who has never left that they had been away.
+    const last = getLastActivity();
+    const away = last !== null && Date.now() - last > RE_ENTRY_DAYS * 86_400_000;
+    indexContainer.appendChild(
+      away
+        ? renderReEntryCard(resumable, progress[resumable.id], newContentNote(lessons))
+        : renderResumeCard(resumable, progress[resumable.id])
+    );
   }
 
   const topicIds = [...new Set(lessons.map((lesson) => lesson.topicId))];

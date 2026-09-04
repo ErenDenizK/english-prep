@@ -170,6 +170,11 @@ export function lessonIndex(manifest) {
         order: index + 1,
         topicId: topic.id,
         topicTitle: topic.title,
+        // Carried so the Eğitim index can tell a returner that a topic has
+        // gained questions since they last opened it. Without it the index
+        // has the topic's name and not its version, and the news is
+        // unreachable from the only screen a returner lands on.
+        contentVersion: topic.contentVersion,
         category: lesson.category,
         summary: lesson.summary,
       }))

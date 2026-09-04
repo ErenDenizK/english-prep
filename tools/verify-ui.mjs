@@ -758,6 +758,87 @@ async function runPretest(browser) {
   await context.close();
 }
 
+/**
+ * The three states of the Eğitim index: never opened, mid-lesson, and
+ * back after a gap. Checked at 320px, where a card the width of the
+ * screen costs the most.
+ */
+async function runIndexStates(browser) {
+  async function open(seed) {
+    const context = await browser.newContext({ viewport: { width: 320, height: 640 } });
+    const page = await context.newPage();
+    await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+    if (seed) await page.evaluate(seed);
+    await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+    await page.reload({ waitUntil: "networkidle" });
+    await page.waitForSelector("#view-egitim .surface, #view-egitim .row");
+    return { context, page, text: await page.locator("#view-egitim").innerText() };
+  }
+
+  // 1 — never opened. No tour, and no progress bar reading zero.
+  let view = await open(null);
+  ok(view.text.includes("English Prep"), "ilk açılışta uygulamanın ne olduğu yazıyor");
+  ok(view.text.includes("bu telefonda kalıyor"), "veri nerede duruyor, ilk ekranda söyleniyor");
+  ok(view.text.includes("İlk dersi aç"), "tek bir açık ilk eylem var");
+  ok(!view.text.includes("İlerlemen"), "sıfırı gösteren ilerleme çubuğu karşılama kartıyla birlikte çıkmıyor");
+  await auditLayout(view.page, "ilk açılış", 320);
+  await view.page.locator("button", { hasText: "İlk dersi aç" }).click();
+  await view.page.waitForSelector(".shell__scroll .option, .shell__scroll .prose");
+  ok(true, "ilk dersi aç bir derse giriyor");
+  await view.context.close();
+
+  const partway = () => {
+    localStorage.setItem(
+      "englishPrep.lessonProgress",
+      JSON.stringify({ "tenses-present-simple-vs-present-continuous": { read: 0.73, done: false } })
+    );
+  };
+  const attempt = (date) => ({
+    date,
+    mode: "mixed",
+    topicBreakdown: { tenses: { correct: 3, total: 5 } },
+    categoryBreakdown: {},
+    questions: [],
+  });
+
+  // 2 — mid-lesson, same day. The plain resume card, unchanged.
+  view = await open(
+    new Function(
+      `(${partway.toString()})();` +
+        `localStorage.setItem("englishPrep.history", JSON.stringify({ attempts: [${JSON.stringify(
+          attempt("PLACEHOLDER")
+        ).replace('"PLACEHOLDER"', "new Date().toISOString()")}] }));`
+    )
+  );
+  ok(view.text.includes("Devam et"), "aynı gün dönüşte düz devam kartı çıkıyor");
+  ok(!view.text.includes("hatırla"), "aynı gün dönüşte hatırlatma teklifi çıkmıyor");
+  await view.context.close();
+
+  // 3 — back after a gap. What is OFFERED changes; nothing is said about
+  // the absence.
+  view = await open(
+    new Function(
+      `(${partway.toString()})();` +
+        `localStorage.setItem("englishPrep.history", JSON.stringify({ attempts: [${JSON.stringify(
+          attempt("PLACEHOLDER")
+        ).replace('"PLACEHOLDER"', "new Date(Date.now() - 21 * 86400000).toISOString()")}] }));` +
+        `localStorage.setItem("englishPrep.seenVersions", JSON.stringify({ tenses: 1 }));`
+    )
+  );
+  ok(view.text.includes("Önce 5 soruyla hatırla"), "aradan zaman geçince önce hatırlatma teklif ediliyor");
+  ok(view.text.includes("Kaldığın yerden devam et"), "devam etme yolu duruyor");
+  ok(/yeni sorular eklendi/.test(view.text), "dönene yeni içerik haberi veriliyor");
+  // Scoped to the card. The lesson summaries below it say "her gün" for
+  // perfectly good reasons of their own.
+  const card = await view.page.locator("#view-egitim .surface").first().innerText();
+  ok(
+    !/\b\d+\s*gün\b|uzun zaman|bir süredir|geri döndün/i.test(card),
+    "kaç gün geçtiği söylenmiyor, suçlayan bir söz yok"
+  );
+  await auditLayout(view.page, "aradan sonra dönüş", 320);
+  await view.context.close();
+}
+
 /** The parts of §8 that do not vary with the viewport. */
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
@@ -938,6 +1019,9 @@ try {
 
   console.log("\n=== dersten önce (ön test) ===");
   await runPretest(browser);
+
+  console.log("\n=== Eğitim indeksinin üç hâli ===");
+  await runIndexStates(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);
