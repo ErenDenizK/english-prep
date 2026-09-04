@@ -10,7 +10,7 @@
 import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
 import { getQuizRequest, setQuizResult } from "./session-state.js";
-import { getItemStats, getSetting } from "./storage.js";
+import { getItemStats, getSetting, recordAttempt } from "./storage.js";
 import { SETTINGS } from "./config.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderPrompt } from "./prompt.js";
@@ -35,6 +35,12 @@ const state = {
    * revising the night before is entitled to choose speed.
    */
   optionsHidden: false,
+  /**
+   * Whether this session's answers have already been written down, so a
+   * `pagehide` on the way to the results screen cannot record the same
+   * attempt a second time.
+   */
+  recorded: false,
 };
 
 function showMessage(text, { withHomeLink = true } = {}) {
@@ -60,6 +66,46 @@ function answeredCount() {
     }
   });
   return last + 1;
+}
+
+/**
+ * Record what has been answered, without navigating anywhere.
+ *
+ * `exitQuiz` handles the learner choosing to leave. This handles the
+ * learner leaving without choosing: the iOS edge-swipe, the Android back
+ * button, closing the tab, the browser being killed in the background.
+ * On a phone that swipe IS the navigation gesture, so it is not an edge
+ * case — it is how a test most often ends when something interrupts it.
+ *
+ * v0.19 made the in-app exit stop destroying answers and left this open,
+ * which meant the fix covered the one way out that was already safe.
+ *
+ * `pagehide` rather than `beforeunload`: Safari has never fired
+ * `beforeunload` reliably on mobile, and `pagehide` is the event the
+ * back/forward cache uses. It has to be synchronous — nothing async
+ * survives here — so it writes the attempt straight to storage rather
+ * than going through the results screen.
+ */
+function recordPartialOnLeave() {
+  const count = answeredCount();
+  if (count === 0 || state.recorded) {
+    return;
+  }
+  state.recorded = true;
+  const scored = scoreSession(state.session.slice(0, count), state.selectedAnswers.slice(0, count));
+  const request = getQuizRequest();
+  recordAttempt({
+    date: new Date().toISOString(),
+    mode: request?.mode ?? "mixed",
+    topicBreakdown: scored.topicBreakdown,
+    categoryBreakdown: scored.categoryBreakdown,
+    questions: scored.questionResults.map((question) => ({
+      id: question.id,
+      topicId: question.topicId,
+      category: question.category,
+      correct: question.correct,
+    })),
+  });
 }
 
 /**
@@ -148,6 +194,9 @@ async function finishQuiz({ upTo } = {}) {
   );
 
   const request = getQuizRequest();
+  // Claimed before navigating: results.js records the attempt, and the
+  // `pagehide` this navigation fires must not record it as well.
+  state.recorded = true;
   setQuizResult({
     date: new Date().toISOString(),
     mode: request?.mode ?? "mixed",
@@ -305,6 +354,7 @@ async function init() {
     state.selectedAnswers = new Array(session.length).fill(null);
     state.optionsHidden = getSetting(SETTINGS.THINK_FIRST);
     document.addEventListener("keydown", handleKeydown);
+    window.addEventListener("pagehide", recordPartialOnLeave);
     renderQuestion();
   } catch (error) {
     console.error(error);

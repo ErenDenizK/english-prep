@@ -37,7 +37,7 @@ choice (`docs/exam-spec.md`, from the two sample papers).
 
 | Section | Items | Points | Where the app stands |
 | --- | --- | --- | --- |
-| Cloze test | 10 | 15 | **7 of the 10 blank types shipped.** Two are the vocabulary blanks (drafted, in review); the tenth is `so / such`, which nothing covers |
+| Cloze test | 10 | 15 | **7 of the 10 blanks, which is 6 of the 8 distinct types.** Ten blanks test eight types — blanks 2 and 4 are both modals, 5 and 10 both vocabulary. Uncovered: vocabulary (drafted, in review) and `so / such` (nothing) |
 | Closest meaning | 10 | 15 | **shipped** |
 | Reading — 2 texts | 14 | 21 | **not covered, and out of v1** — see below |
 | Paragraph completion | 6 | 9 | **not covered, no schema, not started** |
@@ -93,7 +93,8 @@ sitting the owner asked for.
 | 5 | `gerunds-infinitives`: blocking item fixed, lessons audited, re-verified twice | shipped |
 
 That was **+120 questions and +30 lessons**, taking the app to 193
-questions across 8 topics and closing 7 of the 10 cloze blank types.
+questions across 8 topics and closing 7 of the 10 cloze blanks — 6 of the
+8 distinct types the sample tests.
 
 The cost is worth recording, because it is the argument for the pipeline:
 across the five, the passes found roughly one item with two defensible

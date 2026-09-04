@@ -424,7 +424,16 @@ function refreshProfileTrigger() {
 /* ---- Routing ---- */
 
 function parseRoute() {
-  const raw = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+  // decodeURIComponent throws on a malformed escape — `#%` is enough —
+  // and this app is distributed by pasting a URL into a group chat,
+  // where a truncated or re-encoded link is ordinary. Unhandled, the
+  // throw left the screen on "Dersler yükleniyor…" for ever.
+  let raw;
+  try {
+    raw = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+  } catch {
+    raw = "";
+  }
   const [view, ...rest] = raw.split("/");
   return VIEW_IDS.includes(view)
     ? { view, param: rest.join("/") || null }

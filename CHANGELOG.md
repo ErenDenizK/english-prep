@@ -5,6 +5,57 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.25 — 2026-09-04
+
+Four defects a real learner meets, found by an audit that drove the app
+instead of reading it, and fixed before the owner starts using it daily.
+
+**The back gesture out of a live test destroyed every answer.** v0.19
+made the in-app exit record what had been answered and left this open —
+which meant the fix covered the one way out that was already safe. On iOS
+the edge-swipe *is* the navigation gesture, so this is not an edge case:
+it is how a test most often ends when something interrupts it. Three
+answered questions now survive it, recorded exactly once.
+
+**A failed lesson fetch was a dead end that also faked a completion.** It
+hid the header, the nav and the action bar, so a learner whose connection
+dropped got an apology on a screen with no controls on it — measured at
+zero. Worse, it left the reader's state pointing at the previous lesson,
+so one scroll on that dead screen wrote `done: true` for a lesson nobody
+had finished. It is now a card with a retry and a way back, and it writes
+nothing.
+
+**The problem report had lost the question.** `buildReport` read
+`question.paragraph`, and nothing the app hands around has that field —
+`normalizeQuestion` folds a cloze item's paragraph and a restatement's
+sentence into `prompt`. Every report a learner ever sent carried a blank
+line where the question should have been, in the one feature whose whole
+job is to carry a broken question to whoever can fix it. Its test passed
+because the test hand-built a fixture with `paragraph` — a fixture
+agreeing with a bug — so the tests are rewritten against the shape the
+app actually produces, and moved to `tests/report.test.js`.
+
+**`#%` bricked the app.** `decodeURIComponent` throws on a lone percent
+sign, unhandled, and the screen stayed on "Dersler yükleniyor…" for ever.
+This app is distributed by pasting a URL into a group chat, where a
+truncated or re-encoded link is ordinary.
+
+**And the sweep now takes wrong turns on purpose.** It had 1,158 checks
+and not one of them drove a failure path, which is why all four of these
+survived it. Seven new checks: a malformed hash, a topic file that never
+arrives, the back gesture mid-test, and that an ordinary finish is
+recorded once rather than twice.
+
+**One in-app claim was false and is now true.** `data/roadmap.json` told
+the learner in Profil that every lesson and every question had passed a
+review by someone who had not seen the answer. That is true of the five
+newest topics and not of `tenses`, `modals` and `passive-voice`, which
+shipped before the blind-corpus tool, the calibration file and the
+independent re-audit existed. Honesty is a v1 criterion and this was a
+breach of it.
+
+111 unit tests, 1165 verification checks.
+
 ## v0.24 — 2026-09-04
 
 **Finishing a topic is now a thing that happens.** It was not: the
@@ -269,9 +320,10 @@ commissioned as one: the exam spec's blank-by-blank breakdown of the
 sample cloze says the paper rewards discourse markers, modals, causatives,
 relative pronouns, quantifiers and vocabulary, and **not one of its ten
 blanks tests a tense or the passive** — which is what the app shipped
-first. Seven of the ten blank types are now practisable. Two of the rest are
-vocabulary, drafted and queued; the tenth is `so / such`, which is
-covered by nothing.
+first. Seven of the ten cloze blanks are now practisable — six of the eight
+distinct types, since blanks 2 and 4 are both modals and 5 and 10 both
+vocabulary. What is left is vocabulary, drafted and queued, and
+`so / such`, which is covered by nothing.
 
 **Closest meaning is live**, which is fifteen of Session I's sixty points
 the app previously had a schema for and no content behind.

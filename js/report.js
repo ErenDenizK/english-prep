@@ -29,7 +29,7 @@
  * quoted answer text identifies the content revision well enough, and if
  * the item is later rewritten the mismatch is itself informative.
  *
- * @param {{id: string, category: string, paragraph: string, correctAnswer: string}} question
+ * @param {{id: string, category: string, prompt: string, correctAnswer: string}} question
  * @param {string|null} selected - what the learner chose, if anything
  * @param {Date} [now]
  * @returns {string}
@@ -45,7 +45,12 @@ export function buildReport(question, selected, now = new Date()) {
     lines.push(`Benim işaretlediğim: ${selected}`);
   }
   lines.push(`Uygulamanın doğru dediği: ${question.correctAnswer}`);
-  lines.push("", question.paragraph, "", "Sorun ne? (buraya yaz)", "");
+  // `prompt`, not `paragraph`. `normalizeQuestion` in js/topics.js folds a
+  // cloze item's `paragraph` and a restatement's `sentence` into one
+  // field, so nothing the app hands around has `paragraph` on it — this
+  // line shipped a blank where the question should be, in the one feature
+  // whose entire job is to carry the question to whoever can fix it.
+  lines.push("", question.prompt ?? "(soru metni alınamadı)", "", "Sorun ne? (buraya yaz)", "");
   lines.push(`— ${now.toLocaleDateString("tr-TR")}`);
   return lines.join("\n");
 }

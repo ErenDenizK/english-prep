@@ -241,41 +241,6 @@ test("grammar vocabulary is not counted as a scenario", () => {
   assert.equal(r.warnings.length, 0);
 });
 
-/* ---- The problem report ----
- *
- * Not a content check, but the same subject: this is what a learner sends
- * back when one of the checks above did not catch something.
- */
-
-test("a report carries what somebody would need to find the item again", async () => {
-  const { buildReport } = await import("../js/report.js");
-  const text = buildReport(
-    {
-      id: "tenses-t8",
-      category: "Present Perfect vs Past Simple",
-      paragraph: "Turkey ____ several major earthquakes over the past century.",
-      correctAnswer: "has experienced",
-    },
-    "experienced",
-    new Date("2026-09-03T10:00:00Z")
-  );
-  assert.match(text, /tenses-t8/);
-  assert.match(text, /Present Perfect vs Past Simple/);
-  assert.match(text, /Benim işaretlediğim: experienced/);
-  assert.match(text, /Uygulamanın doğru dediği: has experienced/);
-  assert.match(text, /Turkey ____ several major earthquakes/);
-});
-
-test("a report from an unanswered question omits the choice rather than faking one", async () => {
-  const { buildReport } = await import("../js/report.js");
-  const text = buildReport(
-    { id: "t-1", category: "A vs B", paragraph: "A ____ b.", correctAnswer: "x" },
-    null,
-    new Date("2026-09-03T10:00:00Z")
-  );
-  assert.doesNotMatch(text, /Benim işaretlediğim/);
-  assert.match(text, /Uygulamanın doğru dediği: x/);
-});
 
 /* ---- The checks are about the stem, not about a field name ----
  *

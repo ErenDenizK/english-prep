@@ -1517,6 +1517,97 @@ async function runTopicBoundary(browser) {
   await context.close();
 }
 
+/**
+ * The paths that only run when something has gone wrong.
+ *
+ * Nothing drove any of these until an audit did, and all three were
+ * broken: the sweep had 1,158 checks and not one of them took a wrong
+ * turn on purpose. A learner on a phone meets every one of them — a
+ * dropped connection on a bus, a swipe out of a test, a link that
+ * arrived truncated in a group chat.
+ */
+async function runFailurePaths(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+
+  // 1 · A malformed hash. This app is distributed by pasting a URL into a
+  // group chat, so a truncated or re-encoded link is ordinary — and
+  // `decodeURIComponent` throws on `%` alone, which left the screen on
+  // "Dersler yükleniyor…" for ever.
+  await page.goto(`${BASE}/index.html#%`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#index-list .row", { timeout: 5000 });
+  ok(true, "bozuk bir hash uygulamayı kilitlemiyor");
+
+  // 2 · The topic file does not arrive. The learner must keep a way out,
+  // and nothing may be recorded as finished.
+  await page.evaluate(() => localStorage.clear());
+  await page.route("**/data/tenses/tenses.json", (route) => route.abort());
+  await page.goto(`${BASE}/index.html#egitim/tenses-present-simple-vs-present-continuous`, {
+    waitUntil: "networkidle",
+  });
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#lesson-index .surface");
+  ok(
+    (await page.locator("button:visible").count()) > 0,
+    "ders yüklenemediğinde ekranda hâlâ bir çıkış var"
+  );
+  ok(await page.locator("#bottom-nav").isVisible(), "hata ekranı navigasyonu gizlemiyor");
+  await page.evaluate(() => document.getElementById("shell-scroll").scrollBy({ top: 1200 }));
+  await page.waitForTimeout(200);
+  ok(
+    (await page.evaluate(() => localStorage.getItem("englishPrep.lessonProgress"))) === null,
+    "başarısız bir yükleme hiçbir dersi tamamlandı diye yazmıyor"
+  );
+  await page.unroute("**/data/tenses/tenses.json");
+
+  // 3 · Leaving a test without choosing to. On iOS the edge-swipe IS the
+  // navigation gesture, so this is not an edge case — it is how a test
+  // most often ends when something interrupts it. v0.19 made the in-app
+  // exit stop destroying answers and left this one open.
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.evaluate(() => localStorage.clear());
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .btn--primary");
+  await page.locator("#test-panel .btn--primary").click();
+  await page.waitForURL(/quiz\.html/);
+  for (let i = 0; i < 3; i += 1) {
+    await page.waitForSelector(".option");
+    await page.locator(".option").first().click();
+    await page.locator(".shell__bar .btn").first().click();
+  }
+  await page.waitForSelector(".option");
+  await page.goBack();
+  await page.waitForTimeout(400);
+  const kept = await page.evaluate(
+    () => (JSON.parse(localStorage.getItem("englishPrep.history") ?? "{}").attempts ?? [])[0]
+  );
+  ok(kept !== undefined, "geri jesti cevapları silmiyor");
+  ok(kept?.questions?.length === 3, `cevaplanan üç soru da kaydedildi (${kept?.questions?.length})`);
+
+  // And exactly once: the ordinary finish must not be double-recorded by
+  // the pagehide its own navigation fires.
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.evaluate(() => localStorage.clear());
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .btn--primary");
+  await page.locator("#test-panel .btn--primary").click();
+  await page.waitForURL(/quiz\.html/);
+  for (let i = 0; i < 10; i += 1) {
+    await page.waitForSelector(".option");
+    await page.locator(".option").first().click();
+    await page.locator(".shell__bar .btn").first().click();
+    if (/results\.html/.test(page.url())) break;
+  }
+  await page.waitForSelector(".t-display");
+  await page.waitForTimeout(300);
+  const attempts = await page.evaluate(
+    () => (JSON.parse(localStorage.getItem("englishPrep.history") ?? "{}").attempts ?? []).length
+  );
+  ok(attempts === 1, `bitirilen test bir kez kaydediliyor (${attempts})`);
+
+  await context.close();
+}
+
 /** The parts of §8 that do not vary with the viewport. */
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
@@ -1718,6 +1809,9 @@ try {
 
   console.log("\n=== konu sınırı ===");
   await runTopicBoundary(browser);
+
+  console.log("\n=== bir şeyler ters gittiğinde ===");
+  await runFailurePaths(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);
