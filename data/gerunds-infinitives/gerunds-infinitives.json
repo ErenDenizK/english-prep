@@ -666,7 +666,12 @@
       "options": ["avoids to drive", "avoids driving", "refuses to drive", "refuses driving"],
       "correctIndex": 1,
       "explanation": "'avoid' fiili kendinden sonra mutlaka -ing ister: avoid driving. 'avoids to drive' bu listeyi bilmeyen öğrencinin ürettiği biçimdir; bu fiilden sonra 'to' gelmez. En yakın çeldirici 'refuses to drive': biçimi doğrudur ama anlamı tutmaz, çünkü reddetmek koşulsuzdur — cümle adamın çevre yolu kapansa oradan şikâyetsiz geçeceğini söylüyor, yani reddetmiyor, kaçınıyor. 'refuses driving' ise hem anlamca hem biçimce yanlıştır: 'refuse' -ing almaz.",
-      "tip": "'avoid, enjoy, deny, suggest, postpone' fiillerinden sonra -ing gelir; bu türetilebilir bir kural değil, ezberlenecek bir listedir."
+      "tip": "'avoid, enjoy, deny, suggest, postpone' fiillerinden sonra -ing gelir; bu türetilebilir bir kural değil, ezberlenecek bir listedir.",
+      "optionNotes": {
+        "avoids to drive": "'avoid' kendinden sonra -ing ister; bu fiil 'to'lu mastar almaz, 'avoids to drive' diye bir biçim yoktur.",
+        "refuses to drive": "Biçim doğru ama anlam ters: reddetmek koşulsuzdur, oysa çevre yolu kapansa oradan şikâyetsiz geçerdi — reddetmiyor, kaçınıyor.",
+        "refuses driving": "'refuse' 'to + fiil' ister, -ing almaz; ayrıca anlam da tutmaz — adam sürmeyi reddetmiyor, sessizce ondan kaçınıyor."
+      }
     },
     {
       "id": "gerunds-infinitives-t2",
@@ -675,7 +680,12 @@
       "options": ["managed repairing", "enjoyed repairing", "managed to repair", "enjoyed to repair"],
       "correctIndex": 2,
       "explanation": "'manage' zorlukla da olsa bir işi başarmak demektir ve kendinden sonra 'to + fiil' ister: managed to repair. Metindeki 'Nobody could reach an engineer before Monday' bu zorluğu kuruyor. 'managed repairing' yanlış biçimdir. 'enjoyed repairing' ise biçimce doğrudur ama anlamı bozar: burada tamir etmekten keyif almaktan değil, işin ilk tepsiye yetişmesinden söz ediliyor.",
-      "tip": "Bu fiillerden sonra her zaman 'to + fiil' gelir, asla -ing gelmez: manage, decide, refuse, offer, promise, afford. Türetilebilir bir kural değil, ezberlenecek bir listedir."
+      "tip": "Bu fiillerden sonra her zaman 'to + fiil' gelir, asla -ing gelmez: manage, decide, refuse, offer, promise, afford. Türetilebilir bir kural değil, ezberlenecek bir listedir.",
+      "optionNotes": {
+        "managed repairing": "'manage' kendinden sonra 'to + fiil' ister: 'managed repairing' diye bir biçim yoktur.",
+        "enjoyed repairing": "Biçim doğru — 'enjoy' -ing alır — ama anlam kayar: paragraf keyif almaktan değil, zor işin ilk tepsiye yetiştirilmesinden söz ediyor.",
+        "enjoyed to repair": "'enjoy' -ing alır, 'to'lu mastar almaz; üstelik anlatılan da keyif değil, mühendis bulunamayan bir gecede güçlükle başarma."
+      }
     },
     {
       "id": "gerunds-infinitives-t3",
@@ -684,7 +694,12 @@
       "options": ["suggested to move", "suggested them to move", "suggested to moving", "suggested moving"],
       "correctIndex": 3,
       "explanation": "'suggest' Türkçedeki 'önermek' gibi kurulmaz: nesne + 'to' almaz, doğrusu suggest + -ing'dir. 'suggested them to move' tam olarak 'taşımalarını önerdi' yapısının birebir aktarımıdır ve İngilizcede yoktur; 'suggested to move' de aynı hatanın kısa hâlidir. Önerinin geleceğe bakması biçimi değiştirmez — 'to' burada geleceğin işareti değildir.",
-      "tip": "'suggest' asla 'suggest somebody to do' biçiminde kurulmaz: ya 'suggest doing' ya da 'suggest that somebody (should) do' denir."
+      "tip": "'suggest' asla 'suggest somebody to do' biçiminde kurulmaz: ya 'suggest doing' ya da 'suggest that somebody (should) do' denir.",
+      "optionNotes": {
+        "suggested to move": "'suggest' 'to'lu mastar almaz; önerinin ileriye bakıyor olması biçimi değiştirmez, bu fiil -ing ister.",
+        "suggested them to move": "Türkçedeki 'taşımalarını önerdi' birebir aktarılmış; 'suggest' nesne + 'to'lu mastar kalıbıyla kurulmaz.",
+        "suggested to moving": "Buradaki 'to' bir edat değildir: 'suggest' kendinden sonra doğrudan -ing alır, araya 'to' girmez."
+      }
     },
     {
       "id": "gerunds-infinitives-t4",
@@ -693,7 +708,12 @@
       "options": ["refused to pay", "refused paying", "admitted paying", "admitted to pay"],
       "correctIndex": 0,
       "explanation": "'refuse' kendinden sonra 'to + fiil' ister: refused to pay. 'refused paying' bu listeyi bilmeyenin ürettiği biçimdir ve İngilizcede yoktur. 'admitted paying' biçimce doğrudur, çünkü 'admit' -ing alır; ama anlamı tersine çevirir: itiraf etmek, parayı ödediğini kabul etmek demektir, oysa metinde müşteri kalan tutarı ödemiyor ve mağazayı bekletiyor.",
-      "tip": "Bir fiilin -ing mi 'to' mu aldığı anlamından değil kendisinden belli olur: refuse to do, admit doing."
+      "tip": "Bir fiilin -ing mi 'to' mu aldığı anlamından değil kendisinden belli olur: refuse to do, admit doing.",
+      "optionNotes": {
+        "refused paying": "'refuse' 'to + fiil' ister; 'refused paying' diye bir biçim yoktur.",
+        "admitted paying": "Biçim doğru — 'admit' -ing alır — ama anlam tersine döner: itiraf, parayı ödediğini kabul etmek olurdu; oysa müşteri kalanı ödemiyor.",
+        "admitted to pay": "'admit' -ing alır, 'to'lu mastar almaz; ayrıca itiraf anlamı da paragrafa uymaz — müşteri ödemeyi bekletiyor."
+      }
     },
     {
       "id": "gerunds-infinitives-t5",
@@ -702,7 +722,12 @@
       "options": ["remembered to leave", "remembered leaving", "regretted leaving", "tried leaving"],
       "correctIndex": 1,
       "explanation": "'remember + -ing' geçmişte yapılmış bir eylemin hatırlanmasıdır; 'she could still picture the blue stamp' tam olarak bir hatırlama görüntüsüdür. 'remembered to leave' ise unutmayıp yapmak demektir ve önceden verilmiş bir görev gerektirir — metinde kimse ondan bir şey istememiştir. 'regretted leaving' pişmanlık bildirir; tanık pişman değil, yalnızca hatırlıyor.",
-      "tip": "'remember + -ing' geriye, 'remember + to' ileriye bakar: birincisi yapılmış bir eylemin anısı, ikincisi unutulmaması gereken bir görevdir."
+      "tip": "'remember + -ing' geriye, 'remember + to' ileriye bakar: birincisi yapılmış bir eylemin anısı, ikincisi unutulmaması gereken bir görevdir.",
+      "optionNotes": {
+        "remembered to leave": "İkinci eylemi hatırlama anından sonraya koyar: unutmayıp yerine getirilen bir görev demektir, oysa kimse ondan zarfı bırakmasını istememişti.",
+        "regretted leaving": "Sıra doğru — zarf çoktan bırakılmış — ama duygu yanlış: tanık pişmanlık bildirmiyor, yalnızca gördüğünü hatırlıyor.",
+        "tried leaving": "Bir sonucu görmek için uygulanan bir yöntemi anlatır; paragrafta denenen bir çözüm değil, tanıklıkta anımsanan bir sahne var."
+      }
     },
     {
       "id": "gerunds-infinitives-t6",
@@ -711,7 +736,12 @@
       "options": ["stopped filling", "tried to fill", "stopped to fill", "tried filling"],
       "correctIndex": 2,
       "explanation": "'stop + to' bir işi bırakıp başka bir iş yapmak için durmaktır: bisikletten inip mataraları doldurdular. 'stopped filling' doldurma eylemini sona erdirmek demektir, oysa metin 'had not touched their bottles since dawn' diyor — bitecek bir doldurma eylemi hiç başlamamıştı. 'tried to fill' de uymaz: su rahatça akıyor ve bir dakikada doluyor, yani ortada ne bir zorluk ne de bir deneme var.",
-      "tip": "'stop + -ing' eylemi sona erdirir; 'stop + to' başka bir eylem için ara verir. Hangisinin doğru olduğunu paragraftaki olay sırası söyler."
+      "tip": "'stop + -ing' eylemi sona erdirir; 'stop + to' başka bir eylem için ara verir. Hangisinin doğru olduğunu paragraftaki olay sırası söyler.",
+      "optionNotes": {
+        "stopped filling": "Doldurmanın duruştan önce sürüyor olmasını ister; oysa şafaktan beri mataralara dokunulmamış — sona erecek bir eylem yok.",
+        "tried to fill": "Zor bir işi başarma çabası demektir; oysa su rahatça akıyor ve mataralar bir dakikada doluyor, ortada zorluk yok.",
+        "tried filling": "Doldurmayı, bir sorunu çözmek için sınanan yöntem hâline getirir; oysa çözülecek sorun değil, çeşmede verilen bir mola var."
+      }
     },
     {
       "id": "gerunds-infinitives-t7",
@@ -720,7 +750,12 @@
       "options": ["tried to use", "stopped using", "tried using", "stopped to use"],
       "correctIndex": 2,
       "explanation": "'try + -ing' bir sonucu görmek için bir yöntemi denemektir; 'just to see whether it made any difference' bunu açıkça söyler ve kablo değiştirme denemesi zaten öncesinde anlatılıyor. 'tried to use' ise bir şeyi yapmakta zorlanmak, uğraşmak demektir; oysa prize takmak hiç zor değildi ve ilk seferde işe yaradı. 'stopped using' de uymaz: teknisyen o prizi zaten kullanmıyordu.",
-      "tip": "'try + -ing' = bir yöntemi dene; 'try + to' = zor bir şeyi başarmaya çalış. Ortada zorluk yoksa -ing gelir."
+      "tip": "'try + -ing' = bir yöntemi dene; 'try + to' = zor bir şeyi başarmaya çalış. Ortada zorluk yoksa -ing gelir.",
+      "optionNotes": {
+        "tried to use": "Prizi kullanmakta zorlanmayı anlatır; oysa iş hiç zor değildi ve ilk seferde tuttu — burada sınanan bir yöntem var.",
+        "stopped using": "O prizin daha önce kullanılıyor olmasını ve kullanımın sona ermesini ister; teknisyen diğer duvardaki prizi hiç kullanmamıştı.",
+        "stopped to use": "İkinci eylemi bir duruşun amacı yapar; paragrafta bırakılan bir iş ya da verilen bir mola değil, denenen bir çözüm var."
+      }
     },
     {
       "id": "gerunds-infinitives-t8",
@@ -729,7 +764,12 @@
       "options": ["regret informing", "remember to inform", "regret to inform", "remember informing"],
       "correctIndex": 2,
       "explanation": "'regret + to inform/tell/say' kalıbı kötü haberi tam o anda verirken kullanılır ve resmi yazışmanın standart biçimidir. 'regret informing' ise haber verdiğine pişman olmak demektir; oysa mektup haberi o cümlede veriyor, verdiğine pişman olmuyor. 'remember to inform' ve 'remember informing' hatırlama bildirir, mektupta hatırlanan bir şey yok.",
-      "tip": "'regret + -ing' yapılmış bir şeye duyulan pişmanlıktır; 'regret to inform/tell' ise kötü haberi o anda vermenin kalıbıdır."
+      "tip": "'regret + -ing' yapılmış bir şeye duyulan pişmanlıktır; 'regret to inform/tell' ise kötü haberi o anda vermenin kalıbıdır.",
+      "optionNotes": {
+        "regret informing": "Haberi vermiş olmaya duyulan pişmanlıktır, yani bildirimi mektuptan öncesine koyar; oysa haber tam o cümlede veriliyor.",
+        "remember to inform": "Unutulmaması gereken, henüz yapılmamış bir görevi anlatır; mektup bir hatırlatma değil, kararı bildiren resmi cevaptır.",
+        "remember informing": "Daha önce yapılmış bir bildirimin anısını anlatır; oysa bildirim bu mektupla, bu cümlede yapılıyor."
+      }
     },
     {
       "id": "gerunds-infinitives-t9",
@@ -738,7 +778,12 @@
       "options": ["made us to read", "got us read", "made us read", "had us to read"],
       "correctIndex": 2,
       "explanation": "'make' zorlama bildirir ve nesneden sonra 'to'suz yalın fiil ister: made us read. 'made us to read' Türkçedeki 'okumamızı sağladı' yapısının birebir aktarımıdır ve İngilizcede yoktur; sınavlarda en sık test edilen hata budur. 'got us read' de yanlıştır, çünkü 'get' tam tersine 'to' ister (got us to read); 'had us to read' ise 'have' kalıbına olmayan bir 'to' ekler.",
-      "tip": "make ve let nesneden sonra yalın fiil alır (make her wait, let her wait); get ise 'to' alır (get her to wait)."
+      "tip": "make ve let nesneden sonra yalın fiil alır (make her wait, let her wait); get ise 'to' alır (get her to wait).",
+      "optionNotes": {
+        "made us to read": "'make' nesneden sonra yalın fiil ister; Türkçedeki 'okumamızı sağladı' kalıbı buraya bir 'to' ekletir, oysa bu kalıpta 'to' yoktur.",
+        "got us read": "'get' dört yaptırma fiilinin içinde 'to'lu mastar alan tek fiildir: 'got us to read' olurdu. Yalın fiil make, let ve have'e aittir.",
+        "had us to read": "'have + kişi' kalıbı da yalın fiil ister ('had us read'); bu 'to' kalıpta yoktur."
+      }
     },
     {
       "id": "gerunds-infinitives-t10",
@@ -747,7 +792,12 @@
       "options": ["got him go", "got him to go", "made him to go", "let him go"],
       "correctIndex": 1,
       "explanation": "'get' ikna ederek bir şey yaptırmaktır ve nesneden sonra 'to + fiil' ister: got him to go. Üç haftalık telefon trafiği tam olarak bir ikna sürecidir. 'got him go' yalın fiil kullanır, oysa yalın fiil yalnızca 'make' ve 'let' içindir. 'let him go' ise izin vermek demektir ve anlamı tersine çevirir: gitmeyi reddeden kişi dedenin kendisiydi, izin bekleyen değil.",
-      "tip": "'get somebody to do' ikna ederek yaptırmak, 'make somebody do' zorlamak, 'let somebody do' izin vermektir."
+      "tip": "'get somebody to do' ikna ederek yaptırmak, 'make somebody do' zorlamak, 'let somebody do' izin vermektir.",
+      "optionNotes": {
+        "got him go": "'get' yalın fiil almaz; dört yaptırma fiilinin 'to'lu mastar alan tekidir: 'got him to go'.",
+        "made him to go": "'make' nesneden sonra yalın fiil ister, 'to' almaz; ayrıca üç haftalık telefon trafiği zorlamayı değil ikna etmeyi anlatıyor.",
+        "let him go": "Biçim doğru ama rol ters: izin vermek demektir, oysa direnen dedenin kendisiydi — izin bekleyen kimse yok."
+      }
     },
     {
       "id": "gerunds-infinitives-t11",
@@ -756,7 +806,12 @@
       "options": ["had them reprint", "had reprinted them", "made them reprint", "had them reprinted"],
       "correctIndex": 3,
       "explanation": "Nesne bir eşya olduğunda kalıp 'have + nesne + V3'tür: had them reprinted, yani işi başkasına yaptırdı. 'had them reprint' fotoğrafların kendilerinin baskı yaptığı anlamına gelir; yalın fiilli kalıp yalnızca bir kişiye iş verirken kullanılır. 'had reprinted them' ise present perfect sanılarak kurulmuş bir sıra hatasıdır — bu kalıpta nesne fiilden önce gelir.",
-      "tip": "Bir işi başkasına yaptırıyorsan ve nesne bir eşyaysa kalıp şudur: have/get + nesne + V3 (have the car repaired)."
+      "tip": "Bir işi başkasına yaptırıyorsan ve nesne bir eşyaysa kalıp şudur: have/get + nesne + V3 (have the car repaired).",
+      "optionNotes": {
+        "had them reprint": "Yalın fiil işi nesnenin kendisine yaptırır: negatifler baskıyı kendileri yapmış olur. Bu kalıp yalnızca bir kişi görevlendirilirken kurulur.",
+        "had reprinted them": "Kalıbın sırası bozulmuş: yaptırma yapısında nesne fiilden önce gelir — 'had them reprinted'.",
+        "made them reprint": "Zorlama bildirir ve zorlanan bir kişi ister; buradaki nesne fotoğraflar, üstelik berber kimseyi zorlamıyor, işi bir laboratuvara yaptırıyor."
+      }
     },
     {
       "id": "gerunds-infinitives-t12",
@@ -765,7 +820,12 @@
       "options": ["let him drive", "let him to drive", "made him drive", "had him to drive"],
       "correctIndex": 0,
       "explanation": "'let' izin vermektir ve nesneden sonra 'to'suz yalın fiil ister: let him drive. Metin izin olduğunu söylüyor — çocuk haziran ayından beri istiyor ve doğum gününde nihayet oluyor. 'made him drive' biçimce kusursuzdur ama anlamı tersine çevirir: zorlama demektir, oysa isteyen çocuğun kendisidir. 'let him to drive' ve 'had him to drive' ise kalıba olmayan bir 'to' ekler.",
-      "tip": "let ve make'ten sonra 'to' gelmez; ikisini ayıran şey biçim değil bağlamdır: let = izin, make = zorlama."
+      "tip": "let ve make'ten sonra 'to' gelmez; ikisini ayıran şey biçim değil bağlamdır: let = izin, make = zorlama.",
+      "optionNotes": {
+        "let him to drive": "'let' nesneden sonra yalın fiil ister; bu kalıpta 'to' bulunmaz.",
+        "made him drive": "Biçim kusursuz ama anlam ters: zorlama demektir, oysa haziran ayından beri isteyen çocuğun kendisi — burada verilen bir izin var.",
+        "had him to drive": "'have + kişi' kalıbı da yalın fiil ister ('had him drive'); ayrıca anlatılan bir görevlendirme değil, uzun süredir beklenen izin."
+      }
     },
     {
       "id": "gerunds-infinitives-t13",
@@ -774,7 +834,12 @@
       "options": ["eager to hand", "reluctant of handing", "reluctant to hand", "eager for handing"],
       "correctIndex": 2,
       "explanation": "'reluctant' sıfatı doğrudan 'to + fiil' alır: reluctant to hand over. 'reluctant of handing' sıfattan sonra bir edat gerektiği sanılarak kurulur, oysa bu sıfat edat almaz. 'eager to hand' biçimce doğrudur ama anlamı tersine çevirir: on bir haftalık gecikme ve fotoğraf gösterme zorunluluğu isteksizliği anlatır, hevesi değil.",
-      "tip": "Bir sıfattan sonra doğrudan eylem geliyorsa çoğunlukla 'to + fiil' gelir; araya bir edat girerse (of, for, about, at) fiil mutlaka -ing olur."
+      "tip": "Bir sıfattan sonra doğrudan eylem geliyorsa çoğunlukla 'to + fiil' gelir; araya bir edat girerse (of, for, about, at) fiil mutlaka -ing olur.",
+      "optionNotes": {
+        "eager to hand": "Biçim doğru ama anlam ters: on bir haftalık gecikme ve fotoğraf göstermek zorunda kalmak hevesi değil, isteksizliği anlatır.",
+        "reluctant of handing": "'reluctant' kendi edatını taşımaz, doğrudan 'to + fiil' alır; bir sıfata taşımadığı edat sonradan eklenemez.",
+        "eager for handing": "'eager' de edat almaz ('eager to do'); üstelik anlam ters — ev sahibi depozitoyu vermeye hevesli değil."
+      }
     },
     {
       "id": "gerunds-infinitives-t14",
@@ -783,7 +848,12 @@
       "options": ["capable to sing", "capable of singing", "able of singing", "capable of sing"],
       "correctIndex": 1,
       "explanation": "'capable' her zaman 'of' edatıyla gelir ve edattan sonra fiil -ing olur: capable of singing. 'capable to sing' hatası 'able to do' kalıbından bulaşır; iki sıfat aynı anlama gelse de biçimleri farklıdır, 'able of singing' de aynı karışıklığın ters yönüdür. 'capable of sing' ise edattan sonra yalın fiil kullanır; edattan sonra yalın fiil hiçbir zaman gelmez.",
-      "tip": "Edattan sonra fiil daima -ing biçimindedir: good at swimming, interested in learning, capable of finishing."
+      "tip": "Edattan sonra fiil daima -ing biçimindedir: good at swimming, interested in learning, capable of finishing.",
+      "optionNotes": {
+        "capable to sing": "'able to do' kalıbı 'capable'a taşınmış; 'capable' edatı sabit bir sıfattır ve 'of' + -ing ister.",
+        "able of singing": "Aynı karışıklığın ters yönü: 'able' edat almaz, doğrudan 'to + fiil' alır — 'able to sing'.",
+        "capable of sing": "Edat doğru seçilmiş ama biçim değil: edattan sonra yalın fiil gelmez, 'of' + -ing gerekir."
+      }
     },
     {
       "id": "gerunds-infinitives-t15",
@@ -792,7 +862,12 @@
       "options": ["looking forward to see", "looking forward seeing", "looking forward to seeing", "looking forward for seeing"],
       "correctIndex": 2,
       "explanation": "'look forward to' kalıbındaki 'to' mastar eki değil bir edattır, ve edattan sonra fiil -ing olur: looking forward to seeing. 'looking forward to see' tam bu tuzağa düşer, çünkü öğrenci her 'to'yu mastar sanar. 'looking forward seeing' edatı büsbütün düşürür; 'looking forward for seeing' ise kalıbın sabit edatını değiştirir.",
-      "tip": "'look forward to, object to, be used to, get used to' kalıplarındaki 'to' bir edattır ve kendinden sonra -ing ister."
+      "tip": "'look forward to, object to, be used to, get used to' kalıplarındaki 'to' bir edattır ve kendinden sonra -ing ister.",
+      "optionNotes": {
+        "looking forward to see": "Kalıptaki 'to' mastar eki sanılmış; oysa o bir edattır ve edattan sonra fiil -ing biçimine girer.",
+        "looking forward seeing": "Kalıbın edatı büsbütün düşürülmüş: 'to', 'look forward to' kalıbının sabit parçasıdır.",
+        "looking forward for seeing": "Kalıbın sabit edatı değiştirilmiş; 'look forward' 'for' ile değil yalnızca 'to' ile kurulur."
+      }
     },
     {
       "id": "gerunds-infinitives-t16",
@@ -801,7 +876,12 @@
       "options": ["slow to point", "quick at pointing", "quick to point", "slow at pointing"],
       "correctIndex": 2,
       "explanation": "'quick', 'slow', 'ready', 'keen' gibi sıfatlar edat almaz, doğrudan 'to + fiil' alır: quick to point out. 'quick at pointing' hatası 'good at' kalıbından bulaşır. 'slow to point' biçimce doğrudur ama anlamı tutmaz: metin tepkinin yayından bir saat sonra geldiğini ve akşama başkanın oyu kaybettiğini söylüyor, yani komite hiç gecikmemiş.",
-      "tip": "'be quick/slow to do something' kalıbında hız bildiren sıfatlar edat değil doğrudan 'to + fiil' alır."
+      "tip": "'be quick/slow to do something' kalıbında hız bildiren sıfatlar edat değil doğrudan 'to + fiil' alır.",
+      "optionNotes": {
+        "slow to point": "Biçim doğru ama anlam ters: tepki yayından bir saat sonra gelmiş ve akşama başkan oyu kaybetmiş — komite hiç gecikmemiş.",
+        "quick at pointing": "'good at' kalıbı buraya taşınmış; hız bildiren 'quick' edat almaz, doğrudan 'to + fiil' alır.",
+        "slow at pointing": "Hem 'slow' edat almaz — 'slow to do' denir — hem de anlam ters: komite bir saat içinde tepkisini vermiş."
+      }
     },
     {
       "id": "gerunds-infinitives-t17",
@@ -810,7 +890,12 @@
       "options": ["for putting", "to put", "for to put", "to putting"],
       "correctIndex": 1,
       "explanation": "Bir eylemin amacı İngilizcede 'to + fiil' ile anlatılır: had come to put their names on a list. 'for putting' Türkçedeki 'için' edatının doğrudan aktarılmasıdır ve amaç cümlesinde kullanılmaz. Cümlenin başındaki 'not for stamps or forms' farkı gösteriyor: 'for' bir ismin önüne gelebilir, bir fiilin önüne gelemez. 'for to put' ise iki işareti birden koyar.",
-      "tip": "Amaç bildirirken 'for + fiil' asla kullanılmaz: 'to + fiil' ya da 'in order to + fiil' denir; 'for' yalnızca isimle gelir."
+      "tip": "Amaç bildirirken 'for + fiil' asla kullanılmaz: 'to + fiil' ya da 'in order to + fiil' denir; 'for' yalnızca isimle gelir.",
+      "optionNotes": {
+        "for putting": "Türkçedeki 'için' doğrudan 'for'a çekmiş; oysa bir kişinin eylem amacı 'to + fiil' ile kurulur, 'for' fiilin önüne gelmez.",
+        "for to put": "'for to' diye bir kalıp yoktur: amaç işareti ikiye katlanmış, oysa 'to + fiil' tek başına yeter.",
+        "to putting": "Amaç bildiren 'to' bir edat değil, mastarın işaretidir; ardından -ing değil yalın fiil gelir."
+      }
     },
     {
       "id": "gerunds-infinitives-t18",
@@ -819,7 +904,12 @@
       "options": ["to block", "for blocking", "in order to block", "for to block"],
       "correctIndex": 1,
       "explanation": "Buradaki 'for' cezanın gerekçesini bağlayan edattır (fine somebody for doing something) ve edattan sonra fiil -ing olur: fined it for blocking. 'to block' cümleyi bir amaç cümlesine çevirir ve saçmalar: belediye kaldırımın kapanmasını isteyerek ceza kesmiş olurdu. 'in order to block' aynı yanlış okumanın açık hâlidir, 'for to block' ise 'için' kalıbının birebir çevirisidir.",
-      "tip": "'fine, thank, blame, apologise' gibi fiiller gerekçeyi 'for + -ing' ile alır; bu bir amaç yapısı değildir."
+      "tip": "'fine, thank, blame, apologise' gibi fiiller gerekçeyi 'for + -ing' ile alır; bu bir amaç yapısı değildir.",
+      "optionNotes": {
+        "to block": "Cümleyi amaç cümlesine çevirir: belediye kaldırım kapansın diye ceza kesmiş olurdu. 'fine' gerekçesini 'for' ile alır.",
+        "in order to block": "Aynı yanlış okumanın açık hâli; amacı belediyeye yükler. Oysa ceza bir şey olsun diye değil, olduğu için kesilir.",
+        "for to block": "Edat doğru seçilmiş ama 'for to' diye bir kalıp yoktur; 'for'dan sonra fiil -ing biçimine girer."
+      }
     },
     {
       "id": "gerunds-infinitives-t19",
@@ -828,7 +918,12 @@
       "options": ["to read", "for reading", "to reading", "for to read"],
       "correctIndex": 0,
       "explanation": "Kalmasının amacı anlatılıyor, bu yüzden 'to + fiil' gerekir: stayed until closing to read every sleeve. Cümlenin başındaki 'for a single album' doğru bir kullanımdır, çünkü 'for' bir ismin önündedir; fiilin önüne geçemez, dolayısıyla 'for reading' tam olarak bu ayrımı kaçırır. 'to reading' ise 'look forward to' gibi kalıpları yeni öğrenmiş öğrencinin aşırı düzeltmesidir.",
-      "tip": "'for + isim' amaç için doğrudur (come for the conference); ama fiil geldiğinde 'to + fiil' kullanılır."
+      "tip": "'for + isim' amaç için doğrudur (come for the conference); ama fiil geldiğinde 'to + fiil' kullanılır.",
+      "optionNotes": {
+        "for reading": "Boşluktan önce 'for' isteyen bir fiil ya da isim yok; anlatılan, kalmasının amacıdır ve amaç 'to + fiil' ile kurulur.",
+        "to reading": "'look forward to' gibi kalıplardan bulaşan aşırı düzeltme; amaç bildiren 'to' edat değildir, ardından yalın fiil gelir.",
+        "for to read": "'for to' diye bir kalıp yoktur; amaç yalnızca 'to + fiil' ya da 'in order to + fiil' ile bildirilir."
+      }
     },
     {
       "id": "gerunds-infinitives-t20",
@@ -837,7 +932,12 @@
       "options": ["for to flatten", "to flatten", "for flattening", "for flatten"],
       "correctIndex": 2,
       "explanation": "'apology' ismi gerekçesini 'for' edatıyla alır (an apology for doing something) ve edattan sonra fiil -ing olur: an apology for flattening it. 'to flatten' burada kurulamaz, çünkü özür bir amaç taşımaz, bir gerekçe taşır. 'for to flatten' Türkçedeki 'için' kalıbının aktarımıdır; 'for flatten' ise edattan sonra yalın fiil kullanır ki bu hiçbir zaman olmaz.",
-      "tip": "Bazı isimler de gerekçelerini edatla alır: an apology for, a reason for, a talent for — hepsinden sonra -ing gelir."
+      "tip": "Bazı isimler de gerekçelerini edatla alır: an apology for, a reason for, a talent for — hepsinden sonra -ing gelir.",
+      "optionNotes": {
+        "for to flatten": "Edat doğru ama 'for to' diye bir kalıp yoktur; 'for'dan sonra fiil doğrudan -ing biçimine girer.",
+        "to flatten": "Özrü bir amaç hâline getirir: çit yıkılsın diye özür istenmiş olurdu. 'apology' gerekçesini 'for' ile alır.",
+        "for flatten": "Edat doğru, biçim değil: edattan sonra yalın fiil gelmez — 'for flattening' gerekir."
+      }
     },
     {
       "id": "gerunds-infinitives-t21",
@@ -846,7 +946,12 @@
       "options": ["was used to being", "used to be", "got used to being", "is used to being"],
       "correctIndex": 1,
       "explanation": "'used to + yalın fiil' artık sürmeyen geçmiş bir durumu anlatır: There used to be a cinema. Metin de bunu söylüyor — şimdi orada banka var. 'was used to being' ise 'alışkın olmak' demektir ve burada imkânsızdır: 'there' yapısının alışkın olabileceği bir öznesi yoktur. 'got used to being' de aynı nedenle kurulamaz; o bir alışma sürecini anlatır.",
-      "tip": "'used to + yalın fiil' artık olmayan geçmiş bir alışkanlık ya da durumdur; 'be used to + -ing' ise şimdi alışkın olmaktır."
+      "tip": "'used to + yalın fiil' artık olmayan geçmiş bir alışkanlık ya da durumdur; 'be used to + -ing' ise şimdi alışkın olmaktır.",
+      "optionNotes": {
+        "was used to being": "'be used to' alışkın olmayı anlatır ve alışan bir kişi ister; 'there' bir kişi değildir, hiçbir şeye alışamaz.",
+        "got used to being": "Bir alışma sürecini anlatır ve yine alışan bir özne ister; 'there' yapısında böyle bir özne yoktur.",
+        "is used to being": "Alışacak bir özne olmadığı gibi zaman da tutmuyor: sinema artık yok, anlatılan kapanmış bir geçmiştir."
+      }
     },
     {
       "id": "gerunds-infinitives-t22",
@@ -855,7 +960,12 @@
       "options": ["is used to sleep", "used to sleep", "is used to sleeping", "gets used to sleeping"],
       "correctIndex": 2,
       "explanation": "'be used to' alışkın olmayı anlatır ve buradaki 'to' bir edattır, bu yüzden fiil -ing olur: is used to sleeping. 'is used to sleep' bu seviyedeki en sık hatadır ve 'to'yu mastar eki sanmaktan doğar. 'used to sleep' ise alışkanlığın bittiğini söylerdi; oysa paragraf şimdiki zamanda ve 'a quiet room would probably keep her awake' diyerek durumun sürdüğünü gösteriyor.",
-      "tip": "'be used to' kalıbındaki 'to' edattır: be used to + -ing ya da isim (be used to the noise)."
+      "tip": "'be used to' kalıbındaki 'to' edattır: be used to + -ing ya da isim (be used to the noise).",
+      "optionNotes": {
+        "is used to sleep": "Kalıptaki 'to' mastar eki sanılmış; 'be used to' alışkınlık anlamındayken ardından -ing gelir.",
+        "used to sleep": "Artık sürmeyen bir geçmişi anlatır; oysa paragraf şimdiki zamanda ve düzenin hâlâ geçerli olduğunu söylüyor.",
+        "gets used to sleeping": "Henüz tamamlanmamış bir alışma sürecini anlatır; oysa on bir yıllık gece vardiyasından sonra durum çoktan yerleşmiş."
+      }
     },
     {
       "id": "gerunds-infinitives-t23",
@@ -864,7 +974,12 @@
       "options": ["got used to hear", "was used to hearing", "got used to hearing", "used to hear"],
       "correctIndex": 2,
       "explanation": "'get used to' alışma sürecini anlatır ve 'Little by little' tam olarak bir süreç ifadesidir; edattan sonra fiil -ing olur: got used to hearing. 'was used to hearing' ise zaten alışkın olmayı, yani bir durumu anlatır ve 'little by little' ile birlikte kurulamaz. 'got used to hear' 'to'yu mastar sanan yaygın hatadır; 'used to hear' ise artık duymadığını söylerdi.",
-      "tip": "'be used to' bir durumdur, 'get used to' bir süreçtir: gradually, little by little, after a while gibi ifadeler 'get' ister."
+      "tip": "'be used to' bir durumdur, 'get used to' bir süreçtir: gradually, little by little, after a while gibi ifadeler 'get' ister.",
+      "optionNotes": {
+        "got used to hear": "Fiil doğru seçilmiş ama kalıptaki 'to' bir edattır: ardından yalın fiil değil -ing gelir.",
+        "was used to hearing": "Ulaşılmış bir durumu anlatır, değişimi değil; oysa 'Little by little' tam olarak bir alışma sürecini işaret ediyor.",
+        "used to hear": "Artık duymadığını söylerdi; oysa otobüsler hâlâ geçiyor, değişen şey yalnızca onları fark etmesi."
+      }
     },
     {
       "id": "gerunds-infinitives-t24",
@@ -873,7 +988,12 @@
       "options": ["was used to opening", "used to open", "was used to open", "got used to opening"],
       "correctIndex": 2,
       "explanation": "Burada 'be used to' alışkanlık kalıbı değil, 'use' fiilinin edilgen hâlidir: anahtar dolabı açmak için kullanılıyordu. Cümledeki 'by whichever assistant opened up' bunu kanıtlar, çünkü faili olan yapı edilgen yapıdır. 'was used to opening' alışkın olmak demektir, oysa bir anahtar bir şeye alışamaz. 'used to open' ise fail bildiren 'by' öbeğiyle birlikte kurulamaz.",
-      "tip": "Öznesi eşya olan ya da eylemi yapanı 'by ...' ile veren cümlelerde 'be used to' alışkınlık değil, 'kullanılmak' demektir ve ardından yalın fiil gelir. 'little by little' gibi zarf öbekleri bu kurala girmez."
+      "tip": "Öznesi eşya olan ya da eylemi yapanı 'by ...' ile veren cümlelerde 'be used to' alışkınlık değil, 'kullanılmak' demektir ve ardından yalın fiil gelir. 'little by little' gibi zarf öbekleri bu kurala girmez.",
+      "optionNotes": {
+        "was used to opening": "Alışkın olmak demektir ve alışan bir kişi ister; buradaki özne bir anahtar, bir eşya ise hiçbir şeye alışamaz.",
+        "used to open": "Geçmiş alışkanlık kalıbı, ama cümlede eylemi yapanı veren 'by whichever assistant' öbeği var; failli bu yapı edilgen ister.",
+        "got used to opening": "Bir alışma sürecini anlatır ve alışan bir özne gerektirir; anahtar alışamaz, üstelik metinde alışılan bir değişim yok."
+      }
     }
   ]
 }

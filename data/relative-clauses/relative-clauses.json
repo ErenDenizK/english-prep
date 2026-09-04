@@ -606,7 +606,12 @@
       "options": ["whom", "who", "whose", "which"],
       "correctIndex": 1,
       "explanation": "Boşluktan hemen sonra çekimli bir fiil ('repaired') geliyor, yani yan cümlenin öznesi eksik; bu boşluğu özne görevindeki 'who' doldurur. 'whom' yalnızca nesne konumunda durur ve daha resmi göründüğü için seçilir, oysa özne yerine geçemez. 'whose' kendisinden sonra bir isim ister ('whose tools'), 'which' ise insan için kullanılmaz.",
-      "tip": "Boşluktan sonra doğrudan çekimli bir fiil geliyorsa ilgi zamiri öznedir ve 'who' kullanılır; 'whom' asla özne olamaz."
+      "tip": "Boşluktan sonra doğrudan çekimli bir fiil geliyorsa ilgi zamiri öznedir ve 'who' kullanılır; 'whom' asla özne olamaz.",
+      "optionNotes": {
+        "whom": "Nesne görevinin biçimidir ve ardından yan cümlenin kendi öznesini bekler; burada hemen arkasından fiil geliyor, yani eksik olan özne.",
+        "whose": "Sahiplik kurar ve hemen ardından sahip olunan ismi ister ('whose tools'); burada arkasından çekimli bir fiil geliyor.",
+        "which": "İnsan olmayan öncüller içindir; buradaki öncül bir kişi: 'the engineer'."
+      }
     },
     {
       "id": "relative-clauses-t2",
@@ -616,7 +621,12 @@
       "options": ["who", "who's", "whose", "whom"],
       "correctIndex": 2,
       "explanation": "'reports' burada fiil değil isim: cümlenin yüklemi 'are quoted' ve çoğul bir özne arıyor. O ismin sahibi analist olduğu için sahiplik bildiren 'whose' gerekir. 'who' seçilirse 'who reports on shipping costs' bir fiil okuması olur ve 'are quoted' öznesiz kalır. 'who's' ise sahiplik değil, 'who is/has' kısaltmasıdır.",
-      "tip": "'whose' + isim yapısı sahiplik kurar; 'who's' her zaman 'who is' ya da 'who has' kısaltmasıdır ve ilgi cümlesinde sahiplik bildiremez."
+      "tip": "'whose' + isim yapısı sahiplik kurar; 'who's' her zaman 'who is' ya da 'who has' kısaltmasıdır ve ilgi cümlesinde sahiplik bildiremez.",
+      "optionNotes": {
+        "who": "'who reports on shipping costs' okumasını doğurur; o zaman cümlenin asıl yüklemi 'are quoted' öznesiz kalır.",
+        "who's": "Yalnızca 'who is' ya da 'who has' kısaltmasıdır; kesme işareti sahiplik değil, düşen harf demektir.",
+        "whom": "Nesne görevinin biçimi; burada boşluk bir nesne değil, arkasından gelen ismin sahibini gösteriyor."
+      }
     },
     {
       "id": "relative-clauses-t3",
@@ -626,7 +636,12 @@
       "options": ["which", "whose", "of which", "that"],
       "correctIndex": 1,
       "explanation": "Sahiplik yalnızca insanlara özgü değildir: tavan sinemaya aittir, bu yüzden cansız bir öncülde de 'whose' kullanılır. 'which' seçilirse 'cinema which ceiling collapsed' olur; 'which' kendisinden sonra bir isim alamaz ve cümle dağılır. 'of which' doğru bir yapıdır ama sırası farklıdır — 'the ceiling of which collapsed' denmesi gerekirdi.",
-      "tip": "Cansız bir varlığın sahipliğini de 'whose' kurar; aynı ilişki 'isim + of which' sırasıyla da yazılabilir, ama 'which' tek başına ismin önüne gelemez."
+      "tip": "Cansız bir varlığın sahipliğini de 'whose' kurar; aynı ilişki 'isim + of which' sırasıyla da yazılabilir, ama 'which' tek başına ismin önüne gelemez.",
+      "optionNotes": {
+        "which": "Kendisinden sonra doğrudan isim alamaz: 'cinema which ceiling collapsed' kurulmaz, sahiplik ilişkisini taşımaz.",
+        "of which": "Doğru bir yapı ama sırası ters: parçanın adı önce yazılır — 'the ceiling of which collapsed'.",
+        "that": "'that' de arkasına isim alamaz; sahiplik yalnızca 'whose' ya da 'isim + of which' ile kurulur."
+      }
     },
     {
       "id": "relative-clauses-t4",
@@ -636,7 +651,12 @@
       "options": ["that", "which", "whom", "whose"],
       "correctIndex": 2,
       "explanation": "Virgülle ayrılmış açıklayıcı bir ilgi cümlesi var ve boşluk 'had heard' fiilinin nesnesi: kişi + nesne görevi 'whom' demektir. 'that' virgülden sonra hiçbir ilgi cümlesinde kullanılamaz; Türkçede virgülün böyle bir görevi olmadığı için en sık yapılan hata budur. 'which' insan için kullanılmaz, 'whose' ise ardından bir isim bekler.",
-      "tip": "Virgülden sonra 'that' asla gelmez; açıklayıcı ilgi cümlelerinde kişi için 'who/whom', cansız varlık için 'which' kullanılır."
+      "tip": "Virgülden sonra 'that' asla gelmez; açıklayıcı ilgi cümlelerinde kişi için 'who/whom', cansız varlık için 'which' kullanılır.",
+      "optionNotes": {
+        "that": "Virgülden sonra hiçbir ilgi cümlesinde kullanılmaz. Türkçede virgülün böyle bir görevi olmadığı için en sık yapılan hata budur.",
+        "which": "Cansız öncüller içindir; buradaki öncül bir kişi: 'a drummer'.",
+        "whose": "Ardından sahip olunan bir isim bekler; burada arkasından yan cümlenin kendi öznesi ('the jury') geliyor."
+      }
     },
     {
       "id": "relative-clauses-t5",
@@ -646,7 +666,12 @@
       "options": ["that", "which", "who", "what"],
       "correctIndex": 1,
       "explanation": "Hangi kovandan söz edildiği zaten belli ('the oldest hive'); virgüller arasındaki cümle yalnızca ek bilgi veriyor. Bu non-defining yapıda cansız bir öncül için tek seçenek 'which'tir. 'that' tanımlayıcı cümlelerde 'which' ile eş değer olsa da virgülden sonra kullanılamaz. 'what' ise ilgi zamiri değildir; öncülünü kendi içinde taşır.",
-      "tip": "Virgüller arasına giren ilgi cümlesi ek bilgi verir ve cansız öncül için yalnızca 'which' alır; 'that' virgülle birlikte kullanılamaz."
+      "tip": "Virgüller arasına giren ilgi cümlesi ek bilgi verir ve cansız öncül için yalnızca 'which' alır; 'that' virgülle birlikte kullanılamaz.",
+      "optionNotes": {
+        "that": "Virgülsüz tanımlayan cümlelerde 'which' ile eş değerdir, ama virgülden sonra kullanılamaz.",
+        "who": "İnsan öncüller içindir; buradaki öncül bir kovan.",
+        "what": "İlgi zamiri değildir, öncülünü kendi içinde taşır; önünde 'The oldest hive' varken iki öncül üst üste gelir."
+      }
     },
     {
       "id": "relative-clauses-t6",
@@ -656,7 +681,12 @@
       "options": ["which", "that", "who", "whose"],
       "correctIndex": 1,
       "explanation": "Öncül hem insanları hem eşyayı kapsıyor: 'the volunteers and the timing equipment'. İkisini birlikte niteleyebilen tek ilgi zamiri 'that'tir; yan cümlenin çoğul yüklemi ('were due') de öncülün ikisi birden olduğunu gösterir. 'which' boşluğa en yakın isim ('equipment') yüzünden çok seçilir, ama yalnızca cansız varlıkları kapsar ve gönüllüleri dışarıda bırakır. 'who' ise tersini yapıp ekipmanı dışarıda bırakır.",
-      "tip": "Öncül insan ve nesneyi birlikte içeriyorsa ilgi zamiri 'that' olur; ilgi zamiri en yakın isme değil, öncülün tamamına bağlanır."
+      "tip": "Öncül insan ve nesneyi birlikte içeriyorsa ilgi zamiri 'that' olur; ilgi zamiri en yakın isme değil, öncülün tamamına bağlanır.",
+      "optionNotes": {
+        "which": "Yalnızca cansız varlıkları kapsar; öncülün ilk yarısı olan gönüllüleri dışarıda bırakır.",
+        "who": "Yalnızca insanları kapsar; öncülün ikinci yarısı olan ekipmanı dışarıda bırakır.",
+        "whose": "Sahiplik kurar ve ardından sahip olunan ismi ister; burada arkasından çekimli fiil ('were due') geliyor."
+      }
     },
     {
       "id": "relative-clauses-t7",
@@ -666,7 +696,12 @@
       "options": ["which", "that", "what", "this"],
       "correctIndex": 0,
       "explanation": "Boşluktaki zamir tek bir isme değil, önündeki olayın tamamına (elektriğin kesilmesine) gönderme yapıyor; bunu yalnızca virgülden sonra gelen 'which' yapabilir. 'that' bir cümlenin bütününü öncül alamaz ve virgülden sonra zaten kullanılmaz. 'this' ise ilgi zamiri değildir: iki bağımsız cümleyi yalnızca virgülle birbirine yapıştırır.",
-      "tip": "Önceki cümlenin tamamına gönderme yapan ilgi cümlesi 'virgül + which' ile kurulur; 'that' ve 'what' bu görevi üstlenemez."
+      "tip": "Önceki cümlenin tamamına gönderme yapan ilgi cümlesi 'virgül + which' ile kurulur; 'that' ve 'what' bu görevi üstlenemez.",
+      "optionNotes": {
+        "that": "Bir cümlenin bütününü öncül alamaz, üstelik virgülden sonra hiç kullanılmaz.",
+        "what": "Öncülünü kendi içinde taşır; burada öncül önündeki olayın tamamıdır, yani zaten yazılmış durumda.",
+        "this": "İlgi zamiri değildir: iki bağımsız cümleyi yalnızca virgülle yapıştırır, aralarında bağ kurmaz."
+      }
     },
     {
       "id": "relative-clauses-t8",
@@ -676,7 +711,12 @@
       "options": ["what", "whose", "that", "which"],
       "correctIndex": 2,
       "explanation": "'All' öncülünden sonra ilgi zamiri olarak yalnızca 'that' kullanılır (ya da hiç kullanılmaz); 'all which' biçimi İngilizcede kurulmaz, çünkü 'that' ile 'which' denkliği yalnızca sıradan tanımlayıcı cümleler için geçerlidir. 'what' ise öncülünü kendi içinde taşır: 'what the team found' tek başına doğrudur ama önünde 'All' varken iki öncül üst üste gelir.",
-      "tip": "'all', 'everything' ve 'the only thing' gibi öncüllerden sonra 'which' değil 'that' gelir; 'what' zaten öncülü olan yapılarda kullanılamaz."
+      "tip": "'all', 'everything' ve 'the only thing' gibi öncüllerden sonra 'which' değil 'that' gelir; 'what' zaten öncülü olan yapılarda kullanılamaz.",
+      "optionNotes": {
+        "what": "Öncülünü kendi içinde taşır; önünde 'All' varken iki öncül üst üste gelir. 'What the team found' tek başına doğru olurdu.",
+        "whose": "Sahiplik kurar ve ardından sahip olunan ismi ister; burada arkasından yan cümlenin öznesi ('the team') geliyor.",
+        "which": "Sıradan tanımlayan cümlelerde 'that' ile eş değerdir, ama 'all' öncülünden sonra kurulmaz: 'all which' denmez."
+      }
     },
     {
       "id": "relative-clauses-t9",
@@ -686,7 +726,12 @@
       "options": ["which", "where", "when", "why"],
       "correctIndex": 1,
       "explanation": "Boşluktan sonraki cümle eksiksiz: öznesi ('a beginner') ve nesnesi ('real progress') yerinde. Demek ki boşluk bir ismin değil, 'in this craft' gibi bir zarf öbeğinin yerini tutuyor; bunu 'where' karşılar. 'which' ancak yan cümlede eksik bir özne ya da nesne olsaydı kullanılabilirdi. Öncül somut bir mekân olmasa da bir alan bildirdiği için 'where' alabilir.",
-      "tip": "Yan cümlede özne ve nesne tamsa boşluk bir zarfın yerine geçer: alan için 'where', zaman için 'when'; 'which' yalnızca eksik bir isim yerini doldurur."
+      "tip": "Yan cümlede özne ve nesne tamsa boşluk bir zarfın yerine geçer: alan için 'where', zaman için 'when'; 'which' yalnızca eksik bir isim yerini doldurur.",
+      "optionNotes": {
+        "which": "Yan cümlede eksik bir özne ya da nesne olsaydı gelirdi; burada ikisi de yerinde, eksik olan bir zarf: 'in this craft'.",
+        "when": "Zaman bildiren öncüller içindir; buradaki öncül bir zaman değil, bir uğraş alanı.",
+        "why": "Yalnızca 'the reason' öncülünden sonra gelir; başka hiçbir isimle kullanılmaz."
+      }
     },
     {
       "id": "relative-clauses-t10",
@@ -696,7 +741,12 @@
       "options": ["where", "whose", "which", "when"],
       "correctIndex": 2,
       "explanation": "Öncül bir bina, yani bir yer; ama yan cümlede 'put up' fiilinin nesnesi eksik, dolayısıyla eksik olan bir isimdir ve boşluk 'which' ister. 'where' seçilirse vakfın ne diktiği hiç söylenmemiş olur — yer bildiren bir öncül tek başına 'where' gerektirmez. 'whose' ise kendisinden sonra bir isim bekler.",
-      "tip": "Yer bildiren bir öncül otomatik olarak 'where' almaz: yan cümlede özne ya da nesne eksikse 'which' kullanılır."
+      "tip": "Yer bildiren bir öncül otomatik olarak 'where' almaz: yan cümlede özne ya da nesne eksikse 'which' kullanılır.",
+      "optionNotes": {
+        "where": "Öncülün yer bildirmesi yetmez: 'put up' fiilinin nesnesi eksik. 'where' ancak yan cümle eksiksizken gelir.",
+        "whose": "Ardından sahip olunan bir isim bekler; burada arkasından yan cümlenin öznesi ('the foundation') geliyor.",
+        "when": "Zaman bildiren öncüller içindir; buradaki öncül bir bina."
+      }
     },
     {
       "id": "relative-clauses-t11",
@@ -706,7 +756,12 @@
       "options": ["what", "when", "where", "which"],
       "correctIndex": 1,
       "explanation": "Öncül 'the summer', yani bir zaman dilimi, ve yan cümle eksiksizdir; bu yüzden zaman zarfının yerini tutan 'when' gerekir. Baraj bir mekân gibi durduğu için 'where' cazip gelir, ama ilgi zamiri barajı değil, hemen önündeki yazı niteler. 'which' ise ancak 'the reservoir dried up' cümlesinde eksik bir öge olsaydı kullanılabilirdi.",
-      "tip": "İlgi zamiri, boşluğun hemen solundaki öncüle bağlanır; cümlenin başka bir yerindeki yer ya da zaman sözcüğüne değil."
+      "tip": "İlgi zamiri, boşluğun hemen solundaki öncüle bağlanır; cümlenin başka bir yerindeki yer ya da zaman sözcüğüne değil.",
+      "optionNotes": {
+        "what": "İlgi zamiri değildir, öncülünü kendi içinde taşır; burada öncül zaten yazılmış: 'the summer'.",
+        "where": "Barajı bir mekân gibi okuyor; oysa ilgi zamiri barajı değil, hemen önündeki 'the summer'ı niteler.",
+        "which": "Yan cümlede eksik bir öge olsaydı gelirdi; 'the reservoir dried up' öznesiyle birlikte tamamdır."
+      }
     },
     {
       "id": "relative-clauses-t12",
@@ -716,7 +771,12 @@
       "options": ["where", "what", "why", "when"],
       "correctIndex": 2,
       "explanation": "Öncül 'the real reason' ve yan cümle eksiksiz; sebep bildiren bir öncülün ilgi zarfı 'why'dır. 'when' cazip görünür çünkü paragrafta 'eleven days' ve 'last November' geçiyor — ama ilgi zarfı bu zaman ifadelerine değil, hemen önündeki 'reason' sözcüğüne bağlanır. 'where' de aynı hatayı yapıp seferleri bir güzergâh gibi okur.",
-      "tip": "'reason' öncülünden sonra sebep ilgi zarfı 'why' gelir; paragraftaki zaman ve yer ifadeleri değil, öncülün kendisi seçimi belirler."
+      "tip": "'reason' öncülünden sonra sebep ilgi zarfı 'why' gelir; paragraftaki zaman ve yer ifadeleri değil, öncülün kendisi seçimi belirler.",
+      "optionNotes": {
+        "where": "Seferlerin durmasını bir güzergâh gibi okuyor; oysa öncül 'the real reason', yani bir sebep.",
+        "what": "İlgi zamiri değildir ve önünde bir öncül istemez; 'the real reason' zaten öncül olarak yazılmış.",
+        "when": "Paragraftaki 'eleven days' ve 'last November' buraya çekiyor, ama ilgi zarfı hemen önündeki 'reason'a bağlanır."
+      }
     },
     {
       "id": "relative-clauses-t13",
@@ -726,7 +786,12 @@
       "options": ["for whom", "by whom", "for who", "for which"],
       "correctIndex": 0,
       "explanation": "Kadansı besteci, piyanist için yazıyor; anlam 'for' edatını gerektiriyor ve edattan sonra kişi için tek doğru biçim 'whom'dur. 'by whom' parçayı piyanistin yazdığı anlamına gelirdi, oysa yazan kişi bestecidir ('she wrote'). 'for who' ise hiçbir zaman kurulmaz: bir edattan sonra 'who' gelemez.",
-      "tip": "Edat öne alındığında ardından kişi için 'whom', cansız varlık için 'which' gelir; edatı ise fiilin anlamı seçer, alışkanlık değil."
+      "tip": "Edat öne alındığında ardından kişi için 'whom', cansız varlık için 'which' gelir; edatı ise fiilin anlamı seçer, alışkanlık değil.",
+      "optionNotes": {
+        "by whom": "Kadansı piyanistin yazdığı anlamına gelirdi; oysa yazan besteci — 'she wrote'. Edatı fiilin anlamı seçer.",
+        "for who": "Edat öne alındığında ardından 'who' gelemez; o konumdaki tek biçim 'whom'dur.",
+        "for which": "'which' insanları karşılamaz; buradaki öncül bir kişi: 'the one performer'."
+      }
     },
     {
       "id": "relative-clauses-t14",
@@ -736,7 +801,12 @@
       "options": ["of whom", "whose", "of which", "of it"],
       "correctIndex": 2,
       "explanation": "Yapı 'the purpose of the fund' ilişkisini ilgi cümlesine taşıyor: isim + 'of which'. 'whose' aynı sahipliği kurar ama sırası terstir — 'a fund whose purpose was never written down' doğru olurdu; boşluğun önünde 'the purpose' zaten yazıldığı için buraya sığmaz. 'of it' ise ilgi zamiri değildir ve iki bağımsız cümleyi yalnızca virgülle birbirine bağlar.",
-      "tip": "'isim + of which' ile 'whose + isim' aynı sahiplik ilişkisini kurar; hangisinin kullanılacağını öncülden sonra ismin yazılıp yazılmadığı belirler."
+      "tip": "'isim + of which' ile 'whose + isim' aynı sahiplik ilişkisini kurar; hangisinin kullanılacağını öncülden sonra ismin yazılıp yazılmadığı belirler.",
+      "optionNotes": {
+        "of whom": "İnsan öncüller içindir; burada öncül bir fon, yani cansız.",
+        "whose": "Aynı sahipliği kurar ama sırası terstir: 'a fund whose purpose was never written down'. Burada 'the purpose' boşluktan önce yazılmış.",
+        "of it": "İlgi zamiri değildir; iki bağımsız cümleyi yalnızca virgülle birbirine yapıştırır."
+      }
     },
     {
       "id": "relative-clauses-t15",
@@ -746,7 +816,12 @@
       "options": ["who", "whom", "which", "that"],
       "correctIndex": 1,
       "explanation": "Boşluk bir edatın ('with') hemen ardında ve öncül bir insan; bu konumda tek doğru biçim 'whom'dur. 'who' günlük İngilizcede edat cümlenin sonunda kaldığında duyulur ('who she had nothing in common with'), ama edat öne alındığında kullanılamaz. 'that' ise hiçbir edattan sonra gelmez, 'which' de insan için kullanılmaz.",
-      "tip": "Bir edat ilgi zamirinin önüne geçtiğinde ardından yalnızca 'whom' ya da 'which' gelebilir; 'who' ve 'that' bu konumda kullanılamaz."
+      "tip": "Bir edat ilgi zamirinin önüne geçtiğinde ardından yalnızca 'whom' ya da 'which' gelebilir; 'who' ve 'that' bu konumda kullanılamaz.",
+      "optionNotes": {
+        "who": "Edat yan cümlenin sonunda kalırsa duyulur ('who she had nothing in common with'), ama edat öne geçtiğinde kullanılamaz.",
+        "which": "Cansız öncüller içindir; burada öncül bir kişi: 'a history teacher'.",
+        "that": "Hiçbir edattan sonra gelmez; 'with that' biçiminde bir ilgi cümlesi kurulmaz."
+      }
     },
     {
       "id": "relative-clauses-t16",
@@ -756,7 +831,12 @@
       "options": ["which", "at which", "where", "that"],
       "correctIndex": 1,
       "explanation": "Düz cümle 'it is losing ice at that rate' biçimindedir, yani 'at' edatı zorunludur ve ilgi zamirinin önüne geçerek 'at which' olur. 'which' seçilirse edat büsbütün kaybolur ve öncülle yan cümle arasındaki ölçü ilişkisi kopar — Türkçede bu ilişki ekle taşındığı için edatı düşürmek çok kolaydır. 'where' ise bir yer bildirir; 'rate' ölçülen bir hızdır.",
-      "tip": "İlgi cümlesini kurmadan önce cümleyi düz yaz: öncül hangi edatla kullanılıyorsa o edat ilgi zamirinin önüne geçer ('at which', 'for which', 'from which')."
+      "tip": "İlgi cümlesini kurmadan önce cümleyi düz yaz: öncül hangi edatla kullanılıyorsa o edat ilgi zamirinin önüne geçer ('at which', 'for which', 'from which').",
+      "optionNotes": {
+        "which": "Edatı düşürür. Düz cümle 'it is losing ice at that rate' biçimindedir, yani 'at' zorunludur ve zamirin önüne geçer.",
+        "where": "Yer bildirir; 'rate' bir yer değil, ölçülen bir hızdır.",
+        "that": "Edattan sonra gelmez, üstelik cümlenin gerektirdiği 'at' edatını hiç taşımaz."
+      }
     },
     {
       "id": "relative-clauses-t17",
@@ -766,7 +846,12 @@
       "options": ["sending", "sent", "were sent", "had sent"],
       "correctIndex": 1,
       "explanation": "Belgeler gönderen değil, gönderilen taraftır; edilgen bir ilgi cümlesi kısaltıldığında geriye yalnızca fiilin üçüncü hâli ('sent') kalır. 'sending' etken okunur ve belgelerin bir şey gönderdiğini söyler. 'were sent' ise cümleye ikinci bir çekimli fiil ekler: asıl yüklem zaten 'were returned'dır, kısaltmada yardımcı fiil düşmek zorundadır.",
-      "tip": "Kısaltmada özne eylemi yapıyorsa '-ing', eylemden etkileniyorsa fiilin üçüncü hâli kullanılır; 'was/were' gibi yardımcı fiiller düşer."
+      "tip": "Kısaltmada özne eylemi yapıyorsa '-ing', eylemden etkileniyorsa fiilin üçüncü hâli kullanılır; 'was/were' gibi yardımcı fiiller düşer.",
+      "optionNotes": {
+        "sending": "Etken okunur, yani belgelerin bir şey gönderdiğini söyler; oysa belgeler gönderilen taraftır.",
+        "were sent": "Cümleye ikinci bir çekimli fiil ekler; asıl yüklem zaten 'were returned'. İndirgemede 'was/were' düşer.",
+        "had sent": "Hem etken hem çekimli: belgelerin bir şey göndermiş olduğunu söyler ve cümlede iki yüklem bırakır."
+      }
     },
     {
       "id": "relative-clauses-t18",
@@ -776,7 +861,12 @@
       "options": ["waited", "having waited", "were waiting", "waiting"],
       "correctIndex": 3,
       "explanation": "Aileler bekleyen taraftır, yani eylemi kendileri yapar; etken kısaltma '-ing' biçimini alır. 'waited' geçmiş zaman düşünülerek seçilir, oysa üçüncü hâl kısaltmada edilgen anlam verir ve ailelerin beklendiğini söylemiş olur. 'were waiting' ise cümleye ikinci bir çekimli fiil ekler; asıl yüklem 'had been there'dir.",
-      "tip": "Kısaltmayı zaman değil çatı belirler: olay geçmişte geçse bile eylemi yapan özne '-ing' ile kısaltılır."
+      "tip": "Kısaltmayı zaman değil çatı belirler: olay geçmişte geçse bile eylemi yapan özne '-ing' ile kısaltılır.",
+      "optionNotes": {
+        "waited": "Kısaltmada üçüncü hâl edilgen anlam taşır, oysa 'wait' nesne almayan bir fiildir; ailelerin 'beklenmesi' diye bir okuma kurulamaz.",
+        "having waited": "Ana eylemden önce bitmiş ayrı bir olayı anlatır; burada bekleme sürüyor, o sırada geçerli olan bir durum kısaltılıyor.",
+        "were waiting": "Cümleye ikinci bir çekimli fiil ekler; asıl yüklem 'had been there'. İndirgemede yardımcı fiil düşer."
+      }
     },
     {
       "id": "relative-clauses-t19",
@@ -786,7 +876,12 @@
       "options": ["employed", "employing", "was employing", "to employ"],
       "correctIndex": 1,
       "explanation": "Kısaltmayı çatı belirler: dokumacıları işe alan taraf şirkettir, bu yüzden etken '-ing' biçimi gelir. 'employed' seçilirse şirketin kendisinin işe alındığı okunur; bu fiil çoğunlukla edilgen duyulduğu için ('the weavers employed by the company') tuzak güçlüdür. 'was employing' ise cümleye ikinci bir çekimli fiil ekleyerek yapıyı bozar.",
-      "tip": "Kısaltmada soruyu tersten sor: öncül eylemi yapıyor mu ('-ing'), yoksa eylem ona mı yapılıyor (üçüncü hâl)?"
+      "tip": "Kısaltmada soruyu tersten sor: öncül eylemi yapıyor mu ('-ing'), yoksa eylem ona mı yapılıyor (üçüncü hâl)?",
+      "optionNotes": {
+        "employed": "Ortaç olarak edilgen okunur: şirketin kendisinin işe alındığı anlamına gelir. Oysa işe alan taraf şirkettir.",
+        "was employing": "Cümleye ikinci bir çekimli fiil ekler; asıl yüklem 'were put up'. İndirgemede yardımcı fiil düşer.",
+        "to employ": "Amaç ya da niyet bildirir; burada anlatılan, sokaklar yapılırken şirketin süregelen durumudur."
+      }
     },
     {
       "id": "relative-clauses-t20",
@@ -796,7 +891,12 @@
       "options": ["rising", "raising", "raised", "was raised"],
       "correctIndex": 2,
       "explanation": "Parayı toplayan koro, toplanan ise paradır; bu edilgen ilişki fiilin üçüncü hâlini ('raised') gerektirir. 'raising' etken okunur ve paranın bir şeyi yükselttiğini söyler. 'rising' ise geçişsiz bir fiildir: kendiliğinden yükselen şeyler için kullanılır, nesne almaz ve edilgen kurulamaz, dolayısıyla bağış toplamayı anlatamaz.",
-      "tip": "'raise' bir nesneyi yükseltir ya da toplar ve edilgen olabilir; 'rise' geçişsizdir, bu yüzden edilgen kısaltmada yer alamaz."
+      "tip": "'raise' bir nesneyi yükseltir ya da toplar ve edilgen olabilir; 'rise' geçişsizdir, bu yüzden edilgen kısaltmada yer alamaz.",
+      "optionNotes": {
+        "rising": "Geçişsiz bir fiildir: kendiliğinden yükselen şeyler için kullanılır, nesne almaz, bağış toplamayı anlatamaz.",
+        "raising": "Etken okunur ve paranın bir şey topladığını söyler; oysa toplanan paranın kendisidir.",
+        "was raised": "Çatı doğru ama çekimli: cümleye ikinci bir yüklem ekler. Asıl yüklem 'paid', kısaltmada 'was' düşer."
+      }
     },
     {
       "id": "relative-clauses-t21",
@@ -806,7 +906,12 @@
       "options": ["some of them", "some of which", "some of whom", "some of what"],
       "correctIndex": 1,
       "explanation": "Virgülden sonra yeni bir cümle değil, aynı cümleye bağlı bir ilgi cümlesi kuruluyor; niceleyiciden sonra cansız öncül için 'of which' gelir. 'some of them' bir ilgi zamiri içermez ve iki bağımsız cümleyi yalnızca virgülle birleştirir — Türkçede doğal olan bu bağlantı İngilizcede hatalıdır. 'some of whom' ise insanlar için kullanılır, oysa öncül tohum örnekleridir.",
-      "tip": "Virgülden sonra 'some/many/none of' kalıbı 'which' (cansız) ya da 'whom' (kişi) ile sürer; 'of them' bir cümleyi ötekine bağlayamaz."
+      "tip": "Virgülden sonra 'some/many/none of' kalıbı 'which' (cansız) ya da 'whom' (kişi) ile sürer; 'of them' bir cümleyi ötekine bağlayamaz.",
+      "optionNotes": {
+        "some of them": "İlgi zamiri içermez: virgülden sonra bağımsız yeni bir cümle başlatır ve iki cümle bağlaçsız kalır.",
+        "some of whom": "İnsan öncüller içindir; burada öncül tohum örnekleri.",
+        "some of what": "'what' öncülünü kendi içinde taşır; burada öncül zaten yazılmış: 'nine thousand samples'."
+      }
     },
     {
       "id": "relative-clauses-t22",
@@ -816,7 +921,12 @@
       "options": ["both of which", "both of who", "both of whom", "both of them"],
       "correctIndex": 2,
       "explanation": "Öncül iki kişidir ('two sisters'), bu yüzden niceleyiciden sonra kişi biçimi gelir ve yapı 'both of whom' olur. 'both of who' hiçbir zaman kurulmaz: 'of' bir edattır ve edattan sonra 'who' gelemez. 'both of them' ise ilgi zamiri değildir; virgülden sonra bağımsız yeni bir cümle başlatır ve iki cümle bağlaçsız kalır.",
-      "tip": "'of' bir edattır: ardından kişi için her zaman 'whom', cansız varlık için 'which' gelir — 'of who' ve 'of that' biçimleri yoktur."
+      "tip": "'of' bir edattır: ardından kişi için her zaman 'whom', cansız varlık için 'which' gelir — 'of who' ve 'of that' biçimleri yoktur.",
+      "optionNotes": {
+        "both of which": "'which' insanları karşılamaz; öncül iki kişi: 'two sisters'.",
+        "both of who": "'of' bir edattır ve edattan sonra 'who' gelemez; bu yapıda kişiler için tek biçim 'whom'dur.",
+        "both of them": "İlgi zamiri değildir: virgülden sonra bağımsız bir cümle başlatır ve iki cümle bağlaçsız kalır."
+      }
     },
     {
       "id": "relative-clauses-t23",
@@ -826,7 +936,12 @@
       "options": ["none of which", "neither of which", "none of whom", "none of them"],
       "correctIndex": 0,
       "explanation": "Ortada üç öneri var ve hiçbiri ayakta kalmamış; ikiden fazla öge için 'none' kullanılır. 'neither of which' yalnızca tam olarak iki seçenek varken doğrudur, bu yüzden 'three separate tram proposals' ile kurulamaz — sayıyı veren bilgi boşluğun hemen önünde, virgülden önce duruyor. 'none of them' ise ilgi cümlesi kurmaz; virgülden sonra öznesi olan yeni bir cümle başlatır.",
-      "tip": "'neither' tam olarak iki öge için, 'none' ikiden fazlası için kullanılır; ikisi de ilgi cümlesinde 'of which / of whom' ile sürer."
+      "tip": "'neither' tam olarak iki öge için, 'none' ikiden fazlası için kullanılır; ikisi de ilgi cümlesinde 'of which / of whom' ile sürer.",
+      "optionNotes": {
+        "neither of which": "'neither' yalnızca tam olarak iki öge içindir; burada üç öneri var, sayı boşluğun hemen önünde yazılı.",
+        "none of whom": "İnsan öncüller içindir; burada öncül üç tramvay önerisi.",
+        "none of them": "İlgi cümlesi kurmaz: virgülden sonra kendi öznesi olan yeni bir cümle başlatır."
+      }
     },
     {
       "id": "relative-clauses-t24",
@@ -836,7 +951,12 @@
       "options": ["all of which", "all of whose", "all of them", "all of whom"],
       "correctIndex": 3,
       "explanation": "Öncül insanlardır ('nine people'), bu yüzden niceleyiciden sonra 'of whom' gelir. 'all of which' yalnızca cansız varlıklar için kullanılır ve kayıt olan kişileri karşılayamaz. 'all of them' ise virgülden sonra bağımsız bir cümle başlatır: Türkçede 'hepsi de parasını ödemişti' diye virgülle bağlanabilir, ama İngilizcede bu bağlantı için bir ilgi zamiri gerekir.",
-      "tip": "İki cümleyi bir niceleyiciyle bağlarken 'of them' değil 'of whom / of which' kullanılır; 'of them' ancak yeni cümle 'and' ile başlarsa doğru olur."
+      "tip": "İki cümleyi bir niceleyiciyle bağlarken 'of them' değil 'of whom / of which' kullanılır; 'of them' ancak yeni cümle 'and' ile başlarsa doğru olur.",
+      "optionNotes": {
+        "all of which": "Cansız öncüller içindir; burada kayıt olanlar insan: 'nine people'.",
+        "all of whose": "'whose' arkasına sahip olunan ismi ister ('all of whose fares'); burada arkasından çekimli fiil geliyor.",
+        "all of them": "İlgi zamiri değildir; virgülden sonra bağımsız bir cümle başlatır. 'and all of them' olsaydı doğru olurdu."
+      }
     }
   ]
 }

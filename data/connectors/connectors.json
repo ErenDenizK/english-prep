@@ -640,7 +640,12 @@
       "options": ["Moreover", "Similarly", "Even so", "By then"],
       "correctIndex": 0,
       "explanation": "İki cümle de aynı vincin farklı bir üstünlüğünü anlatıyor: önce hız, sonra yakıt. Aynı özne üstüne yeni bir bilgi eklendiği için ekleme bağlacı 'Moreover' gerekir. 'Similarly' benzerlik kurar, ama karşılaştırılacak ikinci bir vinç ya da ikinci bir liman yok; ikinci cümle yine aynı vinci anlatıyor. 'Even so' ise beklenmedik bir sonuç işaret ederdi, oysa iki cümle de aynı yöndedir.",
-      "tip": "Aynı özne hakkında yeni bir bilgi ekleniyorsa ekleme, başka bir özne aynı davranışı gösteriyorsa benzerlik bağlacı gerekir."
+      "tip": "Aynı özne hakkında yeni bir bilgi ekleniyorsa ekleme, başka bir özne aynı davranışı gösteriyorsa benzerlik bağlacı gerekir.",
+      "optionNotes": {
+        "Similarly": "Türkçedeki 'ayrıca' ile karışır: similarly başka bir öznenin aynı biçimde davrandığını söyler, oysa ikinci cümle yine aynı vinci anlatıyor.",
+        "Even so": "Ödün bildirir: ilk cümlenin beklettiğini boşa çıkaran bir bilgi ister. Burada iki cümle de aynı yönde, vincin iki ayrı üstünlüğü.",
+        "By then": "Zaman bağlacı; daha önce anılmış bir ana gönderme yapar. Metinde böyle bir an yok ve iki cümle arasında sıra değil ekleme ilişkisi var."
+      }
     },
     {
       "id": "connectors-t2",
@@ -649,7 +654,12 @@
       "options": ["Similarly", "Moreover", "Nevertheless", "In short"],
       "correctIndex": 0,
       "explanation": "İkinci cümle savın üstüne yeni bir şey koymuyor; ilk cümlede zaten kapanmış olan olguyu ikinci bir bölgede, 'aynı iki hafta' diyerek birebir yineliyor. Farklı özne artı aynı davranış olduğu için 'Similarly' doğrudur. 'Moreover' ikinci cümle zeytin hasadı hakkında ek bir nokta getirseydi uygun olurdu; burada ise ilk cümle kendi içinde tamamlanmış ve ikinci cümle yalnızca eşini gösteriyor. 'Nevertheless' karşıtlık ister, oysa iki cümle aynı yönde.",
-      "tip": "'Similarly' iki farklı özneyi aynı davranışta eşleştirir; tek bir özne üstüne bilgi yığmak için kullanılmaz."
+      "tip": "'Similarly' iki farklı özneyi aynı davranışta eşleştirir; tek bir özne üstüne bilgi yığmak için kullanılmaz.",
+      "optionNotes": {
+        "Moreover": "Ekleme bağlacıdır: aynı konuya yeni bir bilgi koyar. İkinci cümle yeni bir şey söylemiyor, başka bir bölgenin aynı kaymayı yaşadığını söylüyor.",
+        "Nevertheless": "Karşıtlık ister: ilk cümlenin beklettiği şeyin olmaması gerekirdi. İki cümle de aynı yönde, aynı iki haftalık kaymayı bildiriyor.",
+        "In short": "Özet bağlacıdır, sayılanları tek cümlede toplar. Burada toplanacak bir liste yok; ikinci cümle ikinci bir bölgeden paralel bir gözlem getiriyor."
+      }
     },
     {
       "id": "connectors-t3",
@@ -658,7 +668,12 @@
       "options": ["Likewise", "For instance", "Moreover", "Meanwhile"],
       "correctIndex": 0,
       "explanation": "İki ayrı işletme aynı eşikte aynı kararı veriyor; metindeki 'both operators' bu paralelliği açıkça kuruyor, bu yüzden benzerlik bağlacı 'Likewise' gerekir. 'For instance' yanlıştır: teleferik, feribot seferlerinin bir örneği değil, aynı kuralı uygulayan ayrı bir işletmedir. 'Moreover' ise feribotlar hakkında ikinci bir bilgi eklenseydi uygun olurdu.",
-      "tip": "Bir örnek, sözü edilen kümenin içinden gelir; ayrı bir öznenin aynı şeyi yapması örnekleme değil benzerliktir."
+      "tip": "Bir örnek, sözü edilen kümenin içinden gelir; ayrı bir öznenin aynı şeyi yapması örnekleme değil benzerliktir.",
+      "optionNotes": {
+        "For instance": "Örnek, sözü edilen kümenin içinden gelir. Teleferik feribot seferlerinden biri değil, aynı eşiği uygulayan ayrı bir işletme.",
+        "Moreover": "Aynı konuya yeni bilgi ekler. Burada özne değişiyor ve ikinci cümle feribotlar hakkında değil, başka bir taşıma hattı hakkında.",
+        "Meanwhile": "Aynı zaman aralığında yan yana süren iki olay ister. Ortak olan zaman değil, iki işletmenin aynı rüzgârda verdiği aynı karar."
+      }
     },
     {
       "id": "connectors-t4",
@@ -667,7 +682,12 @@
       "options": ["Moreover", "Likewise", "On the other hand", "Subsequently"],
       "correctIndex": 0,
       "explanation": "Her iki cümlenin de öznesi aynı eczane ('it') ve ikinci cümle onun hakkında ikinci bir üstünlük ekliyor; bu ekleme ilişkisini 'Moreover' kurar. 'Likewise' seçilseydi aynı şeyi yapan ikinci bir eczanenin anılması gerekirdi, oysa metin baştan sona tek bir eczaneden söz ediyor. 'On the other hand' ise bir sakınca sıralardı; burada iki cümle de aynı yönde ilerliyor.",
-      "tip": "'Moreover' bir savı ilerletir; ikinci cümlede yeni bir özne yoksa benzerlik bağlacı kullanılamaz."
+      "tip": "'Moreover' bir savı ilerletir; ikinci cümlede yeni bir özne yoksa benzerlik bağlacı kullanılamaz.",
+      "optionNotes": {
+        "Likewise": "İki ayrı öznenin aynı biçimde davrandığını söyler. Burada ikinci cümlenin öznesi de ('it') aynı eczane; karşılaştırılacak ikinci bir yer yok.",
+        "On the other hand": "Aynı şeyin öbür yüzünü, bir sakıncasını açar. İkinci cümle sakınca değil, aynı eczaneye ait ikinci bir üstünlük.",
+        "Subsequently": "Sıra bildirir, bir olaydan sonra geleni verir. İki cümle de aynı anda geçerli olan iki özelliği anlatıyor; art arda gelen olay yok."
+      }
     },
     {
       "id": "connectors-t5",
@@ -676,7 +696,12 @@
       "options": ["Nevertheless", "On the other hand", "Therefore", "Meanwhile"],
       "correctIndex": 0,
       "explanation": "İlk cümle yola çıkmamak için iki gerekçe veriyor, ikinci cümle ise beklenenin tersine yola çıkıldığını söylüyor. Beklentiyi boşa çıkaran bu ilişki 'Nevertheless' ile kurulur. 'On the other hand' iki ayrı özellik tartıya konduğunda kullanılır; burada tartılan bir şey değil, alınmış bir karar var. 'Therefore' ise sebep-sonuç kurardı, oysa kötü hava yola çıkmanın sebebi değil engelidir.",
-      "tip": "Engele rağmen yapılan bir iş anlatılıyorsa ödün (concession) bağlacı gerekir; sebep-sonuç bağlacı burada anlamı ters çevirir."
+      "tip": "Engele rağmen yapılan bir iş anlatılıyorsa ödün (concession) bağlacı gerekir; sebep-sonuç bağlacı burada anlamı ters çevirir.",
+      "optionNotes": {
+        "On the other hand": "Aynı konunun iki yüzünü tartar ve iki taraf da doğru kalır. Burada tartılan bir şey değil, engellere karşın alınmış bir karar var.",
+        "Therefore": "Sonuç bildirir. Kötü hava ile hastalık yola çıkmanın sebebi değil, engelidir; sonuç bağlacı anlamı ters çevirir.",
+        "Meanwhile": "İki olayın aynı süre içinde yan yana yürümesini ister. İkinci cümle eşzamanlı başka bir olay değil, ilkine rağmen yapılan iştir."
+      }
     },
     {
       "id": "connectors-t6",
@@ -685,7 +710,12 @@
       "options": ["On the other hand", "Nevertheless", "Likewise", "As a result"],
       "correctIndex": 0,
       "explanation": "Paragraf aynı seçeneğin önce bir artısını, sonra bir eksisini sıralıyor; iki yönü tartan bu ilişkiyi 'On the other hand' kurar. 'Nevertheless' bir engele rağmen yapılan bir şeyi bildirir, oysa burada henüz verilmiş bir karar yok ve koku kısa yol süresine rağmen ortaya çıkan bir şey de değil. 'As a result' ise kokuyu kısa yolun sonucu göstererek anlamsız bir neden bağı kurardı.",
-      "tip": "Bir seçeneğin iki yüzü tartılıyorsa karşıtlık, beklenen sonuç gerçekleşmiyorsa ödün bağlacı gerekir."
+      "tip": "Bir seçeneğin iki yüzü tartılıyorsa karşıtlık, beklenen sonuç gerçekleşmiyorsa ödün bağlacı gerekir.",
+      "optionNotes": {
+        "Nevertheless": "Bir engele karşın gerçekleşen bir şey ister. Burada verilmiş bir karar yok ve koku kısa yolun beklettiği bir şeyi de boşa çıkarmıyor.",
+        "Likewise": "Farklı bir öznenin aynı biçimde davranmasını ister. İkinci cümle aynı daireyi anlatıyor, üstelik ilkinin tersi yönde.",
+        "As a result": "Sonuç kurar. Koku, kısa yolun ya da biriken paranın sonucu değil; ondan bağımsız bir sakınca."
+      }
     },
     {
       "id": "connectors-t7",
@@ -694,7 +724,12 @@
       "options": ["However", "For instance", "In short", "Similarly"],
       "correctIndex": 0,
       "explanation": "İlk cümle bir beklenti kuruyor (kolay bir yürüyüş), ikinci cümle bu beklentiyi bozuyor; seçenekler içinde bu ters ilişkiyi kurabilen tek bağlaç 'However'. 'For instance' yanlıştır: kapalı bölüm, kolay bir yürüyüşün örneği değil, onu yalanlayan bir bilgidir. 'In short' ise ilk cümleyi özetlerdi, oysa ikinci cümle yeni ve ters bir olgu getiriyor.",
-      "tip": "Yeni cümle önceki cümlenin kurduğu beklentiyi bozuyorsa karşıtlık bağlacı gerekir; örnek ya da özet bağlacı bu işi göremez."
+      "tip": "Yeni cümle önceki cümlenin kurduğu beklentiyi bozuyorsa karşıtlık bağlacı gerekir; örnek ya da özet bağlacı bu işi göremez.",
+      "optionNotes": {
+        "For instance": "Örnek, önceki cümlenin söylediğini doğrulayan bir durum gösterir. Kapalı bölüm o iddianın örneği değil, onu bozan bir bilgi.",
+        "In short": "Söylenenleri kısaltıp toplar, yeni bilgi eklemez. İkinci cümle rehberlerde geçmeyen, üstelik ters yönde yeni bir olgu getiriyor.",
+        "Similarly": "İkinci bir öznenin aynı biçimde davranmasını ister. Burada tek bir patika var ve ikinci cümle ilkiyle aynı yönde değil."
+      }
     },
     {
       "id": "connectors-t8",
@@ -703,7 +738,12 @@
       "options": ["whereas", "however", "nevertheless", "on the other hand"],
       "correctIndex": 0,
       "explanation": "Dört seçenek de karşıtlık bildiriyor, ama bu boşluk iki cümleciği tek bir cümlede virgülle birleştiriyor; bunu yalnızca bağlaç olan 'whereas' yapabilir. 'however' bir zarftır ve ancak noktadan ya da noktalı virgülden sonra gelebilir, virgülle iki cümleciği bağlayamaz. Aynı sınırlama 'nevertheless' ve 'on the other hand' için de geçerlidir.",
-      "tip": "'However, nevertheless, on the other hand' zarftır ve nokta ya da noktalı virgül ister; iki cümleciği virgülle bağlamak için 'whereas' gibi bir bağlaç gerekir."
+      "tip": "'However, nevertheless, on the other hand' zarftır ve nokta ya da noktalı virgül ister; iki cümleciği virgülle bağlamak için 'whereas' gibi bir bağlaç gerekir.",
+      "optionNotes": {
+        "however": "İlişki doğru, sözcük türü yanlış: zarftır, kendi cümlesini başlatır. İki bağımsız cümleciği virgülle bağlamak için bağlaç gerekir.",
+        "nevertheless": "Bu da bir zarf: nokta ya da noktalı virgülden sonra gelir. Boşluk iki cümleciği tek bir cümlede birleştirdiği için giremez.",
+        "on the other hand": "Bu da bir zarf öbeğidir: iki cümleciği virgülle birleştiremez, önünde nokta ya da noktalı virgül olması gerekir."
+      }
     },
     {
       "id": "connectors-t9",
@@ -712,7 +752,12 @@
       "options": ["therefore", "meanwhile", "nevertheless", "for instance"],
       "correctIndex": 0,
       "explanation": "İkinci cümle, ilkinde anlatılan durumun doğurduğu sonucu bildiriyor: bariyer sınırına dayandığı için yeni bir pompa isteniyor. Bu sebep-sonuç ilişkisini 'therefore' kurar. 'nevertheless' beklenenin tersini gerektirirdi, oysa taşma riskinden sonra önlem istemek tam da beklenen davranıştır. 'meanwhile' ise iki eylemin aynı süre içinde birlikte yürümesini gerektirir.",
-      "tip": "Sonuç bağlacı cümle içinde yardımcı fiilden sonra da durabilir; kararı veren, boşluğun yeri değil iki cümle arasındaki ilişkidir."
+      "tip": "Sonuç bağlacı cümle içinde yardımcı fiilden sonra da durabilir; kararı veren, boşluğun yeri değil iki cümle arasındaki ilişkidir.",
+      "optionNotes": {
+        "meanwhile": "İki eylemin aynı zaman aralığında birlikte yürümesini ister. İstek, taşma riskinin ardından ve onun yüzünden geliyor.",
+        "nevertheless": "Beklenenin tersini bildirir. Sınırına dayanmış bir bariyerden sonra daha büyük bir pompa istemek tam da beklenen davranıştır.",
+        "for instance": "Örnekleme yapar, tanımlanmış bir kümenin üyesini verir. Liman başkanının isteği bir örnek değil, anlatılan durumun sonucu."
+      }
     },
     {
       "id": "connectors-t10",
@@ -721,7 +766,12 @@
       "options": ["so that", "in order to", "because", "thus"],
       "correctIndex": 0,
       "explanation": "Boşluktan sonra kendi öznesi ve yüklemi olan bir cümlecik geliyor ('the children could catch'), bu yüzden amaç 'so that' ile kurulur. 'in order to' bu boşlukta olamaz: ardından özne değil yalın bir fiil gelmelidir. 'because' ise amacı sebebe çevirir; otobüsü yakalayabilmeleri dersin öne alınmasının sebebi değil hedefidir, Türkçede iki ilişkiyi de '-için' karşıladığı için bu karışır. 'thus' hem sonuç bildirir hem de virgülsüz bir yerde iki cümleciği bağlayamaz.",
-      "tip": "Amaç cümleciğinin kendi öznesi varsa 'so that + özne + could/can', özne yoksa 'in order to + yalın fiil' gelir."
+      "tip": "Amaç cümleciğinin kendi öznesi varsa 'so that + özne + could/can', özne yoksa 'in order to + yalın fiil' gelir.",
+      "optionNotes": {
+        "in order to": "Aynı amaç ilişkisini kurar ama ardına yalın fiil ister. Boşluktan sonra kendi öznesi olan bir cümlecik var: 'the children could catch'.",
+        "because": "Amacı sebebe çevirir. Otobüsü yakalayabilmeleri derslerin öne alınmasının sebebi değil, hedefi; Türkçede ikisini de '-için' karşılar.",
+        "thus": "Sonuç bildirir, amaç değil: otobüse yetişmek dersin doğurduğu bir sonuç olarak değil, hedeflediği durum olarak veriliyor."
+      }
     },
     {
       "id": "connectors-t11",
@@ -730,7 +780,12 @@
       "options": ["in order to", "so that", "for", "because of"],
       "correctIndex": 0,
       "explanation": "Boşluktan sonra öznesiz, yalın bir fiil var ('have'), dolayısıyla amaç 'in order to' ile kurulur. 'so that' ancak ardından bir özne gelseydi doğru olurdu. 'for' Türkçedeki '-mek için' kalıbının doğrudan çevirisidir, ama İngilizcede 'for' bir fiilin yalın hâlini alamaz; 'because of' ise amaç değil sebep bildirir ve ardına isim ister.",
-      "tip": "Amaç bildirmek için 'for + fiil' kurulamaz: öznesiz yapıda 'in order to', özneli yapıda 'so that' kullanılır."
+      "tip": "Amaç bildirmek için 'for + fiil' kurulamaz: öznesiz yapıda 'in order to', özneli yapıda 'so that' kullanılır.",
+      "optionNotes": {
+        "so that": "Aynı amacı kurar ama ardına özneli bir cümlecik ister. Boşluktan sonra doğrudan yalın fiil geliyor: 'have the first trays cooling'.",
+        "for": "'-mek için' diye ezberlenir, ama 'for' ardına yalın fiil alamaz; boşluktan hemen sonra 'have' var.",
+        "because of": "Amaç değil sebep bildirir ve ardına isim ister, fiil değil: erken başlamanın hedefi anlatılıyor, sebebi değil."
+      }
     },
     {
       "id": "connectors-t12",
@@ -739,7 +794,12 @@
       "options": ["so", "so that", "because", "whereas"],
       "correctIndex": 0,
       "explanation": "İkinci cümlecik, seferlerin kaldırılmasının istenmeyen sonucudur; sonucu aynı cümle içinde bağlayan 'so' gerekir. 'so that' bunu amaca çevirir ve saçma bir anlam üretir, çünkü kimse işçiler yürüsün diye otobüsleri kaldırmaz; Türkçedeki 'böylece' hem sonucu hem amacı karşıladığı için bu tuzağa düşülür. 'because' ise nedeni ve sonucu ters çevirir.",
-      "tip": "'so' gerçekleşen sonucu, 'so that' amaçlanan sonucu bildirir; sonuç kasıtsızsa 'so that' kullanılamaz."
+      "tip": "'so' gerçekleşen sonucu, 'so that' amaçlanan sonucu bildirir; sonuç kasıtsızsa 'so that' kullanılamaz.",
+      "optionNotes": {
+        "so that": "Sonucu amaca çevirir: kimse işçiler yürüsün diye sefer kaldırmaz. Türkçedeki 'böylece' hem sonucu hem amacı karşıladığı için karışır.",
+        "because": "Sebep ile sonucu ters çevirir: yürümek zorunda kalmak seferlerin kaldırılmasının sebebi değil, sonucudur.",
+        "whereas": "Karşıtlık bağlacıdır, iki durumu karşı karşıya koyar. İkinci cümlecik ilkine karşı çıkmıyor, ondan çıkanı anlatıyor."
+      }
     },
     {
       "id": "connectors-t13",
@@ -748,7 +808,12 @@
       "options": ["For instance", "Namely", "In other words", "Even so"],
       "correctIndex": 0,
       "explanation": "İlk cümle çok sayıda iş olduğunu söylüyor ('almost every object'), ikinci cümle bunlardan yalnızca birini anlatıyor; yani örneklendiriyor ve 'For instance' gerekir. 'Namely' kastedilen şeyin tamamını belirtir, oysa burada tek bir iş değil bir işler kümesi var. 'In other words' ise ilk cümleyi başka sözcüklerle yinelerdi; ikinci cümle yeni bir bilgi veriyor.",
-      "tip": "'Namely' kümenin tamamını belirtir, örnekleme bağlacı içinden birini verir; küme birden çoksa 'namely' olamaz."
+      "tip": "'Namely' kümenin tamamını belirtir, örnekleme bağlacı içinden birini verir; küme birden çoksa 'namely' olamaz.",
+      "optionNotes": {
+        "Namely": "Belirsiz bırakılan şeyin tamamını sayar ve listeyi kapatır. 'Almost every object' çok sayıda iş demek; anlatılan beşik onlardan yalnızca biri.",
+        "In other words": "Aynı bilgiyi başka sözcüklerle yineler. İkinci cümle beşik hakkında yeni ve özel bir bilgi veriyor, ilk cümlenin sade hâli değil.",
+        "Even so": "Ödün bildirir: ilk cümleye karşın olan bir şey ister. İkinci cümle ilkine karşı çıkmıyor, onu örnekliyor."
+      }
     },
     {
       "id": "connectors-t14",
@@ -757,7 +822,12 @@
       "options": ["namely", "for instance", "above all", "by contrast"],
       "correctIndex": 0,
       "explanation": "Metin tek bir koşuldan söz ediyor ve boşluktan sonra o koşulun ne olduğu eksiksiz veriliyor; bu belirtme ilişkisini 'namely' kurar. 'for instance' seçilirse koşulun birçok örneğinden biri verilmiş olur, oysa 'only one ... condition' böyle bir çokluğa izin vermiyor. 'above all' ise sıralanmış birkaç şeyden en önemlisini öne çıkarırdı; ortada sıralanan bir liste yok.",
-      "tip": "Belirtilen şey tek ve eksiksizse 'namely', birçok olasılıktan yalnızca biri veriliyorsa örnekleme bağlacı kullanılır."
+      "tip": "Belirtilen şey tek ve eksiksizse 'namely', birçok olasılıktan yalnızca biri veriliyorsa örnekleme bağlacı kullanılır.",
+      "optionNotes": {
+        "for instance": "Verileni birçok olasılıktan biri yapar, sonuna 'and others' eklenebilir. Oysa metin tek bir koşuldan söz ediyor: 'only one ... condition'.",
+        "above all": "Sıralanmış maddelerden en önemlisini öne çıkarır. Ortada sıralanan bir liste yok; boşluktan sonrası tek koşulun kendisi.",
+        "by contrast": "İki şeyi karşı karşıya koyar. Boşluktan sonra gelen, koşulun karşıtı değil tam karşılığı."
+      }
     },
     {
       "id": "connectors-t15",
@@ -766,7 +836,12 @@
       "options": ["In other words", "For instance", "Similarly", "Subsequently"],
       "correctIndex": 0,
       "explanation": "İkinci cümle yeni bir olgu eklemiyor; ilk cümledeki resmî ifadeyi ('indeterminate duration') gündelik dile çeviriyor. Aynı içeriğin yeniden söylenmesi 'In other words' ile bağlanır. 'For instance' yanlıştır: ikinci cümle duyurunun bir örneği değil, aynı bilginin sade hâlidir. 'Subsequently' ise iki olay arasında sıra kurardı, oysa ortada tek bir durum var.",
-      "tip": "Aynı bilgi başka sözcüklerle yineleniyorsa açıklama, kümeden yeni bir üye veriliyorsa örnekleme bağlacı gerekir."
+      "tip": "Aynı bilgi başka sözcüklerle yineleniyorsa açıklama, kümeden yeni bir üye veriliyorsa örnekleme bağlacı gerekir.",
+      "optionNotes": {
+        "For instance": "Birçok durumdan birini örnek verir. İkinci cümle yeni bir durum değil, duyurudaki resmî ifadenin gündelik karşılığı.",
+        "Similarly": "İkinci bir öznenin aynı biçimde davranmasını ister. Burada tek bir duyuru var ve ikinci cümle onu yeniden söylüyor.",
+        "Subsequently": "İki olay arasında sıra kurar. Ortada art arda gelen iki olay değil, tek bir durumun iki ayrı anlatımı var."
+      }
     },
     {
       "id": "connectors-t16",
@@ -775,7 +850,12 @@
       "options": ["for instance", "in other words", "by contrast", "above all"],
       "correctIndex": 0,
       "explanation": "İlk cümle bir küme tanımlıyor ('a dozen devices'), ikinci cümle bu kümeden tek bir aygıtı ayrıntılandırıyor; araya giren bağlaç örnekleme yapmalı, yani 'for instance' olmalıdır. 'in other words' seçilseydi ikinci cümlenin ilkini başka sözcüklerle yinelemesi gerekirdi, oysa burada yeni ve özel bir bilgi veriliyor. 'by contrast' ise karşılaştırılacak ikinci bir aygıt isterdi.",
-      "tip": "İki virgül arasına giren bağlaç da cümle başındaki gibi okunur: küme-üye ilişkisi varsa örnekleme bağlacı gelir."
+      "tip": "İki virgül arasına giren bağlaç da cümle başındaki gibi okunur: küme-üye ilişkisi varsa örnekleme bağlacı gelir.",
+      "optionNotes": {
+        "in other words": "İlk cümleyi başka sözcüklerle yinelemesi gerekirdi. Oysa buhar dümen düzeneği hakkında yeni ve özel bir bilgi veriliyor.",
+        "by contrast": "Karşılaştırılacak ikinci bir aygıt ister. Anılan düzenek, ilk cümledeki kümenin karşıtı değil, içinden bir üyesi.",
+        "above all": "Sayılanlardan birini en önemlisi diye ayırır. Metin bu düzeneği önemine göre değil, kümenin bir örneği olarak veriyor."
+      }
     },
     {
       "id": "connectors-t17",
@@ -784,7 +864,12 @@
       "options": ["Meanwhile", "Subsequently", "By then", "In short"],
       "correctIndex": 0,
       "explanation": "İki eylem aynı perşembe öğleden sonrasını paylaşıyor: ameliyat sürerken kimse masadan kalkamıyor ve gönüllüler o sırada zaten yola çıkmış durumda. Bu eşzamanlılığı 'Meanwhile' kurar. 'Subsequently' aramayı ameliyattan sonraya atardı, oysa 'already driving' arama işinin ameliyat sürerken sürdüğünü söylüyor. 'By then' daha önce anılmış belirli bir ana gönderme yapar; burada öyle bir an verilmemiş.",
-      "tip": "'Meanwhile' iki olayı aynı zaman diliminde yan yana koyar; sıra bildirmek için kullanılmaz."
+      "tip": "'Meanwhile' iki olayı aynı zaman diliminde yan yana koyar; sıra bildirmek için kullanılmaz.",
+      "optionNotes": {
+        "Subsequently": "Aramayı ameliyattan sonraya atar. Oysa 'already driving' aramanın ameliyat sürerken de devam ettiğini söylüyor.",
+        "By then": "Daha önce anılmış belirli bir ana gönderme yapar ve o ana kadar bitmiş olanı bildirir. Metinde böyle bir an yok, arama da sürüyor.",
+        "In short": "Kendinden öncekini tek cümlede toplar. İkinci cümle bir özet değil, aynı saatlerde başka yerde olan yeni bir olay."
+      }
     },
     {
       "id": "connectors-t18",
@@ -793,7 +878,12 @@
       "options": ["Subsequently", "Meanwhile", "By then", "Above all"],
       "correctIndex": 0,
       "explanation": "Sonar taraması ilk ölçümü düzeltiyor ve bu yüzden eski kayıtlar yeniden yazılıyor; demek ki dalışlardan sonra yapılmış. Sıra bildiren 'Subsequently' gerekir. 'Meanwhile' taramanın dalışlarla aynı sırada sürdüğünü söylerdi; o zaman kulübün iki kez yanlış derinlikle dalması açıklanamazdı. 'By then' ise yeni bir olayı değil, o ana kadar çoktan geçerli olan bir durumu bildirir.",
-      "tip": "'Subsequently' sıraya yeni bir olay ekler; 'by then' o ana gelindiğinde çoktan geçerli olan durumu bildirir."
+      "tip": "'Subsequently' sıraya yeni bir olay ekler; 'by then' o ana gelindiğinde çoktan geçerli olan durumu bildirir.",
+      "optionNotes": {
+        "Meanwhile": "Taramanın dalışlarla aynı sırada sürdüğünü söylerdi; o zaman kulübün iki kez yanlış derinlikle dalması açıklanamazdı.",
+        "By then": "Yeni bir olay eklemez; anılan bir ana gelindiğinde çoktan geçerli olan durumu bildirir. Sonar taraması ise olayın kendisi.",
+        "Above all": "Sayılanlardan en önemlisini öne çıkarır. İki cümle arasındaki ilişki önem değil, zaman sırası."
+      }
     },
     {
       "id": "connectors-t19",
@@ -802,7 +892,12 @@
       "options": ["by then", "until then", "meanwhile", "subsequently"],
       "correctIndex": 0,
       "explanation": "'Eleven' önceden anılmış bir zaman noktası ve cümle o noktaya gelindiğinde durumun ne olduğunu bildiriyor: arama alanı çoktan yanlış yere kaymış. Bunu 'by then' karşılar. 'until then' Türkçede aynı sözlerle ('o zamana kadar') karşılansa da o ana kadar süren bir durumu anlatır ve burada anlamı bozar. 'meanwhile' ise eşzamanlı ikinci bir eylem isterdi.",
-      "tip": "'By then' o ana gelindiğinde geçerli olan durumu, 'until then' o ana kadar süregelen durumu bildirir."
+      "tip": "'By then' o ana gelindiğinde geçerli olan durumu, 'until then' o ana kadar süregelen durumu bildirir.",
+      "optionNotes": {
+        "until then": "Türkçede ikisi de 'o zamana kadar' diye karşılanır, ama bu, o ana kadar süregelen durumu anlatır. Cümle o ana gelindiğindeki durumu bildiriyor.",
+        "meanwhile": "Eşzamanlı ikinci bir eylem ister. İkinci bölüm yeni bir eylem değil, saat on birde çoktan geçerli olan durumu bildiriyor.",
+        "subsequently": "Sıradaki yeni bir olayı bildirir. Burada anlatılan, anılan ana gelindiğinde çoktan oluşmuş bir durum."
+      }
     },
     {
       "id": "connectors-t20",
@@ -811,7 +906,12 @@
       "options": ["meanwhile", "by then", "subsequently", "for instance"],
       "correctIndex": 0,
       "explanation": "Baskı durmuşken ciltçiler aynı süre boyunca çalışmayı sürdürüyor; iki durum üst üste bindiği için 'meanwhile' gerekir. 'by then' dördü on geçe itibarıyla çoktan tamamlanmış bir durumu bildirirdi, oysa dikiş işi o saatten sonra da sürüyor. 'subsequently' ise ciltçilerin ancak makineler durduktan sonra başladığını söylerdi; metin böyle bir sıra kurmuyor.",
-      "tip": "Bir yerde iş dururken başka yerde sürenleri anlatmak için 'meanwhile' kullanılır; iki virgül arasında da aynı işi görür."
+      "tip": "Bir yerde iş dururken başka yerde sürenleri anlatmak için 'meanwhile' kullanılır; iki virgül arasında da aynı işi görür.",
+      "optionNotes": {
+        "by then": "Dördü on geçe itibarıyla çoktan tamamlanmış bir durumu bildirirdi. Oysa dikiş işi o saatten sonra da sürüyor.",
+        "subsequently": "Ciltçilerin ancak makineler durduktan sonra başladığını söylerdi. 'Carried on' işin zaten sürmekte olduğunu söylüyor.",
+        "for instance": "Kümenin bir üyesini örnek verir. Ciltçiler duran makinelerin bir örneği değil, aynı sırada çalışmayı sürdüren ayrı bir bölüm."
+      }
     },
     {
       "id": "connectors-t21",
@@ -820,7 +920,12 @@
       "options": ["Above all", "In short", "Similarly", "By then"],
       "correctIndex": 0,
       "explanation": "Cümle, sıralanan görevlere bir yenisini ekliyor ve onu en önemlisi olarak öne çıkarıyor; bu vurguyu 'Above all' kurar. 'In short' önceki listeyi tek cümlede toplardı, oysa buradaki cümle listeyi özetlemiyor, ona en ağır maddeyi ekliyor. 'Similarly' ise başka bir mesleğin aynı şeyi yaptığını bildirirdi; ortada ikinci bir meslek yok.",
-      "tip": "Sıralanan maddelerden biri en önemlisi diye öne çıkarılıyorsa vurgu bağlacı gerekir; özet bağlacı listeye yeni madde eklemez."
+      "tip": "Sıralanan maddelerden biri en önemlisi diye öne çıkarılıyorsa vurgu bağlacı gerekir; özet bağlacı listeye yeni madde eklemez.",
+      "optionNotes": {
+        "In short": "Sayılanları tek cümlede toplar ve yeni madde eklemez. Buradaki cümle listeyi özetlemiyor, ona en ağır maddeyi ekliyor.",
+        "Similarly": "Başka bir öznenin aynı şeyi yaptığını bildirir. Ortada ikinci bir meslek ya da ikinci bir görevli yok.",
+        "By then": "Anılan bir ana gelindiğinde geçerli olan durumu bildirir. Metinde ne belirli bir an ne de bir zaman sırası var."
+      }
     },
     {
       "id": "connectors-t22",
@@ -829,7 +934,12 @@
       "options": ["In short", "Above all", "For instance", "Meanwhile"],
       "correctIndex": 0,
       "explanation": "Son cümle dört ayrı adımı tek bir sonuca indiriyor ve yeni bir bilgi eklemiyor; bu sıkıştırmayı 'In short' yapar. 'Above all' adımlardan birini en önemlisi diye seçerdi, oysa cümle hiçbirini ayırmıyor, hepsini birden topluyor. 'For instance' ise sürecin bir örneğini verirdi; 'bir hafta' bir örnek değil, listenin toplamıdır.",
-      "tip": "'In short' kendinden önce söylenene yeni bir şey katmaz; yeni bir madde katıldığı anda yanlış bağlaçtır."
+      "tip": "'In short' kendinden önce söylenene yeni bir şey katmaz; yeni bir madde katıldığı anda yanlış bağlaçtır.",
+      "optionNotes": {
+        "Above all": "Adımlardan birini en önemlisi diye ayırır. Son cümle hiçbirini ayırmıyor, dördünü birden tek bir sonuca indiriyor.",
+        "For instance": "Sürecin örneklerinden birini verirdi. 'Bir hafta' bir örnek değil, sayılan bütün adımların toplamı.",
+        "Meanwhile": "Aynı zaman aralığında süren ikinci bir olay ister. Son cümle yeni bir olay değil, sayılanların özeti."
+      }
     },
     {
       "id": "connectors-t23",
@@ -838,7 +948,12 @@
       "options": ["Overall", "Above all", "In other words", "Subsequently"],
       "correctIndex": 0,
       "explanation": "Paragrafta hem olumsuz hem olumlu veriler var ve son cümle bunları birlikte tartıp bir hüküm veriyor; bu genel değerlendirmeyi 'Overall' kurar. 'Above all' verilerden birini en önemlisi ilan ederdi, oysa cümle hiçbirini seçmeden hepsinin toplamına bakıyor. 'In other words' ise aynı bilgiyi yeniden söylerdi; burada yeni bir yargı üretiliyor.",
-      "tip": "Artılar ve eksiler birlikte tartılıp bir hüküm veriliyorsa genel değerlendirme bağlacı kullanılır."
+      "tip": "Artılar ve eksiler birlikte tartılıp bir hüküm veriliyorsa genel değerlendirme bağlacı kullanılır.",
+      "optionNotes": {
+        "Above all": "Verilerden birini en önemlisi ilan ederdi. Son cümle hiçbirini seçmiyor, olumlu ve olumsuz verilerin toplamına bakıyor.",
+        "In other words": "Aynı bilgiyi başka sözcüklerle yinelerdi. Son cümle yeni bir yargı üretiyor: hat, beklenenden iyi durumda.",
+        "Subsequently": "Sıradaki bir olayı bildirir. Son cümle yeni bir olay değil, sayılanlar üstüne verilen bir hüküm."
+      }
     },
     {
       "id": "connectors-t24",
@@ -847,7 +962,12 @@
       "options": ["Above all", "First of all", "In short", "Meanwhile"],
       "correctIndex": 0,
       "explanation": "Sıralanan üç ölçütün ardından gelen soru, 'that question settled it' denerek en belirleyici olan diye işaretleniyor; bu bir sıra değil önem derecesidir, dolayısıyla 'Above all' gerekir. 'First of all' Türkçede aynı ifadeyle ('her şeyden önce') karşılansa da sırada ilk geleni bildirir, oysa bu soru diğer üç ölçütten sonra soruluyor. 'In short' ise üç ölçütü özetlerdi; burada dördüncü bir ölçüt ekleniyor.",
-      "tip": "'Above all' önem sırasında birinciyi, 'first of all' anlatım sırasında birinciyi gösterir."
+      "tip": "'Above all' önem sırasında birinciyi, 'first of all' anlatım sırasında birinciyi gösterir.",
+      "optionNotes": {
+        "First of all": "Türkçede ikisi de 'her şeyden önce' diye karşılanır, ama bu, anlatım sırasında ilk geleni bildirir. Bu soru üç ölçütten sonra soruluyor.",
+        "In short": "Sayılanları tek cümlede toplar. Buradaki cümle bir özet değil, kararı veren dördüncü bir ölçüt ekliyor.",
+        "Meanwhile": "Aynı zaman diliminde süren ikinci bir olay ister. Sorulan soru heyetin ölçütlerinden biri, başka yerde süren bir olay değil."
+      }
     }
   ]
 }

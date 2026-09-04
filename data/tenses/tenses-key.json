@@ -1,0 +1,277 @@
+{
+  "tenses-t1": {
+    "answer": "goes",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      3,
+      1,
+      2,
+      0
+    ]
+  },
+  "tenses-t2": {
+    "answer": "is working",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      2,
+      1,
+      0,
+      3
+    ]
+  },
+  "tenses-t3": {
+    "answer": "boils",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      2,
+      1,
+      0,
+      3
+    ]
+  },
+  "tenses-t4": {
+    "answer": "think",
+    "original": 1,
+    "shown": 3,
+    "order": [
+      3,
+      2,
+      0,
+      1
+    ]
+  },
+  "tenses-t5": {
+    "answer": "has done",
+    "original": 1,
+    "shown": 2,
+    "order": [
+      0,
+      2,
+      1,
+      3
+    ]
+  },
+  "tenses-t6": {
+    "answer": "met",
+    "original": 1,
+    "shown": 0,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "tenses-t7": {
+    "answer": "has broken",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      3,
+      1,
+      0,
+      2
+    ]
+  },
+  "tenses-t8": {
+    "answer": "has experienced",
+    "original": 1,
+    "shown": 2,
+    "order": [
+      3,
+      0,
+      1,
+      2
+    ]
+  },
+  "tenses-t9": {
+    "answer": "was waiting",
+    "original": 1,
+    "shown": 3,
+    "order": [
+      3,
+      2,
+      0,
+      1
+    ]
+  },
+  "tenses-t10": {
+    "answer": "had left",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "tenses-t11": {
+    "answer": "was cooking",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "tenses-t12": {
+    "answer": "had rebuilt",
+    "original": 1,
+    "shown": 2,
+    "order": [
+      3,
+      0,
+      1,
+      2
+    ]
+  },
+  "tenses-t13": {
+    "answer": "is going to rain",
+    "original": 1,
+    "shown": 3,
+    "order": [
+      2,
+      0,
+      3,
+      1
+    ]
+  },
+  "tenses-t14": {
+    "answer": "will take",
+    "original": 1,
+    "shown": 0,
+    "order": [
+      1,
+      0,
+      3,
+      2
+    ]
+  },
+  "tenses-t15": {
+    "answer": "leaves",
+    "original": 0,
+    "shown": 1,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "tenses-t16": {
+    "answer": "are having",
+    "original": 1,
+    "shown": 0,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "tenses-t17": {
+    "answer": "have been writing",
+    "original": 2,
+    "shown": 2,
+    "order": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "tenses-t18": {
+    "answer": "has read",
+    "original": 1,
+    "shown": 3,
+    "order": [
+      2,
+      0,
+      3,
+      1
+    ]
+  },
+  "tenses-t19": {
+    "answer": "had founded",
+    "original": 2,
+    "shown": 2,
+    "order": [
+      0,
+      3,
+      2,
+      1
+    ]
+  },
+  "tenses-t20": {
+    "answer": "been",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      3,
+      1,
+      0,
+      2
+    ]
+  },
+  "tenses-t25": {
+    "answer": "has gone",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      1,
+      3,
+      2
+    ]
+  },
+  "tenses-t21": {
+    "answer": "since",
+    "original": 1,
+    "shown": 0,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "tenses-t22": {
+    "answer": "already",
+    "original": 0,
+    "shown": 0,
+    "order": [
+      0,
+      3,
+      1,
+      2
+    ]
+  },
+  "tenses-t23": {
+    "answer": "already",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      2,
+      1,
+      3,
+      0
+    ]
+  },
+  "tenses-t24": {
+    "answer": "ago",
+    "original": 2,
+    "shown": 2,
+    "order": [
+      0,
+      1,
+      2,
+      3
+    ]
+  }
+}
