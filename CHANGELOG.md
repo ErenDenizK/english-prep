@@ -5,6 +5,49 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.31 — 2026-09-05
+
+**Vocabulary ships.** `Academic Verbs` and `Academic Nouns & Adjectives`
+— 48 questions and 12 lessons, taking the app to **241 questions and 60
+lessons across 10 topics** — and with them the two cloze blanks the paper
+tests that nothing here covered. There is no vocabulary *section* on this
+paper and the intros say so: two of the sample cloze's ten blanks, plus a
+vocabulary-in-context item in every reading text.
+
+They shipped because a pass that had not seen the key said they could.
+The `academic-nouns-adjectives` auditor blinded the corpus and answered
+all 24 items before opening the source: **24 of 24**, including the item
+two earlier rounds had each thought safe. Both drafts had been blocked on
+four categories between them; the second repair round closed all four,
+and the re-audit of that round found two defects the repair had
+introduced — an example sharing four words with an item's keyed sentence,
+and a gloss left saying the older thing after the row beneath it changed.
+Those are fixed, and the same auditor verified the fix rather than the
+log.
+
+**The intro giveaway rule now works on a vocabulary topic.** It exempted
+single words, because a quantifiers intro that may not print `many`
+teaches nothing — and every option in a vocabulary topic is one word, so
+the exemption turned the option arm off entirely and left the rule to the
+author's diligence. The author who noticed it said so in their report;
+that is not a system. Single words are still exempt from the stem arm
+everywhere, and never from the option arm in a `vocabulary` tier.
+
+**Three repair rounds on the three oldest topics.** `tenses` and `modals`
+are in; `passive-voice` follows. Together with the giveaway check growing
+to read `text` block prose — which found a question's paragraph, key and
+reasoning printed inside one — the corpus count of questions built on a
+sentence from their own lesson is **32 → 1**, and the ratchet is set to
+1.
+
+The independent re-audit of `tenses` came back with six blockers, none of
+them a mis-key, and it is the most useful document of the night: a
+deleted decision block orphaned the prose that pointed at it; a
+`since → Present Perfect` rule was fixed in one lesson and not in the
+other lesson carrying it; and one giveaway the repair hunted and fixed on
+one side of a contrast survived on the other. A second round is running
+against exactly those.
+
 ## v0.30 — 2026-09-04
 
 **The service worker had shipped one cache name since the day it was

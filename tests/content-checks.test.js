@@ -462,10 +462,12 @@ test("a shared frame without the key is not a giveaway", () => {
 });
 
 test("the corpus backlog only shrinks", async () => {
-  // A ratchet. 32 was the count on 2026-09-04, the day the check was
-  // written; a repair pass is working through them. Lower this number
-  // when it drops, and when it reaches zero the check becomes an error.
-  const CEILING = 32;
+  // A ratchet. It was 32 when the check was written on 2026-09-04, and 1
+  // by the end of the same night: three repair rounds cleared tenses,
+  // modals and passive-voice, and the check itself grew to read `text`
+  // block prose, which found one more. Lower this number when it drops,
+  // and when it reaches zero the check becomes an error.
+  const CEILING = 1;
   const { readFile } = await import("node:fs/promises");
   const manifest = JSON.parse(
     await readFile(new URL("../data/manifest.json", import.meta.url), "utf8")

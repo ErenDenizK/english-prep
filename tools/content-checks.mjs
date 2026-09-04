@@ -466,6 +466,12 @@ export function lessonSentences(lesson) {
     for (const field of ["wrong", "right"]) {
       if (isNonEmptyString(block[field])) out.push(block[field]);
     }
+    // And the prose. A `text` block is Turkish, but Turkish prose about
+    // English quotes English — and the re-audit of the tenses repair
+    // found a question's paragraph, key and reasoning printed inside one,
+    // silent because this function had never read `body`. A block type
+    // this function does not know about is a channel it does not close.
+    if (isNonEmptyString(block.body)) out.push(block.body);
   }
   return out;
 }

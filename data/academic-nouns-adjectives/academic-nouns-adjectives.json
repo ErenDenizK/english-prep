@@ -3,6 +3,31 @@
   "title": "Academic Nouns & Adjectives",
   "level": "B2-C1",
   "note": "The other half of the vocabulary the paper rewards: the nouns and adjectives an academic passage turns on. Written to docs/agents/kickoff-vocabulary.md.",
+  "intro": {
+    "title": "Akademik isim ve sıfat nedir?",
+    "what": "Akademik bir metnin üzerinde döndüğü isimler ve sıfatlar: bir bulgunun ne kadar sağlam olduğunu, bir kuralın kimi bağladığını, bir farkın sayılacak kadar büyük olup olmadığını adıyla söyleyen sözcükler.\n\nTürkçede bu ayrımları çoğu zaman genel bir sözcükle, yanına eklenen bir belirteçle yaparsın — **oldukça belirsiz**, **çok önemli**. İngilizce farkı sözcüğün içine koyar: aynı Türkçe karşılığa çıkan dört ayrı sözcük vardır ve hangisinin doğru olduğunu paragraf söyler.",
+    "examples": [
+      { "en": "The wording of the clause is ambiguous.", "note": "Belirsiz — iki ayrı biçimde okunabildiği için." },
+      { "en": "The wording of the clause is vague.", "note": "Yine belirsiz — bu kez hiçbir şeyi tam söylemediği için." }
+    ],
+    "partsHeading": "Doğru sözcüğü seçtiren üç şey",
+    "parts": [
+      { "name": "Küme", "gloss": "dört seçenek de aynı anlam komşuluğundan gelir ve Türkçede çoğu aynı karşılığa çıkar", "en": "ambiguous · vague · obscure" },
+      {
+        "name": "Seçici",
+        "gloss": "paragrafta üyelerden yalnız birini doğru kılan ayrıntı: bir sayı, bir karşıtlık, bir sonuç",
+        "en": "It can be read two ways."
+      },
+      {
+        "name": "Kalıp",
+        "gloss": "sözcüğün kendi dilbilgisi: isim sayılabilir mi, hangi edatı ister, sıfat ismin önüne mi düşer",
+        "en": "the prevalence of the fault · an ambiguous clause"
+      }
+    ],
+    "choice": "Türkçede genel sözcükle idare edip ayrıntıyı cümlenin geri kalanına bırakabilirsin. İngilizcede bu seçenek yok: cümleyi kurduğun anda kümenin bir üyesini seçmiş olursun. Komşusunu seçmek üslup hatası değildir — paragrafın söylediğinden başka bir şey söyler.",
+    "lessons": "Altı ders altı kümedir: büyüklük ve kapsam, kanıt ve çıkarım, kesinlik ve şüphe, önem ve öncelik, kısıt ve zorunluluk, tutum. Aralarında sıra yok; biri ötekinin önkoşulu değil, istediğin kümeden başlayabilirsin. Bir dersin içinde ise üyeler ancak birbirine karşı okunduğunda ayrışır, o yüzden bir kümeyi bölmemek gerekir.",
+    "exam": "Örnek kâğıdın on boşluklu boşluk doldurma bölümünde iki boşluk doğrudan kelime bilgisi soruyor; her okuma parçasında da bir soru bir sözcüğün o paragraftaki anlamını soruyor. Ayrı bir kelime bölümü yok."
+  },
   "lessons": [
     {
       "category": "Scale & Extent (extent / scope / magnitude / margin / threshold)",

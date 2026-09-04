@@ -678,7 +678,7 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
   // recognise. Silence about an unknown key is not neutrality.
   if (data.intro !== undefined) {
     validateIntro(report, file, data.intro);
-    checkIntroGiveaway(report, file, data.intro, data.questions ?? []);
+    checkIntroGiveaway(report, file, data.intro, data.questions ?? [], topic.tier);
   }
 
   for (const key of Object.keys(data)) {
@@ -819,7 +819,11 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
  * the Turkish explanations; requiring it not to would be a check that
  * fires on correct content.
  */
-function checkIntroGiveaway(report, file, intro, questions) {
+/**
+ * @param {string} [tier] - `vocabulary` turns off the single-word
+ *   exemption for the option arm; see below.
+ */
+function checkIntroGiveaway(report, file, intro, questions, tier) {
   const strings = [
     ...(intro.examples ?? []).map((item) => item.en),
     ...(intro.parts ?? []).map((part) => part.en),
@@ -832,10 +836,31 @@ function checkIntroGiveaway(report, file, intro, questions) {
       // Single words are the grammar being taught and cannot be avoided:
       // a quantifiers intro that may not print `many` teaches nothing.
       // A phrase is a different matter — that is a scenario, not a term.
-      if (piece.split(/\s+/).length < 2) {
+      //
+      // Except in a vocabulary topic, where a single word is not the name
+      // of a rule — it IS an item's answer. Every option in these two
+      // topics is one word, so the exemption turned the option arm off
+      // entirely and the rule was left to the author's diligence. The
+      // author who noticed said so; that is not a system.
+      //
+      // The stem arm keeps the exemption even there: a stem is a
+      // paragraph, and one word of it appearing in an intro is a
+      // coincidence rather than a giveaway.
+      const single = piece.split(/\s+/).length < 2;
+      if (single && tier !== "vocabulary") {
         continue;
       }
       for (const question of questions) {
+        if (single) {
+          // Option arm only.
+          if ((question.options ?? []).some((option) => option.toLowerCase() === piece.toLowerCase())) {
+            report.error(
+              `${file} › intro`,
+              `"${piece}" is an option in ${question.id} — in a vocabulary topic the word is the answer`
+            );
+          }
+          continue;
+        }
         const stem = question.paragraph ?? question.sentence ?? "";
         if (stem.toLowerCase().includes(piece.toLowerCase())) {
           report.error(
