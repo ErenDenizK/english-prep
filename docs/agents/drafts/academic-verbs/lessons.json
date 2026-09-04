@@ -865,7 +865,7 @@
           },
           {
             "label": "assign",
-            "gloss": "Bir görev, rol ya da yer belirli bir kişiye veya ekibe verilir. Nesne bir miktar değil, bir iştir.",
+            "gloss": "Bir görev, rol ya da yer belirli bir kişiye veya ekibe verilir; nesne bu görev de olabilir, göreve gönderilen kişi de. Nesne hiçbir zaman bir miktar değildir.",
             "example": "The dean assigned the evening class to a new lecturer."
           }
         ]
@@ -918,7 +918,7 @@
             "form": "assign",
             "use": "Ters yön: kişi bir göreve ya da yere verilir",
             "pattern": "S + assign + person + to + N",
-            "example": "They assigned her to the Ankara office."
+            "example": "The registrar assigned two interpreters to the appeal court."
           },
           {
             "form": "withhold",

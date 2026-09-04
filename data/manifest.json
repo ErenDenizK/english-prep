@@ -221,6 +221,46 @@
         { "category": "Used To vs Be Used To vs Get Used To", "summary": "Eskiden mi yapardın, alışkın mısın, yoksa alışıyor musun?" }
       ],
       "hasIntro": true
+    },
+    {
+      "id": "academic-nouns-adjectives",
+      "title": "Academic Nouns & Adjectives",
+      "tier": "vocabulary",
+      "file": "data/academic-nouns-adjectives/academic-nouns-adjectives.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Scale & Extent (extent / scope / magnitude / margin / threshold)",
+        "Evidence & Inference (evidence / indication / assumption / implication / consensus)",
+        "Certainty & Doubt (apparent / plausible / questionable / conclusive / tentative)",
+        "Significance & Priority (crucial / substantial / marginal / negligible / considerable)",
+        "Constraint & Requirement (constraint / obligation / provision / criterion / exemption)",
+        "Stance & Disposition (reluctant / deliberate / cautious / persistent / indifferent)"
+      ],
+      "lessons": [
+        { "category": "Scale & Extent (extent / scope / magnitude / margin / threshold)", "summary": "Ne kadar ileri gittiği mi, neyi kapsadığı mı?" },
+        {
+          "category": "Evidence & Inference (evidence / indication / assumption / implication / consensus)",
+          "summary": "Elde veri mi var, yoksa yalnızca bir işaret mi?"
+        },
+        {
+          "category": "Certainty & Doubt (apparent / plausible / questionable / conclusive / tentative)",
+          "summary": "Cümle konuyu kapatıyor mu, açık mı bırakıyor?"
+        },
+        {
+          "category": "Significance & Priority (crucial / substantial / marginal / negligible / considerable)",
+          "summary": "Miktar mı büyük, yoksa sonuç mu ona bağlı?"
+        },
+        {
+          "category": "Constraint & Requirement (constraint / obligation / provision / criterion / exemption)",
+          "summary": "Yapmak zorunda mısın, yoksa yapamıyor musun?"
+        },
+        {
+          "category": "Stance & Disposition (reluctant / deliberate / cautious / persistent / indifferent)",
+          "summary": "İstemiyor mu, riskten mi çekiniyor, umursamıyor mu?"
+        }
+      ]
     }
   ]
 }
