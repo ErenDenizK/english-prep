@@ -898,6 +898,96 @@ async function runMistakeRuns(browser) {
 }
 
 /**
+ * The option note — the line under a wrong answer that says what THAT
+ * option would have meant.
+ *
+ * 579 of them ship, one for every wrong option in the corpus, and until
+ * now nothing checked that a single one reached a screen. That is the
+ * shape of the worst bug this project has had: `buildReport` read a field
+ * no question carries, every report a learner sent went out with a blank
+ * where the question should have been, and it was invisible from both
+ * directions because no test looked. A field with 579 authored values and
+ * no check on the render path is the same bet.
+ *
+ * It answers wrongly on purpose, which takes a loop: the app shuffles,
+ * so the first option is right about a quarter of the time.
+ */
+async function runOptionNotes(browser) {
+  const context = await browser.newContext({ viewport: { width: 320, height: 640 } });
+  const page = await context.newPage();
+
+  await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await page.evaluate(() =>
+    sessionStorage.setItem(
+      "englishPrep.quizRequest",
+      JSON.stringify({ mode: "topic", topicIds: ["tenses"], count: "all" })
+    )
+  );
+  await page.goto(`${BASE}/quiz.html`, { waitUntil: "networkidle" });
+
+  let checked = 0;
+  for (let step = 0; step < 25 && checked < 3; step += 1) {
+    if (!(await page.locator(".option").count())) {
+      break;
+    }
+    await page.locator(".option").first().click();
+    await page.waitForSelector(".feedback");
+
+    if (await page.locator(".option--no").count()) {
+      const chosen = (await page.locator(".option--no .option__text").innerText()).trim();
+      // The block holds three `.feedback__body` paragraphs at most — the
+      // explanation, the note and the tip — and the note is the one that
+      // opens with the chosen option in `lang="en"`. The tip's <strong>
+      // is Turkish ("Kural: "), which is what separates them.
+      const line = page
+        .locator(".feedback__body")
+        .filter({ has: page.locator('strong[lang="en"]') })
+        .first();
+      const strong = (await line.locator("strong").first().innerText()).trim();
+      ok(strong === chosen, `not seçilen şıkkın adıyla başlıyor (${strong})`);
+      ok(
+        (await line.locator("strong").first().getAttribute("lang")) === "en",
+        "şık adı lang=\"en\" taşıyor"
+      );
+      const body = (await line.innerText()).slice(strong.length + 1).trim();
+      ok(body.length > 20, `not gerçekten bir cümle (${body.length} karakter)`);
+      // And it is the note the content file holds for THAT option, not
+      // some other question's: a keyed-by-text map cannot drift, but the
+      // lookup that reads it can.
+      const inFile = await page.evaluate(
+        async ([option, note]) => {
+          const data = await (await fetch("data/tenses/tenses.json")).json();
+          return data.questions.some((question) => question.optionNotes?.[option]?.includes(note));
+        },
+        [chosen, body.slice(0, 40)]
+      );
+      ok(inFile, `not içerik dosyasındaki notla aynı ("${chosen}")`);
+      checked += 1;
+    } else {
+      // Right answer: no note, by design — the learner who was right is
+      // not told what the options they did not pick would have meant.
+      ok(
+        (await page.locator('.feedback__body strong[lang="en"]').count()) === 0,
+        "doğru cevapta şık notu gösterilmiyor"
+      );
+    }
+
+    const advance = page.locator("#quiz-bar button");
+    if (!(await advance.count())) {
+      break;
+    }
+    await advance.click();
+    await page.waitForTimeout(80);
+    if (page.url().includes("results.html")) {
+      break;
+    }
+  }
+  ok(checked >= 3, `yanlış cevaplarda not gösteriliyor (${checked} kez ölçüldü)`);
+
+  await context.close();
+}
+
+/**
  * docs/components.html — every primitive on one page, against the real
  * CSS. It was not checked by anything until a restatement's options went
  * on it: the case that breaks the Option row is four whole sentences at
@@ -2254,6 +2344,9 @@ try {
 
   console.log("\n=== yanlış defteri ===");
   await runMistakeBook(browser);
+
+  console.log("\n=== şık notları ===");
+  await runOptionNotes(browser);
 
   console.log("\n=== yanlış turu ve sonuç kısayolları ===");
   await runMistakeRuns(browser);
