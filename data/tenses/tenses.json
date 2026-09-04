@@ -28,7 +28,12 @@
       "options": ["goes", "is going", "has gone", "went"],
       "correctIndex": 0,
       "explanation": "'Every morning' alışkanlık/rutin bildiren bir zaman ifadesi, bu yüzden Present Simple kullanılır. 'is going' anlık bir eylem için kullanılırdı, ama burada tekrar eden bir alışkanlıktan bahsediliyor.",
-      "tip": "Alışkanlık bildiren zaman zarfları (every day, usually, often) Present Simple'ı tetikler."
+      "tip": "Alışkanlık bildiren zaman zarfları (every day, usually, often) Present Simple'ı tetikler.",
+      "optionNotes": {
+        "is going": "Şu anda, tam bu sırada sürmekte olan bir gidiş. 'Every morning' ise her sabah tekrarlanan bir rutini işaret ediyor.",
+        "has gone": "Gidip henüz dönmemiş olmak. Paragraf tek bir gidişten değil, Elif'in her sabah yinelediği alışkanlıktan söz ediyor.",
+        "went": "Belirli bir günde olup bitmiş tek bir gidiş. Cümledeki 'every morning' ise hâlâ süren bir düzeni anlatıyor."
+      }
     },
     {
       "id": "tenses-t2",
@@ -37,7 +42,12 @@
       "options": ["works", "is working", "has worked", "worked"],
       "correctIndex": 1,
       "explanation": "'Right now' ve 'don't interrupt him' tam şu anda sürmekte olan, geçici bir eylemi işaret ediyor; bu yüzden Present Continuous 'is working' gerekir. 'works' Present Simple'dır ve onun genel olarak sıkışık teslim tarihleriyle çalıştığını, yani bir alışkanlığı anlatırdı — bir alışkanlık kimseyi tam bu anda rahatsız etmemeni gerektirmez. 'has worked' ise bugüne kadar birikmiş bir sonucu bildirir, oysa cümle şu andaki durumu anlatıyor.",
-      "tip": "'Right now', 'at the moment', 'currently' gibi ifadeler genelde Present Continuous'u işaret eder."
+      "tip": "'Right now', 'at the moment', 'currently' gibi ifadeler genelde Present Continuous'u işaret eder.",
+      "optionNotes": {
+        "works": "Genel olarak, her zaman böyle çalıştığını söyler. 'Right now' ise tam şu anda süren geçici bir durumu işaret ediyor.",
+        "has worked": "Bugüne kadar birikmiş bir çalışmanın bilançosu. Cümle ise onu tam şu anda bölmemeni istiyor.",
+        "worked": "Kapanmış bir geçmiş dönemde çalışmış olmak. 'Don't interrupt him right now' ise hâlâ işin başında olduğunu söylüyor."
+      }
     },
     {
       "id": "tenses-t3",
@@ -46,7 +56,12 @@
       "options": ["is boiling", "boils", "boiled", "has boiled"],
       "correctIndex": 1,
       "explanation": "Cümle 'a fact every chemistry student memorizes' diyerek zamana bağlı olmayan, değişmeyen bir gerçekten bahsediyor; değişmeyen gerçekler Present Simple ile ifade edilir, bu yüzden 'boils' doğrudur. 'is boiling' Present Continuous'tur ve suyun tam şu anda, geçici olarak kaynadığını söylerdi — ocaktaki bir tencere için doğru olurdu, her zaman geçerli bir doğa yasası için değil. 'boiled' ise geçmişte olup bitmiş tek bir olayı anlatır ve cümledeki 'a fact' ifadesiyle çelişir.",
-      "tip": "Zamana bağlı olmayan bilimsel gerçekler ve değişmeyen doğrular Present Simple ile ifade edilir."
+      "tip": "Zamana bağlı olmayan bilimsel gerçekler ve değişmeyen doğrular Present Simple ile ifade edilir.",
+      "optionNotes": {
+        "is boiling": "Suyun tam şu anda, geçici olarak kaynadığı. Cümle ise 'a fact' diyerek her zaman geçerli bir kuralı veriyor.",
+        "boiled": "Geçmişte olup bitmiş tek bir kaynama. Zamana bağlı olmayan bir doğa yasası kapanmış bir olay olarak anlatılmaz.",
+        "has boiled": "Tamamlanmış bir kaynamanın bugüne kalan sonucu. Burada bir olay değil, her zaman geçerli bir gerçek anlatılıyor."
+      }
     },
     {
       "id": "tenses-t4",
@@ -55,7 +70,12 @@
       "options": ["am thinking", "think", "have thought", "thought"],
       "correctIndex": 1,
       "explanation": "'Think' burada bir fikir bildiriyor, yani bir durum fiili (stative verb) olarak kullanılıyor; durum fiilleri normalde Continuous formda kullanılmaz, bu yüzden Present Simple 'think' gerekir. 'am thinking' ancak 'think' bir süreç anlattığında mümkün olurdu (bir konu üzerine kafa yormak), oysa 'that the new library extension is a good idea' bunun taşınan bir görüş olduğunu gösteriyor. 'have thought' ise bugüne uzanan tamamlanmış bir eylem bildirir; burada anlatılan şu anda sahip olunan bir kanaattir.",
-      "tip": "Düşünce, duygu ve sahiplik bildiren fiiller (think, believe, own, love) normalde Continuous formda kullanılmaz."
+      "tip": "Düşünce, duygu ve sahiplik bildiren fiiller (think, believe, own, love) normalde Continuous formda kullanılmaz.",
+      "optionNotes": {
+        "am thinking": "Bir konu üzerine şu sıralar kafa yormak. Burada 'think' taşınan bir görüş bildiriyor, yani durum fiili — Continuous almaz.",
+        "have thought": "Bugüne uzanan, tamamlanmış bir düşünme süreci. Cümlenin anlattığı ise şu anda sahip olunan bir kanaat.",
+        "thought": "Görüşün geçmişte kaldığını, o zamanlar öyle düşündüğünü söyler. 'Is a good idea' ise fikrin hâlâ geçerli olduğunu gösteriyor."
+      }
     },
     {
       "id": "tenses-t5",
@@ -64,7 +84,12 @@
       "options": ["did", "has done", "was doing", "does"],
       "correctIndex": 1,
       "explanation": "'Since she started university' geçmişte bir başlangıç noktası verip bugüne uzanan, hâlâ açık bir dönem kuruyor; böyle dönemlerde toplamı bildirmek için Present Perfect 'has done' kullanılır. 'did' Past Simple'dır ve kapanmış, belirli bir geçmiş dönem ister — 'last summer' gibi bir ifadeyle çalışırdı, ama 'since' ile kurulan açık dönemle değil. 'was doing' ise geçmişte belirli bir anda sürmekte olan tek bir eylemi anlatır, üç stajın bugüne kadarki toplamını değil.",
-      "tip": "'Since' bir başlangıç noktası verir; cümlenin referans noktası şimdiyse Present Perfect, geçmişteki bir an ise Past Perfect gelir."
+      "tip": "'Since' bir başlangıç noktası verir; cümlenin referans noktası şimdiyse Present Perfect, geçmişteki bir an ise Past Perfect gelir.",
+      "optionNotes": {
+        "did": "Kapanmış, belirli bir geçmiş dönem ister ('last summer' gibi). 'Since she started university' ise hâlâ açık bir dönem kuruyor.",
+        "was doing": "Geçmişte belirli bir anda sürmekte olan tek bir staj. Burada verilen, üniversiteden bu yana biriken üç stajlık toplam.",
+        "does": "Düzenli olarak yaptığı bir işi, bir alışkanlığı anlatır. 'Since' ile açılan dönemde bugüne kadar tamamlanan sayıyı taşıyamaz."
+      }
     },
     {
       "id": "tenses-t6",
@@ -73,7 +98,12 @@
       "options": ["have met", "met", "meet", "was meeting"],
       "correctIndex": 1,
       "explanation": "'Two years ago' belirli ve kapanmış bir geçmiş anı veriyor; belirli zaman ifadeleriyle Past Simple kullanılır, bu yüzden 'met' doğrudur. 'have met' Present Perfect'tir ve olayın ne zaman olduğunun söylenmediği durumlar içindir; 'two years ago' ile aynı cümlede kullanılamaz — zaten cümlenin ikinci yarısındaki 'we haven't kept in touch since then' Present Perfect'in işini üstlenmiş durumda. 'was meeting' ise o anda sürmekte olan bir eylem anlatırdı, oysa biriyle tanışmak tek ve anlık bir olaydır.",
-      "tip": "Belirli bir zaman ifadesi varsa (yesterday, last year, two years ago) Present Perfect değil Past Simple kullanılır."
+      "tip": "Belirli bir zaman ifadesi varsa (yesterday, last year, two years ago) Present Perfect değil Past Simple kullanılır.",
+      "optionNotes": {
+        "have met": "Olayın ne zaman olduğunun söylenmediği durumlar için. Buradaki 'two years ago' belirli bir an verdiği için yanına gelemez.",
+        "meet": "Tekrarlanan bir alışkanlık ya da her zaman geçerli bir durum. Cümlede anlatılan ise iki yıl önce bir kez olmuş tanışma.",
+        "was meeting": "O sırada sürmekte olan, kesilebilecek bir eylem. Oysa biriyle bir konferansta tanışmak anlık ve tek seferlik bir olay."
+      }
     },
     {
       "id": "tenses-t7",
@@ -82,7 +112,12 @@
       "options": ["broke", "has broken", "breaks", "was breaking"],
       "correctIndex": 1,
       "explanation": "Olayın ne zaman olduğu hiç söylenmiyor; önemli olan sonucun şu anda ortada olması ('Look at this mess!', makine hâlâ bozuk), bu yüzden Present Perfect 'has broken' kullanılır. 'broke' Past Simple'dır ve belirli, kapanmış bir geçmiş ana ait bir olay bildirir — cümlede böyle bir zaman ifadesi yok ve vurgu geçmişte değil, şu an gözünün önündeki sonuçta. 'was breaking' ise o sırada sürmekte olan bir eylem anlatır, oysa kırılma anlık ve tamamlanmış bir olaydır.",
-      "tip": "Present Perfect, geçmişteki bir eylemin şimdiki zamana etkisini/sonucunu vurgular."
+      "tip": "Present Perfect, geçmişteki bir eylemin şimdiki zamana etkisini/sonucunu vurgular.",
+      "optionNotes": {
+        "broke": "Belirli, kapanmış bir geçmiş anı ister. Burada zaman hiç verilmiyor; 'Look at this mess!' vurguyu şu anki sonuca koyuyor.",
+        "breaks": "Birinin makineyi sürekli, alışkanlık hâline getirerek kırdığını söyler. Anlatılan ise bu dağınıklığı yaratan tek bir olay.",
+        "was breaking": "Geçmişte bir süre boyunca sürmekte olan bir eylem. Burada süren bir sahne değil, gözünün önünde duran bir sonuç var."
+      }
     },
     {
       "id": "tenses-t8",
@@ -91,7 +126,12 @@
       "options": ["experienced", "has experienced", "experiences", "was experiencing"],
       "correctIndex": 1,
       "explanation": "'Over the past century' geçmişte başlayıp bugüne kadar uzanan, hâlâ açık bir dönemi kapsıyor, bu yüzden Present Perfect kullanılır. 'experienced' dönemin kapandığını ima eder ve yanında belirli bir geçmiş zaman ifadesi ister ('in 1999' gibi).",
-      "tip": "'Over the last/past + süre' hâlâ süren bir dönemi işaret eder; kapanmış bir dönem Past Simple ister."
+      "tip": "'Over the last/past + süre' hâlâ süren bir dönemi işaret eder; kapanmış bir dönem Past Simple ister.",
+      "optionNotes": {
+        "experienced": "Dönemin kapandığını ima eder ve yanına 'in 1999' gibi belirli bir tarih ister. 'Over the past century' hâlâ açık bir dönem.",
+        "experiences": "Her zaman geçerli, genel bir durum bildirir. Burada sayılan, geçen yüzyıl boyunca bugüne kadar birikmiş depremler.",
+        "was experiencing": "Depremleri o sırada sürmekte olan bir sahnenin parçası yapar. Yüz yıla yayılmış birden çok olay böyle anlatılmaz."
+      }
     },
     {
       "id": "tenses-t9",
@@ -100,7 +140,12 @@
       "options": ["waited", "was waiting", "has waited", "waits"],
       "correctIndex": 1,
       "explanation": "'While' arka planda sürmekte olan bir geçmiş eylemi işaret eder; sürmekte olan eylem Past Continuous 'was waiting' alır, onu kesen kısa olay ise Past Simple'dır ('noticed'). 'waited' beklemeyi olup bitmiş tek bir olaya çevirir ve 'while' ile kurulan arka plan–kesme ilişkisini yok eder; o zaman iki eylem sadece arka arkaya olmuş gibi okunur. 'has waited' ise geçmişi şimdiye bağlar, oysa cümlenin tamamı ('noticed', 'almost missed') kapanmış bir geçmiş sahneyi anlatıyor.",
-      "tip": "'While' genelde Past Continuous ile, 'when' genelde Past Simple ile eşleşir."
+      "tip": "'While' genelde Past Continuous ile, 'when' genelde Past Simple ile eşleşir.",
+      "optionNotes": {
+        "waited": "Beklemeyi olup bitmiş tek bir olaya çevirir. 'While' ise arka planda süren ve 'noticed' ile kesilen bir eylem ister.",
+        "has waited": "Bekleyişi bugüne bağlar ve şu an geçerli bir sonuç bildirir. Oysa 'noticed' ve 'almost missed' kapanmış bir sahne kuruyor.",
+        "waits": "Her gün tekrarlanan bir rutin gibi okunur. Cümlenin geri kalanı ise o gün bir kez olmuş tek bir sahneyi anlatıyor."
+      }
     },
     {
       "id": "tenses-t10",
@@ -109,7 +154,12 @@
       "options": ["left", "had left", "have left", "were leaving"],
       "correctIndex": 1,
       "explanation": "'By the time the professor arrived' geçmişte bir referans anı veriyor; o andan önce tamamlanmış eylem Past Perfect 'had left' alır. 'left' Past Simple olsaydı öğrencilerin tam profesör geldiği anda çıktığı anlaşılırdı, oysa 'already' ve 'only a few remained' ayrılmanın daha önce bitmiş olduğunu söylüyor. 'have left' ise şimdiye bağlanır ve geçmişteki bir referans anı olan 'arrived' ile aynı cümleye oturmaz.",
-      "tip": "'By the time + geçmiş cümle' yapısında genelde Past Perfect kullanılır."
+      "tip": "'By the time + geçmiş cümle' yapısında genelde Past Perfect kullanılır.",
+      "optionNotes": {
+        "left": "Öğrencilerin tam profesörün geldiği anda çıktığını söyler. 'Already' ise ayrılmanın o andan önce bittiğini belirtiyor.",
+        "have left": "Öğrencilerin ayrılmasını bu ana, şimdiye bağlar. Oysa cümle geçmişte bir ana kuruluyor: 'the professor arrived'.",
+        "were leaving": "Profesör geldiğinde çıkışın hâlâ sürdüğü anlamına gelir. 'Only a few remained' ise işin çoktan bittiğini söylüyor."
+      }
     },
     {
       "id": "tenses-t11",
@@ -118,7 +168,12 @@
       "options": ["cooked", "was cooking", "has cooked", "cooks"],
       "correctIndex": 1,
       "explanation": "Yemek pişirmek uzun ve sürmekte olan eylem, elektriğin kesilmesi ise onu kesen kısa olay; kesilen uzun eylem Past Continuous 'was cooking' alır. 'cooked' Past Simple'dır ve yemeğin pişirilip bitirildiğini söylerdi — 'when the power suddenly went out' ile kurulan kesilme ilişkisi kaybolur, iki olay sadece sırayla olmuş gibi okunur. 'has cooked' ise geçmişi şimdiye bağlar, oysa cümle tamamen kapanmış bir geçmiş sahneyi anlatıyor.",
-      "tip": "Devam eden bir eylemi kesen ani bir olay varsa, devam eden eylem Past Continuous olur."
+      "tip": "Devam eden bir eylemi kesen ani bir olay varsa, devam eden eylem Past Continuous olur.",
+      "optionNotes": {
+        "cooked": "Yemeğin pişirilip bitirildiğini söyler. 'When the power suddenly went out' ise süren bir işi kesen ani bir olay kuruyor.",
+        "has cooked": "Geçmişteki bir eylemi şimdiye bağlar ve bugüne kalan sonucu bildirir. Sahne ise elektriğin kesildiği o anda kapanıyor.",
+        "cooks": "Her akşam tekrarlanan bir alışkanlık. Anlatılan ise bir kez olmuş ve mutfağı karanlıkta bırakmış tek bir olay."
+      }
     },
     {
       "id": "tenses-t12",
@@ -127,7 +182,12 @@
       "options": ["rebuilt", "had rebuilt", "have rebuilt", "were rebuilding"],
       "correctIndex": 1,
       "explanation": "Cümlenin referans noktası geçmişte bir an: 'I didn't recognize the campus'. Yeniden inşa o andan önce tamamlandığı için Past Perfect 'had rebuilt' gerekir — 'since' burada Present Perfect değil Past Perfect çağırır, çünkü bağlanılan nokta şimdi değil, o geçmiş andır. 'have rebuilt' tam bu tuzağa düşer: şimdiye bağlanır ve 'didn't recognize' ile aynı zaman çizgisine oturmaz. 'rebuilt' ise sadece Past Simple'dır ve tanıyamama anından önce bitmiş olduğunu göstermez.",
-      "tip": "Bir geçmiş olayın diğerinden önce bittiğini vurgulaman gerekiyorsa önce biteni Past Perfect yap; olaylar sadece sırayla anlatılıyorsa Past Simple yeter."
+      "tip": "Bir geçmiş olayın diğerinden önce bittiğini vurgulaman gerekiyorsa önce biteni Past Perfect yap; olaylar sadece sırayla anlatılıyorsa Past Simple yeter.",
+      "optionNotes": {
+        "rebuilt": "Yeniden inşayı yalnızca geçmişte olmuş bir iş yapar; tanıyamama anından önce bitmiş olduğunu, yani öncelik ilişkisini kurmaz.",
+        "have rebuilt": "'Since' görünce en kolay düşülen tuzak: şimdiye bağlanır. Buradaki referans noktası ise 'didn't recognize', geçmişte bir an.",
+        "were rebuilding": "İnşaatın o sırada hâlâ sürdüğünü söyler. Oysa kampüsü tanıyamamasının sebebi girişin çoktan yenilenmiş olması."
+      }
     },
     {
       "id": "tenses-t13",
@@ -136,7 +196,12 @@
       "options": ["will rain", "is going to rain", "rains", "is raining"],
       "correctIndex": 1,
       "explanation": "'Look at those clouds' şu anda gözle görülen somut bir kanıt sunuyor; kanıta dayanan tahminler 'be going to' ile kurulur, bu yüzden 'is going to rain' doğrudur. 'will rain' dışarıdaki bir kanıta değil, konuşanın kendi öngörüsüne dayanan bir tahmin olurdu ve bulutlara yapılan göndermeyi anlamsız bırakırdı. 'is raining' ise yağmurun hâlihazırda yağdığını söyler, oysa 'any minute now' henüz başlamadığını belirtiyor.",
-      "tip": "Elde somut bir kanıt varsa (bulutlar, şu anki durum) 'be going to' kullan; spontane tahminlerde 'will' kullanılır."
+      "tip": "Elde somut bir kanıt varsa (bulutlar, şu anki durum) 'be going to' kullan; spontane tahminlerde 'will' kullanılır.",
+      "optionNotes": {
+        "will rain": "Dayanağını konuşanın kendi öngörüsünden alan bir tahmin. 'Look at those clouds' ise gözle görülür somut bir kanıt sunuyor.",
+        "rains": "Değişmez bir gerçeği ya da sabit bir tarifeyi bildirir. Burada ise bulutlara bakılarak yapılan tek seferlik bir tahmin var.",
+        "is raining": "Yağmurun hâlihazırda yağdığını söyler. 'Any minute now' ise henüz başlamadığını, birazdan başlayacağını belirtiyor."
+      }
     },
     {
       "id": "tenses-t14",
@@ -145,7 +210,12 @@
       "options": ["am taking", "will take", "take", "have taken"],
       "correctIndex": 1,
       "explanation": "Karar tam konuşma anında veriliyor: karşı taraf seni almayı teklif ediyor, sen de o anda taksi tutmaya söz veriyorsun; ani kararlar ve sözler 'will' ile kurulur ('will take'). 'am taking' önceden ayarlanmış, kesinleşmiş bir planı bildirir, oysa 'Don't worry about picking me up' bu kararın konuşma sırasında doğduğunu gösteriyor. 'take' Present Simple ise resmî tarifeler içindir (uçuş, tren saati), konuşma anında verilen kişisel bir karar için değil.",
-      "tip": "Önceden planlanmamış, konuşma anında alınan kararlar ve verilen sözler için 'will' kullanılır."
+      "tip": "Önceden planlanmamış, konuşma anında alınan kararlar ve verilen sözler için 'will' kullanılır.",
+      "optionNotes": {
+        "am taking": "Önceden ayarlanmış, kesinleşmiş bir plan. 'Don't worry about picking me up' kararın konuşma sırasında doğduğunu gösteriyor.",
+        "take": "Resmî tarifeler içindir (uçuş, tren saati). Burada verilen ise karşı tarafı rahatlatmak için o anda alınan kişisel bir karar.",
+        "have taken": "Taksiye çoktan binmiş olmak ve sonucunun şu an geçerli olması. Oysa konuşan henüz havaalanına inmiş bile değil."
+      }
     },
     {
       "id": "tenses-t15",
@@ -154,7 +224,12 @@
       "options": ["leaves", "will leave", "is going to leave", "has left"],
       "correctIndex": 0,
       "explanation": "Saati belirleyen konuşmacının kararı değil, demiryolunun basılı tarifesidir; kişiye bağlı olmayan resmî programlar gelecekten söz etse bile Present Simple ile kurulur. 'will leave' kararın konuşma anında verildiğini ima eder ve önceden basılmış bir tarifeyle çelişir.",
-      "tip": "Resmî tarifeler ve programlar (tren, uçuş, ders saatleri) için gelecek anlamında Present Simple kullanılır."
+      "tip": "Resmî tarifeler ve programlar (tren, uçuş, ders saatleri) için gelecek anlamında Present Simple kullanılır.",
+      "optionNotes": {
+        "will leave": "Kararın konuşma anında verildiğini ima eder. Saati belirleyen ise konuşmacı değil, istasyonda asılı duran basılı tarife.",
+        "is going to leave": "Bir niyete ya da şu an görünen bir kanıta dayanan tahmin. Treni kaldıran ise kimsenin niyeti değil, sabit bir tarife.",
+        "has left": "Trenin çoktan kalkmış olduğunu söyler. 'Tomorrow night' ise kalkışın henüz gerçekleşmediğini belirtiyor."
+      }
     },
     {
       "id": "tenses-t16",
@@ -163,7 +238,12 @@
       "options": ["will have", "are having", "have", "had"],
       "correctIndex": 1,
       "explanation": "'It's already in both of our calendars' planın önceden yapıldığını ve karşı tarafla kesinleştiğini söylüyor; kesinleşmiş kişisel planlar Present Continuous ile kurulur, bu yüzden 'are having' doğrudur. 'will have' kararın tam şu anda verildiğini ima eder ve planın takvimde çoktan yazılı olmasıyla çelişir. 'have' Present Simple ise resmî tarifeler içindir (tren, uçuş, ders programı), bir akşam yemeği randevusu için değil.",
-      "tip": "Kişisel, önceden ayarlanmış planlar için Present Continuous kullanılır."
+      "tip": "Kişisel, önceden ayarlanmış planlar için Present Continuous kullanılır.",
+      "optionNotes": {
+        "will have": "Kararın tam şu anda verildiğini ima eder. Planın iki tarafın da takviminde yazılı olması bunu çürütüyor.",
+        "have": "Resmî tarifeler için ayrılmıştır (tren, uçuş, ders programı). Karşı tarafla ayarlanmış bir akşam yemeği randevusu için değil.",
+        "had": "Yemeği geçmişte olup bitmiş bir şeye çevirir. 'On Saturday' ise henüz gerçekleşmemiş bir plandan söz ediyor."
+      }
     },
     {
       "id": "tenses-t17",
@@ -172,7 +252,12 @@
       "options": ["wrote", "have written", "have been writing", "am writing"],
       "correctIndex": 2,
       "explanation": "'For almost three hours now' sürenin kendisini vurguluyor ve iş hâlâ sürüyor ('I still have two sections left'); süre + devam eden eylem Present Perfect Continuous ister, bu yüzden 'have been writing' doğrudur. 'have written' Present Perfect Simple'dır ve ne kadarının bittiğini, yani tamamlanmış bir miktarı ya da net bir sonucu bildirir — oysa burada bitmiş bir miktar değil, geçen süre anlatılıyor. 'am writing' ise sadece şu anı gösterir ve eylemin üç saattir sürdüğü bilgisini taşıyamaz.",
-      "tip": "Bir eylemin süresini ve devam ettiğini vurgulamak istiyorsan Present Perfect Continuous kullan."
+      "tip": "Bir eylemin süresini ve devam ettiğini vurgulamak istiyorsan Present Perfect Continuous kullan.",
+      "optionNotes": {
+        "wrote": "Kapanmış bir geçmiş dönemde yazılmış bir rapor. 'Still have two sections left' ise işin hâlâ sürdüğünü söylüyor.",
+        "have written": "Ne kadarının bittiğini, tamamlanmış bir miktarı bildirir. Burada vurgulanan miktar değil, üç saate yaklaşan süre.",
+        "am writing": "Yalnızca şu anda yazmakta olduğunu gösterir. İşin üç saattir sürüyor olduğu bilgisini taşıyamaz."
+      }
     },
     {
       "id": "tenses-t18",
@@ -181,7 +266,12 @@
       "options": ["has been reading", "has read", "read", "was reading"],
       "correctIndex": 1,
       "explanation": "'Five chapters' ve 'so far' bugüne kadar tamamlanan miktarı bildiriyor; miktar ya da net sonuç söz konusuysa Present Perfect Simple kullanılır, bu yüzden 'has read' doğrudur. 'has been reading' Present Perfect Continuous'tur ve sürenin kendisine odaklanır — 'for two hours' gibi bir süre ifadesiyle doğru olurdu, sayılabilir bir sonuçla değil. 'read' (Past Simple) ise kapanmış bir geçmiş dönem ister, oysa 'so far' ve 'determined to finish the rest' dönemin hâlâ açık olduğunu söylüyor.",
-      "tip": "Ne kadar/kaç tane tamamlandığı önemliyse Present Perfect Simple, sürecin kendisi önemliyse Present Perfect Continuous kullan."
+      "tip": "Ne kadar/kaç tane tamamlandığı önemliyse Present Perfect Simple, sürecin kendisi önemliyse Present Perfect Continuous kullan.",
+      "optionNotes": {
+        "has been reading": "Sürenin kendisine odaklanır ('for two hours' gibi). Burada verilen ise 'five chapters', tamamlanmış bir miktar.",
+        "read": "Okumayı geçmişte kapanmış bir döneme koyar. 'So far' ve kalanını bitirme kararı dönemin hâlâ açık olduğunu söylüyor.",
+        "was reading": "Geçmişte bir sahnenin içinde sürüp giden bir okuma. 'So far' ise bugüne kadar tamamlananın bilançosunu veriyor."
+      }
     },
     {
       "id": "tenses-t19",
@@ -190,7 +280,12 @@
       "options": ["founded", "has founded", "had founded", "was founding"],
       "correctIndex": 2,
       "explanation": "'By the time she turned thirty' geçmişte bir referans anı veriyor; o andan önce tamamlanan eylemler Past Perfect alır, bu yüzden 'had founded' doğrudur. 'founded' Past Simple olsaydı şirket kurmak otuz yaşına basmasından önce bitmiş değil, onunla aynı çizgide olup bitmiş görünürdü — oysa 'by the time' tam da bu öncelik ilişkisini kurmak için var. 'has founded' ise şimdiye bağlanır, oysa cümlenin bağlandığı nokta 'turned thirty', yani geçmişte bir an.",
-      "tip": "'By the time' geçmişte bir referans anı verir: o andan önce bitmiş bir eylem Past Perfect alır, o anda ortaya çıkan bir durum ise Past Simple ile kalır."
+      "tip": "'By the time' geçmişte bir referans anı verir: o andan önce bitmiş bir eylem Past Perfect alır, o anda ortaya çıkan bir durum ise Past Simple ile kalır.",
+      "optionNotes": {
+        "founded": "Şirket kurmayı otuz yaşına basmasıyla aynı çizgide gösterir. 'By the time' ise tam da öncelik ilişkisini kurmak için var.",
+        "has founded": "Şimdiye, bugüne kadarki bilançoya bağlanır. Cümlenin bağlandığı nokta ise 'turned thirty', geçmişte bir an.",
+        "was founding": "Otuzuna bastığı anda kuruluşun hâlâ sürdüğünü söyler. Oysa iki şirket o andan önce kurulmuş ve satılmış."
+      }
     },
     {
       "id": "tenses-t20",
@@ -199,7 +294,12 @@
       "options": ["gone", "been", "go", "went"],
       "correctIndex": 1,
       "explanation": "'Have been to' bir yere gidip geri dönmüş olma deneyimini anlatır; 'have gone to' ise kişinin hâlâ orada olduğunu ima eder ki karşısındaki kişiyle konuşurken bu mümkün değildir.",
-      "tip": "'Have been to' = gidip döndü (deneyim); 'have gone to' = hâlâ orada, dönmedi."
+      "tip": "'Have been to' = gidip döndü (deneyim); 'have gone to' = hâlâ orada, dönmedi.",
+      "optionNotes": {
+        "gone": "'Have gone to' kişinin oraya gidip hâlâ orada olduğunu söyler. Oysa soruyu tam karşında duran kişiye soruyorsun.",
+        "go": "'Have you go' diye bir kalıp yoktur: 'have' ile kurulan Perfect yapı fiilin üçüncü hâlini (V3) ister.",
+        "went": "'Did you go to Japan before?' deseydin doğru biçimdi. 'Have you ____' kalıbı Past Simple'ı değil, V3'ü ister."
+      }
     },
     {
       "id": "tenses-t25",
@@ -208,7 +308,12 @@
       "options": ["has gone", "has been", "has been going", "had gone"],
       "correctIndex": 0,
       "explanation": "Dizüstü bilgisayarı hâlâ açık duruyor ve 'she should be back before the meeting starts' deniyor: kişi gittiği yerden henüz dönmedi, hâlâ oradadır. Hâlâ orada olan biri için 'has gone to' kullanılır. En yakın çeldirici 'has been', kişinin gidip döndüğünü söyler ve 'should be back' ile açıkça çelişir. 'has been going' tek bir gidişi değil tekrarlanan bir gidip gelmeyi anlatır; 'had gone' ise cümlede bulunmayan, geçmişte bir referans anı ister.",
-      "tip": "Kişi hâlâ oradaysa 'has gone to', gidip döndüyse 'has been to'. Kararı zaman ifadesi değil, kişinin şu an nerede olduğu verir."
+      "tip": "Kişi hâlâ oradaysa 'has gone to', gidip döndüyse 'has been to'. Kararı zaman ifadesi değil, kişinin şu an nerede olduğu verir.",
+      "optionNotes": {
+        "has been": "'Has been to' kişinin gidip döndüğünü söyler. Oysa 'she should be back' Deniz'in hâlâ aşağıda olduğunu belirtiyor.",
+        "has been going": "Arşive bir süredir gidip geldiğini, tekrarlanan bir hareketi anlatır. Burada anlatılan ise öğle arasından beri süren tek bir gidiş.",
+        "had gone": "Geçmişte bir referans anı ister ve ondan öncesini anlatır. Bu paragrafta bağlanılan nokta şu an: masada duran açık bilgisayar."
+      }
     },
     {
       "id": "tenses-t21",
@@ -217,7 +322,12 @@
       "options": ["for", "since", "during", "while"],
       "correctIndex": 1,
       "explanation": "'Since' belirli bir başlangıç noktasıyla kullanılır (last summer); 'for' bir süre miktarıyla kullanılırdı (for six months gibi).",
-      "tip": "'Since + zaman noktası', 'for + süre miktarı' ile kullanılır — ikisini karıştırma."
+      "tip": "'Since + zaman noktası', 'for + süre miktarı' ile kullanılır — ikisini karıştırma.",
+      "optionNotes": {
+        "for": "Bir süre miktarıyla kullanılır ('for six months'). 'Last summer' bir miktar değil, görüşmemenin başladığı noktayı veriyor.",
+        "during": "Bir şeyin geçen yazın içinde olduğunu söylerdi. Cümle ise geçen yazdan bu yana kesintisiz süren bir durumu anlatıyor.",
+        "while": "Yanına bir cümle alır ('while we were away'), bir zaman öbeği değil. Boşluktan sonra gelen 'last summer' bir zaman noktası."
+      }
     },
     {
       "id": "tenses-t22",
@@ -226,7 +336,12 @@
       "options": ["already", "yet", "still", "ago"],
       "correctIndex": 0,
       "explanation": "Cümle olumlu ve referans noktası geçmişte ('by the time we arrived'); toplantının o andan önce başladığını söyleyen kelime 'already'dir ve Past Perfect ile birlikte doğal durur. 'yet' bu anlamıyla ('henüz') yalnızca olumsuz cümlelerde ve sorularda çalışır, olumlu bir 'had ____ started' kalıbına giremez — 'The meeting hadn't started yet' deseydi doğru olurdu, ama o zaman anlam tersine dönerdi. 'still' ise beklenenden uzun süren bir durumu anlatır ve bu kalıba oturmaz.",
-      "tip": "'Already' olumlu cümlelerde, 'yet' ise soru ve olumsuz cümlelerde kullanılır."
+      "tip": "'Already' olumlu cümlelerde, 'yet' ise soru ve olumsuz cümlelerde kullanılır.",
+      "optionNotes": {
+        "yet": "Bir işin henüz olmadığını söyler ve yalnızca olumsuz cümlelerle sorulara girer. Buradaki 'had ____ started' olumlu bir kalıp.",
+        "still": "Bir durumun beklenenden uzun sürdüğünü anlatır. Burada anlatılan ise toplantının siz gelmeden önce başlamış olması.",
+        "ago": "Geçmişte bir anı işaret eder ve daima bir süre miktarının arkasına gelir ('two hours ago'); yardımcı fiilin yanına giremez."
+      }
     },
     {
       "id": "tenses-t23",
@@ -235,7 +350,12 @@
       "options": ["yet", "already", "ago", "since"],
       "correctIndex": 1,
       "explanation": "Cümle olumlu ve işin çoktan bittiğini, hatırlatmaya gerek olmadığını söylüyor; olumlu bir cümlede 'beklenenden önce bitti' anlamını veren kelime 'already'dir. 'yet' 'henüz' anlamıyla olumsuz cümlelere ve sorulara aittir ('I haven't finished yet' / 'Have you finished yet?'), bu yüzden 'I've ____ finished' boşluğuna giremez. 'since' ise arkasına bir başlangıç noktası ister (bir tarih ya da bir olay), oysa boşluktan hemen sonra fiil geliyor.",
-      "tip": "'Yet' 'henüz' anlamını yalnızca soru ve olumsuz cümlelerde verir: 'Have you finished yet?' / 'I haven't finished yet.' Olumlu cümlede aynı işi 'already' yapar."
+      "tip": "'Yet' 'henüz' anlamını yalnızca soru ve olumsuz cümlelerde verir: 'Have you finished yet?' / 'I haven't finished yet.' Olumlu cümlede aynı işi 'already' yapar.",
+      "optionNotes": {
+        "yet": "Türkçedeki 'henüz'ün karşılığıdır, ama yalnızca soru ve olumsuz cümlelerde: 'I haven't finished yet'. Buradaki cümle olumlu.",
+        "ago": "Bir süre miktarının hemen arkasında çalışır ('five years ago'). Burada boşluğun önünde süre değil 'I've', arkasında bir fiil var.",
+        "since": "Arkasına bir başlangıç noktası ister: bir tarih ya da bir olay. Boşluktan hemen sonra ise 'finished' fiili geliyor."
+      }
     },
     {
       "id": "tenses-t24",
@@ -244,7 +364,12 @@
       "options": ["since", "for", "ago", "before"],
       "correctIndex": 2,
       "explanation": "'Five years' bir süre miktarı ve cümlenin fiili Past Simple ('moved'); bir süre miktarından sonra gelip geçmişte belirli bir anı işaret eden kelime 'ago'dur. 'since' bir başlangıç noktası ister ('since 2019', 'since he graduated'), bir süre miktarının arkasına gelmez ve yanında Past Simple değil Present Perfect isterdi. 'for' ise süre miktarının önüne geçer ('for five years') ve olayın ne kadar sürdüğünü söyler, hangi noktada olduğunu değil; buradaki boşluk ise miktarın arkasında.",
-      "tip": "Bir süre miktarı + 'ago' belirli bir geçmiş anı işaret eder: Present Perfect ile kullanılmaz, Past Simple ister."
+      "tip": "Bir süre miktarı + 'ago' belirli bir geçmiş anı işaret eder: Present Perfect ile kullanılmaz, Past Simple ister.",
+      "optionNotes": {
+        "since": "Bir başlangıç noktasının önüne gelir ('since 2019'). 'Five years' ise bir süre miktarı ve boşluk onun arkasında.",
+        "for": "Bir süre miktarının önüne geçer ('for five years') ve işin ne kadar sürdüğünü söyler. Buradaki boşluk ise miktarın arkasında.",
+        "before": "Bir süreyi geçmişteki başka bir ana göre geriye sayar ('two days before the wedding'). Burada ölçülen nokta ise konuşma anı."
+      }
     }
   ],
   "lessons": [

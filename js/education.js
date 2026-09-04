@@ -906,10 +906,61 @@ function renderIntro(topic, lessons, progress) {
   for (const lesson of lessons) {
     rows.appendChild(renderLessonRow(lesson, statusOf(lesson, progress)));
   }
+
+  // And a way to test the topic, from the screen that introduces it. It
+  // was reachable from the Test tab's topic rows and from the end of a
+  // lesson, so a learner revising a topic from Eğitim had to cross to the
+  // other tab and find the row again — the one launcher this app has that
+  // is reachable from one half of it and not the other.
+  //
+  // A row rather than a button, and last: the bar already carries this
+  // screen's filled action (§7.2), and the offer belongs after the
+  // lessons rather than beside them. When every lesson here is finished
+  // the bar itself becomes the test — so the row would be the same action
+  // twice, and it steps out.
+  if (lessons.some((lesson) => !progress[lesson.id]?.done)) {
+    rows.appendChild(renderTopicTestRow(topic.topicId, topic.questions?.length ?? 0));
+  }
+
   list.appendChild(rows);
   page.appendChild(list);
 
   return page;
+}
+
+/**
+ * @param {string} topicId - the topic file's own `topicId`. The file has
+ *   no `id`, and reading one gave a row that silently did nothing: the
+ *   launcher returns false for an unknown topic rather than throwing.
+ * @param {number} questionCount - the file's own count, not the
+ *   manifest's copy of it
+ */
+function renderTopicTestRow(topicId, questionCount) {
+  const row = el("button", "row");
+  row.type = "button";
+
+  const lead = el("span", "row__lead");
+  lead.appendChild(icon("target", { size: 20 }));
+  row.appendChild(lead);
+
+  const main = el("span", "row__main");
+  main.appendChild(el("span", "row__title", "Bu konudan test çöz"));
+  main.appendChild(el("span", "row__sub t-num", `${questionCount} soru`));
+  row.appendChild(main);
+
+  row.addEventListener("click", () => {
+    // Loudly, because the failure mode here is silence: the launcher
+    // returns false for a topic the manifest does not have, and the first
+    // version of this row read the wrong field and did nothing at all.
+    startTopicTest(topicId)
+      .then((started) => {
+        if (!started) {
+          console.error(`renderTopicTestRow: manifestte olmayan konu "${topicId}"`);
+        }
+      })
+      .catch(console.error);
+  });
+  return row;
 }
 
 /**
@@ -973,14 +1024,26 @@ export async function openTopicIntro(topicId) {
   // way backwards routes nobody. The forward action opens the first lesson
   // the learner has not finished in THIS topic — which on a first visit is
   // lesson 1, and on a return is where they actually stopped.
+  //
+  // Once there is no such lesson, it stops being a reading action: the
+  // fallback used to be lesson 1, so a learner who had read the whole
+  // topic was offered its first page again under a label that says
+  // forward. What is actually forward there is the topic's test.
   const progress = getAllLessonProgress();
   const inTopic = lessons.filter((lesson) => lesson.topicId === topicId);
-  const next = inTopic.find((lesson) => !progress[lesson.id]?.done) ?? inTopic[0] ?? null;
+  const next = inTopic.find((lesson) => !progress[lesson.id]?.done) ?? null;
+  const forward = next
+    ? { label: "Derslere geç", level: "primary", onClick: () => openLessonByHash(next.id) }
+    : {
+        label: "Bu konudan test çöz",
+        level: "primary",
+        onClick: () => {
+          startTopicTest(topicId).catch(console.error);
+        },
+      };
   actionBar.set([
     { label: "Derslere dön", level: "secondary", onClick: showIndexByHash },
-    ...(next
-      ? [{ label: "Derslere geç", level: "primary", onClick: () => openLessonByHash(next.id) }]
-      : []),
+    ...(inTopic.length > 0 ? [forward] : []),
   ]);
 }
 
