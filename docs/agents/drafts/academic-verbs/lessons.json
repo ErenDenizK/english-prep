@@ -634,9 +634,9 @@
       },
       {
         "type": "pitfall",
-        "wrong": "The board monitored which of the two designs was cheaper.",
-        "right": "The board determined which of the two designs was cheaper.",
-        "why": "monitor süren bir şeyi izlemektir ve kendiliğinden bir sonuca varmaz. Bir sorunun cevabının bulunup kapanması determine ile söylenir."
+        "wrong": "The librarian monitored which of the two copies was the older.",
+        "right": "The librarian determined which of the two copies was the older.",
+        "why": "monitor süre boyunca değişen bir şeyi izlemektir. Hangi nüshanın daha eski olduğu değişmeyen, geçmişte kapanmış bir olgudur; böyle bir soruyu bir kerede cevaplayıp kapatmak determine'dir."
       },
       {
         "type": "check"
@@ -818,23 +818,23 @@
         "heading": "Sınavda ne yapacaksın",
         "rules": [
           {
-            "condition": "Durdurma geçici olduğu belirtiliyorsa — bir süre, bir koşul ya da yeniden başlama beklentisi varsa",
+            "condition": "Boşluğun nesnesi bir faaliyet, hizmet ya da izinse ve durdurulması geçiciyse — bir süre, bir koşul ya da yeniden başlama beklentisi varsa",
             "then": "suspend"
           },
           {
-            "condition": "Bırakma kalıcıysa ve cümlede geri dönüş öngörülmüyorsa",
+            "condition": "Boşluğun nesnesi bir plan, proje ya da işse ve ondan büsbütün vazgeçiliyorsa; cümlede geri dönüş öngörülmüyorsa",
             "then": "abandon"
           },
           {
-            "condition": "Faaliyet sürüyor ama bir tavan, kota ya da koşulla daraltılmışsa",
+            "condition": "Boşluğun nesnesi bir erişim, miktar ya da kapsamsa ve faaliyet durmadan bir sınır, tavan ya da koşulla daraltılıyorsa",
             "then": "restrict"
           },
           {
-            "condition": "Korunan şey kaybolabilir ya da zarar görebilir bir değerse ve amaç onu geleceğe taşımaksa",
+            "condition": "Boşluğun nesnesi kaybolabilecek ya da zarar görebilecek değerli şeyin kendisiyse ve amaç onu geleceğe taşımaksa",
             "then": "preserve"
           },
           {
-            "condition": "Korunan şey bir düzey, hız ya da işleyişse ve çaba kesilirse düşeceği anlaşılıyorsa",
+            "condition": "Boşluğun nesnesi bir düzey, hız ya da işleyişse ve çaba kesilirse düşeceği anlaşılıyorsa",
             "then": "maintain"
           }
         ]
@@ -876,7 +876,7 @@
         "sides": [
           {
             "label": "withhold",
-            "gloss": "Karşı tarafın hak ettiği ya da alacağı olan bir şey bilerek verilmez. Verilmeyen şey öznenin kendi malı değildir.",
+            "gloss": "Karşı tarafın hak ettiği ya da alacağı olan bir şey bilerek verilmez. Belirleyici olan, karşı tarafın o şey üzerinde bir hakkının bulunmasıdır.",
             "example": "The firm withheld the report."
           },
           {
@@ -913,6 +913,12 @@
             "use": "İki nesneli biçim",
             "pattern": "S + assign + N + N",
             "example": "They assigned her the case."
+          },
+          {
+            "form": "assign",
+            "use": "Ters yön: kişi bir göreve ya da yere verilir",
+            "pattern": "S + assign + person + to + N",
+            "example": "They assigned her to the Ankara office."
           },
           {
             "form": "withhold",
@@ -986,7 +992,7 @@
         "heading": "Sınavda ne yapacaksın",
         "rules": [
           {
-            "condition": "Verilen şey bir miktar değil de bir görev, rol ya da vakaysa ve belirli bir kişiye veya ekibe gidiyorsa",
+            "condition": "Verilen şey bir miktar değil de bir görev, rol ya da vakaysa ve belirli bir kişiye veya ekibe gidiyorsa — ya da belirli bir kişi belirli bir göreve veya yere gönderiliyorsa",
             "then": "assign"
           },
           {

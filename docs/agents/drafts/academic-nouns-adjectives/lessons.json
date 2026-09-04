@@ -633,8 +633,8 @@
       },
       {
         "type": "pitfall",
-        "wrong": "A crucial amount of time was wasted.",
-        "right": "A substantial amount of time was wasted.",
+        "wrong": "A crucial amount of stock was destroyed.",
+        "right": "A substantial amount of stock was destroyed.",
         "why": "crucial miktar bildirmez, onsuz olmaz der. Ölçülen bir miktarı büyük göstermek için miktar ekseninden bir sözcük gerekir."
       },
       {
