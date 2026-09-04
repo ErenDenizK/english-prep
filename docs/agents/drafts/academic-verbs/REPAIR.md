@@ -516,3 +516,22 @@ tree at 15:28 (`WIP: the nouns/adjectives lesson examples, mid-repair`),
 which swept most of this round's edits into that commit. The files on
 disk are correct and `npm run draft` is clean; the commit boundary is
 not.
+
+---
+
+## Where this repair lives in the history
+
+Commit boundaries for this round are wrong, and the record is here rather
+than in them. Two repair agents wrote concurrently while a stop hook
+committed the working tree whenever this session paused, so:
+
+| commit | title says | actually contains |
+| --- | --- | --- |
+| `1632abc` | the topic intro screens | those, plus both drafts mid-repair |
+| `94b8e6a` | the nouns/adjectives lesson examples, WIP | that, correctly |
+| `23f1302` | the academic-verbs repair | **both** repairs' final state and both `REPAIR.md` files |
+
+Nothing was lost and every intermediate state passed `npm run draft`, but
+a reader following `git log` will not find a commit whose message
+describes the `academic-nouns-adjectives` repair. These two files are the
+record; the history is only where the bytes are.
