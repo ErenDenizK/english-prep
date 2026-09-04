@@ -17,7 +17,7 @@
 
 import { loadManifest } from "./topics.js";
 import {
-  getLastTopicScore,
+  getTopicAccuracy,
   getWeakCategories,
   getSeenVersion,
   getProfileName,
@@ -281,9 +281,13 @@ function renderTopicRow(topic) {
     if (typeof topic.contentVersion === "number" && getSeenVersion(topic.id) < topic.contentVersion) {
       trail.appendChild(el("span", "chip chip--accent", "Yeni"));
     }
-    const lastScore = getLastTopicScore(topic.id);
-    if (lastScore) {
-      trail.appendChild(el("span", "t-num", `${lastScore.correct}/${lastScore.total}`));
+    // A percentage, not a fraction. The row already carries one fraction's
+    // worth of numbers in its subtitle ("24 soru · 6 ders"), and a second
+    // pair beside it was read as the topic's own size — which is how a
+    // 24-question topic came to show "0/3".
+    const accuracy = getTopicAccuracy(topic.id);
+    if (accuracy) {
+      trail.appendChild(el("span", "t-num", `%${Math.round(accuracy.accuracy * 100)}`));
     }
     trail.appendChild(icon("chevron-right", { size: 20 }));
   }
