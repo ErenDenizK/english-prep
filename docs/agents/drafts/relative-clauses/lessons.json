@@ -80,8 +80,8 @@
             "note": "Zamirin önünde edat var → whom"
           },
           {
-            "sentence": "The child who broke the window apologised.",
-            "note": "Zamirden hemen sonra fiil, kişi eylemi yapıyor → who"
+            "sentence": "The bridge whose railings rusted is closed to traffic.",
+            "note": "Öncül insan değil, ama korkuluklar ona ait → whose"
           }
         ]
       },
@@ -115,7 +115,7 @@
             "then": "Which / That"
           },
           {
-            "condition": "Boşluktan sonra gelen isim öncüle ait bir şeyse, yani 'his car', 'her father', 'its roof' yerine geçiyorsa — öncülün insan olması gerekmez",
+            "condition": "Boşluktan hemen sonra gelen isim öncüle ait bir şeyse, yani 'his car', 'her father', 'its roof' yerine geçiyorsa — öncülün insan olması gerekmez",
             "then": "Whose"
           },
           {
@@ -123,7 +123,7 @@
             "then": "Whom"
           },
           {
-            "condition": "Boşluktan sonra bir isim var ama o isim öncüle ait değilse, boşluk sahiplik değil nesne bildirir",
+            "condition": "Boşluktan hemen sonra bir isim ya da zamir geliyor (the jury, my sister) ve bu öncüle ait bir şey değil, yan cümlenin kendi öznesiyse — boşluk sahiplik değil nesne bildirir",
             "then": "Whom"
           },
           {
@@ -135,7 +135,7 @@
             "then": "Whom"
           },
           {
-            "condition": "Şıkta kesme işaretli 'who's' varsa: bu 'who is / who has' kısaltmasıdır, sahiplik bildiremez",
+            "condition": "Şıkta hem 'whose' hem kesme işaretli 'who's' varsa ve boşluktan hemen sonra bir isim geliyorsa: 'who's' yalnızca 'who is / who has' kısaltmasıdır, sahiplik bildiremez",
             "then": "Whose"
           }
         ]
@@ -184,7 +184,7 @@
       },
       {
         "type": "text",
-        "body": "Dürüst sınır: virgülsüz bir cümlede hem 'that' hem 'which' doğrudur ve sınavda ikisini birbirine karşı anahtarlamak haksızlık olur. Kuralın karar verdiği yerler şunlar: virgülden sonra, edattan sonra, zamir bütün bir cümleyi karşılarken, all / everything / the only ve en üstünlük ifadelerinden sonra, öncül insanla nesneyi birlikte kapsadığında. Bu yüzden önce virgüle bakılır."
+        "body": "Dürüst sınır: virgülsüz bir cümlede hem 'that' hem 'which' doğrudur; sınav ikisini birbirine karşı anahtarlayamaz. Kuralın karar verdiği yerler şunlar: virgülden sonra, edattan sonra, zamir bütün bir cümleyi karşılarken, kendi başına duran 'all' / 'everything' öncülünden sonra, öncül insanla nesneyi birlikte kapsadığında. En üstünlükten sonra 'that' tercihtir, kural değil; önce virgüle bakılır."
       },
       {
         "type": "forms",
@@ -218,6 +218,12 @@
             "use": "Tanımlamayan, insan",
             "pattern": "N, who + V, ...",
             "example": "Ayşe, who studies law, is my cousin"
+          },
+          {
+            "form": "That",
+            "use": "İnsan ve nesne birlikte",
+            "pattern": "N and N + that + V",
+            "example": "the driver and the van that went missing"
           }
         ]
       },
@@ -246,6 +252,10 @@
           {
             "sentence": "Professor Demir, who taught us statistics, has retired.",
             "note": "Kişi zaten belli, virgüller arasında ek bilgi → who"
+          },
+          {
+            "sentence": "All that mattered was the deadline.",
+            "note": "Öncül tek başına 'all' → that"
           }
         ]
       },
@@ -291,11 +301,11 @@
             "then": "Which"
           },
           {
-            "condition": "Virgül yok ve öncül **all**, **everything**, **the only** ile başlıyorsa ya da bir en üstünlük ifadesi (the first, the best) taşıyorsa — öncül tek başına 'all' ya da 'everything' olabilir",
+            "condition": "Virgül yok ve öncül kendi başına duran 'all', 'everything', 'the only thing' ise — 'all which' İngilizcede kurulmaz",
             "then": "That"
           },
           {
-            "condition": "Virgül yok ve öncül bir insanla bir nesneyi birlikte kapsıyorsa (the volunteers and the equipment) — 'which' gönüllüleri, 'who' ekipmanı dışarıda bırakır",
+            "condition": "Virgül yok ve öncül bir insanla bir nesneyi birlikte kapsıyorsa (iki isim 'and' ile bağlanmış, biri insan biri eşya) — 'which' insanları, 'who' eşyayı dışarıda bırakır",
             "then": "That"
           }
         ]
@@ -316,7 +326,7 @@
         "sides": [
           {
             "label": "Where",
-            "gloss": "Ana isim bir yer, bir kurum ya da bir alan / durum bildirir ve yan cümlede eksik bir öge yoktur: the city where we met, the craft where patience matters.",
+            "gloss": "Ana isim bir yer, bir kurum ya da bir alan / durum bildirir ve yan cümlede eksik bir öge yoktur: the city where we met, the industry where safety comes first.",
             "example": "the café where we first met"
           },
           {
@@ -442,11 +452,7 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
-            "condition": "Öncül, boşluğun hemen solundaki isimdir; paragrafın başka bir yerindeki yer ya da zaman sözcüğü değil",
-            "then": "Where / When / Why / Which"
-          },
-          {
-            "condition": "Önce boşluktan sonrasını oku: ana isim insan değilse ve fiilin öznesi ya da nesnesi eksikse — sonda boşta kalmış bir edat da (lived in, told you about) eksik demektir",
+            "condition": "Önce boşluktan sonrasını oku — ve öncülü paragraftaki en dikkat çeken yer/zaman sözcüğü değil, boşluğun bağlandığı isim olarak al: ana isim insan değilse ve fiilin öznesi ya da nesnesi eksikse — sonda boşta kalmış bir edat da (lived in, told you about) eksik demektir",
             "then": "Which"
           },
           {
@@ -458,7 +464,7 @@
             "then": "When"
           },
           {
-            "condition": "Yan cümle eksiksiz ve ana ismin çekirdeği 'reason' ise (the reason, the real reason, the main reason)",
+            "condition": "Yan cümle eksiksiz ve ana ismin çekirdeği 'reason' ise (sıfat almış olsa da)",
             "then": "Why"
           }
         ]
@@ -527,6 +533,12 @@
             "use": "Bir nesnenin parçası ya da özelliği",
             "pattern": "N, the ... of which + V",
             "example": "the house, the roof of which had collapsed"
+          },
+          {
+            "form": "To which",
+            "use": "Öncül ismin kendi edatı",
+            "pattern": "N + to which + S + V",
+            "example": "the extent to which prices rose"
           }
         ]
       },
@@ -584,16 +596,16 @@
         "heading": "Sınavda sırayla bunlara bak",
         "rules": [
           {
+            "condition": "Şıklar edat bakımından ayrışıyorsa — biri edatlı biri edatsız ya da iki ayrı edat — soru önce edatı soruyor: cümleyi düz yaz ve hangi edatın gerektiğini gör. Edatı bazen fiil seçer (She works for the company), bazen öncül ismin kendisi (the extent to which prices rose). Başka bir edat taşıyan ya da edatı hiç taşımayan şık elenir",
+            "then": "The preposition the plain sentence uses"
+          },
+          {
             "condition": "Boşluğun içinde ya da hemen önünde bir edat varsa (to, with, for, at, in) ve ana isim bir insansa — edattan sonra 'who' gelmez",
             "then": "Whom"
           },
           {
             "condition": "Boşluğun içinde ya da hemen önünde bir edat varsa ve ana isim insan değilse — edattan sonra 'that' gelmez",
             "then": "Which"
-          },
-          {
-            "condition": "Hangi edatın geleceğini cümleyi düz yazınca görürsün (She works for the company / It is losing ice at that rate): edatı bazen fiil, bazen öncül ismin kendisi seçer; o edatı zamirin önüne taşı",
-            "then": "Preposition + which / whom"
           },
           {
             "condition": "İnsan olmayan bir ismin parçasından ya da özelliğinden söz ediliyor ve o parçanın adı boşluktan **önce** yazılmışsa (the purpose ___, the roof ___)",
@@ -722,6 +734,10 @@
             "then": "V-ing / V3 (-ed)"
           },
           {
+            "condition": "Şık 'having + V3' biçimindeyse elenir: bu, ana cümledeki eylemden önce bitmiş ayrı bir olayı anlatır, süren ya da o sırada geçerli olan bir durumu kısaltmaz — 'the guests arriving' ile 'the guests having arrived' aynı şey değildir",
+            "then": "V-ing / V3 (-ed)"
+          },
+          {
             "condition": "Eylemi ana isim kendisi yapıyor ve eylem sürüyor ya da genel bir durumu anlatıyorsa",
             "then": "V-ing"
           },
@@ -804,6 +820,12 @@
             "use": "En üstünlük",
             "pattern": "N, the largest of which + V",
             "example": "three halls, the largest of which seats 400"
+          },
+          {
+            "form": "Of whom",
+            "use": "Tam iki öge",
+            "pattern": "N, neither of whom + V",
+            "example": "the two examiners, neither of whom had read the file"
           }
         ]
       },
@@ -865,16 +887,16 @@
             "then": "Of whom / Of which"
           },
           {
+            "condition": "Şık 'neither' ile başlıyor ama öncül ikiden fazla ögeyse o şık elenir: 'neither' yalnızca tam olarak iki öge içindir, ikiden fazlası için 'none' gelir. Sayı çoğu zaman öncülün hemen önünde yazılıdır",
+            "then": "None of which / None of whom"
+          },
+          {
             "condition": "Boşlukta ya da boşluktan hemen önce 'of' varsa ve ana isim insansa — 'of'tan sonra ne 'who' ne 'that' gelir",
             "then": "Of whom"
           },
           {
             "condition": "Boşlukta ya da boşluktan hemen önce 'of' varsa ve ana isim nesne, kurum ya da kavramsa",
             "then": "Of which"
-          },
-          {
-            "condition": "Öncül tam olarak iki ögeyse 'neither', ikiden fazlaysa 'none' kullanılır; sayı çoğu zaman bir önceki cümlededir",
-            "then": "None of which / None of whom"
           },
           {
             "condition": "İkinci cümle 'and' ile bağlanmışsa ya da noktayla ayrılmış bağımsız bir cümleyse",

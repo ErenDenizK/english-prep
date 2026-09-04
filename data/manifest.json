@@ -74,6 +74,87 @@
         { "category": "Passive Reporting Structures", "summary": "Kaynağı belirtmeden bir bilgi nasıl aktarılır?" },
         { "category": "By + Agent: Include vs Omit", "summary": "'By' ne zaman gerekli, ne zaman fazlalık?" }
       ]
+    },
+    {
+      "id": "closest-meaning",
+      "title": "Closest Meaning",
+      "tier": "compound-structures",
+      "file": "data/closest-meaning/closest-meaning.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Third Conditional vs Mixed Conditional",
+        "Unless vs If Not vs Otherwise",
+        "Despite vs Although vs However",
+        "As...As vs Comparatives vs The More...The More",
+        "Too vs Enough vs So...That",
+        "Passive Reporting: It Is Said vs Is Said To"
+      ],
+      "lessons": [
+        { "category": "Third Conditional vs Mixed Conditional", "summary": "Sonuç da geçmişte mi kaldı, bugüne mi uzanıyor?" },
+        { "category": "Unless vs If Not vs Otherwise", "summary": "Olumsuzluk hangi cümleye düşüyor: koşula mı, sonuca mı?" },
+        { "category": "Despite vs Although vs However", "summary": "Zıtlığı hangi cümle taşıyor, asıl söylenen hangisi?" },
+        { "category": "As...As vs Comparatives vs The More...The More", "summary": "Karşılaştırmada fazlası hangi tarafta kaldı?" },
+        { "category": "Too vs Enough vs So...That", "summary": "Derece sonucu engelledi mi, yoksa doğurdu mu?" },
+        { "category": "Passive Reporting: It Is Said vs Is Said To", "summary": "Kaynak orijinalde ne kadarsa o kadar: ne ekle, ne çıkar." }
+      ]
+    },
+    {
+      "id": "connectors",
+      "title": "Connectors & Discourse Markers",
+      "tier": "compound-structures",
+      "file": "data/connectors/connectors.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Addition vs Similarity: Moreover / Similarly / Likewise",
+        "Contrast vs Concession: However / Nevertheless / On the Other Hand",
+        "Result vs Purpose: Therefore / Thus / So That / In Order To",
+        "Exemplification vs Restatement: For Instance / Namely / In Other Words",
+        "Time & Sequence: Meanwhile / Subsequently / By Then",
+        "Emphasis & Summary: Above All / In Short / Overall"
+      ],
+      "lessons": [
+        { "category": "Addition vs Similarity: Moreover / Similarly / Likewise", "summary": "Yeni bilgi mi ekliyor, ikinci bir örnek de aynı mı davranıyor?" },
+        {
+          "category": "Contrast vs Concession: However / Nevertheless / On the Other Hand",
+          "summary": "Düz zıtlık mı, beklentiyi boşa çıkarma mı, iki yüz mü?"
+        },
+        { "category": "Result vs Purpose: Therefore / Thus / So That / In Order To", "summary": "Gerçekleşmiş bir sonuç mu, hedeflenen bir amaç mı?" },
+        {
+          "category": "Exemplification vs Restatement: For Instance / Namely / In Other Words",
+          "summary": "Örnek mi veriyor, tam olarak hangisi olduğunu mu söylüyor?"
+        },
+        { "category": "Time & Sequence: Meanwhile / Subsequently / By Then", "summary": "Aynı anda mı sürüyor, sonra mı oldu, o ana kadar bitmiş mi?" },
+        { "category": "Emphasis & Summary: Above All / In Short / Overall", "summary": "En önemlisini mi seçiyor, hepsini tek cümlede mi topluyor?" }
+      ]
+    },
+    {
+      "id": "quantifiers",
+      "title": "Quantifiers & Determiners",
+      "tier": "core-grammar",
+      "file": "data/quantifiers/quantifiers.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "A Few vs Few vs A Little vs Little",
+        "Much vs Many vs A Lot Of vs Plenty Of",
+        "Some vs Any vs No vs None",
+        "Each vs Every vs Both vs All",
+        "Either vs Neither vs Nor",
+        "Most vs Most Of vs The Most"
+      ],
+      "lessons": [
+        { "category": "A Few vs Few vs A Little vs Little", "summary": "Tek bir 'a', 'azdı ama yetti' ile 'neredeyse hiç'i ayırır." },
+        { "category": "Much vs Many vs A Lot Of vs Plenty Of", "summary": "İsim sayılabilir mi, ve cümle düz olumlu mu?" },
+        { "category": "Some vs Any vs No vs None", "summary": "Olumsuzluğu fiil mi taşıyor, kelime mi?" },
+        { "category": "Each vs Every vs Both vs All", "summary": "Fiil tekil mi çoğul mu? Karar oradan başlar." },
+        { "category": "Either vs Neither vs Nor", "summary": "İkisinden biri mi, ikisi de değil mi?" },
+        { "category": "Most vs Most Of vs The Most", "summary": "Genel olarak çoğu mu, bu grubun çoğu mu, yoksa en mi?" }
+      ]
     }
   ]
 }

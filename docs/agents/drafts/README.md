@@ -1,6 +1,13 @@
 # Drafts
 
-Nothing in here is served. A topic is shipped by putting it in `data/`
+**Shipped 2026-09-04: `closest-meaning`, `connectors`, `quantifiers`** —
+72 questions and 18 lessons, taking the app to 6 topics, 145 questions
+and 36 lessons. Each cleared a blind pass on its items and a sufficiency
+pass on its lessons, and each of the three lesson repairs went back for
+an independent re-audit rather than being trusted. Their sections below
+are kept as the record of what those passes found.
+
+Nothing else in here is served. A topic is shipped by putting it in `data/`
 and in `data/manifest.json`, which is what `tools/ship-topic.mjs` does —
 and it will happily ship content that failed both review passes, so the
 state of each topic is recorded below rather than inferred from the

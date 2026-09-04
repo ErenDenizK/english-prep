@@ -278,7 +278,10 @@ async function runFlow(page, viewport) {
   // about the exam.
   const profileText = await page.locator("#profile-container").innerText();
   ok(profileText.includes("Sınavın hangi kısmı burada"), "kapsam bölümü Profil'de");
-  ok(/okuma \(21 puan\)/.test(profileText), "kapsanmayan bölümler puanıyla adlandırılıyor");
+  // Case-insensitive: the sentence is built from the manifest, so a
+  // section name sits mid-sentence or opens one depending on what has
+  // shipped. That is the paragraph correcting itself, not a regression.
+  ok(/okuma \(21 puan\)/i.test(profileText), "kapsanmayan bölümler puanıyla adlandırılıyor");
   ok(/dinleme/.test(profileText), "Session II'nin kapsanmadığı söyleniyor");
 
   ok(errors.length === 0, `konsol temiz${errors.length ? ` — ${[...new Set(errors)].join(" | ")}` : ""}`);
