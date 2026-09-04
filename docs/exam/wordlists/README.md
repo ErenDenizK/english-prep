@@ -1,16 +1,16 @@
-# The prep school's published word lists
+# Published prep-school word lists
 
-Primary source, supplied by the owner. Extract a new one with:
+Primary source. Extract a new one with:
 
 ```bash
-node tools/extract-wordlist.mjs <list.pdf> docs/exam/wordlists/<level>-<years>.json
+node tools/extract-wordlist.mjs <list.pdf> docs/exam/wordlists/<school>-<level>-<years>.json
 ```
 
 ## What is here
 
-| File | Level | Groups | Entries |
-| --- | --- | --- | --- |
-| `elementary-2023-2024.json` | Elementary (A1–A2) | 30 | 1,126 |
+| File | School | Level | Groups | Entries |
+| --- | --- | --- | --- | --- |
+| `bilkent-elementary-2023-2024.json` | Bilkent (BUSEL) | Elementary (A1–A2) | 30 | 1,126 |
 
 Thirty thematic groups: *Meta Language*, *Linkers*, *Modal Verbs*,
 *Classroom (Equipment)*, *Prepositions*, *Work/Job Related*, *Irregular
@@ -18,47 +18,60 @@ Verbs*, *Food & Drink*, *Body Parts*, and so on. The vocabulary is
 `black / blue / brown`, `chin / ear / eye`, `can / could / would`,
 `and / because / but`.
 
+## Whose list this is, and why that was wrong for a while
+
+**It is Bilkent's, not YTÜ's**, and this file said otherwise until
+2026-09-04. It arrived among the files a friend sitting the **Bilkent**
+exam shared with the owner, and it is
+[`ELEMENTARY-LEVEL-WORDLIST-2023-2024.pdf`](http://prep.bilkent.edu.tr/wp-content/uploads/2023/09/ELEMENTARY-LEVEL-WORDLIST-2023-2024.pdf),
+published by BUSEL in September 2023 — same title string, same thirty
+group names in the same order. YTÜ does not name its levels
+"Elementary"; it uses A1 / A2 / B1 / B1+.
+
+That matters because the repo is now serving two learners sitting two
+different papers, and a check run against the wrong institution's list
+proves something other than what it claims.
+
 ## What it settles, and what it does not
 
-**It settles that the school publishes level-banded, thematically
-grouped word lists.** That is new, and it matters more than the contents
-of this particular file: it means there is a *published* answer to "which
-words does this institution expect you to know", and one band of it is
-now in the repo with a tool that reads the next one in a single command.
+**It settles that Bilkent publishes a level-banded lexical syllabus.**
+That is the useful finding, and a bigger one than this particular file:
+`docs/research/exam-vocabulary.md` traces the upper-level lists, which
+are `HEADWORD | VERB | NOUN | ADJECTIVE | ADVERB | COLLOCATION` tables —
+a published answer to "which words, in which forms, with which
+collocations does this institution expect", for the exam that actually
+has a discrete vocabulary section.
 
-**It is not the syllabus for the proficiency exam.** This is the lowest
-band. `docs/research/vocabulary.md` §2.3 excludes K1–K3 in their core
-senses with the reason that the learner already has them, and this list
-is almost entirely that. Nothing in it should become an item.
+**It is not the syllabus for either proficiency exam.** This is the
+lowest band. `docs/research/vocabulary.md` §2.3 excludes K1–K3 in their
+core senses because the learner already has them, and this list is almost
+entirely that. Nothing in it should become an item.
 
-**It does, however, validate the vocabulary taxonomy by not overlapping
-it.** All sixty target words in `docs/agents/kickoff-vocabulary.md` were
-checked against every entry here, split on the source's own `/` and `–`
-alternatives:
+**It does still validate the vocabulary taxonomy by not overlapping it,
+for Bilkent.** All sixty target words in `docs/agents/kickoff-vocabulary.md`
+were checked against every entry here, split on the source's own `/` and
+`–` alternatives:
 
 ```
-0 / 60 target words appear in the elementary list
+0 / 60 target words appear in the Bilkent elementary list
 ```
 
-Every one of the twelve semantic sets came back clean. That is a cheap,
-real check that the two topics being authored sit above the band the
-school treats as assumed knowledge — and it is a check worth re-running
-against the *upper* list when it arrives, where a hit would mean the
-opposite thing and would be worth acting on.
+Every one of the twelve semantic sets came back clean. Read it as what it
+is: evidence that the two drafted topics sit above what **Bilkent**
+treats as assumed knowledge. It says nothing about YTÜ, and the earlier
+version of this file claimed it did.
 
 ## What is still missing
 
-**The list for the level the proficiency exam actually samples.** The
-school publishes one per level, so there are presumably Pre-Intermediate,
-Intermediate and Upper-Intermediate lists as well. The last of those is
-the one that would change authoring decisions: `vocabulary.md` §2.2 says
-AWL and AVL are *"inputs to choosing sets, not the syllabus"*, and an
-institution's own published list for the exam's own level is a
-straightforwardly better input than either.
+**Bilkent's upper lists**, which is where a hit would mean the opposite
+thing and would be worth acting on — and which are published and
+findable; `docs/research/exam-vocabulary.md` has the URLs and the reason
+`tools/extract-wordlist.py` needs work before it can read their
+six-column layout.
 
-It would not change the method — the unit stays a semantic set, not a
-word, for the reasons in §2.2 — but it would change which sets are worth
-six items.
+**Anything published by YTÜ.** No level-banded list has been found for
+the owner's own exam, which leaves `docs/exam-spec.md`'s two sample
+papers as the only primary source for it.
 
 ## One known limitation of the extraction
 

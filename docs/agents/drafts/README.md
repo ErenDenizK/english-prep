@@ -237,9 +237,12 @@ paper asked for vocabulary. First content in the app that is not grammar,
 and the first to use `optionNotes`, which is mandatory here: every wrong
 option is a different word, so one explanation cannot cover three.
 
-Validated against the school's own published word list: **0 of the 60
-target words appear in its elementary band** (`docs/exam/wordlists/`), so
-both topics sit above what the school treats as assumed knowledge.
+Validated against a published prep-school word list: **0 of the 60 target
+words appear in its elementary band** (`docs/exam/wordlists/`), so both
+topics sit above what that school treats as assumed knowledge. The list
+turned out to be **Bilkent's, not YTÜ's** — it came in with the files a
+friend sitting the Bilkent exam shared — so read the check as evidence
+about Doruk's paper. It says nothing about the owner's.
 
 `npm run draft` leaves one warning on each, and **both are forced rather
 than careless.** Each category is five words and each item shows four, so
