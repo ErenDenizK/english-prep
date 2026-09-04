@@ -108,7 +108,7 @@
     {
       "id": "tenses-t7",
       "category": "Present Perfect vs Past Simple",
-      "paragraph": "Look at this mess! Someone ____ the coffee machine and left it broken for the whole office.",
+      "paragraph": "Look at this mess! Someone ____ the coffee machine, and now the whole office is drinking instant coffee.",
       "options": ["broke", "has broken", "breaks", "was breaking"],
       "correctIndex": 1,
       "explanation": "Olayın ne zaman olduğu hiç söylenmiyor; önemli olan sonucun şu anda ortada olması ('Look at this mess!', makine hâlâ bozuk), bu yüzden Present Perfect 'has broken' kullanılır. 'broke' Past Simple'dır ve belirli, kapanmış bir geçmiş ana ait bir olay bildirir — cümlede böyle bir zaman ifadesi yok ve vurgu geçmişte değil, şu an gözünün önündeki sonuçta. 'was breaking' ise o sırada sürmekte olan bir eylem anlatır, oysa kırılma anlık ve tamamlanmış bir olaydır.",
@@ -136,15 +136,15 @@
     {
       "id": "tenses-t9",
       "category": "Past Simple vs Past Continuous vs Past Perfect",
-      "paragraph": "While she ____ for the bus, she noticed a familiar face across the street and almost missed her stop thinking about it.",
-      "options": ["waited", "was waiting", "has waited", "waits"],
+      "paragraph": "While she ____ across the bridge on her usual route home, a sudden gust tore the umbrella out of her hand, and she had to turn back before she reached the other side.",
+      "options": ["walked", "was walking", "has walked", "walks"],
       "correctIndex": 1,
-      "explanation": "'While' arka planda sürmekte olan bir geçmiş eylemi işaret eder; sürmekte olan eylem Past Continuous 'was waiting' alır, onu kesen kısa olay ise Past Simple'dır ('noticed'). 'waited' beklemeyi olup bitmiş tek bir olaya çevirir ve 'while' ile kurulan arka plan–kesme ilişkisini yok eder; o zaman iki eylem sadece arka arkaya olmuş gibi okunur. 'has waited' ise geçmişi şimdiye bağlar, oysa cümlenin tamamı ('noticed', 'almost missed') kapanmış bir geçmiş sahneyi anlatıyor.",
+      "explanation": "'While' arka planda sürmekte olan bir geçmiş eylemi işaret eder; sürerken kesilen eylem Past Continuous 'was walking' alır, onu kesen ani olay ise Past Simple'dır ('tore'). 'walked' köprüyü baştan sona geçtiğini, yani yürüyüşün tamamlandığını söyler — oysa cümlenin sonu 'she had to turn back before she reached the other side' diyerek karşıya hiç geçemediğini belirtiyor. 'has walked' ise geçmişi şimdiye bağlar, oysa 'tore' ve 'had to turn back' kapanmış bir sahne kuruyor.",
       "tip": "'While' genelde Past Continuous ile, 'when' genelde Past Simple ile eşleşir.",
       "optionNotes": {
-        "waited": "Beklemeyi olup bitmiş tek bir olaya çevirir. 'While' ise arka planda süren ve 'noticed' ile kesilen bir eylem ister.",
-        "has waited": "Bekleyişi bugüne bağlar ve şu an geçerli bir sonuç bildirir. Oysa 'noticed' ve 'almost missed' kapanmış bir sahne kuruyor.",
-        "waits": "Her gün tekrarlanan bir rutin gibi okunur. Cümlenin geri kalanı ise o gün bir kez olmuş tek bir sahneyi anlatıyor."
+        "walked": "Köprüyü baştan sona geçtiğini söyler. Cümlenin sonu ise karşı tarafa hiç ulaşamadığını, geri dönmek zorunda kaldığını belirtiyor.",
+        "has walked": "Yürüyüşü bugüne bağlar ve şu an geçerli bir sonuç bildirir. Oysa 'tore' ve 'had to turn back' kapanmış bir sahne kuruyor.",
+        "walks": "Her gün tekrarlanan bir rutin gibi okunur. 'Usual route' bunu düşündürse de anlatılan, o gün bir kez yaşanmış tek bir olay."
       }
     },
     {
@@ -206,14 +206,14 @@
     {
       "id": "tenses-t14",
       "category": "Future Forms",
-      "paragraph": "Don't worry about picking me up — I ____ a taxi from the airport, so just relax at home.",
+      "paragraph": "Stop offering to pick me up — I ____ a taxi from the airport. I hadn't thought about it until just now, so nothing is arranged.",
       "options": ["am taking", "will take", "take", "have taken"],
       "correctIndex": 1,
-      "explanation": "Karar tam konuşma anında veriliyor: karşı taraf seni almayı teklif ediyor, sen de o anda taksi tutmaya söz veriyorsun; ani kararlar ve sözler 'will' ile kurulur ('will take'). 'am taking' önceden ayarlanmış, kesinleşmiş bir planı bildirir, oysa 'Don't worry about picking me up' bu kararın konuşma sırasında doğduğunu gösteriyor. 'take' Present Simple ise resmî tarifeler içindir (uçuş, tren saati), konuşma anında verilen kişisel bir karar için değil.",
+      "explanation": "Karar tam konuşma anında doğuyor: karşı taraf seni almayı teklif ediyor, sen de o anda taksiye karar veriyorsun; ani kararlar ve verilen sözler 'will' ile kurulur. 'am taking' önceden ayarlanmış, kesinleşmiş bir planı bildirir — oysa cümle 'I hadn't thought about it until just now, so nothing is arranged' diyerek böyle bir planın olmadığını açıkça söylüyor. 'take' Present Simple ise resmî tarifeler içindir (uçuş, tren saati), konuşma anında verilen kişisel bir karar için değil.",
       "tip": "Önceden planlanmamış, konuşma anında alınan kararlar ve verilen sözler için 'will' kullanılır.",
       "optionNotes": {
-        "am taking": "Önceden ayarlanmış, kesinleşmiş bir plan. 'Don't worry about picking me up' kararın konuşma sırasında doğduğunu gösteriyor.",
-        "take": "Resmî tarifeler içindir (uçuş, tren saati). Burada verilen ise karşı tarafı rahatlatmak için o anda alınan kişisel bir karar.",
+        "am taking": "Önceden ayarlanmış, kesinleşmiş bir planı bildirir. Cümle ise 'nothing is arranged' diyor: ortada ayarlanmış hiçbir şey yok.",
+        "take": "Resmî tarifeler içindir (uçuş, tren saati). Burada verilen ise teklifi geri çevirmek için o anda alınan kişisel bir karar.",
         "have taken": "Taksiye çoktan binmiş olmak ve sonucunun şu an geçerli olması. Oysa konuşan henüz havaalanına inmiş bile değil."
       }
     },
@@ -276,15 +276,15 @@
     {
       "id": "tenses-t19",
       "category": "Past Simple vs Past Continuous vs Past Perfect",
-      "paragraph": "By the time she turned thirty, she ____ two companies and sold both of them for a considerable profit.",
-      "options": ["founded", "has founded", "had founded", "was founding"],
-      "correctIndex": 2,
-      "explanation": "'By the time she turned thirty' geçmişte bir referans anı veriyor; o andan önce tamamlanan eylemler Past Perfect alır, bu yüzden 'had founded' doğrudur. 'founded' Past Simple olsaydı şirket kurmak otuz yaşına basmasından önce bitmiş değil, onunla aynı çizgide olup bitmiş görünürdü — oysa 'by the time' tam da bu öncelik ilişkisini kurmak için var. 'has founded' ise şimdiye bağlanır, oysa cümlenin bağlandığı nokta 'turned thirty', yani geçmişte bir an.",
-      "tip": "'By the time' geçmişte bir referans anı verir: o andan önce bitmiş bir eylem Past Perfect alır, o anda ortaya çıkan bir durum ise Past Simple ile kalır.",
+      "paragraph": "The interview lasted barely ten minutes. The manager glanced at my portfolio, ____ me two short questions about the deadline I had missed the year before, and said she would call me on Monday.",
+      "options": ["asked", "had asked", "was asking", "has asked"],
+      "correctIndex": 0,
+      "explanation": "Boşluk, hikâyenin ana çizgisindeki üç eylemden ortadakidir: 'glanced', boşluk, 'said'. Sırayla olup biten olaylar Past Simple alır, bu yüzden 'asked' doğrudur. 'had asked' soruların bu üç eylemden önce bittiğini söylerdi; oysa üçü de aynı on dakikanın içinde art arda oluyor. Cümlenin gerçek Past Perfect'i zaten yerinde duruyor: 'the deadline I had missed the year before' — görüşmeden bir yıl öncesine ait olan iş odur. 'was asking' ise soru sormayı kesilmeyi bekleyen bir arka plana çevirir.",
+      "tip": "Olaylar sadece sırayla anlatılıyorsa hepsi Past Simple kalır; Past Perfect ancak biri diğerinden önce bittiği için ayrılması gerektiğinde girer.",
       "optionNotes": {
-        "founded": "Şirket kurmayı otuz yaşına basmasıyla aynı çizgide gösterir. 'By the time' ise tam da öncelik ilişkisini kurmak için var.",
-        "has founded": "Şimdiye, bugüne kadarki bilançoya bağlanır. Cümlenin bağlandığı nokta ise 'turned thirty', geçmişte bir an.",
-        "was founding": "Otuzuna bastığı anda kuruluşun hâlâ sürdüğünü söyler. Oysa iki şirket o andan önce kurulmuş ve satılmış."
+        "had asked": "Soruların, cümledeki başka bir geçmiş andan önce bittiğini söyler. Oysa üç eylem de aynı on dakikanın içinde sırayla oluyor.",
+        "was asking": "Soru sormayı, kesilmeyi bekleyen sürmekte olan bir arka plana çevirir. Burada anlatılan ise art arda gelen üç kısa hareket.",
+        "has asked": "Görüşmeyi bugüne bağlar ve şu an geçerli bir sonuç bildirir. Cümle ise 'lasted barely ten minutes' ile kapanmış bir sahne kuruyor."
       }
     },
     {
@@ -332,29 +332,29 @@
     {
       "id": "tenses-t22",
       "category": "Time Expressions & Signal Words",
-      "paragraph": "The meeting had ____ started by the time we arrived, so we missed the introduction entirely.",
-      "options": ["already", "yet", "still", "ago"],
+      "paragraph": "The results were supposed to go up on Friday, and it is now the middle of the following week. According to the secretary, the marks haven't been entered ____, so nobody in our year can register for next term.",
+      "options": ["yet", "already", "still", "ago"],
       "correctIndex": 0,
-      "explanation": "Cümle olumlu ve referans noktası geçmişte ('by the time we arrived'); toplantının o andan önce başladığını söyleyen kelime 'already'dir ve Past Perfect ile birlikte doğal durur. 'yet' bu anlamıyla ('henüz') yalnızca olumsuz cümlelerde ve sorularda çalışır, olumlu bir 'had ____ started' kalıbına giremez — 'The meeting hadn't started yet' deseydi doğru olurdu, ama o zaman anlam tersine dönerdi. 'still' ise beklenenden uzun süren bir durumu anlatır ve bu kalıba oturmaz.",
-      "tip": "'Already' olumlu cümlelerde, 'yet' ise soru ve olumsuz cümlelerde kullanılır.",
+      "explanation": "Cümle olumsuz ('haven't been entered') ve beklenen bir işin hâlâ yapılmadığını söylüyor; olumsuz cümlelerde ve sorularda 'henüz' anlamını veren kelime 'yet'tir ve cümlenin sonunda durur. 'already' olumlu cümlelere aittir ve bir işin beklenenden erken bittiğini söyler — burada iş hiç yapılmamış. 'still' bu anlamı verebilir ama yeri farklıdır: 'the marks still haven't been entered' denir, yardımcı fiilden önce, cümlenin sonunda değil.",
+      "tip": "'Yet' olumsuz cümlenin ve sorunun sonunda durur; aynı işi olumlu cümlede 'already' yapar, 'still' ise olumsuzda yardımcı fiilden önce gelir.",
       "optionNotes": {
-        "yet": "Bir işin henüz olmadığını söyler ve yalnızca olumsuz cümlelerle sorulara girer. Buradaki 'had ____ started' olumlu bir kalıp.",
-        "still": "Bir durumun beklenenden uzun sürdüğünü anlatır. Burada anlatılan ise toplantının siz gelmeden önce başlamış olması.",
-        "ago": "Geçmişte bir anı işaret eder ve daima bir süre miktarının arkasına gelir ('two hours ago'); yardımcı fiilin yanına giremez."
+        "already": "Olumlu cümlelerde, bir işin beklenenden erken bittiğini söyler. Burada ise iş hiç yapılmamış ve cümle olumsuz.",
+        "still": "Bu anlamı verebilir ama yeri farklıdır: 'the marks still haven't been entered' denir, cümlenin sonunda değil.",
+        "ago": "Bir süre miktarının hemen arkasında çalışır ('three days ago') ve Past Simple ister. Burada önünde bir miktar yok."
       }
     },
     {
       "id": "tenses-t23",
       "category": "Time Expressions & Signal Words",
       "paragraph": "I've ____ finished the assignment, so there's no need to remind me about the deadline anymore.",
-      "options": ["yet", "already", "ago", "since"],
+      "options": ["yet", "already", "never", "ever"],
       "correctIndex": 1,
-      "explanation": "Cümle olumlu ve işin çoktan bittiğini, hatırlatmaya gerek olmadığını söylüyor; olumlu bir cümlede 'beklenenden önce bitti' anlamını veren kelime 'already'dir. 'yet' 'henüz' anlamıyla olumsuz cümlelere ve sorulara aittir ('I haven't finished yet' / 'Have you finished yet?'), bu yüzden 'I've ____ finished' boşluğuna giremez. 'since' ise arkasına bir başlangıç noktası ister (bir tarih ya da bir olay), oysa boşluktan hemen sonra fiil geliyor.",
+      "explanation": "Cümle olumlu ve işin çoktan bittiğini, hatırlatmaya gerek olmadığını söylüyor; olumlu bir cümlede 'beklenenden önce bitti' anlamını veren kelime 'already'dir. 'yet' 'henüz' anlamıyla olumsuz cümlelere ve sorulara aittir ('I haven't finished yet' / 'Have you finished yet?'), bu yüzden 'I've ____ finished' boşluğuna giremez. 'never' dilbilgisi açısından oturur ama anlamı tersine çevirir: ödevi hiç bitirmemiş biri hatırlatmaya gerek olmadığını söyleyemez.",
       "tip": "'Yet' 'henüz' anlamını yalnızca soru ve olumsuz cümlelerde verir: 'Have you finished yet?' / 'I haven't finished yet.' Olumlu cümlede aynı işi 'already' yapar.",
       "optionNotes": {
         "yet": "Türkçedeki 'henüz'ün karşılığıdır, ama yalnızca soru ve olumsuz cümlelerde: 'I haven't finished yet'. Buradaki cümle olumlu.",
-        "ago": "Bir süre miktarının hemen arkasında çalışır ('five years ago'). Burada boşluğun önünde süre değil 'I've', arkasında bir fiil var.",
-        "since": "Arkasına bir başlangıç noktası ister: bir tarih ya da bir olay. Boşluktan hemen sonra ise 'finished' fiili geliyor."
+        "never": "Dilbilgisi açısından boşluğa oturur ama anlamı tersine çevirir: ödevi hiç bitirmemiş biri hatırlatmaya gerek olmadığını söyleyemez.",
+        "ever": "Olumlu bir bildirim cümlesinde tek başına kullanılmaz; sorularda ve olumsuzlarda çalışır: 'Have you ever finished it on time?'"
       }
     },
     {
@@ -410,15 +410,6 @@
         },
         { "type": "check" },
         {
-          "type": "decision",
-          "heading": "Cümledeki ipucu",
-          "rules": [
-            { "signals": ["every day", "usually", "often", "always", "never", "on Mondays"], "then": "Present Simple" },
-            { "signals": ["now", "right now", "at the moment", "currently", "these days", "this week"], "then": "Present Continuous" },
-            { "condition": "Fiil bir durum bildiriyorsa (think, believe, love, know, own, understand)", "then": "Present Simple" }
-          ]
-        },
-        {
           "type": "text",
           "body": "Son kural sınavda en çok puan kaybettiren yer. **Durum fiilleri** bir süreç değil bir durum anlatır — anlamak, sevmek, sahip olmak bir süre boyunca \"yapılan\" şeyler değildir. Bu yüzden normalde Continuous formu almazlar, cümlede \"now\" geçse bile."
         },
@@ -448,9 +439,10 @@
           "type": "decision",
           "heading": "Sınavda sırayla bunlara bak",
           "rules": [
-            { "condition": "Fiil bir durum bildiriyor mu (think, love, know gibi)", "then": "Present Simple" },
-            { "signals": ["now", "at the moment", "these days"], "then": "Present Continuous" },
-            { "signals": ["every", "usually", "always", "never"], "then": "Present Simple" }
+            { "condition": "Fiil bir durum bildiriyorsa (think, believe, love, know, own, understand) — cümlede \"now\" geçse bile", "then": "Present Simple" },
+            { "condition": "Cümle her zaman doğru olan bir gerçeği ya da bir doğa yasasını anlatıyorsa", "then": "Present Simple" },
+            { "signals": ["every day", "every morning", "usually", "often", "always", "never", "on Mondays"], "then": "Present Simple" },
+            { "signals": ["now", "right now", "at the moment", "currently", "these days", "this week"], "then": "Present Continuous" }
           ]
         }
       ]
@@ -602,7 +594,7 @@
           "heading": "Sınavda sırayla bunlara bak",
           "rules": [
             { "signals": ["by the time", "by then", "already", "before that"], "then": "Past Perfect" },
-            { "condition": "İki geçmiş olaydan biri açıkça diğerinden önce bitmişse, önce biten", "then": "Past Perfect" },
+            { "condition": "Anlatı sırayı bozup daha erken bir zamana dönüyorsa (önce olanı sonradan anlatıyorsa), o erken olay", "then": "Past Perfect" },
             { "signals": ["while", "as", "all morning"], "then": "Past Continuous" },
             { "condition": "Uzun süren bir eylem kısa bir olayla kesiliyorsa, kesilen uzun eylem", "then": "Past Continuous" },
             { "condition": "\"When\" ile gelen kısa olayın kendisi ve sırayla olup biten olaylar", "then": "Past Simple" }
@@ -625,12 +617,12 @@
             {
               "label": "will",
               "gloss": "Konuşma anında verilen ani karar, bir söz ya da dayanağını içinden verdiğin bir tahmin. Öncesinde bir plan yoktur.",
-              "example": "Don't worry — I'll take a taxi."
+              "example": "That's the doorbell — I'll get it."
             },
             {
               "label": "be going to",
               "gloss": "Ya önceden verilmiş bir niyet, ya da şu anda gözünün önünde duran somut bir kanıta dayanan tahmin.",
-              "example": "Look at those clouds — it's going to rain."
+              "example": "The tank is almost empty — we are going to run out of fuel."
             }
           ]
         },
@@ -666,7 +658,7 @@
           "items": [
             { "sentence": "I think I'll have the soup.", "note": "Menüye bakarken verilen anlık karar → will" },
             { "sentence": "I promise I will call you as soon as I land.", "note": "Söz verme → will" },
-            { "sentence": "Look at those clouds — it's going to rain.", "note": "Gözle görülür kanıta dayalı tahmin → be going to" },
+            { "sentence": "The queue is enormous — we are going to be late.", "note": "Gözle görülür kanıta dayalı tahmin → be going to" },
             { "sentence": "We are meeting the dentist on Friday.", "note": "Önceden ayarlanmış kişisel plan → Present Continuous" },
             { "sentence": "The train leaves at 7:45 tomorrow morning.", "note": "Sabit bir tarife söz konusu → Present Simple" }
           ]
@@ -690,9 +682,16 @@
           "rules": [
             { "condition": "Karar tam konuşma anında veriliyorsa: teklif, söz, ani fikir", "then": "will" },
             { "signals": ["I promise", "I think", "probably", "maybe", "I'm sure"], "then": "will" },
-            { "condition": "Şu anda görünen somut bir kanıta dayanan tahmin varsa (bulutlar, boş depo, kırık cam)", "then": "be going to" },
-            { "condition": "Önceden ayarlanmış kişisel bir plan varsa (takvimde yazıyor, karşı tarafla konuşulmuş)", "then": "Present Continuous" },
-            { "signals": ["according to the schedule", "the timetable says", "departs at", "arrives at"], "then": "Present Simple" }
+            {
+              "condition": "Şu anda gözle görülen somut bir kanıta dayanan tahmin varsa (kararan gökyüzü, boş yakıt göstergesi, kırık cam)",
+              "then": "be going to"
+            },
+            { "condition": "Önceden ayarlanmış kişisel bir plan varsa (tarihi ve saati belli, karşı tarafla sözleşilmiş)", "then": "Present Continuous" },
+            { "signals": ["according to the schedule", "the timetable says", "departs at", "arrives at"], "then": "Present Simple" },
+            {
+              "condition": "Saati belirleyen kimsenin kararı değil, önceden basılmış ya da asılmış bir tarifeyse (tren, uçuş, ders programı, seans saati)",
+              "then": "Present Simple"
+            }
           ]
         }
       ]
@@ -744,9 +743,9 @@
         },
         {
           "type": "pitfall",
-          "wrong": "I have written this report for three hours.",
-          "right": "I have been writing this report for three hours.",
-          "why": "\"For three hours\" süreyi vurgular ve iş hâlâ sürüyordur; süre sorusunun (how long) cevabı Continuous formdur. Simple form miktar ya da bitmiş sonuç bildirir."
+          "wrong": "We have waited in this queue for forty minutes.",
+          "right": "We have been waiting in this queue for forty minutes.",
+          "why": "\"For forty minutes\" süreyi vurgular ve iş hâlâ sürüyordur; süre sorusunun (how long) cevabı Continuous formdur. Simple form miktar ya da bitmiş sonuç bildirir."
         },
         {
           "type": "contrast",
@@ -783,10 +782,15 @@
           "type": "decision",
           "heading": "Sınavda ne arayacaksın",
           "rules": [
-            { "signals": ["how long", "for three hours", "all day", "lately"], "then": "Present Perfect Continuous" },
-            { "condition": "Eylem hâlâ sürüyorsa ya da izi ortadaysa (yorgunum, gözlerim kızarmış, hâlâ bitmedi)", "then": "Present Perfect Continuous" },
+            { "condition": "Bir kişinin gittiği bir yer anılıyor ve o kişi hâlâ oradaysa, henüz dönmediyse", "then": "have gone to" },
+            { "condition": "Aynı durumda kişi gidip döndüyse ya da bir deneyim soruluyorsa (ever, before, twice)", "then": "have been to" },
             { "signals": ["how many", "how much", "so far", "three times"], "then": "Present Perfect Simple" },
-            { "condition": "Bitmiş bir miktar ya da net bir sonuç varsa", "then": "Present Perfect Simple" },
+            { "condition": "Tamamlanmış bir miktar ya da sayılabilir bir sonuç varsa (kaç bölüm bitti, kaç kez yapıldı)", "then": "Present Perfect Simple" },
+            { "signals": ["how long", "for hours", "all day", "lately"], "then": "Present Perfect Continuous" },
+            {
+              "condition": "Tamamlanmış bir miktar yoksa ve vurgu geçen sürenin kendisindeyse ya da sürecin görünür izindeyse (yorgunum, gözlerim kızarmış)",
+              "then": "Present Perfect Continuous"
+            },
             { "signals": ["by the time", "by then", "before that"], "then": "Past Perfect" }
           ]
         }
@@ -823,7 +827,7 @@
             {
               "label": "already",
               "gloss": "Bir şeyin beklenenden erken olduğunu söyler; olumlu cümlelerde kullanılır.",
-              "example": "I have already finished the assignment."
+              "example": "They have already announced the results."
             },
             {
               "label": "yet",
@@ -845,7 +849,7 @@
             { "form": "ago", "use": "Geçmişte bir an", "pattern": "V2 ... + length of time + ago", "example": "I met her ten years ago." },
             { "form": "already", "use": "Olumlu cümle", "pattern": "have/has + already + V3", "example": "She has already left." },
             { "form": "yet", "use": "Olumsuz cümle ve soru", "pattern": "haven't/hasn't + V3 ... yet", "example": "She hasn't left yet." },
-            { "form": "still", "use": "Süren durum", "pattern": "S + still + V", "example": "She still works there." }
+            { "form": "still", "use": "Süren durum", "pattern": "S + still + V / S + be + still + V-ing", "example": "She still works there." }
           ]
         },
         { "type": "check" },
@@ -854,7 +858,7 @@
           "items": [
             { "sentence": "I have lived here since 2019.", "note": "Başlangıç noktası → since + Present Perfect" },
             { "sentence": "I have lived here for five years.", "note": "Süre miktarı → for + Present Perfect" },
-            { "sentence": "He moved to Istanbul five years ago.", "note": "Belirli bir geçmiş an → ago + Past Simple" },
+            { "sentence": "They sold the house three months ago.", "note": "Belirli bir geçmiş an → ago + Past Simple" },
             { "sentence": "The meeting had already started by the time we arrived.", "note": "Referans noktası geçmişte → already + Past Perfect" },
             { "sentence": "Have you finished the report yet?", "note": "Soru cümlesi, henüz olup olmadığı soruluyor → yet" },
             { "sentence": "She is still waiting for the results.", "note": "Beklenenden uzun süren durum → still" }
@@ -868,14 +872,14 @@
         },
         {
           "type": "pitfall",
-          "wrong": "I have finished the assignment yet.",
-          "right": "I have already finished the assignment.",
+          "wrong": "I have paid the bill yet.",
+          "right": "I have already paid the bill.",
           "why": "\"Yet\" sadece olumsuz cümlelerde ve sorularda kullanılır. Olumlu bir cümlede işin bittiğini söylemek için \"already\" gerekir."
         },
         {
           "type": "pitfall",
-          "wrong": "He has moved to Istanbul five years ago.",
-          "right": "He moved to Istanbul five years ago.",
+          "wrong": "She has graduated two years ago.",
+          "right": "She graduated two years ago.",
           "why": "\"Ago\" belirli bir geçmiş anı işaret eder; belirli zaman ifadeleriyle Present Perfect kullanılmaz, Past Simple kullanılır."
         },
         { "type": "check" },
@@ -883,7 +887,7 @@
           "type": "decision",
           "heading": "Boşluğa hangi kelime girer",
           "rules": [
-            { "condition": "Boşluktan sonra bir başlangıç noktası varsa (2019, last summer, I graduated)", "then": "since" },
+            { "condition": "Boşluktan sonra bir başlangıç noktası varsa (2019, the pandemic, I graduated)", "then": "since" },
             { "condition": "Boşluktan sonra bir süre miktarı varsa (five years, two months, a long time)", "then": "for" },
             { "condition": "Süre miktarından hemen sonra geliyorsa ve fiil Past Simple ise", "then": "ago" },
             { "condition": "Olumlu cümlede, bir iş beklenenden erken bitmişse", "then": "already" },
@@ -894,9 +898,14 @@
           "type": "decision",
           "heading": "Kelimeyi gördün, hangi zaman gelir",
           "rules": [
-            { "signals": ["since", "for", "already", "yet", "just", "so far", "ever", "never"], "then": "Present Perfect" },
+            {
+              "condition": "Cümlenin referans noktası geçmişte bir an ise (by the time we arrived, I didn't recognize it): o andan öncesi",
+              "then": "Past Perfect"
+            },
             { "signals": ["ago", "yesterday", "last night", "in 2019"], "then": "Past Simple" },
-            { "condition": "Cümlenin referans noktası geçmişteyse (by the time we arrived), already ve yet aynı işi geçmiş için yapar", "then": "Past Perfect" }
+            { "condition": "**since** ya da **for** varsa önce döneme bak: bugüne kadar açık kaldıysa", "then": "Present Perfect" },
+            { "condition": "**since** ya da **for** varsa ve dönem geçmişte kapandıysa (I lived there for five years, then I moved)", "then": "Past Simple" },
+            { "signals": ["already", "yet", "just", "so far", "ever", "never"], "then": "Present Perfect" }
           ]
         }
       ]
