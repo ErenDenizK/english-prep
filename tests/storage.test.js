@@ -701,3 +701,50 @@ test("finishing again does not move the timestamp", () => {
   storage.markLessonDone("tenses-l2");
   assert.equal(storage.getLessonProgress("tenses-l2").at, first);
 });
+
+/* ---- Remembered choices ----
+   A count is not a boolean, and `setSetting` coerces to one on purpose.
+   These are the second pair of accessors over the same settings object,
+   so the rule worth pinning is the one that makes them safe: the caller
+   declares what it can honour, and anything else reads as the fallback. */
+
+const COUNTS = ["5", "10", "20", "all"];
+
+test("an unset choice reads as its fallback", () => {
+  assert.equal(storage.getChoice("mixedCount", COUNTS, "10"), "10");
+});
+
+test("a chosen value comes back", () => {
+  storage.setChoice("mixedCount", "20", COUNTS);
+  assert.equal(storage.getChoice("mixedCount", COUNTS, "10"), "20");
+});
+
+test("a value the caller cannot honour is never written", () => {
+  storage.setChoice("mixedCount", "999", COUNTS);
+  assert.equal(storage.getChoice("mixedCount", COUNTS, "10"), "10");
+});
+
+test("a stored value the list no longer offers reads as the fallback", () => {
+  // The mistake book's list is as long as the book: someone who picked
+  // twenty and has since worked down to eight questions must not be
+  // handed a count the screen cannot show.
+  storage.setChoice("mistakeCount", "20", COUNTS);
+  assert.equal(storage.getChoice("mistakeCount", ["5", "all"], "all"), "all");
+});
+
+test("a hand-edited store cannot make the app act on nonsense", () => {
+  localStorage.setItem("englishPrep.settings", JSON.stringify({ mixedCount: { n: 20 } }));
+  assert.equal(storage.getChoice("mixedCount", COUNTS, "10"), "10");
+});
+
+test("a remembered choice does not disturb the boolean settings", () => {
+  storage.setSetting("thinkFirst", true);
+  storage.setChoice("mixedCount", "5", COUNTS);
+  assert.equal(storage.getSetting("thinkFirst"), true);
+  assert.equal(storage.getChoice("mixedCount", COUNTS, "10"), "5");
+});
+
+test("a remembered choice rides the backup", () => {
+  storage.setChoice("mixedCount", "20", COUNTS);
+  assert.equal(storage.exportState().settings.mixedCount, "20");
+});

@@ -734,6 +734,42 @@ export function setSetting(name, value) {
   writeJson(SETTINGS_KEY, { ...getSettings(), [name]: value === true });
 }
 
+/**
+ * A remembered choice from a fixed set of strings, rather than an on/off.
+ *
+ * `getSetting`/`setSetting` coerce to boolean deliberately — "everything
+ * here defaults to off" is what makes a setting the learner has never
+ * seen harmless — so widening them would weaken that promise for every
+ * existing caller to serve one. This is a second pair of accessors over
+ * the same object, which means a remembered choice rides the backup for
+ * free (`exportState` carries the whole settings object).
+ *
+ * The caller passes the values it can actually honour, and anything else
+ * reads as the fallback: a store can hold "20" for a list that now offers
+ * five, and a hand-edited store can hold anything at all.
+ *
+ * @param {string} name
+ * @param {string[]} allowed
+ * @param {string} fallback
+ * @returns {string}
+ */
+export function getChoice(name, allowed, fallback) {
+  const value = getSettings()[name];
+  return allowed.includes(value) ? value : fallback;
+}
+
+/**
+ * @param {string} name
+ * @param {string} value - ignored unless it is one of `allowed`
+ * @param {string[]} allowed
+ */
+export function setChoice(name, value, allowed) {
+  if (!allowed.includes(value)) {
+    return;
+  }
+  writeJson(SETTINGS_KEY, { ...getSettings(), [name]: value });
+}
+
 /* ---- Backup ----
    Everything above lives in one browser and can be deleted by that
    browser without asking. These two functions are how a learner takes it

@@ -25,4 +25,12 @@ export const TOPIC_INTRO_PREFIX = "konu/";
 export const SETTINGS = {
   /** Hide the answer options until the learner has committed to a guess. */
   THINK_FIRST: "thinkFirst",
+  /**
+   * How many questions the mixed test and the mistake book were last set
+   * to. Not booleans, so they go through `getChoice`/`setChoice` — see
+   * the note there. Someone revising re-picks a count on every arrival
+   * otherwise, ten or more times across a week.
+   */
+  MIXED_COUNT: "mixedCount",
+  MISTAKE_COUNT: "mistakeCount",
 };

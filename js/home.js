@@ -24,6 +24,8 @@ import {
   requestPersistentStorage,
   getMistakeBook,
   getHistory,
+  getChoice,
+  setChoice,
 } from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createListbox } from "./listbox.js";
@@ -33,7 +35,7 @@ import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook
 import { el, clear, sectionHeading } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop } from "./shell.js";
-import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX } from "./config.js";
+import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
 
 const VIEW_IDS = ["egitim", "test", "profil"];
 const DEFAULT_VIEW = "egitim";
@@ -142,12 +144,17 @@ function renderMistakeBook() {
   ].filter((choice) => Number(choice.value) < book.length);
   choices.push({ value: "all", label: `Tümü (${book.length})` });
 
+  // Remembered, but only among the lengths this book can actually offer:
+  // a learner who once picked twenty and is now down to eight questions
+  // gets the fallback rather than a stored value the list does not have.
+  const values = choices.map((choice) => choice.value);
   mistakeCount = createListbox({
     container: listboxHost,
     options: choices,
     // Ten by default: the length the simulation shows graduating items,
     // and short enough that a learner finishes it on a phone.
-    value: choices.some((choice) => choice.value === "10") ? "10" : "all",
+    value: getChoice(SETTINGS.MISTAKE_COUNT, values, values.includes("10") ? "10" : "all"),
+    onChange: (value) => setChoice(SETTINGS.MISTAKE_COUNT, value, values),
     labelledBy: "mistake-count-label",
   });
 
@@ -201,15 +208,21 @@ function renderMixedTest({ primary = true } = {}) {
   });
   surface.appendChild(start);
 
+  // The Test tab re-renders on every arrival, so an unremembered choice
+  // is re-made on every arrival — ten or more times across a week of
+  // revision, by someone who wants twenty questions every time.
+  const options = [
+    { value: "5", label: "5" },
+    { value: "10", label: "10" },
+    { value: "20", label: "20" },
+    { value: "all", label: "Tümü" },
+  ];
+  const values = options.map((option) => option.value);
   mixedCount = createListbox({
     container: listboxHost,
-    options: [
-      { value: "5", label: "5" },
-      { value: "10", label: "10" },
-      { value: "20", label: "20" },
-      { value: "all", label: "Tümü" },
-    ],
-    value: MIXED_TEST_DEFAULT_COUNT,
+    options,
+    value: getChoice(SETTINGS.MIXED_COUNT, values, MIXED_TEST_DEFAULT_COUNT),
+    onChange: (value) => setChoice(SETTINGS.MIXED_COUNT, value, values),
     labelledBy: "mixed-count-label",
   });
 

@@ -50,8 +50,17 @@ all three.
 
 ### Pass A — blind
 
-You are given items as `id`, paragraph and four lettered options. No key,
-no explanation, no category name. For each item, before moving on:
+You are given items as `id`, paragraph and four lettered options — and
+the **category**, because the Test screen prints it above the question
+and a blind file carries what the learner sees before answering, no more
+and no less. No key, no explanation, no tip, no option notes.
+
+The category is therefore not a leak, but it can be a crutch: an item
+whose category names the rule can be answerable from the label alone,
+with the paragraph doing no work. That is a finding — say so — but it is
+a finding about the item, not about your pass.
+
+For each item, before moving on:
 
 1. Choose the option a well-prepared B2–C1 student should choose.
 2. Rate your confidence: **certain** / **probable** / **coin-flip**.

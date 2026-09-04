@@ -5,6 +5,26 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.29 — 2026-09-04
+
+**The app remembers how long a test you want.** Both count listboxes —
+the mixed test's and the mistake book's — were rebuilt at their default
+on every render of the Test tab, so a learner who wants twenty questions
+re-picked twenty on every arrival, ten or more times across a week of
+revision.
+
+A count is not a boolean, and `setSetting` coerces to one *on purpose*:
+"everything here defaults to off" is what makes a setting the learner has
+never seen harmless. So this is a second pair of accessors over the same
+settings object rather than a widening of the first —
+`getChoice(name, allowed, fallback)` takes the values the caller can
+actually honour, and anything else reads as the fallback. That makes two
+real cases safe rather than merely unlikely: the mistake book's list is
+as long as the book, so a remembered twenty must not be shown to someone
+now down to eight questions; and a hand-edited store can hold anything at
+all. Because it is the same object, a remembered count rides the backup
+for free.
+
 ## v0.28 — 2026-09-04
 
 **Every wrong option in the app now says something.** `optionNotes` — the

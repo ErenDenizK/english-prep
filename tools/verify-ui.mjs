@@ -791,6 +791,53 @@ async function runMistakeRuns(browser) {
   );
   await page.keyboard.press("Escape");
 
+  // Remembered across arrivals. The Test tab re-renders every time it is
+  // opened, so an unremembered count is re-picked every time — ten or
+  // more times across a week, by someone who wants the same length every
+  // time. A count is not a boolean, so it does not go through
+  // `setSetting`, which coerces to one on purpose.
+  await trigger.click();
+  await bookListbox.locator(".listbox__option").filter({ hasText: /^5$/ }).click();
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .surface");
+  ok(
+    (await page.locator("#test-panel .listbox__trigger").first().innerText()).trim() === "5",
+    "defterin soru sayısı hatırlanıyor"
+  );
+
+  const mixedListbox = page.locator("#test-panel .listbox").nth(1);
+  await mixedListbox.locator(".listbox__trigger").click();
+  await mixedListbox.locator(".listbox__option").filter({ hasText: /^20$/ }).click();
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .surface");
+  const remembered = await page.locator("#test-panel .listbox__trigger").allInnerTexts();
+  ok(
+    remembered.map((text) => text.trim()).join("|") === "5|20",
+    `iki sayı ayrı ayrı hatırlanıyor (${remembered.join(", ")})`
+  );
+  // And a remembered value the list can no longer offer falls back
+  // rather than being shown: the book's list is as long as the book.
+  await page.evaluate(() =>
+    localStorage.setItem(
+      "englishPrep.settings",
+      JSON.stringify({ ...JSON.parse(localStorage.getItem("englishPrep.settings") ?? "{}"), mistakeCount: "20" })
+    )
+  );
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .surface");
+  ok(
+    (await page.locator("#test-panel .listbox__trigger").first().innerText()).trim() !== "20",
+    "listede olmayan bir hatıra gösterilmiyor"
+  );
+  await page.evaluate(() =>
+    localStorage.setItem(
+      "englishPrep.settings",
+      JSON.stringify({ ...JSON.parse(localStorage.getItem("englishPrep.settings") ?? "{}"), mistakeCount: "10" })
+    )
+  );
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#test-panel .surface");
+
   await page.locator("button", { hasText: "Yanlışları çalış" }).click();
   await page.waitForURL(/quiz\.html/);
   await page.waitForSelector(".option");
