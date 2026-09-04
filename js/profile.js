@@ -270,6 +270,52 @@ function renderSettings() {
  * of this paragraph: it only gets used by someone who has been told the
  * content can be wrong.
  */
+/**
+ * What the app covers, and what it does not.
+ *
+ * A v1 criterion rather than a nicety. Session I is 60 points in four
+ * sections and this app practises two of them; Session II is another 20
+ * and it practises none. An app that silently omits half the paper is
+ * worse than one that says so, because the learner who does well here
+ * concludes something false about Friday.
+ *
+ * The restatement half is read from the manifest rather than asserted,
+ * so this paragraph cannot quietly become untrue the way a hand-written
+ * coverage claim does. The section point values come from
+ * docs/exam-spec.md and change only if the paper does.
+ */
+function renderCoverage(topics) {
+  const hasRestatement = topics.some((topic) => topic.id === "closest-meaning" && !topic.comingSoon);
+
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Sınavın hangi kısmı burada"));
+
+  const covered = hasRestatement
+    ? "paragraf içindeki dilbilgisi ve kelime boşlukları (15 puan) ve anlamca en yakın cümle (15 puan)"
+    : "paragraf içindeki dilbilgisi ve kelime boşlukları (15 puan)";
+  const missing = hasRestatement
+    ? "Okuma (21 puan) ve paragraf tamamlama (9 puan) burada yok"
+    : "Anlamca en yakın cümle (15 puan), okuma (21 puan) ve paragraf tamamlama (9 puan) burada yok";
+
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      `Session I'de 40 soru ve 60 puan var. Bu uygulama şu an ${covered} ` +
+        `çalıştırıyor. ${missing}. Session II'nin tamamı dinleme ve not alma; o da yok.`
+    )
+  );
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "Yani buradaki ilerleme sınavın tamamı hakkında bir şey söylemiyor. " +
+        "Eksik bölümleri örnek sınav kâğıtlarından çalışman gerekiyor."
+    )
+  );
+  return section;
+}
+
 function renderAbout() {
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", "İçerik hakkında"));
@@ -300,8 +346,10 @@ function renderAbout() {
 async function render() {
   let titleById = new Map();
   let lessons = [];
+  let topics = [];
   try {
     const manifest = await loadManifest();
+    topics = manifest.topics;
     titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
     // Names and ids only — Profil never shows a lesson's contents, so it
     // has no business downloading them.
@@ -357,6 +405,7 @@ async function render() {
 
   container.appendChild(renderData());
   container.appendChild(renderSettings());
+  container.appendChild(renderCoverage(topics));
   container.appendChild(renderAbout());
 }
 
