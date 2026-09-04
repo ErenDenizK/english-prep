@@ -273,6 +273,14 @@ async function runFlow(page, viewport) {
   await page.waitForSelector("#profile-container .surface");
   await auditLayout(page, "Profil", viewport.width);
 
+  // A v1 criterion: the app says which parts of the paper it does not
+  // cover. A learner who does well here must not conclude something false
+  // about the exam.
+  const profileText = await page.locator("#profile-container").innerText();
+  ok(profileText.includes("Sınavın hangi kısmı burada"), "kapsam bölümü Profil'de");
+  ok(/okuma \(21 puan\)/.test(profileText), "kapsanmayan bölümler puanıyla adlandırılıyor");
+  ok(/dinleme/.test(profileText), "Session II'nin kapsanmadığı söyleniyor");
+
   ok(errors.length === 0, `konsol temiz${errors.length ? ` — ${[...new Set(errors)].join(" | ")}` : ""}`);
 }
 
