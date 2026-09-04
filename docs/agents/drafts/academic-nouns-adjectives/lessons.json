@@ -661,15 +661,15 @@
         "heading": "Sınavda ne yapacaksın",
         "rules": [
           {
-            "condition": "Cümle bir sonucun ona bağlı olduğunu söylüyorsa: o olmadan iş yürümüyor, karar ya da başarı değişiyorsa",
-            "then": "crucial"
-          },
-          {
-            "condition": "Cümle miktarın hesaba katılmasına gerek olmadığını, pratikte hiçbir fark yaratmadığını söylüyorsa",
+            "condition": "Cümle miktarın hesaba katılmasına gerek olmadığını, hesaptan çıkarılabileceğini söylüyorsa",
             "then": "negligible"
           },
           {
-            "condition": "Cümle küçük ama gerçek bir farktan söz ediyorsa: ölçülüyor ve sonuca giriyor, ama zar zor",
+            "condition": "Cümle sonucun ona bağlı olduğunu söylüyorsa **ve bu bağlılık boşluktaki yargının gerekçesiyse**: o olmadan iş yürümüyor, karar ya da başarı değişiyorsa. Sonuç boşluğa bir ama / yine de ile karşı konuyorsa bu kural işlemez",
+            "then": "crucial"
+          },
+          {
+            "condition": "Cümle küçük ama gerçek bir farktan söz ediyorsa: ölçülüyor, hesaba giriyor ve hesaptan çıkarılamıyor, yine de zar zor",
             "then": "marginal"
           },
           {
@@ -681,7 +681,7 @@
             "then": "considerable"
           },
           {
-            "condition": "Cümle bir miktarın büyük olduğunu söylüyor ama bunu ne bir sayıyla ne de bir sonuçla bağlıyorsa: son iki kural bir eğilimdir, kural değil; ikisi de doğrudur",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve cümle bir miktarın büyük olduğunu söylüyor ama bunu ne bir sayıyla ne de bir sonuçla bağlıyorsa: son iki kural bir eğilimdir, ikisi de doğrudur",
             "then": "substantial / considerable"
           }
         ]
