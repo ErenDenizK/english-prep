@@ -1,0 +1,977 @@
+[
+  {
+    "category": "Verb + Gerund vs Verb + Infinitive",
+    "summary": "Kural değil liste: hangi fiil -ing, hangisi 'to' istiyor?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede \"yüzmeyi severim\" ile \"yüzmeye karar verdim\" arasındaki ek farkını düşünmeyiz; hangi fiilin hangi eki istediğini yıllar içinde tek tek öğrendik. İngilizcede de durum aynıdır: **enjoy** neden -ing, **decide** neden 'to' alır sorusunun bir cevabı yoktur. Bu ders bir kural vermez; listenin güvenilir iki mahallesini gösterir, gerisi karşılaştıkça oturur."
+      },
+      {
+        "type": "contrast",
+        "heading": "Kararı fiil verir, anlam değil",
+        "sides": [
+          {
+            "label": "Verb + V-ing",
+            "gloss": "Bazı fiiller kendinden sonraki eylemi hazır bir etkinlik gibi alır: hoşlanma, kaçınma ve sürdürme fiillerinin neredeyse tamamı bu gruptadır.",
+            "example": "She avoids driving at night."
+          },
+          {
+            "label": "Verb + to V",
+            "gloss": "Bazı fiiller kendinden sonraki eylemi henüz gerçekleşmemiş bir hedef gibi alır: karar, plan, söz ve ret fiilleri bu gruptadır.",
+            "example": "She refuses to drive at night."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "Verb + V-ing",
+            "use": "Hoşlanma",
+            "pattern": "enjoy / don't mind / can't stand + V-ing",
+            "example": "I don't mind waiting."
+          },
+          {
+            "form": "Verb + V-ing",
+            "use": "Kaçınma, bırakma",
+            "pattern": "avoid / give up / deny + V-ing",
+            "example": "He gave up arguing."
+          },
+          {
+            "form": "Verb + V-ing",
+            "use": "Öneri, düşünme",
+            "pattern": "suggest / consider / imagine + V-ing",
+            "example": "She suggested postponing it."
+          },
+          {
+            "form": "Verb + V-ing",
+            "use": "Sürdürme, bitirme",
+            "pattern": "keep / finish / postpone + V-ing",
+            "example": "They kept talking."
+          },
+          {
+            "form": "Verb + to V",
+            "use": "Karar, plan",
+            "pattern": "decide / plan / intend + to V",
+            "example": "We decided to wait."
+          },
+          {
+            "form": "Verb + to V",
+            "use": "Umut, bekleyiş",
+            "pattern": "hope / expect / want + to V",
+            "example": "I hope to hear soon."
+          },
+          {
+            "form": "Verb + to V",
+            "use": "Söz, ret",
+            "pattern": "promise / agree / refuse + to V",
+            "example": "He refused to sign."
+          },
+          {
+            "form": "Verb + to V",
+            "use": "Başarma, başaramama",
+            "pattern": "manage / fail / afford + to V",
+            "example": "She managed to finish."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "I enjoy cycling to work.",
+            "note": "Hoşlanma fiili → enjoy + V-ing"
+          },
+          {
+            "sentence": "They avoided answering the question.",
+            "note": "Kaçınma fiili → avoid + V-ing"
+          },
+          {
+            "sentence": "He suggested postponing the meeting.",
+            "note": "Anlam ileriye dönük olsa da suggest istisnasız → V-ing"
+          },
+          {
+            "sentence": "We decided to take the early bus.",
+            "note": "Karar fiili → decide + to V"
+          },
+          {
+            "sentence": "She managed to fix the printer herself.",
+            "note": "Başarma fiili → manage + to V"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I enjoy to read novels on the bus.",
+        "right": "I enjoy reading novels on the bus.",
+        "why": "Türkçede \"roman okumayı severim\" dediğimiz için mastar doğru gelir, ama **enjoy** istisnasız -ing ister."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "She suggested to go to the cinema.",
+        "right": "She suggested going to the cinema.",
+        "why": "**suggest** ileriye dönük bir öneri anlatır, yine de -ing alır. Kararı anlam değil, fiilin kendisi verir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "We decided going by train.",
+        "right": "We decided to go by train.",
+        "why": "Liste iki yönlü çalışır: -ing öğrenildikten sonra her yere taşınır, oysa **decide** yalnızca 'to'lu mastar alır."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Bu kategoride sınav bir kuralı değil, o fiili daha önce görüp görmediğini ölçer. Bu yüzden çalışma biçimi de farklı olmalı: fiilleri tek tek değil, aşağıdaki gibi öbek öbek ezberle ve yanlış yaptığın her fiili kendi listene ekle. İki hafta sonra o liste senin için bu sayfadan daha işe yarar olacak."
+      },
+      {
+        "type": "decision",
+        "heading": "Boşluktan önceki fiile bak",
+        "rules": [
+          {
+            "signals": [
+              "enjoy",
+              "avoid",
+              "mind",
+              "suggest",
+              "consider",
+              "deny",
+              "postpone",
+              "risk"
+            ],
+            "then": "V-ing"
+          },
+          {
+            "signals": [
+              "finish",
+              "give up",
+              "quit",
+              "keep",
+              "imagine",
+              "can't stand"
+            ],
+            "then": "V-ing"
+          },
+          {
+            "signals": [
+              "decide",
+              "plan",
+              "hope",
+              "expect",
+              "agree",
+              "promise",
+              "refuse",
+              "offer"
+            ],
+            "then": "to V"
+          },
+          {
+            "signals": [
+              "manage",
+              "fail",
+              "afford",
+              "learn",
+              "pretend",
+              "seem"
+            ],
+            "then": "to V"
+          },
+          {
+            "condition": "Fiil listelerde yoksa ve hoşlanma, kaçınma ya da bir etkinliği sürdürme anlatıyorsa (son çare tahmin)",
+            "then": "V-ing"
+          },
+          {
+            "condition": "Fiil listelerde yoksa ve ileriye dönük bir karar, niyet ya da söz anlatıyorsa (son çare tahmin)",
+            "then": "to V"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Both, With a Meaning Change: Remember / Stop / Try / Regret",
+    "summary": "İkinci eylem çoktan oldu mu, yoksa daha önünde mi?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçe bu farkı iki ayrı fiille kurar: \"sigarayı bıraktı\" ile \"sigara içmek için durdu\" arasında karışacak bir şey yoktur. İngilizcede ikisinin de fiili **stop**; değişen tek şey ikinci fiilin biçimidir. Bu yüzden fark Türkçe konuşan biri için görünmez. Tek bir soru bütün kategoriyi çözer: ikinci eylem çoktan oldu mu, yoksa henüz olmadı mı?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Tek soru: ikinci eylem gerçekleşti mi?",
+        "sides": [
+          {
+            "label": "Verb + V-ing",
+            "gloss": "İkinci eylem gerçektir: olmuş, oluyor ya da gerçekten uygulanıyordur. Ana fiil ona geriye doğru bakar; hatırlar, bırakır, pişman olur, dener.",
+            "example": "He stopped taking the pills."
+          },
+          {
+            "label": "Verb + to V",
+            "gloss": "İkinci eylem henüz gerçekleşmemiştir: yapılacak, amaçlanan ya da sonucu belirsiz bir çabadır. Ana fiil ona ileriye doğru bakar.",
+            "example": "He stopped to take the pills."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "remember",
+            "use": "Geriye: eylem oldu, şimdi hatırlanıyor",
+            "pattern": "remember + V-ing",
+            "example": "I remember posting the letter."
+          },
+          {
+            "form": "remember",
+            "use": "İleriye: unutulmaması gereken iş",
+            "pattern": "remember + to V",
+            "example": "Remember to post the letter."
+          },
+          {
+            "form": "stop",
+            "use": "Geriye: süren eylem sona erer",
+            "pattern": "stop + V-ing",
+            "example": "She stopped checking her phone."
+          },
+          {
+            "form": "stop",
+            "use": "İleriye: başka bir şey için ara verilir",
+            "pattern": "stop + to V",
+            "example": "She stopped to check her phone."
+          },
+          {
+            "form": "try",
+            "use": "Deneme: yöntem gerçekten uygulanır",
+            "pattern": "try + V-ing",
+            "example": "Try restarting the router."
+          },
+          {
+            "form": "try",
+            "use": "Çaba: zor olan başarılmaya çalışılır",
+            "pattern": "try + to V",
+            "example": "Try to restart the router."
+          },
+          {
+            "form": "regret",
+            "use": "Geriye: yapılmış şeye pişmanlık",
+            "pattern": "regret + V-ing",
+            "example": "I regret leaving so early."
+          },
+          {
+            "form": "regret",
+            "use": "İleriye: kötü haber verilmek üzere",
+            "pattern": "regret + to V",
+            "example": "We regret to inform you."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "I stopped drinking coffee after six.",
+            "note": "Süren alışkanlık sona erdi → stop + V-ing"
+          },
+          {
+            "sentence": "On the way home she stopped to post a parcel.",
+            "note": "Duruşun amacı; kargo duruştan sonra veriliyor → stop + to V"
+          },
+          {
+            "sentence": "Try adding a little more water.",
+            "note": "Bir yöntem öneriliyor, su gerçekten ekleniyor → try + V-ing"
+          },
+          {
+            "sentence": "He tried to lift the box, but it was too heavy.",
+            "note": "Eylem gerçekleşmedi, ortada yalnızca çaba var → try + to V"
+          },
+          {
+            "sentence": "I remember meeting her at a conference.",
+            "note": "Tanışma olmuş, şimdi hafızada duruyor → remember + V-ing"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "He stopped to smoke five years ago and feels much better now.",
+        "right": "He stopped smoking five years ago and feels much better now.",
+        "why": "Anlatılmak istenen \"beş yıl önce bıraktı\": sigara içme eylemi gerçekten oluyordu ve sona erdi, yani -ing gerekir. \"stop to smoke\" ise \"sigara içmek için durdu\" demektir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Please remember calling me when you land.",
+        "right": "Please remember to call me when you land.",
+        "why": "Arama henüz olmadı; istenen, yapılacak bir iş. **remember + V-ing** yalnızca olmuş bir şeyi hatırlamak için kullanılır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "She tried opening the window, but it was painted shut.",
+        "right": "She tried to open the window, but it was painted shut.",
+        "why": "\"but it was painted shut\" pencerenin açılmadığını söyler. **try + V-ing** eylemin gerçekten yapıldığını varsayar; sonuçsuz kalan bir çabada **try + to V** gerekir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "İkinci eylem gerçekleşti mi?",
+        "rules": [
+          {
+            "condition": "İkinci eylem gerçekten yaşanıyor ya da yaşanmışsa: hatırlanan, bırakılan, pişman olunan ya da uygulanıp sonucuna bakılan şey",
+            "then": "V-ing"
+          },
+          {
+            "condition": "İkinci eylem gerçekleşmemişse: yalnızca hatırlatılan bir iş, duruşun amacı ya da sonucu belirsiz bir çaba",
+            "then": "to V"
+          },
+          {
+            "condition": "**stop**'tan sonra \"ne için durdu?\" sorusunun cevabı geliyorsa",
+            "then": "to V"
+          },
+          {
+            "condition": "**try**'dan sonra bir sorunu çözmek için önerilen yöntem geliyorsa (işe yarıyor mu diye)",
+            "then": "V-ing"
+          },
+          {
+            "condition": "**try**'dan sonra zor bir işi başarma çabası geliyorsa; devamında çoğu zaman \"but\" gelir",
+            "then": "to V"
+          },
+          {
+            "signals": [
+              "regret to inform you",
+              "regret to say",
+              "regret to tell you"
+            ],
+            "then": "to V"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Causative Verb Patterns: Make / Let / Have / Get",
+    "summary": "Yaptırma cümlesinde nesneden sonra 'to' var mı, yok mu?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede yaptırma tek bir ekle kurulur: \"yazdırdı\", \"okuttu\", \"temizletti\". İngilizcede bunun için dört ayrı fiil vardır ve dördü de kendinden sonraki fiili farklı biçimde ister. Bu doğrudan sınav konusudur: örnek paragrafın boşluklarından biri tam olarak **make + nesne + yalın fiil** üzerine kuruluydu. Karar tek bir şeye bakar: nesneden sonra ne geliyor?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Nesneden sonra ne gelir?",
+        "sides": [
+          {
+            "label": "make + O + V",
+            "gloss": "Zorlama: kişi istemese de yapar. Nesneden sonra fiil yalın gelir, 'to' almaz.",
+            "example": "The teacher made us rewrite the essay."
+          },
+          {
+            "label": "let + O + V",
+            "gloss": "İzin: engel kaldırılır, kişi kendi ister. Bu da yalın fiil ister.",
+            "example": "They let me leave early."
+          },
+          {
+            "label": "get + O + to V",
+            "gloss": "İkna etme ya da ayarlama: kişi razı edilir. Dördünün içinde 'to'lu mastar alan tek fiil budur.",
+            "example": "I got my brother to help me."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "have ikiye ayrılır",
+        "sides": [
+          {
+            "label": "have + person + V",
+            "gloss": "İşi yapması beklenen birine iş verilir; odakta o kişi vardır ve fiil yalın gelir.",
+            "example": "I had the plumber check the boiler."
+          },
+          {
+            "label": "have + something + V3",
+            "gloss": "Odakta işi yapan kişi değil, nesnenin başına gelen iş vardır; fiil üçüncü hâline geçer.",
+            "example": "I had the boiler checked."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "make",
+            "use": "Zorlama",
+            "pattern": "make + O + V",
+            "example": "She made me apologise."
+          },
+          {
+            "form": "let",
+            "use": "İzin",
+            "pattern": "let + O + V",
+            "example": "She let me explain."
+          },
+          {
+            "form": "get",
+            "use": "İkna etme, ayarlama",
+            "pattern": "get + O + to V",
+            "example": "She got me to apologise."
+          },
+          {
+            "form": "have",
+            "use": "Görevlendirme (kişi)",
+            "pattern": "have + O + V",
+            "example": "She had the intern print the file."
+          },
+          {
+            "form": "have",
+            "use": "İş yaptırma (nesne)",
+            "pattern": "have + something + V3",
+            "example": "She had the file printed."
+          },
+          {
+            "form": "get",
+            "use": "İş yaptırma (nesne)",
+            "pattern": "get + something + V3",
+            "example": "She got the file printed."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "My boss made me redo the whole report.",
+            "note": "Zorlama, nesneden sonra 'to' yok → make + O + V"
+          },
+          {
+            "sentence": "Our landlord won't let us paint the walls.",
+            "note": "İzin verme, yine yalın fiil → let + O + V"
+          },
+          {
+            "sentence": "I finally got my flatmate to wash up.",
+            "note": "İkna etme; 'to'lu mastar alan tek fiil → get + O + to V"
+          },
+          {
+            "sentence": "We had a technician install the router.",
+            "note": "Bir kişi görevlendirildi, fiil yalın → have + O + V"
+          },
+          {
+            "sentence": "We had the router installed last week.",
+            "note": "Odak nesnede, işi kimin yaptığı söylenmiyor → have + something + V3"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "My parents made me to study medicine.",
+        "right": "My parents made me study medicine.",
+        "why": "**make** ve **let**'ten sonra 'to' gelmez. Türkçedeki \"okumaya zorladılar\" kalıbı mastarı çağırdığı için bu hata çok yaygındır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I got my brother help me with the boxes.",
+        "right": "I got my brother to help me with the boxes.",
+        "why": "**get**, dört fiilin içinde 'to'lu mastar alan tek fiildir; make ve let'in kuralı buraya taşınmaz."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I had the mechanic repaired my car.",
+        "right": "I had the mechanic repair my car.",
+        "why": "**have**'den sonra bir kişi varsa fiil yalın gelir. Üçüncü hâl yalnızca nesne öne çıktığında kullanılır: \"I had my car repaired.\""
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Boşluktan sonrasına bak",
+        "rules": [
+          {
+            "condition": "Nesneden sonra 'to'suz yalın fiil varsa (me go, us rewrite), üç aday kalır",
+            "then": "make / let / have"
+          },
+          {
+            "condition": "Nesneden sonra 'to'lu mastar varsa (my brother to help)",
+            "then": "get"
+          },
+          {
+            "condition": "Nesneden sonra fiilin üçüncü hâli varsa (my car repaired)",
+            "then": "have / get"
+          },
+          {
+            "condition": "Kişi istemediği hâlde bir şeye zorlanıyorsa",
+            "then": "make"
+          },
+          {
+            "condition": "Kişiye izin veriliyor ya da önündeki engel kaldırılıyorsa",
+            "then": "let"
+          },
+          {
+            "condition": "İşi yapması zaten beklenen biri görevlendiriliyorsa (usta, asistan, garson)",
+            "then": "have"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Adjective + Infinitive vs Preposition + Gerund",
+    "summary": "Boşluğun solunda sıfat mı var, edat mı?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede \"yüzmekte iyiyim\" ile \"yüzmek kolay\" aynı ekle kurulur. İngilizcede bu iki cümlenin biri bir edatla (good **at**), diğeri doğrudan sıfatla (easy) devam eder ve bu fark fiilin biçimini değiştirir. İyi haber: burada ezber yok, istisnasız tek bir kural var. Edattan sonra fiil daima -ing alır."
+      },
+      {
+        "type": "contrast",
+        "heading": "Boşluktan önceki kelime ne?",
+        "sides": [
+          {
+            "label": "Adjective + to V",
+            "gloss": "Sıfattan sonra araya bir edat girmeden doğrudan eylem geliyorsa mastar kullanılır.",
+            "example": "She was determined to finish the report."
+          },
+          {
+            "label": "Preposition + V-ing",
+            "gloss": "Bir edatın hemen ardından fiil geliyorsa o fiil istisnasız -ing alır; edattan sonra mastar gelmez.",
+            "example": "She insisted on finishing the report."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "Adjective + to V",
+            "use": "Duygu, tepki",
+            "pattern": "happy / sorry / surprised + to V",
+            "example": "I was surprised to see her."
+          },
+          {
+            "form": "Adjective + to V",
+            "use": "Kolaylık, zorluk",
+            "pattern": "easy / hard / difficult + to V",
+            "example": "The form is easy to fill in."
+          },
+          {
+            "form": "Adjective + to V",
+            "use": "Hazırlık, olasılık",
+            "pattern": "ready / willing / likely + to V",
+            "example": "They are ready to start."
+          },
+          {
+            "form": "Adjective + preposition + V-ing",
+            "use": "Sıfat kendi edatını taşır",
+            "pattern": "good at / afraid of / interested in + V-ing",
+            "example": "He is interested in learning Arabic."
+          },
+          {
+            "form": "Verb + preposition + V-ing",
+            "use": "Fiil kendi edatını taşır",
+            "pattern": "insist on / think about / succeed in + V-ing",
+            "example": "They insisted on paying."
+          },
+          {
+            "form": "Preposition 'to' + V-ing",
+            "use": "Mastar değil, edat olan 'to'",
+            "pattern": "look forward to / object to + V-ing",
+            "example": "We look forward to hearing from you."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "It is difficult to explain in two sentences.",
+            "note": "Sıfattan sonra edat yok, doğrudan eylem → difficult + to V"
+          },
+          {
+            "sentence": "She is brilliant at explaining difficult ideas.",
+            "note": "Sıfat kendi edatını taşıyor → at + V-ing"
+          },
+          {
+            "sentence": "They are willing to work at weekends.",
+            "note": "Sıfat + doğrudan eylem → willing + to V"
+          },
+          {
+            "sentence": "He apologised for arriving so late.",
+            "note": "Fiilin edatı 'for' → for + V-ing"
+          },
+          {
+            "sentence": "We are looking forward to seeing the results.",
+            "note": "Buradaki 'to' mastar değil edat → to + V-ing"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I look forward to hear from you.",
+        "right": "I look forward to hearing from you.",
+        "why": "\"look forward to\" kalıbındaki 'to' mastar değil edattır. Testi basit: arkasına \"it\" koyabiliyorsan (look forward to it) o bir edattır ve fiil -ing alır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I am interested in to learn Spanish.",
+        "right": "I am interested in learning Spanish.",
+        "why": "\"in\" bir edattır ve edattan sonra mastar gelmez. Türkçedeki \"öğrenmeye ilgi duyuyorum\" kalıbı mastarı çağırır, İngilizce burada -ing ister."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "It is difficult understanding this article.",
+        "right": "It is difficult to understand this article.",
+        "why": "Sıfattan sonra edat yoksa mastar gelir. -ing kuralı öğrenildikten sonra sıfatlara da taşınıyor, oysa \"difficult\" kendi edatını taşımaz."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Önce boşluğun solundaki kelimeye bak",
+        "rules": [
+          {
+            "condition": "Boşluğun hemen solunda bir edat varsa (of, in, at, about, for, on, without, by)",
+            "then": "V-ing"
+          },
+          {
+            "condition": "Boşluğun hemen solunda bir sıfat varsa ve araya edat girmiyorsa",
+            "then": "to V"
+          },
+          {
+            "signals": [
+              "look forward to",
+              "object to",
+              "in addition to",
+              "committed to"
+            ],
+            "then": "V-ing"
+          },
+          {
+            "signals": [
+              "easy",
+              "difficult",
+              "hard",
+              "ready",
+              "willing",
+              "likely",
+              "able"
+            ],
+            "then": "to V"
+          },
+          {
+            "condition": "'to' edat mı mastar mı belli değilse arkasına \"it\" koy: \"look forward to it\" oluyorsa edattır",
+            "then": "V-ing"
+          },
+          {
+            "condition": "Sıfattan sonra bir edat yazılmışsa (good at, afraid of, tired of), kararı sıfat değil edat verir",
+            "then": "V-ing"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Infinitive of Purpose vs For + Gerund",
+    "summary": "Bir kişinin amacı mı, bir nesnenin işlevi mi?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede amaç tek kalıpla kurulur: \"-mek için\". Sınavda bu kalıp iki farklı İngilizce yapıya bölünür ve \"için\" kelimesi öğrenciyi doğrudan **for**'a çeker. Oysa \"for buying bread\" hatalıdır. Ayrım şudur: bir kişinin bir işi neden yaptığını mı söylüyorsun, yoksa bir nesnenin ne işe yaradığını mı?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Amaç kimin?",
+        "sides": [
+          {
+            "label": "to + V",
+            "gloss": "Bir kişinin eylemi neden yaptığını söyler; amacın sahibi cümlenin öznesidir.",
+            "example": "I use this app to book tickets."
+          },
+          {
+            "label": "for + V-ing",
+            "gloss": "Bir nesnenin ne işe yaradığını, işlevini söyler; ortada belirli bir kişi ve tek bir olay yoktur.",
+            "example": "This app is for booking tickets."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "to + V",
+            "use": "Amaç (kişi)",
+            "pattern": "S + V + to V",
+            "example": "She called to apologise."
+          },
+          {
+            "form": "in order to + V",
+            "use": "Aynı amaç, resmi ton",
+            "pattern": "S + V + in order to V",
+            "example": "He left early in order to catch the train."
+          },
+          {
+            "form": "so as not to + V",
+            "use": "Olumsuz amaç",
+            "pattern": "S + V + so as not to V",
+            "example": "She whispered so as not to wake the baby."
+          },
+          {
+            "form": "for + V-ing",
+            "use": "Nesnenin işlevi",
+            "pattern": "N + is for + V-ing",
+            "example": "This key is for opening the back door."
+          },
+          {
+            "form": "for + noun",
+            "use": "Amaç bir isimle",
+            "pattern": "S + V + for + N",
+            "example": "He went out for a walk."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "He got up early to catch the first train.",
+            "note": "Bir kişinin eylem sebebi → to V"
+          },
+          {
+            "sentence": "This drawer is for keeping cables.",
+            "note": "Nesnenin işlevi anlatılıyor → for + V-ing"
+          },
+          {
+            "sentence": "She turned off her phone in order to concentrate.",
+            "note": "Aynı amaç, daha resmi ton → in order to V"
+          },
+          {
+            "sentence": "I stayed behind so as not to miss the announcement.",
+            "note": "Amaç olumsuz → so as not to V"
+          },
+          {
+            "sentence": "We went out for a quick coffee.",
+            "note": "Amacın ardından fiil değil isim var → for + noun"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I went to the pharmacy for buying vitamins.",
+        "right": "I went to the pharmacy to buy vitamins.",
+        "why": "\"için\" kelimesi doğrudan 'for'u çağırır, ama bir kişinin eylem amacı 'to + fiil' ile kurulur. 'for + V-ing' bir nesnenin işlevini anlatır, bir kişinin gerekçesini değil."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "She went to the bank for to change money.",
+        "right": "She went to the bank to change money.",
+        "why": "\"for to\" diye bir kalıp yoktur; amaç bildiren mastar tek başına 'to' ile kurulur."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "This machine is for make coffee.",
+        "right": "This machine is for making coffee.",
+        "why": "'for' bir edattır ve edattan sonra fiil daima -ing alır. Cümlede 'for' gördüğün anda mastar seçeneği elenir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Amaç kimin, ne için?",
+        "rules": [
+          {
+            "condition": "Bir kişinin bir eylemi neden yaptığı anlatılıyorsa",
+            "then": "to V"
+          },
+          {
+            "condition": "Bir nesnenin ne işe yaradığı, işlevi anlatılıyorsa",
+            "then": "for + V-ing"
+          },
+          {
+            "condition": "Boşluktan hemen önce 'for' yazılıysa, ardından mastar gelemez",
+            "then": "for + V-ing"
+          },
+          {
+            "condition": "Amaç olumsuzsa (bir şey olmasın diye)",
+            "then": "so as not to / in order not to + V"
+          },
+          {
+            "condition": "Amacın ardından fiil değil bir isim geliyorsa",
+            "then": "for + noun"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Used To vs Be Used To vs Get Used To",
+    "summary": "Eskiden mi yapardın, alışkın mısın, yoksa alışıyor musun?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçe bu üçünü ayırır: \"eskiden sigara içerdim\", \"sigara dumanına alışkınım\", \"dumana alışıyorum\". İngilizce üçünü de aynı iki kelimeyle, **used to** ile kurar; değişen tek şey önündeki fiil ve arkasından gelen biçimdir. Yani zorluk anlamda değil, kalıbı tanımaktadır: 'used to'nun önünde bir **be** ya da **get** var mı?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Aynı iki kelime, üç yapı",
+        "sides": [
+          {
+            "label": "used to + V",
+            "gloss": "Geçmişte düzenli olan ama artık geçerli olmayan alışkanlık. Yalnızca geçmiş için kullanılır.",
+            "example": "I used to get up at five."
+          },
+          {
+            "label": "be used to + V-ing",
+            "gloss": "Alışkın olma durumu: iş artık kişiye zor gelmiyordur. Her zamanda kullanılabilir.",
+            "example": "I am used to getting up at five."
+          },
+          {
+            "label": "get used to + V-ing",
+            "gloss": "Alışma süreci: henüz tam alışılmamıştır, alışılmaktadır.",
+            "example": "I am getting used to getting up at five."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "rows": [
+          {
+            "form": "used to + V",
+            "use": "Olumlu",
+            "pattern": "S + used to + V",
+            "example": "He used to smoke."
+          },
+          {
+            "form": "used to + V",
+            "use": "Olumsuz",
+            "pattern": "S + didn't use to + V",
+            "example": "He didn't use to smoke."
+          },
+          {
+            "form": "used to + V",
+            "use": "Soru",
+            "pattern": "Did + S + use to + V?",
+            "example": "Did he use to smoke?"
+          },
+          {
+            "form": "be used to + V-ing",
+            "use": "Olumlu",
+            "pattern": "S + am/is/are/was + used to + V-ing",
+            "example": "She is used to working nights."
+          },
+          {
+            "form": "be used to + V-ing",
+            "use": "Olumsuz",
+            "pattern": "S + isn't/wasn't + used to + V-ing",
+            "example": "She isn't used to working nights."
+          },
+          {
+            "form": "get used to + V-ing",
+            "use": "Olumlu",
+            "pattern": "S + get/got/will get + used to + V-ing",
+            "example": "He got used to working nights."
+          },
+          {
+            "form": "get used to + V-ing",
+            "use": "Olumsuz",
+            "pattern": "S + can't get used to + V-ing",
+            "example": "He can't get used to working nights."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "We used to live in a small village.",
+            "note": "Geçmişte öyleydi, artık değil → used to + V"
+          },
+          {
+            "sentence": "She is used to driving in heavy traffic.",
+            "note": "Alışkınlık durumu, artık zorlanmıyor → be used to + V-ing"
+          },
+          {
+            "sentence": "He didn't use to enjoy classical music.",
+            "note": "Olumsuzda 'used' değil 'use' yazılır → didn't use to + V"
+          },
+          {
+            "sentence": "It took me a month to get used to the night shift.",
+            "note": "Alışma süreci; kalıp isimle de kurulur → get used to + noun"
+          },
+          {
+            "sentence": "I am slowly getting used to working from home.",
+            "note": "Süreç sürüyor, alışma tamamlanmadı → get used to + V-ing"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I am used to get up early.",
+        "right": "I am used to getting up early.",
+        "why": "Buradaki 'to' mastar değil edattır; \"be used to\" kalıbının parçasıdır. Edattan sonra fiil -ing alır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "I didn't used to like coffee.",
+        "right": "I didn't use to like coffee.",
+        "why": "\"didn't\" geçmişi zaten taşır; ardından gelen fiil yalın kalır, bu yüzden 'used' değil 'use' yazılır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "At first the noise was terrible, but I was used to it after a month.",
+        "right": "At first the noise was terrible, but I got used to it after a month.",
+        "why": "\"Bir ay sonra alıştım\" bir süreçtir. **be used to** ulaşılmış durumu anlatır, değişimi değil; değişimi anlatan fiil **get**'tir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Önce 'used to'nun önüne bak",
+        "rules": [
+          {
+            "condition": "'used to'nun önünde am / is / are / was / were varsa",
+            "then": "be used to + V-ing"
+          },
+          {
+            "condition": "'used to'nun önünde get / got / getting varsa",
+            "then": "get used to + V-ing"
+          },
+          {
+            "condition": "Anlam \"eskiden yapardım, artık yapmıyorum\" ise",
+            "then": "used to + V"
+          },
+          {
+            "condition": "Anlam \"benim için artık normal, zorlanmıyorum\" ise",
+            "then": "be used to + V-ing"
+          },
+          {
+            "condition": "Anlam \"yavaş yavaş alışıyorum\" ya da \"sonunda alıştım\" ise",
+            "then": "get used to + V-ing"
+          },
+          {
+            "condition": "Geçmiş alışkanlık olumsuz ya da soru cümlesindeyse (didn't, did ... ?)",
+            "then": "use to + V"
+          }
+        ]
+      }
+    ]
+  }
+]
