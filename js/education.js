@@ -215,12 +215,32 @@ function renderWelcome(firstLesson) {
   card.appendChild(head);
 
   if (firstLesson) {
-    const start = el("button", "btn btn--primary", "İlk dersi aç");
+    // The topic, not its first lesson.
+    //
+    // This button used to open `Present Simple vs Present Continuous`
+    // directly, which is the complaint the whole orientation round
+    // started from: every lesson in this app is a contrast, and dropping
+    // a learner into one before they have the category is dropping them
+    // into an argument about a word they have not met. The topic screen
+    // says what a tense IS and then hands them on, so "start" means
+    // start at the beginning rather than start at chapter one.
+    const label = firstLesson.hasIntro ? "Tenses ile başla" : "İlk dersi aç";
+    const start = el("button", "btn btn--primary", label);
     start.type = "button";
-    start.addEventListener("click", () => openLessonByHash(firstLesson.id));
+    start.addEventListener("click", () =>
+      firstLesson.hasIntro
+        ? openIntroByHash(firstLesson.topicId)
+        : openLessonByHash(firstLesson.id)
+    );
     card.appendChild(start);
     card.appendChild(
-      el("p", "t-meta", `${firstLesson.topicTitle} · ${firstLesson.category}`)
+      el(
+        "p",
+        "t-meta",
+        firstLesson.hasIntro
+          ? "Önce bu konunun ne olduğu, sonra altı ders."
+          : `${firstLesson.topicTitle} · ${firstLesson.category}`
+      )
     );
   }
 

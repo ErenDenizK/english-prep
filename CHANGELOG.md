@@ -5,6 +5,26 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.23 — 2026-09-04
+
+**"Başla" now starts at the beginning.** The welcome card's one action
+opened `Present Simple vs Present Continuous` — the first lesson of the
+first topic — which is the complaint this whole round began with: every
+lesson in this app is a contrast, so dropping a learner into one before
+they have the category drops them into an argument about a word they have
+not met. It opens **Tense nedir?** now, and that screen hands them on to
+the lessons.
+
+Two of the three things asked for turned out already to be true, and
+saying so is worth more than building them again. A brand-new learner
+already sees **all eight topics, each with a one-line Turkish
+description**, on the first screen — that is what the index became when
+it stopped being 48 lesson rows. A separate "here is what you will learn"
+flow would re-show what is already on screen, which is the tour this
+project refused on evidence.
+
+107 unit tests, 1156 verification checks.
+
 ## v0.22 — 2026-09-04
 
 **The Eğitim index is eight topic rows instead of forty-eight lesson
