@@ -48,7 +48,7 @@
       "extent"
     ],
     "correctIndex": 0,
-    "explanation": "Ölçülen şey iki adayın arasındaki fark: on dokuz binde on bir oy. İki değer arasındaki bu farka 'margin' denir. En yakın yanlış seçenek 'threshold'dur; o aşıldığında bir şeyin devreye girdiği sınır değerdir — yeniden sayımı tetikleyen kural bir eşik olabilir, ama boşluktaki sözcük kuralın kendisi değil, iki aday arasındaki farktır.",
+    "explanation": "Ölçülen şey iki adayın arasındaki fark: on dokuz binde dokuz oy. İki değer arasındaki bu farka 'margin' denir. En yakın yanlış seçenek 'threshold'dur; o aşıldığında bir şeyin devreye girdiği sınır değerdir — yeniden sayımı tetikleyen kural bir eşik olabilir, ama boşluktaki sözcük kuralın kendisi değil, iki aday arasındaki farktır.",
     "tip": "İki sayı arasındaki fark ya da elde kalan pay 'margin'dir; 'threshold' ise aşıldığında sonucu değiştiren sınır değerdir.",
     "optionNotes": {
       "scope": "Kapsam: bir işin neleri içine aldığı. Seçimde kapsam değil, iki aday arasındaki fark konuşuluyor.",
@@ -276,12 +276,12 @@
       "considerable"
     ],
     "correctIndex": 0,
-    "explanation": "Kazanç var ve ölçülebiliyor, ama yüzde on birlik eğitim tasarrufunun yanında anılmaya değmeyecek kadar sönük kalıyor; bu yüzden rapordan da çıkıyor. Ölçülebilir ama sınırda kalan bu büyüklük 'marginal'dır. 'considerable' en yakın yanlış seçenek olurdu ama tam tersini söyler: hatırı sayılır bir miktar demektir, oysa buradaki oran binde dörttür.",
+    "explanation": "Kazanç var ve ölçülebiliyor, ama yüzde yedilik eğitim tasarrufunun yanında anılmaya değmeyecek kadar sönük kalıyor; bu yüzden rapordan da çıkıyor. Ölçülebilir ama sınırda kalan bu büyüklük 'marginal'dır. 'considerable' en yakın yanlış seçenek olurdu ama tam tersini söyler: hatırı sayılır bir miktar demektir, oysa buradaki oran binde dörttür.",
     "tip": "'Marginal' ölçülebilen ama başka bir şeyin yanında kayda değmeyen küçüklüktür; büyük miktar için 'considerable' kullanılır.",
     "optionNotes": {
       "crucial": "Olmazsa olmaz, sonucu belirleyen. Bir yıl içinde rapordan çıkarılan bir kazanç için kullanılamaz.",
       "substantial": "Miktarca büyük, ciddi. Binde dörtlük bir yakıt tasarrufu bu sözcüğü karşılamaz.",
-      "considerable": "Hatırı sayılır ölçüde çok. Paragraf kazancın yüzde on birin yanında sönük kaldığını söylüyor."
+      "considerable": "Hatırı sayılır ölçüde çok. Paragraf kazancın yüzde yedinin yanında sönük kaldığını söylüyor."
     }
   },
   {
@@ -295,11 +295,11 @@
       "considerable"
     ],
     "correctIndex": 0,
-    "explanation": "İki sayı yan yana konuyor: iki yüz binlik bir bütçenin içinde on bir lira. Hesaba katmaya değmeyecek kadar küçük olan bu farkı 'negligible' anlatır ve maddenin gündemden düşürülmesi de bunu doğrular. 'substantial' en yakın yanlış seçenek; o ciddi tutarda bir miktar demektir ve paragrafın verdiği oranla doğrudan çelişir.",
+    "explanation": "İki sayı yan yana konuyor: iki yüz binlik bir bütçenin içinde doksan lira. Hesaba katmaya değmeyecek kadar küçük olan bu farkı 'negligible' anlatır ve maddenin gündemden düşürülmesi de bunu doğrular. 'substantial' en yakın yanlış seçenek; o ciddi tutarda bir miktar demektir ve paragrafın verdiği oranla doğrudan çelişir.",
     "tip": "'Negligible' hesaba katılmaya değmeyecek kadar küçük demektir; ölçü sayının kendisi değil, toplamın içindeki payıdır.",
     "optionNotes": {
       "crucial": "Olmazsa olmaz, sonucu belirleyen. Gündemden düşürülen bir maliyet farkı için kullanılamaz.",
-      "substantial": "Miktarca büyük, ciddi tutarda. İki yüz bin liralık bütçe içinde on bir lira bunun tersidir.",
+      "substantial": "Miktarca büyük, ciddi tutarda. İki yüz bin liralık bütçe içinde doksan lira bunun tersidir.",
       "considerable": "Hatırı sayılır ölçüde çok. Paragraf farkın tartışmaya bile değmediğini söylüyor."
     }
   },
@@ -428,11 +428,11 @@
       "deliberate"
     ],
     "correctIndex": 0,
-    "explanation": "Üç ret, her biri bir yıl süren bir bekleyiş ve on bir yıl sonra hâlâ aynı dilekçe: paragraf engellere rağmen sürdürmeyi anlatıyor, bu da 'persistent'tır. 'reluctant' en yakın yanlış seçenek; Türkçeye 'isteksiz' diye çevrilir ve tek başına 'yapmayı istemeyen' demektir, oysa buradaki kadın yapmak istemeyen değil, ısrarla yapan taraftır.",
+    "explanation": "Üç ret, her biri bir yıl süren bir bekleyiş ve altı yıl sonra hâlâ aynı dilekçe: paragraf engellere rağmen sürdürmeyi anlatıyor, bu da 'persistent'tır. 'reluctant' en yakın yanlış seçenek; Türkçeye 'isteksiz' diye çevrilir ve tek başına 'yapmayı istemeyen' demektir, oysa buradaki kadın yapmak istemeyen değil, ısrarla yapan taraftır.",
     "tip": "'Persistent' engellere rağmen sürdürendir; 'reluctant' tek başına kullanıldığında 'gönülsüz', yani tam tersidir.",
     "optionNotes": {
-      "reluctant": "İsteksiz, gönülsüz. Aynı dilekçeyi on bir yıl boyunca yineleyen biri için tam ters anlam verir.",
-      "indifferent": "Umursamayan, fikri olmayan. Aynı talebi on bir yıl sürdüren biri konuyu fazlasıyla umursuyor.",
+      "reluctant": "İsteksiz, gönülsüz. Aynı dilekçeyi altı yıl boyunca yineleyen biri için tam ters anlam verir.",
+      "indifferent": "Umursamayan, fikri olmayan. Aynı talebi altı yıl sürdüren biri konuyu fazlasıyla umursuyor.",
       "deliberate": "Kasıtlı, bilerek yapılmış. Anlatılan şey tek bir eylemin kasti olması değil, yıllara yayılan bir sürdürme."
     }
   },

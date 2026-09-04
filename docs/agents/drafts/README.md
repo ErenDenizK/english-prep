@@ -262,12 +262,36 @@ real teaching — `negligible` is the *named* closest trap in its item's
 explanation, and the whole point of that item is that a quantity can be
 negligible while its consequence is not. Recorded rather than fixed.
 
-One thing was fixed: `eleven` was the arbitrary quantity in six of the
-nouns/adjectives paragraphs — votes, lira, flats, days, per cent, years.
-An author's tic rather than a defect in any item, but six of them in one
-session reads as one voice. Only the numerals changed; the arithmetic in
-every paragraph still holds. `years` remains at 4/24, which is four
-ordinary time spans rather than a rut.
+One thing was fixed, and **the fix broke four items.** `eleven` was the
+arbitrary quantity in six of the nouns/adjectives paragraphs — votes,
+lira, flats, days, per cent, years. An author's tic rather than a defect
+in any item, but six in one session reads as one voice, so the numerals
+were changed. The note left behind said *"only the numerals changed; the
+arithmetic in every paragraph still holds"*, which was true, and which
+was the wrong thing to check: the English paragraphs were edited and the
+**Turkish explanations were not**. Eight sentences across `t3`, `t15`,
+`t16` and `t23` went on naming *on bir* against a paragraph now saying
+nine votes, seven per cent, ninety lira and six years — each explanation
+contradicting its own item.
+
+Corrected 2026-09-04, each numeral set to the one its own paragraph
+gives. Two things worth keeping from it:
+
+- **No automated check catches this.** The blind pass strips
+  `explanation` and `optionNotes` by allow-list, so it cannot see them by
+  construction; `npm run draft` does not read Turkish for arithmetic. The
+  lesson sufficiency pass found it because it is the only pass that reads
+  the item and its explanation together. A cross-language numeral check
+  was prototyped and **not shipped**: on the live corpus it flags *half a
+  century* and *a decade or more* as contradictions, and a check that
+  cries wolf is a check nobody reads.
+- **The failure class is "the repair fixed one surface".** It is the same
+  one this pipeline has now recorded five times, and the tell each time
+  was a completion note that reported what *had* been verified rather
+  than what had been changed.
+
+`years` remains at 4/24, which is four ordinary time spans rather than a
+rut.
 
 ---
 
