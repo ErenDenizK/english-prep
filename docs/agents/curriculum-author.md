@@ -269,6 +269,32 @@ scope it to a position — immediately before the blank, inside the blank's
 own clause — and before you hand the file over, check every word in every
 list against the paragraphs your questions actually use.
 
+**The sharpest form of this, because it defeats even a well-scoped rule:
+the blank swallows the thing the rule tells you to look at.** A cloze
+option is not a word dropped into a finished sentence — it can carry the
+preposition, the auxiliary, the whole verb phrase. So a rule that says
+*"boşluktan hemen önce bir edat varsa"* is unrunnable on an item whose
+preposition is inside the option, and three separate topics have now
+failed that way: `for whom` and `of which` sit in the option in three of
+four preposition items and in all four quantifier items; `is used to` and
+`was used to` sit in the option in the entire *Used To* category, which
+makes the two rules keyed on them circular.
+
+The fix is one clause at the top of the block: **`Şıkkı boşluğa koy, sonra
+bak.`** Test the filled sentence, never the stem.
+
+**And order the rules the way `closest-meaning` does.** Specific first,
+one guarded catch-all last — *"Yukarıdaki kuralların hiçbiri
+ateşlemediyse …"*. A broad semantic rule at the top means the
+verb-specific and structure-specific rules below it never run at all, and
+a block with no terminal rule leaves options with no verdict rather than
+a default. Two topics have failed on each half of that.
+
+Finally: **if an item asks the learner to pick a word as well as a form,
+the block needs a rule that reads meaning.** A procedure that settles the
+form and stops will certify every distractor that shares the key's form —
+which in one topic was seven options in a single category.
+
 ### `check` — a question, here
 
 ```json
