@@ -1,0 +1,1029 @@
+[
+  {
+    "category": "Scale & Extent (extent / scope / magnitude / margin / threshold)",
+    "summary": "Ne kadar ileri gittiği mi, neyi kapsadığı mı?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede kapsam sözcüğü hem bir şeyin ne kadar ileri gittiğini hem de neleri içine aldığını karşılar; sınır sözcüğü ise hem iki değer arasındaki farkı hem de aşılınca her şeyin değiştiği noktayı. İngilizce bunları beş ayrı isme dağıtır. Ayrımı yapan sözcüğün kendisi değil, **cümlenin sana ne verdiğidir**: bir derece mi, bir çerçeve mi, iki değer arasında bir fark mı?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Üçü de büyüklük anlatır, farklı soruya cevap verir",
+        "sides": [
+          {
+            "label": "extent",
+            "gloss": "Bir şeyin **ne kadar ileri gittiği**: derecesi, oranı, ulaştığı nokta. Cümle bir ölçek üzerinde konum veriyorsa bu sözcüktür.",
+            "example": "The extent of the delay is still unclear."
+          },
+          {
+            "label": "scope",
+            "gloss": "Bir işin **neleri içine aldığı**: çerçevenin sınırları, nelerin dışarıda kaldığı. Büyüklükten çok kapsama alanı.",
+            "example": "That question is beyond the scope of the review."
+          },
+          {
+            "label": "magnitude",
+            "gloss": "Büyüklüğün kendisi, üstelik **alışılmışın dışında** büyük. Ölçülmüş ya da çarpıcı bir boyut varsa gelir.",
+            "example": "A failure of this magnitude is rare."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "İkisi de bir sayı çizgisi üzerinde durur",
+        "sides": [
+          {
+            "label": "margin",
+            "gloss": "İki değer arasındaki **fark** ya da elde tutulan pay. Karşılaştırılacak iki büyüklük yoksa margin de yoktur.",
+            "example": "The team won by a narrow margin."
+          },
+          {
+            "label": "threshold",
+            "gloss": "Aşılınca davranışın **değiştiği nokta**. Altında bir şey olmaz, üstünde olur; kendisi bir miktar değil, bir eşiktir.",
+            "example": "Nothing changes below this threshold."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Hangisi ne alır",
+        "rows": [
+          {
+            "form": "extent",
+            "use": "Tekil kullanılır",
+            "pattern": "the extent of + N / to a large extent",
+            "example": "the extent of the delay"
+          },
+          {
+            "form": "scope",
+            "use": "Tekil kullanılır",
+            "pattern": "the scope of + N / beyond the scope of + N",
+            "example": "beyond the scope of the review"
+          },
+          {
+            "form": "magnitude",
+            "use": "Tekil kullanılır",
+            "pattern": "the magnitude of + N / of this magnitude",
+            "example": "a problem of this magnitude"
+          },
+          {
+            "form": "margin",
+            "use": "Sayılabilir; çoğul olur",
+            "pattern": "by a + adj + margin / a margin of error",
+            "example": "by a narrow margin"
+          },
+          {
+            "form": "threshold",
+            "use": "Sayılabilir; çoğul olur",
+            "pattern": "above / below the threshold",
+            "example": "below the threshold"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The extent of the delay is still unclear.",
+            "note": "Ne kadar ilerlediği sorusu → extent"
+          },
+          {
+            "sentence": "That question is beyond the scope of the review.",
+            "note": "Neyin içeride kaldığı çerçevesi → scope"
+          },
+          {
+            "sentence": "A failure of this magnitude is rare.",
+            "note": "Alışılmışın dışında bir boyut → magnitude"
+          },
+          {
+            "sentence": "The team won by a narrow margin.",
+            "note": "İki değer arasındaki fark → margin"
+          },
+          {
+            "sentence": "Nothing changes below this threshold.",
+            "note": "Davranışın değiştiği nokta → threshold"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The report explains the scope of the damage.",
+        "right": "The report explains the extent of the damage.",
+        "why": "Türkçede ikisine de kapsam denir, ama scope bir işin neleri içerdiğini çizer. Hasarın ne kadar ilerlediği bir derecedir, çerçeve değil."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The temperature stayed below the margin.",
+        "right": "The temperature stayed below the threshold.",
+        "why": "Türkçede ikisi de sınırdır. margin iki değer arasındaki farktır ve karşılaştırılacak iki büyüklük ister; altında kalınan nokta threshold'dur."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "He was affected to a large scope.",
+        "right": "He was affected to a large extent.",
+        "why": "Derece anlatan kalıp to a large extent'tir; scope bu kalıba girmez. Sözcüğü değiştirdiğinde kalıbın da değiştiğini unutma."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Bu beşlinin ikisi gerçekten örtüşür: cümle bir şeyin yalnızca büyük olduğunu söylüyorsa **extent** de **magnitude** da savunulur, ve iyi bir soru seni bu ikisi arasında seçim yapmaya zorlamaz. Ayrım ancak cümle bir şey eklerse doğar: alışılmışın dışında bir boyut magnitude'ü, bir ölçek üzerinde ne kadar ilerlendiği extent'i çeker."
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda ne yapacaksın",
+        "rules": [
+          {
+            "condition": "Cümle iki değeri karşılaştırıyorsa ya da elde bırakılan payı veriyorsa: aradaki fark, hata payı, ne kadarla kazanıldığı",
+            "then": "margin"
+          },
+          {
+            "condition": "Cümle aşılınca bir şeyin başladığı, durduğu ya da değiştiği bir düzeyden söz ediyorsa",
+            "then": "threshold"
+          },
+          {
+            "condition": "Cümle neyin içeride neyin dışarıda olduğunu çiziyorsa: bir işin çerçevesi, ele alınmayan konular",
+            "then": "scope"
+          },
+          {
+            "condition": "Cümle boyutu alışılmışın dışında büyük diye niteliyorsa ya da çarpıcı bir ölçü veriyorsa",
+            "then": "magnitude"
+          },
+          {
+            "condition": "Cümle bir şeyin ne kadar etkilendiğini, ne oranda yayıldığını ya da nereye kadar ulaştığını soruyorsa",
+            "then": "extent"
+          },
+          {
+            "condition": "Cümle yalnızca büyük diyorsa; ne bir çerçeve, ne bir eşik, ne de bir fark veriyorsa: ikisi de doğrudur, birini aceleyle eleme",
+            "then": "extent / magnitude"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Evidence & Inference (evidence / indication / assumption / implication / consensus)",
+    "summary": "Elde veri mi var, yoksa yalnızca bir işaret mi?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede kanıt sözcüğü hem elde gerçekten veri olduğu durumu hem de yalnızca bir işaret bulunduğu durumu karşılar. İngilizce bu ikisini ayırır ve üstüne üç sözcük daha koyar: sınanmamış bir kabul, bir bulgudan çıkan sonuç, ve insanların uzlaşması. Bu beşlide soru ne kadar büyük değil, **iddianın arkasında ne var** sorusudur."
+      },
+      {
+        "type": "contrast",
+        "heading": "Desteğin gücü",
+        "sides": [
+          {
+            "label": "evidence",
+            "gloss": "Gözlenmiş, toplanmış **veri**. Bir sonucu destekler; cümlenin bir ölçümden, bulgudan ya da gözlemden söz etmesi gerekir.",
+            "example": "The data provide clear evidence for the claim."
+          },
+          {
+            "label": "indication",
+            "gloss": "Henüz kanıt sayılmayan bir **işaret**. Bir yöne gösterir ama o yönü kurmaz; cümle çoğu zaman kesinliği açıkça geri çeker.",
+            "example": "A rise in complaints is an early indication."
+          },
+          {
+            "label": "assumption",
+            "gloss": "Doğruluğu **sınanmadan** kabul edilen çıkış noktası. Arkasında veri yoktur; olsaydı adı evidence olurdu.",
+            "example": "The model rests on one untested assumption."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "Bulgudan sonra gelen ikisi",
+        "sides": [
+          {
+            "label": "implication",
+            "gloss": "Bir bulgudan **çıkan** sonuç: bunun şu alan için anlamı nedir? Açıkça söylenmemiş, ama söylenenden izlenen şey.",
+            "example": "The finding has implications for future work."
+          },
+          {
+            "label": "consensus",
+            "gloss": "Kanıtla değil **insanlarla** ilgilidir: bir grubun ortak görüşe varmış olması. Doğru olduğunu değil, üzerinde anlaşıldığını söyler.",
+            "example": "There is broad consensus among economists."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Hangisi ne alır",
+        "rows": [
+          {
+            "form": "evidence",
+            "use": "Sayılamaz; an almaz, çoğullaşmaz",
+            "pattern": "evidence for / of + N",
+            "example": "clear evidence for the claim"
+          },
+          {
+            "form": "indication",
+            "use": "Sayılabilir",
+            "pattern": "an indication of + N / that + clause",
+            "example": "an indication that it works"
+          },
+          {
+            "form": "assumption",
+            "use": "Sayılabilir",
+            "pattern": "the assumption that + clause / on the assumption that",
+            "example": "on the assumption that costs fall"
+          },
+          {
+            "form": "implication",
+            "use": "Sayılabilir; sık çoğul",
+            "pattern": "implications for + N",
+            "example": "implications for policy"
+          },
+          {
+            "form": "consensus",
+            "use": "Tekil kullanılır",
+            "pattern": "consensus on + N / among + N",
+            "example": "consensus among economists"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The data provide clear evidence for the claim.",
+            "note": "Gözleme dayanan destek → evidence"
+          },
+          {
+            "sentence": "A rise in complaints is an early indication.",
+            "note": "Henüz kanıt değil, işaret → indication"
+          },
+          {
+            "sentence": "The model rests on one untested assumption.",
+            "note": "Sınanmamış çıkış noktası → assumption"
+          },
+          {
+            "sentence": "The finding has implications for future work.",
+            "note": "Bulgudan çıkan sonuç → implication"
+          },
+          {
+            "sentence": "There is broad consensus among economists.",
+            "note": "İnsanların uzlaşması → consensus"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "He gave an evidence for his claim.",
+        "right": "He gave evidence for his claim.",
+        "why": "evidence sayılamaz bir isimdir: an almaz ve çoğullaşmaz. Tek bir parçadan söz etmen gerekirse a piece of evidence dersin."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "We started from the implication that costs would fall.",
+        "right": "We started from the assumption that costs would fall.",
+        "why": "implication bir bulgudan sonra gelir, ondan çıkar. Baştan doğru sayılan ve sınanmayan önerme assumption'dır; yön terstir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The results have important indications for policy.",
+        "right": "The results have important implications for policy.",
+        "why": "Türkçede ikisi de sonuç ya da işaret diye geçer. indication bir şeyin işaretidir; bir bulgunun bir alan için doğurduğu sonuç implication'dır."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Dürüst olmak gerekirse evidence ile indication bir yerde gerçekten örtüşür: aynı gözlem hem destek hem işaret olabilir. Ayrımı cümle yapar. Gözlem bir sonucu **desteklemek için** sunuluyorsa evidence, kesinlik açıkça geri çekiliyorsa indication. Bir de dilbilgisi ayırır: boşluk an alıyorsa ya da çoğulsa evidence zaten elenir."
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda ne yapacaksın",
+        "rules": [
+          {
+            "condition": "Cümle bir grubun ortak görüşe varmış olmasından söz ediyorsa",
+            "then": "consensus"
+          },
+          {
+            "condition": "Cümle bir şeyin doğru sayılıp hiç sınanmadığını, akıl yürütmenin oradan başladığını söylüyorsa",
+            "then": "assumption"
+          },
+          {
+            "condition": "Cümle bir bulgunun başka bir alan için doğurduğu sonucu soruyorsa: bunun anlamı nedir, ne değişir",
+            "then": "implication"
+          },
+          {
+            "condition": "Cümle toplanmış veri, ölçüm ya da gözlem sunuyorsa ve bunlar bir iddiayı destekliyorsa",
+            "then": "evidence"
+          },
+          {
+            "condition": "Cümle elde yalnızca bir işaret olduğunu, sonucun henüz kurulmadığını söylüyorsa",
+            "then": "indication"
+          },
+          {
+            "condition": "Seçtiğini boşluğa koyup denetle: boşluk an alıyorsa ya da çoğulsa, sayılamayan üyeler o biçime girmez",
+            "then": "indication / implication / assumption"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Certainty & Doubt (apparent / plausible / questionable / conclusive / tentative)",
+    "summary": "Cümle konuyu kapatıyor mu, açık mı bırakıyor?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Bu beşli bir iddianın ne kadar kapandığını anlatır. Asıl tuzak **apparent**'tadır: hem ortada, açıkça görülüyor anlamına gelir, hem de görünüşte öyle, belki değil anlamına. Türkçede belli sözcüğü ikisini birden taşıdığı için ayrım kaybolur. Hangisi olduğunu sözcük değil, **cümlenin devamı** söyler."
+      },
+      {
+        "type": "contrast",
+        "heading": "apparent'ın iki yüzü",
+        "sides": [
+          {
+            "label": "apparent (evident)",
+            "gloss": "Ortada, görülür hâle gelmiş. Çoğunlukla It is / became apparent that kalıbında gelir ve cümlenin devamı bunu yalanlamaz.",
+            "example": "It soon became apparent to everyone."
+          },
+          {
+            "label": "apparent (seeming)",
+            "gloss": "Görünüşte öyle olan. Çoğunlukla isimden önce gelir ve cümlenin devamı görünenin gerçek olmadığını söyler ya da onu açıklar.",
+            "example": "Her apparent confidence hid real doubt."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "Konu kapandı mı?",
+        "sides": [
+          {
+            "label": "conclusive",
+            "gloss": "Tartışmayı **bitiren**. Genelde kanıt, sonuç, kanıtlama gibi isimlerle gelir; geriye makul bir şüphe bırakmaz.",
+            "example": "The tests are not conclusive."
+          },
+          {
+            "label": "tentative",
+            "gloss": "**Geçici**, sonradan değişebilir. Cümle çoğu zaman daha fazla veri, sınama ya da onay beklendiğini söyler.",
+            "example": "We have reached a tentative conclusion."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "İnandırıcı mı, kuşkulu mu?",
+        "sides": [
+          {
+            "label": "plausible",
+            "gloss": "Akla yatkın, olabilir görünen. Kanıtlanmış demek **değildir**; yalnızca bilinenlerle çelişmediğini söyler.",
+            "example": "That is one plausible explanation."
+          },
+          {
+            "label": "questionable",
+            "gloss": "Kuşku götürür: cümle bir kusur, bir itiraz ya da yönteme yönelik bir şüphe taşır. Olumsuz bir yargıdır.",
+            "example": "The method is questionable."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Nerede durur, ne alır",
+        "rows": [
+          {
+            "form": "apparent",
+            "use": "Fiilden sonra: ortada anlamı",
+            "pattern": "It is / became apparent that + clause",
+            "example": "It became apparent that it had failed."
+          },
+          {
+            "form": "apparent",
+            "use": "İsimden önce: görünürdeki anlamı",
+            "pattern": "the apparent + N",
+            "example": "the apparent contradiction"
+          },
+          {
+            "form": "plausible",
+            "use": "İsimden önce ve fiilden sonra",
+            "pattern": "a plausible + N / seem plausible",
+            "example": "a plausible explanation"
+          },
+          {
+            "form": "questionable",
+            "use": "İsimden önce ve fiilden sonra",
+            "pattern": "a questionable + N",
+            "example": "questionable methods"
+          },
+          {
+            "form": "conclusive",
+            "use": "Genelde kanıt isimleriyle",
+            "pattern": "conclusive + evidence / proof / results",
+            "example": "not conclusive evidence"
+          },
+          {
+            "form": "tentative",
+            "use": "Genelde isimden önce",
+            "pattern": "a tentative + N",
+            "example": "a tentative conclusion"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The tests are not conclusive.",
+            "note": "Konu hâlâ kapanmıyor → conclusive'in olumsuzu"
+          },
+          {
+            "sentence": "We have reached a tentative conclusion.",
+            "note": "Değişebilir, geçici → tentative"
+          },
+          {
+            "sentence": "That is one plausible explanation.",
+            "note": "İnandırıcı, ama kanıtlanmış değil → plausible"
+          },
+          {
+            "sentence": "The method is questionable.",
+            "note": "Yönteme kuşku düşüyor → questionable"
+          },
+          {
+            "sentence": "It soon became apparent to everyone.",
+            "note": "Ortaya çıkan, görülür olan → apparent (evident)"
+          },
+          {
+            "sentence": "Her apparent confidence hid real doubt.",
+            "note": "Görünen ile gerçek ayrışıyor → apparent (seeming)"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The evidence was plausible enough to end the debate.",
+        "right": "The evidence was conclusive enough to end the debate.",
+        "why": "plausible yalnızca inandırıcı demektir ve hiçbir tartışmayı bitirmez. Bir tartışmayı kapatan kanıt conclusive'dir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "These are our conclusive findings; more data will follow.",
+        "right": "These are our tentative findings; more data will follow.",
+        "why": "Daha fazla veri gelecekse sonuç henüz kapanmamıştır. conclusive tam tersini, konunun kapandığını söyler; geçici sonuç tentative'dir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "İki dürüst örtüşme var. Zayıf bir kanıt hem questionable hem de not conclusive diye anlatılabilir; questionable'ı seçmek için cümlenin **kaynağa ya da yönteme** kuşku düşürmesi gerekir. plausible ile tentative de bir arada durabilir: plausible inandırıcılığı ölçer, tentative geçiciliği. Cümle daha fazla çalışma vaat ediyorsa tentative'dir."
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda ne yapacaksın",
+        "rules": [
+          {
+            "condition": "Cümle görüneni gerçekle karşı karşıya getiriyorsa: söylenen şey sonra yalanlanıyor, açıklanıyor ya da bir kuşkuyla dengeleniyorsa",
+            "then": "apparent"
+          },
+          {
+            "condition": "Cümle konunun kapandığını söylüyorsa: kanıt tartışmayı bitiriyor, geriye şüphe kalmıyorsa",
+            "then": "conclusive"
+          },
+          {
+            "condition": "Cümle sonucun geçici olduğunu, daha fazla veriyle ya da onayla değişebileceğini söylüyorsa",
+            "then": "tentative"
+          },
+          {
+            "condition": "Cümle bir kusur, bir itiraz ya da yönteme yönelik bir şüphe taşıyorsa",
+            "then": "questionable"
+          },
+          {
+            "condition": "Cümle bir açıklamayı akla yatkın buluyor ama kanıtlandığını söylemiyorsa",
+            "then": "plausible"
+          },
+          {
+            "condition": "Cümle bir şeyin herkesçe görülür hâle geldiğini söylüyorsa ve bunu sonradan yalanlamıyorsa",
+            "then": "apparent"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Significance & Priority (crucial / substantial / marginal / negligible / considerable)",
+    "summary": "Miktar mı büyük, yoksa sonuç mu ona bağlı?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede önemli sözcüğü iki ayrı işi birden görür: hem onsuz olmaz anlamına gelir, hem de epeyce çok anlamına. İngilizce bu ikisini iki ayrı eksene ayırır. Bu beşliyi çözmenin yolu sözcükleri ezberlemek değil, önce cümlenin hangi ekseni verdiğini görmektir: bir **miktar** mı veriliyor, yoksa bir **sonuç** mu buna bağlanıyor?"
+      },
+      {
+        "type": "contrast",
+        "heading": "İki ayrı eksen",
+        "sides": [
+          {
+            "label": "crucial",
+            "gloss": "**Sonuç ekseni**: bir şey buna bağlıdır, olmazsa iş yürümez. Miktar bildirmez; küçük bir ayrıntı da crucial olabilir.",
+            "example": "Timing is crucial to the result."
+          },
+          {
+            "label": "substantial",
+            "gloss": "**Miktar ekseni**: ölçülebilir biçimde büyük. Önemli olduğunu söylemez, çok olduğunu söyler.",
+            "example": "There was a substantial rise in costs."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "Miktar ekseninin üç durağı",
+        "sides": [
+          {
+            "label": "considerable",
+            "gloss": "Büyük miktar; substantial ile neredeyse eş anlamlıdır. Eğilimi soyut derecelerdedir: ilgi, güçlük, etki.",
+            "example": "The change caused considerable difficulty."
+          },
+          {
+            "label": "marginal",
+            "gloss": "Küçük ama **gerçek**: ölçülüyor, sayılıyor, yine de zar zor. Yok saymak yanlış olur.",
+            "example": "The gain was marginal."
+          },
+          {
+            "label": "negligible",
+            "gloss": "O kadar küçük ki **hesaba katılmasına gerek yok**. Hesabın dışında bırakılabileceğini söyler.",
+            "example": "The difference is negligible."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Nerede durur, ne alır",
+        "rows": [
+          {
+            "form": "crucial",
+            "use": "Tümleçle",
+            "pattern": "be crucial to / for + N",
+            "example": "crucial to the outcome"
+          },
+          {
+            "form": "crucial",
+            "use": "Mastarla",
+            "pattern": "It is crucial to + V",
+            "example": "It is crucial to check the data."
+          },
+          {
+            "form": "substantial",
+            "use": "İsimden önce ve fiilden sonra",
+            "pattern": "a substantial + N",
+            "example": "a substantial increase"
+          },
+          {
+            "form": "considerable",
+            "use": "Genelde isimden önce",
+            "pattern": "considerable + N",
+            "example": "considerable difficulty"
+          },
+          {
+            "form": "marginal",
+            "use": "Genelde isimden önce",
+            "pattern": "a marginal + N",
+            "example": "a marginal gain"
+          },
+          {
+            "form": "negligible",
+            "use": "İsimden önce ve fiilden sonra",
+            "pattern": "be negligible",
+            "example": "the risk was negligible"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "Timing is crucial to the result.",
+            "note": "Sonuç buna bağlı → crucial"
+          },
+          {
+            "sentence": "There was a substantial rise in costs.",
+            "note": "Ölçülen, büyük miktar → substantial"
+          },
+          {
+            "sentence": "The change caused considerable difficulty.",
+            "note": "Soyut bir derece, büyük → considerable"
+          },
+          {
+            "sentence": "The gain was marginal.",
+            "note": "Küçük ama gerçek → marginal"
+          },
+          {
+            "sentence": "The difference is negligible.",
+            "note": "Hesaba katılmayacak kadar küçük → negligible"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "A crucial amount of water was lost.",
+        "right": "A substantial amount of water was lost.",
+        "why": "crucial miktar bildirmez, onsuz olmaz der. Ölçülen bir miktarı büyük göstermek için miktar ekseninden bir sözcük gerekir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Rest is considerable for recovery.",
+        "right": "Rest is crucial for recovery.",
+        "why": "considerable çokluk bildirir, önem değil. Bir şeyin ona bağlı olduğunu söyleyen sözcük crucial'dır ve tümlecini for ya da to ile alır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The effect was negligible, but it changed the outcome.",
+        "right": "The effect was marginal, but it changed the outcome.",
+        "why": "negligible hesaba katmaya değmez demektir; sonucu değiştiren bir etki hesaptan çıkarılamaz. Küçük ama gerçek etki marginal'dır."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Açıkça söylemek gerek: crucial, substantial ve considerable sıradan yazıda büyük ölçüde örtüşür ve çoğu cümlede üçü de kurulabilir. Ayrılmaları için cümlenin bir şey eklemesi gerekir: **ölçülmüş bir miktar** varsa miktar ekseni, **ona bağlanan bir sonuç** varsa crucial. Cümle ikisini de vermiyorsa aradığın ipucu henüz elinde değildir; okumaya devam et."
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda ne yapacaksın",
+        "rules": [
+          {
+            "condition": "Cümle bir sonucun ona bağlı olduğunu söylüyorsa: o olmadan iş yürümüyor, karar ya da başarı değişiyorsa",
+            "then": "crucial"
+          },
+          {
+            "condition": "Cümle miktarın hesaba katılmasına gerek olmadığını, pratikte hiçbir fark yaratmadığını söylüyorsa",
+            "then": "negligible"
+          },
+          {
+            "condition": "Cümle küçük ama gerçek bir farktan söz ediyorsa: ölçülüyor ve sonuca giriyor, ama zar zor",
+            "then": "marginal"
+          },
+          {
+            "condition": "Cümle büyük bir miktarı sayı, oran ya da tutar olarak veriyorsa",
+            "then": "substantial"
+          },
+          {
+            "condition": "Cümle büyüklüğü ölçülmeyen soyut bir derece olarak veriyorsa: ilgi, güçlük, etki, beceri",
+            "then": "considerable"
+          },
+          {
+            "condition": "Cümle bir miktarın büyük olduğunu söylüyor ama bunu ne bir sayıyla ne de bir sonuçla bağlıyorsa: son iki kural bir eğilimdir, kural değil; ikisi de doğrudur",
+            "then": "substantial / considerable"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Constraint & Requirement (constraint / obligation / provision / criterion / exemption)",
+    "summary": "Yapmak zorunda mısın, yoksa yapamıyor musun?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede koşul, şart ve zorunluluk sözcükleri bu beşlinin üstünü örter: seni **daraltan** bir şey de, **yapmakla yükümlü** olduğun bir şey de, bir belgedeki **madde** de aynı sözcükle anlatılabilir. İngilizce bunları ayırır ve iyi bir soru hep bu ayrımın üstüne kurulur: bu şey seni sınırlıyor mu, zorunlu mu kılıyor, yoksa dışında mı tutuyor?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Seni ne bağlar, ne serbest bırakır",
+        "sides": [
+          {
+            "label": "constraint",
+            "gloss": "Yapabileceğini **daraltan** şey: zaman, para, yer, yetki. Bir şey yapmanı istemez, yapabildiğini kısar.",
+            "example": "Time constraints shaped the design."
+          },
+          {
+            "label": "obligation",
+            "gloss": "Yerine getirmen **gereken** şey: yasal ya da ahlaki bir borç. Seni kısmaz, seni yükümlü kılar.",
+            "example": "Employers have an obligation to report accidents."
+          },
+          {
+            "label": "exemption",
+            "gloss": "Başkaları için geçerli olan bir kuralın **dışında tutulmak**. Kuralın varlığını gerektirir: kural yoksa muafiyet de yoktur.",
+            "example": "Small firms were granted an exemption."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "Ölçüt mü, madde mi",
+        "sides": [
+          {
+            "label": "criterion",
+            "gloss": "Bir şeyin nitelikli sayılıp sayılmadığına karar vermek için kullanılan **ölçüt**. Çoğulu criteria'dır.",
+            "example": "Applicants must meet three criteria."
+          },
+          {
+            "label": "provision",
+            "gloss": "Bir yasanın ya da sözleşmenin içindeki tek bir **madde**. İkinci bir anlamı daha vardır: bir şeyin sağlanması, sunulması.",
+            "example": "The contract includes a provision on delays."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Hangisi ne alır",
+        "rows": [
+          {
+            "form": "constraint",
+            "use": "Sayılabilir; sık çoğul",
+            "pattern": "constraints on + N / under constraints",
+            "example": "constraints on spending"
+          },
+          {
+            "form": "obligation",
+            "use": "Sayılabilir; mastarla",
+            "pattern": "an obligation to + V / under an obligation",
+            "example": "an obligation to report"
+          },
+          {
+            "form": "provision",
+            "use": "Sayılabilir: madde anlamı",
+            "pattern": "a provision of + document / a provision on + N",
+            "example": "a provision of the treaty"
+          },
+          {
+            "form": "provision",
+            "use": "Sayılamaz: sağlama anlamı",
+            "pattern": "the provision of + N",
+            "example": "the provision of care"
+          },
+          {
+            "form": "criterion",
+            "use": "Tekil criterion, çoğul criteria",
+            "pattern": "a criterion for + N / meet the criteria",
+            "example": "meet the criteria"
+          },
+          {
+            "form": "exemption",
+            "use": "Sayılabilir",
+            "pattern": "an exemption from + N",
+            "example": "exemption from the rule"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "Time constraints shaped the design.",
+            "note": "Yapılabileni daraltan şey → constraint"
+          },
+          {
+            "sentence": "Employers have an obligation to report accidents.",
+            "note": "Yerine getirilmesi gereken borç → obligation"
+          },
+          {
+            "sentence": "The contract includes a provision on delays.",
+            "note": "Belgedeki madde → provision"
+          },
+          {
+            "sentence": "The provision of housing improved.",
+            "note": "İkinci anlam: sağlama, sunma → provision"
+          },
+          {
+            "sentence": "Applicants must meet three criteria.",
+            "note": "Değerlendirme ölçütü → criterion, çoğulu criteria"
+          },
+          {
+            "sentence": "Small firms were granted an exemption.",
+            "note": "Kuralın dışında tutulma → exemption"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Age is the main criteria.",
+        "right": "Age is the main criterion.",
+        "why": "criteria çoğuldur; tek bir ölçütten söz ederken criterion denir. Türkçede kriter tek biçim olduğu için bu ayrım kolayca kaçar."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The team worked under tight obligations.",
+        "right": "The team worked under tight constraints.",
+        "why": "obligation yapman gereken şeydir; burada anlatılan, yapabildiğini daraltan şeydir. Daraltan şey constraint'tir ve on edatını alır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Students under 18 receive an exception from the fee.",
+        "right": "Students under 18 receive an exemption from the fee.",
+        "why": "exception kuralın dışında kalan durumdur; bir kişiye resmen tanınan muafiyet exemption'dır. İkisi Türkçede tek sözcükle karşılandığı için karışır."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Örtüşme iki yerde gerçek. Aynı yasa maddesi hem seni daraltan bir **constraint** hem de yerine getirmen gereken bir **obligation** olarak anlatılabilir; ayrımı cümlenin daralttığı bir şeyden mi yoksa yapman gereken bir şeyden mi söz ettiği yapar. provision ile criterion da bir arada durur: metnin kendisi provision, o metnin koyduğu ölçüt criterion'dır."
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda ne yapacaksın",
+        "rules": [
+          {
+            "condition": "Cümle birinin, başkaları için geçerli olan bir kuralın dışında tutulduğunu söylüyorsa",
+            "then": "exemption"
+          },
+          {
+            "condition": "Cümle bir şeyin nitelikli sayılması için karşılanması gereken bir ölçütten söz ediyorsa: seçme, kabul, değerlendirme",
+            "then": "criterion"
+          },
+          {
+            "condition": "Cümle bir yasanın ya da sözleşmenin içindeki tek bir maddeden söz ediyorsa",
+            "then": "provision"
+          },
+          {
+            "condition": "Cümle bir hizmetin ya da kaynağın sağlanmasından, sunulmasından söz ediyorsa",
+            "then": "provision"
+          },
+          {
+            "condition": "Cümle birinin yapmakla yükümlü olduğu bir şeyi veriyorsa: yasal ya da ahlaki bir borç",
+            "then": "obligation"
+          },
+          {
+            "condition": "Cümle yapılabileni daraltan bir şeyden söz ediyorsa: zaman, para, yer ya da yetki sınırı",
+            "then": "constraint"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Stance & Disposition (reluctant / deliberate / cautious / persistent / indifferent)",
+    "summary": "İstemiyor mu, riskten mi çekiniyor, umursamıyor mu?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Bu beşli bir kişinin ya da kurumun tutumunu anlatır ve sınavda hepsi aynı sahnede görünür: biri harekete geçmiyor. Ayrımı yapan **neden**dir. İstemediği için mi, riskten çekindiği için mi, yoksa umursamadığı için mi? Türkçede çekingen sözcüğü bu üçünü birden karşıladığı için ayrımı cümlenin verdiği gerekçeden çıkarmak gerekir."
+      },
+      {
+        "type": "contrast",
+        "heading": "Harekete geçmemenin üç nedeni",
+        "sides": [
+          {
+            "label": "reluctant",
+            "gloss": "**İstemiyor**: yapmaya gönlü yok, ama çoğu zaman sonunda yapar. Bir direnç ya da gönülsüzlük vardır.",
+            "example": "She was reluctant to agree."
+          },
+          {
+            "label": "cautious",
+            "gloss": "**Riskten çekiniyor**: yapmak isteyebilir, ama tehlikeyi ya da belirsizliği tartıyor. Ölçülü davranır.",
+            "example": "Investors remain cautious."
+          },
+          {
+            "label": "indifferent",
+            "gloss": "**Umursamıyor**: sonuç ne olursa olsun onun için fark etmez. Ne yana ne öbür yana; tepki vermez.",
+            "example": "He seemed indifferent to the result."
+          }
+        ]
+      },
+      {
+        "type": "contrast",
+        "heading": "Eylemin kendisini niteleyen ikisi",
+        "sides": [
+          {
+            "label": "deliberate",
+            "gloss": "**Bilerek** yapılmış: kaza değil, niyet. Cümle çoğu zaman kaza ya da rastlantı olasılığını karşıya koyar.",
+            "example": "The omission was deliberate."
+          },
+          {
+            "label": "persistent",
+            "gloss": "**Sürüyor**: kişi için yılmadan devam eden, bir sorun için geçmek bilmeyen. Zaman ya da tekrar ister.",
+            "example": "The problem proved persistent."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Nerede durur, ne alır",
+        "rows": [
+          {
+            "form": "reluctant",
+            "use": "Mastarla",
+            "pattern": "be reluctant to + V",
+            "example": "reluctant to agree"
+          },
+          {
+            "form": "cautious",
+            "use": "Edatla",
+            "pattern": "be cautious about + N",
+            "example": "cautious about the plan"
+          },
+          {
+            "form": "indifferent",
+            "use": "Edatla",
+            "pattern": "be indifferent to + N",
+            "example": "indifferent to criticism"
+          },
+          {
+            "form": "deliberate",
+            "use": "İsimden önce; eylemi niteler",
+            "pattern": "a deliberate + N",
+            "example": "a deliberate choice"
+          },
+          {
+            "form": "persistent",
+            "use": "İsimden önce; kişi ya da sorun",
+            "pattern": "a persistent + N",
+            "example": "persistent problems"
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "She was reluctant to agree.",
+            "note": "İstemeden kabul → reluctant, mastarla"
+          },
+          {
+            "sentence": "Investors remain cautious.",
+            "note": "Riskten kaçınma → cautious"
+          },
+          {
+            "sentence": "He seemed indifferent to the result.",
+            "note": "Umursamama → indifferent"
+          },
+          {
+            "sentence": "The omission was deliberate.",
+            "note": "Kaza değil, niyet → deliberate"
+          },
+          {
+            "sentence": "The problem proved persistent.",
+            "note": "Geçmek bilmeyen, süregelen → persistent"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "She was reluctant of signing the form.",
+        "right": "She was reluctant to sign the form.",
+        "why": "reluctant mastar alır: to + fiil. Türkçede -mekten çekindi kalıbı akla of getirir, ama bu sıfat edatla değil mastarla kurulur."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "After years of cautious effort, the team succeeded.",
+        "right": "After years of persistent effort, the team succeeded.",
+        "why": "cautious riskten kaçınmayı anlatır, sürekliliği değil. Yıllarca sürdürülen ve bırakılmayan çabanın sözcüğü persistent'tir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The delay was reluctant, not accidental.",
+        "right": "The delay was deliberate, not accidental.",
+        "why": "Kazanın karşısına konan sözcük deliberate'tir. reluctant kişinin isteksizliğini anlatır ve bir eylemin kasıtlı olduğunu söyleyemez."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "cautious ile reluctant birçok cümlede birbirinin yerine geçer; ikisi de ağır davranmayı anlatır ve iyi bir soru seni ikisi arasında ipucusuz bırakmaz. Fark **nedendedir**: cautious bir riskten kaçınır, reluctant istemeden yapar. Cümle bir tehlike ya da belirsizlik veriyorsa cautious, bir gönülsüzlük ya da direnç veriyorsa reluctant."
+      },
+      {
+        "type": "decision",
+        "heading": "Sınavda ne yapacaksın",
+        "rules": [
+          {
+            "condition": "Cümle eylemi kaza ya da rastlantı olasılığıyla karşı karşıya getiriyorsa",
+            "then": "deliberate"
+          },
+          {
+            "condition": "Cümle tekrarlanan denemeler ya da süregelen bir durum veriyorsa: yıllardır, defalarca, hâlâ geçmemiş",
+            "then": "persistent"
+          },
+          {
+            "condition": "Cümle kişinin sonucu umursamadığını, iki taraftan da yana olmadığını söylüyorsa",
+            "then": "indifferent"
+          },
+          {
+            "condition": "Cümle kaçınılan bir riskten söz ediyorsa: ağır davranmanın nedeni tehlike ya da belirsizlikse",
+            "then": "cautious"
+          },
+          {
+            "condition": "Cümle bir gönülsüzlükten söz ediyorsa: kişi yapmayı istemiyor, direniyor ya da istemeden kabul ediyorsa",
+            "then": "reluctant"
+          },
+          {
+            "condition": "Cümle yalnızca ağır davranıldığını söylüyor, ne bir risk ne de bir istememe nedeni veriyorsa: ikisi de savunulur, ipucunu cümlenin devamında ara",
+            "then": "cautious / reluctant"
+          }
+        ]
+      }
+    ]
+  }
+]
