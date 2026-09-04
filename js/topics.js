@@ -191,6 +191,13 @@ export function lessonIndex(manifest) {
         // has the topic's name and not its version, and the news is
         // unreachable from the only screen a returner lands on.
         contentVersion: topic.contentVersion,
+        // One Turkish line saying what this group of six lessons IS.
+        // The index shows a topic's English title and nothing else, so a
+        // learner who does not already have the category meets
+        // "Relative Clauses" and then, immediately, "Who vs Whom vs
+        // Whose". Carried here because the index is built from the
+        // manifest alone and never fetches a topic file.
+        topicGloss: topic.gloss ?? null,
         category: lesson.category,
         summary: lesson.summary,
       }))

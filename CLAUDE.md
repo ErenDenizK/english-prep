@@ -48,6 +48,7 @@ npm run verify      # drives the real app in Chromium — needs `serve` running
 npm run icons       # redraws the app icons and the link-preview card
 npm run draft -- docs/agents/drafts/<topic>          # checks a topic that is not shipped yet
 npm run blind -- docs/agents/drafts/<topic>/questions.json <outDir>   # unkeys a set for review
+npm run calibrate -- <outDir>                        # builds the reviewer's calibration corpus
 ```
 
 `check` runs in CI on every push and PR to `main` and `test`. `verify`
@@ -201,6 +202,15 @@ from `docs/agents/`. The supervisor fixes the category taxonomy first —
 that's the one thing the two agents must agree on, and the thing the app
 uses to link a wrong answer on the results screen to the lesson that
 teaches it. See `docs/agents/README.md` for the loop.
+
+**A reviewer is calibrated with a file, never with a document.**
+`docs/agents/calibration.md` is the supervisor's *key*; `npm run calibrate`
+assembles the same ten items from `data/` and `npm run blind` unkeys them.
+Two briefs said "work the calibration set" and pointed at the key. Both
+reviewers obeyed, read the answers, and refused to report a score — which
+was correct, and cost two review passes their only measurement. The ids
+live in `tools/make-calibration.mjs` so that building the corpus never
+opens the key.
 
 **Blind a corpus with `npm run blind`, never by hand.** The first
 hand-rolled attempt hid `correctIndex` and `explanation` and left `tip`

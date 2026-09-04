@@ -3,19 +3,6 @@
   "title": "Tenses",
   "level": "B2-C1",
   "note": "Her soru YTU IYS ve Bilkent hazirlik sinavi tarzinda: kisa paragraf + tek bosluk + 4 secenek. Aciklamalar ve tuyolar Turkce, ogrenme materyali Ingilizce.",
-  "overview": {
-    "title": "Tenses Nedir?",
-    "body": [
-      "İngilizce'de 'tense' (zaman), bir fiilin ne zaman gerçekleştiğini değil, konuşmacının bir eylemi nasıl algıladığını anlatan bir gramer sistemidir. Türkçe'de de zamanlar var (geniş zaman, şimdiki zaman, geçmiş zaman, gelecek zaman) ama İngilizce'nin zaman sistemi çok daha ayrıntılıdır: aynı 'geçmişte olan bir şey' bile, bağlama göre dört farklı şekilde ifade edilebilir (Past Simple, Past Continuous, Present Perfect, Past Perfect gibi).",
-      "Türkçe konuşan öğrenciler için en büyük tuzak şu: Türkçe'de 'gidiyorum' hem 'I go' (rutin) hem 'I am going' (şu an) anlamına gelebilir, çünkü Türkçe bu ayrımı genelde bağlamdan çıkarır. İngilizce ise bu ayrımı fiilin kendisinde, gramer yapısıyla zorunlu kılar. Bu yüzden İngilizce'de doğru tense seçmek, sadece 'ne zaman oldu' sorusuna değil, 'konuşmacı bu eylemi nasıl görüyor — bitmiş bir olay mı, devam eden bir süreç mi, şimdiki zamana etkisi olan bir geçmiş mi' sorusuna cevap vermeyi gerektirir.",
-      "Bu konuda, sınavlarda en sık karıştırılan altı çift/üçlüyü sırasıyla işleyeceğiz: önce şimdiki zamanın iki hali, sonra geçmişin bugüne etkisini gösteren yapı, ardından geçmişin kendi içindeki üç hali, sonra gelecek zaman ifadeleri, devamında 'perfect' yapıların ince farkları, ve son olarak bu zamanları tetikleyen sinyal kelimeler (since, for, ago, already, yet gibi)."
-    ],
-    "keyPoints": [
-      "İngilizce'de zaman seçimi, olayın ne zaman olduğundan çok, konuşmacının o olayı nasıl gördüğüyle ilgilidir.",
-      "Türkçe'deki tek bir zaman kipi, İngilizce'de birden fazla tense'e karşılık gelebilir — 'Türkçe'ye çevirince nasıl söylerdim' mantığı çoğu zaman yanıltıcıdır.",
-      "Altı başlık aşağıda önerilen bir sırada listeleniyor ama hepsi bağımsız birer makale; istediğin sırayla okuyabilirsin."
-    ]
-  },
   "questions": [
     {
       "id": "tenses-t1",

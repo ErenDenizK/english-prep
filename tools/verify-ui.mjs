@@ -863,6 +863,23 @@ async function runIndexStates(browser) {
   // 1 — never opened. No tour, and no progress bar reading zero.
   let view = await open(null);
   ok(view.text.includes("English Prep"), "ilk açılışta uygulamanın ne olduğu yazıyor");
+  // Every lesson in this app is a contrast, so the index used to offer
+  // "Relative Clauses" and then, one line down, "Who vs Whom vs Whose",
+  // with nothing anywhere saying what a relative clause is. One Turkish
+  // line per topic, read from the manifest.
+  const glosses = await view.page.evaluate(async () => {
+    const manifest = await (await fetch("data/manifest.json")).json();
+    return manifest.topics.filter((topic) => !topic.comingSoon).map((topic) => topic.gloss ?? null);
+  });
+  ok(glosses.every(Boolean), `her konunun bir Türkçe tanıtım satırı var (${glosses.length})`);
+  ok(
+    glosses.every((gloss) => view.text.includes(gloss)),
+    "tanıtım satırları Eğitim indeksinde çiziliyor"
+  );
+  ok(
+    glosses.every((gloss) => gloss.length <= 110),
+    `tanıtım satırları tek satırlık (en uzun ${Math.max(...glosses.map((g) => g.length))})`
+  );
   ok(view.text.includes("bu telefonda kalıyor"), "veri nerede duruyor, ilk ekranda söyleniyor");
   ok(view.text.includes("İlk dersi aç"), "tek bir açık ilk eylem var");
   ok(!view.text.includes("İlerlemen"), "sıfırı gösteren ilerleme çubuğu karşılama kartıyla birlikte çıkmıyor");
@@ -1020,9 +1037,15 @@ async function runIndexStates(browser) {
     !/hazırsın|hazırlandın|başardın|tebrik/i.test(view.text),
     "sınava hazırsın denmiyor — banka sınavın küçük bir parçası"
   );
-  ok(/okuma \(21 puan\)/.test(view.text), "kapsanmayan bölümler adıyla söyleniyor");
+  // Scoped to the card, not to the whole view. The negative below is the
+  // reason: the view also carries the topic glosses, and the one on
+  // `closest-meaning` names the section this card must NOT list as
+  // missing. Reading the whole view made the check pass by luck and fail
+  // the moment an unrelated line mentioned a section by name.
+  const doneCard = await view.page.locator("#view-egitim .surface").first().innerText();
+  ok(/okuma \(21 puan\)/.test(doneCard), "kapsanmayan bölümler adıyla söyleniyor");
   ok(
-    !/anlamca en yakın cümle/.test(view.text),
+    !/anlamca en yakın cümle/.test(doneCard),
     "kapsanan bölüm eksik diye sayılmıyor (manifestten okunuyor)"
   );
   await auditLayout(view.page, "hepsi bitti", 320);
