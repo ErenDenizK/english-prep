@@ -275,7 +275,7 @@
             "then": "Much / Many"
           },
           {
-            "condition": "Boşluğun bulunduğu cümlecik olumsuzsa ya da soruysa — fiilde not / n't olabilir, ya da no longer, never, hardly gibi bir sözcük olabilir. Başka bir cümlecikteki olumsuzluk (Don't rush ...) sayılmaz",
+            "condition": "Boşluğun bulunduğu cümlecik olumsuzsa ya da soruysa — fiilde not / n't olabilir, ya da no longer, never, hardly gibi bir sözcük olabilir. Boşluğun dışındaki bir cümlecikte duran olumsuzluk (Don't worry, ... / She never said ...) sayılmaz",
             "then": "Much / Many"
           },
           {
@@ -295,7 +295,7 @@
             "then": "Plenty Of"
           },
           {
-            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve cümle düz olumluysa, miktarın yeteceğine dair bir işaret de yoksa",
+            "condition": "A Lot Of / Plenty Of'a karar verdiysen ve cümlede miktarın yeteceğine, kimsenin sıkıntı çekmeyeceğine dair bir işaret yoksa",
             "then": "A Lot Of"
           }
         ]
@@ -442,7 +442,7 @@
         "heading": "Fiile ve boşluktan sonrasına bak",
         "rules": [
           {
-            "condition": "Cümlede zaten olumsuz bir fiil ya da hardly / barely gibi olumsuz bir zarf varsa",
+            "condition": "Boşluğun bulunduğu cümlecikte fiil olumsuz biçimdeyse (not / n't) ya da hardly / barely / scarcely gibi olumsuz bir zarf varsa",
             "then": "Any"
           },
           {
@@ -462,7 +462,7 @@
             "then": "No"
           },
           {
-            "condition": "Anlam 'hiç' ama boşluğun hemen arkasında isim yoksa — boşluk tek başına özne ya da nesne konumundaysa: cümle orada bitebilir, arkasından 'of the ...' gelebilir, ya da grup 'Of the six pumps, ____' gibi boşluktan önce söylenmiş olabilir",
+            "condition": "Anlam 'hiç' ama boşluğun hemen arkasında isim yoksa — boşluk tek başına özne ya da nesne konumundaysa: cümle orada bitebilir, arkasından 'of the ...' gelebilir, ya da grubun kendisi boşluktan önce sayılmış olabilir (Of the ten applicants, ____ ...)",
             "then": "None"
           }
         ]
@@ -615,7 +615,7 @@
         "heading": "Önce fiile, sonra sayıya bak",
         "rules": [
           {
-            "condition": "Boşluktan sonra sayılabilir tekil bir isim geliyor ve fiil tekilse (has, is, was; 'had' iki tarafa da uyar, o zaman isme bak)",
+            "condition": "Boşluktan sonra sayılabilir tekil bir isim geliyor ve fiil tekilse (has, is, was; 'had' iki tarafa da uyar, o zaman isme bak). İsim sayılamayansa bu kural işlemez, aşağıdaki All kuralına geç",
             "then": "Each / Every"
           },
           {
@@ -627,7 +627,7 @@
             "then": "Both / All"
           },
           {
-            "condition": "İsim sayılamayansa (furniture, equipment, information), fiil tekil olsa bile",
+            "condition": "İsim sayılamayansa (plasterwork, furniture, equipment, information), fiil tekil olsa bile",
             "then": "All"
           },
           {
@@ -775,7 +775,7 @@
         "type": "pitfall",
         "wrong": "My brother doesn't drive, and I don't neither.",
         "right": "My brother doesn't drive, and I don't either.",
-        "why": "Cümlede zaten don't var. 'Ben de' anlamını olumsuz bir cümlenin sonunda **either** verir; 'Ben de' anlamını olumsuz bir cümlenin sonunda either verir; bu anlamda neither ancak devrik yapıyla gelir: *Neither do I*."
+        "why": "Cümlede zaten don't var. 'Ben de' anlamını olumsuz bir cümlenin sonunda **either** verir; neither bu anlamda ancak devrik yapıyla gelir: *Neither do I*."
       },
       {
         "type": "check"
@@ -785,7 +785,7 @@
         "heading": "Eşini ara, sonra fiile bak",
         "rules": [
           {
-            "condition": "Cümlede boşluktan önce bir neither geçmişse ve boşluk ikinci öğenin önündeyse — neither cümlenin başında da olabilir, fiilden sonra da: 'takes neither coins ____ notes'",
+            "condition": "Cümlede boşluktan önce bir neither geçmişse ve boşluk ikinci öğenin önündeyse — neither cümlenin başında da olabilir (Neither the letter nor the email arrived), fiilden sonra da (She sent neither the letter ____ the email)",
             "then": "Nor"
           },
           {
@@ -836,7 +836,7 @@
           },
           {
             "label": "The Most",
-            "gloss": "Bir oran değil, üstünlük: karşılaştırmada en yüksek olan — derece olarak (the most expensive) ya da sayıca (the most complaints).",
+            "gloss": "Bir oran değil, üstünlük: karşılaştırmada en yüksek olan — derece olarak (the most expensive) ya da sayıca (the most points).",
             "example": "Physics attracts the most students in the faculty."
           }
         ]
@@ -935,7 +935,7 @@
         "heading": "Boşluktan sonrasına bak",
         "rules": [
           {
-            "condition": "Cümle tek bir şeyi bir grubun tepesine koyuyorsa — boşluktan sonra bir sıfat/zarf (en pahalı, en zor) ya da bir isim gelebilir; 'of any ...', 'in the ...', 'than any other' gibi bir karşılaştırma çerçevesi varsa bu kural işler",
+            "condition": "Boşluktan sonraki isme bağlı bir üstünlük çerçevesi varsa — 'of any + tekil isim' ya da 'than any other + isim' — ya da boşluktan sonra bir sıfat/zarf gelip cümle tek bir şeyi bir grubun tepesine koyuyorsa",
             "then": "The Most"
           },
           {
@@ -943,7 +943,7 @@
             "then": "Most Of"
           },
           {
-            "condition": "Boşluktan sonra çıplak, belirleyicisiz bir çoğul ya da sayılamayan isim geliyorsa (araya yalnızca sıfat girebilir: most young people) ve cümlede bir üstünlük çerçevesi yoksa",
+            "condition": "Boşluktan sonra çıplak, belirleyicisiz bir çoğul ya da sayılamayan isim geliyorsa (araya yalnızca sıfat girebilir: most young people) ve bu isme bağlı 'of any ...' / 'than any other ...' gibi bir üstünlük çerçevesi yoksa",
             "then": "Most"
           },
           {

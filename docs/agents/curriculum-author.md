@@ -295,6 +295,46 @@ the block needs a rule that reads meaning.** A procedure that settles the
 form and stops will certify every distractor that shares the key's form —
 which in one topic was seven options in a single category.
 
+### The one that only bites when you are repairing
+
+Everything above is about writing a block. This one is about **fixing**
+one, and it has caught every repair pass this project has run.
+
+When an audit tells you a rule misfires on a particular item, the item is
+sitting right there, and its words are the obvious illustration. So the
+repaired rule ends up quoting it — sometimes with the blank still in it,
+sometimes with the answer. One repair round produced five of these in six
+lessons: a correlative rule containing `'takes neither coins ____
+notes'`, a partitive rule containing `'Of the six pumps, ____'`, a gloss
+ending in the exact two words that are one item's answer.
+
+`check` blocks are filled from the same category's questions, so every
+one of those puts the item — and twice its answer — into prose the
+learner reads three blocks above meeting it. The same commit that
+introduced them had *removed* an identical defect from a contrast
+example, which is how reliably this one hides: it does not feel like
+writing an example, it feels like being precise.
+
+Two rules, then. **Illustrate a rule from the lesson's own `forms` and
+`examples`, never from the item that exposed the bug.** And **a rule that
+names an item is still a rule written against the corpus's surface rather
+than against the language** — if it only works because it quotes that
+sentence, it is not yet a rule.
+
+The same round showed the cheaper version of the same instinct: widening
+a condition to reach the item that failed, using a closed list of the
+strings that item happens to contain. One of those was `'in the ...'`,
+which occurs in ordinary prose everywhere, and it fired on a different
+item in the wrong branch — first rule in the block, eliminating that
+item's key. Bind a frame to what it governs (`of any + tekil isim`),
+never to a substring.
+
+And: **re-run the whole block after a repair.** Promoting, widening or
+narrowing one rule changes what every rule below it ever sees, and
+removing a condition can remove an accident that was doing real work —
+one widening here admitted the token an item needed *and* let the rule
+reach a second item it had been keeping out by mistake.
+
 ### `check` — a question, here
 
 ```json
