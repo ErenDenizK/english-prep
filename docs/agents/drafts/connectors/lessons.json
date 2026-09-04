@@ -54,7 +54,7 @@
         "type": "examples",
         "items": [
           {
-            "sentence": "The library is open all night. Moreover, it offers free printing.",
+            "sentence": "The jacket is waterproof. Moreover, it folds into a pocket.",
             "note": "Aynı özne, ikinci bir özellik → Moreover"
           },
           {
@@ -283,7 +283,7 @@
             "form": "Therefore",
             "use": "Yardımcı fiil ile asıl fiilin arasında",
             "pattern": "S + have/has + therefore + V3",
-            "example": "The council has therefore raised the fee."
+            "example": "The board has therefore raised the fee."
           },
           {
             "form": "Thus",
@@ -464,7 +464,7 @@
             "note": "Birçok durumdan biri örnek veriliyor → For Instance"
           },
           {
-            "sentence": "Only one item was missing, namely the receipt.",
+            "sentence": "The delay had a single cause, namely the storm.",
             "note": "Belirsiz bırakılan şeyin tam karşılığı → Namely"
           },
           {
@@ -649,7 +649,7 @@
             "then": "Subsequently"
           },
           {
-            "condition": "Metinde geçen bir ana kadar bir şeyin çoktan tamamlandığı söyleniyorsa (yanında genelde had + V3 vardır)",
+            "condition": "Metinde geçen bir ana kadar bir şeyin çoktan tamamlandığı söyleniyorsa (yanında genelde had + V3 vardır); anlatılan, o ana kadar süren bir durum değil o ana gelindiğinde çoktan geçerli olan durum olduğu için until then elenir",
             "then": "By Then"
           },
           {
@@ -701,13 +701,13 @@
             "form": "Above All",
             "use": "Öne çıkan tek madde",
             "pattern": "Above all, + S + V.",
-            "example": "Above all, cost matters."
+            "example": "Above all, reliability matters."
           },
           {
             "form": "Above All",
             "use": "Listenin son maddesinden önce",
             "pattern": "A, B and, above all, C",
-            "example": "Speed, cost and, above all, safety."
+            "example": "Speed, comfort and, above all, safety."
           },
           {
             "form": "In Short",
@@ -787,10 +787,6 @@
           {
             "condition": "Önce hem olumlu hem olumsuz ayrıntılar verilmiş ve son cümle bunları tartıp genel bir yargı veriyorsa",
             "then": "Overall"
-          },
-          {
-            "condition": "Öne çıkarılan madde, anlatım sırasında ilk gelen değil, önem sırasında birinci olansa; first of all elenir",
-            "then": "Above All"
           }
         ]
       }

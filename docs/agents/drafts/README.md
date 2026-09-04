@@ -84,7 +84,15 @@ it. Four claims about English were untrue, two of them firing on their
 own category's keys (`by then` does not require *had + V3*; `above all`
 need not pick out an already-listed item).
 
-**Needs:** a sufficiency re-run over the repaired lessons.
+**Re-audited 2026-09-04: no blocking item in any of the six
+categories.** All 24 items get a verdict and it is the key in all 24.
+That pass also caught two of the previous repair's five claimed fixes not
+landing as reported — a rule reported deleted was still in the file, and
+a trap named in a rule that never runs — plus the twin of a defect that
+repair had removed: it took out one of two medial `forms` rows that
+rebuilt their own items and left the other, which carried the same
+auxiliary, the same slot, the key spelled out and a shared content word.
+All applied. **Ready to ship.**
 
 ## relative-clauses · 24 questions, 6 lessons
 
