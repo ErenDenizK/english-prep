@@ -24,7 +24,8 @@
         { "category": "Future Forms", "summary": "Kararı ne zaman verdin: şimdi mi, önceden mi?" },
         { "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone", "summary": "Ne kadarı bitti mi, ne kadar süredir mi?" },
         { "category": "Time Expressions & Signal Words", "summary": "Hangi kelime hangi zamanı çağırır?" }
-      ]
+      ],
+      "hasIntro": true
     },
     {
       "id": "modals",
@@ -50,7 +51,8 @@
         { "category": "Modal Perfects: Must / Can't / Should / Needn't Have", "summary": "Geçmişe dair tahmin mi, pişmanlık mı, gereksiz çaba mı?" },
         { "category": "Should vs Ought To vs Had Better", "summary": "Sıradan bir tavsiye mi, yoksa uymazsan kötü olur mu?" },
         { "category": "Can vs Could vs Be Able To", "summary": "Genel bir yetenek mi, o gün başarılan tek bir şey mi?" }
-      ]
+      ],
+      "hasIntro": true
     },
     {
       "id": "passive-voice",
@@ -76,7 +78,8 @@
         { "category": "Causative: Have/Get Something Done", "summary": "Kendin mi yapıyorsun, birine mi yaptırıyorsun?" },
         { "category": "Passive Reporting Structures", "summary": "Kaynağı belirtmeden bir bilgi nasıl aktarılır?" },
         { "category": "By + Agent: Include vs Omit", "summary": "'By' ne zaman gerekli, ne zaman fazlalık?" }
-      ]
+      ],
+      "hasIntro": true
     },
     {
       "id": "closest-meaning",
@@ -102,7 +105,8 @@
         { "category": "As...As vs Comparatives vs The More...The More", "summary": "Karşılaştırmada fazlası hangi tarafta kaldı?" },
         { "category": "Too vs Enough vs So...That", "summary": "Derece sonucu engelledi mi, yoksa doğurdu mu?" },
         { "category": "Passive Reporting: It Is Said vs Is Said To", "summary": "Kaynak orijinalde ne kadarsa o kadar: ne ekle, ne çıkar." }
-      ]
+      ],
+      "hasIntro": true
     },
     {
       "id": "connectors",
@@ -134,7 +138,8 @@
         },
         { "category": "Time & Sequence: Meanwhile / Subsequently / By Then", "summary": "Aynı anda mı sürüyor, sonra mı oldu, o ana kadar bitmiş mi?" },
         { "category": "Emphasis & Summary: Above All / In Short / Overall", "summary": "En önemlisini mi seçiyor, hepsini tek cümlede mi topluyor?" }
-      ]
+      ],
+      "hasIntro": true
     },
     {
       "id": "quantifiers",
@@ -160,7 +165,8 @@
         { "category": "Each vs Every vs Both vs All", "summary": "Fiil tekil mi çoğul mu? Karar oradan başlar." },
         { "category": "Either vs Neither vs Nor", "summary": "İkisinden biri mi, ikisi de değil mi?" },
         { "category": "Most vs Most Of vs The Most", "summary": "Genel olarak çoğu mu, bu grubun çoğu mu, yoksa en mi?" }
-      ]
+      ],
+      "hasIntro": true
     },
     {
       "id": "relative-clauses",
@@ -186,7 +192,8 @@
         { "category": "Preposition + Relative Pronoun: In Which / For Whom / Of Which", "summary": "Edat öne geçtiğinde who ve that neden elenir?" },
         { "category": "Reduced Relative Clauses: -ing vs -ed", "summary": "İsim eylemi kendisi mi yapıyor, eylem ona mı yapılıyor?" },
         { "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom", "summary": "İki cümleyi 'some of them' bağlamaz — peki ne bağlar?" }
-      ]
+      ],
+      "hasIntro": true
     },
     {
       "id": "gerunds-infinitives",
@@ -212,7 +219,8 @@
         { "category": "Adjective + Infinitive vs Preposition + Gerund", "summary": "Sıfat kendi edatını taşıyor mu, taşımıyor mu?" },
         { "category": "Infinitive of Purpose vs For + Gerund", "summary": "Amaç mı bildiriliyor, yoksa bir gerekçe mi?" },
         { "category": "Used To vs Be Used To vs Get Used To", "summary": "Eskiden mi yapardın, alışkın mısın, yoksa alışıyor musun?" }
-      ]
+      ],
+      "hasIntro": true
     }
   ]
 }

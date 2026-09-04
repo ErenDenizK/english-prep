@@ -3,6 +3,23 @@
   "title": "Connectors & Discourse Markers",
   "level": "B2-C1",
   "note": "Written to docs/agents/connectors-spec.md.",
+  "intro": {
+    "title": "Connector nedir?",
+    "what": "İki bilgi arasındaki ilişkiyi adıyla söyleyen kelime. Türkçede bunu her cümlede yaparsın: *ama*, *bu yüzden*, *örneğin*, *ayrıca*.\n\nİngilizcede bu kelimeler yalnızca ilişkiyi taşımaz; hangi noktalama ve hangi cümle yapısıyla kullanılacaklarını da beraberinde getirirler. İki kelime aynı anlama gelip farklı kurulabilir — ve sınav tam orayı sorar.",
+    "examples": [
+      { "en": "It rained; the picnic went ahead anyway.", "note": "İki bağımsız cümle, aralarında zıtlık." },
+      { "en": "Although it rained, the picnic went ahead.", "note": "Aynı zıtlık, bu kez tek cümlede." }
+    ],
+    "partsHeading": "Bir bağlacın üç bilgisi",
+    "parts": [
+      { "name": "İlişki", "gloss": "ekleme mi, zıtlık mı, sonuç mu, örnek mi", "en": "moreover · however · therefore" },
+      { "name": "Sözcük türü", "gloss": "zarf mı, bağlaç mı, edat mı — bu, cümlenin nasıl kurulacağını belirler", "en": "however · although · despite" },
+      { "name": "Noktalama", "gloss": "zarf iki cümleyi virgülle bağlayamaz", "en": "…rained. However, …" }
+    ],
+    "choice": "Türkçede *ama* hem cümle içinde hem cümle başında aynı kelimedir. İngilizcede ilişkiyi bilmek yetmez: aynı ilişkiyi taşıyan üç kelimeden hangisinin o cümle yapısına gireceğini de seçmen gerekir.",
+    "lessons": "Altı ders ilişkiye göre bölünür — ekleme ve benzerlik, zıtlık ve ödün, sonuç ve amaç, örnekleme ve yeniden ifade, zaman ve sıra, vurgu ve özet. Her derste hem anlam farkı hem de yapı farkı var; ikisini birlikte okumak gerekir, çünkü sorular çoğu zaman ikincisiyle karar verilir.",
+    "exam": "Örnek kâğıdın boşluk doldurma bölümünde ilk boşluk tam olarak bunu soruyor ve dört seçenek de farklı türden bağlaç."
+  },
   "lessons": [
     {
       "category": "Addition vs Similarity: Moreover / Similarly / Likewise",

@@ -23,8 +23,8 @@
           },
           {
             "label": "magnitude",
-            "gloss": "Büyüklüğün kendisi, üstelik **alışılmışın dışında** büyük. Ölçülmüş ya da çarpıcı bir boyut varsa gelir.",
-            "example": "A failure of this magnitude is rare."
+            "gloss": "Bir şeyin **ölçekle ifade edilen boyutu**: tek bir olayın, kuvvetin ya da niceliğin büyüklüğü. Büyük demek zorunda değildir; boyutun kendisini adlandırır.",
+            "example": "The magnitude of the shock surprised everyone."
           }
         ]
       },
@@ -40,7 +40,7 @@
           {
             "label": "threshold",
             "gloss": "Aşılınca davranışın **değiştiği nokta**. Altında bir şey olmaz, üstünde olur; kendisi bir miktar değil, bir eşiktir.",
-            "example": "Nothing changes below this threshold."
+            "example": "The alarm sounds only above this threshold."
           }
         ]
       },
@@ -76,7 +76,7 @@
             "form": "threshold",
             "use": "Sayılabilir; çoğul olur",
             "pattern": "above / below the threshold",
-            "example": "below the threshold"
+            "example": "above the threshold"
           }
         ]
       },
@@ -87,38 +87,38 @@
         "type": "examples",
         "items": [
           {
-            "sentence": "The extent of the delay is still unclear.",
-            "note": "Ne kadar ilerlediği sorusu → extent"
+            "sentence": "Nobody yet knows the extent of the flooding.",
+            "note": "Nereye kadar yayıldığı sorusu → extent"
           },
           {
-            "sentence": "That question is beyond the scope of the review.",
+            "sentence": "The scope of the survey was fixed in advance.",
             "note": "Neyin içeride kaldığı çerçevesi → scope"
           },
           {
-            "sentence": "A failure of this magnitude is rare.",
-            "note": "Alışılmışın dışında bir boyut → magnitude"
+            "sentence": "An earthquake of magnitude six is rare.",
+            "note": "Ölçekle verilen boyut → magnitude"
           },
           {
-            "sentence": "The team won by a narrow margin.",
-            "note": "İki değer arasındaki fark → margin"
+            "sentence": "The forecast allows a margin of error.",
+            "note": "İki değer arasındaki pay → margin"
           },
           {
-            "sentence": "Nothing changes below this threshold.",
+            "sentence": "Nothing happens until the threshold is crossed.",
             "note": "Davranışın değiştiği nokta → threshold"
           }
         ]
       },
       {
         "type": "pitfall",
-        "wrong": "The report explains the scope of the damage.",
-        "right": "The report explains the extent of the damage.",
-        "why": "Türkçede ikisine de kapsam denir, ama scope bir işin neleri içerdiğini çizer. Hasarın ne kadar ilerlediği bir derecedir, çerçeve değil."
+        "wrong": "Two topics fall outside the extent of this course.",
+        "right": "Two topics fall outside the scope of this course.",
+        "why": "scope bir işin neleri içine aldığını çizer, dolayısıyla bir şey onun dışında kalabilir. extent bir derece ya da yayılma ölçüsüdür; bir çerçevenin dışını gösteremez."
       },
       {
         "type": "pitfall",
-        "wrong": "The temperature stayed below the margin.",
-        "right": "The temperature stayed below the threshold.",
-        "why": "Türkçede ikisi de sınırdır. margin iki değer arasındaki farktır ve karşılaştırılacak iki büyüklük ister; altında kalınan nokta threshold'dur."
+        "wrong": "Sales stayed under the margin.",
+        "right": "Sales stayed under the threshold.",
+        "why": "Türkçede ikisi de sınırdır. margin iki değer arasındaki farktır ve karşılaştırılacak iki büyüklük ister; altında kalınan ya da aşılan düzey threshold'dur."
       },
       {
         "type": "pitfall",
@@ -131,7 +131,7 @@
       },
       {
         "type": "text",
-        "body": "Bu beşlinin ikisi gerçekten örtüşür: cümle bir şeyin yalnızca büyük olduğunu söylüyorsa **extent** de **magnitude** da savunulur, ve iyi bir soru seni bu ikisi arasında seçim yapmaya zorlamaz. Ayrım ancak cümle bir şey eklerse doğar: alışılmışın dışında bir boyut magnitude'ü, bir ölçek üzerinde ne kadar ilerlendiği extent'i çeker."
+        "body": "Bu beşlinin ikisi gerçekten yakındır. **extent** bir şeyin nereye kadar yayıldığını ya da hangi dereceye vardığını sorar; **magnitude** tek bir olayın ya da niceliğin ölçekle verilen boyutunu adlandırır. Cümle bir ölçek veriyorsa — kaç kat, kaç birim, hangi düzeyde — magnitude; bir yayılma ya da derece veriyorsa extent."
       },
       {
         "type": "decision",
@@ -150,7 +150,7 @@
             "then": "scope"
           },
           {
-            "condition": "Cümle boyutu alışılmışın dışında büyük diye niteliyorsa ya da çarpıcı bir ölçü veriyorsa",
+            "condition": "Cümle tek bir olayın, kuvvetin ya da niceliğin boyutunu bir ölçekle veriyorsa: kaç kat, kaç birim, hangi düzeyde",
             "then": "magnitude"
           },
           {
@@ -158,7 +158,7 @@
             "then": "extent"
           },
           {
-            "condition": "Cümle yalnızca büyük diyorsa; ne bir çerçeve, ne bir eşik, ne de bir fark veriyorsa: ikisi de doğrudur, birini aceleyle eleme",
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse: cümle bir yayılma ya da derece soruyorsa extent, tek bir olayın ölçülen boyutunu soruyorsa magnitude",
             "then": "extent / magnitude"
           }
         ]
@@ -337,7 +337,7 @@
     "blocks": [
       {
         "type": "text",
-        "body": "Bu beşli bir iddianın ne kadar kapandığını anlatır. Asıl tuzak **apparent**'tadır: hem ortada, açıkça görülüyor anlamına gelir, hem de görünüşte öyle, belki değil anlamına. Türkçede belli sözcüğü ikisini birden taşıdığı için ayrım kaybolur. Hangisi olduğunu sözcük değil, **cümlenin devamı** söyler."
+        "body": "Bu beşli bir iddianın ne kadar kapandığını anlatır: elde yeterli kanıt var mı, kanıtın kendisine güveniliyor mu, sonuç geçici mi? **apparent** bunların hiçbirini söylemez. Onun iki anlamı da belirli bir yere bağlıdır — ya It is / became apparent that kalıbında, ya doğrudan bir ismin önünde. Boşluk bu iki yerden birinde değilse apparent aday bile değildir."
       },
       {
         "type": "contrast",
@@ -345,12 +345,12 @@
         "sides": [
           {
             "label": "apparent (evident)",
-            "gloss": "Ortada, görülür hâle gelmiş. Çoğunlukla It is / became apparent that kalıbında gelir ve cümlenin devamı bunu yalanlamaz.",
+            "gloss": "Ortada, görülür hâle gelmiş. Bu anlamda neredeyse hep It is / became apparent that kalıbında gelir ve cümlenin devamı söyleneni yalanlamaz.",
             "example": "It soon became apparent to everyone."
           },
           {
             "label": "apparent (seeming)",
-            "gloss": "Görünüşte öyle olan. Çoğunlukla isimden önce gelir ve cümlenin devamı görünenin gerçek olmadığını söyler ya da onu açıklar.",
+            "gloss": "Görünüşte öyle olan, gerçekte belki değil. Bu anlamda **isimden önce** gelir ve cümlenin devamı görünenin gerçek olmadığını söyler ya da onu açıklar.",
             "example": "Her apparent confidence hid real doubt."
           }
         ]
@@ -362,7 +362,7 @@
           {
             "label": "conclusive",
             "gloss": "Tartışmayı **bitiren**. Genelde kanıt, sonuç, kanıtlama gibi isimlerle gelir; geriye makul bir şüphe bırakmaz.",
-            "example": "The tests are not conclusive."
+            "example": "The final test was conclusive."
           },
           {
             "label": "tentative",
@@ -378,7 +378,7 @@
           {
             "label": "plausible",
             "gloss": "Akla yatkın, olabilir görünen. Kanıtlanmış demek **değildir**; yalnızca bilinenlerle çelişmediğini söyler.",
-            "example": "That is one plausible explanation."
+            "example": "The theory is plausible but unproved."
           },
           {
             "label": "questionable",
@@ -407,7 +407,7 @@
             "form": "plausible",
             "use": "İsimden önce ve fiilden sonra",
             "pattern": "a plausible + N / seem plausible",
-            "example": "a plausible explanation"
+            "example": "a plausible account"
           },
           {
             "form": "questionable",
@@ -436,28 +436,28 @@
         "type": "examples",
         "items": [
           {
-            "sentence": "The tests are not conclusive.",
-            "note": "Konu hâlâ kapanmıyor → conclusive'in olumsuzu"
+            "sentence": "The results were far from conclusive.",
+            "note": "Kanıt yetersiz kalıyor, konu kapanmıyor → conclusive olumsuzlanır"
           },
           {
-            "sentence": "We have reached a tentative conclusion.",
-            "note": "Değişebilir, geçici → tentative"
+            "sentence": "The schedule is still tentative.",
+            "note": "Sonradan değişecek, geçici → tentative"
           },
           {
-            "sentence": "That is one plausible explanation.",
-            "note": "İnandırıcı, ama kanıtlanmış değil → plausible"
+            "sentence": "Her account sounds plausible.",
+            "note": "İnandırıcı, ama kanıt yok → plausible"
           },
           {
-            "sentence": "The method is questionable.",
-            "note": "Yönteme kuşku düşüyor → questionable"
+            "sentence": "The figures came from a questionable source.",
+            "note": "Kuşku kaynağa düşüyor → questionable"
           },
           {
-            "sentence": "It soon became apparent to everyone.",
-            "note": "Ortaya çıkan, görülür olan → apparent (evident)"
+            "sentence": "It became apparent that the fault lay elsewhere.",
+            "note": "It became apparent that kalıbı: ortaya çıkan → apparent (evident)"
           },
           {
-            "sentence": "Her apparent confidence hid real doubt.",
-            "note": "Görünen ile gerçek ayrışıyor → apparent (seeming)"
+            "sentence": "Their apparent agreement did not last.",
+            "note": "İsimden önce: görünen ile gerçek ayrışıyor → apparent (seeming)"
           }
         ]
       },
@@ -482,31 +482,35 @@
       },
       {
         "type": "decision",
-        "heading": "Sınavda ne yapacaksın",
+        "heading": "Şıkkı boşluğa koy, sonra cümlenin olumsuzuna bak",
         "rules": [
           {
-            "condition": "Cümle görüneni gerçekle karşı karşıya getiriyorsa: söylenen şey sonra yalanlanıyor, açıklanıyor ya da bir kuşkuyla dengeleniyorsa",
+            "condition": "Boşluk It is / became ____ that kalıbının içindeyse, ya da doğrudan bir ismin önünde durup görüneni gerçekten ayırıyorsa",
             "then": "apparent"
           },
           {
-            "condition": "Cümle konunun kapandığını söylüyorsa: kanıt tartışmayı bitiriyor, geriye şüphe kalmıyorsa",
+            "condition": "Boşluğun sıfatı aynı cümlede olumsuzlanıyorsa (never, not, far from) ve elde bir yere kadar götüren ama meseleyi kapatamayan bir kanıt varsa",
             "then": "conclusive"
           },
           {
-            "condition": "Cümle sonucun geçici olduğunu, daha fazla veriyle ya da onayla değişebileceğini söylüyorsa",
-            "then": "tentative"
+            "condition": "Cümle konunun kapandığını söylüyorsa: kanıt tartışmayı bitiriyor, geriye makul bir şüphe kalmıyorsa",
+            "then": "conclusive"
           },
           {
-            "condition": "Cümle bir kusur, bir itiraz ya da yönteme yönelik bir şüphe taşıyorsa",
+            "condition": "Kuşku kanıtın **kaynağına ya da elde ediliş yöntemine** düşüyorsa: kimin ürettiği, neyin seçildiği, neyin verilmediği. Kanıtın yalnızca yetersiz olması yetmez",
             "then": "questionable"
           },
           {
-            "condition": "Cümle bir açıklamayı akla yatkın buluyor ama kanıtlandığını söylemiyorsa",
+            "condition": "Cümle sonucun geçici olduğunu, daha fazla veriyle, sınamayla ya da onayla değişeceğini söylüyorsa",
+            "then": "tentative"
+          },
+          {
+            "condition": "Cümle bir açıklamayı destekleyen bir şey veriyor ama kanıtlandığını söylemiyorsa: bilinenlerle çelişmiyor, yine de doğrulanamıyor",
             "then": "plausible"
           },
           {
-            "condition": "Cümle bir şeyin herkesçe görülür hâle geldiğini söylüyorsa ve bunu sonradan yalanlamıyorsa",
-            "then": "apparent"
+            "condition": "Yukarıdaki kuralların hiçbiri ateşlemediyse ve elde yalnızca zayıf bir kanıt varsa: eksiklik kanıtın miktarındaysa not conclusive, güvenilirliğindeyse questionable",
+            "then": "conclusive / questionable"
           }
         ]
       }
@@ -532,7 +536,7 @@
           {
             "label": "substantial",
             "gloss": "**Miktar ekseni**: ölçülebilir biçimde büyük. Önemli olduğunu söylemez, çok olduğunu söyler.",
-            "example": "There was a substantial rise in costs."
+            "example": "There was a substantial rise in rents."
           }
         ]
       },
@@ -542,18 +546,18 @@
         "sides": [
           {
             "label": "considerable",
-            "gloss": "Büyük miktar; substantial ile neredeyse eş anlamlıdır. Eğilimi soyut derecelerdedir: ilgi, güçlük, etki.",
+            "gloss": "Hatırı sayılır ölçüde büyük. Genellikle sayılmayan, soyut derecelerle gelir — ilgi, güçlük, zaman, etki — ve miktardan çok onun ağırlığını vurgular.",
             "example": "The change caused considerable difficulty."
           },
           {
             "label": "marginal",
             "gloss": "Küçük ama **gerçek**: ölçülüyor, sayılıyor, yine de zar zor. Yok saymak yanlış olur.",
-            "example": "The gain was marginal."
+            "example": "The improvement was marginal."
           },
           {
             "label": "negligible",
             "gloss": "O kadar küçük ki **hesaba katılmasına gerek yok**. Hesabın dışında bırakılabileceğini söyler.",
-            "example": "The difference is negligible."
+            "example": "The risk is negligible."
           }
         ]
       },
@@ -583,19 +587,19 @@
             "form": "considerable",
             "use": "Genelde isimden önce",
             "pattern": "considerable + N",
-            "example": "considerable difficulty"
+            "example": "considerable interest"
           },
           {
             "form": "marginal",
             "use": "Genelde isimden önce",
             "pattern": "a marginal + N",
-            "example": "a marginal gain"
+            "example": "a marginal advantage"
           },
           {
             "form": "negligible",
             "use": "İsimden önce ve fiilden sonra",
             "pattern": "be negligible",
-            "example": "the risk was negligible"
+            "example": "the delay was negligible"
           }
         ]
       },
@@ -606,24 +610,24 @@
         "type": "examples",
         "items": [
           {
-            "sentence": "Timing is crucial to the result.",
+            "sentence": "Trust is crucial to any agreement.",
             "note": "Sonuç buna bağlı → crucial"
           },
           {
-            "sentence": "There was a substantial rise in costs.",
-            "note": "Ölçülen, büyük miktar → substantial"
+            "sentence": "They received a substantial grant.",
+            "note": "Ölçülen, büyük tutar → substantial"
           },
           {
-            "sentence": "The change caused considerable difficulty.",
+            "sentence": "The plan met considerable resistance.",
             "note": "Soyut bir derece, büyük → considerable"
           },
           {
-            "sentence": "The gain was marginal.",
-            "note": "Küçük ama gerçek → marginal"
+            "sentence": "The advantage was real but marginal.",
+            "note": "Küçük, ama ölçülüyor ve hesaba giriyor → marginal"
           },
           {
-            "sentence": "The difference is negligible.",
-            "note": "Hesaba katılmayacak kadar küçük → negligible"
+            "sentence": "The extra weight is negligible.",
+            "note": "Hesaptan çıkarılabilecek kadar küçük → negligible"
           }
         ]
       },
@@ -874,7 +878,7 @@
         "sides": [
           {
             "label": "reluctant",
-            "gloss": "**İstemiyor**: yapmaya gönlü yok, ama çoğu zaman sonunda yapar. Bir direnç ya da gönülsüzlük vardır.",
+            "gloss": "**İstemiyor**: yapmaya gönlü yok, ama çoğu zaman sonunda yapar. Kişiyi niteler; kişinin gönülsüzlüğü onun yaptığı işe de taşınabilir.",
             "example": "She was reluctant to agree."
           },
           {
@@ -907,37 +911,67 @@
       },
       {
         "type": "forms",
-        "heading": "Nerede durur, ne alır",
+        "heading": "Hangi tümleci alır (yeri tek başına hiçbir şıkkı elemez)",
         "rows": [
           {
             "form": "reluctant",
-            "use": "Mastarla",
+            "use": "Fiilden sonra, mastarla",
             "pattern": "be reluctant to + V",
-            "example": "reluctant to agree"
+            "example": "reluctant to admit it"
+          },
+          {
+            "form": "reluctant",
+            "use": "İsimden önce: kişiyi ya da onun yaptığı işi niteler",
+            "pattern": "a reluctant + N",
+            "example": "a reluctant apology"
           },
           {
             "form": "cautious",
-            "use": "Edatla",
+            "use": "Fiilden sonra, edatla",
             "pattern": "be cautious about + N",
-            "example": "cautious about the plan"
+            "example": "cautious about the forecast"
+          },
+          {
+            "form": "cautious",
+            "use": "İsimden önce",
+            "pattern": "a cautious + N",
+            "example": "a cautious welcome"
           },
           {
             "form": "indifferent",
-            "use": "Edatla",
+            "use": "Fiilden sonra, edatla",
             "pattern": "be indifferent to + N",
-            "example": "indifferent to criticism"
+            "example": "indifferent to praise"
+          },
+          {
+            "form": "indifferent",
+            "use": "İsimden önce: burada çoğunlukla vasat anlamına kayar",
+            "pattern": "an indifferent + N",
+            "example": "an indifferent performance"
           },
           {
             "form": "deliberate",
-            "use": "İsimden önce; eylemi niteler",
+            "use": "İsimden önce: eylemi ya da onun ürününü niteler",
             "pattern": "a deliberate + N",
-            "example": "a deliberate choice"
+            "example": "a deliberate insult"
+          },
+          {
+            "form": "deliberate",
+            "use": "Fiilden sonra, tümleçsiz",
+            "pattern": "be deliberate",
+            "example": "the choice was deliberate"
           },
           {
             "form": "persistent",
-            "use": "İsimden önce; kişi ya da sorun",
+            "use": "İsimden önce: kişi ya da sorun",
             "pattern": "a persistent + N",
-            "example": "persistent problems"
+            "example": "a persistent rumour"
+          },
+          {
+            "form": "persistent",
+            "use": "Fiilden sonra, tümleçsiz",
+            "pattern": "be persistent",
+            "example": "the fault was persistent"
           }
         ]
       },
@@ -948,44 +982,44 @@
         "type": "examples",
         "items": [
           {
-            "sentence": "She was reluctant to agree.",
-            "note": "İstemeden kabul → reluctant, mastarla"
+            "sentence": "He gave a reluctant nod.",
+            "note": "İstemeye istemeye yapılan → reluctant, isimden önce"
           },
           {
-            "sentence": "Investors remain cautious.",
-            "note": "Riskten kaçınma → cautious"
+            "sentence": "The bank stayed cautious about lending.",
+            "note": "Riskten çekinme → cautious, about ile"
           },
           {
-            "sentence": "He seemed indifferent to the result.",
-            "note": "Umursamama → indifferent"
+            "sentence": "The audience seemed indifferent.",
+            "note": "Hiç umursamama, taraf olmama → indifferent"
           },
           {
-            "sentence": "The omission was deliberate.",
-            "note": "Kaza değil, niyet → deliberate"
+            "sentence": "She kept a deliberate silence.",
+            "note": "Kaza değil, seçim → deliberate"
           },
           {
-            "sentence": "The problem proved persistent.",
+            "sentence": "Persistent rain delayed the harvest.",
             "note": "Geçmek bilmeyen, süregelen → persistent"
           }
         ]
       },
       {
         "type": "pitfall",
-        "wrong": "She was reluctant of signing the form.",
-        "right": "She was reluctant to sign the form.",
+        "wrong": "They were reluctant of admitting the error.",
+        "right": "They were reluctant to admit the error.",
         "why": "reluctant mastar alır: to + fiil. Türkçede -mekten çekindi kalıbı akla of getirir, ama bu sıfat edatla değil mastarla kurulur."
       },
       {
         "type": "pitfall",
-        "wrong": "After years of cautious effort, the team succeeded.",
-        "right": "After years of persistent effort, the team succeeded.",
-        "why": "cautious riskten kaçınmayı anlatır, sürekliliği değil. Yıllarca sürdürülen ve bırakılmayan çabanın sözcüğü persistent'tir."
+        "wrong": "The campaign was cautious and never let up.",
+        "right": "The campaign was persistent and never let up.",
+        "why": "cautious ağır ve ölçülü davranmayı anlatır; hiç ara vermemenin karşıtıdır. Bırakılmayan, tekrar tekrar sürdürülen çabanın sözcüğü persistent'tir."
       },
       {
         "type": "pitfall",
-        "wrong": "The delay was reluctant, not accidental.",
-        "right": "The delay was deliberate, not accidental.",
-        "why": "Kazanın karşısına konan sözcük deliberate'tir. reluctant kişinin isteksizliğini anlatır ve bir eylemin kasıtlı olduğunu söyleyemez."
+        "wrong": "The wording was reluctant.",
+        "right": "The wording was deliberate.",
+        "why": "Bir metnin ya da eylemin kasten seçildiğini söyleyen sözcük deliberate'tir. reluctant kişinin gönülsüzlüğünü anlatır; bir eylemi kasıtlı diye niteleyemez."
       },
       {
         "type": "check"
@@ -996,14 +1030,14 @@
       },
       {
         "type": "decision",
-        "heading": "Sınavda ne yapacaksın",
+        "heading": "Şıkkı boşluğa koy, sonra nedene bak",
         "rules": [
           {
             "condition": "Cümle eylemi kaza ya da rastlantı olasılığıyla karşı karşıya getiriyorsa",
             "then": "deliberate"
           },
           {
-            "condition": "Cümle tekrarlanan denemeler ya da süregelen bir durum veriyorsa: yıllardır, defalarca, hâlâ geçmemiş",
+            "condition": "Boşluğun öznesi, engellere rağmen aynı şeyi tekrar tekrar deneyen ya da geçmek bilmeyen taraf ise: yıllardır, defalarca, hâlâ sürüyor",
             "then": "persistent"
           },
           {

@@ -3,6 +3,23 @@
   "title": "Tenses",
   "level": "B2-C1",
   "note": "Her soru YTU IYS ve Bilkent hazirlik sinavi tarzinda: kisa paragraf + tek bosluk + 4 secenek. Aciklamalar ve tuyolar Turkce, ogrenme materyali Ingilizce.",
+  "intro": {
+    "title": "Tense nedir?",
+    "what": "Bir fiilin hangi biçimde kurulacağını seçmek. Türkçede de yaparsın — *fırın ekmek pişiriyor* ile *fırın ekmek pişirir* aynı olayı iki farklı gözle anlatır: biri şu an olanı, öteki her zaman olanı.\n\nİngilizcede bu seçim daha ayrıntılıdır ve zorunludur. Olayın ne zaman olduğu tek başına yetmez; cümle, konuşanın o olayı nasıl gördüğünü de taşımak zorundadır.",
+    "examples": [
+      { "en": "The bakery bakes bread every morning.", "note": "Her sabah olan bir şey." },
+      { "en": "The bakery is baking bread right now.", "note": "Aynı fırın, şu an süren iş." }
+    ],
+    "partsHeading": "Her tense'in iki bilgisi",
+    "parts": [
+      { "name": "Zaman", "gloss": "olay şimdi mi, geçmişte mi, gelecekte mi", "en": "wrote · writes · will write" },
+      { "name": "Görünüş", "gloss": "olay bitmiş mi, sürüyor mu, etkisi duruyor mu", "en": "wrote · was writing · has written" },
+      { "name": "Sinyal kelimeler", "gloss": "cümlenin içinde seçimi ele veren zaman ifadeleri", "en": "since · for · ago · already" }
+    ],
+    "choice": "Türkçede *gidiyorum* hem rutini hem şu anı karşılayabilir, çünkü Türkçe farkı çoğu zaman bağlamdan çıkarır. İngilizce bu farkı fiilin biçiminde söylemeni ister — yani \"Türkçeye çevirince nasıl derdim\" yöntemi burada en çok yanıltan yöntemdir.",
+    "lessons": "Altı ders, karıştırılması en kolay çiftleri sırayla ele alır: önce şimdiki zamanın iki hâli, sonra geçmişin bugüne uzanıp uzanmadığı, sonra geçmişin kendi içindeki sıralaması, ardından gelecek ifadeleri ve perfect yapıların ince farkları. Son ders, hepsini tetikleyen sinyal kelimeleri toplar; bağımsızdır ve önce de okunabilir.",
+    "exam": "Örnek kâğıdın boşluk doldurma bölümünde doğrudan tense soran bir boşluk yok — zamanlar orada değil, okuma ve yeniden ifade sorularında doğru cümleyi seçebilmen için gerekiyor."
+  },
   "questions": [
     {
       "id": "tenses-t1",

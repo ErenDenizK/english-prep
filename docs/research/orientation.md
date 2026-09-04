@@ -1001,6 +1001,59 @@ check, because it introduces the app's first three-segment hash route.
 
 ---
 
+## What shipped, 2026-09-04
+
+**(e1), then (e2) — both.** The document ranked them 1 and 3 and staged
+(e2) after the vocabulary topics; the owner asked for the intro to be
+finished, so it was, and the arm's own reasoning is why it could be: it
+says (e1) and (e2) are the same content at two lengths and that (e1) is
+the first sentence of (e2). Shipping both is the coherent version.
+
+| | Where |
+| --- | --- |
+| **(e1)** the one-line gloss | `gloss` on the manifest topic entry, rendered under the heading on the Eğitim index |
+| **(e2)** the topic screen | `intro` in the topic file → `#egitim/konu/<topicId>`, reached from a "Bu konu nedir?" button under that gloss |
+
+**Two of the arm's design calls were followed exactly, and one was not.**
+
+Followed: the entry point is not a row. The arm costed a `Genel bakış`
+row at 62–82px each, +520–650px on a 4,564px index; a quiet button is one
+44px tap target, about 400px across eight topics, and it sits directly
+under the line that has just raised the question it answers.
+
+Followed: the schema is typed fields rather than prose, which is what the
+arm's §3.1 note about `lang="en"` forces. `parts` is 2–4 named
+components, because that — not the essay — is what the pre-training
+principle actually measured.
+
+Not followed: **the staging.** The arm said after vocabulary; this went
+first, on the owner's instruction. The cost is real and is recorded
+rather than argued away — the two vocabulary topics are still in review,
+and this was a day of work that did not go to them.
+
+**Three of the arm's four unasked-for findings were acted on.** The dead
+`overview` objects are out of `data/` and in `docs/agents/overviews/`,
+and the validator now warns on any unread top-level key. The `lang="en"`
+constraint is why the schema is shaped as it is. The roadmap row the arm
+noticed (`Konu girişleri`, `status: "next"`) is now true rather than
+pending.
+
+**One check earned its place immediately.** `checkIntroGiveaway` in
+`tools/validate-content.mjs` — an orientation must not print a phrase
+that appears in one of its own questions — failed on its first run: the
+`passive-voice` intro listed `has been` among the auxiliaries, and
+`has been` is an option in `passive-voice-t4`. The arm predicted exactly
+this ("an orientation is the *most* likely place to reintroduce that
+defect, because it is written last and about the same material").
+
+**Not done: the review pass.** §6.2 asked whether the intros need one.
+They have had a schema check, a giveaway check and a browser sweep; they
+have not had a human or an independent session read them for whether the
+teaching is true. That is the same gap the two review passes exist to
+close for lessons and items, and it is open.
+
+---
+
 ## Ranked recommendation
 
 Ordered by value per hour, sizes honest.

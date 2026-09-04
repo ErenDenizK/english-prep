@@ -375,12 +375,12 @@
         "sides": [
           {
             "label": "concede",
-            "gloss": "Doğruluğunu kabul eder, ama kabul ettiği şey kendi savını zayıflatır ya da bir direnişin sonunda gelir.",
+            "gloss": "Tartışmada karşı tarafa bir puan verir: o noktada direnmekten vazgeçer, ama onu benimsemiş olmak zorunda değildir. Verdiği şey kendi savını zayıflatır.",
             "example": "He conceded that the sample was small."
           },
           {
             "label": "acknowledge",
-            "gloss": "Bir şeyin doğru ya da geçerli olduğunu açıkça teslim eder; bunda bir geri adım ya da kayıp yoktur.",
+            "gloss": "Bir şeyin doğru ya da geçerli olduğunu benimseyerek, açıkça teslim eder; bunda bir geri adım ya da kayıp yoktur.",
             "example": "She acknowledges the earlier work."
           },
           {
@@ -496,11 +496,11 @@
             "then": "dispute"
           },
           {
-            "condition": "Kabul edilen şey öznenin kendi savını zayıflatıyorsa ya da bir karşı kanıttan veya baskıdan sonra geliyorsa",
+            "condition": "Verilen nokta öznenin kendi savını zayıflatıyorsa — bir karşı kanıttan ya da baskıdan sonra geliyorsa, ya da özne onu benimsemeden yalnızca tartışma uğruna veriyorsa",
             "then": "concede"
           },
           {
-            "condition": "Bir şeyin doğru ya da geçerli olduğu, öznenin konumuna bir zarar vermeden teslim ediliyorsa",
+            "condition": "Özne bir şeyin doğru ya da geçerli olduğunu benimsiyorsa ve bunu kendi konumuna zarar vermeden teslim ediyorsa",
             "then": "acknowledge"
           }
         ]
@@ -566,7 +566,7 @@
             "form": "determine",
             "use": "Nesne: isim ya da wh-cümlesi",
             "pattern": "S + determine + N / wh-clause",
-            "example": "The study determined why it failed."
+            "example": "The court determined whether the signature was genuine."
           },
           {
             "form": "verify",
@@ -634,9 +634,9 @@
       },
       {
         "type": "pitfall",
-        "wrong": "Researchers monitored the cause of the failure.",
-        "right": "Researchers determined the cause of the failure.",
-        "why": "monitor süren bir şeyi izlemektir ve kendiliğinden bir sonuca varmaz. Bir nedenin bulunup kapanması determine ile söylenir."
+        "wrong": "The board monitored which of the two designs was cheaper.",
+        "right": "The board determined which of the two designs was cheaper.",
+        "why": "monitor süren bir şeyi izlemektir ve kendiliğinden bir sonuca varmaz. Bir sorunun cevabının bulunup kapanması determine ile söylenir."
       },
       {
         "type": "check"
@@ -700,7 +700,7 @@
           {
             "label": "restrict",
             "gloss": "Tamamen durdurmaz: bir sınır, tavan ya da koşul koyar. Faaliyet daralmış hâlde sürer.",
-            "example": "The rules restrict access to members."
+            "example": "The permit restricts fishing to the winter months."
           },
           {
             "label": "suspend",
@@ -800,15 +800,15 @@
       },
       {
         "type": "pitfall",
-        "wrong": "Access is restricted for staff.",
-        "right": "Access is restricted to staff.",
-        "why": "restrict ... to ... kalıbı sınırın nereye kadar olduğunu verir: erişim yalnızca personele açıktır. \"for\" ile cümle \"personel için sınırlandı\" gibi tam tersi bir anlama kayar."
+        "wrong": "Bidding is restricted for local firms.",
+        "right": "Bidding is restricted to local firms.",
+        "why": "restrict ... to ... kalıbı sınırın nereye kadar olduğunu verir: ihaleye yalnızca yerel firmalar girebilir. \"for\" ile cümle \"yerel firmalar için sınırlandı\" gibi tam tersi bir anlama kayar."
       },
       {
         "type": "pitfall",
-        "wrong": "The engine preserves a constant speed.",
-        "right": "The engine maintains a constant speed.",
-        "why": "Bir hızı ya da düzeyi sürekli çabayla aynı yerde tutmak maintain'dir. preserve, kaybolma veya bozulma tehlikesindeki bir şeyi geleceğe taşır; bir hız böyle bir şey değildir."
+        "wrong": "The pump preserves the pressure in the pipes.",
+        "right": "The pump maintains the pressure in the pipes.",
+        "why": "Bir düzeyi sürekli çabayla aynı yerde tutmak maintain'dir. preserve, kaybolma veya bozulma tehlikesindeki bir şeyi geleceğe taşır; bir basınç böyle bir şey değildir."
       },
       {
         "type": "check"
@@ -866,7 +866,7 @@
           {
             "label": "assign",
             "gloss": "Bir görev, rol ya da yer belirli bir kişiye veya ekibe verilir. Nesne bir miktar değil, bir iştir.",
-            "example": "The editor assigned the task to a junior."
+            "example": "The dean assigned the evening class to a new lecturer."
           }
         ]
       },
@@ -876,12 +876,12 @@
         "sides": [
           {
             "label": "withhold",
-            "gloss": "Verilmesi beklenen ya da istenen bir şey bilerek verilmez; cümlede bekleyen bir taraf vardır.",
+            "gloss": "Karşı tarafın hak ettiği ya da alacağı olan bir şey bilerek verilmez. Verilmeyen şey öznenin kendi malı değildir.",
             "example": "The firm withheld the report."
           },
           {
             "label": "retain",
-            "gloss": "Özne elindekini bırakmaz, kendinde tutar. Karşı tarafın bir beklentisi ya da hakkı ima edilmez.",
+            "gloss": "Özne zaten kendinin olan bir şeyi elden çıkarmaz, kendinde tutar. Başkasının o şey üzerinde bir alacağı yoktur; birinin ondan bir şey beklemesi bunu değiştirmez.",
             "example": "The company retained control."
           }
         ]
@@ -918,7 +918,7 @@
             "form": "withhold",
             "use": "Nesne: bilgi, ödeme, onay · alıcı 'from' ile",
             "pattern": "S + withhold + N (from + N)",
-            "example": "They withheld payment from the supplier."
+            "example": "They withheld approval from the contractor."
           },
           {
             "form": "retain",
@@ -935,7 +935,7 @@
         "type": "examples",
         "items": [
           {
-            "sentence": "The budget allocates a third to research.",
+            "sentence": "The trust allocates a fixed share of its income to bursaries.",
             "note": "Sınırlı kaynaktan bir pay ayrılıyor → allocate"
           },
           {
@@ -964,13 +964,13 @@
         "type": "pitfall",
         "wrong": "The company withheld its licence for another year.",
         "right": "The company retained its licence for another year.",
-        "why": "withhold, başkasına verilmesi beklenen bir şeyi vermemektir; burada verilecek bir taraf yok, özne kendi elindekini tutuyor. Bu retain'dir."
+        "why": "withhold, karşı tarafın hak ettiği bir şeyi vermemektir; oysa lisans zaten şirketin ve kimsenin onun üzerinde bir alacağı yok. Kendinin olanı elde tutmak retain'dir."
       },
       {
         "type": "pitfall",
-        "wrong": "Half of the budget was distributed to research.",
-        "right": "Half of the budget was allocated to research.",
-        "why": "distribute aynı şeyin çok sayıda alıcıya yayılmasıdır. Bir bütçenin bir bölümünün tek bir başlık için ayrılması allocate'tir."
+        "wrong": "Half of the fund was distributed to a single laboratory.",
+        "right": "Half of the fund was allocated to a single laboratory.",
+        "why": "distribute aynı şeyin çok sayıda alıcıya yayılmasıdır. Bir kaynağın bir bölümünün tek bir başlık için ayrılması allocate'tir."
       },
       {
         "type": "pitfall",
@@ -998,11 +998,11 @@
             "then": "distribute"
           },
           {
-            "condition": "Verilmesi beklenen ya da istenen bir şey bilerek verilmiyorsa ve cümlede bekleyen bir taraf varsa",
+            "condition": "Verilmeyen şey karşı tarafın hakkı ya da alacağıysa ve özne onu bilerek vermiyorsa",
             "then": "withhold"
           },
           {
-            "condition": "Özne zaten elinde olan bir şeyi bırakmayıp kendinde tutuyorsa ve ortada bekleyen bir alıcı yoksa",
+            "condition": "Özne zaten kendinin olan bir şeyi bırakmayıp kendinde tutuyorsa ve başkasının o şey üzerinde bir alacağı yoksa",
             "then": "retain"
           }
         ]

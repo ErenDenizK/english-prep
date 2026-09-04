@@ -66,7 +66,15 @@ const TOPIC_ID_PATTERN = /^[a-z][a-z0-9-]*$/;
 // â î û are ordinary Turkish spellings — resmî, kâğıt, âdet — and leaving
 // them out made the heuristic call perfectly good Turkish foreign.
 const TURKISH_CHARS = /[ıİşŞğĞçÇöÖüÜâÂîÎûÛ]/;
-const TURKISH_WORDS = /\b(bir|ve|için|bu|ile|ama|çünkü|değil|gibi|olur|olarak|yani|hangi)\b/i;
+// A field written in English by accident is what this catches, so the list
+// only has to contain words that cannot be English. It grew when the topic
+// intros arrived: their fields are short — "tarif edilen isim",
+// "Connector nedir?" — and a two-word Turkish phrase can easily carry
+// neither a Turkish-specific character nor any of the original thirteen
+// words. A heuristic that warns on correct content is one people learn to
+// ignore, which is the same argument this repo makes about reviewers.
+const TURKISH_WORDS =
+  /\b(bir|ve|için|bu|ile|ama|çünkü|değil|gibi|olur|olarak|yani|hangi|nedir|mi|mı|mu|mü|önce|sonra|olan|eden|edilen|kelime|cümle|ismin|değişir|verir)\b/i;
 
 class Report {
   constructor() {
@@ -344,8 +352,19 @@ const MAX_GLOSS = 200;
 /** A topic gloss is one t-meta line under a heading at 320px. */
 const MAX_TOPIC_GLOSS = 110;
 
+/**
+ * The whole intro, Turkish only, counted across every prose field.
+ *
+ * `docs/research/orientation.md` §3.2: past roughly this it is an
+ * article, and articles were removed from this app once already. The
+ * evidence is not a preference — the coherence principle found added
+ * inessential material measurably *hurting* learning across 50 studies,
+ * so length here has a cost and not merely a size.
+ */
+const MAX_INTRO_PROSE = 1400;
+
 /** Every top-level key a topic file may carry. Anything else is dead weight. */
-const TOPIC_FILE_KEYS = new Set(["topicId", "title", "level", "note", "questions", "lessons"]);
+const TOPIC_FILE_KEYS = new Set(["topicId", "title", "level", "note", "intro", "questions", "lessons"]);
 const MIN_EXAMPLE_ITEMS = 3;
 const MAX_EXAMPLE_ITEMS = 6;
 
@@ -628,6 +647,14 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
     return;
   }
 
+  if ((data.intro !== undefined) !== (topic.hasIntro === true)) {
+    report.error(
+      file,
+      data.intro
+        ? "has an intro but the manifest does not say so — run `npm run format`"
+        : "has no intro but the manifest says hasIntro — run `npm run format`"
+    );
+  }
   if (data.topicId !== topic.id) {
     report.error(file, `topicId "${data.topicId}" does not match the manifest id "${topic.id}"`);
   }
@@ -643,6 +670,11 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
   // for months after the reader redesign orphaned it, and it was
   // invisible precisely because the validator ignored what it did not
   // recognise. Silence about an unknown key is not neutrality.
+  if (data.intro !== undefined) {
+    validateIntro(report, file, data.intro);
+    checkIntroGiveaway(report, file, data.intro, data.questions ?? []);
+  }
+
   for (const key of Object.keys(data)) {
     if (!TOPIC_FILE_KEYS.has(key)) {
       report.warn(
@@ -766,6 +798,134 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
 }
 
 /**
+ * An orientation must not hand over its own topic's answers.
+ *
+ * `docs/agents/question-author.md` rule 1 exists because 20 of 24 keys in
+ * one topic were built on the lesson's own sentences, and an orientation
+ * is the *most* likely place to reintroduce that: it is written last,
+ * about the same material, by someone who has just read all of it. It
+ * also sits one screen above the questions rather than three blocks
+ * above, so a collision here is worse than a collision in a lesson.
+ *
+ * Only the English is checked, and only against options and stems. The
+ * Turkish is prose about the category and is expected to share words with
+ * the Turkish explanations; requiring it not to would be a check that
+ * fires on correct content.
+ */
+function checkIntroGiveaway(report, file, intro, questions) {
+  const strings = [
+    ...(intro.examples ?? []).map((item) => item.en),
+    ...(intro.parts ?? []).map((part) => part.en),
+  ].filter(isNonEmptyString);
+
+  for (const raw of strings) {
+    // An illustration is often a list — "can · must · should" — and each
+    // side of it is what a question could key.
+    for (const piece of raw.split(/[·|]/).map((part) => part.trim()).filter(Boolean)) {
+      // Single words are the grammar being taught and cannot be avoided:
+      // a quantifiers intro that may not print `many` teaches nothing.
+      // A phrase is a different matter — that is a scenario, not a term.
+      if (piece.split(/\s+/).length < 2) {
+        continue;
+      }
+      for (const question of questions) {
+        const stem = question.paragraph ?? question.sentence ?? "";
+        if (stem.toLowerCase().includes(piece.toLowerCase())) {
+          report.error(
+            `${file} › intro`,
+            `"${piece}" also appears in ${question.id}'s stem — the intro is one screen above the questions`
+          );
+        }
+        if ((question.options ?? []).some((option) => option.toLowerCase() === piece.toLowerCase())) {
+          report.error(
+            `${file} › intro`,
+            `"${piece}" is an option in ${question.id} — an intro must not print an item's answer`
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * A topic's overview screen (`#egitim/konu/<topicId>`).
+ *
+ * Typed fields rather than one prose blob, and the validator is where
+ * that stays true. Two reasons, both structural: English has to sit in
+ * its own field so the renderer can give it `lang="en"` — a Turkish
+ * prose field cannot, because `js/dom.js` has no `lang` handling and
+ * `text-transform: uppercase` would turn SIMPLE into SİMPLE — and the
+ * five fields are the five questions `docs/research/orientation.md` §3.2
+ * says an orientation answers, in order. A sixth field would be a sixth
+ * question nobody has argued for.
+ */
+function validateIntro(report, file, intro) {
+  const where = `${file} › intro`;
+  if (!intro || typeof intro !== "object" || Array.isArray(intro)) {
+    report.error(where, "intro must be an object");
+    return;
+  }
+
+  for (const field of ["title", "what", "choice", "lessons", "exam"]) {
+    if (!isNonEmptyString(intro[field])) {
+      report.error(where, `${field} is required and must be a non-empty string`);
+    } else {
+      checkTurkish(report, where, field, intro[field]);
+    }
+  }
+
+  const prose = ["title", "what", "choice", "lessons", "exam"]
+    .map((field) => (typeof intro[field] === "string" ? intro[field].length : 0))
+    .reduce((total, length) => total + length, 0);
+  if (prose > MAX_INTRO_PROSE) {
+    report.warn(
+      where,
+      `${prose} characters of Turkish — keep it under ${MAX_INTRO_PROSE}, or it is an article rather than an orientation`
+    );
+  }
+
+  if (intro.examples !== undefined) {
+    if (!Array.isArray(intro.examples) || intro.examples.length === 0) {
+      report.error(where, "examples must be a non-empty array when present");
+    } else {
+      intro.examples.forEach((item, index) => {
+        if (!isNonEmptyString(item?.en)) {
+          report.error(`${where} › examples[${index}]`, "en is required");
+        }
+        if (item?.note !== undefined && !isNonEmptyString(item.note)) {
+          report.error(`${where} › examples[${index}]`, "note must be a non-empty string when present");
+        } else if (item?.note) {
+          checkTurkish(report, `${where} › examples[${index}]`, "note", item.note);
+        }
+      });
+    }
+  }
+
+  // The parts list is the part that earns the page: Mayer's pre-training
+  // principle is about knowing the names and characteristics of the main
+  // concepts, and in the experiments that is a parts list rather than an
+  // essay. Two to four, because one is not a list and five is a lesson.
+  if (!Array.isArray(intro.parts) || intro.parts.length < 2 || intro.parts.length > 4) {
+    report.error(where, "parts must be an array of 2–4 named components");
+    return;
+  }
+  intro.parts.forEach((part, index) => {
+    const partWhere = `${where} › parts[${index}]`;
+    if (!isNonEmptyString(part?.name)) {
+      report.error(partWhere, "name is required");
+    }
+    if (part?.gloss !== undefined && !isNonEmptyString(part.gloss)) {
+      report.error(partWhere, "gloss must be a non-empty string when present");
+    } else if (part?.gloss) {
+      checkTurkish(report, partWhere, "gloss", part.gloss);
+    }
+    if (part?.en !== undefined && !isNonEmptyString(part.en)) {
+      report.error(partWhere, "en must be a non-empty string when present");
+    }
+  });
+}
+
+/**
  * `data/roadmap.json` — the one file in `data/` that is not content.
  *
  * It is checked here anyway, and lightly: a typo in `status` would ship a
@@ -866,6 +1026,9 @@ async function main() {
     // topic heading on the Eğitim index, and a paragraph there is a
     // lesson wearing a costume — the same reasoning, and the same
     // failure, as a contrast side's gloss.
+    if (topic.hasIntro !== undefined && topic.hasIntro !== true) {
+      report.error(where, "hasIntro is generated by `npm run format` and is either true or absent");
+    }
     if (topic.gloss !== undefined) {
       if (!isNonEmptyString(topic.gloss)) {
         report.error(where, "gloss must be a non-empty string when present");

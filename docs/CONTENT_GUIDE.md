@@ -113,6 +113,55 @@ should name a confusable pair or triad wherever the grammar allows it
 
 `topicId` and `title` must match the manifest entry.
 
+### `intro` — the topic overview screen
+
+Optional. When present it becomes `#egitim/konu/<topicId>`, reached from
+a "Bu konu nedir?" button under the topic's heading on the Eğitim index,
+and `npm run format` sets `hasIntro: true` on the manifest entry so the
+index knows to offer it without fetching this file.
+
+```json
+"intro": {
+  "title": "Relative clause nedir?",
+  "what": "Turkish prose. Blank lines split paragraphs; **bold** is the only markup.",
+  "examples": [{ "en": "the map that we bought", "note": "Turkish." }],
+  "partsHeading": "Her ilgi cümlesinin üç parçası",
+  "parts": [{ "name": "Öncül", "gloss": "tarif edilen isim", "en": "the map" }],
+  "choice": "One Turkish sentence.",
+  "lessons": "One or two Turkish sentences.",
+  "exam": "One Turkish sentence."
+}
+```
+
+**Typed fields, not one prose blob, and that is structural.** English has
+to sit in its own field so the renderer can give it `lang="en"` — a
+Turkish prose field cannot, because `js/dom.js` has no `lang` handling
+and `text-transform: uppercase` would turn SIMPLE into SİMPLE.
+
+**The five prose fields are five questions, in order**, from
+`docs/research/orientation.md` §3.2: what is this in function terms, with
+a Turkish example the learner already produces (`what`); what are its
+parts, named (`parts`); what choice does English make that Turkish does
+not (`choice`); what do the lessons divide between them (`lessons`); what
+does the exam do with it (`exam`). A sixth field would be a sixth
+question nobody has argued for.
+
+`parts` is 2–4 entries and is **the part that earns the page**: Mayer's
+pre-training principle — the strongest result in this literature — is
+about knowing the *names and characteristics* of the main concepts, which
+in the experiments is a parts list rather than an essay.
+
+**What it must never contain**, each enforced or recorded:
+
+| Never | Because |
+| --- | --- |
+| More than ~1,400 characters of Turkish | Validator warns. Past that it is an article, and articles were removed from this app once already. The coherence principle found added inessential material measurably *hurting* learning across 50 studies. |
+| A phrase that also appears in one of its own questions | Validator **errors**. It caught one on its first run: a `passive-voice` illustration listed `has been`, which is an option in `passive-voice-t4`. |
+| A decision procedure or signal-word list | That is the `decision` block, and a duplicated procedure drifts. |
+| Any keyed contrast of one of its own lessons | The learner would meet the answer one screen above the question. |
+| A claim the app cannot support | How common a form is, what "usually" happens on the paper, a difficulty level. |
+| Encouragement or a promise about outcomes | The app states facts; it never claims a readiness it cannot measure. |
+
 **Those six keys are the whole list, and the validator now warns on any
 other.** A key nothing reads is content the learner downloads and never
 sees: three topic files carried a 1,400–1,800 character `overview` object

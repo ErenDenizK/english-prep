@@ -3,6 +3,23 @@
   "title": "Quantifiers & Determiners",
   "level": "B2-C1",
   "note": "Written to docs/agents/quantifiers-spec.md.",
+  "intro": {
+    "title": "Quantifier nedir?",
+    "what": "Bir ismin ne kadarından söz ettiğini söyleyen kelime. Türkçede tek kelimeyle idare edersin: *biraz süt*, *birkaç kavanoz*, *çoğu raf*.\n\nİngilizcede aynı \"biraz\" ve \"çok\" için birden fazla kelime vardır, ve hangisinin geçerli olduğunu ismin kendisi belirler: sayılabilen bir şey mi, yoksa ölçülen bir şey mi.",
+    "examples": [
+      { "en": "There were a few jars left on the shelf.", "note": "Sayılabilen şey: kavanoz, iki, üç." },
+      { "en": "There was a little milk left in the jug.", "note": "Ölçülen şey: süt, sayılmaz." }
+    ],
+    "partsHeading": "Seçimi belirleyen üç şey",
+    "parts": [
+      { "name": "İsim sayılabilir mi", "gloss": "sayılabilenle sayılamayan farklı kelime ister", "en": "many pencils · much water" },
+      { "name": "Cümlenin kutbu", "gloss": "bazı kelimeler yalnız olumsuzda ya da soruda çalışır", "en": "any · some" },
+      { "name": "Belirli bir grup mu", "gloss": "genel olarak mı, yoksa bilinen bir grubun içinden mi", "en": "most students · most of the students" }
+    ],
+    "choice": "Türkçede ismin sayılabilir olup olmaması miktar sözcüğünü değiştirmez. İngilizcede ilk soru budur, ve yanlış cevaplanırsa geri kalan her şey de yanlış olur — bu yüzden altı dersin hepsi aynı iki soruyla başlar.",
+    "lessons": "Altı ders miktarın farklı eksenlerini alır: az olanın yeterli mi yetersiz mi olduğu, çokluğun sayılabilirliği, olumsuzluğun nerede taşındığı, tekil-çoğul zorunlulukları, ikili seçimler, ve bir grubun tamamı mı bir kısmı mı. İlk iki ders diğerlerinin varsaydığı temeldir.",
+    "exam": "Örnek kâğıdın boşluk doldurma bölümünde bir boşluk doğrudan bunu soruyor ve dört seçenek de miktar sözcüğü."
+  },
   "lessons": [
     {
       "category": "A Few vs Few vs A Little vs Little",

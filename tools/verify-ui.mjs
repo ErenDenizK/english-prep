@@ -1217,6 +1217,91 @@ async function runHonestNumbers(browser) {
   await context.close();
 }
 
+/**
+ * The topic overview screen.
+ *
+ * Every lesson in this app is a contrast, which is right for the exam and
+ * wrong for a first arrival: the index offered "Relative Clauses" and
+ * then, one line down, "Who vs Whom vs Whose". This screen is what says
+ * what the group IS — and it is a screen you choose to open rather than a
+ * block in all 48 lessons, because the expertise-reversal literature says
+ * the same support that helps a novice measurably hurts someone who
+ * already has the schema.
+ */
+async function runTopicIntro(browser) {
+  const context = await browser.newContext({ viewport: { width: 320, height: 640 } });
+  const page = await context.newPage();
+  const errors = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+
+  const manifest = JSON.parse(await readFile(new URL("../data/manifest.json", import.meta.url), "utf8"));
+  const live = manifest.topics.filter((topic) => !topic.comingSoon);
+  const withIntro = live.filter((topic) => topic.hasIntro === true);
+  ok(withIntro.length === live.length, `her konunun bir girişi var (${withIntro.length}/${live.length})`);
+
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#view-egitim .row");
+  const ways = await page.locator("#view-egitim button", { hasText: "Bu konu nedir?" }).count();
+  ok(ways === live.length, `indekste her konu için bir giriş yolu var (${ways})`);
+
+  // Every one of them, not just the first: an intro that renders for
+  // `tenses` and throws for `quantifiers` is exactly the failure that
+  // reaches a learner and never reaches a test.
+  for (const topic of withIntro) {
+    await page.goto(`${BASE}/index.html#egitim/konu/${topic.id}`, { waitUntil: "networkidle" });
+    await page.waitForSelector("#lesson-reader h1");
+    const text = await page.locator("#lesson-reader").innerText();
+
+    const data = JSON.parse(
+      await readFile(new URL(`../${topic.file}`, import.meta.url), "utf8")
+    );
+    ok(text.includes(data.intro.title), `${topic.id}: başlık çiziliyor`);
+    ok(
+      data.intro.parts.every((part) => text.includes(part.name)),
+      `${topic.id}: parça listesi tam (${data.intro.parts.length})`
+    );
+    // The parts list is the part that earns the page — Mayer's
+    // pre-training principle is a named-components list, not an essay.
+    ok(
+      (await page.locator("#lesson-reader .row").count()) === (topic.lessonCount ?? 0),
+      `${topic.id}: dersleri de listeliyor`
+    );
+    ok(
+      await page.title() === `${topic.title} — English Prep`,
+      `${topic.id}: document.title güncelleniyor`
+    );
+
+    // §8: an English string inside a Turkish page needs lang="en", or
+    // text-transform follows lang="tr" and SIMPLE becomes SİMPLE.
+    const untagged = await page.evaluate(() => {
+      const nodes = [...document.querySelectorAll("#lesson-reader .t-en")];
+      return nodes.filter((node) => node.closest("[lang=en]") === null).length;
+    });
+    ok(untagged === 0, `${topic.id}: İngilizce dizeler lang="en" taşıyor`);
+  }
+
+  await auditLayout(page, "konu girişi", 320);
+
+  // Focused mode, and a way out of it.
+  ok(await page.locator("#shell-header").isHidden(), "giriş ekranı odaklı modda");
+  await page.locator(".shell__bar .btn").first().click();
+  await page.waitForSelector("#view-egitim .row");
+  ok(await page.locator("#shell-header").isVisible(), "geri dönünce başlık geri geliyor");
+
+  // A hand-typed or stale id must not strand the learner on a dead screen.
+  await page.goto(`${BASE}/index.html#egitim/konu/does-not-exist`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#view-egitim .row");
+  ok(
+    !page.url().includes("does-not-exist"),
+    "bilinmeyen konu id'si indekse düşüyor, ölü ekrana değil"
+  );
+
+  ok(errors.length === 0, `konsol temiz${errors.length ? ` — ${[...new Set(errors)].join(" | ")}` : ""}`);
+  await context.close();
+}
+
 /** The parts of §8 that do not vary with the viewport. */
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
@@ -1412,6 +1497,9 @@ try {
 
   console.log("\n=== sayılar ne anlama geliyor ===");
   await runHonestNumbers(browser);
+
+  console.log("\n=== konu girişleri ===");
+  await runTopicIntro(browser);
 
   console.log("\n=== bileşen sayfası ===");
   await runComponents(browser);
