@@ -1513,10 +1513,38 @@ export async function openLesson(lessonId) {
     // whole syllabus rather than one topic.
     state.lessons = lessons.map((lesson) => (lesson.id === lessonId ? { ...lesson, ...loaded } : lesson));
   } catch (error) {
+    // Two things this used to get wrong, and both mattered more than the
+    // failure itself.
+    //
+    // It called setReaderChrome(true), which hides the header, the nav
+    // AND the action bar — so a learner whose connection dropped got an
+    // apology on a screen with no controls on it at all, and the only
+    // way out was the browser's back button.
+    //
+    // And it left `state.reader` pointing at whatever was open before,
+    // so the scroll handler stayed live: one scroll on that dead screen
+    // called markLessonDone on the PREVIOUS lesson. A failed fetch was
+    // writing a completion for a lesson the learner had not finished.
     console.error(error);
-    clear(readerContainer);
-    readerContainer.appendChild(el("p", "t-meta", "Ders yüklenemedi. Bağlantını kontrol edip tekrar dene."));
-    setReaderChrome(true);
+    state.reader = null;
+    setReaderChrome(false);
+    clear(indexContainer);
+    const failure = el("section", "surface stack");
+    const head = el("div", "stack stack--tight");
+    head.appendChild(el("h2", "t-title", "Ders yüklenemedi"));
+    head.appendChild(
+      el("p", "t-body", "Bağlantını kontrol edip tekrar dene. İlerlemen olduğu gibi duruyor.")
+    );
+    failure.appendChild(head);
+    const retry = el("button", "btn btn--primary", "Tekrar dene");
+    retry.type = "button";
+    retry.addEventListener("click", () => openLesson(lessonId));
+    failure.appendChild(retry);
+    const back = el("button", "btn btn--quiet", "Derslere dön");
+    back.type = "button";
+    back.addEventListener("click", showIndexByHash);
+    failure.appendChild(back);
+    indexContainer.appendChild(failure);
     return;
   }
 

@@ -4,10 +4,12 @@
 `relative-clauses`, `gerunds-infinitives`** — 120 questions and 30
 lessons, taking the app to 8 topics, 193 questions and 48 lessons. That
 is the whole grammar queue: every topic commissioned to close the cloze
-gap is now served, and 7 of the paper's 10 blank types are practisable —
-not 8, which this file and `docs/roadmap.md` both said until 2026-09-04.
-The two vocabulary blanks are drafted and in review; the tenth is
-`so / such`, which nothing covers.
+gap is now served, and **7 of the paper's 10 cloze blanks are
+practisable — 6 of the 8 distinct types.** Both this file and
+`docs/roadmap.md` said 8 until 2026-09-04, and both were also confusing
+blanks with types: ten blanks test eight types, because blanks 2 and 4
+are both modals and 5 and 10 are both vocabulary. What is uncovered is
+vocabulary (drafted, in review) and `so / such` (nothing).
 Each cleared a blind pass on its items and a sufficiency pass on its
 lessons, and every lesson repair went back for an independent re-audit
 rather than being trusted — which is the only reason five repair-
