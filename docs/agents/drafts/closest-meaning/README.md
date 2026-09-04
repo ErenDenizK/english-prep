@@ -184,6 +184,41 @@ had never been used — or restatement items inside a lesson's `check`
 blocks needs code. `node docs/agents/drafts/closest-meaning/assemble.mjs`
 from the repo root is genuinely the whole of it.
 
+## Round 3 (2026-09-04) — and the line for shipping
+
+**The questions are done.** Five independent blind passes have now read
+them, every one agreeing with the key on all 24 — 120 of 120 — and the
+final pass returned an explicit *ship*: no item with two faithful
+restatements, no key worth arguing against, no ambiguous stem, no broken
+English. Its three prose notes were applied.
+
+**The lessons took four repair rounds**, all on one thing: a `decision`
+rule that reaches the wrong verdict on its own lesson's questions. Nine
+such rules have now been fixed. One of them was introduced *by a previous
+repair* — fixing a rule that wrongly demanded the two sides of a
+comparison keep their written order, I told the learner the only thing to
+check is which side has more, which certifies a distractor that keeps the
+comparison intact and swaps the people.
+
+That is why the class kept reappearing, and it is the finding worth
+keeping: **a decision block is a procedure, and its rules only mean
+anything together.** Changing one without re-auditing the rest is how a
+fix becomes the next defect.
+
+### The line
+
+Not every audit finding is a reason to hold content, and the difference
+is sharp:
+
+| The rule … | Verdict |
+| --- | --- |
+| fires on the key, or certifies a distractor | **misleading — must fix before shipping.** A learner who follows the procedure is actively led to the wrong answer, which is worse than having no procedure |
+| fires on nothing in its category | incomplete — ship, and record it |
+| should have fired and did not | incomplete — ship, and record it |
+
+An under-firing rule leaves a learner where they would have been anyway.
+A misfiring one takes marks off them. Only the first row holds a release.
+
 ## What is left
 
 1. Repair the lessons — 2 blocking first.
