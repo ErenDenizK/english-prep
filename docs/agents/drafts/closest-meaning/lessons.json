@@ -46,6 +46,12 @@
             "example": "Had they asked, I would have helped."
           },
           {
+            "form": "Devrik olumsuz",
+            "use": "Koşul olumsuzsa: olay gerçekten olmuştur",
+            "pattern": "Had + S + not + V3, S + would have + V3",
+            "example": "Had the rain not stopped, we would have cancelled it."
+          },
+          {
             "form": "Mixed Conditional",
             "use": "Olumlu",
             "pattern": "If + S + had + V3, S + would + V",
@@ -82,6 +88,10 @@
           {
             "sentence": "Had I known, I would have said something.",
             "note": "Devrik şart: if düşer, had başa geçer → Third Conditional"
+          },
+          {
+            "sentence": "Had the rain not stopped, we would have cancelled it.",
+            "note": "Koşul olumsuz olduğu için tersi doğrudur: yağmur **durdu** ve iptal **etmedik**"
           },
           {
             "sentence": "If he hadn't overslept, he wouldn't be waiting now.",
@@ -147,7 +157,7 @@
             "then": "Overshoot"
           },
           {
-            "condition": "Şık geçmişin gerçekleşmediğini koruyor, sonucu orijinalle aynı zamana koyuyor ve koşul yine aynı cümleyse",
+            "condition": "Şık, koşulun gerçekleşip gerçekleşmediğini orijinaldeki gibi bırakmışsa — olumlu şartta \"olmadı\", olumsuz şartta (\"Had she not ...\") \"oldu\" — sonucu aynı zamana koyuyorsa ve koşul yine aynı cümleyse",
             "then": "Same meaning"
           }
         ]
@@ -289,7 +299,7 @@
             "then": "Reverse"
           },
           {
-            "condition": "Hangi önermenin olumsuzlandığı değişmişse: orijinalde olumsuzlanan koşulken şıkta sonuç olumsuzlanıyorsa (ya da tersi)",
+            "condition": "Hangi önermenin olumsuzlandığı değişmişse: orijinalde olumsuzlanan koşulken şıkta sonuç olumsuzlanıyorsa (ya da tersi). Aynı önermeyi karşıt bir kelimeyle söylemek bir değişiklik değildir: \"will not continue\" ile \"will stop\", \"will not get back\" ile \"will keep\" aynı şeyi der",
             "then": "Reverse"
           },
           {
@@ -625,6 +635,10 @@
             "then": "Reverse"
           },
           {
+            "condition": "Karşılaştırılan taraflar değil, karşılaştırmayı yapanlar yer değiştirmişse: kim kimi övmüş, kim kimi ölçmüş",
+            "then": "Reverse"
+          },
+          {
             "condition": "Şık karşılaştırmayı mutlak bir yargıya çevirmişse (\"yavaş\", \"pahalı\", \"en iyisi\") ya da kapsamı genişletmişse (\"her gün\", \"bütün yollar arasında\")",
             "then": "Overshoot"
           },
@@ -637,7 +651,7 @@
             "then": "Same meaning"
           },
           {
-            "condition": "Fazlası hâlâ aynı tarafta ve karşılaştırma hâlâ bir karşılaştırmaysa — taraflar yer değiştirmiş olabilir, bakılacak olan kimde fazla olduğudur",
+            "condition": "Fazlası hâlâ aynı tarafta, karşılaştırmayı yapan da yapılan da aynı kişiler ve karşılaştırma hâlâ bir karşılaştırmaysa — cümledeki sıra değişmiş olabilir, bakılacak olan kimde fazla olduğudur",
             "then": "Same meaning"
           }
         ]
@@ -726,8 +740,8 @@
             "note": "Derece engelledi, içilmedi → too ... to"
           },
           {
-            "sentence": "The soup was cool enough to drink.",
-            "note": "Derece yetti, içilebildi → enough to"
+            "sentence": "The swell was heavy enough to keep the boats in port, so it was too heavy for them to leave.",
+            "note": "Bir dereceyi \"enough\" ile engelin **sebebi**, \"too\" ile engelin **kendisi** olarak söyleyebilirsin; ikisi aynı olayı anlatır"
           },
           {
             "sentence": "The soup was cool enough to drink, so it was not so hot that we had to wait.",
@@ -777,7 +791,7 @@
         "heading": "Şıkkı denetle: kesinlik korunmuş mu?",
         "rules": [
           {
-            "condition": "Orijinal \"too ... to\" derken şık sonucun yine de gerçekleştiğini söylüyorsa",
+            "condition": "Şık, derecenin doğurduğu sonucu tersine çevirmişse: orijinalde engellenen şey şıkta gerçekleşiyorsa, ya da orijinalde gerçekleşen şey şıkta engelleniyorsa",
             "then": "Reverse"
           },
           {
@@ -785,7 +799,7 @@
             "then": "Re-modalise"
           },
           {
-            "condition": "Orijinal \"could not\" derken şık \"found it difficult / might not\" diyorsa",
+            "condition": "Orijinal olmuş bitmiş bir sonucu verirken şık onu bir öneriye ya da ihtimale çeviriyorsa (\"should have\", \"might not\", \"found it difficult\")",
             "then": "Re-modalise"
           },
           {
@@ -797,7 +811,7 @@
             "then": "Re-time"
           },
           {
-            "condition": "Şık sonucu olduğu gibi koruyorsa ve derece ile sonuç arasındaki ilişki bozulmamışsa: \"too ... to\" ile \"so ... that not\" arasında olumsuzluk kaybolmamış, ya da \"enough to\" ile olumlu \"so ... that\" arasında sonuç yine gerçekleşiyorsa",
+            "condition": "Şık sonucu olduğu gibi koruyorsa ve derece ile sonuç arasındaki ilişki bozulmamışsa: \"too ... to\" ile \"so ... that not\" arasında olumsuzluk kaybolmamış, ya da \"enough to\" ile olumlu \"so ... that\" arasında sonuç yine gerçekleşiyorsa, ya da bir engel \"enough to\" ile sebebinden, \"too ... to\" ile kendisinden söylenmişse",
             "then": "Same meaning"
           }
         ]
