@@ -5,6 +5,40 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.27 — 2026-09-04
+
+**Yanlış defteri asks how many.** It was hard-coded to draw the whole
+book. Simulated over the real corpus at twenty questions a day, the book
+reaches 24 items by day 4 and 30 by day 5 — so the mode became a wall
+exactly as it became the best thing in the app. Worse, the graduation
+promise it makes (two correct answers, two separate days) is unkeepable
+in all-or-nothing runs: the same simulation graduates **zero** items in
+five days that way, and eleven at ten a day. Ten is the default, and the
+list never offers twenty questions to someone who has eight.
+
+**"Yeni test" was a replay after a mistakes run.** Every other mode
+re-enters `quiz.html`, which re-reads the stored request and re-shuffles
+— a new set from the same selection. A mistakes request carries explicit
+ids, so it came back as the identical questions in the one mode whose
+whole promise is that the set moves. It is rebuilt from the book as it
+stands after the attempt is recorded; when the book has been cleared it
+offers a mixed test instead of a repeat of nothing.
+
+**The results screen reaches the book.** This is where the book gets
+written — every wrong answer above just went into it — and the only door
+was the Test tab, a tab away and below the fold. One row, with the
+count, and not after a mistakes run: the bar already offers that.
+
+**"Sıradaki adım" stopped recommending a lesson you had finished.** The
+card names the weakest category and offered its lesson, and that lesson
+is *usually* one the learner has read — the app learns a category is
+weak by testing it, and it tests it after the lesson. It now says so and
+offers practice in that category, which is what the weak-spot rows on
+the Test tab have always offered.
+
+Three checks in the sweep were added with them (1193 total), and the
+dead `clearQuizState` export went.
+
 ## v0.26 — 2026-09-04
 
 **A corrupt attempt no longer takes Profil down — and it was hiding the
