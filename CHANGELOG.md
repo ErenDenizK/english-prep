@@ -5,6 +5,29 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.33 — 2026-09-05
+
+**Every release was wiping the learner's offline content, and v0.30 is
+what started it.** Tying the cache name to the app version made a deploy
+reach a returning learner on their first open — and `activate` deletes
+every cache that is not the current one, and topic files were in it. The
+shell survives a wipe because it is re-precached on install; content is
+deliberately not in `SHELL`, so nothing restored it. Six releases in
+thirty hours made "offline with an empty content cache" the normal case
+rather than an edge one — the exact failure the worker was written to
+end.
+
+Content has its own cache now, unversioned, and `activate` keeps it.
+Nothing is lost by that: content is network-first, so it refreshes on
+every request with signal, and `contentVersion` is what actually tells a
+learner a topic changed.
+
+**The sweep never exercised a deploy**, which is why a wipe on every
+release survived every pass. It does now: it bumps the version on disk,
+lets the browser install and activate the new worker, goes offline, and
+asks for the same lesson again — then restores the file. That is the part
+that stops this recurring.
+
 ## v0.32 — 2026-09-05
 
 **"Devam eden bir test yok" is gone, and it should never have been a
