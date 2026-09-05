@@ -423,7 +423,7 @@
       "blocks": [
         {
           "type": "text",
-          "body": "Burası Türkçenin yardım ettiği tek yer: 'bekleyen adam' ile 'gönderilen mektup' arasındaki farkı zaten kuruyorsun. İngilizce aynı ayrımı **-ing** ve **V3 (-ed)** ile yapar. Tuzak anlamda değil, yerde: tek kelimelik ortaç ismin önünde durur (a broken window), ama ortaç yanına bir tümleç aldığı anda ismin arkasına geçer."
+          "body": "Burası Türkçenin yardım ettiği tek yer: 'bekleyen adam' ile 'gönderilen mektup' arasındaki farkı zaten kuruyorsun. İngilizce aynı ayrımı **-ing** ve **V3** (fiilin üçüncü hâli) ile yapar. Tuzak anlamda değil, yerde: tek kelimelik ortaç ismin önünde durur (a broken window), ama ortaç yanına bir tümleç aldığı anda ismin arkasına geçer."
         },
         {
           "type": "contrast",
@@ -435,7 +435,7 @@
               "example": "the artist painting the mural"
             },
             {
-              "label": "V3 (-ed)",
+              "label": "V3",
               "gloss": "Eylem ana isme başkası tarafından yapılır. Açılımı 'which/who was + V3' olan edilgen bir cümledir.",
               "example": "the mural painted by the artist"
             }
@@ -490,18 +490,15 @@
             },
             {
               "condition": "Ana cümlenin çekimli fiili zaten varsa boşluğa ikinci bir çekimli fiil giremez: indirgemede 'was / were / had' düşer, geriye yalnızca ortaç kalır",
-              "then": "V-ing / V3 (-ed)"
+              "then": "V-ing / V3"
             },
             {
               "condition": "Şık 'having + V3' biçimindeyse bu soruda elenir: bu, ana cümledeki eylemden önce bitmiş ayrı bir olayı anlatır, süren ya da o sırada geçerli olan bir durumu kısaltmaz — 'the guests arriving' ile 'the guests having arrived' aynı şey değildir",
-              "then": "V-ing / V3 (-ed)"
+              "then": "V-ing / V3"
             },
             { "condition": "Eylemi ana isim kendisi yapıyor ve eylem sürüyor ya da genel bir durumu anlatıyorsa", "then": "V-ing" },
-            { "condition": "Eylem ana isme başkası tarafından yapılıyorsa; çoğu zaman arkasından 'by ...' ya da bir edat öbeği gelir", "then": "V3 (-ed)" },
-            {
-              "condition": "Fiil nesne almayan bir fiilse ve bitmiş bir sonucu anlatıyorsa (fallen leaves, retired teachers), edilgen olmasa da",
-              "then": "V3 (-ed)"
-            }
+            { "condition": "Eylem ana isme başkası tarafından yapılıyorsa; çoğu zaman arkasından 'by ...' ya da bir edat öbeği gelir", "then": "V3" },
+            { "condition": "Fiil nesne almayan bir fiilse ve bitmiş bir sonucu anlatıyorsa (fallen leaves, retired teachers), edilgen olmasa da", "then": "V3" }
           ]
         }
       ]
