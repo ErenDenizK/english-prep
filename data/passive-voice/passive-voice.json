@@ -24,14 +24,14 @@
     {
       "id": "passive-voice-t1",
       "category": "Tense Forms in Passive",
-      "paragraph": "Fresh bread ____ every morning at this bakery, using the same recipe that's been in the family for three generations.",
+      "paragraph": "Fresh bread ____ every morning at the bakery on the corner, and the queue starts forming before the shutters are even up. Whatever is left when the shop closes goes to the shelter down the road.",
       "options": ["is baked", "was baked", "has been baked", "is being baked"],
       "correctIndex": 0,
-      "explanation": "'Every morning' ve üç kuşaktır değişmeyen tarif, her gün tekrarlanan bir rutini anlatıyor; rutin edilgen eylemler Present Simple Passive ile kurulur ('is baked'). En yakın çeldirici 'is being baked', Present Continuous Passive'tir ve ekmeğin tam şu anda fırında olduğunu, tek seferlik bir olayın sürdüğünü söyler — 'every morning' ile bir arada duramaz. 'was baked' ise olayı geçmişte kapatır, oysa fırın bu işi hâlâ yapıyor.",
-      "tip": "Rutin, tekrar eden edilgen eylemler için Present Simple Passive ('is/are + V3') kullanılır.",
+      "explanation": "'Every morning' her gün yinelenen bir işi anlatıyor ve çevresindeki fiiller de geniş zamanda: kuyruk her sabah oluşuyor, artan ekmek her akşam bağışlanıyor. Yinelenen edilgen bir iş Present Simple Passive ile kurulur. En yakın çeldirici 'is being baked' tam şu anda fırında olan tek bir olayı anlatır ve 'every morning' ile bir arada duramaz. 'has been baked' ise bugüne kadarki bir süreyi ölçer, ama paragrafta ölçülecek bir süre yok.",
+      "tip": "Yinelenen bir iş anlatılıyorsa Present Simple Passive kullanılır; Present Perfect Passive bir süre ölçer ve o süreyi cümlede ister ('since 2010', 'for years').",
       "optionNotes": {
-        "was baked": "Ekmeği geçmişte kapanmış bir döneme bağlar. 'Every morning' ve hâlâ kullanılan aile tarifi, fırının bu işi bugün de yaptığını söylüyor.",
-        "has been baked": "Bugüne kadar süren bir dönemi ölçer ve o dönemi cümlede ister; buradaki üç kuşak ise tarife bağlı, ekmeğin pişirilmesine değil.",
+        "was baked": "Ekmeği geçmişte kapanmış bir döneme bağlar. Her sabah oluşan kuyruk ve her akşam bağışlanan ekmek, fırının bu işi bugün de yaptığını söylüyor.",
+        "has been baked": "Bugüne kadar süren bir dönemi ölçer ve o dönemi cümlede ister ('for years', 'since 1980'). Paragrafta böyle bir süre yok, yalnızca her gün yinelenen bir iş var.",
         "is being baked": "Ekmeğin tam şu anda fırında olduğunu söyler. 'Every morning' tek bir ana değil, her gün yinelenen bir işe işaret ediyor."
       }
     },
@@ -69,7 +69,7 @@
       "paragraph": "Please use the side entrance for now — the main lobby ____ renovated this week, so it's quite noisy in there.",
       "options": ["is being", "was", "has been", "is"],
       "correctIndex": 0,
-      "explanation": "'This week' şu anda devam eden bir süreci gösteriyor, bu yüzden Present Continuous Passive ('is being renovated') kullanılır.",
+      "explanation": "'This week' burada şu an devam eden bir işi anlatıyor: yan girişe yönlendirme ve içerideki gürültü tadilatın hâlâ sürdüğünü söylüyor, bu yüzden Present Continuous Passive ('is being renovated') gerekir. En yakın çeldirici 'has been': işin bitip sonucunun ortada olduğunu anlatır — bitmiş olsaydı ne gürültü olurdu ne de yan girişe ihtiyaç. 'was' ise tadilatı geçmişte kapatır.",
       "tip": "Şu anda devam eden edilgen eylemler için Present Continuous Passive ('is/are being + V3') kullanılır.",
       "optionNotes": {
         "was": "Tadilatı geçmişte bitmiş gösterir. Yan girişe yönlendirme ve içerideki gürültü, işin hâlâ sürdüğünü söylüyor.",
@@ -237,7 +237,7 @@
       "paragraph": "By the time we moved in, the previous owners ____ the entire kitchen renovated, so we didn't have to do anything ourselves.",
       "options": ["had had", "had", "have had", "did have"],
       "correctIndex": 0,
-      "explanation": "'By the time we moved in' geçmişte başka bir olaydan önce tamamlanmış bir eylemi gösteriyor, bu yüzden Past Perfect'in causative hali 'had had + nesne + V3' kullanılır.",
+      "explanation": "'By the time we moved in' geçmişte başka bir olaydan önce tamamlanmış bir eylemi gösteriyor, bu yüzden yaptırma kalıbının Past Perfect hâli gerekir: 'had had + nesne + V3'. En yakın çeldirici 'had' yaptırmayı düz geçmişe koyar ve mutfağın yenilenmesini taşınmayla aynı düzleme indirir; oysa 'we didn't have to do anything ourselves' işin biz gelmeden önce bitmiş olmasını istiyor. 'have had' ise süreci bugüne bağlar, cümlenin referans anı ise taşındığımız gün.",
       "tip": "Causative yapı da diğer zamanlar gibi çekimlenebilir: Past Perfect'te 'had had something done' şeklini alır.",
       "optionNotes": {
         "had": "Yaptırmayı düz geçmişe koyar, yani mutfak taşınmayla aynı düzleme düşer. 'By the time we moved in' işin ondan önce bitmesini istiyor.",
@@ -248,28 +248,28 @@
     {
       "id": "passive-voice-t17",
       "category": "Passive Reporting Structures",
-      "paragraph": "Nobody at the council will put a name to the story, and the minutes of the safety meeting were never circulated. The site manager ____ about the cracked roof beam weeks before the ceiling came down, and two councillors now admit that a note reached their desks and was quietly filed.",
+      "paragraph": "Nobody at the council will put a name to the story, and the minutes of the safety meeting were never circulated. The site manager ____ about the cracked roof beam weeks before the ceiling came down — he had spotted the crack himself during an inspection — and two councillors now admit that his note reached their desks and was quietly filed.",
       "options": ["is said to have warned", "is said to warn", "is said to be warning", "is said to have been warned"],
       "correctIndex": 0,
-      "explanation": "Kaynağı verilmeden aktarılan bir bilgi var ve aktarılan olay aktarımdan önce olmuş: 'weeks before the ceiling came down'. Bu yüzden mastar 'to + fiil' değil, 'to have + V3' olur. Uyaran da müdürün kendisi — not, meclis üyelerinin masasına ondan ulaşmış — yani özne eylemi yapan taraf. En yakın çeldirici 'is said to have been warned' zamanı doğru kurar ama rolleri ters çevirir: müdürü birinin uyardığını söyler.",
+      "explanation": "Kaynağı verilmeden aktarılan bir bilgi var ve aktarılan olay aktarımdan önce olmuş: 'weeks before the ceiling came down'. Bu yüzden mastar 'to + fiil' değil, 'to have + V3' olur. Uyaran da müdürün kendisi: çatlağı kendi fark etmiş, notu meclis üyelerine o göndermiş. En yakın çeldirici 'is said to have been warned' zamanı doğru kurar ama rolleri ters çevirir: müdürü birinin uyardığını söyler.",
       "tip": "Aktarılan olay aktarımdan önce olmuşsa mastar 'to have + V3' olur; özne o eylemi yapan değil de eylemin uygulandığı tarafsa araya 'been' girer: 'to have been + V3'.",
       "optionNotes": {
         "is said to warn": "Aktarımla aynı zamanı, yinelenen bir durumu anlatır. Buradaki uyarı ise tavan çökmeden haftalar önce yapılmış tek bir olay.",
         "is said to be warning": "Şu anda sürmekte olan bir uyarıyı anlatır. Paragraftaki uyarı geçmişte kalmış ve sonucu da anlatılmış.",
-        "is said to have been warned": "Zamanı doğru kurar, rolleri ters çevirir: müdürün uyarıldığını söyler. Oysa notu masalara gönderen taraf o."
+        "is said to have been warned": "Zamanı doğru kurar, rolleri ters çevirir: müdürün uyarıldığını söyler. Oysa çatlağı kendisi fark etmiş, masalara ulaşan notu da o göndermiş."
       }
     },
     {
       "id": "passive-voice-t18",
       "category": "Passive Reporting Structures",
-      "paragraph": "The eruption itself is dated, from the ash layer, to the summer of 1628. What became of the people who farmed the eastern slope is far less certain. ____ moved inland after the second tremor, and that a few of them settled as far away as the mainland — an account the island's guidebooks still repeat.",
+      "paragraph": "The eruption itself is dated, from the ash layer, to the summer of 1628. What became of the people who farmed the eastern slope is far less certain. ____ moved inland when the tremors began, and that a few of them settled as far away as the mainland — an account the island's guidebooks still repeat.",
       "options": ["It is believed that they", "It was believed that they", "It is believed that they have", "They are believed to have"],
       "correctIndex": 0,
       "explanation": "Cümlenin arkasında 'and that a few of them settled...' diye ikinci bir 'that' cümlesi daha var; iki yan cümleyi birden taşıyabilen kalıp 'It is believed that + cümle'dir. Görüş de hâlâ yürürlükte: rehber kitaplar onu bugün de tekrarlıyor, bu yüzden aktarma fiili geniş zamanda kalır. En yakın çeldirici 'They are believed to have' özneyle başlayan kalıbı kurar ve ikinci 'that' cümlesine bağlanacak bir yer bırakmaz.",
       "tip": "'It is believed that + cümle' kalıbı arkasına birden fazla 'that' cümlesi bağlayabilir; özneyle başlayan 'S + is believed to + fiil' kalıbı bağlayamaz.",
       "optionNotes": {
         "It was believed that they": "Artık terk edilmiş bir görüşü anlatır. Oysa bu açıklama hâlâ yürürlükte: adanın rehber kitapları onu bugün de tekrarlıyor.",
-        "It is believed that they have": "Present Perfect olayı bugüne bağlar. Anlatılan göç ise 1628 yazına tarihlenmiş, kapanmış bir geçmişe ait.",
+        "It is believed that they have": "Present Perfect olayı bugüne bağlar. Anlatılan göç ise 1628 yazına tarihlenen patlamanın ardına düşen, kapanmış bir geçmişe ait.",
         "They are believed to have": "Özneyle başlayan kalıp 'to + fiil' ile devam eder; arkadan gelen ikinci 'that' cümlesi bağlanacak yer bulamaz."
       }
     },
@@ -783,7 +783,7 @@
             { "condition": "Boşluktan sonra işi yapan kişi ve yalın fiil geliyorsa", "then": "have + person + V" },
             { "condition": "Zorlama, ikna ya da baskı varsa", "then": "make + person + V" },
             {
-              "condition": "Nesne V3'ten sonra geliyorsa (repaired them, cut my hair) ortada yaptırma yoktur: işi özne kendi yapmıştır",
+              "condition": "Nesne V3'ten sonra geliyorsa (cleaned the windows, cut my own hair) ortada yaptırma yoktur: işi özne kendi yapmıştır",
               "then": "Active: S + V + object"
             }
           ]
@@ -816,13 +816,19 @@
         },
         {
           "type": "forms",
-          "heading": "to'dan sonrası zamanı taşır",
+          "heading": "Hangi parça hangi zamanı taşır",
           "rows": [
             {
               "form": "It + be + V3 + that",
-              "use": "Genel görüş, cümleyle devam eder",
+              "use": "Bugün de aktarılan genel görüş",
               "pattern": "It is said/thought/believed/reported that + cümle",
               "example": "It is reported that the talks have failed."
+            },
+            {
+              "form": "It + was + V3 + that",
+              "use": "Bir zamanlar savunulan, artık bırakılmış görüş",
+              "pattern": "It was thought/believed that + cümle",
+              "example": "For centuries it was thought that the marshes had no bottom."
             },
             { "form": "S + be + V3 + to + V", "use": "Aktarımla aynı zamanda", "pattern": "S + is said to + V", "example": "He is said to live in Ankara." },
             {
@@ -845,16 +851,22 @@
             },
             {
               "form": "be supposed to",
-              "use": "Beklenti, plan ya da kural",
+              "use": "Beklenti, plan ya da kural — hâlâ geçerli",
               "pattern": "S + is supposed to + V",
               "example": "The new library is supposed to open in March."
+            },
+            {
+              "form": "was supposed to",
+              "use": "Beklenti geçmişte kalmış, iş olmamış",
+              "pattern": "S + was supposed to + V",
+              "example": "The ferry was supposed to dock at six, but it never came."
             }
           ]
         },
         { "type": "check" },
         {
           "type": "text",
-          "body": "Zaman farkını taşıyan parça **to**'dan sonrasıdır: aktarım ile olay aynı zamandaysa \"to + fiil\", olay daha önce olduysa \"to have + V3\". Özne o eylemi yapmıyor da ona bir şey yapılıyorsa araya bir **be** / **been** girer: to be seen, to have been seen."
+          "body": "Bu kalıpta iki ayrı zaman vardır. **Aktarma fiili** görüşün kendi durumunu söyler: is said bugün de geçerli, was said sonradan bırakılmış demektir. **to'dan sonrası** ise olayın zamanını taşır: aktarımla aynı zamandaysa \"to + fiil\", önce olduysa \"to have + V3\"; özneye bir şey yapılıyorsa araya be / been girer (to be seen, to have been seen). that'li yapıda yan cümle kendi zamanını kurar."
         },
         {
           "type": "examples",
@@ -863,7 +875,11 @@
             { "sentence": "The company is believed to be planning layoffs.", "note": "Şu an süren, aynı zaman → is believed to be + V-ing" },
             { "sentence": "The suspect is reported to have left the country.", "note": "Aktarımdan önce olmuş → is reported to have + V3" },
             { "sentence": "Two paintings are reported to have been recovered from a garage.", "note": "Hem geçmiş hem edilgen → to have been + V3" },
-            { "sentence": "The train is supposed to arrive at six.", "note": "Beklenti bildiren bir plan → is supposed to + fiil" }
+            { "sentence": "The train is supposed to arrive at six.", "note": "Beklenti bildiren bir plan → is supposed to + fiil" },
+            {
+              "sentence": "The tomb was believed to be empty until a second chamber was found.",
+              "note": "Sonradan bırakılmış bir görüş → was believed to + fiil"
+            }
           ]
         },
         {
@@ -889,14 +905,25 @@
           "type": "decision",
           "heading": "Boşluğun iki yanına bak",
           "rules": [
-            { "condition": "Boşluk cümlenin başındaysa ve arkasından tam bir cümle (özne + fiil) geliyorsa", "then": "It is said/believed/reported that ..." },
-            { "condition": "Beklenen ya da planlanan, ama gerçekleşmemiş olabilecek bir durumdan söz ediliyorsa", "then": "is supposed to + V" },
+            {
+              "condition": "Boşluk cümlenin başındaysa ve arkasından bir cümle gövdesi (fiil) geliyorsa — öznesi boşluktan sonra da durabilir, seçeneğin içinde de olabilir",
+              "then": "It is/was said/believed/reported that ..."
+            },
+            { "condition": "Beklenen ya da planlanan, ama gerçekleşmemiş olabilecek bir durumdan söz ediliyorsa", "then": "is / was supposed to + V" },
             {
               "condition": "Aktarılan olay aktarımdan önce olmuşsa ve özne o eylemi yapan değil, eylemin uygulandığı taraf ise (görülmüş, bulunmuş, kurtarılmış)",
               "then": "to have been + V3"
             },
             { "condition": "Aktarılan olay aktarımdan önce olmuşsa ve eylemi özne kendi yapmışsa", "then": "to have + V3" },
-            { "condition": "Boşluğun önünde asıl özne varsa ve olay aktarımla aynı zamandaysa", "then": "S + is said to + V" }
+            { "condition": "Boşluğun önünde asıl özne varsa ve olay aktarımla aynı zamandaysa", "then": "S + is said to + V" },
+            {
+              "condition": "Kalıbı seçtikten sonra bir de aktarma fiilinin zamanı kalır: aktarılan görüş bugün de tekrarlanıyorsa ya da beklenen an henüz gelmediyse aktarma fiili geniş zamanda kalır",
+              "then": "is said / is believed / is supposed to"
+            },
+            {
+              "condition": "Aktarılan görüş sonradan bırakılmışsa ya da beklenen an gelip geçmiş, beklenen iş olmamışsa aktarma fiili geçmişe çekilir",
+              "then": "was said / was believed / was supposed to"
+            }
           ]
         }
       ]
@@ -980,7 +1007,7 @@
           "heading": "By yazayım mı?",
           "rules": [
             {
-              "condition": "Faili sen de bilmiyorsan ya da someone / people / they gibi belirsizse ve boşluktan sonra onu söyleyen bir öbek yoksa",
+              "condition": "Faili sen de bilmiyorsan ya da someone / people / they gibi belirsizse ve boşluktan sonra ne faili ne de kullanılan aracı söyleyen bir isim öbeği yoksa",
               "then": "Passive without an agent"
             },
             { "condition": "Fail bağlamdan zaten belliyse (doktorlar, polis, garsonlar)", "then": "Passive without an agent" },
