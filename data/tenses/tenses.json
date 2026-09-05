@@ -721,31 +721,31 @@
             {
               "label": "Present Perfect Simple",
               "gloss": "Eylemin ne kadarının tamamlandığına ya da sonucuna odaklanır: kaç tane, ne kadarı bitti.",
-              "example": "I have written two chapters."
+              "example": "I have painted two walls."
             },
             {
               "label": "Present Perfect Continuous",
               "gloss": "Eylemin ne kadar süredir devam ettiğine odaklanır; büyük ihtimalle hâlâ sürüyordur.",
-              "example": "I have been writing for two hours."
+              "example": "I have been painting the kitchen for two hours."
             }
           ]
         },
         {
           "type": "forms",
           "rows": [
-            { "form": "Present Perfect Simple", "use": "Olumlu", "pattern": "S + have/has + V3", "example": "I have written." },
-            { "form": "Present Perfect Simple", "use": "Soru", "pattern": "Have/Has + S + V3?", "example": "Have you written?" },
-            { "form": "Present Perfect Continuous", "use": "Olumlu", "pattern": "S + have/has + been + V-ing", "example": "I have been writing." },
-            { "form": "Present Perfect Continuous", "use": "Soru", "pattern": "Have/Has + S + been + V-ing?", "example": "Have you been writing?" },
-            { "form": "Past Perfect", "use": "Olumlu", "pattern": "S + had + V3", "example": "I had written." }
+            { "form": "Present Perfect Simple", "use": "Olumlu", "pattern": "S + have/has + V3", "example": "I have painted." },
+            { "form": "Present Perfect Simple", "use": "Soru", "pattern": "Have/Has + S + V3?", "example": "Have you painted?" },
+            { "form": "Present Perfect Continuous", "use": "Olumlu", "pattern": "S + have/has + been + V-ing", "example": "I have been painting." },
+            { "form": "Present Perfect Continuous", "use": "Soru", "pattern": "Have/Has + S + been + V-ing?", "example": "Have you been painting?" },
+            { "form": "Past Perfect", "use": "Olumlu", "pattern": "S + had + V3", "example": "I had painted." }
           ]
         },
         { "type": "check" },
         {
           "type": "examples",
           "items": [
-            { "sentence": "I have written two chapters.", "note": "Kaç tanesi bitti → Present Perfect Simple" },
-            { "sentence": "I have been writing for two hours.", "note": "Ne kadar süredir sürüyor → Present Perfect Continuous" },
+            { "sentence": "I have painted two walls.", "note": "Kaç tanesi bitti → Present Perfect Simple" },
+            { "sentence": "I have been painting the kitchen for two hours.", "note": "Ne kadar süredir sürüyor → Present Perfect Continuous" },
             { "sentence": "Your eyes are red — have you been crying?", "note": "Sürecin görünür izi → Present Perfect Continuous" },
             { "sentence": "She has read the whole book.", "note": "Tamamlanmış, sonucu net → Present Perfect Simple" },
             { "sentence": "By the time she turned thirty, she had founded two companies.", "note": "Referans noktası geçmişte bir an → Past Perfect" }
