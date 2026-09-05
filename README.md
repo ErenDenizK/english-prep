@@ -89,10 +89,15 @@ so, on screen, in Profil:
 > Okuma (21 puan) ve paragraf tamamlama (9 puan) burada yok…
 
 The covered fraction is **counted, not asserted**: the sample cloze's ten
-blanks are mapped to the topics that would cover them, and the app derives
-"seven of ten" from the manifest, so the number moves on its own when a
-topic ships. A learner who does well here should not conclude anything
-false about Friday.
+blanks are mapped to the topics that cover them, and the app derives the
+number from what is actually live rather than stating it. A learner who
+does well here should not conclude anything false about Friday.
+
+The number on screen is currently "seven of ten" and the true figure is
+nine — two blanks were written before any vocabulary topic existed and
+were never repointed when those shipped, so they count as uncovered for
+ever. It is wrong in the direction the design prefers, and it is on the
+list (`docs/roadmap.md`).
 
 ---
 

@@ -15,10 +15,15 @@ that call.
 
 | | Shipped | Drafted, not shipped |
 | --- | --- | --- |
-| Topics | 8 | 2 |
-| Questions | 193 | 48 |
-| Lessons | 48 | 12 |
-| Questions per category | 4.0 | 4.0 |
+| Topics | **10** | 0 |
+| Questions | **241** | 0 |
+| Lessons | **60** | 0 |
+| Questions per category | 4.0 | — |
+| Option notes | **723 — one for every wrong option in the app** | — |
+
+Updated 2026-09-05. **The draft queue is empty**: everything written has
+shipped, and every shipped item has been through the pipeline as it
+stands today rather than as it stood when the item was written.
 
 **Grammar is finished** (2026-09-04). The five drafted grammar topics
 cleared their review debt and shipped together, as the owner asked and
@@ -26,17 +31,13 @@ for the reason the queue existed: they were commissioned to close one
 gap, and shipping them one at a time would have meant five partial
 answers to the cloze section instead of one whole one.
 
-What remains drafted is the two vocabulary topics, in
-`docs/agents/drafts/`; `docs/agents/drafts/README.md` records what each
-still owes. Both have now been through a blind item review, a lesson
-sufficiency pass, a repair and an **independent re-audit** — and the
-re-audit is why neither is served yet: it blocked two of six categories
-in each, with named defects rather than a general doubt. `academic-verbs`
-is held by a `decision` rule that certifies a distractor and by two
-second-defensible answers; `academic-nouns-adjectives` by an item that is
-its own lesson's `pitfall` block and by a `pitfall` that marks as wrong a
-use the rest of its lesson licenses. A second repair round is under way
-against exactly those four.
+**Vocabulary is finished too** (2026-09-05). The two vocabulary topics
+cleared the four categories their first re-audit had blocked — a
+`decision` rule that certified a distractor, two second-defensible
+answers, an item that was its own lesson's `pitfall` block, and a
+`pitfall` marking as wrong a use the rest of its lesson licensed — went
+through a second repair and a second independent re-audit, and shipped.
+The copies left in `docs/agents/drafts/` are history, not a queue.
 
 ## What the paper actually pays for
 
@@ -45,7 +46,7 @@ choice (`docs/exam-spec.md`, from the two sample papers).
 
 | Section | Items | Points | Where the app stands |
 | --- | --- | --- | --- |
-| Cloze test | 10 | 15 | **7 of the 10 blanks, which is 6 of the 8 distinct types.** Ten blanks test eight types — blanks 2 and 4 are both modals, 5 and 10 both vocabulary. Uncovered: vocabulary (drafted, in review) and `so / such` (nothing) |
+| Cloze test | 10 | 15 | **9 of the 10 blanks, which is 7 of the 8 distinct types.** Ten blanks test eight types — blanks 2 and 4 are both modals, 5 and 10 both vocabulary. One type is uncovered: `so / such`. **The app still says seven — see the defect below** |
 | Closest meaning | 10 | 15 | **shipped** |
 | Reading — 2 texts | 14 | 21 | **not covered, and out of v1** — see below |
 | Paragraph completion | 6 | 9 | **not covered, no schema, not started** |
@@ -60,7 +61,7 @@ now exists:
 | 1 | discourse markers | `connectors` ✓ |
 | 2, 4 | modals | `modals` ✓ |
 | 3 | causative `make + object + bare` | `gerunds-infinitives` ✓ |
-| 5, 10 | vocabulary | `academic-verbs`, `academic-nouns-adjectives` (drafted) |
+| 5, 10 | vocabulary | `academic-verbs`, `academic-nouns-adjectives` ✓ |
 | 6 | comparatives | `closest-meaning` ✓ (partly) |
 | 7 | `so` / `such` | **nothing** |
 | 8 | relative pronouns | `relative-clauses` ✓ |
@@ -139,13 +140,31 @@ been through it, and the results are worth separating:
 A repair round is under way on all three, and will be re-audited
 independently before it is called done.
 
-### Now — the two vocabulary topics
+### Done — the two vocabulary topics (2026-09-05)
 
-`academic-verbs` and `academic-nouns-adjectives`: 48 questions and 12
-lessons, both through both review passes, a repair and an independent
-re-audit. Eight of the twelve categories are cleared to ship; four are
-held by named defects and are in a second repair round. They close cloze
-blanks 5 and 10 and take the app to 241 questions across 10 topics.
+`academic-verbs` and `academic-nouns-adjectives` shipped: 48 questions
+and 12 lessons, through both review passes, two repair rounds and two
+independent re-audits. They close cloze blanks 5 and 10 and take the app
+to 241 questions across 10 topics.
+
+### Now — one defect, found by updating this table
+
+**The app understates its own cloze coverage.** `CLOZE_BLANKS` in
+`js/topics.js:296` maps each of the sample paper's ten blanks to the
+topic that covers it, and `clozeCoverage` derives the on-screen number
+from what is live — which is why Profil could be trusted to move on its
+own as topics shipped. Blanks 5 and 10 were written as
+`{ topicId: null, label: "kelime bilgisi" }` because no vocabulary topic
+existed yet. They were never repointed when the two shipped, so a `null`
+counts as missing for ever and the screen still says seven of ten when
+it is nine of ten.
+
+It errs in the safe direction — the app claims less than it does, which
+is the right way round for a screen whose whole job is honesty — so it
+is not urgent. But it falsifies the general claim: the number moves on
+its own only for a blank whose covering topic id was written down in
+advance. Two lines in `js/topics.js`, and a sweep assertion that the
+derived count matches the live manifest rather than a constant.
 
 ### Next — the two real holes
 
@@ -245,11 +264,15 @@ before anything else starts, and the two vocabulary topics queue behind
 them rather than beside them. `so / such` and paragraph completion follow
 the grammar ship, not the vocabulary one.
 
-**`optionNotes` is not a budget item now.** The field exists and the
-vocabulary topics use it, because there one gloss per wrong option is the
-minimum honest explanation. Writing 291 notes against the existing
-grammar corpus is not scheduled: completing the app's features is worth
-more than deepening content that already teaches.
+**~~`optionNotes` is not a budget item now.~~ Reversed, and done
+(2026-09-05).** The decision was that writing ~291 notes against the
+existing grammar corpus was not worth it against shipping features. It
+was reversed and the work was done: **723 notes, one for every wrong
+option in the app**, all ten topics. What changed the answer was the
+audience statement — a learner whose ear is good and whose instinct is
+often right does not need to be told they were wrong, they need to be
+told *what the thing they chose would have meant*, because that is the
+boundary their ear is missing. The note is that sentence.
 
 **A content roadmap became a feature, in small.** Shipped 2026-09-04 as a
 section in Profil: what exists, counted from the manifest so it cannot go
@@ -258,6 +281,17 @@ next and planned. It replaced the "Geliştirme aşamasındayız" banner
 rather than joining it. The larger version the owner described — down to
 which questions and which `optionNotes` exist — is still later; this is
 the version that fits on a phone and tells the truth today.
+
+## Where the money and the platform questions went
+
+They are not in this file. `docs/business/` is six documents written
+2026-09-05 against the owner's own brief — the two-app split, the price,
+the store routes, what "a bit online" would cost this codebase, and who
+owns the corpus. `docs/business/README.md` is the index, and the only
+item there with a near deadline is a contributor note, before a second
+author writes anything into `data/`.
+
+---
 
 ## Still open
 
