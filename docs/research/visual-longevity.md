@@ -630,6 +630,37 @@ of which sinks it.
 
 ### 5.3 An accent per *tier* — measured, and the answer to the brief's question 2
 
+> **Deferred by the owner, 2026-09-05, and not for the reason this
+> section anticipated.** He accepted the arithmetic and stopped at the
+> risk. Three things checked against the running app after this section
+> was written, which sharpen it and should be settled before it is
+> reopened:
+>
+> 1. **Four tiers are populated, not five.** `foundations` holds one
+>    topic (Tenses), `advanced` holds none, `core-grammar` four,
+>    `compound-structures` three, `vocabulary` two. A hue scheme should
+>    still be designed for five, but what a learner can see today is four
+>    groups, one of them a group of one.
+> 2. **The two tabs disagree about whether `tier` is structure at all.**
+>    The Test tab groups topics under tier headings
+>    (`js/home.js:378`); the Eğitim index is one flat list of ten rows
+>    under "Konular" (`js/education.js:767`). Colouring an axis that one
+>    of the two main screens does not draw would make the colour the only
+>    place the grouping exists.
+> 3. **The tier labels are difficulty claims, and the app refuses to make
+>    one.** `js/tiers.js` says in its own comment that this is *"purely a
+>    display grouping … not a required content-authoring order"*, and the
+>    Eğitim tab locks nothing. A hue per tier encodes a progression from
+>    Temeller to İleri Seviye that the app does not believe in, and a
+>    learner reading four colours will look for exactly that progression.
+>    This is the risk the section did not raise: `tier` is declared in
+>    the data, but what it declares is contradicted by the app's own
+>    reading of it.
+>
+> Reopening it needs (2) resolved first — one grouping, on both tabs —
+> and then the five-minute question this document already proposes.
+
+
 The brief asked whether ten hues for ten topics breaks "one accent, one
 job" or extends it. **Neither: it does not fit.** Here is the arithmetic,
 run with this repository's own `tools/color.mjs`.
