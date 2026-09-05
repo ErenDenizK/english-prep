@@ -136,6 +136,33 @@ have paid costs nothing. A shared code that unlocks the product does.
 
 ---
 
+## What was re-derived independently
+
+This project's own rule is that a finding is not a finding until someone
+who did not produce it has re-produced it. The repo-derived numbers the
+arms lean on were re-measured on 2026-09-05 by a separately written
+script, against `data/` rather than against the documents:
+
+| Claim | Where | Re-derived |
+|---|---|---|
+| 21 of 241 questions reason about Turkish | `two-apps.md` §1.1 | **21 / 241 (8.7%)** ✓ |
+| 51 of 60 lessons do | `two-apps.md` §1.1 | **51 / 60 (85.0%)** ✓ |
+| ~37,000 words of lesson prose | `two-apps.md` §5.3 | **36,987**, 616 per lesson ✓ |
+| ~80,000 authored words | `pricing.md` §1.2 | **79,778** ✓ |
+| ~178 words per question | `two-apps.md` §5.1 | **178** ✓ |
+| Four calendar days | `pricing.md` §1.2 | first commit 2026-09-02, latest 2026-09-05 ✓ |
+
+The measurement that matters most is the first pair, because the whole
+*exam / no-exam* seam rests on it: the item bank travels and the lessons
+do not. It reproduces exactly.
+
+**The figures that were not re-derived are the ones from outside the
+repository** — every tax rate, commission, store fee and policy clause.
+Those are the subject of the next section, and none of them has been
+verified at source.
+
+---
+
 ## The rule this directory is written under
 
 Turkish tax law and Apple's review policy are the two subjects where
