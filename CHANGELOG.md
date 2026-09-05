@@ -5,6 +5,39 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.35 — 2026-09-05
+
+**The mixed test says what it draws from.** `startMixedTest` pools every
+live topic and `orderForPractice` draws unseen items first — both right,
+and together they mean a learner who has read six of sixty lessons gets a
+test that is mostly categories nothing has taught them yet: 24 of 241
+items belong to what they have read. The machinery downstream handles
+that correctly, turning a low score into instruction rather than restudy.
+What was missing is that nobody told the learner, so a 3/10 on day two
+read as a verdict on them instead of a description of the draw. One
+sentence, in the voice the reader already uses for the pretest block,
+because it is the same argument: attempting before studying is the point.
+
+Not for the owner, who has read the corpus — for the four people who
+started this week from zero.
+
+**The two tabs agree about topics now.** The Test tab grouped ten topics
+under four tier headings; the Eğitim index was one flat list of ten
+identical rows. Same topics, same manifest field, two answers — and flat
+is also what a learner reported as the topics piling up. Eğitim groups
+too.
+
+The umbrella heading went rather than sitting above the group names:
+`js/home.js` settled that shape for the Test tab and the reasoning holds
+— two labels of identical weight one line apart read as a pile rather
+than a hierarchy. The sentence under it was the part worth keeping, and
+it stays, because it is the one place at runtime the app says what it is
+for.
+
+These are a grouping and never an order. `js/tiers.js` calls the tiers
+"purely a display grouping", the reader locks nothing, and the next-step
+card routes by weakness rather than by tier.
+
 ## v0.34 — 2026-09-05
 
 **The app now writes down which option was chosen, not only whether it

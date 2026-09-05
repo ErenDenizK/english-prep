@@ -1435,6 +1435,33 @@ async function runIndexStates(browser) {
     "her konu satırı ne olduğunu tek satırda söylüyor"
   );
 
+  // The two tabs used to disagree about whether `tier` is structure: the
+  // Test tab grouped ten topics under four headings and the Eğitim index
+  // was one flat list of ten identical rows. Same topics, same manifest
+  // field, two answers.
+  const groupsOf = async (page, host) =>
+    (await page.locator(`${host} h2`).allInnerTexts()).map((text) => text.trim()).sort();
+  const egitimGroups = await groupsOf(view.page, "#index-list");
+  await view.page.locator('.nav__item[data-view="test"]').click();
+  await view.page.waitForSelector("#test-panel .row");
+  const testGroups = await groupsOf(view.page, "#test-panel section:last-of-type");
+  ok(
+    egitimGroups.length > 1 && egitimGroups.join("|") === testGroups.join("|"),
+    `iki sekme konuları aynı şekilde gruplıyor (${egitimGroups.join(", ")})`
+  );
+  await view.page.locator('.nav__item[data-view="egitim"]').click();
+  await view.page.waitForSelector("#index-list .row");
+  // And the umbrella is gone rather than sitting above the group names:
+  // two labels of identical weight one line apart read as a pile.
+  ok(
+    !egitimGroups.includes("Konular"),
+    "grup adları tek başlık düzeyi — üstlerinde ikinci bir etiket yok"
+  );
+  ok(
+    (await view.page.locator("#view-egitim").innerText()).includes("önce ne olduğunu anlatır"),
+    "ekranın ne işe yaradığını söyleyen satır duruyor"
+  );
+
   // And what pays back the tap that costs: the learner who knew which
   // lesson he wanted goes from one tap to three without this.
   const filter = view.page.locator("#index-filter");
