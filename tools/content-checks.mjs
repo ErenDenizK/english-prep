@@ -472,6 +472,14 @@ export function lessonSentences(lesson) {
     // silent because this function had never read `body`. A block type
     // this function does not know about is a channel it does not close.
     if (isNonEmptyString(block.body)) out.push(block.body);
+    // A `decision` rule's condition is Turkish, and quotes English the
+    // same way a `text` body does — the passive-voice re-audit found a
+    // rule printing an item's best distractor verbatim. `then` names a
+    // form rather than a sentence, so it is not read here; a run of six
+    // words never comes out of a form name.
+    for (const rule of block.rules ?? []) {
+      if (isNonEmptyString(rule.condition)) out.push(rule.condition);
+    }
   }
   return out;
 }
