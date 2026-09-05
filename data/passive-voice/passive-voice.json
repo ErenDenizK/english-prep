@@ -17,7 +17,7 @@
       { "name": "by + fail", "gloss": "isteğe bağlı; sadece yeni bir bilgi veriyorsa", "en": "by the council" }
     ],
     "choice": "Türkçede edilgen yapmak bir ek meselesidir ve cümlenin zamanı yerinde kalır. İngilizcede zaman *be* fiiline taşınır, ana fiil ise donar — yani zamanı doğru kurmak edilgende ayrı bir iştir, ve asıl zorluk oradadır.",
-    "lessons": "İlk üç ders zamanı taşımanın üç katmanıdır: düz zamanlar, modallı yapılar, sonra geçmişe bakan modallı yapılar. Dördüncü ders başkasına yaptırmayı, beşinci kaynağı belirtmeden bilgi aktarmayı alır. Son ders tek bir soruya bakar: *by* ne zaman gerekli, ne zaman fazlalık.",
+    "lessons": "İlk üç ders zamanı taşımanın üç katmanıdır: düz zamanlar, modallı yapılar, sonra geçmişe bakan modallı yapılar. Dördüncü ders başkasına yaptırmayı, beşinci kaynağı belirtmeden bilgi aktarmayı alır. Son ders tek bir soruya bakar: *by* ne zaman gerekli, ne zaman fazlalık. Katmanlar üst üste binse de her ders gereken parçayı kendi içinde yeniden kurar; sırayla okumak zorunda değilsin.",
     "exam": "Örnek kâğıdın boşluk doldurma bölümünde doğrudan edilgen soran bir boşluk yok; edilgen, uzun cümleleri doğru okuyabilmen için gerekiyor."
   },
   "questions": [

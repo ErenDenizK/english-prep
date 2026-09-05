@@ -172,3 +172,54 @@ Don't edit `js/`, `css/`, `*.html`, `data/manifest.json`, or the lessons
 array. If the schema seems to be blocking a question you want to write,
 say so and stop rather than working around it — changing the schema means
 changing the validator and the app too, and that's the supervisor's call.
+
+---
+
+## Combination: the one way this app gets harder
+
+Every category in this app sits at the same level by design. The tiers
+are a display grouping, not an order (`js/tiers.js`), nothing is locked,
+and `docs/research/progression.md` measured the corpus and found no
+curriculum underneath: six content edges across sixty lessons, all six
+already neutralised by the importing lesson re-teaching what it imports.
+
+So difficulty cannot come from "later topics are harder", because there
+are no later topics. It comes from two places, and this section is about
+the first.
+
+**A combined item holds one thing constant and makes the learner carry
+two.** `passive-voice` already does it, in nine of the corpus's sixty
+categories and most sharply in `Modal Perfects in Passive`: all four
+options are passive, the passive is not the question, and what varies is
+the modal — so the learner has to hold the passive steady *while*
+choosing on a scale they learned somewhere else. Ten of that topic's
+twenty-four items work this way.
+
+That is the right kind of hard for this app's learner. CLAUDE.md's
+"Who this is for" says why: someone with competence and no labels will
+usually get either half right on its own, because their ear produces it.
+They stumble when the two are stacked, which is exactly where an exam
+puts them.
+
+Write one deliberately, per category, when the material allows it:
+
+1. **Name the constant.** Every option shares it, and no option is
+   eliminated by it. If a learner can answer by noticing which option is
+   the odd shape, the constant is not constant.
+2. **Vary on the imported axis**, and make the paragraph decide it — not
+   the category label, which the Test screen prints above the question.
+3. **Re-teach the import in the lesson**, in full. That is what the six
+   existing edges do and it is why "her ders ayrı bir makale" is still
+   true. A combined item whose lesson assumes the other topic breaks the
+   app's one promise about how it may be read.
+4. **Apply the paragraph-deleted test.** Delete the paragraph; if one
+   option still picks itself out, the item is testing form recognition
+   and not the combination.
+
+The counter-example is instructive and it is in this repository's own
+history: before its third repair round, `Passive with Modals` held the
+modal constant across all four options and varied only whether the option
+was a well-formed passive. It looked like a combined item and it was a
+spelling drill — nine of twelve keys in that part of the topic were the
+only structurally legal option, so a student who read nothing scored
+9/12.
