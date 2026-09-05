@@ -214,7 +214,7 @@
       "optionNotes": {
         "am taking": "Önceden ayarlanmış, kesinleşmiş bir planı bildirir. Cümle ise 'nothing is arranged' diyor: ortada ayarlanmış hiçbir şey yok.",
         "take": "Resmî tarifeler içindir (uçuş, tren saati). Burada verilen ise teklifi geri çevirmek için o anda alınan kişisel bir karar.",
-        "have taken": "Taksiye çoktan binmiş olmak ve sonucunun şu an geçerli olması. Oysa konuşan henüz havaalanına inmiş bile değil."
+        "have taken": "Taksiye çoktan binmiş olmak ve sonucunun şu an geçerli olması. Oysa ortada henüz yapılmamış, konuşma anında verilen bir karar var."
       }
     },
     {
@@ -304,13 +304,13 @@
     {
       "id": "tenses-t25",
       "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone",
-      "paragraph": "Nobody has seen Deniz since the lunch break, and her laptop is still open on the desk with the screen unlocked. She ____ down to the archive on the ground floor, I think, so she should be back before the meeting starts.",
+      "paragraph": "Nobody has seen Deniz since the lunch break, and her laptop is open on the desk with the screen unlocked. She ____ down to the archive on the ground floor, I think, and her coat is still on the back of her chair.",
       "options": ["has gone", "has been", "has been going", "had gone"],
       "correctIndex": 0,
-      "explanation": "Dizüstü bilgisayarı hâlâ açık duruyor ve 'she should be back before the meeting starts' deniyor: kişi gittiği yerden henüz dönmedi, hâlâ oradadır. Hâlâ orada olan biri için 'has gone to' kullanılır. En yakın çeldirici 'has been', kişinin gidip döndüğünü söyler ve 'should be back' ile açıkça çelişir. 'has been going' tek bir gidişi değil tekrarlanan bir gidip gelmeyi anlatır; 'had gone' ise cümlede bulunmayan, geçmişte bir referans anı ister.",
+      "explanation": "Dizüstü bilgisayarı masada açık duruyor, ceketi hâlâ sandalyesinde ve öğle arasından beri kimse onu görmedi: kişi gittiği yerden henüz dönmedi, hâlâ oradadır. Hâlâ orada olan biri için 'has gone to' kullanılır. En yakın çeldirici 'has been', kişinin gidip döndüğünü söyler — dönmüş olsaydı ceketini alır, masasına dönerdi. 'has been going' tek bir gidişi değil tekrarlanan bir gidip gelmeyi anlatır; 'had gone' ise cümlede bulunmayan, geçmişte bir referans anı ister.",
       "tip": "Kişi hâlâ oradaysa 'has gone to', gidip döndüyse 'has been to'. Kararı zaman ifadesi değil, kişinin şu an nerede olduğu verir.",
       "optionNotes": {
-        "has been": "'Has been to' kişinin gidip döndüğünü söyler. Oysa 'she should be back' Deniz'in hâlâ aşağıda olduğunu belirtiyor.",
+        "has been": "'Has been to' kişinin gidip döndüğünü söyler. Oysa ceketi hâlâ sandalyesinde ve öğle arasından beri onu gören olmamış.",
         "has been going": "Arşive bir süredir gidip geldiğini, tekrarlanan bir hareketi anlatır. Burada anlatılan ise öğle arasından beri süren tek bir gidiş.",
         "had gone": "Geçmişte bir referans anı ister ve ondan öncesini anlatır. Bu paragrafta bağlanılan nokta şu an: masada duran açık bilgisayar."
       }
@@ -333,14 +333,14 @@
       "id": "tenses-t22",
       "category": "Time Expressions & Signal Words",
       "paragraph": "The results were supposed to go up on Friday, and it is now the middle of the following week. According to the secretary, the marks haven't been entered ____, so nobody in our year can register for next term.",
-      "options": ["yet", "already", "still", "ago"],
+      "options": ["yet", "already", "still", "yesterday"],
       "correctIndex": 0,
       "explanation": "Cümle olumsuz ('haven't been entered') ve beklenen bir işin hâlâ yapılmadığını söylüyor; olumsuz cümlelerde ve sorularda 'henüz' anlamını veren kelime 'yet'tir ve cümlenin sonunda durur. 'already' olumlu cümlelere aittir ve bir işin beklenenden erken bittiğini söyler — burada iş hiç yapılmamış. 'still' bu anlamı verebilir ama yeri farklıdır: 'the marks still haven't been entered' denir, yardımcı fiilden önce, cümlenin sonunda değil.",
       "tip": "'Yet' olumsuz cümlenin ve sorunun sonunda durur; aynı işi olumlu cümlede 'already' yapar, 'still' ise olumsuzda yardımcı fiilden önce gelir.",
       "optionNotes": {
         "already": "Olumlu cümlelerde, bir işin beklenenden erken bittiğini söyler. Burada ise iş hiç yapılmamış ve cümle olumsuz.",
         "still": "Bu anlamı verebilir ama yeri farklıdır: 'the marks still haven't been entered' denir, cümlenin sonunda değil.",
-        "ago": "Bir süre miktarının hemen arkasında çalışır ('three days ago') ve Past Simple ister. Burada önünde bir miktar yok."
+        "yesterday": "Belirli bir geçmiş anı verir ve Present Perfect'in yanına gelmez; 'the marks weren't entered yesterday' derdin."
       }
     },
     {
@@ -411,7 +411,7 @@
         { "type": "check" },
         {
           "type": "text",
-          "body": "Son kural sınavda en çok puan kaybettiren yer. **Durum fiilleri** bir süreç değil bir durum anlatır — anlamak, sevmek, sahip olmak bir süre boyunca \"yapılan\" şeyler değildir. Bu yüzden normalde Continuous formu almazlar, cümlede \"now\" geçse bile."
+          "body": "Sınavda en çok puan kaybettiren kural şudur: **durum fiilleri** bir süreç değil bir durum anlatır — anlamak, sevmek, sahip olmak bir süre boyunca \"yapılan\" şeyler değildir. Bu yüzden normalde Continuous formu almazlar, cümlede \"now\" geçse bile."
         },
         {
           "type": "examples",
@@ -489,7 +489,7 @@
             { "sentence": "I visited Paris last summer.", "note": "Belirli bir geçmiş zaman ifadesi → Past Simple" },
             { "sentence": "I have visited Paris three times.", "note": "Ne zaman olduğu değil, kaç kez olduğu önemli → Present Perfect" },
             { "sentence": "She has just finished her homework.", "note": "Yeni bitti, sonucu şu an geçerli → Present Perfect" },
-            { "sentence": "Have you ever been to Japan?", "note": "Hayat boyu süren bir deneyim sorusu → Present Perfect" },
+            { "sentence": "Have you ever tried skiing?", "note": "Hayat boyu süren bir deneyim sorusu → Present Perfect" },
             { "sentence": "I lived in Izmir for five years, but I moved away in 2019.", "note": "\"For\" var ama dönem 2019'da kapanmış → Past Simple" }
           ]
         },
@@ -512,11 +512,18 @@
         },
         {
           "type": "decision",
-          "heading": "Sınavda cümledeki zaman ifadesine bak",
+          "heading": "Sınavda sırayla bunlara bak",
           "rules": [
+            {
+              "condition": "Cümlenin bağlandığı nokta şimdi değil, geçmişte bir an ise (by the time we arrived, when I finally got back): o andan öncesi",
+              "then": "Past Perfect"
+            },
             { "signals": ["yesterday", "last summer", "in 2020", "two years ago", "when I was a child"], "then": "Past Simple" },
-            { "signals": ["since", "already", "yet", "just", "ever", "never", "so far", "recently"], "then": "Present Perfect" },
-            { "condition": "Zaman aralığı hâlâ açıksa (over the past century, this week, this year)", "then": "Present Perfect" },
+            { "signals": ["already", "yet", "just", "ever", "never", "so far", "recently"], "then": "Present Perfect" },
+            {
+              "condition": "Zaman aralığı hâlâ açıksa — **since** ile verilen bir başlangıç noktası da buraya girer (over the past century, this week, since she graduated)",
+              "then": "Present Perfect"
+            },
             {
               "condition": "Olayın ne zaman olduğu hiç söylenmiyor ama sonucu şu anda ortadaysa (makine hâlâ bozuk, ortalık hâlâ dağınık)",
               "then": "Present Perfect"
@@ -587,14 +594,17 @@
         { "type": "check" },
         {
           "type": "text",
-          "body": "Bir uyarı: **since** her zaman Present Perfect demek değildir. Cümlenin referans noktası geçmişteyse, since'ten önceki fiil Past Perfect olur: \"I didn't recognize the campus because they had rebuilt it since my last visit.\" Referans \"didn't recognize\", yani geçmiş bir an; ondan önce biten eylem \"had rebuilt\"."
+          "body": "Bir uyarı: **since** her zaman Present Perfect demek değildir. Cümlenin referans noktası geçmişteyse, since'ten önceki fiil Past Perfect olur: \"The street looked strange to me because they had planted new trees since I moved away.\" Referans \"looked strange\", yani geçmiş bir an; ondan önce biten eylem \"had planted\"."
         },
         {
           "type": "decision",
           "heading": "Sınavda sırayla bunlara bak",
           "rules": [
             { "signals": ["by the time", "by then", "already", "before that"], "then": "Past Perfect" },
-            { "condition": "Anlatı sırayı bozup daha erken bir zamana dönüyorsa (önce olanı sonradan anlatıyorsa), o erken olay", "then": "Past Perfect" },
+            {
+              "condition": "Anlatı sırayı bozup daha erken bir zamana dönüyorsa ve boşluk tam o geriye dönüşse (ana çizgideki olaylardan önce bitmiş iş)",
+              "then": "Past Perfect"
+            },
             { "signals": ["while", "as", "all morning"], "then": "Past Continuous" },
             { "condition": "Uzun süren bir eylem kısa bir olayla kesiliyorsa, kesilen uzun eylem", "then": "Past Continuous" },
             { "condition": "\"When\" ile gelen kısa olayın kendisi ve sırayla olup biten olaylar", "then": "Past Simple" }
@@ -633,7 +643,7 @@
             {
               "label": "Present Continuous",
               "gloss": "Kişisel olarak önceden ayarlanmış, kesinleşmiş bir buluşma ya da randevu; genelde zamanı ve tarafı bellidir.",
-              "example": "We are having dinner with them on Saturday."
+              "example": "I am meeting my project partner at four on Thursday."
             },
             {
               "label": "Present Simple",
@@ -761,9 +771,9 @@
         },
         {
           "type": "pitfall",
-          "wrong": "She has been to the library; she'll be back in an hour.",
-          "right": "She has gone to the library; she'll be back in an hour.",
-          "why": "\"Has been to\" kişinin dönmüş olduğunu ima eder, bu yüzden \"birazdan döner\" ile çelişir. Kişi hâlâ oradaysa \"has gone to\" kullanılır."
+          "wrong": "My sister has gone to Berlin three times and she loved it every time.",
+          "right": "My sister has been to Berlin three times and she loved it every time.",
+          "why": "\"Has gone to\" kişinin hâlâ orada olduğunu söyler; oysa cümle dönmüş birinin anlattığı bir deneyimi bildiriyor. Gidip dönülmüş deneyimler için \"has been to\" kullanılır."
         },
         { "type": "check" },
         {
@@ -836,7 +846,7 @@
             },
             {
               "label": "still",
-              "gloss": "Bir durumun beklenenden uzun sürdüğünü söyler ve fiilden önce gelir.",
+              "gloss": "Bir durumun beklenenden uzun sürdüğünü söyler; olumlu cümlede fiilden, olumsuz cümlede yardımcı fiilden önce gelir.",
               "example": "She is still waiting for the results."
             }
           ]
@@ -849,7 +859,8 @@
             { "form": "ago", "use": "Geçmişte bir an", "pattern": "V2 ... + length of time + ago", "example": "I met her ten years ago." },
             { "form": "already", "use": "Olumlu cümle", "pattern": "have/has + already + V3", "example": "She has already left." },
             { "form": "yet", "use": "Olumsuz cümle ve soru", "pattern": "haven't/hasn't + V3 ... yet", "example": "She hasn't left yet." },
-            { "form": "still", "use": "Süren durum", "pattern": "S + still + V / S + be + still + V-ing", "example": "She still works there." }
+            { "form": "still", "use": "Olumlu cümle", "pattern": "S + still + V / S + be + still + V-ing", "example": "She still works there." },
+            { "form": "still", "use": "Olumsuz cümle", "pattern": "S + still + haven't/hasn't + V3", "example": "She still hasn't replied to my email." }
           ]
         },
         { "type": "check" },
@@ -861,7 +872,7 @@
             { "sentence": "They sold the house three months ago.", "note": "Belirli bir geçmiş an → ago + Past Simple" },
             { "sentence": "The meeting had already started by the time we arrived.", "note": "Referans noktası geçmişte → already + Past Perfect" },
             { "sentence": "Have you finished the report yet?", "note": "Soru cümlesi, henüz olup olmadığı soruluyor → yet" },
-            { "sentence": "She is still waiting for the results.", "note": "Beklenenden uzun süren durum → still" }
+            { "sentence": "They still haven't announced the results.", "note": "Olumsuzda still yardımcı fiilden önce gelir → still" }
           ]
         },
         {
@@ -891,7 +902,9 @@
             { "condition": "Boşluktan sonra bir süre miktarı varsa (five years, two months, a long time)", "then": "for" },
             { "condition": "Süre miktarından hemen sonra geliyorsa ve fiil Past Simple ise", "then": "ago" },
             { "condition": "Olumlu cümlede, bir iş beklenenden erken bitmişse", "then": "already" },
-            { "condition": "Olumsuz cümlede ya da soruda, bir iş henüz olmamışsa", "then": "yet" }
+            { "condition": "Olumsuz cümlede ya da soruda, bir iş henüz olmamışsa ve boşluk fiilden sonra, cümlenin sonundaysa", "then": "yet" },
+            { "condition": "Aynı olumsuz cümlede boşluk yardımcı fiilin önündeyse (gecikmenin uzadığını vurgular)", "then": "still" },
+            { "condition": "Bir deneyim soruluyorsa (Have you ...?) **ever**, o deneyimin hiç yaşanmadığı söyleniyorsa **never**", "then": "ever / never" }
           ]
         },
         {
