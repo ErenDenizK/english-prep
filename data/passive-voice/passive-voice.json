@@ -195,7 +195,7 @@
       "paragraph": "The prints came back so dark that the studio apologised twice. Rather than argue about it, she simply ____ the whole set reprinted, and the second batch was exactly right.",
       "options": ["had", "let", "has had", "will have"],
       "correctIndex": 0,
-      "explanation": "Baskıları kendisi yapmadı, yeniden yaptırdı: boşluktan sonraki 'the whole set reprinted' sırası — nesne + V3 — yaptırma kalıbını gösteriyor ve bu sırayı İngilizcede yalnızca 'have' ile 'get' alır. Zaman da kapanmış bir geçmiş: stüdyo özür diledi, ikinci baskı doğru çıktı. En yakın çeldirici 'has had' işi bugüne bağlar, oysa anlatılan her şey bitmiş. 'let' ise bu kalıba hiç girmez: izin verir ve arkasından kişi + yalın fiil ister ('let the studio reprint it').",
+      "explanation": "Baskıları kendisi yapmadı, yeniden yaptırdı: boşluktan sonraki 'the whole set reprinted' sırası — nesne + V3 — yaptırma kalıbını gösteriyor ve bu kalıpta yaptırma anlamını taşıyan fiiller have ile get'tir. Zaman da kapanmış bir geçmiş: stüdyo özür diledi, ikinci baskı doğru çıktı. En yakın çeldirici 'has had' işi bugüne bağlar, oysa anlatılan her şey bitmiş. 'let' ise bu kalıba hiç girmez: izin verir ve arkasından kişi + yalın fiil ister ('let the studio reprint it').",
       "tip": "'Have / get + nesne + V3' kalıbında zamanı taşıyan parça have/get'tir; V3 hiç değişmez. Kapanmış bir geçmiş için 'had + nesne + V3'.",
       "optionNotes": {
         "let": "İzin vermek demektir ve arkasından kişi + yalın fiil ister: 'let the studio reprint it'. Nesne + V3 sırasını almaz.",
@@ -206,15 +206,15 @@
     {
       "id": "passive-voice-t14",
       "category": "Causative: Have/Get Something Done",
-      "paragraph": "The lease is very clear that tenants are not to touch the wiring themselves. So when the kitchen sockets stopped working we ____ within a day, and the landlord paid the electrician's bill.",
-      "options": ["got them repaired", "repaired them", "made them repaired", "got repaired them"],
+      "paragraph": "The lease is very clear that tenants must not touch the wiring themselves. So when the kitchen sockets went dead last month we ____ within a day, and the landlord paid the electrician's bill without an argument.",
+      "options": ["got them repaired", "repaired them", "get them repaired", "got repaired"],
       "correctIndex": 0,
-      "explanation": "Sokete elektrikçi baktı, kiracılar değil: sözleşme buna izin vermiyor ve faturayı ev sahibi ödemiş. Bir işi başkasına yaptırmanın kalıbı 'get + nesne + V3'tür ('got them repaired'). En yakın çeldirici 'repaired them' dilbilgisi bakımından kusursuzdur, ama işi kiracıların kendisinin yaptığını söyler — paragrafın açıkça dışladığı şey budur. 'got repaired them' ise sırayı bozar: bu kalıpta nesne V3'ten önce gelir.",
+      "explanation": "Sokete elektrikçi baktı, kiracılar değil: sözleşme buna izin vermiyor ve faturayı ev sahibi ödemiş. Bir işi başkasına yaptırmanın kalıbı 'get + nesne + V3'tür ve zaman get üzerinde taşınır — anlatılan her şey kapanmış bir geçmişte ('went dead last month', 'paid'), yani 'got'. En yakın çeldirici 'repaired them' dilbilgisi bakımından kusursuzdur, ama işi kiracıların kendisinin yaptığını söyler — paragrafın açıkça dışladığı şey budur.",
       "tip": "'Got it repaired' ile 'repaired it' arasındaki fark dilbilgisi değil, işi kimin yaptığıdır: birincisinde iş yaptırılır, ikincisinde özne kendi yapar.",
       "optionNotes": {
         "repaired them": "İşi kiracıların kendisinin yaptığını söyler. Sözleşme buna izin vermiyor ve elektrikçinin faturasını ev sahibi ödemiş.",
-        "made them repaired": "'Make something done' diye bir kalıp yoktur: make bir kişiyi zorlar ve yalın fiil alır ('made the landlord send someone').",
-        "got repaired them": "Sıra bozuk: yaptırma kalıbında nesne V3'ten önce gelir — 'got them repaired'."
+        "get them repaired": "Kalıp doğru, zaman yanlış: 'went dead' ve 'paid' kapanmış bir geçmişi anlatıyor, geniş zamanı değil.",
+        "got repaired": "Nesne düşmüş; bu hâliyle onarılan taraf kiracılar olur. Yaptırma kalıbında nesne V3'ten önce gelir — 'got them repaired'."
       }
     },
     {
@@ -223,10 +223,10 @@
       "paragraph": "I have never held a paint roller in my life. Every few years I simply ____ the whole house painted by the same firm my father always used.",
       "options": ["have", "make", "let", "am having"],
       "correctIndex": 0,
-      "explanation": "Kişi işi kendisi yapmıyor, aynı firmaya yaptırıyor; bunun kalıbı 'have + nesne + V3'tür ve 'every few years' yinelenen bir alışkanlık bildirdiği için have yalın hâlde kalır. En yakın çeldirici 'am having' şu sıralar sürmekte olan tek bir işi anlatır, alışkanlıkla bir arada duramaz. 'make' bu kalıba girmez — 'make somebody do' der, 'make something done' demez — 'let' ise izin vermek anlamındadır.",
+      "explanation": "Kişi işi kendisi yapmıyor, aynı firmaya yaptırıyor; bunun kalıbı 'have + nesne + V3'tür ve 'every few years' yinelenen bir alışkanlık bildirdiği için have yalın hâlde kalır. En yakın çeldirici 'am having' şu sıralar sürmekte olan tek bir işi anlatır, alışkanlıkla bir arada duramaz. 'make' bu kalıba girmez: bir kişiyi zorlar ve yalın fiil alır ('make somebody do'). 'let' ise izin vermek anlamındadır.",
       "tip": "Bir işi başkasına yaptırdığında 'have/get something done' kullan; 'make' ve 'let' bu kalıba girmez.",
       "optionNotes": {
-        "make": "'Make something done' diye bir kalıp yoktur: make bir kişiyi zorlar ve yalın fiil alır ('made the firm repaint it').",
+        "make": "Make yaptırma kalıbına girmez: bir kişiyi zorlar ve yalın fiil alır ('made the firm repaint it').",
         "let": "İzin vermek demektir ve yalın fiil alır. Burada anlatılan izin değil, babadan beri aynı firmaya yaptırılan bir iş.",
         "am having": "Şu sıralar sürmekte olan tek bir işi anlatır. 'Every few years' ise birkaç yılda bir yinelenen bir alışkanlık bildiriyor."
       }
@@ -248,29 +248,29 @@
     {
       "id": "passive-voice-t17",
       "category": "Passive Reporting Structures",
-      "paragraph": "The company's new CEO ____ be one of the most demanding bosses in the entire industry, according to several former employees.",
-      "options": ["is said to", "is saying to", "says to", "is telling to"],
+      "paragraph": "Nobody in the department will put a name to the story, and the minutes of that meeting were never circulated. The site manager ____ about the cracked roof beam weeks before the ceiling came down, and two councillors now admit that a note reached their desks and was quietly filed.",
+      "options": ["is said to have warned", "is said to warn", "is said to be warning", "is said to have been warned"],
       "correctIndex": 0,
-      "explanation": "Kaynağı net verilmeden ('according to several former employees') genel bir kanı aktarılıyor ve boşluktan sonra yalın 'be' geliyor: özneyle başlayan edilgen raporlama kalıbı 'S + is said to + V' gerekir. En yakın çeldirici 'is saying to' aktif ve continuous bir yapıdır; CEO'nun kendisinin bir şey söylediğini anlatır, oysa burada söyleyen CEO değil, hakkında söylenen CEO'dur. 'says to' da aktiftir ve 'say to' bir muhatap ister ('says to his staff'); üstelik edilgen raporlamanın parçası 'be + V3'tür, düz 'says' değil.",
-      "tip": "'Is said to + fiil (base form)', bir şeyin genel olarak söylendiğini/düşünüldüğünü, kimin söylediği belirtilmeden aktarmak için kullanılır.",
+      "explanation": "Kaynağı verilmeden aktarılan bir bilgi var ve aktarılan olay aktarımdan önce olmuş: 'weeks before the ceiling came down'. Bu yüzden mastar 'to + fiil' değil, 'to have + V3' olur. Uyaran da müdürün kendisi — not, meclis üyelerinin masasına ondan ulaşmış — yani özne eylemi yapan taraf. En yakın çeldirici 'is said to have been warned' zamanı doğru kurar ama rolleri ters çevirir: müdürü birinin uyardığını söyler.",
+      "tip": "Aktarılan olay aktarımdan önce olmuşsa mastar 'to have + V3' olur; özne o eylemi yapan değil de eylemin uygulandığı tarafsa araya 'been' girer: 'to have been + V3'.",
       "optionNotes": {
-        "is saying to": "CEO'nun kendisinin bir şey söylediğini anlatır. Aktarılan bilgi ise onun hakkında: söyleyen değil, hakkında söylenen o.",
-        "says to": "Aktif bir yapı ve 'say to' bir muhatap ister ('says to his staff'); boşluktan sonra ise yalın 'be' geliyor.",
-        "is telling to": "Tell doğrudan bir muhatap ister ('tell someone') ve bu kalıba hiç girmez; aktarma yapısının fiili 'say'dir."
+        "is said to warn": "Aktarımla aynı zamanı, yinelenen bir durumu anlatır. Buradaki uyarı ise tavan çökmeden haftalar önce yapılmış tek bir olay.",
+        "is said to be warning": "Şu anda sürmekte olan bir uyarıyı anlatır. Paragraftaki uyarı geçmişte kalmış ve sonucu da anlatılmış.",
+        "is said to have been warned": "Zamanı doğru kurar, rolleri ters çevirir: müdürün uyarıldığını söyler. Oysa notu masalara gönderen taraf o."
       }
     },
     {
       "id": "passive-voice-t18",
       "category": "Passive Reporting Structures",
-      "paragraph": "____ that the ancient city was destroyed by a massive earthquake, although archaeologists are still debating the exact cause.",
-      "options": ["It is believed", "It believes", "It is believing", "They believe it"],
+      "paragraph": "The eruption itself is dated, from the ash layer, to the summer of 1628. What became of the people who farmed the eastern slope is far less certain. ____ moved inland after the second tremor, and that a few of them settled as far away as the mainland — an account the island's guidebooks still repeat.",
+      "options": ["It is believed that they", "It was believed that they", "It is believed that they have", "They are believed to have"],
       "correctIndex": 0,
-      "explanation": "Boşluktan sonra 'that' ile tam bir cümle geliyor ve inanışın sahibi hiç belirtilmiyor: kalıp 'It is believed that + cümle'. En yakın çeldirici 'They believe it': hem 'that'lı yapının önüne fazladan bir 'it' koyup 'they believe it that...' gibi bozuk bir dizi üretir hem de yapının varlık sebebini ortadan kaldırıp olmayan bir özne ('they') icat eder. 'It is believing' de olmaz: 'believe' durum fiilidir, continuous'a girmez, ve bu kalıpta gereken parça 'be + V3'tür.",
-      "tip": "'It is believed/thought/reported that...' yapısı, kaynağı belirtmeden genel bir görüşü aktarmak için kullanılır.",
+      "explanation": "Cümlenin arkasında 'and that a few of them settled...' diye ikinci bir 'that' cümlesi daha var; iki yan cümleyi birden taşıyabilen kalıp 'It is believed that + cümle'dir. Görüş de hâlâ yürürlükte: rehber kitaplar onu bugün de tekrarlıyor, bu yüzden aktarma fiili geniş zamanda kalır. En yakın çeldirici 'They are believed to have' özneyle başlayan kalıbı kurar ve ikinci 'that' cümlesine bağlanacak bir yer bırakmaz.",
+      "tip": "'It is believed that + cümle' kalıbı arkasına birden fazla 'that' cümlesi bağlayabilir; özneyle başlayan 'S + is believed to + fiil' kalıbı bağlayamaz.",
       "optionNotes": {
-        "It believes": "Aktif bir yapı: bir şeyin bir şeye inandığını söyler. Buradaki 'It' anlamsız bir başlangıçtır, inanan taraf değil.",
-        "It is believing": "Believe bir durum fiilidir, continuous'a girmez; kalıbın istediği parça da 'be + V3'tür.",
-        "They believe it": "Kaynağı gizlemek için kurulan cümleye olmayan bir özne icat eder; üstelik 'that'ten önce fazladan bir 'it' bırakır."
+        "It was believed that they": "Artık terk edilmiş bir görüşü anlatır. Oysa bu açıklama hâlâ yürürlükte: adanın rehber kitapları onu bugün de tekrarlıyor.",
+        "It is believed that they have": "Present Perfect olayı bugüne bağlar. Anlatılan göç ise 1628 yazına tarihlenmiş, kapanmış bir geçmişe ait.",
+        "They are believed to have": "Özneyle başlayan kalıp 'to + fiil' ile devam eder; arkadan gelen ikinci 'that' cümlesi bağlanacak yer bulamaz."
       }
     },
     {
@@ -290,15 +290,15 @@
     {
       "id": "passive-voice-t20",
       "category": "Passive Reporting Structures",
-      "paragraph": "According to the schedule pinned to the door, the meeting ____ start at nine, but half the team still hasn't arrived and nobody seems worried.",
-      "options": ["is supposed to", "is supposing to", "supposes to", "is supposed"],
+      "paragraph": "The programme taped to the door gives nine as the starting time, and the clock in the corridor still says twenty to. The meeting ____ at nine, though anyone who has sat through one of these knows that nothing will be decided before eleven.",
+      "options": ["is supposed to start", "was supposed to start", "is supposed to have started", "was supposed to have started"],
       "correctIndex": 0,
-      "explanation": "Planlanan ama gerçekleşmeyen bir durum anlatılıyor, bu yüzden 'is supposed to + fiil' (yapılması bekleniyordu ama) kullanılır.",
-      "tip": "'Is supposed to + fiil', bir beklentiyi/planı, genelde tam gerçekleşmemiş bir durumu ima ederek anlatır.",
+      "explanation": "Kapıdaki program dokuzu veriyor, koridordaki saat ise hâlâ dokuza yirmi var diyor: beklenen saat gelmedi, yani plan henüz bozulmuş değil. Bu yüzden hem 'be supposed' hem de mastar geniş zamanda kalır. En yakın çeldirici 'was supposed to start' planın çoktan bozulduğunu, toplantının dokuzda başlamadığını söyler. 'is supposed to have started' de aynı hatayı mastar tarafında yapar: toplantının şimdiye kadar başlamış olmasını bekler.",
+      "tip": "'Be supposed to' kalıbında zamanı iki parça taşır: 'is/was' beklentinin ne zaman geçerli olduğunu, 'to start / to have started' ise beklenen işin ne zamana ait olduğunu söyler.",
       "optionNotes": {
-        "is supposing to": "Toplantının bir şey varsaydığını söyleyen aktif bir yapı. Beklentiyi kuran kalıpta ise 'be + V3' parçası bulunur.",
-        "supposes to": "Aktif bir çekim: varsayan taraf toplantının kendisi olur. Oysa saati belirleyen, kapıya asılmış program.",
-        "is supposed": "'be supposed' tek başına kullanılmaz; arkasından gelen yalın fiile ('start') bağlanabilmesi için 'to' gerekir."
+        "was supposed to start": "Planın çoktan bozulduğunu, dokuzda başlamadığını söyler. Koridordaki saate göre dokuza daha yirmi dakika var.",
+        "is supposed to have started": "Toplantının şimdiye kadar başlamış olması gerektiğini anlatır. Beklenen saat ise henüz gelmedi.",
+        "was supposed to have started": "Hem beklentiyi geçmişe atar hem de işi başlamış saymaya çalışır; dokuza yirmi kala ikisi de geçerli değil."
       }
     },
     {
@@ -392,7 +392,7 @@
               "form": "Present Continuous",
               "use": "Şu anda, bu aralar süren",
               "pattern": "S + am/is/are being + V3",
-              "example": "The lobby is being renovated."
+              "example": "The old cinema is being converted into flats."
             },
             { "form": "Past Simple", "use": "Belirli bir geçmiş an", "pattern": "S + was/were + V3", "example": "The tunnel was opened in 1988." },
             { "form": "Past Continuous", "use": "Geçmişte o sırada süren", "pattern": "S + was/were being + V3", "example": "The road was being repaired." },
@@ -400,7 +400,7 @@
               "form": "Present Perfect",
               "use": "Geçmişten bugüne uzanan",
               "pattern": "S + have/has been + V3",
-              "example": "Three million copies have been sold."
+              "example": "Two new wards have been added to the hospital."
             },
             {
               "form": "Past Perfect",
@@ -422,7 +422,7 @@
             { "sentence": "This form is checked by two different departments.", "note": "Her gün tekrarlanan bir iş → Present Simple Passive" },
             { "sentence": "The email was sent yesterday afternoon.", "note": "Belirli geçmiş an → Past Simple Passive" },
             { "sentence": "The road is being repaired this month.", "note": "Şu an devam ediyor → Present Continuous Passive" },
-            { "sentence": "Over a million units have been sold since launch.", "note": "Geçmişten bugüne süreç → Present Perfect Passive" },
+            { "sentence": "Nearly four hundred trees have been planted since the campaign began.", "note": "Geçmişten bugüne süreç → Present Perfect Passive" },
             { "sentence": "The results will be announced next week.", "note": "Gelecekte olacak bir iş → Future Passive (will be + V3)" }
           ]
         },
@@ -452,7 +452,7 @@
             { "signals": ["every morning", "usually", "always", "twice a week"], "then": "Present Simple Passive" },
             { "signals": ["now", "at the moment", "currently"], "then": "Present Continuous Passive" },
             {
-              "condition": "Belirli ve kapanmış bir geçmiş an veriliyorsa — bir tarih, bir yıl, ya da yesterday / last week / two years ago gibi bir ifade",
+              "condition": "Belirli ve kapanmış bir geçmiş an veriliyorsa — bir tarih, bir yıl, ya da yesterday / last week / two years ago gibi bir ifade — ve bu an bir 'since' ile bugüne bağlanmıyorsa",
               "then": "Past Simple Passive"
             },
             { "signals": ["since", "so far", "already", "recently"], "then": "Present Perfect Passive" },
@@ -495,7 +495,7 @@
           "rows": [
             { "form": "must", "use": "Güçlü zorunluluk", "pattern": "S + must be + V3", "example": "Exits must be kept clear." },
             { "form": "have to", "use": "Dıştan gelen zorunluluk", "pattern": "S + has/have to be + V3", "example": "The form has to be signed." },
-            { "form": "should", "use": "Tavsiye, beklenti", "pattern": "S + should be + V3", "example": "Applications should be submitted online." },
+            { "form": "should", "use": "Tavsiye, beklenti", "pattern": "S + should be + V3", "example": "Damaged books should be reported at the desk." },
             { "form": "can", "use": "İmkân, izin", "pattern": "S + can be + V3", "example": "This medicine can be taken with food." },
             { "form": "may / might", "use": "İhtimal", "pattern": "S + may/might be + V3", "example": "The project might be postponed." },
             { "form": "will", "use": "Gelecek", "pattern": "S + will be + V3", "example": "The results will be announced on Friday." },
@@ -770,19 +770,22 @@
         { "type": "check" },
         {
           "type": "decision",
-          "heading": "Boşluktan sonrasına bak",
+          "heading": "Nesne fiilden önce mi geliyor, sonra mı?",
           "rules": [
             {
-              "condition": "Boşluktan sonra \"nesne + V3\" sırası varsa ve bu iş, cümlede anlatılan başka bir geçmiş andan önce bitmişse",
+              "condition": "\"Nesne + V3\" sırası varsa ve cümle 'by the time' / 'before' gibi bir ifadeyle daha geç bir geçmiş an veriyorsa: yaptırma o andan önce bitmiştir",
               "then": "had had + object + V3"
             },
             {
-              "condition": "Boşluktan sonra \"nesne + V3\" sırası varsa (the windows cleaned, the brakes checked): kalıp yaptırmadır ve zamanı taşıyan parça have/get'tir, V3 değil",
+              "condition": "\"Nesne + V3\" sırası varsa (the windows cleaned, the brakes checked) — ister boşluktan sonra, ister seçeneğin içinde: kalıp yaptırmadır ve zamanı taşıyan parça have/get'tir, V3 değil",
               "then": "have / get + object + V3"
             },
             { "condition": "Boşluktan sonra işi yapan kişi ve yalın fiil geliyorsa", "then": "have + person + V" },
             { "condition": "Zorlama, ikna ya da baskı varsa", "then": "make + person + V" },
-            { "condition": "Nesne fiilden sonra geliyorsa cümle causative değildir, işi özne kendi yapmıştır", "then": "Past Perfect (had + V3)" }
+            {
+              "condition": "Nesne V3'ten sonra geliyorsa (repaired them, cut my hair) ortada yaptırma yoktur: işi özne kendi yapmıştır",
+              "then": "Active: S + V + object"
+            }
           ]
         }
       ]
