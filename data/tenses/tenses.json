@@ -304,13 +304,13 @@
     {
       "id": "tenses-t25",
       "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone",
-      "paragraph": "Nobody has seen Deniz since the lunch break, and her laptop is open on the desk with the screen unlocked. She ____ down to the archive on the ground floor, I think, and her coat is still on the back of her chair.",
+      "paragraph": "Nobody has seen Deniz since the lunch break, and her laptop is still open on the desk with the screen unlocked. She ____ down to the archive on the ground floor, I think, and her coat is still on the back of her chair.",
       "options": ["has gone", "has been", "has been going", "had gone"],
       "correctIndex": 0,
-      "explanation": "Dizüstü bilgisayarı masada açık duruyor, ceketi hâlâ sandalyesinde ve öğle arasından beri kimse onu görmedi: kişi gittiği yerden henüz dönmedi, hâlâ oradadır. Hâlâ orada olan biri için 'has gone to' kullanılır. En yakın çeldirici 'has been', kişinin gidip döndüğünü söyler — dönmüş olsaydı ceketini alır, masasına dönerdi. 'has been going' tek bir gidişi değil tekrarlanan bir gidip gelmeyi anlatır; 'had gone' ise cümlede bulunmayan, geçmişte bir referans anı ister.",
+      "explanation": "Öğle arasından beri kimse onu görmemiş, bilgisayarı hâlâ açık ve kilitsiz duruyor, ceketi de sandalyesinde: işinin başından ayrılmış ama binadan çıkmamış, yani gittiği yerden henüz dönmemiş. Hâlâ orada olan biri için 'has gone to' kullanılır. En yakın çeldirici 'has been', kişinin gidip döndüğünü söyler — oysa dönmüş olsa öğle arasından beri onu gören biri olurdu. 'has been going' tek bir gidişi değil tekrarlanan bir gidip gelmeyi anlatır; 'had gone' ise cümlede bulunmayan, geçmişte bir referans anı ister.",
       "tip": "Kişi hâlâ oradaysa 'has gone to', gidip döndüyse 'has been to'. Kararı zaman ifadesi değil, kişinin şu an nerede olduğu verir.",
       "optionNotes": {
-        "has been": "'Has been to' kişinin gidip döndüğünü söyler. Oysa ceketi hâlâ sandalyesinde ve öğle arasından beri onu gören olmamış.",
+        "has been": "'Has been to' kişinin gidip döndüğünü söyler. Oysa öğle arasından beri onu gören olmamış — dönmüş olsa görülürdü.",
         "has been going": "Arşive bir süredir gidip geldiğini, tekrarlanan bir hareketi anlatır. Burada anlatılan ise öğle arasından beri süren tek bir gidiş.",
         "had gone": "Geçmişte bir referans anı ister ve ondan öncesini anlatır. Bu paragrafta bağlanılan nokta şu an: masada duran açık bilgisayar."
       }
