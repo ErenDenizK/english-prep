@@ -17,7 +17,7 @@
 //
 //   node tools/verify-ui.mjs [baseUrl]
 
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 // The app's own id rule, not a copy of it: the harness seeds lesson
@@ -2257,6 +2257,53 @@ async function runOffline(browser) {
   await page.waitForSelector("#lesson-reader .reader__top", { timeout: 8000 });
   const blocks = await page.locator("#lesson-reader article > *").count();
   ok(blocks > 3, `ağ yokken okunmuş bir ders açılıyor (${blocks} blok)`);
+
+  // And now the half nothing checked: a deploy.
+  //
+  // The worker's cache was named for the app version, `activate` deletes
+  // every cache that is not the current one, and topic files were in it —
+  // so every release wiped the learner's offline content, and the next
+  // time they were underground the shell painted and both tabs said
+  // "yüklenemedi". Six releases in thirty hours made that the normal
+  // case. This section is the reason it cannot come back: it bumps the
+  // version on disk, lets the browser install and activate the new
+  // worker, goes offline, and asks for the same lesson again.
+  const swPath = new URL("../sw.js", import.meta.url);
+  const original = await readFile(swPath, "utf8");
+  try {
+    await writeFile(swPath, original.replace(/english-prep-v[\d.]+/, "english-prep-vTEST"));
+    await context.setOffline(false);
+    await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+    const activated = await page.evaluate(async () => {
+      const registration = await navigator.serviceWorker.getRegistration();
+      await registration.update();
+      for (let i = 0; i < 60; i += 1) {
+        const names = await caches.keys();
+        if (names.some((name) => name.includes("vTEST"))) return names;
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+      return await caches.keys();
+    });
+    ok(
+      activated.some((name) => name.includes("vTEST")),
+      `yeni sürümün kabuk önbelleği kuruldu (${activated.join(", ")})`
+    );
+    ok(
+      activated.includes("english-prep-content"),
+      "içerik önbelleği sürüm değişiminden sağ çıkıyor"
+    );
+
+    await context.setOffline(true);
+    await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("#lesson-reader .reader__top", { timeout: 8000 });
+    const afterDeploy = await page.locator("#lesson-reader article > *").count();
+    ok(
+      afterDeploy > 3,
+      `sürüm çıktıktan sonra da ağsız ders açılıyor (${afterDeploy} blok)`
+    );
+  } finally {
+    await writeFile(swPath, original);
+  }
 
   await context.setOffline(false);
   await context.close();

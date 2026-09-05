@@ -26,7 +26,26 @@
 // "remember to bump this" is a rule that gets forgotten once and then
 // silently stays forgotten, which is exactly what happened here.
 
-const VERSION = "english-prep-v0.32";
+const VERSION = "english-prep-v0.33";
+
+/**
+ * Content lives in its own cache, and that cache is deliberately NOT
+ * versioned.
+ *
+ * When the version string started moving with the app (v0.30), `activate`
+ * began deleting every cache that was not the current one — and topic
+ * files were in it. So every release wiped every topic file the learner
+ * had offline, and the next time they were underground the shell painted
+ * and both tabs said "yüklenemedi": the exact failure the worker was
+ * written to end. Six releases in thirty hours made that the normal case
+ * rather than an edge one.
+ *
+ * Unversioning it costs nothing the design was not already accepting.
+ * Content is network-first, so it refreshes on every request that has
+ * signal, and `contentVersion` in the manifest is what actually tells a
+ * learner their topic changed. The corpus bounds the size.
+ */
+const CONTENT = "english-prep-content";
 
 /**
  * The shell. Everything needed to paint a screen with no network at all.
@@ -91,7 +110,13 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((names) => Promise.all(names.filter((name) => name !== VERSION).map((name) => caches.delete(name))))
+      .then((names) =>
+        Promise.all(
+          names
+            .filter((name) => name !== VERSION && name !== CONTENT)
+            .map((name) => caches.delete(name))
+        )
+      )
       .then(() => self.clients.claim())
   );
 });
@@ -113,7 +138,7 @@ self.addEventListener("fetch", (event) => {
       fetch(request)
         .then((response) => {
           const copy = response.clone();
-          caches.open(VERSION).then((cache) => cache.put(request, copy));
+          caches.open(CONTENT).then((cache) => cache.put(request, copy));
           return response;
         })
         .catch(() => caches.match(request))
