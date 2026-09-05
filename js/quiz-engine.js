@@ -140,6 +140,15 @@ export function scoreSession(session, selectedAnswers) {
       correctAnswer: question.correctAnswer,
       explanation: question.explanation,
       tip: question.tip,
+      // Carried so the results review can say what the chosen option
+      // would have meant, not only that it was wrong. The learner met
+      // that line once, during the test; the review is the pass where a
+      // mistake is consolidated rather than merely met, and for the two
+      // vocabulary topics it is the only thing that tells them what
+      // *their* word meant — the explanation names the closest wrong
+      // option, and in a vocabulary set every wrong option is a
+      // different word.
+      optionNotes: question.optionNotes ?? null,
       selectedAnswer,
       correct,
     };

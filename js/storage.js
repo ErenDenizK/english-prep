@@ -484,8 +484,22 @@ export function getOverallStats() {
   // window is full. Attempts are whole; the window is a floor, not a cap,
   // so a single long test is never chopped in half.
   const recent = [];
+  // How many of the windowed answers came from the mistake book. Not to
+  // exclude them — a book run IS the learner answering questions, and
+  // dropping it would decide a defensible reading on their behalf — but
+  // to be able to say what is in the window. The book is by construction
+  // their hardest items, so a week of taking the app's own advice drags
+  // this number down, which is the failure this function's own docstring
+  // names about lifetime averages, arriving by another route. `mode` has
+  // been on every attempt since the beginning and nothing had ever read
+  // it back out of history.
+  let fromBook = 0;
   for (let i = attempts.length - 1; i >= 0 && recent.length < ACCURACY_WINDOW; i -= 1) {
-    recent.push(...(attempts[i].questions ?? []));
+    const questions = attempts[i].questions ?? [];
+    if (attempts[i].mode === "mistakes") {
+      fromBook += questions.length;
+    }
+    recent.push(...questions);
   }
 
   return {
@@ -494,6 +508,7 @@ export function getOverallStats() {
     totalCorrect,
     accuracy: recent.length === 0 ? null : recent.filter((q) => q.correct).length / recent.length,
     accuracyWindow: recent.length,
+    accuracyFromBook: fromBook,
   };
 }
 

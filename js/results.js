@@ -225,6 +225,22 @@ function renderReview(result) {
     }
     item.appendChild(answers);
 
+    // The note for the option they actually picked, under the answers
+    // and not in a block of its own: the review is long by nature and
+    // this adds a line per wrong answer.
+    const note = !question.correct && question.selectedAnswer
+      ? question.optionNotes?.[question.selectedAnswer]
+      : null;
+    if (note) {
+      const line = el("p", "t-meta");
+      const word = el("strong", "t-en", question.selectedAnswer);
+      word.lang = "en";
+      line.appendChild(word);
+      line.appendChild(document.createTextNode(": "));
+      appendInline(line, note);
+      item.appendChild(line);
+    }
+
     const explanation = el("p", "t-meta");
     appendInline(explanation, question.explanation);
     item.appendChild(explanation);
@@ -299,6 +315,17 @@ async function init() {
         topicId: question.topicId,
         category: question.category,
         correct: question.correct,
+        // Which option they actually picked, not only whether it was
+        // right. `scoreSession` has always computed it and the results
+        // screen has always shown it; it was simply never written down,
+        // so every session run without it threw the distractor choice
+        // away for good. It is the one field on this record that gets
+        // permanently more expensive to add later, and it is what an
+        // error log has to have to say "you picked Similarly" rather
+        // than "you got question 3 wrong". The problem report already
+        // carries it off the device (js/report.js), so keeping it here
+        // is strictly less exposure than the app already accepts.
+        selected: question.selectedAnswer ?? null,
       })),
     });
     result.recorded = true;

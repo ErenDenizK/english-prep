@@ -5,6 +5,43 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.34 — 2026-09-05
+
+**The app now writes down which option was chosen, not only whether it
+was right.** `scoreSession` has always computed it and the feedback block
+has always shown it; it was never stored, so every session run without it
+threw the distractor choice away permanently. This is the one field on
+the attempt record that gets more expensive with every day of use, and
+this is the densest week of real use the app has had. It costs two lines
+and about 29% of a history measured in kilobytes, it rides the backup for
+free, and the problem report already carries the same datum off the
+device — so keeping it locally is strictly less exposure than the app
+already accepts.
+
+**The option note reaches the results review.** 579 of them were written
+and the learner met each one exactly once, during the test. The review is
+the second pass, and the second pass is where a mistake is consolidated
+rather than merely met — and for the two vocabulary topics the note is
+the only thing that says what *their* word meant, because the explanation
+names the closest wrong option and in a vocabulary set every wrong option
+is a different word. One line under the answers, per wrong answer, in an
+`article` that already exists.
+
+**Profil says what is in its accuracy window.** The headline number
+windows the last 40 answers with no regard for `mode` — a field every
+attempt has carried since the beginning and that nothing had ever read
+back out of history. The mistake book is by construction the learner's
+hardest items, so a week of taking the app's own advice drags the number
+down: the failure that function's own docstring names about lifetime
+averages, arriving by another route. The number is **not** filtered — a
+book run is the learner answering questions, and excluding it would
+decide a defensible reading for them — but an average that falls because
+they followed the advice has to say so, or it quietly argues against the
+mode the Test tab recommends.
+
+All three come from `docs/research/what-else.md`, a sweep of what the app
+could gain that read the code rather than the documents about it.
+
 ## v0.33 — 2026-09-05
 
 **Every release was wiping the learner's offline content, and v0.30 is

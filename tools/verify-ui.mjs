@@ -1126,6 +1126,35 @@ async function runOptionNotes(browser) {
   }
   ok(checked >= 3, `yanlış cevaplarda not gösteriliyor (${checked} kez ölçüldü)`);
 
+  // And the second time the learner meets it: the review. 579 notes were
+  // authored and the review showed none of them, because scoreSession
+  // did not carry the map into its results. The review is the pass where
+  // a mistake is consolidated rather than merely met.
+  for (let step = 0; step < 30; step += 1) {
+    if (page.url().includes("results.html")) break;
+    if (!(await page.locator(".option").count())) break;
+    if (!(await page.locator(".option--ok, .option--no").count())) {
+      await page.locator(".option").first().click();
+      await page.waitForTimeout(40);
+    }
+    const advance = page.locator("#quiz-bar button");
+    if (!(await advance.count())) break;
+    await advance.click();
+    await page.waitForTimeout(60);
+  }
+  await page.waitForURL(/results\.html/, { timeout: 8000 });
+  await page.waitForSelector("#results-container .t-display");
+  const wrong = await page.locator("#results-container .ink-no").count();
+  const reviewNotes = await page.locator('#results-container article strong[lang="en"]').count();
+  ok(
+    wrong === 0 || reviewNotes > 0,
+    `incelemede de şık notu var (${reviewNotes} not / ${wrong} yanlış)`
+  );
+  ok(
+    reviewNotes <= wrong,
+    "doğru cevaplanan soruya incelemede not konmuyor"
+  );
+
   await context.close();
 }
 
