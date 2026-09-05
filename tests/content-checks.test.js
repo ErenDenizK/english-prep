@@ -16,6 +16,7 @@ import {
   checkOptionNotes,
   checkScenarioReuse,
   checkLessonGiveaway,
+  checkNotationGlossed,
 } from "../tools/content-checks.mjs";
 
 /** A stand-in for the validator's Report. */
@@ -492,4 +493,77 @@ test("the corpus backlog only shrinks", async () => {
       `up from ${CEILING}. A new one is a defect; lower the ceiling when the count drops.`
   );
   assert.equal(found.errors.length, 0);
+});
+
+/* ---- Notation the learner has never been shown ----
+   CLAUDE.md's "Who this is for": the learner has the competence and not
+   the labels. Someone who says "I have gone" correctly may never have met
+   V3. The owner confirmed the notation is seen in Turkish schools but
+   that knowing it is a level marker — and a learner who already knows it
+   is not the one this app is for. */
+
+test("a lesson that uses V3 without saying what it means is caught", () => {
+  const found = report();
+  checkNotationGlossed(found, "data/x/x.json", {
+    category: "C",
+    blocks: [{ type: "forms", rows: [{ form: "f", use: "u", pattern: "S + have + V3" }] }],
+  });
+  assert.equal(found.warnings.length, 1);
+  assert.match(found.warnings[0].message, /V3/);
+});
+
+test("the gloss modals already uses counts", () => {
+  const found = report();
+  checkNotationGlossed(found, "data/x/x.json", {
+    category: "C",
+    blocks: [
+      {
+        type: "text",
+        body: "Bu kalıpta 'have'den sonra fiilin üçüncü hâli (V3) gelir: went değil gone.",
+      },
+    ],
+  });
+  assert.equal(found.warnings.length, 0);
+});
+
+test("a gloss far from the token does not count as attached to it", () => {
+  const found = report();
+  checkNotationGlossed(found, "data/x/x.json", {
+    category: "C",
+    blocks: [
+      { type: "forms", rows: [{ form: "f", use: "u", pattern: "S + had + V3" }] },
+      { type: "text", body: `${"x".repeat(400)} fiilin üçüncü hâli` },
+    ],
+  });
+  assert.equal(found.warnings.length, 1);
+});
+
+test("a lesson using neither token is silent", () => {
+  const found = report();
+  checkNotationGlossed(found, "data/x/x.json", {
+    category: "C",
+    blocks: [{ type: "text", body: "Hiçbir kısaltma yok." }],
+  });
+  assert.equal(found.warnings.length, 0);
+});
+
+test("the corpus backlog of unglossed notation only shrinks", async () => {
+  // 16 lesson/token pairs on 2026-09-05, the day the rule was settled.
+  // Lower this as they are written; at zero the check becomes an error.
+  const CEILING = 16;
+  const { readFile } = await import("node:fs/promises");
+  const manifest = JSON.parse(
+    await readFile(new URL("../data/manifest.json", import.meta.url), "utf8")
+  );
+  const found = report();
+  for (const topic of manifest.topics.filter((entry) => !entry.comingSoon)) {
+    const data = JSON.parse(await readFile(new URL(`../${topic.file}`, import.meta.url), "utf8"));
+    for (const lesson of data.lessons ?? []) {
+      checkNotationGlossed(found, topic.file, lesson);
+    }
+  }
+  assert.ok(
+    found.warnings.length <= CEILING,
+    `${found.warnings.length} lessons use V2/V3 without glossing it, up from ${CEILING}`
+  );
 });

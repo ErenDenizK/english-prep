@@ -26,6 +26,7 @@ import {
   checkScenarioReuse,
   checkOptionNotes,
   checkLessonGiveaway,
+  checkNotationGlossed,
 } from "./content-checks.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -631,6 +632,7 @@ function validateLesson(report, file, lesson, index, seenIds, questionCategories
 
   if (isNonEmptyString(lesson.category)) {
     checkLessonGiveaway(report, file, lesson, questionsFor(lesson.category));
+    checkNotationGlossed(report, file, lesson);
   }
 }
 

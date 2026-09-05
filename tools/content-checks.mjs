@@ -577,3 +577,62 @@ export function checkLessonGiveaway(report, file, lesson, questions) {
     }
   }
 }
+
+/* Notation the corpus leans on, and what counts as glossing it.
+ *
+ * The owner settled this on 2026-09-05, and CLAUDE.md's "Who this is
+ * for" is the reason: the learner has the competence and not the labels.
+ * Someone who says "I have gone" correctly may never have met `V3`. It
+ * is seen in Turkish schools, he said, but knowing it is a level marker
+ * — and a learner who already knows it is not the one this app is for.
+ *
+ * Measured when the rule was written: `V3` appeared 176 times across 17
+ * lessons in 7 topics, `V2` 6 times in 5 lessons, and `V1` never — the
+ * corpus used two thirds of a three-part system. `relative-clauses`
+ * defined `V3` as "(-ed)" while `passive-voice` wrote a pitfall to break
+ * exactly that equation, in a sentence whose own example was "a broken
+ * window".
+ */
+const NOTATION = {
+  V2: /(ikinci h[âa]li|past simple)/i,
+  V3: /(üçüncü h[âa]li|past participle)/i,
+};
+
+/** How far from the token a gloss still counts as attached to it. */
+const GLOSS_WINDOW = 90;
+
+/**
+ * A lesson that uses a notation token must gloss it in that lesson.
+ *
+ * Per lesson and not per topic, because "her ders ayrı bir makale" is the
+ * promise the app makes and keeps — `progression.md` measured it and
+ * found the corpus keeps it by re-teaching what it imports. The intro is
+ * the usual path into a lesson but not the only one: the results screen
+ * links a weak category straight to `#egitim/<lessonId>`, past the
+ * topic's overview.
+ *
+ * The gloss belongs at the point of use, attached to something the
+ * learner already says — the shape `modals` already uses: "'have'den
+ * sonra fiilin üçüncü hâli (V3) gelir, ikinci hâli değil: went değil
+ * gone". For this audience that is teaching, not a glossary.
+ */
+export function checkNotationGlossed(report, file, lesson) {
+  const text = JSON.stringify(lesson);
+  for (const [token, gloss] of Object.entries(NOTATION)) {
+    const pattern = new RegExp(`\\b${token}\\b`, "g");
+    const uses = [...text.matchAll(pattern)];
+    if (uses.length === 0) {
+      continue;
+    }
+    const glossed = uses.some((match) =>
+      gloss.test(text.slice(Math.max(0, match.index - GLOSS_WINDOW), match.index + GLOSS_WINDOW))
+    );
+    if (!glossed) {
+      report.warn(
+        `${file} › ${lesson.category}`,
+        `uses ${token} ${uses.length} time(s) and never says what it means — ` +
+          "this app's learner has the form and not the label (CLAUDE.md, \"Who this is for\")"
+      );
+    }
+  }
+}
