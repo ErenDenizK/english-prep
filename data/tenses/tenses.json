@@ -472,6 +472,10 @@
           ]
         },
         {
+          "type": "text",
+          "body": "Tablodaki kısaltmalar düzensiz fiil listesinin sütunlarıdır: **V2** fiilin ikinci hâli (went, saw, took), **V3** ise üçüncü hâli (gone, seen, taken). Past Simple olumlu cümlede ikinciyi alır; Present Perfect ise 'have'den sonra her zaman üçüncüyü ister."
+        },
+        {
           "type": "forms",
           "rows": [
             { "form": "Past Simple", "use": "Olumlu", "pattern": "S + V2", "example": "She visited." },
@@ -556,6 +560,10 @@
               "example": "She had left when I called."
             }
           ]
+        },
+        {
+          "type": "text",
+          "body": "Past Perfect'i kuran ikinci parça **V3**, yani fiilin üçüncü hâli: had gone, had written, had left. Türkçede \"gitmişti\" tek kelimedir; İngilizce aynı işi iki parçayla yapar ve o ikinci parça hiçbir zaman ikinci hâl olmaz — \"had went\" diye bir şey yoktur."
         },
         {
           "type": "forms",
@@ -731,6 +739,10 @@
           ]
         },
         {
+          "type": "text",
+          "body": "Bu derste geçen kalıpların ikisi aynı parçayı paylaşır: **V3**, yani fiilin üçüncü hâli — has painted, had taken. Continuous olan onun yerine been + V-ing alır. Düzenli fiillerde üçüncü hâl ikinciyle aynı görünür (painted / painted), düzensizlerde ayrışır: saw / seen."
+        },
+        {
           "type": "forms",
           "rows": [
             { "form": "Present Perfect Simple", "use": "Olumlu", "pattern": "S + have/has + V3", "example": "I have painted." },
@@ -850,6 +862,10 @@
               "example": "She is still waiting for the results."
             }
           ]
+        },
+        {
+          "type": "text",
+          "body": "Tablodaki iki kısaltma: **V3** fiilin üçüncü hâli (known, left, replied), **V2** ise ikinci hâli (met, sold, knew). Düzensiz bir fiilde üçü de ayrı görünür — know / knew / known. Aşağıdaki kalıplar her işaret kelimesinin yanına hangi hâlin geldiğini gösterir."
         },
         {
           "type": "forms",

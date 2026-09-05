@@ -46,6 +46,10 @@
           ]
         },
         {
+          "type": "text",
+          "body": "Kalıplardaki **V3** fiilin üçüncü hâli demektir — gone, taken, written; **V** ise yalın hâli. Sonuç kolunda bu ikisinden hangisinin durduğu, dersin bütün farkını taşır."
+        },
+        {
           "type": "forms",
           "heading": "Şart kolu değişmez, sonuç kolu değişir",
           "rows": [
@@ -686,7 +690,7 @@
       "blocks": [
         {
           "type": "text",
-          "body": "Bu iki kalıbı kurmayı Passive Voice konusunda öğrendin. Buradaki iş farklı: aynı bilgiyi bir kalıptan öbürüne taşırken **kimin söylediğini** ve **olayın ne zaman olduğunu** bozmamak. İki kalıp gerçekten eş anlamlıdır, bu yüzden soru hangisinin daha doğal olduğu üzerine kurulamaz."
+          "body": "Bu iki kalıbı kurmayı Passive Voice konusunda öğrendin. Buradaki iş farklı: aynı bilgiyi bir kalıptan öbürüne taşırken **kimin söylediğini** ve **olayın ne zaman olduğunu** bozmamak. İki kalıp gerçekten eş anlamlıdır, bu yüzden soru hangisinin daha doğal olduğu üzerine kurulamaz. Kalıplardaki **V3** orada olduğu gibi burada da fiilin üçüncü hâli: said, thought, seen."
         },
         {
           "type": "contrast",

@@ -253,8 +253,8 @@
             {
               "form": "Therefore",
               "use": "Yardımcı fiil ile asıl fiilin arasında",
-              "pattern": "S + have/has + therefore + V3",
-              "example": "The board has therefore raised the fee."
+              "pattern": "S + will + therefore + V",
+              "example": "The board will therefore raise the fee."
             },
             { "form": "Thus", "use": "Sonuç, yeni cümle", "pattern": "S + V. Thus, + S + V.", "example": "It rained. Thus, we stayed in." },
             {
@@ -468,7 +468,7 @@
             },
             {
               "label": "By Then",
-              "gloss": "Metinde **anılmış bir ana kadar** bir şeyin çoktan olmuş olduğunu söyler; bu yüzden yanında genelde had + V3 bulunur.",
+              "gloss": "Metinde **anılmış bir ana kadar** bir şeyin çoktan olmuş olduğunu söyler; bu yüzden yanında genelde had + fiilin üçüncü hâli (V3) bulunur: had gone, had left.",
               "example": "The office opened in May. By then, the staff had moved."
             }
           ]
@@ -483,8 +483,8 @@
               "pattern": "Meanwhile, + S + was/were + V-ing",
               "example": "Meanwhile, the others were waiting."
             },
-            { "form": "Meanwhile", "use": "Aynı dönemde geçerli durum", "pattern": "Meanwhile, + S + V2", "example": "Meanwhile, prices stayed high." },
-            { "form": "Subsequently", "use": "Sıradaki olay", "pattern": "Subsequently, + S + V2", "example": "Subsequently, the rule changed." },
+            { "form": "Meanwhile", "use": "Aynı dönemde geçerli durum", "pattern": "Meanwhile, + S + Past Simple", "example": "Meanwhile, prices stayed high." },
+            { "form": "Subsequently", "use": "Sıradaki olay", "pattern": "Subsequently, + S + Past Simple", "example": "Subsequently, the rule changed." },
             { "form": "By Then", "use": "O ana kadar bitmiş olay", "pattern": "By then, + S + had + V3", "example": "By then, the work had finished." },
             { "form": "By Then", "use": "O ana kadar geçerli olmuş durum", "pattern": "By then, + S + was/were + ...", "example": "By then, it was too late." }
           ]

@@ -5,6 +5,43 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.37 — 2026-09-05
+
+**The corpus says what `V3` means now, wherever it uses it.** Thirteen
+lessons gained a gloss and one lost the notation instead; the count of
+lessons using `V2`/`V3` without naming them went 16 to 0, and the check
+that measures it graduated from a warning to an error the same day.
+
+The reason is the audience, which the owner stated today and which is now
+CLAUDE.md's first section: **a learner with a real English base and no
+academic foundation** — series, films, games, maybe speaking, so a good
+ear and right instincts, and never taught the scaffolding. Not a
+beginner; the opposite of the usual textbook learner. Someone who says
+*"I have gone"* correctly and has never seen `V3` written down. Asked
+whether the notation needed explaining, he said it is seen in Turkish
+schools but that knowing it is a level marker — and a student who knows
+it well may not be who this app is for.
+
+So a gloss here is not a definition for a beginner. It is a name being
+attached to something the learner already does, which is why every one of
+them proves itself with irregular verbs — `written`, `gone`, `taken` —
+and why no two say the same thing: what stays fixed while the modal moves,
+what the learner already builds in Turkish, where the regular and
+irregular columns diverge, `V3` against bare `V` as the whole difference
+in a result clause.
+
+In `connectors` the notation was removed rather than glossed. A topic
+that is not about verb forms had `S + have/has + therefore + V3` in a row
+whose point was where *therefore* sits; it is `S + will + therefore + V`
+now, and that lesson uses no verb-form shorthand at all.
+
+Three claims were caught in draft and walked back against the corpus, by
+the session that wrote them and not by any check: that *since*/*for* call
+for the third form, which the lesson's own decision block contradicts;
+that `V3` is the part every perfect shares, which Present Perfect
+Continuous is not; and a gloss in `Passive Reporting Structures` that was
+false of the second `V3` in its own pattern.
+
 ## v0.36 — 2026-09-05
 
 **The backup note was broken on every phone, and nothing had ever drawn

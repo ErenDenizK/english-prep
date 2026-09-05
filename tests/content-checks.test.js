@@ -502,14 +502,14 @@ test("the corpus backlog only shrinks", async () => {
    that knowing it is a level marker — and a learner who already knows it
    is not the one this app is for. */
 
-test("a lesson that uses V3 without saying what it means is caught", () => {
+test("a lesson that uses V3 without saying what it means is an error", () => {
   const found = report();
   checkNotationGlossed(found, "data/x/x.json", {
     category: "C",
     blocks: [{ type: "forms", rows: [{ form: "f", use: "u", pattern: "S + have + V3" }] }],
   });
-  assert.equal(found.warnings.length, 1);
-  assert.match(found.warnings[0].message, /V3/);
+  assert.equal(found.errors.length, 1);
+  assert.match(found.errors[0].message, /V3/);
 });
 
 test("the gloss modals already uses counts", () => {
@@ -523,7 +523,7 @@ test("the gloss modals already uses counts", () => {
       },
     ],
   });
-  assert.equal(found.warnings.length, 0);
+  assert.equal(found.errors.length, 0);
 });
 
 test("a gloss far from the token does not count as attached to it", () => {
@@ -535,7 +535,7 @@ test("a gloss far from the token does not count as attached to it", () => {
       { type: "text", body: `${"x".repeat(400)} fiilin üçüncü hâli` },
     ],
   });
-  assert.equal(found.warnings.length, 1);
+  assert.equal(found.errors.length, 1);
 });
 
 test("a lesson using neither token is silent", () => {
@@ -544,13 +544,16 @@ test("a lesson using neither token is silent", () => {
     category: "C",
     blocks: [{ type: "text", body: "Hiçbir kısaltma yok." }],
   });
-  assert.equal(found.warnings.length, 0);
+  assert.equal(found.errors.length, 0);
 });
 
 test("the corpus backlog of unglossed notation only shrinks", async () => {
-  // 16 lesson/token pairs on 2026-09-05, the day the rule was settled.
-  // Lower this as they are written; at zero the check becomes an error.
-  const CEILING = 16;
+  // 16 lesson/token pairs on 2026-09-05, the day the rule was settled;
+  // 0 by the end of the same day, once the fifteen lessons that used V2
+  // or V3 unglossed had one written at the point of use. The backlog is
+  // empty, so any new warning is a defect. Making the check an *error*
+  // is the supervisor's call, not this test's.
+  const CEILING = 0;
   const { readFile } = await import("node:fs/promises");
   const manifest = JSON.parse(
     await readFile(new URL("../data/manifest.json", import.meta.url), "utf8")
@@ -563,7 +566,7 @@ test("the corpus backlog of unglossed notation only shrinks", async () => {
     }
   }
   assert.ok(
-    found.warnings.length <= CEILING,
-    `${found.warnings.length} lessons use V2/V3 without glossing it, up from ${CEILING}`
+    found.errors.length <= CEILING,
+    `${found.errors.length} lessons use V2/V3 without glossing it, up from ${CEILING}`
   );
 });
