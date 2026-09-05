@@ -5,6 +5,34 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.38 — 2026-09-05
+
+**All ten topic overviews now answer the same question: do I have to read
+these in order?** Four already said there is an order and three said
+there is not; three said nothing, and a learner could not tell which
+silence meant "no order" and which meant "nobody wrote a sentence".
+`connectors`, `gerunds-infinitives` and `passive-voice` say it now, and
+each claim was checked against the dependency graph rather than asserted:
+all six of the corpus's content edges live in `passive-voice` and
+`relative-clauses`, and all six are already re-taught in full by the
+lesson that imports them.
+
+**And the combination rule is written down** (`question-author.md`).
+Every category in this app sits at the same level by design, so
+difficulty cannot come from later topics being harder — there are no
+later topics. It comes from combination, which `passive-voice` already
+does in nine of the corpus's sixty categories without anyone having
+written the rule: hold one thing constant across all four options, vary
+on an axis imported from another topic, let the paragraph decide it, and
+re-teach the import in full so the lesson still stands alone.
+
+The section keeps its own counter-example, from this repository's history:
+before its third repair round `Passive with Modals` held the modal
+constant and varied whether the option was a well-formed passive. It
+looked like a combined item and it was a spelling drill — nine of twelve
+keys in that part of the topic were the only structurally legal option,
+so a student who read nothing scored 9 of 12.
+
 ## v0.37 — 2026-09-05
 
 **The corpus says what `V3` means now, wherever it uses it.** Thirteen
