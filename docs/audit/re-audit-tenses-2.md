@@ -32,7 +32,7 @@ neither is a finding here.** No warning of any kind is reported against
 
 ## 1. Verdicts
 
-**Five of six categories ship.** That is a change from the previous
+**Five of six categories ship** (six of six after the supervisor's fix to `t25` — §9, appended later the same day). That is a change from the previous
 audit, which shipped none of them, and it is earned: all six of its
 blockers are genuinely closed, and two of the fixes — the `since`
 untangling and the `still` rule — are more thorough than the findings
@@ -47,7 +47,7 @@ every one of its category's items, at the first rule that fires.
 | Present Perfect vs Past Simple | **SHIPS** | — bare `since` is out of the chip list, and the new r1 reaches Past Perfect on `t12` before `since` can be scanned. Clean on t5–t8. |
 | Past Simple vs Past Continuous vs Past Perfect | **SHIPS** | — `t12`'s paragraph and key are out of the `text` block, and the tightened r2 closes the previous audit's own least-certain finding. The cleanest work in the round. |
 | Future Forms | **SHIPS** | — the `contrast` example that was `t16` minus one word is replaced; the collision is gone at every threshold I measured. |
-| Perfect Aspects: Simple vs Continuous vs Been/Gone | **DOES NOT SHIP** | `t25`'s rewritten `explanation` argues from a cue that does not discriminate: *"dönmüş olsaydı ceketini alır, masasına dönerdi"* is false of the scenario — someone returning from the archive to their own desk does not collect their coat, and the coat on the chair is equally true whether she is back or not. The learner who chose `has been` is handed an argument that does not exclude `has been`. Introduced by this round, in the one field that teaches a wrong answer. One-clause fix. |
+| Perfect Aspects: Simple vs Continuous vs Been/Gone | **DOES NOT SHIP** — *superseded, see §9: the supervisor fixed this and the category now SHIPS* | `t25`'s rewritten `explanation` argues from a cue that does not discriminate: *"dönmüş olsaydı ceketini alır, masasına dönerdi"* is false of the scenario — someone returning from the archive to their own desk does not collect their coat, and the coat on the chair is equally true whether she is back or not. The learner who chose `has been` is handed an argument that does not exclude `has been`. Introduced by this round, in the one field that teaches a wrong answer. One-clause fix. |
 | Time Expressions & Signal Words | **SHIPS** | — the `still`-before-the-auxiliary rule is now stated in five places that agree, and `ago` is replaced by an option the lesson's own chip list teaches. The most thorough fix in the round. |
 
 Item-level, for the four items the round touched:
@@ -56,7 +56,7 @@ Item-level, for the four items the round touched:
 | --- | --- | --- |
 | `t14` (note) | **ships** | The stranded `have taken` note is genuinely re-anchored: it now argues from *"nothing is arranged"* / *"until just now"*, both of which are in the paragraph. §5.1. |
 | `t22` (option swap) | **ships** | `ago` → `yesterday` replaces a positionally-dead option with one the lesson teaches by name — `yesterday` is a chip in this lesson's own tense `decision` block. Two live distractors and one weak one, against one live and two dead before. §5.2. |
-| `t25` (paragraph, explanation, notes) | **does not ship** | The key survives, on evidence that sits in the first sentence. The explanation does not. §5.3. |
+| `t25` (paragraph, explanation, notes) | **does not ship** — *fixed, §9* | The key survives, on evidence that sits in the first sentence. The explanation does not. §5.3. |
 | `t20` | **untouched** | The brief says `t20`'s paragraph was rewritten. It was not — `git diff 9d948bb 44a9562` does not touch `t20`, and neither did round one. What changed is the *lesson* sentence it collided with. §4.5. |
 
 ---
@@ -1005,3 +1005,209 @@ audit's re-derivation rather than on my own reading. And, as §5 says,
 **this pass was not blind**: I saw three keys before I reasoned about
 their paragraphs, and a future pass over these three items should use
 `npm run blind` and is entitled to discount my agreement with them.
+
+---
+
+## 9. Supervisor's fix to `t25`, verified
+
+Appended 2026-09-05, after §1–§8 were written. The supervisor acted on
+the one blocker in §5.3 and asked this pass to verify it, since it found
+the defect and did not write the repair. Three changes to
+`tenses-t25`, all in the working tree, none committed.
+
+**Verdict: the fix works, and the category now ships.** The false clause
+is gone, each of the three cues does the job the sentence assigns it and
+no more, and the item's margin against `has been` is not merely restored
+but is better evidenced than the pre-round-two version was. Nothing in
+this file gets worse. I found one cosmetic wobble and one idle cue,
+neither of them a defect.
+
+### 9.1 The paragraph
+
+> *"Nobody has seen Deniz since the lunch break, and her laptop is
+> **still** open on the desk with the screen unlocked. She ____ down to
+> the archive on the ground floor, I think, and her coat is still on the
+> back of her chair."*
+
+Restoring `still` to the laptop is the load-bearing half of this fix,
+and it is worth saying why it matters more than it looks. Without it,
+*"her laptop is open on the desk"* is a description that is equally true
+whether Deniz is sitting in front of it or not. With it, the laptop has
+**remained** open, unattended, since she left — and `with the screen
+unlocked` is the marked state that says she expected to be back in a
+minute. The cue stops being scenery and becomes evidence. §5.3 listed
+its removal as one of the three things the previous rewrite cost; that
+one is now repaid.
+
+**Not restoring *"so she should be back before the meeting starts"* is
+the right call, and I want to record that I agree with the reasoning
+rather than just the outcome.** That clause was the sharpest cue the
+item ever had, but it was also the clause the Perfect Aspects `pitfall`
+shared word for word (*"she'll be back in an hour"*), which is what the
+previous audit blocked the category on. The `pitfall` has since been
+rewritten in the opposite direction so the collision would not fire
+today — but the supervisor's argument is that a lesson block is edited
+by whoever touches the lesson next, and an item that only survives
+because of the current wording of a block in a different part of the
+file is an item waiting to break. That is exactly the failure mode this
+whole sequence of audits keeps finding, applied pre-emptively for once.
+It also costs the item nothing measurable: see §9.4.
+
+Re-substituting all four options into the new paragraph:
+
+| option | accept? | on what evidence |
+| --- | --- | --- |
+| `has gone` (key) | **yes** | She went and has not come back. |
+| `has been` | **no**, and on **two** independent cues now | *"Nobody has seen Deniz since the lunch break"* denies she has reappeared; *"her laptop is **still** open … unlocked"* denies she is back at it. After round two there was one cue and it sat in the first sentence alone. |
+| `has been going` | **no** | Repeated trips against a single absence since lunch. |
+| `had gone` | **no** | Past Perfect needs a past reference point; every anchor is present (`has seen`, `is still open`, `is still on`). |
+
+The `decision` block trace is unchanged: r1 (*a place is named and the
+person is still there, not back*) fires and returns `have gone to` →
+`has gone`, the key. §2.5 stands.
+
+### 9.2 The explanation, cue by cue
+
+> *"Öğle arasından beri kimse onu görmemiş, bilgisayarı hâlâ açık ve
+> kilitsiz duruyor, ceketi de sandalyesinde: işinin başından ayrılmış
+> ama binadan çıkmamış, yani gittiği yerden henüz dönmemiş. … En yakın
+> çeldirici 'has been', kişinin gidip döndüğünü söyler — oysa dönmüş
+> olsa öğle arasından beri onu gören biri olurdu."*
+
+| cue | job the sentence gives it | does the cue do that job? |
+| --- | --- | --- |
+| *"Öğle arasından beri kimse onu görmemiş"* | she has not come back | **yes.** This is the discriminating cue and it is now where the discrimination rests. |
+| *"bilgisayarı hâlâ açık ve kilitsiz duruyor"* | *"işinin başından ayrılmış"* — she stepped away mid-task | **yes**, and only because `still` came back into the paragraph. Without `still` this cue could not have carried even this much. |
+| *"ceketi de sandalyesinde"* | *"binadan çıkmamış"* — she has not left the building | **yes.** Leaving a building means taking your coat; the coat staying on the chair is good, ordinary, defeasible evidence for exactly that and for nothing beyond it. |
+
+**On the coat, which is what the supervisor was least sure of: it is not
+overclaiming.** The old clause failed because it asserted a
+counterfactual that is false of the scenario — someone returning from
+the ground-floor archive to her own desk does not collect her coat. The
+new clause asserts only that she has not left the building, which is
+what the coat shows, and the `has been` exclusion two sentences later
+does not use the coat at all. That is the correct architecture: the cue
+that cannot discriminate is no longer asked to.
+
+One qualification, offered as information rather than as a finding. The
+coat is now **true but idle for the key/distractor choice**: no option
+on this item is "she went home", so ruling out that reading excludes
+nothing. What it does earn is the *plausibility* of the sentence it sits
+in — it is why *"down to the archive on the ground floor"* is the
+natural completion rather than "she left for the day" — so it is doing
+real work in the paragraph even though it is doing none in the
+discrimination. Keeping it is right. If anyone ever wants the
+explanation one clause shorter, the coat is the clause that can go
+without weakening the argument.
+
+The `yani` step holds: away from her workstation **and** still in the
+building ⇒ she is somewhere else in the building ⇒ she has not come back
+from where she went. The three cues are presented jointly, after a
+colon, rather than as three independent proofs, which is the honest
+shape given that the laptop cue leans on the first one to mean what it
+is claimed to mean.
+
+The counterfactual that carries the `has been` exclusion — *"dönmüş olsa
+öğle arasından beri onu gören biri olurdu"* — is grounded in the
+paragraph's own first clause and is valid. `docs/CONTENT_GUIDE.md`'s
+requirement that the explanation name the closest wrong option in its
+own words and say why *this* passage does not select it is met, which is
+the requirement the previous version failed.
+
+Schema: 511 chars (warns over 600), Turkish, names all three wrong
+options. ✓
+
+### 9.3 The other two exclusions, and the note
+
+- **`has been going`** — explanation clause and `optionNote` both
+  **untouched** and both still true of the new text. The note's *"öğle
+  arasından beri süren tek bir gidiş"* rests on the paragraph's first
+  clause, which this fix did not change. ✓
+- **`had gone`** — explanation clause untouched and still true: there is
+  no past reference point anywhere in the paragraph. Its `optionNote`
+  names *"masada duran açık bilgisayar"* as the present anchor, which is
+  still in the paragraph and is now slightly better supported by
+  `still`. ✓
+- **`optionNotes["has been"]`**, rewritten to *"Oysa öğle arasından beri
+  onu gören olmamış — dönmüş olsa görülürdü."* — **consistent with the
+  explanation**: same cue, same counterfactual, and the coat is out of it
+  entirely. The note no longer leads with a cue the explanation has
+  stopped relying on, which was the smallest of the three things §5.3
+  listed. 113 chars, under the 160 warn. ✓
+
+The only wobble worth naming: the `had gone` note foregrounds the
+laptop while the explanation now foregrounds *"nobody has seen her"*.
+Both are present-tense anchors and neither contradicts the other, so
+this is a difference of emphasis, not an inconsistency. Not a finding.
+
+### 9.4 Does the restored `still` collide with anything?
+
+Re-run after the fix, same predicates as §3:
+
+- `checkLessonGiveaway`, tenses in-category, shipped `GIVEAWAY_RUN = 6`:
+  **0**. Cross-category: **0**. Corpus-wide: **0**.
+- Threshold three, tenses in-category: **5** — `t1`, `t17`, `t18`,
+  `t20`, `t23`. **Exactly the same five as before the fix; `t25` is not
+  among them and never approaches it.** Cross-category at three: **0**.
+- Corpus at three is now 40 rather than the 48 in §3.2. That drop is
+  `passive-voice` going 15 → 7 as the other session's repair landed. The
+  tenses figure is unchanged at 5.
+- `t25` filled against **every** lesson sentence in the topic, all six
+  lessons, run ≥ 3: **nothing**. Against every other question stem in
+  the topic, run ≥ 4: **nothing**. Against `t22` directly: run 2
+  (*"to the"*).
+- Every sentence in the file containing `still`, against `t25` and
+  `t22`: *"She is still waiting for the results."* 2 / 2; *"She still
+  works there."* 1 / 0; *"She still hasn't replied to my email."* 1 / 1;
+  *"They still haven't announced the results."* 1 / 2. Nothing anywhere
+  near a threshold.
+- `npm run validate` ✓ (same two out-of-scope warnings),
+  `npm run format --check` ✓. The near-duplicate-stem and
+  scenario-over-use checks report nothing against tenses.
+
+So: no new collision, with this lesson, with the Time Expressions
+lesson, or with `t22`.
+
+**And a point in the fix's favour that the numbers do not show.** Both
+of `t25`'s `still`s are in **positive** clauses, immediately after the
+copula — *"is still open"*, *"is still on"* — which is the placement the
+Time Expressions lesson teaches for positives and illustrates with
+*"She is still waiting for the results."* Neither models the clause-final
+placement that `t22`'s `still` distractor depends on. Counting every
+`still` in the whole file — four lesson sentences, `t24`'s *"he still
+says"*, and now `t25`'s two — **the file models `still` in its taught
+slots six times and clause-final nowhere.** If restoring `still` here
+tilts `t22` at all, it tilts it *away* from the distractor.
+
+### 9.5 Does my doubt about `examples[5]` survive?
+
+**Yes, unchanged in kind, and slightly reduced in degree.** Unchanged,
+because `t25` is a Perfect Aspects item and cannot be drawn into a
+Time Expressions `check` block, so the adjacency that worries me — a
+`still` + negative + *results* sentence two blocks above a `still` +
+negative + *results* question — is exactly as it was. Reduced, because
+of the count in §9.4: nothing in this file now shows a learner `still`
+at the end of a clause, so the only place the wrong placement is ever
+displayed is `t22`'s own option list, where it is the thing being
+tested. That is the right distribution.
+
+§8's doubt list stands as written. Its item **3** — whether `t25`'s
+explanation was worth a DOES NOT SHIP — is now moot: the clause is gone,
+and the question of how heavily to weigh it does not have to be settled.
+Item **1** stands, with the addendum above.
+
+### 9.6 What this changes in §1
+
+**Perfect Aspects: Simple vs Continuous vs Been/Gone → SHIPS.** All six
+categories in `data/tenses/tenses.json` now ship. The row in §1's table
+was written before this fix and is superseded by this section; I have
+left it as it was rather than rewriting the record of what the audit
+found, and marked it.
+
+What still stands against the category, unchanged and not blocking, is
+§3.2: `t17` shares four words and its key with a lesson sentence printed
+three times, and `t18` shares three with another. Both are avoidable,
+both predate every repair round, and neither is measured at the shipped
+threshold. They remain the single most useful thing left to fix in this
+file — changing the verb in the lesson's *"I have been writing"*
+sentences closes `t17` outright.
