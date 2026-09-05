@@ -915,3 +915,276 @@ author's intention out of the room.
   is still 0 and that `npm run check` is green.
 - **A blind pass.** I saw `correctIndex` before I reasoned (§5). The one item
   where that most likely cost something is t17.
+
+---
+
+# Fourth round, verified
+
+Appended 2026-09-05, after `91c17fa` (*"Fourth repair round on passive-voice:
+the two carried-across rules, and t1"*), log at
+`docs/audit/repair-passive-voice-3.md`. Scope as the supervisor set it: the two
+`decision` rules, t1, t17, and the `Passive Reporting` lesson additions. Not
+another full pass — everything not named below stands as written above.
+
+## Verdict — all three blockers closed
+
+| category | was | now |
+| --- | --- | --- |
+| **Tense Forms in Passive** | DOES NOT SHIP (t1) | **SHIPS** |
+| **Passive Reporting Structures** | DOES NOT SHIP (r1/t18) | **SHIPS** |
+| **By + Agent: Include vs Omit** | DOES NOT SHIP (r1/t23) | **SHIPS** |
+| Passive with Modals · Modal Perfects · Causative | SHIP | unchanged, and untouched except the one `decision` parenthetical below |
+
+**All six categories ship.** Every blocking finding in §0 is closed, both
+second-order findings (§5.1 t17, §5.2 the lesson monoculture) are closed, and
+three costs I recorded but did not block on (§3.4's r5 parenthetical, §5.6's
+t4 and t16 one-liners, §8's *the second tremor*) were fixed as well. I found
+nothing new that blocks, and no fix in this round reproduced the defect it was
+for — which is the first time that has been true of a round in this file.
+
+## A · `Passive Reporting` r1 — fires on t18, and the widening is safe
+
+r1's second conjunct is now *"…arkasından bir cümle gövdesi (fiil) geliyorsa —
+öznesi boşluktan sonra da durabilir, seçeneğin içinde de olabilir"*. Two new
+rules r6/r7 decide the reporting verb's own tense. Re-walked, file order:
+
+| item | trace | returns | on the item? |
+| --- | --- | --- | --- |
+| **t18** | **r1 fires** — the blank opens the sentence and *moved inland when the tremors began* is a verb body whose subject is inside the option | `It is/was said/believed/reported that …` → eliminates `They are believed to have`; **r4 is never reached**; then **r6** (*an account the island's guidebooks still repeat*) → `is believed` | narrowed to `It is believed that they` / `It is believed that they have`; **no wrong option returned** ✔ |
+| t17 | **r1 does not fire — first conjunct**: the blank is mid-sentence, after *The site manager*; r2 no; r3 no; **r4** | `to have + V3` | `is said to have warned` ✔ |
+| t19 | r1 no (mid-sentence); r2 no; **r3** — *late last night*, hikers seen | `to have been + V3` | `are reported to have been` ✔ |
+| t20 | r1 no (mid-sentence); **r2** | `is / was supposed to + V` → two options; then **r6** (*beklenen an henüz gelmediyse* — the corridor clock says twenty to) | `is supposed to start` ✔ |
+
+**The widening cannot reach t17, t19 or t20**, and this is the question worth
+answering rather than the one about t18. r1 is a conjunction and only its
+*second* conjunct moved; the conjunct that excludes the other three items is
+the first — *"Boşluk cümlenin başındaysa"* — and all three have their blank
+after the subject. There is no reading on which the edit touches them.
+
+**r4 no longer returns a distractor on t18**, because the learner stops at r1
+and r1's `then` names a frame that `They are believed to have` does not
+instantiate. The blocker is closed.
+
+**r6 and r7, judged over all four.** r7 (*belief abandoned, or the expected
+moment came and went unfulfilled*) fires on **none** of the four, correctly:
+t17's allegation is live, t18's account is still repeated, t19's report is
+current, and t20's nine o'clock has not arrived. r6 fires on all four and is
+vacuous on t17 and t19, where every option carries `is said` / `are reported`
+— it returns nothing wrong. On t18 and t20 it does real work, and on **t20 it
+repairs something this audit recorded as latent**: r2 previously reached t20's
+key by accident, because its `then` happened to be spelled `is supposed to`
+while its condition was equally true of a paragraph wanting `was`. r2's `then`
+is now honestly `is / was supposed to + V` and r6 makes the choice. Good.
+
+**Three things to record rather than block on.**
+
+1. **The block is no longer a flat checklist.** r6 opens *"Kalıbı seçtikten
+   sonra bir de aktarma fiilinin zamanı kalır"* — it is a second stage, and it
+   is signposted in the rule text because the schema offers no other way. I
+   accept it: the alternative was leaving the axis two items turn on undecided
+   anywhere in the lesson. But it means **the re-audit brief's "first rule that
+   fires wins" test no longer describes this block**, and the next auditor
+   should trace it in two passes rather than one. That is worth a line in
+   `docs/agents/re-audit.md` more than a line here.
+2. **r1 and r4 both describe t18 truthfully and return incompatible answers**,
+   and only order keeps them apart. Under the stated test the block is clean,
+   because r1 is first. The technique this file's own history recommends is to
+   fold the test into the rule rather than rely on order, and the clean version
+   adds *"…ve boşluk cümlenin başında değilse"* to r4. One clause; not urgent.
+3. **r1 is now broad in a way that is safe here and would not stay safe.**
+   "Blank at sentence start + a verb body, subject possibly inside the option"
+   also describes a hypothetical item keyed `The suspect is reported to have`,
+   which r1 would answer wrongly. No such item exists, r1 is this category's
+   checklist over this category's four items, and I would not change it — but
+   whoever adds a fifth item to this category should read r1 first.
+
+`then` values: `It is/was said/believed/reported that …` is a six-way
+alternation and `is said / is believed / is supposed to` is a three-way whose
+`to` attaches only to the last member. `CONTENT_GUIDE.md` asks `then` to be
+*"the thing the learner writes down"* and these are frames rather than forms.
+Legible, and raggeder than the rest of the file. Cosmetic.
+
+## B · `By + Agent` r1 — stops firing on t23, correct on the other three
+
+r1 now reads *"…ve boşluktan sonra **ne faili ne de kullanılan aracı** söyleyen
+bir isim öbeği yoksa"*.
+
+| item | what follows the blank | r1? | first firing rule | on the item? |
+| --- | --- | --- | --- | --- |
+| t21 | *while I was on the crowded train* — a clause; *the crowded train* names neither agent nor instrument | **fires** | r1 | `was stolen` ✔ |
+| t22 | *a fifteen-year-old student* — names the agent | no (both conjuncts fail) | r3 | `was written by` ✔ |
+| **t23** | *a modern ballpoint pen* — names the instrument | **no longer fires** ✔ | r2 no · r3 no (not a person or institution) · r4 no (instrument, explicitly) · **r5** | `was written with` ✔ |
+| t24 | *to hospital* — a place, neither agent nor instrument | **fires** | r1 | `was taken` ✔ |
+
+The blocker is closed and the wording is now the same shape as r4's, which is
+the point: the two rules that have to agree about what an instrument is now
+say so in the same words.
+
+**The round's claim that it fixed the rule rather than reordering r5 is what
+the file does** — I checked the array: r5 is still last, r1 is still first, and
+r1's condition carries the new clause. That was the right call and for the
+right reason. Moving r5 to the front would have made every item pass through
+an instrument test first and would have left r1 false where a learner still
+meets it; a false rule that is merely unreachable is still a false rule, and
+this file has been repaired four times by people reading rules literally.
+
+**And the fix is better than the one I proposed.** My §3.6 offered
+*"…ve boşluktan sonra bir isim öbeği hiç gelmiyorsa"*. That would have broken
+**t24**, where *to hospital* is a noun phrase after the blank and r1 must still
+fire. Naming the two categories the rule cares about — agent and instrument —
+is the correct generalisation and mine was not.
+
+## C · t1 — the option is excluded, and my blocker is answered
+
+> Fresh bread **____** every morning at the bakery on the corner, and the queue
+> **starts** forming before the shutters **are** even up. Whatever **is** left
+> when the shop **closes** **goes** to the shelter down the road.
+
+- **`was baked`** — *"Fresh bread was baked every morning … and the queue
+  starts forming…"* **Rejected**: a past main clause coordinated with a present
+  one describing the same routine. Live — reading *every morning* as
+  habitual-past is a real reflex.
+- **`is being baked`** — **Rejected**: the progressive with a bare frequency
+  adverbial and no temporary frame. Live, and it is the Turkish-learner error
+  the whole category exists for.
+- **`has been baked`** — *"Fresh bread has been baked every morning at the
+  bakery on the corner, and the queue starts forming before the shutters are
+  even up."* **Rejected. I accept the fix.**
+
+  My finding was that the old paragraph contained the durational frame the
+  perfect wants (*for three generations*) and excluded the option only by
+  arguing about which noun the adverbial attached to — an interpretive
+  exclusion, which is what rule 2 forbids. The new paragraph excludes it two
+  ways, and the second is the one that convinces me:
+
+  1. **Nothing licenses the perfect.** A durative perfect under a frequency
+     adverbial wants its period stated — *for years*, *since 1980* — and there
+     is now no time span anywhere in the paragraph to attach to, correctly or
+     incorrectly. The exclusion is an absence the learner can check rather than
+     an argument they have to follow.
+  2. **Five surrounding verbs are present simple** — *starts*, *are*, *is*,
+     *closes*, *goes* — and they describe the same daily routine as the blank.
+     A present perfect coordinated with `and the queue starts forming` is a
+     tense mismatch a teacher marks, not a stylistic preference. This is a
+     *positive* signal, not just the absence of a negative one, and it is what
+     moves the item off rule 2.
+
+  The log's §9.1 puts this as its own strongest doubt and asks to be told if it
+  is wrong. It is not wrong. The reading it worries about — *"has been baked …
+  with an implied lately"* — does not survive the coordination.
+
+The `explanation` and both rewritten notes now argue from what the paragraph
+has rather than from where an adverbial attaches, and the `tip` carries the
+transferable form of it (*"Present Perfect Passive bir süre ölçer ve o süreyi
+cümlede ister"*). **`Tense Forms in Passive` ships.**
+
+## D · t17 — the longer fix closes it, and my one-word fix would not have
+
+> The site manager **____** about the cracked roof beam weeks before the
+> ceiling came down — **he had spotted the crack himself during an inspection**
+> — and two councillors now admit that **his** note reached their desks and was
+> quietly filed.
+
+**I accept the reading, and I withdraw my proposed repair.** The round is right
+that *his note* alone does not exclude `is said to have been warned`: being
+warned and passing the warning on are entirely compatible, and *his note* is
+satisfied by either. That is a correct reading of my own suggestion and it is
+better than mine.
+
+What closes it is `himself`, and the em-dash placement. The parenthetical sits
+immediately after the blank clause as its **elaboration** — it says how he came
+to know. Elaborating *"he was warned about the crack"* with *"he had spotted
+the crack himself"* is not an elaboration but a contradiction, so the discourse
+relation excludes the passive rather than merely disfavouring it. Both halves
+of the argument are now on the page; previously the `explanation` asserted
+*"not … ondan ulaşmış"*, which the paragraph never said. The `explanation` and
+the `is said to have been warned` note were both rewritten to cite the text
+they now have, and I checked them against it.
+
+**Costs, both small and neither blocking.** The stem is 57 words and the item's
+deciding evidence has moved closer to the blank — still not adjacent, and the
+time axis still runs on *weeks before the ceiling came down*, so the 2×2 design
+survives. And there is a mild wobble of footing: a paragraph whose premise is
+that *nobody will put a name to the story* narrates *he had spotted the crack
+himself* as established fact. Newspapers mix an attributed claim with a settled
+one exactly like this, and no option turns on it. Recorded, not a finding.
+
+## E · The lesson additions — checked against the rest of the lesson and all four items
+
+This answers §5.2, which was my second reason for not shipping the category:
+the lesson attested one cell of each new 2×2 four or five times over, and it
+was the keyed cell both times.
+
+| added | checked |
+| --- | --- |
+| `forms` row *It + was + V3 + that* — *"For centuries it was thought that the marshes had no bottom."* | Shares no content word with t17–t20. Its gloss (*bir zamanlar savunulan, artık bırakılmış görüş*) is the same distinction t18's `It was believed that they` note draws, which is the lesson teaching the axis rather than the answer: it says when `was` is right, and t18's paragraph is what says this is not that case. ✔ |
+| `forms` row *was supposed to* — *"The ferry was supposed to dock at six, but it never came."* | No shared content word with t20 (*ferry/dock* against *meeting/start*). The gloss (*beklenti geçmişte kalmış, iş olmamış*) is exactly the ground on which t20 excludes `was supposed to start`, and it is consistent with the `is supposed to` row, whose `use` was amended to *— hâlâ geçerli* in the same edit. ✔ |
+| `examples` item — *"The tomb was believed to be empty until a second chamber was found."* | No overlap with any of the four. ✔ |
+| `text` block rewritten | **This is the important one.** It previously said the tense difference is carried by *what follows `to`* — which, as §5.2 recorded, steered a learner toward `is supposed to have started` and `It is believed that they have`, both distractors. It now separates the two clocks explicitly (*aktarma fiili* for the belief's own standing, *to'dan sonrası* for the event) and adds *"that'li yapıda yan cümle kendi zamanını kurar"*, which is the sentence t18's last step needs. It no longer contradicts either item. ✔ |
+| `forms` heading *to'dan sonrası zamanı taşır* → *Hangi parça hangi zamanı taşır* | Consistent with the table it now heads. ✔ |
+
+The lesson is still 11 blocks. The `examples` block is now **6 items**, which
+is the validator's warning threshold exactly — a seventh errors the advisory.
+The rewritten `text` block is **390 characters** against a hard limit of 400;
+it is correct today and it has ten characters of headroom, so the next person
+to add a clause to it will have to take one out. Both worth knowing, neither a
+defect.
+
+The round declined to add an `is supposed to have + V3` row on the grounds that
+it is two of t20's distractors and the table should stay a list of patterns to
+use (§8.5 of its log). **I agree**, and it is the right side of the line: the
+lesson now attests both cells of the axis the items *decide on* (`is` vs `was`)
+and does not attest the cell that is only ever wrong.
+
+## F · The other fixes, and what remains
+
+Three things I recorded above as costs rather than blockers were fixed anyway,
+all correctly:
+
+- **`Causative` r5's parenthetical** — *(repaired them, cut my hair)* →
+  *(cleaned the windows, cut my own hair)*. t14's best distractor is no longer
+  printed verbatim in t14's own lesson, and the replacement is neater than a
+  neutral one: *cleaned the windows* is the inversion of r2's own
+  *the windows cleaned*, so the two rules now show the same phrase in both
+  orders. My option-string sweep over the fields `lessonSentences()` never
+  reads returns **nothing** in `Causative` or `Passive Reporting` now.
+- **t4's and t16's explanations** (§5.6) now name their closest wrong option in
+  words rather than passing the checker on a substring accident.
+- **t18's *the second tremor*** (§8.7) → *when the tremors began*, which is
+  bridgeable from *the eruption* and no longer a definite reference to nothing.
+
+**Outstanding, and correctly deferred** — the round names all of these in its
+§8 and I agree with every deferral: the doubled-modal tell in t6/t7/t9/t10/t12
+(§6 above; the fix is one new item in a passing category, and this round
+carried three blocking repairs and a lesson rebuild); `Tense Forms` r4's bare
+`since` chip (§3.1); the `Causative` block deciding one item in four (§3.4);
+and `checkExplanationsNameDistractors`'s substring matching, which is a
+two-line change to `tools/content-checks.mjs` and out of a content session's
+scope.
+
+**One item from §4.3 is no longer outstanding.** A separate session has since
+taught `lessonSentences()` to read `decision.rules[].condition` (`959d1dc`),
+which is the channel the r5 parenthetical was written into and the check that
+would have caught it at authoring time. I re-ran both sweeps against the
+widened checker: **0 rows at run ≥ 6, 2 rows at run ≥ 3** — still t8 and t19 —
+and `npm test` is 136/136 with *the corpus backlog only shrinks* green, so the
+ratchet holds at 0 with the new channel open. The comment on the change is
+right not to read `then` as well: a `then` names a form, and six consecutive
+words never come out of a form name.
+
+`contentVersion` for `passive-voice` is **3** and this round materially changes
+four questions and a lesson. Whoever merges should make it 4.
+
+## G · Confidence
+
+Lower doubt than on any section above. The two rule fixes are decidable by
+reading two strings against four stems and I have done that; they are not
+judgement calls. t17 is a judgement call and it is not a close one — the
+parenthetical contradicts the passive rather than disfavouring it. **t1 is the
+one I would still put in front of a second reader**, for the reason the log
+gives itself: it is an exclusion by absence plus register agreement, not by
+contradiction, and it is the softest kind of exclusion this file relies on
+anywhere. I am satisfied, and two of us being satisfied is not the same as it
+being right. If a third reader disagrees about t1, the paragraph wants one
+positive contradiction — a *right now* or a *this week* — and not a fifth
+round of argument.
