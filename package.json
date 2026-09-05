@@ -1,0 +1,22 @@
+{
+  "name": "english-prep",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static English prep-school practice app. Tooling only — the app itself has no build step and no dependencies.",
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.js\"",
+    "validate": "node tools/validate-content.mjs",
+    "color": "node tools/palette.mjs",
+    "format": "node tools/format-content.mjs",
+    "format:check": "node tools/format-content.mjs --check",
+    "check": "npm run format:check && npm run validate && npm run color && npm test",
+    "serve": "python3 -m http.server 8000",
+    "verify": "node tools/verify-ui.mjs",
+    "audit": "node tools/audit-ui.mjs",
+    "icons": "node tools/make-icons.mjs",
+    "blind": "node tools/blind-corpus.mjs",
+    "calibrate": "node tools/make-calibration.mjs",
+    "draft": "node tools/check-draft.mjs"
+  }
+}

@@ -1,0 +1,587 @@
+// Profil — everything about *you* rather than about a particular test: an
+// optional display name, how much you have done overall, and where you are
+// weakest. Everything is read from the same local storage the rest of the
+// app writes to; there is no login and no server, and "Geçmişi sıfırla"
+// only ever clears this browser's data.
+//
+// The weak lists here lead into the *lessons*, because that is what this
+// screen is for: understanding where you stand and what to study. The same
+// lists on the Test tab start practice instead. One row, one action, and
+// which action it is follows from which screen you are on.
+
+import {
+  loadManifest,
+  loadRoadmap,
+  lessonIndex,
+  uncoveredSections,
+  sectionListPhrase,
+  clozeCoverage,
+} from "./topics.js";
+import {
+  getProfileName,
+  setProfileName,
+  getOverallStats,
+  getWeakTopics,
+  getWeakCategories,
+  countCompletedLessons,
+  clearHistory,
+  clearLessonProgress,
+  getSetting,
+  setSetting,
+} from "./storage.js";
+import { SETTINGS } from "./config.js";
+import { createConfirmModal } from "./modal.js";
+import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
+import { el, clear } from "./dom.js";
+import { icon } from "./icons.js";
+import { announce } from "./shell.js";
+
+const container = document.getElementById("profile-container");
+let resetModal;
+let restoreDialog;
+let initialized = false;
+
+function formatPercent(value) {
+  return value === null ? "—" : `%${Math.round(value * 100)}`;
+}
+
+function renderNameField() {
+  const surface = el("section", "surface stack stack--tight");
+
+  const heading = el("h2", "t-label", "İsmin");
+  heading.id = "profile-name-label";
+  surface.appendChild(heading);
+  surface.appendChild(
+    el("p", "t-meta", "İsteğe bağlı — sadece bu cihazda saklanır, hiçbir yere gönderilmez.")
+  );
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "field";
+  input.placeholder = "İsmini yaz";
+  input.value = getProfileName();
+  input.maxLength = 40;
+  input.autocomplete = "off";
+  input.setAttribute("aria-labelledby", "profile-name-label");
+  input.addEventListener("change", () => {
+    setProfileName(input.value.trim());
+    // The header shows the learner's initial; tell it to catch up without
+    // the two modules having to import each other.
+    document.dispatchEvent(new CustomEvent("profile:namechange"));
+  });
+  surface.appendChild(input);
+
+  return surface;
+}
+
+function stat(value, label) {
+  const cell = el("div");
+  cell.appendChild(el("div", "stat__value", value));
+  cell.appendChild(el("div", "stat__label", label));
+  return cell;
+}
+
+function renderStats(stats, lessonsDone, lessonsTotal) {
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Genel durum"));
+
+  const grid = el("div", "stats");
+  grid.appendChild(stat(lessonsTotal ? `${lessonsDone}/${lessonsTotal}` : "—", "Tamamlanan ders"));
+  grid.appendChild(stat(String(stats.testsCompleted), "Çözülen test"));
+  grid.appendChild(stat(String(stats.totalQuestions), "Çözülen soru"));
+  // The label says which question the number answers. Three lifetime
+  // counters beside one recent average would otherwise read as four of the
+  // same kind of thing, and the learner would take the average for a
+  // lifetime one — which is the reading that makes it discouraging.
+  grid.appendChild(
+    stat(
+      formatPercent(stats.accuracy),
+      stats.accuracyWindow > 0 ? `Son ${stats.accuracyWindow} soruda` : "Doğruluk"
+    )
+  );
+  section.appendChild(grid);
+
+  // What is in the window, when part of it is the mistake book. The
+  // number is not filtered — a book run is the learner answering
+  // questions, and excluding it would decide a defensible reading for
+  // them — but an average that falls because they took the app's advice
+  // has to say so, or it quietly argues against the mode the Test tab
+  // recommends.
+  if (stats.accuracyFromBook > 0) {
+    section.appendChild(
+      el(
+        "p",
+        "t-meta",
+        `Bu ortalamanın ${stats.accuracyFromBook} sorusu yanlış defterinden geliyor; ` +
+          "defterdekiler zaten en zorlandıkların."
+      )
+    );
+  }
+
+  if (stats.testsCompleted === 0 && lessonsDone === 0) {
+    section.appendChild(
+      el("p", "t-meta", "Henüz başlamadın — bir ders okuyunca ya da test çözünce burası dolacak.")
+    );
+  }
+
+  return section;
+}
+
+/**
+ * @param {string} heading
+ * @param {string} hint
+ * @param {Array<{name: string, score: string, lessonId?: string|null}>} rows
+ */
+function renderWeakList(heading, hint, rows) {
+  if (rows.length === 0) {
+    return null;
+  }
+
+  const section = el("section", "stack stack--tight");
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("h2", "t-label", heading));
+  head.appendChild(el("p", "t-meta", hint));
+  section.appendChild(head);
+
+  const list = el("div");
+  rows.forEach((entry, index) => {
+    const row = el(entry.lessonId ? "a" : "div", "row");
+    if (entry.lessonId) {
+      row.href = `#egitim/${entry.lessonId}`;
+    }
+
+    // Entries arrive sorted weakest-first; the rank makes that visible
+    // instead of leaving it to be inferred from the scores.
+    row.appendChild(el("span", "row__lead t-num t-meta", String(index + 1)));
+
+    const main = el("span", "row__main");
+    const name = el("span", "row__title t-en", entry.name);
+    name.lang = "en";
+    main.appendChild(name);
+    if (entry.lessonId) {
+      main.appendChild(el("span", "row__sub", "Dersi aç"));
+    }
+    row.appendChild(main);
+
+    const trail = el("span", "row__trail t-num", entry.score);
+    if (entry.lessonId) {
+      trail.appendChild(icon("chevron-right", { size: 20 }));
+    }
+    row.appendChild(trail);
+
+    list.appendChild(row);
+  });
+  section.appendChild(list);
+
+  return section;
+}
+
+/**
+ * The one part of Profil that is not a read-out.
+ *
+ * Everything the app knows about a learner lives in this browser and can
+ * be deleted by it without asking — WebKit clears script-written storage
+ * after seven days of browser use without an interaction on the origin.
+ * That is not a rare edge case for a study app used a few times a week
+ * before an exam; it is the normal case. So the app says so plainly, and
+ * gives them the file.
+ */
+function renderData() {
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Verilerin"));
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "İlerlemen sadece bu tarayıcıda saklanıyor — bir hesap yok, hiçbir yere " +
+        "gönderilmiyor. Telefon değiştirirsen ya da tarayıcı verini silerse kaybolur. " +
+        "Ara sıra yedek al; başka bir cihaza da böyle taşırsın."
+    )
+  );
+
+  const status = el("p", "t-meta");
+  status.setAttribute("role", "status");
+
+  const backup = el("button", "btn btn--secondary", "Yedek al");
+  backup.type = "button";
+  backup.addEventListener("click", () => {
+    downloadBackup()
+      .then((how) => {
+        status.textContent =
+          how === "shared" ? "Yedek paylaşıma hazırlandı." : "Yedek dosyan indirildi.";
+      })
+      .catch((error) => {
+        console.error(error);
+        status.textContent = "Yedek alınamadı. Tarayıcıyı yenileyip tekrar dene.";
+      });
+  });
+  section.appendChild(backup);
+
+  const restore = el("button", "btn btn--secondary", "Yedekten geri yükle");
+  restore.type = "button";
+  restore.addEventListener("click", () => restoreDialog.open());
+  section.appendChild(restore);
+
+  section.appendChild(status);
+  return section;
+}
+
+/**
+ * A switch, made out of a Row rather than a new primitive: the whole row
+ * is the target, which is what a Row is for, and `role="switch"` with
+ * `aria-checked` gives it the semantics without inventing a control.
+ */
+function toggleRow({ name, title, description }) {
+  const row = el("button", "row");
+  row.type = "button";
+  row.setAttribute("role", "switch");
+
+  const main = el("span", "row__main");
+  main.appendChild(el("span", "row__title", title));
+  main.appendChild(el("span", "row__sub", description));
+  row.appendChild(main);
+
+  const state = el("span", "chip");
+  row.appendChild(el("span", "row__trail")).appendChild(state);
+
+  const paint = () => {
+    const on = getSetting(name);
+    row.setAttribute("aria-checked", String(on));
+    state.textContent = on ? "Açık" : "Kapalı";
+  };
+  paint();
+
+  row.addEventListener("click", () => {
+    setSetting(name, !getSetting(name));
+    paint();
+  });
+
+  return row;
+}
+
+function renderSettings() {
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Ayarlar"));
+
+  section.appendChild(
+    toggleRow({
+      name: SETTINGS.THINK_FIRST,
+      title: "Önce kendin düşün",
+      description: "Testte şıklar, sen hazır olduğunu söyleyene kadar gizli kalır.",
+    })
+  );
+
+  const reset = el("button", "btn btn--secondary", "Geçmişi sıfırla");
+  reset.type = "button";
+  reset.addEventListener("click", () => resetModal.open());
+  section.appendChild(reset);
+  section.appendChild(
+    el("p", "t-meta", "Sıfırlama, test geçmişini ve ders ilerlemeni bu cihazdan siler.")
+  );
+
+  return section;
+}
+
+/**
+ * Where the content comes from, said plainly.
+ *
+ * It is written by a language model and reviewed by another one, against
+ * a written brief, and `docs/content-review.md` records what that process
+ * caught and what it missed. Someone studying for an exam that decides
+ * their year is entitled to know that before they trust a question — and
+ * knowing it is also what turns a learner into the only pretest panel
+ * this project can have. The report button on every answer is downstream
+ * of this paragraph: it only gets used by someone who has been told the
+ * content can be wrong.
+ */
+/**
+ * What the app covers, and what it does not.
+ *
+ * A v1 criterion rather than a nicety. Session I is 60 points in four
+ * sections and this app practises two of them; Session II is another 20
+ * and it practises none. An app that silently omits half the paper is
+ * worse than one that says so, because the learner who does well here
+ * concludes something false about Friday.
+ *
+ * The restatement half is read from the manifest rather than asserted,
+ * so this paragraph cannot quietly become untrue the way a hand-written
+ * coverage claim does. The section point values come from
+ * docs/exam-spec.md and change only if the paper does.
+ */
+/** "a, b ve c" — the conjunction Turkish wants, for a plain list. */
+function listPhrase(parts) {
+  if (parts.length <= 1) {
+    return parts[0] ?? "";
+  }
+  return `${parts.slice(0, -1).join(", ")} ve ${parts[parts.length - 1]}`;
+}
+
+function renderCoverage(topics) {
+  const hasRestatement = topics.some((topic) => topic.id === "closest-meaning" && !topic.comingSoon);
+
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Sınavın hangi kısmı burada"));
+
+  // "15 puan" next to a section the app practises reads as fifteen points
+  // earned. It means fifteen points *attempted*, and not all of them: of
+  // the sample cloze's ten blanks, two are vocabulary and one is
+  // `so / such`, and no lesson here teaches any of the three. The count
+  // is derived, so it moves on its own when a topic ships.
+  const cloze = clozeCoverage(topics);
+  const covered = hasRestatement
+    ? "paragraf içindeki boşluklar (15 puan) ve anlamca en yakın cümle (15 puan)"
+    : "paragraf içindeki boşluklar (15 puan)";
+  // Built from the manifest, not written out: the day `closest-meaning`
+  // shipped, a hardcoded list naming it as missing became a lie about the
+  // app the learner was holding, and the next topic to ship would do the
+  // same thing again.
+  const phrase = sectionListPhrase(uncoveredSections(topics));
+  const missing = `${phrase.charAt(0).toLocaleUpperCase("tr")}${phrase.slice(1)} burada yok`;
+
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      `Session I'de 40 soru ve 60 puan var. Bu uygulama şu an ${covered} ` +
+        `çalıştırıyor. ${missing}. Session II'nin tamamı dinleme ve not alma; o da yok.`
+    )
+  );
+  if (cloze.missing.length > 0) {
+    section.appendChild(
+      el(
+        "p",
+        "t-meta",
+        `Çalıştırdığı bölümleri de bütünüyle değil: örnek sınavdaki ` +
+          `${cloze.total} boşluktan ${cloze.covered} tanesinin dersi burada var, ` +
+          `${listPhrase(cloze.missing)} yok.`
+      )
+    );
+  }
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "Yani buradaki ilerleme sınavın tamamı hakkında bir şey söylemiyor. " +
+        "Eksik bölümleri örnek sınav kâğıtlarından çalışman gerekiyor."
+    )
+  );
+  return section;
+}
+
+function renderAbout() {
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "İçerik hakkında"));
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "Buradaki dersler ve sorular yapay zekâ ile yazıldı, sonra yazılı bir " +
+        "ölçüte göre ayrı bir denetimden geçirildi. Yine de hata çıkabiliyor: " +
+        "bazı soruların birden fazla savunulabilir cevabı olduğu, bazı " +
+        "derslerin uyardığı tuzağı hiçbir sorunun sınamadığı bu denetimde " +
+        "ortaya çıktı ve düzeltiliyor."
+    )
+  );
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "Bir soru sana yanlış geldiyse büyük ihtimalle haklısın. Cevabı " +
+        "gördüğün ekranda \u201cBu soruda bir sorun var\u201d bağlantısı, " +
+        "soruyu bulmaya yetecek bilgiyi hazırlar; kopyalayıp bize " +
+        "ilettiğinde en güvenilir hata bildirimi o oluyor."
+    )
+  );
+  return section;
+}
+
+/**
+ * "Neler var, neler geliyor" — the app's own roadmap, shown to the
+ * learner rather than only kept for us.
+ *
+ * This replaces the banner that used to sit above every screen saying
+ * "Geliştirme aşamasındayız". That banner was the first thing a stranger
+ * read, cost 48px of the 320px fold on every single arrival, and said
+ * almost nothing: a learner cannot act on "new topics are being added".
+ * A list they can go and look at says the same thing properly, costs
+ * nothing until they open it, and is somewhere a real answer fits.
+ *
+ * Profil is where it belongs because Profil is already the honest-
+ * metadata screen — what part of the exam this covers, how the content
+ * was written, where the data lives. A roadmap is the same species of
+ * fact, and it is not a content mode, so it is not a third tab.
+ *
+ * Two halves, and they are different kinds of thing. What EXISTS is
+ * counted from the manifest, so it cannot go stale and cannot be
+ * overstated. What is COMING is the editorial list in
+ * `data/roadmap.json`, which is a short honest list and never a date:
+ * this app has no schedule to promise and would not keep one.
+ *
+ * @param {Array<object>} topics - from the manifest
+ * @param {{note?: string, items?: Array<object>}|null} roadmap
+ */
+const ROADMAP_STATUS = {
+  done: { label: "Bitti", chip: "chip chip--ok" },
+  next: { label: "Sırada", chip: "chip chip--accent" },
+  planned: { label: "Planlandı", chip: "chip" },
+};
+
+function renderRoadmap(topics, roadmap) {
+  const live = topics.filter((topic) => !topic.comingSoon);
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Neler var, neler geliyor"));
+
+  if (roadmap?.note) {
+    section.appendChild(el("p", "t-meta", roadmap.note));
+  }
+
+  // Counted, not claimed. Every one of these numbers is the manifest's
+  // own answer, so shipping a topic updates this line and nothing else
+  // has to remember to.
+  const questions = live.reduce((total, topic) => total + (topic.questionCount ?? 0), 0);
+  const lessons = live.reduce((total, topic) => total + (topic.lessonCount ?? 0), 0);
+  section.appendChild(
+    el(
+      "p",
+      "t-meta t-num",
+      `Şu an ${live.length} konu, ${lessons} ders, ${questions} soru.`
+    )
+  );
+
+  const items = Array.isArray(roadmap?.items) ? roadmap.items : [];
+  if (items.length === 0) {
+    return section;
+  }
+
+  const list = el("div");
+  for (const item of items) {
+    const status = ROADMAP_STATUS[item.status] ?? ROADMAP_STATUS.planned;
+    // A div, not a button: nothing here is tappable. A roadmap row that
+    // looked like a control would be promising a screen that does not
+    // exist, which is the one thing a roadmap must not do.
+    const row = el("div", "row");
+
+    const main = el("span", "row__main");
+    main.appendChild(el("span", "row__title", item.title));
+    if (item.detail) {
+      main.appendChild(el("span", "row__sub", item.detail));
+    }
+    row.appendChild(main);
+
+    const trail = el("span", "row__trail");
+    trail.appendChild(el("span", status.chip, status.label));
+    row.appendChild(trail);
+
+    list.appendChild(row);
+  }
+  section.appendChild(list);
+
+  return section;
+}
+
+async function render() {
+  let titleById = new Map();
+  let lessons = [];
+  let topics = [];
+  /** @type {{note?: string, items?: Array<object>}|null} */
+  let roadmap = null;
+  try {
+    const manifest = await loadManifest();
+    topics = manifest.topics;
+    titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
+    // Names and ids only — Profil never shows a lesson's contents, so it
+    // has no business downloading them.
+    lessons = lessonIndex(manifest);
+  } catch (error) {
+    // Stats come from local storage and are still worth showing, so a
+    // failed content load degrades the lesson counter and the
+    // category-to-lesson links rather than the whole tab.
+    console.error(error);
+  }
+
+  try {
+    // Its own load and its own catch: the roadmap is the one file in
+    // `data/` that is not content, and a learner who cannot reach it has
+    // lost a paragraph, not their statistics.
+    roadmap = await loadRoadmap();
+  } catch (error) {
+    console.error(error);
+  }
+
+  const lessonIds = lessons.map((lesson) => lesson.id);
+  const lessonIdByCategory = new Map(lessons.map((lesson) => [lesson.category, lesson.id]));
+
+  clear(container);
+  container.appendChild(renderNameField());
+  container.appendChild(
+    renderStats(getOverallStats(), countCompletedLessons(lessonIds), lessonIds.length)
+  );
+
+  const weakCategories = getWeakCategories();
+  const weakCategoryList = renderWeakList(
+    "En çok zorlandığın kategoriler",
+    // `every`, not `some` — see the note in js/home.js: the hint is about
+    // the whole list, and one well-evidenced row must not speak for four
+    // that are not.
+    weakCategories.every((entry) => entry.confident)
+      ? "Dokunduğunda o kategoriyi anlatan ders açılır."
+      : "Şimdilik az veriyle sıralandı. Dokunduğunda o kategoriyi anlatan ders açılır.",
+    weakCategories.map((entry) => ({
+      name: entry.category,
+      score: `${entry.correct}/${entry.total}`,
+      lessonId: lessonIdByCategory.get(entry.category) ?? null,
+    }))
+  );
+  if (weakCategoryList) {
+    container.appendChild(weakCategoryList);
+  }
+
+  const weakTopics = renderWeakList(
+    "En çok zorlandığın konular",
+    // "Şu an" is doing real work: the score is the most recent answer to
+    // each distinct question, so it moves as soon as the learner does.
+    "Her sorunun en son cevabına göre, şu an en çok yanıldığından başlayarak.",
+    getWeakTopics().map((entry) => ({
+      name: titleById.get(entry.topicId) ?? entry.topicId,
+      score: `${entry.correct}/${entry.total}`,
+    }))
+  );
+  if (weakTopics) {
+    container.appendChild(weakTopics);
+  }
+
+  container.appendChild(renderData());
+  container.appendChild(renderSettings());
+  container.appendChild(renderCoverage(topics));
+  container.appendChild(renderRoadmap(topics, roadmap));
+  container.appendChild(renderAbout());
+}
+
+export async function initProfileTab() {
+  if (!initialized) {
+    initialized = true;
+    restoreDialog = createRestoreDialog({
+      onRestored: (summary) => {
+        const said = describeRestore(summary);
+        announce(said);
+        render().then(() => {
+          const status = container.querySelector('[role="status"]');
+          if (status) {
+            status.textContent = said;
+          }
+        });
+      },
+    });
+    resetModal = createConfirmModal({
+      dialogId: "confirm-dialog",
+      confirmId: "confirm-dialog-confirm",
+      cancelId: "confirm-dialog-cancel",
+      onConfirm: () => {
+        clearHistory();
+        clearLessonProgress();
+        render();
+      },
+    });
+  }
+  await render();
+}

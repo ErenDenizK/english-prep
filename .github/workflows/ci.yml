@@ -1,0 +1,43 @@
+name: CI
+
+# Runs on both branches in the project's branch model (see README): every
+# push to `test` where content and changes land first, and every push to
+# `main`, plus pull requests targeting either.
+on:
+  push:
+    branches: [main, test]
+  pull_request:
+    branches: [main, test]
+
+jobs:
+  check:
+    name: Validate content and run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # No `npm ci` step on purpose: the project has zero dependencies, so
+      # there is no lockfile to install from and nothing to build.
+
+      # Content is written by several different sessions, and any of them
+      # that round-trips a topic file through JSON.stringify reformats
+      # every question in it — a four-line change arriving as four hundred.
+      - name: Check content formatting
+        run: npm run format:check
+
+      - name: Validate content
+        run: npm run validate
+
+      # Re-measures every colour token against its contrast requirement in
+      # both WCAG 2 and APCA. The first draft of the palette passed WCAG
+      # everywhere and failed APCA everywhere; nobody would have caught
+      # that by looking.
+      - name: Verify the palette
+        run: npm run color
+
+      - name: Run unit tests
+        run: npm test

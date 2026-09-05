@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Bileşen sayfası — English Prep</title>
+<!-- Declared so the browser stops asking for /favicon.ico and 404ing on
+     every load. The harness audits this page for console errors, so a
+     missing icon here is a failing check rather than a cosmetic gap. -->
+<link rel="icon" href="../icons/icon-192.png" type="image/png">
+<!-- Every primitive in docs/design-system.md on one page, using the real
+     stylesheet. Serve the repo and open /docs/components.html to check the
+     system at any width without going through the app. Not linked from
+     the app; it is a development surface. -->
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<header class="shell__header">
+  <div class="shell__header-inner">
+    <h1 class="shell__brand t-en">English Prep</h1>
+    <button class="btn btn--secondary btn--icon" aria-label="Profilini aç" data-icon="user"></button>
+  </div>
+</header>
+<main class="shell__scroll">
+<div class="page stack--loose stack">
+
+  <div class="stack stack--tight">
+    <p class="t-label">Yüzeyler</p>
+    <!-- surface-0 is the page's own ground, so its swatch is invisible
+         here on purpose: that is what "depth is surface lightness" costs
+         and what the whole ramp is budgeted against. -->
+    <div class="cluster">
+      <div style="width:88px;height:56px;background:var(--c-surface-0);border-radius:var(--r-1)"></div>
+      <div style="width:88px;height:56px;background:var(--c-surface-1);border-radius:var(--r-1)"></div>
+      <div style="width:88px;height:56px;background:var(--c-surface-2);border-radius:var(--r-1)"></div>
+    </div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Tipografi</p>
+    <h1 class="t-display">Geçmişte sıralama</h1>
+    <h2 class="t-title">Present Perfect vs Past Simple</h2>
+    <p class="t-lead">Bu ikisi sınavlarda en sık karıştırılan çifttir.</p>
+    <div class="prose">
+      <p class="t-body">Past Simple <strong>kapanmış</strong> bir zaman diliminden konuşur: olay bitti, zaman da bitti. Present Perfect ise geçmişteki olayı şimdiye bağlar.</p>
+      <p class="t-body t-en">She has taught here since 2018.</p>
+    </div>
+    <p class="t-meta t-num">Adım 3 / 8</p>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Butonlar</p>
+    <div class="cluster">
+      <button class="btn btn--primary">Devam</button>
+      <button class="btn btn--secondary">Atla</button>
+      <button class="btn btn--quiet">Dersler</button>
+      <button class="btn btn--secondary btn--icon" aria-label="Profilini aç" data-icon="user"></button>
+      <button class="btn btn--quiet btn--icon" aria-label="Kapat" data-icon="close"></button>
+    </div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">İkonlar</p>
+    <div class="cluster" id="icons"></div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Boşluk</p>
+    <p class="t-lead t-en" lang="en">She <span class="blank"><span class="visually-hidden">boşluk</span></span> here since 2018.</p>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Satırlar</p>
+    <div>
+      <button class="row"><span class="row__lead t-num t-meta">1</span><span class="row__main"><span class="row__title t-en">Present Simple vs Present Continuous</span><span class="row__sub">Alışkanlık mı, şu an mı?</span></span><span class="row__trail">Tamamlandı</span></button>
+      <button class="row"><span class="row__lead t-num t-meta">2</span><span class="row__main"><span class="row__title t-en">Present Perfect vs Past Simple</span><span class="row__sub">Geçmiş bitti mi, şimdiye mi uzanıyor?</span></span><span class="row__trail t-num">4/8</span></button>
+    </div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Çipler ve ilerleme</p>
+    <div class="cluster">
+      <span class="chip">6 ders</span>
+      <span class="chip chip--ok">Tamamlandı</span>
+      <span class="chip chip--accent">Sıradaki</span>
+    </div>
+    <div class="progress"><div class="progress__fill" style="width:38%"></div></div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Seçenekler ve geri bildirim</p>
+    <!-- Built by the app's own modules, below, rather than copied here.
+         Hand-copied markup on a component sheet drifts from the real thing
+         within one refactor, and then the sheet is worse than nothing. -->
+    <div class="bleed" id="answers"></div>
+  </div>
+
+  <div class="surface stack">
+    <p class="t-label">Restatement — cümlelik seçenekler</p>
+    <!-- The same Option primitive carrying whole sentences. It is here
+         because this is the case that breaks it: the row aligns to its
+         first line, and at 320px these wrap to three. -->
+    <div id="restatement"></div>
+    <div class="bleed" id="restatement-options"></div>
+  </div>
+
+  <div class="stack stack--tight">
+    <p class="t-label">Yüzey, alan, istatistik</p>
+    <div class="surface stack stack--tight">
+      <p class="t-label">Kaldığın yer</p>
+      <p class="t-title t-en">Future Forms</p>
+      <input class="field" placeholder="İsmini yaz (isteğe bağlı)">
+    </div>
+    <div class="stats">
+      <div><div class="stat__value t-num">3/18</div><div class="stat__label">Tamamlanan ders</div></div>
+      <div><div class="stat__value t-num">%74</div><div class="stat__label">Genel doğruluk</div></div>
+      <div><div class="stat__value t-num">126</div><div class="stat__label">Çözülen soru</div></div>
+    </div>
+  </div>
+
+</div>
+</main>
+<div class="shell__bar">
+  <div class="shell__bar-inner">
+    <button class="btn btn--secondary">Geri</button>
+    <button class="btn btn--primary">İleri</button>
+  </div>
+</div>
+<nav class="nav">
+  <a class="nav__item" href="#" aria-current="page"><span data-icon="book-fill"></span><span>Eğitim</span></a>
+  <a class="nav__item" href="#"><span data-icon="check-square"></span><span>Test</span></a>
+</nav>
+<script type="module">
+  // Icons come from js/icons.js rather than being pasted in, so this page
+  // cannot quietly show a set the app no longer draws.
+  import { icon, ICON_NAMES } from "../js/icons.js";
+  import { renderOptions } from "../js/answers.js";
+  import { renderAnswerFeedback } from "../js/feedback.js";
+  import { renderPrompt } from "../js/prompt.js";
+  import { QUESTION_TYPE } from "../js/topics.js";
+
+  const question = {
+    prompt: "The policy ____ twice since the term began.",
+    options: ["changed", "has changed", "was changing", "had changed"],
+    correctAnswer: "has changed",
+    explanation:
+      "\u201csince + geçmişte bir nokta\u201d hâlâ açık bir aralık kurar, ve açık aralık Present Perfect ister.",
+    tip: "since / for + açık aralık → Present Perfect.",
+  };
+  const answers = document.getElementById("answers");
+  answers.append(
+    renderOptions(question, { selected: "changed", answered: true }),
+    renderAnswerFeedback(question, false)
+  );
+
+  const restated = {
+    type: QUESTION_TYPE.RESTATEMENT,
+    prompt: "If the shipment had left on Monday, it would already have reached the depot.",
+    options: [
+      "The shipment did not leave on Monday, so it has not reached the depot yet.",
+      "The shipment left on Monday and reached the depot as planned.",
+      "The shipment will reach the depot if it leaves on Monday.",
+      "The shipment reached the depot even though it left after Monday.",
+    ],
+    correctAnswer: "The shipment did not leave on Monday, so it has not reached the depot yet.",
+  };
+  document.getElementById("restatement").appendChild(renderPrompt(restated));
+  document.getElementById("restatement-options").appendChild(renderOptions(restated));
+
+  for (const host of document.querySelectorAll("[data-icon]")) {
+    host.appendChild(icon(host.dataset.icon, { size: host.closest(".nav") ? 24 : 20 }));
+  }
+  const shelf = document.getElementById("icons");
+  for (const name of ICON_NAMES) {
+    shelf.appendChild(icon(name));
+  }
+</script>
+</body>
+</html>

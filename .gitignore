@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+*.log
+/tmp/
+
+# Seeded design-canvas output — regenerated from docs/mockups/, never edited by hand.
+/english-prep-*.html

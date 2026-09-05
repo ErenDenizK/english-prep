@@ -1,0 +1,185 @@
+/* ==========================================================================
+   Self-hosted webfonts — Source Serif 4 + Source Sans 3
+   Generated with fontTools/pyftsubset (dev-time only; not a runtime dep).
+
+   WHAT WAS SUBSET AND WHY
+   -----------------------
+   Google serves these families as ~10 unicode-range slices per weight. A
+   Turkish/English reader needs exactly two of them, and the `latin-ext`
+   slice is the expensive one: ~33 KB for Source Sans 3 against ~15 KB for
+   `latin`, because it spans hundreds of glyphs for languages this app will
+   never show. Turkish needs precisely five of those glyphs:
+
+       Ğ U+011E   ğ U+011F   İ U+0130   Ş U+015E   ş U+015F
+
+   Everything else Turkish uses — ç ö ü â î û and ı (U+0131) — already lives
+   inside `latin`. So each face here is ONE file: Google's `latin` range plus
+   those five codepoints. That is why the unicode-range below is Google's
+   `latin` list with five extra entries appended, and why there is no second
+   @font-face per weight.
+
+   Source: static instances pulled from the Google Fonts CSS2 API
+   (Source Sans 3 v19, 3.052; Source Serif 4 v14, 4.004), subset with
+       pyftsubset <face>.ttf --flavor=woff2 --notdef-outline \
+         --unicodes=<range below> \
+         --layout-features=ccmp,locl,kern,liga,clig,calt,rlig,rclt,mark,mkmk,tnum,onum
+
+   FIGURES — read this before "fixing" a missing tnum
+   --------------------------------------------------
+   Both families ship TABULAR figures as their default set (all ten digits
+   have an identical advance: 497/513 units in Source Sans 3, 529/547 in
+   Source Serif 4). `pnum` is the opt-OUT to proportional; Source Sans 3 has
+   no `tnum` feature at all because it has nothing to switch back from.
+   `pnum` was therefore dropped, which closes out `tnum` with it and saves
+   ~3 KB of proportional figure glyphs the app would never render.
+   `font-variant-numeric: tabular-nums` is a harmless no-op against these
+   files — the counters are tabular regardless. Neither family has `onum`.
+
+   METRIC-MATCHED FALLBACKS
+   ------------------------
+   The four *-fallback families below exist only so `font-display: swap`
+   does not reflow the page. Each is a locally installed font re-declared
+   with size-adjust / ascent-override / descent-override / line-gap-override
+   solved so its line box and average advance match the webfont's:
+
+       size-adjust       = webAvgAdvance / fallbackAvgAdvance   (per em)
+       ascent-override   = (webAscent  / webUpem) / size-adjust
+       descent-override  = (|webDescent| / webUpem) / size-adjust
+       line-gap-override = (webLineGap / webUpem) / size-adjust
+
+   The division by size-adjust is not optional: the fallback renders at
+   font-size x size-adjust, so the overrides have to be expressed in that
+   scaled em to land on the same pixel line box.
+
+   Both families set OS/2 USE_TYPO_METRICS, so the webfont side uses
+   sTypo* (which here equals hhea): Sans 1024/-400/0, Serif 1036/-335/0 per
+   1000 upem. Average advance was measured over a mixed English/Turkish
+   sample string, which is what keeps the line-break points from moving.
+
+   CAVEAT — the serif fallback is matched to Times New Roman, not Georgia.
+   Georgia is not installed on the machine that generated this file, so its
+   metrics could not be read and were not guessed. Times New Roman metrics
+   were read from Liberation Serif, which is metric-compatible with it by
+   design; Arial metrics likewise from Liberation Sans. Georgia has a much
+   larger x-height than Times, so if Georgia is wanted as the serif fallback
+   its size-adjust will be near 100%, not the 116% below — recompute with
+   the formula above before swapping the local() name.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1 · The webfonts
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/source-sans-3-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD,
+    U+011E-011F, U+0130, U+015E-015F;
+}
+
+@font-face {
+  font-family: "Source Sans 3";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/source-sans-3-600.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD,
+    U+011E-011F, U+0130, U+015E-015F;
+}
+
+@font-face {
+  font-family: "Source Serif 4";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/source-serif-4-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD,
+    U+011E-011F, U+0130, U+015E-015F;
+}
+
+
+/* --------------------------------------------------------------------------
+   2 · Metric-matched fallbacks (no reflow on swap)
+
+   Measured: Source Sans 3 avg advance .41545 (400) / .42862 (600) em;
+             Source Serif 4 avg advance .47745 (400) / .48562 (600) em;
+             Arial .44717 / Arial Bold .48129;
+             Times New Roman .41163 / Times New Roman Bold .43357.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Source Sans 3 Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 92.91%;
+  ascent-override: 110.22%;
+  descent-override: 43.05%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Source Sans 3 Fallback";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Arial Bold"), local("Helvetica Bold"),
+    local("Liberation Sans Bold");
+  size-adjust: 89.06%;
+  ascent-override: 114.98%;
+  descent-override: 44.92%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Source Serif 4 Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Times New Roman"), local("Liberation Serif"), local("Times");
+  size-adjust: 115.99%;
+  ascent-override: 89.32%;
+  descent-override: 28.88%;
+  line-gap-override: 0%;
+}
+
+
+/* --------------------------------------------------------------------------
+   Source Serif 4 600 is deliberately not shipped.
+   English is set in the serif at 400 everywhere; its hierarchy comes from
+   size and from the face itself, against the sans at 600 for Turkish and UI.
+   That is a cleaner pairing than making both halves bold, and it takes the
+   font payload from 66.6 KB to 48.0 KB — inside the budget without trimming
+   the character range, which would have risked future content.
+   `.t-en` pins font-weight: 400 so nothing can ask for a weight that is not
+   here and get a synthesised faux-bold.
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   3 · Wiring (not done here — css/style.css was out of scope)
+
+   To use these, the tokens in css/style.css should name the fallback family
+   between the webfont and the generic:
+
+     --f-serif: "Source Serif 4", "Source Serif 4 Fallback", Georgia,
+                "Times New Roman", serif;
+     --f-sans:  "Source Sans 3", "Source Sans 3 Fallback", system-ui,
+                -apple-system, "Segoe UI", sans-serif;
+
+   and index.html / quiz.html / results.html should drop the two
+   fonts.googleapis.com preconnects and the Google stylesheet <link>, add
+   <link rel="stylesheet" href="css/fonts.css">, and preload only the two
+   faces used above the fold:
+
+     <link rel="preload" as="font" type="font/woff2" crossorigin
+           href="fonts/source-sans-3-400.woff2">
+     <link rel="preload" as="font" type="font/woff2" crossorigin
+           href="fonts/source-serif-4-400.woff2">
+   -------------------------------------------------------------------------- */

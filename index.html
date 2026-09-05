@@ -1,52 +1,143 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>English Prep Practice</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Eğitim — English Prep</title>
+  <meta name="description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#13100d" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <!-- iOS ignores the manifest's icons for Add to Home Screen and wants
+       this one. Without it the home-screen icon is a screenshot of the
+       page, which is what it was. -->
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <!-- This app is distributed by pasting a URL into a group chat, so the
+       preview card is the first thing every one of its users will ever see
+       of it. It was blank. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="English Prep" />
+  <meta property="og:locale" content="tr_TR" />
+  <meta property="og:title" content="English Prep" />
+  <meta property="og:description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
+  <meta property="og:url" content="https://erendenizk.github.io/english-prep/" />
+  <meta property="og:image" content="https://erendenizk.github.io/english-prep/icons/social-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="English Prep — üniversite İngilizce yeterlik sınavı için ders ve test." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/source-sans-3-400.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/source-serif-4-400.woff2" />
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header__inner">
-      <div>
-        <h1><a href="index.html">English Prep Practice</a></h1>
-        <p>Multiple-choice practice for the university English prep exam</p>
-      </div>
-      <button id="clear-history-btn" class="btn btn--secondary" type="button" hidden>
-        Clear history
+  <!-- The shell is a fixed-height column: header, one scrolling region, and
+       either the bottom nav or a focused mode's action bar. Nothing else
+       ever scrolls, so the frame cannot grow and cannot shift sideways. -->
+  <header class="shell__header" id="shell-header">
+    <div class="shell__header-inner">
+      <h1 class="shell__brand t-en">English Prep</h1>
+      <!-- Profil is identity and settings, not a content mode, so it opens
+           from here rather than taking a third slot in the bottom nav. -->
+      <button class="btn btn--secondary btn--icon" type="button" id="profile-trigger" aria-label="Profilini aç">
+        <span id="profile-trigger-face" aria-hidden="true"></span>
       </button>
     </div>
   </header>
 
-  <main class="page">
-    <section class="hero">
-      <h2 class="hero__title">Start a mixed test</h2>
-      <p class="hero__description">
-        Questions are pulled at random from every topic below. Good for a
-        general check of where you stand.
-      </p>
-      <div class="hero__controls">
-        <div class="field-row">
-          <label for="mixed-count">Questions</label>
-          <select id="mixed-count" class="select">
-            <option value="5">5</option>
-            <option value="10" selected>10</option>
-            <option value="all">All</option>
-          </select>
+  <main class="shell__scroll" id="shell-scroll">
+    <div class="page stack stack--loose">
+      <section id="view-egitim" class="view stack stack--loose" aria-label="Eğitim" tabindex="-1" hidden>
+        <div id="lesson-index" class="stack stack--loose">
+          <p class="t-meta">Dersler yükleniyor&hellip;</p>
         </div>
-        <button id="start-mixed-btn" class="btn" type="button">Start Mixed Test</button>
-      </div>
-    </section>
+        <div id="lesson-reader" hidden></div>
+      </section>
 
-    <section>
-      <h2>Practice by topic</h2>
-      <div id="topics-container" class="topics">
-        <p class="empty-state">Loading topics&hellip;</p>
-      </div>
-    </section>
+      <section id="view-test" class="view stack stack--loose" aria-label="Test" tabindex="-1" hidden>
+        <div id="test-panel" class="stack stack--loose">
+          <p class="t-meta">Konular yükleniyor&hellip;</p>
+        </div>
+      </section>
+
+      <section id="view-profil" class="view stack stack--loose" aria-label="Profil" tabindex="-1" hidden>
+        <div id="profile-container" class="stack stack--loose">
+          <p class="t-meta">Profil yükleniyor&hellip;</p>
+        </div>
+      </section>
+    </div>
   </main>
+
+  <!-- A nav landmark with aria-current, not a tablist: a tablist makes the
+       whole bar one tab stop, implies panels in this document, and fights a
+       hash router. -->
+  <nav class="nav" id="bottom-nav" aria-label="Bölümler">
+    <a class="nav__item" href="#egitim" data-view="egitim"><span data-icon></span><span>Eğitim</span></a>
+    <a class="nav__item" href="#test" data-view="test"><span data-icon></span><span>Test</span></a>
+  </nav>
+
+  <!-- Shown only by the lesson reader, which runs as a focused mode with
+       the header and the nav stepped out of the way. -->
+  <div class="shell__bar" id="lesson-bar" hidden>
+    <div class="shell__bar-inner"></div>
+  </div>
+
+  <!-- One persistent live region for the whole app. Its text is replaced;
+       it is never created together with its content, because a region that
+       appears already populated is frequently missed. -->
+  <p class="visually-hidden" id="live-region" role="status"></p>
+
+  <dialog class="dialog" id="confirm-dialog" aria-labelledby="confirm-dialog-title">
+    <div class="stack stack--tight">
+      <h2 class="t-title" id="confirm-dialog-title">Geçmişi sıfırla</h2>
+      <p class="t-body">
+        Tüm test geçmişin ve ders ilerlemen bu cihazdan silinecek. Bu işlem
+        geri alınamaz — silmeden önce yedek almak istersen vazgeç ve
+        "Yedek al"a dokun.
+      </p>
+    </div>
+    <!-- Equal weight, deliberately. Filling one of them would either dress
+         up a destructive action or make an amber Cancel the loudest thing
+         on screen, and a confirmation is the one place where making the
+         reader actually read is the point. The safe action takes focus. -->
+    <div class="dialog__actions">
+      <button class="btn btn--secondary" type="button" id="confirm-dialog-cancel">Vazgeç</button>
+      <button class="btn btn--secondary" type="button" id="confirm-dialog-confirm">Sil</button>
+    </div>
+  </dialog>
+
+  <!-- Restoring a backup. Two steps in one dialog: choose the file or
+       paste the text, then read what it would add before it is written.
+       A restore that silently overwrote would be the one action in this
+       app a learner could not undo. -->
+  <dialog class="dialog" id="restore-dialog" aria-labelledby="restore-dialog-title">
+    <div class="stack">
+      <div class="stack stack--tight">
+        <h2 class="t-title" id="restore-dialog-title">Yedekten geri yükle</h2>
+        <p class="t-body" id="restore-dialog-text">
+          Yedek dosyanı seç, ya da içeriğini aşağıya yapıştır. Mevcut
+          ilerlemen silinmez — iki taraf birleştirilir.
+        </p>
+      </div>
+
+      <div class="stack stack--tight" id="restore-input">
+        <label class="btn btn--secondary" for="restore-file">Dosya seç</label>
+        <input class="visually-hidden" type="file" id="restore-file" accept="application/json,.json" />
+        <label class="t-label" for="restore-text">Ya da yapıştır</label>
+        <textarea class="field field--multiline" id="restore-text" rows="4" spellcheck="false"></textarea>
+      </div>
+
+      <p class="t-meta" id="restore-message" role="status"></p>
+    </div>
+
+    <div class="dialog__actions">
+      <button class="btn btn--secondary" type="button" id="restore-cancel">Vazgeç</button>
+      <button class="btn btn--primary" type="button" id="restore-confirm">Devam</button>
+    </div>
+  </dialog>
 
   <script type="module" src="js/home.js"></script>
 </body>

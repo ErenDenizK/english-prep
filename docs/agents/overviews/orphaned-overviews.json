@@ -1,0 +1,41 @@
+{
+  "tenses": {
+    "title": "Tenses Nedir?",
+    "body": [
+      "İngilizce'de 'tense' (zaman), bir fiilin ne zaman gerçekleştiğini değil, konuşmacının bir eylemi nasıl algıladığını anlatan bir gramer sistemidir. Türkçe'de de zamanlar var (geniş zaman, şimdiki zaman, geçmiş zaman, gelecek zaman) ama İngilizce'nin zaman sistemi çok daha ayrıntılıdır: aynı 'geçmişte olan bir şey' bile, bağlama göre dört farklı şekilde ifade edilebilir (Past Simple, Past Continuous, Present Perfect, Past Perfect gibi).",
+      "Türkçe konuşan öğrenciler için en büyük tuzak şu: Türkçe'de 'gidiyorum' hem 'I go' (rutin) hem 'I am going' (şu an) anlamına gelebilir, çünkü Türkçe bu ayrımı genelde bağlamdan çıkarır. İngilizce ise bu ayrımı fiilin kendisinde, gramer yapısıyla zorunlu kılar. Bu yüzden İngilizce'de doğru tense seçmek, sadece 'ne zaman oldu' sorusuna değil, 'konuşmacı bu eylemi nasıl görüyor — bitmiş bir olay mı, devam eden bir süreç mi, şimdiki zamana etkisi olan bir geçmiş mi' sorusuna cevap vermeyi gerektirir.",
+      "Bu konuda, sınavlarda en sık karıştırılan altı çift/üçlüyü sırasıyla işleyeceğiz: önce şimdiki zamanın iki hali, sonra geçmişin bugüne etkisini gösteren yapı, ardından geçmişin kendi içindeki üç hali, sonra gelecek zaman ifadeleri, devamında 'perfect' yapıların ince farkları, ve son olarak bu zamanları tetikleyen sinyal kelimeler (since, for, ago, already, yet gibi)."
+    ],
+    "keyPoints": [
+      "İngilizce'de zaman seçimi, olayın ne zaman olduğundan çok, konuşmacının o olayı nasıl gördüğüyle ilgilidir.",
+      "Türkçe'deki tek bir zaman kipi, İngilizce'de birden fazla tense'e karşılık gelebilir — 'Türkçe'ye çevirince nasıl söylerdim' mantığı çoğu zaman yanıltıcıdır.",
+      "Altı başlık aşağıda önerilen bir sırada listeleniyor ama hepsi bağımsız birer makale; istediğin sırayla okuyabilirsin."
+    ]
+  },
+  "modals": {
+    "title": "Modallar (Modal Verbs) Nedir?",
+    "body": [
+      "Modal fiiller (can, could, may, might, must, should, will, would, ought to, need, had better gibi) İngilizce'de bir eylemin gerçekleşme olasılığını, zorunluluğunu, iznini ya da tavsiye niteliğini anlatan yardımcı fiillerdir. Diğer fiillerden farklı olarak çekimlenmezler (he/she/it ile bile '-s' almazlar: 'he can', asla 'he cans' değil), ve kendilerinden sonra her zaman fiilin yalın hali (base form) gelir: 'she must go', asla 'she must going' ya da 'she must to go' değil.",
+      "Türkçe'de zorunluluk, izin ve olasılık genelde ayrı kelimelerle (gerekmek, gerekiyor, -abilir, izin var gibi) ama daha esnek bir şekilde ifade edilir. İngilizce'de ise her modal, çok spesifik bir anlam ve ton taşır: 'must' ile 'have to' ikisi de 'zorunlu' demek gibi görünse de, biri içsel/kişisel bir zorunluluğu, diğeri dışarıdan gelen bir kuralı ifade eder. Bu ince farklar, sınavlarda en sık test edilen noktalardır.",
+      "Bu konuda modalleri altı ana kullanım alanına göre işleyeceğiz: zorunluluk/gereklilik, izin/olasılık, şimdiki zamana dair çıkarımlar, geçmişe dair çıkarımlar (modal perfects), tavsiye, ve yetenek. Her biri kendi mantığıyla ayrı bir makale."
+    ],
+    "keyPoints": [
+      "Modal fiiller çekimlenmez ve kendilerinden sonra her zaman fiilin yalın hali gelir.",
+      "Aynı Türkçe karşılığa sahip görünen modaller (must/have to gibi) çoğu zaman farklı bir tonu ya da kaynağı ima eder.",
+      "Modalleri doğru kullanmak, kelimenin kendisinden çok, cümlenin bağlamındaki ipuçlarını (kural mı kişisel görüş mü, kesin mi belirsiz mi) okumakla ilgilidir."
+    ]
+  },
+  "passive-voice": {
+    "title": "Edilgen Çatı (Passive Voice) Nedir?",
+    "body": [
+      "Aktif cümlede eylemi yapan (fail) özneyi oluşturur: 'The chef cooked the meal.' Edilgen (passive) çatıda ise odak eylemi yapan değil, eylemden etkilenen üzerindedir: 'The meal was cooked (by the chef).' Türkçe'de de edilgen çatı var ('-il, -in, -n' ekleriyle: 'yemek pişirildi') ama İngilizce'de edilgen çatı çok daha sık ve farklı amaçlarla kullanılır: bilimsel/akademik yazıda, haberlerde, resmi kurallarda, ya da failin kim olduğu bilinmediğinde/önemli olmadığında.",
+      "Edilgen çatının en can alıcı noktası şu: fiilin zamanı değişmez, sadece yapısı değişir — 'be + V3' kalıbı, aktif cümlede hangi zaman kullanılmışsa onunla eşleşir. Yani edilgen çatıyı öğrenmek yeni bir zaman öğrenmek değildir; zaten bildiğin zamanları yeni bir kalıba dökmektir.",
+      "Bu konuda edilgen çatıyı altı başlıkta işleyeceğiz: temel zaman formları, modallerle birleşimi, geçmişe dönük modal + edilgen kalıpları, bir işi başkasına yaptırma (causative), söylenti/haber aktarma yapıları, ve failin ne zaman belirtilip ne zaman belirtilmeyeceği."
+    ],
+    "keyPoints": [
+      "Edilgen çatı yeni bir zaman değil, mevcut zamanların 'be + V3' kalıbına dökülmüş halidir.",
+      "Edilgen çatı, kimin yaptığından çok neyin yapıldığını/olduğunu vurgulamak istendiğinde tercih edilir.",
+      "Fail (by + kişi) sadece önemliyse ya da şaşırtıcıysa belirtilir; aksi halde cümleden çıkarılır."
+    ]
+  }
+}
