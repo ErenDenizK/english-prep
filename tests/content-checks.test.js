@@ -465,9 +465,11 @@ test("the corpus backlog only shrinks", async () => {
   // A ratchet. It was 32 when the check was written on 2026-09-04, and 1
   // by the end of the same night: three repair rounds cleared tenses,
   // modals and passive-voice, and the check itself grew to read `text`
-  // block prose, which found one more. Lower this number when it drops,
-  // and when it reaches zero the check becomes an error.
-  const CEILING = 1;
+  // block prose, which found one more. The second tenses repair cleared
+  // that last one, so the backlog is 0 and any new warning is a defect.
+  // Lower this number when it drops; the check becomes an error once the
+  // corpus has held at zero long enough for that to be a safe default.
+  const CEILING = 0;
   const { readFile } = await import("node:fs/promises");
   const manifest = JSON.parse(
     await readFile(new URL("../data/manifest.json", import.meta.url), "utf8")
