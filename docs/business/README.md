@@ -13,11 +13,15 @@ deadline because a friend might start writing content.
 
 ## The documents
 
+**`ozet.md` is the whole of this directory in Turkish, on one page.**
+Start there; everything below is the long form.
+
 Read in this order. Each is self-contained; each says what it could not
 verify.
 
 | | | |
 |---|---|---|
+| **`ozet.md`** | **Türkçe özet — hepsi bir sayfada** | Where to start |
 | **`brief.md`** | What the owner actually said | The record. Where anything below disagrees with it, this is what he said and the other is an argument |
 | **`two-apps.md`** | Is the App 1 / App 2 split right? | Yes — but the seam is *exam / no exam*, not *Turkish / global* |
 | **`pricing.md`** | The 270 / 150 / three-schools arithmetic | It clears his bar. The production cost, which he never computed, is the interesting number |
