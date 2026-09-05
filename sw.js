@@ -26,7 +26,7 @@
 // "remember to bump this" is a rule that gets forgotten once and then
 // silently stays forgotten, which is exactly what happened here.
 
-const VERSION = "english-prep-v0.31";
+const VERSION = "english-prep-v0.32";
 
 /**
  * The shell. Everything needed to paint a screen with no network at all.

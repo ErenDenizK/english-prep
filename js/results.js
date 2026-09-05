@@ -32,12 +32,6 @@ function formatPercent(correct, total) {
   return total === 0 ? "%0" : `%${Math.round((correct / total) * 100)}`;
 }
 
-function showMessage(text) {
-  clear(container);
-  container.appendChild(el("p", "t-meta", text));
-  actionBar.set([{ label: "Ana sayfa", level: "primary", href: "index.html" }]);
-}
-
 function renderScore(result) {
   const block = el("section", "stack stack--tight");
   block.appendChild(el("p", "t-label", "Sonuç"));
@@ -252,7 +246,9 @@ function renderReview(result) {
 async function init() {
   const result = getQuizResult();
   if (!result) {
-    showMessage("Henüz gösterilecek bir sonuç yok. Ana sayfadan bir test başlat.");
+    // The same restored-session case as quiz.html, and the same answer:
+    // go home rather than show a dead end. See the note there.
+    window.location.replace("index.html");
     return;
   }
 

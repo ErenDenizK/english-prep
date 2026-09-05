@@ -321,7 +321,21 @@ function handleKeydown(event) {
 async function init() {
   const request = getQuizRequest();
   if (!request) {
-    showMessage("Devam eden bir test yok. Ana sayfadan bir test başlat.");
+    // Not an error, and not a screen worth having. The request lives in
+    // sessionStorage, so the only way to arrive here without one is to
+    // arrive in a NEW session — an installed app or a phone browser
+    // reopening the last page it had, a day later. The learner did not
+    // ask for a quiz screen; the app reopened where it was. What they
+    // got was a fullscreen page with no header, no nav and one button,
+    // which reads as a broken app, and the owner reported it as one.
+    //
+    // Nothing is lost by leaving: `recordPartialOnLeave` wrote down
+    // whatever had been answered on the way out, so the score is already
+    // in the history the home screen reads.
+    //
+    // `replace` rather than `assign`, so Back does not return to the
+    // page we are leaving and bounce them straight out again.
+    window.location.replace("index.html");
     return;
   }
 
