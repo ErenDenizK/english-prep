@@ -185,6 +185,27 @@ function renderMixedTest({ primary = true } = {}) {
         "de kendin bulursun — sınavda da öyle olacak."
     )
   );
+  // And the half nobody was told. `startMixedTest` pools every live
+  // topic and `orderForPractice` draws unseen items first — both right —
+  // but the consequence is that someone who has read six of sixty
+  // lessons gets a test that is mostly categories no lesson has taught
+  // them yet: 24 of 241 items belong to what they have read. The
+  // machinery downstream handles that correctly, turning a low score
+  // into instruction rather than restudy. What was missing is that the
+  // learner is never told, so a 3/10 on day two reads as a verdict on
+  // them instead of a description of the draw.
+  //
+  // Said in the voice the reader already uses for the pretest block,
+  // because it is the same argument: attempting before studying is the
+  // point, not a waste.
+  intro.appendChild(
+    el(
+      "p",
+      "t-body",
+      "Bir kısmı henüz okumadığın derslerden gelecek. Bilmediğin bir soruyu " +
+        "denemek boşa değil: yanıldığın yer, hangi dersi açacağını söyler."
+    )
+  );
   surface.appendChild(intro);
 
   const row = el("div", "cluster cluster--spread");

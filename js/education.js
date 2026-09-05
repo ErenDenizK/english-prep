@@ -50,6 +50,7 @@ import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { startTopicTest, startCategoryPractice, startMixedTest } from "./quiz-launch.js";
 import { TOPIC_INTRO_PREFIX } from "./config.js";
+import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { el, clear, appendProse, appendInline, sectionHeading } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
@@ -759,13 +760,51 @@ function renderIndexFilter(lessons, progress) {
  * person who uses the app most.
  */
 function renderTopicIndex(lessons, progress) {
-  const section = el("section", "stack stack--tight");
+  const section = el("section", "stack");
+
   // The one place at runtime the app says what it is for. It used to be
-  // on the welcome card only, so the learner's first test destroyed it;
-  // a permanent structural heading is somewhere it can live.
+  // on the welcome card only, so the learner's first test destroyed it.
+  //
+  // It is a line rather than a heading now, because the rows below are
+  // grouped and the group names are the headings. js/home.js settled
+  // this shape for the Test tab and the reasoning holds here: an
+  // umbrella "Konular" above four tier names puts two labels of
+  // identical weight one line apart, which reads as a pile rather than
+  // as a hierarchy. The sentence was the part worth keeping.
   section.appendChild(
-    sectionHeading("Konular", "Her konu, önce ne olduğunu anlatır; dersler içinde.")
+    el("p", "t-meta", "Her konu, önce ne olduğunu anlatır; dersler içinde.")
   );
+
+  // Grouped the way the Test tab groups, which until now it was not: the
+  // same ten topics were four headed groups on one tab and one flat list
+  // of ten identical rows on the other. Flat is also what a learner
+  // reported as the topics piling up.
+  //
+  // A grouping, never an order. `js/tiers.js` says the tiers are "purely
+  // a display grouping", the reader locks nothing, and the next-step
+  // card routes by weakness rather than by tier — so these headings say
+  // where a topic is filed, not what to read first.
+  const tiersPresent = TIER_ORDER.filter((tier) =>
+    lessons.some((lesson) => lesson.tier === tier)
+  );
+  const groups =
+    tiersPresent.length > 1
+      ? tiersPresent.map((tier) => ({
+          heading: TIER_LABELS[tier] ?? tier,
+          lessons: lessons.filter((lesson) => lesson.tier === tier),
+        }))
+      : [{ heading: "Konular", lessons }];
+
+  for (const group of groups) {
+    section.appendChild(renderTopicGroup(group.heading, group.lessons, progress));
+  }
+
+  return section;
+}
+
+function renderTopicGroup(heading, lessons, progress) {
+  const block = el("section", "stack stack--tight");
+  block.appendChild(el("h2", "t-label", heading));
 
   const list = el("div");
   const topicIds = [...new Set(lessons.map((lesson) => lesson.topicId))];
@@ -796,9 +835,9 @@ function renderTopicIndex(lessons, progress) {
     row.addEventListener("click", () => openIntroByHash(topicId));
     list.appendChild(row);
   }
-  section.appendChild(list);
+  block.appendChild(list);
 
-  return section;
+  return block;
 }
 
 /* ---- Topic intro ---- */
