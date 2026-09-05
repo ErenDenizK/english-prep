@@ -47,6 +47,15 @@ A rule that fires and returns a non-key option is **blocking**, whether or
 not a later rule would have reached the key. The learner stops at the
 first rule that fires — that is what a checklist is.
 
+**Unless the block says otherwise, in its own text.** One block in this
+corpus is deliberately two-stage: its later rules choose the *tense of
+the reporting verb* once the earlier ones have chosen the pattern, and a
+rule inside it says so to the learner. Read a block before applying the
+first-rule-wins test to it — a procedure that announces a second stage is
+not the same object as a checklist, and judging it as one manufactures a
+finding. A block that is two-stage *without* saying so is still a defect:
+the announcement is what makes it legible.
+
 Run it over the categories the repair did *not* touch as well.
 
 ### 2 · Substitute every non-key option into its paragraph

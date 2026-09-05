@@ -914,7 +914,7 @@
               "condition": "Aktarılan olay aktarımdan önce olmuşsa ve özne o eylemi yapan değil, eylemin uygulandığı taraf ise (görülmüş, bulunmuş, kurtarılmış)",
               "then": "to have been + V3"
             },
-            { "condition": "Aktarılan olay aktarımdan önce olmuşsa ve eylemi özne kendi yapmışsa", "then": "to have + V3" },
+            { "condition": "Aktarılan olay aktarımdan önce olmuşsa, eylemi özne kendi yapmışsa ve boşluk cümlenin başında değilse", "then": "to have + V3" },
             { "condition": "Boşluğun önünde asıl özne varsa ve olay aktarımla aynı zamandaysa", "then": "S + is said to + V" },
             {
               "condition": "Kalıbı seçtikten sonra bir de aktarma fiilinin zamanı kalır: aktarılan görüş bugün de tekrarlanıyorsa ya da beklenen an henüz gelmediyse aktarma fiili geniş zamanda kalır",
