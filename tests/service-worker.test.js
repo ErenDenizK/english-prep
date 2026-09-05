@@ -36,9 +36,24 @@ test("the cache name matches the newest CHANGELOG entry", () => {
   );
 });
 
-test("activate deletes every cache that is not the current one", () => {
-  // The half of the mechanism a bumped version depends on.
-  assert.match(sw, /names\.filter\(\(name\) => name !== VERSION\)/);
+test("activate deletes stale caches and keeps the content one", () => {
+  // Both halves of the mechanism a bumped version depends on. The second
+  // half is one release old: tying the cache name to the version made
+  // activate delete the cache the topic files were in, so every deploy
+  // wiped the learner's offline content. Content is unversioned now and
+  // activate must keep it — a future tidy-up that folds it back into the
+  // versioned cache fails here rather than in someone's metro tunnel.
+  assert.match(sw, /name !== VERSION && name !== CONTENT/);
+  assert.match(sw, /const CONTENT = "english-prep-content";/);
+});
+
+test("content is written to the content cache, not the versioned one", () => {
+  const contentBranch = sw.slice(sw.indexOf("if (isContent)"), sw.indexOf("// Cache first"));
+  assert.match(contentBranch, /caches\.open\(CONTENT\)/);
+  assert.ok(
+    !contentBranch.includes("caches.open(VERSION)"),
+    "the content branch must not write into the versioned cache"
+  );
 });
 
 test("the shell lists every module in js/", async () => {
