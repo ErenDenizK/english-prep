@@ -628,7 +628,12 @@ export function checkNotationGlossed(report, file, lesson) {
       gloss.test(text.slice(Math.max(0, match.index - GLOSS_WINDOW), match.index + GLOSS_WINDOW))
     );
     if (!glossed) {
-      report.warn(
+      // An error rather than a warning, because the backlog is closed.
+      // It was 16 lesson/token pairs the day the rule was settled and 0
+      // by the end of it, so from here a lesson that uses the notation
+      // without naming it is a new defect rather than an old one — and
+      // this is the project's rule for when a ratcheted check graduates.
+      report.error(
         `${file} › ${lesson.category}`,
         `uses ${token} ${uses.length} time(s) and never says what it means — ` +
           "this app's learner has the form and not the label (CLAUDE.md, \"Who this is for\")"

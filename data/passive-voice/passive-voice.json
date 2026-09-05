@@ -471,7 +471,7 @@
       "blocks": [
         {
           "type": "text",
-          "body": "Kurallar, talimatlar ve kullanım kılavuzları eylemi kimin yapacağını genelde söylemez: \"Formlar cuma gününe kadar teslim edilmelidir.\" Kimin teslim edeceği zaten bellidir ve söylenmesine gerek yoktur. İngilizce bunu tek bir kalıpla kurar ve kalıbın hiç istisnası yoktur: **modal + be + V3**."
+          "body": "Kurallar, talimatlar ve kullanım kılavuzları eylemi kimin yapacağını genelde söylemez: \"Formlar cuma gününe kadar teslim edilmelidir.\" Kimin teslim edeceği zaten bellidir ve söylenmesine gerek yoktur. İngilizce bunu tek bir kalıpla kurar, istisnasız: **modal + be + V3**. Kalıpta çekilen tek şey modaldir; **be** ile **V3** — fiilin üçüncü hâli — hep aynı kalır: kept, taken, written."
         },
         {
           "type": "contrast",
@@ -570,7 +570,7 @@
       "blocks": [
         {
           "type": "text",
-          "body": "Bir önceki kalıp şimdiye ve geleceğe bakıyordu: \"must be done\" = yapılmalı. Bu kalıp ise geçmişe bakar. Olay çoktan olmuş ya da olmamıştır; sen sadece onun hakkında bir tahmin yürütür ya da bir eleştiri yaparsın. Yapı tek bir parça daha uzundur: **modal + have been + V3**."
+          "body": "Bir önceki kalıp şimdiye ve geleceğe bakıyordu: \"must be done\" = yapılmalı. Bu kalıp ise geçmişe bakar. Olay çoktan olmuş ya da olmamıştır; sen sadece onun hakkında bir tahmin yürütür ya da bir eleştiri yaparsın. Yapı tek bir parça daha uzundur: **modal + have been + V3**. Türkçede \"gönderilmiş olmalı\" derken bunu zaten kuruyorsun; sondaki **V3** fiilin üçüncü hâli: sent, taken, done."
         },
         {
           "type": "contrast",
@@ -682,7 +682,7 @@
       "blocks": [
         {
           "type": "text",
-          "body": "Türkçede bunun için bir ek var: \"kestim\" → \"kestirdim\", \"boyadım\" → \"boyattım\". İngilizcede ek yok, kalıp var: **have/get + nesne + V3**. \"I cut my hair\" saçını kendin kestiğini söyler; kuaförde kestirdiysen \"I had my hair cut\" demen gerekir. Türkçede tek bir ek kadar küçük olan fark, İngilizcede cümlenin tamamını değiştirir."
+          "body": "Türkçede bunun için bir ek var: \"kestim\" → \"kestirdim\", \"boyadım\" → \"boyattım\". İngilizcede ek yok, kalıp var: **have/get + nesne + V3**; buradaki **V3** fiilin üçüncü hâli: cut, taken, broken. \"I cut my hair\" saçını kendin kestiğini söyler; kuaförde kestirdiysen \"I had my hair cut\" demen gerekir. Türkçede tek bir ek kadar küçük olan fark, İngilizcede cümlenin tamamını değiştirir."
         },
         {
           "type": "contrast",
@@ -815,6 +815,10 @@
           ]
         },
         {
+          "type": "text",
+          "body": "Aşağıdaki kalıplarda **V3** fiilin üçüncü hâli demek: said, thought, reported, gone. Aktarma fiilinin kendisi bu hâlde durur (is said, is believed); aktarılan olay aktarımdan önce olmuşsa arkadan ikinci bir üçüncü hâl daha gelir."
+        },
+        {
           "type": "forms",
           "heading": "Hangi parça hangi zamanı taşır",
           "rows": [
@@ -934,7 +938,7 @@
       "blocks": [
         {
           "type": "text",
-          "body": "Edilgen çatı okulda çoğu zaman \"be + V3 + by\" diye tek parça bir kalıp gibi öğretilir, bu yüzden \"by\" cümleye refleksle eklenir. Oysa gerçek metinlerde edilgen cümlelerin büyük çoğunluğunda fail hiç geçmez; faili gizleyebilmek edilgen çatıyı seçmenin ana sebeplerinden biridir. \"By\" bir süs değil, bir karardır."
+          "body": "Edilgen çatı okulda çoğu zaman \"be + V3 + by\" diye tek parça bir kalıp gibi öğretilir — ortadaki **V3** fiilin üçüncü hâli, broken ya da made gibi — ve \"by\" bu yüzden refleksle eklenir. Oysa gerçek metinlerde edilgen cümlelerin büyük çoğunluğunda fail hiç geçmez; faili gizleyebilmek edilgen çatıyı seçmenin ana sebeplerinden biridir. \"By\" bir süs değil, bir karardır."
         },
         {
           "type": "contrast",
