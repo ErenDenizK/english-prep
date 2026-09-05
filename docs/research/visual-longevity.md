@@ -641,12 +641,15 @@ of which sinks it.
 >    `compound-structures` three, `vocabulary` two. A hue scheme should
 >    still be designed for five, but what a learner can see today is four
 >    groups, one of them a group of one.
-> 2. **The two tabs disagree about whether `tier` is structure at all.**
->    The Test tab groups topics under tier headings
->    (`js/home.js:378`); the Eğitim index is one flat list of ten rows
->    under "Konular" (`js/education.js:767`). Colouring an axis that one
->    of the two main screens does not draw would make the colour the only
->    place the grouping exists.
+> 2. ~~**The two tabs disagree about whether `tier` is structure at
+>    all.**~~ **Closed in v0.35**: the Eğitim index groups by tier too,
+>    on the shape `js/home.js` had already settled. What the fix produced
+>    is better evidence than the argument it answered — the owner looked
+>    at the grouped index on his phone and reported feeling nothing at
+>    all from the tier names. That is this document's own five-minute
+>    test, answered by the person who knows the content best, and it is
+>    the finding that keeps this lever parked: an axis its own author
+>    cannot perceive is not an axis worth colouring.
 > 3. **The tier labels are difficulty claims, and the app refuses to make
 >    one.** `js/tiers.js` says in its own comment that this is *"purely a
 >    display grouping … not a required content-authoring order"*, and the
