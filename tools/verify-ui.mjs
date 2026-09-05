@@ -984,6 +984,75 @@ async function runEmptiedBook(browser) {
 }
 
 /**
+ * The backup note, which nothing had ever rendered.
+ *
+ * It needs three recorded attempts to appear, and no sweep seeded three,
+ * so the one component in the app with an icon button beside a sentence
+ * was never drawn at any width. It shipped broken at every phone size:
+ * `.cluster` wraps, a paragraph inside it is sized to its own
+ * max-content, and this sentence wants 337px — so below about 430px the
+ * 48px button dropped to a line of its own at the far left and left an
+ * empty band under the text. The owner met it on a real phone and read
+ * it as a rendering failure, which is exactly what it looked like.
+ *
+ * Checked at the widths where it was wrong, not only at the four the
+ * sweep normally walks: the failure lived between 320 and 430.
+ */
+async function runBackupNote(browser) {
+  for (const width of [320, 360, 390, 412]) {
+    const context = await browser.newContext({ viewport: { width, height: 900 } });
+    const page = await context.newPage();
+    await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+    await page.evaluate(() => {
+      const attempt = (day) => ({
+        date: new Date(Date.now() - day * 86_400_000).toISOString(),
+        mode: "mixed",
+        topicBreakdown: { tenses: { correct: 1, total: 2 } },
+        categoryBreakdown: {},
+        questions: [{ id: `tenses-t${day}`, topicId: "tenses", correct: day % 2 === 0 }],
+      });
+      localStorage.setItem(
+        "englishPrep.history",
+        JSON.stringify({ attempts: [attempt(3), attempt(2), attempt(1)] })
+      );
+    });
+    await page.reload({ waitUntil: "networkidle" });
+    await page.waitForSelector("#index-list .row");
+
+    const note = page.locator(".note");
+    ok(await note.count() === 1, `${width}px: üç denemeden sonra yedek notu çıkıyor`);
+
+    const box = await page.evaluate(() => {
+      const row = document.querySelector(".note");
+      const text = row.querySelector("p").getBoundingClientRect();
+      const button = row.querySelector("button").getBoundingClientRect();
+      return {
+        rowHeight: Math.round(row.getBoundingClientRect().height),
+        wrapped: button.top > text.bottom - 2,
+        beside: button.left > text.right - 2,
+      };
+    });
+    ok(!box.wrapped, `${width}px: kapatma düğmesi alt satıra düşmüyor`);
+    ok(box.beside, `${width}px: düğme metnin sağında`);
+    // The band was 72–88px when the button wrapped; one row of target
+    // height is what it should be.
+    ok(box.rowHeight <= 56, `${width}px: not tek satır yüksekliğinde (${box.rowHeight}px)`);
+    await auditLayout(page, `yedek notu ${width}`, width);
+
+    // And it goes away for good, which is the whole contract: a reminder
+    // that comes back is a nag, and this project has none.
+    await page.locator(".note button").click();
+    await page.waitForTimeout(120);
+    ok(await page.locator(".note").count() === 0, `${width}px: kapatılınca gidiyor`);
+    await page.reload({ waitUntil: "networkidle" });
+    await page.waitForSelector("#index-list .row");
+    ok(await page.locator(".note").count() === 0, `${width}px: bir daha gelmiyor`);
+
+    await context.close();
+  }
+}
+
+/**
  * Reopening the app on a page that needs a session it no longer has.
  *
  * `quizRequest` and `quizResult` live in sessionStorage, which dies with
@@ -2589,6 +2658,9 @@ try {
 
   console.log("\n=== yanlış defteri ===");
   await runMistakeBook(browser);
+
+  console.log("\n=== yedek notu ===");
+  await runBackupNote(browser);
 
   console.log("\n=== oturumu biten sayfalar ===");
   await runRestoredSession(browser);

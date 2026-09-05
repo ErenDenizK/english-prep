@@ -5,6 +5,28 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.36 — 2026-09-05
+
+**The backup note was broken on every phone, and nothing had ever drawn
+it.** It needs three recorded attempts before it appears and no sweep
+seeded three, so the one component in the app with an icon button beside
+a sentence was never rendered at any width.
+
+`.cluster` wraps, and a paragraph inside it is a flex item sized to its
+own max-content. That sentence wants 337px, so below about 430px there
+was no room for the 48px close button beside it: the button dropped to a
+line of its own, at the far left, leaving a 48px empty band under the
+text. Measured before the fix — 320px: 88px tall, wrapped. 360: 88,
+wrapped. 390: 72, wrapped. 412: 72, wrapped. 430: 48, correct. The owner
+met it at about 390 and read it as a rendering failure, which is what it
+was.
+
+It is a `.note` now — the "note band" `.btn--icon` already mentions in
+its own comment — and the text shrinks so the row does not. 48px at every
+width, button on the right. The sweep renders it at 320, 360, 390 and
+412, checks that the button stays beside the text rather than under it,
+and checks the other half of its contract: dismissed once, gone for good.
+
 ## v0.35 — 2026-09-05
 
 **The mixed test says what it draws from.** `startMixedTest` pools every

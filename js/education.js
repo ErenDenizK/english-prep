@@ -632,7 +632,7 @@ function renderBackupNudge() {
     return null;
   }
 
-  const row = el("div", "cluster cluster--spread");
+  const row = el("div", "note");
   row.appendChild(
     el("p", "t-meta", "Çalıştıkların yalnızca bu tarayıcıda. Profil'den yedek alabilirsin.")
   );

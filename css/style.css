@@ -1056,6 +1056,35 @@
     justify-content: space-between;
   }
 
+  /* A dismissible line with its close button beside it — the "note band"
+     the .btn--icon rule already mentions.
+
+     It used to be a `.cluster--spread`, and that was wrong at every phone
+     width. `.cluster` wraps, and a paragraph inside it is a flex item
+     sized to its own max-content: this sentence wants 337px, so below
+     about 430px there was no room left for the 48px button and it
+     dropped to a line of its own, at the far left, leaving a 48px empty
+     band under the text. The owner met it on a real phone and reported
+     it as a bug, which is what it looked like — an empty box between the
+     resume card and the search field.
+
+     The fix is to let the text shrink and wrap instead of the row
+     wrapping: the button keeps its fixed square and the sentence takes
+     whatever is left. */
+  .note {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .note > p {
+    flex: 1;
+    /* A flex item's default `min-width: auto` refuses to go below its
+       longest word plus, in practice, its content — which is the whole
+       reason the row wrapped. */
+    min-width: 0;
+  }
+
   /* Clipped, not display:none — a live region that is display:none is never
      announced. */
   .visually-hidden:not(:focus):not(:active) {
