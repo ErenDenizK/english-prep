@@ -248,7 +248,7 @@
     {
       "id": "passive-voice-t17",
       "category": "Passive Reporting Structures",
-      "paragraph": "Nobody in the department will put a name to the story, and the minutes of that meeting were never circulated. The site manager ____ about the cracked roof beam weeks before the ceiling came down, and two councillors now admit that a note reached their desks and was quietly filed.",
+      "paragraph": "Nobody at the council will put a name to the story, and the minutes of the safety meeting were never circulated. The site manager ____ about the cracked roof beam weeks before the ceiling came down, and two councillors now admit that a note reached their desks and was quietly filed.",
       "options": ["is said to have warned", "is said to warn", "is said to be warning", "is said to have been warned"],
       "correctIndex": 0,
       "explanation": "Kaynağı verilmeden aktarılan bir bilgi var ve aktarılan olay aktarımdan önce olmuş: 'weeks before the ceiling came down'. Bu yüzden mastar 'to + fiil' değil, 'to have + V3' olur. Uyaran da müdürün kendisi — not, meclis üyelerinin masasına ondan ulaşmış — yani özne eylemi yapan taraf. En yakın çeldirici 'is said to have been warned' zamanı doğru kurar ama rolleri ters çevirir: müdürü birinin uyardığını söyler.",
@@ -305,13 +305,13 @@
       "id": "passive-voice-t21",
       "category": "By + Agent: Include vs Omit",
       "paragraph": "I only noticed once I reached the station and reached for my ticket. My wallet ____ while I was on the crowded train yesterday afternoon, and I have no idea who took it.",
-      "options": ["was stolen", "was stolen by someone", "was stolen by a stranger", "stole"],
+      "options": ["was stolen", "was stolen by someone", "was stolen by a thief", "stole"],
       "correctIndex": 0,
-      "explanation": "'I have no idea who took it' failin bilinmediğini açıkça söylüyor; fail bilinmiyorsa edilgen cümle zaten onu söylememek için kurulur ve 'by' düşer. En yakın çeldirici 'was stolen by someone' yanlış bir cümle değildir — dilbilgisi kusursuzdur — ama fazlalıktır: 'someone' zaten 'bilmiyorum' demenin uzun hâlidir. 'was stolen by a stranger' ise fazlalık olmakla kalmaz, bilinmeyen bir şeyi bilirmiş gibi hırsızın bir yabancı olduğunu iddia eder.",
+      "explanation": "'I have no idea who took it' failin bilinmediğini açıkça söylüyor; fail bilinmiyorsa edilgen cümle zaten onu söylememek için kurulur ve 'by' düşer. En yakın çeldirici 'was stolen by someone' yanlış bir cümle değildir — dilbilgisi kusursuzdur — ama fazlalıktır: 'someone' zaten 'bilmiyorum' demenin uzun hâlidir. 'was stolen by a thief' de aynı sebeple fazlalıktır: çalan kişinin hırsız olduğunu zaten fiilin kendisi söylüyor.",
       "tip": "Fail bilinmiyorsa, önemli değilse veya belirsizse (someone, people, they) 'by' ifadesi cümleye bilgi katmaz ve yazılmaz.",
       "optionNotes": {
         "was stolen by someone": "Yanlış değil, fazlalık: dilbilgisi kusursuz ama cümleye sıfır bilgi ekler — 'someone' zaten 'bilmiyorum' demenin uzun hâlidir.",
-        "was stolen by a stranger": "Bilinmeyen bir şeyi bilirmiş gibi hırsızın bir yabancı olduğunu iddia eder; 'I have no idea who took it' bunu dışlıyor.",
+        "was stolen by a thief": "Fiilin kendisi zaten söylüyor: çalan kişi hırsızdır. 'By' ancak yeni bir bilgi veriyorsa yazılır, burada hiçbir şey eklemiyor.",
         "stole": "Aktif bir çekim, rolleri ters çevirir: cüzdanın birinden bir şey çaldığını söyler. Çalınan cüzdanın kendisidir."
       }
     },
@@ -970,19 +970,25 @@
         },
         {
           "type": "pitfall",
-          "wrong": "The letter was written by a fountain pen.",
-          "right": "The letter was written with a fountain pen.",
-          "why": "**by** eylemi yapanı gösterir, **with** ise kullanılan aracı. Dolma kalem mektubu kendi yazmadı; onu kullanan biri yazdı."
+          "wrong": "The parcel was tied by a length of string.",
+          "right": "The parcel was tied with a length of string.",
+          "why": "**by** eylemi yapanı gösterir, **with** ise kullanılan aracı. Paketi bağlayan ip değil, ipi kullanan kişidir; ip yalnızca bir araçtır."
         },
         { "type": "check" },
         {
           "type": "decision",
           "heading": "By yazayım mı?",
           "rules": [
-            { "condition": "Faili sen de bilmiyorsan ya da someone / people / they gibi belirsizse", "then": "Passive without an agent" },
+            {
+              "condition": "Faili sen de bilmiyorsan ya da someone / people / they gibi belirsizse ve boşluktan sonra onu söyleyen bir öbek yoksa",
+              "then": "Passive without an agent"
+            },
             { "condition": "Fail bağlamdan zaten belliyse (doktorlar, polis, garsonlar)", "then": "Passive without an agent" },
-            { "condition": "Fail cümlenin en şaşırtıcı ya da en bilgilendirici parçasıysa", "then": "Passive + by + agent" },
-            { "condition": "Boşluktan hemen sonra faili söyleyen bir isim öbeği geliyorsa", "then": "Passive + by + agent" },
+            { "condition": "Fail — işi yapan kişi ya da kurum — cümlenin en şaşırtıcı ya da en bilgilendirici parçasıysa", "then": "Passive + by + agent" },
+            {
+              "condition": "Boşluktan hemen sonra işi yapanı söyleyen bir isim öbeği geliyorsa — kullanılan bir araç ya da malzeme değil",
+              "then": "Passive + by + agent"
+            },
             { "condition": "Söylenen şey fail değil, kullanılan araç ya da malzemeyse", "then": "Passive + with + instrument" }
           ]
         }
