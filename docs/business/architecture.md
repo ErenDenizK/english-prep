@@ -264,10 +264,17 @@ that the reversible ones come first.
    no way back to a static site. Cross it only when rung 3 has shown
    there is something worth charging for, and only with the smallest
    version that works.
-7. **Native store presence.** Its own research arm (`shipping.md`).
-   Independent of 1–6 in principle; in practice a store listing makes
-   rung 6 much harder to reverse, because a refund policy and a store
-   review process now sit on top of it.
+7. **Native store presence.** Its own research arm (`shipping.md`),
+   which reached the compatible conclusion from the other side: the
+   cheapest path to a paying student has no store in it at all. Two
+   things it found bear on the rungs above. A **custom domain** is a
+   hard prerequisite for the Android route — Digital Asset Links must
+   sit at an origin root and the site currently lives on a shared
+   `github.io` subpath — so buying one is a rung-0 item, not a rung-7
+   one, and it is also what makes any of §2's sync endpoints
+   addressable without hard-coding somebody else's hostname into the
+   client. And a store listing makes rung 6 much harder to reverse: a
+   refund policy and a review process now sit on top of it.
 
 **The claim this ordering makes:** rungs 1–4 make the app materially
 better for the person using it. Rung 6 makes it better for the person
