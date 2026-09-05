@@ -94,15 +94,15 @@
     {
       "id": "modals-t6",
       "category": "Can vs Could vs May vs Might",
-      "paragraph": "The last marker handed in her scripts this morning; the results ____ announced before the weekend, though the office has not put up a notice yet.",
+      "paragraph": "The lift has been standing with its doors open since yesterday morning and the small display above the buttons is dark. It ____ out of order again, though the caretaker leaves it exactly like this whenever he cleans the entrance hall.",
       "options": ["may be", "can be", "must be", "maybe"],
       "correctIndex": 0,
-      "explanation": "Cümle gerçekleşmesi makul görünen bir ihtimalden söz ediyor: puanlama bitmiş ama duyuru henüz yok. Belirli bir olayın gerçekleşme ihtimali 'may' ile kurulur, yani boşluğa 'may be' girer. 'can be' bunu yapamaz; genel bir imkânı anlatır ('sonuçların açıklanması mümkündür' gibi bir kural cümlesi olurdu), belirli bir duyurunun gerçekleşme ihtimalini değil. 'must be' kesinlik bildirir ve ofisin henüz ilan asmamış olmasıyla çelişir. 'maybe' ise ayrı bir kelimedir: modal değil zarftır, cümlenin başına gelir.",
-      "tip": "Belirli bir olayın gerçekleşme ihtimali 'may' ya da 'might' ile kurulur; 'can' bu iş için kullanılmaz. 'Maybe' ise modal değil zarftır — 'may be' ile karıştırma.",
+      "explanation": "Kanıt ortada: kapılar açık kalmış ve ekran sönük. Ama cümle aynı görüntüyü açıklayan ikinci bir sebebi de veriyor — kapıcı temizlik yaparken asansörü tam olarak bu hâlde bırakıyor. Yani arıza kesin değil, ciddi bir ihtimal; belirli bir durumun bu tür ihtimali 'may be' ile kurulur. 'must be' kesinlik bildirir, kesinlik ise başka açıklamaya yer bırakmaz; oysa ikinci açıklama cümlenin içinde yazılı. 'can be' genel bir imkânı anlatır ('asansör arızalanabilir'), bugün arızalı olma ihtimalini değil. 'maybe' ise modal değil zarftır: tek kelimedir ve fiilin yerini tutamaz.",
+      "tip": "Belirli bir durumun ihtimali 'may' ya da 'might' ile kurulur; 'can' genel imkân bildirir. Aynı kanıtın ikinci bir açıklaması varsa kesinlik ('must') değil ihtimal anlatılır.",
       "optionNotes": {
-        "can be": "Genel bir imkânı ya da yeteneği anlatır. Belirli bir duyurunun bu hafta gerçekleşme ihtimali bu kelimeyle kurulmaz.",
-        "must be": "Kesinlik bildirir: duyurunun yapılmış olması kaçınılmaz olurdu. Cümle ise ofisin henüz bir ilan asmadığını söylüyor.",
-        "maybe": "Tek kelimelik bir zarftır ve cümlenin başına gelir. Boşluğa giren yapı ise iki kelimedir: 'may be announced'."
+        "can be": "Genel bir imkânı anlatır: 'asansör arızalanabilir'. Bugün bu asansörün arızalı olma ihtimali bu kelimeyle kurulmaz.",
+        "must be": "Kesinlik bildirir: başka açıklama kalmamış olurdu. Cümle ise aynı görüntüyü açıklayan ikinci bir sebebi, kapıcının alışkanlığını veriyor.",
+        "maybe": "Tek kelimelik bir zarftır ve cümlenin başına gelir. Boşluğa ise iki ayrı kelime girer: 'may be out of order'."
       }
     },
     {
@@ -276,15 +276,15 @@
     {
       "id": "modals-t19",
       "category": "Should vs Ought To vs Had Better",
-      "paragraph": "As the eldest sibling, she ____ set a good example for the younger ones, even when it's not easy.",
-      "options": ["ought to", "had better", "must", "can"],
+      "paragraph": "Reading the accounts aloud at the annual meeting is not in the association's rules, and nobody would complain if the treasurer skipped it — but she ____ do it anyway, because the members have expected it for years.",
+      "options": ["ought to", "had better", "should to", "shouldn't"],
       "correctIndex": 0,
-      "explanation": "'Ought to' anlamca 'should' ile neredeyse aynıdır ve burada bir sorumluluk/beklenti bildiren biraz daha resmi bir tavsiye olarak kullanılır. 'Had better' bu kadar genel/uzun vadeli bir beklenti için uygun değildir.",
-      "tip": "'Ought to', 'should' ile neredeyse aynı anlama gelir ama biraz daha resmi ve yazılı dilde daha sık görülür; sonrasında 'to' almayı unutma.",
+      "explanation": "Kurallarda yazmıyor ve atlasa kimse şikâyet etmeyecek: ortada bir uyarı yok, saymanlık görevinden doğan süregelen ve resmî tonlu bir beklenti var. Bu tür sorumluluk tavsiyeleri 'ought to' ile kurulur. 'had better' uyulmazsa doğacak kötü bir sonucu ima eder, oysa cümle kimsenin şikâyet etmeyeceğini açıkça söylüyor. 'shouldn't' tavsiyeyi tersine çevirir: üyeler bunu yıllardır bekliyor. 'should to' diye bir kalıp ise yoktur; 'to' alan 'ought'tur.",
+      "tip": "'Ought to' rolden ya da görevden doğan, resmî tonlu sorumluluk beklentilerinde kullanılır ve daima 'to' alır; 'should' ise 'to' almaz.",
       "optionNotes": {
-        "had better": "Acil bir uyarıdır ve uyulmazsa doğacak kötü sonuç genelde cümlede yazılıdır. Burada ise süregelen, tehditsiz bir beklenti anlatılıyor.",
-        "must": "Konuşmacının o an koyduğu kesin bir zorunluluk. Cümlede ise büyük kardeş olmaktan doğan, ondan beklenen bir sorumluluk var.",
-        "can": "Yetenek ya da imkân bildirir: 'iyi bir örnek olabilir'. Cümle onun yapabildiğini değil, yapmasının beklendiğini söylüyor."
+        "had better": "Uyarıdır: uyulmazsa kötü bir sonuç vardır. Cümle ise atlasa kimsenin şikâyet etmeyeceğini söylüyor, ortada böyle bir sonuç yok.",
+        "should to": "'Should' kendisinden sonra 'to' almaz, doğrudan fiilin yalın hâli gelir. 'To' alan kalıp 'ought to'dur.",
+        "shouldn't": "Tavsiyeyi tersine çevirir: hesapları okumamasını öğütler. Cümle ise üyelerin bunu yıllardır beklediğini söylüyor."
       }
     },
     {
@@ -346,15 +346,15 @@
     {
       "id": "modals-t24",
       "category": "Can vs Could vs Be Able To",
-      "paragraph": "Once you finish this course, you ____ speak with much more confidence in job interviews and everyday conversations.",
-      "options": ["will be able to", "can", "could", "were able to"],
+      "paragraph": "When the Japanese course began in October he could barely tell the characters apart, but he has been going twice a week ever since. His teacher says that by the end of the summer he ____ read a whole page of a newspaper without a dictionary.",
+      "options": ["will be able to", "can", "will can", "was able to"],
       "correctIndex": 0,
-      "explanation": "Gelecekte kazanılacak bir yetenekten bahsediliyor; 'can' bir modal olduğu için başka bir modal ('will') ile yan yana kullanılamaz, bu yüzden 'will be able to' kullanılır.",
-      "tip": "'Can' başka bir modal ile birlikte kullanılamaz; gelecekteki yetenek için 'will be able to' gerekir.",
+      "explanation": "Yetenek henüz yok: kursun başında karakterleri bile zor ayırt ediyordu. Cümle bu beceriyi yaz sonunda kazanılacak bir şey olarak anlatıyor, yani gelecekte ortaya çıkacak bir yetenekten söz ediyor; bunun karşılığı 'will be able to'dur. 'can' şu andan konuşur ve henüz olmayan bir beceriyi ileriye taşıyamaz. 'will can' ise kurulamaz: 'can'in mastar hâli yoktur, iki modal yan yana gelmez. 'was able to' geçmişte tek seferde başarılan bir işi anlatır, oysa buradaki kazanım henüz gerçekleşmedi.",
+      "tip": "Henüz kazanılmamış, ileride ortaya çıkacak bir yetenek 'will be able to' ile anlatılır; 'can'in mastar hâli olmadığı için 'will can' kurulamaz.",
       "optionNotes": {
-        "can": "Şu an sahip olunan yeteneği bildirir. Cümle ise kurs bittikten sonrasına bakıyor ve 'can' bir modal olduğu için geleceğe taşınamaz.",
-        "could": "Yeteneği geçmişe taşır: 'eskiden daha rahat konuşabiliyordun'. 'Once you finish this course' ise henüz gelmemiş bir zamanı işaret ediyor.",
-        "were able to": "Geçmişte tek seferde başarılan bir işi anlatır. Cümledeki kazanım ise kurs bittikten sonra, ileride ortaya çıkacak."
+        "can": "Şu anda var olan yeteneği bildirir. Cümledeki beceri ise henüz yok: yaz sonunda kazanılacak bir şey olarak anlatılıyor.",
+        "will can": "İki modal yan yana gelmez, çünkü 'can'in mastar hâli yoktur. Gelecekteki yetenek 'will be able to' ile kurulur.",
+        "was able to": "Geçmişte tek seferde başarılan bir işi anlatır. Buradaki kazanım ise henüz gerçekleşmedi, cümle yaz sonuna bakıyor."
       }
     }
   ],
@@ -374,7 +374,7 @@
             {
               "label": "Must",
               "gloss": "Konuşmacının kendi koyduğu zorunluluk: kendi kararı, kendi verdiği söz, kendi vicdanı. Kimse onu zorlamıyordur. Bu ayrım yalnızca olumlu cümleler içindir.",
-              "example": "I must call my mother tonight — I promised her."
+              "example": "I must start going to bed earlier — I keep falling asleep in lectures."
             },
             {
               "label": "Have to",
@@ -483,7 +483,7 @@
           "type": "decision",
           "heading": "Hangi tonu seçeceksin",
           "rules": [
-            { "condition": "Ortam samimi: arkadaş, aile ya da sınıf arkadaşı", "then": "Can" },
+            { "condition": "Cümle birinden bir şey istiyor (izin ya da rica) ve ortam samimi: arkadaş, aile ya da sınıf arkadaşı", "then": "Can" },
             { "signals": ["please", "possibly", "if you don't mind", "I'm sorry to bother you"], "then": "Could" },
             { "condition": "Ortam resmî ve muhatap bir otorite figürü (Professor, Sir, Madam)", "then": "May" }
           ]
@@ -597,7 +597,7 @@
           "items": [
             { "sentence": "Her bike is chained up outside, so she must be in the library.", "note": "Somut kanıta dayanan güçlü çıkarım → must" },
             { "sentence": "This can't be the right address; the building doesn't even exist.", "note": "Mantıken imkânsız → can't" },
-            { "sentence": "She hasn't texted back. She might be asleep.", "note": "Zayıf tahmin, kanıt yok → might" },
+            { "sentence": "She hasn't texted back. She might be asleep.", "note": "Kanıt var ama zayıf, başka açıklamaya da yer bırakıyor → might" },
             { "sentence": "She could be stuck in traffic, but I don't know.", "note": "Zayıf tahmin, alternatif bir seçenek → could" }
           ]
         },
@@ -825,7 +825,7 @@
       "blocks": [
         {
           "type": "text",
-          "body": "Türkçede \"yüzebiliyorum\" ve \"o gün karşıya yüzebildim\" aynı ekle kurulur. İngilizce ikisini ayırır: sürekli bir **yetenek** başka bir kelime ister, belirli bir günde **başarılan tek bir iş** başka. Üstüne 'can' bir modaldir, yani gelecekte kullanılamaz — ve sınav bunu her seferinde sorar."
+          "body": "Türkçede \"yüzebiliyorum\" ve \"o gün karşıya yüzebildim\" aynı ekle kurulur. İngilizce ikisini ayırır: sürekli bir **yetenek** başka bir kelime ister, belirli bir günde **başarılan tek bir iş** başka. Üstüne 'can' şu anki yeteneği anlatır ve mastar hâli yoktur — 'will can' kurulamaz — yani henüz kazanılmamış bir yetenek 'will be able to' ister, ve sınav bunu her seferinde sorar."
         },
         {
           "type": "contrast",
@@ -877,7 +877,7 @@
           "type": "pitfall",
           "wrong": "Next month, you can cook without a recipe.",
           "right": "Next month, you will be able to cook without a recipe.",
-          "why": "'Can' bir modaldir ve gelecekteki bir yeteneği anlatamaz; 'will can' de kurulamaz, çünkü iki modal yan yana gelmez. Gelecek için 'will be able to' vardır."
+          "why": "'Can' şu anki yeteneği anlatır; henüz kazanılmamış, ileride ortaya çıkacak bir yeteneği anlatamaz. 'will can' de kurulamaz, çünkü 'can'in mastar hâli yoktur ve iki modal yan yana gelmez. Gelecekte kazanılacak yetenek için 'will be able to' vardır."
         },
         {
           "type": "pitfall",
@@ -892,7 +892,7 @@
           "rules": [
             { "signals": ["despite", "in the end", "finally", "after a long struggle"], "then": "Was / were able to" },
             { "signals": ["next year", "by the time you graduate", "in the future", "one day"], "then": "Will be able to" },
-            { "condition": "Yetenek henüz yok; cümle onu bir kursun, bir eğitimin ya da bir sürecin bitmesine bağlıyor", "then": "Will be able to" },
+            { "condition": "Yetenek şu anda yok; cümle onu ileride kazanılacak bir şey olarak anlatıyor", "then": "Will be able to" },
             { "condition": "Cümlede zaten 'will' ya da başka bir modal varsa 'can' kullanılamaz", "then": "Be able to" },
             { "condition": "Geçmişte bir dönem boyunca süren genel bir yetenek (çocukken, o yıllarda)", "then": "Could" },
             { "condition": "Şu anki genel bir yetenek", "then": "Can" }
