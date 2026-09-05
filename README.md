@@ -165,9 +165,11 @@ npm run audit          # measures each screen against the design spec
 dependencies is not to acquire one for CI. It walks a whole learner
 journey at 320 / 390 / 768 / 1280, auditing every screen it lands on for
 horizontal overflow, touch targets under 44px and console errors, then
-runs the accessibility contract once. **1518 checks.** Run it for anything
-that touches the interface: WCAG conformance is defined per page and per
-responsive variation, so the sweep *is* the requirement.
+runs the accessibility contract once. **About 1,500 checks** — the exact
+count moves with the draw; the run behind this sentence was 1,514, all
+green. Run it for anything that touches the interface: WCAG conformance
+is defined per page and per responsive variation, so the sweep *is* the
+requirement.
 
 There are also 146 unit tests over the scoring, storage, backup and
 content checks.
