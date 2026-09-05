@@ -15,6 +15,39 @@ exam. Served from GitHub Pages.
 No accounts, no backend, no analytics. Everything a learner does is stored
 in their own browser's `localStorage`.
 
+## Who this is for
+
+Stated by the owner on 2026-09-05, and it decides more authoring
+questions than anything else in this file.
+
+**A learner with a real English base and no academic foundation.** They
+picked the language up from series, films, games, maybe from speaking it
+— so their ear is good and their instinct is often right — and they have
+never been taught the scaffolding underneath. They are not beginners.
+They are the opposite of the usual textbook learner: **competence without
+the labels.**
+
+The owner thinks this is the point of the exam app and of whatever it
+becomes later, and the consequences run through the whole corpus:
+
+- **Notation and metalanguage must be explained; the language itself
+  usually must not.** Someone who says *"I have gone"* correctly has
+  never met `V3`. Glossing the term is not talking down to them — it is
+  the only part they are actually missing. Explaining what a tense *is*
+  would be.
+- **This is why every lesson is an "X vs Y" contrast, and why that is
+  right.** They do not need to be taught the forms. They need the
+  boundary between two things their ear conflates.
+- **A rule stated too absolutely fails this learner hardest.** Their ear
+  will produce the counterexample. An item whose distractor a competent
+  speaker would accept does not read to them as a hard question; it reads
+  as the app being wrong — and they are right. That is why
+  `question-author.md` says an option a competent teacher would accept is
+  a wrong option, and why the blind pass exists.
+- **"Refine", not "teach from zero."** The app closes gaps in someone who
+  already functions. Copy that congratulates progress from nothing, or
+  that assumes no prior English, is aimed at somebody else.
+
 ## Non-negotiables
 
 - **No build step.** Plain HTML/CSS/ES modules, served as-is. `package.json`
