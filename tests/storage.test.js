@@ -46,6 +46,7 @@ test("an empty store reports empty stats rather than throwing", () => {
     totalCorrect: 0,
     accuracy: null,
     accuracyWindow: 0,
+    accuracyFromBook: 0,
   });
 });
 
@@ -298,6 +299,7 @@ test("overall stats count questions, not attempts", () => {
     // Ten answers is inside the window, so recent and lifetime agree here.
     accuracy: 0.4,
     accuracyWindow: 10,
+    accuracyFromBook: 0,
   });
 });
 
@@ -747,4 +749,38 @@ test("a remembered choice does not disturb the boolean settings", () => {
 test("a remembered choice rides the backup", () => {
   storage.setChoice("mixedCount", "20", COUNTS);
   assert.equal(storage.exportState().settings.mixedCount, "20");
+});
+
+/* ---- What is in the accuracy window ----
+   `mode` has been on every attempt since the beginning and nothing had
+   ever read it back out of history. The mistake book is by construction
+   the learner's hardest items, so a week of running it drags the headline
+   number down — the failure getOverallStats' own docstring names about
+   lifetime averages, arriving by another route. The number is not
+   filtered; it is labelled. */
+
+test("an accuracy window with no book runs says so with a zero", () => {
+  storage.recordAttempt(attempt({ questions: answers(3, 1), mode: "mixed" }));
+  assert.equal(storage.getOverallStats().accuracyFromBook, 0);
+});
+
+test("book answers inside the window are counted", () => {
+  storage.recordAttempt(attempt({ questions: answers(3, 1), mode: "mixed" }));
+  storage.recordAttempt(attempt({ questions: answers(2, 3), mode: "mistakes" }));
+  const stats = storage.getOverallStats();
+  assert.equal(stats.accuracyFromBook, 5);
+  assert.equal(stats.accuracyWindow, 9);
+});
+
+test("counting them does not change the accuracy itself", () => {
+  storage.recordAttempt(attempt({ questions: answers(2, 2), mode: "mistakes" }));
+  const stats = storage.getOverallStats();
+  assert.equal(stats.accuracy, 0.5);
+});
+
+test("the chosen option is written down, not only whether it was right", () => {
+  storage.recordAttempt(
+    attempt({ questions: [{ id: "q1", topicId: "tenses", correct: false, selected: "went" }] })
+  );
+  assert.equal(storage.getHistory()[0].questions[0].selected, "went");
 });

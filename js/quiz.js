@@ -104,6 +104,10 @@ function recordPartialOnLeave() {
       topicId: question.topicId,
       category: question.category,
       correct: question.correct,
+      // Same shape as the normal path in js/results.js, and it has to
+      // stay the same shape: two writers of one record is how a field
+      // ends up present on some attempts and absent on others.
+      selected: question.selectedAnswer ?? null,
     })),
   });
 }

@@ -101,6 +101,23 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
   );
   section.appendChild(grid);
 
+  // What is in the window, when part of it is the mistake book. The
+  // number is not filtered — a book run is the learner answering
+  // questions, and excluding it would decide a defensible reading for
+  // them — but an average that falls because they took the app's advice
+  // has to say so, or it quietly argues against the mode the Test tab
+  // recommends.
+  if (stats.accuracyFromBook > 0) {
+    section.appendChild(
+      el(
+        "p",
+        "t-meta",
+        `Bu ortalamanın ${stats.accuracyFromBook} sorusu yanlış defterinden geliyor; ` +
+          "defterdekiler zaten en zorlandıkların."
+      )
+    );
+  }
+
   if (stats.testsCompleted === 0 && lessonsDone === 0) {
     section.appendChild(
       el("p", "t-meta", "Henüz başlamadın — bir ders okuyunca ya da test çözünce burası dolacak.")
