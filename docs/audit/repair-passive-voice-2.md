@@ -19,6 +19,29 @@ as stem text.
 
 ---
 
+## 0 · Everything that changed
+
+Nine question fields across five items, six lesson sentences, and eight
+`decision` rules — in one file, `data/passive-voice/passive-voice.json`.
+
+| what | where | § |
+| --- | --- | --- |
+| t17, t18, t20 rewritten — stem, options, explanation, tip, all notes | `Passive Reporting Structures` | §1 |
+| t14 rewritten — stem, options, explanation, two notes | `Causative` | §2 |
+| t13's explanation: a false claim about English narrowed | `Causative` | §2.2 |
+| t15's explanation and `make` note: the same overstatement, softened | `Causative` | §2.2 |
+| t21: `by a stranger` → `by a thief`, explanation and note with it | `By + Agent` | §4.2 |
+| two `forms` examples and one `examples` sentence replaced | `Tense Forms in Passive` | §3 |
+| one `forms` example replaced | `Passive with Modals` | §6 |
+| `pitfall` 7 moved to a new scenario | `By + Agent` | §4.1 |
+| `decision` r3 gains the `since` test | `Tense Forms in Passive` | §3.1 |
+| `decision` heading, r1, r2, r5 `then` | `Causative` | §2.1 |
+| `decision` r1, r3, r4 gain the agent/instrument test | `By + Agent` | §4.3 |
+
+Unchanged: every item in `Passive with Modals` and `Modal Perfects in
+Passive`, t1–t4, t11, t15's options, t16, t19, t22, t23, t24, and the
+`Passive Reporting Structures` `decision` block.
+
 ## 1 · `Passive Reporting Structures` — t17, t18 and t20 rewritten
 
 The headline defect of the file, in the one category the previous round never
@@ -356,3 +379,348 @@ and the schema allows exactly one of `signals` / `condition` per rule, so
 carrying the caveat would mean giving up the chip list — which is the part of
 r4 a learner actually scans for. The re-audit offers r3 *or* r4 as the place;
 r3 is the one the schema allows, and it is now done.
+
+---
+
+## 4 · `By + Agent: Include vs Omit` — t23's lesson pair, and t21's unsound exclusion
+
+### 4.1 `pitfall` 7 was t23's key **and** its closest distractor
+
+The worst of the four sub-threshold giveaways, because it hands over both
+halves of the item:
+
+> `pitfall` 7, before: *"The letter was written **by** a fountain pen."* →
+> *"The letter was written **with** a fountain pen."*
+>
+> t23: *"…the whole letter ____ a modern ballpoint pen"*, keyed
+> `was written with` against the distractor `was written by`.
+
+Same verb, same object, same instrument class, in the lesson the previous
+round had open and edited in four other places, under the principle that round
+stated and did not keep (*"Every `pitfall` whose `wrong`/`right` pair was an
+item's distractor/key pair was rewritten onto a different scenario"*).
+
+The pitfall moved, not the item — t23 is sound and it is the category's only
+instrument item.
+
+> after: *"The parcel was tied **by** a length of string."* →
+> *"The parcel was tied **with** a length of string."*
+
+`wrong` and `right` still differ in exactly one thing, the preposition. The
+new scenario shares no content word with any of t21–t24 (`parcel`, `tied`,
+`string` against wallet/train, novel/manuscript, letter/pen, bike/ambulance),
+and `string` cannot be read as an agent, which the old pen could not either —
+that is the point of the pair. The `why` changed only in its second sentence,
+to name the new instrument.
+
+This also closes a giveaway on **t22** that the re-audit did not name: the old
+pitfall's `wrong` string, *"The letter was written by a fountain pen"*,
+contains `was written by` — t22's key — and shares `written` with t22's stem.
+It fell out with the rewrite.
+
+### 4.2 t21 — `by a stranger` replaced by `by a thief`
+
+The re-audit is right and the finding is the one I would have been slowest to
+find on my own. t21's explanation excluded `was stolen by a stranger` by
+claiming it *"asserts, as though it were known, that the thief was a
+stranger"*, and that *I have no idea who took it* rules it out. It does not:
+on a crowded train, a stranger is the default assumption, and knowing the
+thief was a stranger is entirely compatible with not knowing who they were.
+A competent teacher accepts it — which is `question-author.md` rule 2, and
+makes it a second correct answer rather than a distractor.
+
+The remedy is the blind pass's, applied to the option rather than to the
+paragraph: replace it with a redundancy whose emptiness is not an inference.
+
+> `was stolen` ✔ · `was stolen by someone` · **`was stolen by a thief`** ·
+> `stole`
+
+**Substitution, one option at a time.**
+
+- `was stolen by someone` — *"My wallet was stolen by someone while I was on
+  the crowded train."* **Rejected** — and, as the previous round had it,
+  rejected as redundancy rather than as error: the sentence is flawless
+  English and `someone` is the long way of saying *I don't know*. The
+  explanation says so outright. Unchanged.
+- `was stolen by a thief` — *"My wallet was stolen by a thief while I was on
+  the crowded train."* **Rejected.** The agent is contained in the verb: what
+  steals is a thief, so `by a thief` adds nothing at all. Unlike `by a
+  stranger` this needs no claim about what the speaker could or could not
+  know, so the exclusion survives substitution — which is the whole reason for
+  the swap. No teacher defends it as good writing.
+- `stole` — *"My wallet stole while I was on the crowded train."* **Rejected**,
+  and live: it reverses the roles, and the reflex to leave the verb active is
+  what the lesson's opening `text` block is about.
+
+**Paragraph deleted:** three well-formed passives differing only in what
+follows `by`, plus one active. The two `by` options are grammatically perfect,
+so nothing picks itself out on form; the decision is a judgement about
+information, which is what the category is named for. **Passes**, and it is
+still the file's one style item — recorded, not hidden.
+
+Two costs, both recorded rather than fixed. Two of the three wrong options are
+now redundancy of a kind (an indefinite agent, a tautological one) rather than
+three distinct failure modes; they are distinct as *errors* — one is empty
+because it is unknown, the other because it is entailed — but they are one
+judgement. And the category still has three syntax items and one style item,
+which is the shape the re-audit describes.
+
+### 4.3 The block's order defect, closed by folding the test in
+
+The re-audit's §4.7 records what this block does have wrong: r3 and r4 both
+say *fail* and both precede r5, the instrument rule. Mistaking an instrument
+for an agent is t23's entire test and `pitfall` 7's entire subject, and the
+block puts the two rules that reward that mistake first.
+
+The same fix that was applied to `Passive Reporting` — put the discriminating
+test inside the earlier rule instead of relying on order:
+
+| rule | before | after |
+| --- | --- | --- |
+| r1 | "Faili sen de bilmiyorsan ya da someone / people / they gibi belirsizse" | "…**ve boşluktan sonra onu söyleyen bir öbek yoksa**" |
+| r3 | "Fail cümlenin en şaşırtıcı ya da en bilgilendirici parçasıysa" | "Fail — **işi yapan kişi ya da kurum** — cümlenin en şaşırtıcı…" |
+| r4 | "Boşluktan hemen sonra faili söyleyen bir isim öbeği geliyorsa" | "Boşluktan hemen sonra **işi yapanı** söyleyen bir isim öbeği geliyorsa — **kullanılan bir araç ya da malzeme değil**" |
+
+r1's qualifier is there for a second reason: read literally, r1 fires on t23
+(nobody knows who forged the letter) and returns `Passive without an agent`,
+which is `was written` — an actual distractor. The re-audit's trace has t23
+reaching r5, i.e. it read r1 as a rule about *omitting* an agent rather than
+about a blank with a phrase waiting behind it. With the qualifier the two
+readings agree, and t21 and t24 — neither of which has a noun phrase after the
+blank — are untouched.
+
+Re-run as a literal checklist over all four items, in file order:
+
+| item | trace | returns | on the item? |
+| --- | --- | --- | --- |
+| t21 | **r1** — *I have no idea who took it*, and nothing follows the blank but *while I was on the crowded train* | passive without an agent | `was stolen` ✔ |
+| t22 | r1 no (the agent is known **and** stands right after the blank); r2 no (it is the opposite of obvious); **r3** — *which surprised every critic*, and a fifteen-year-old student is a person | passive + `by` + agent | `was written by` ✔ |
+| t23 | r1 no (a phrase follows the blank); r2 no; r3 no — a ballpoint pen is not a person or an institution; r4 no — the noun phrase names the instrument, not the doer; **r5** | passive + `with` | `was written with` ✔ |
+| t24 | **r1** and **r2** both fire — nobody is named, and *An ambulance was there in four minutes* makes the agent obvious | passive without an agent | `was taken` ✔ |
+
+No rule returns a non-key option on any of the four, and t23 now reaches r5
+by being **excluded** from r3 and r4 rather than by their happening to be
+about something else. r4 is still reached by no item; as the re-audit says,
+that is the better outcome, since r4 is the rule whose condition is purely
+syntactic and it earns its place by excluding `was written` on t22.
+
+---
+
+## 5 · The `decision` blocks whose items moved
+
+Three blocks changed and were re-traced in §2.1, §3.1 and §4.3. One block did
+**not** change and had three of its four items rewritten under it, which is
+the case the previous round got wrong in `Passive with Modals`, so it is
+traced here in full.
+
+### 5.1 `Passive Reporting Structures` › *Boşluğun iki yanına bak* — unchanged, and still clean
+
+| item | rules that do not fire | first firing rule | returns | on the item? |
+| --- | --- | --- | --- | --- |
+| t18 | — | **r1** — the blank opens the sentence and a full clause follows | `It is said/believed/reported that …` | `It is believed that they` ✔ |
+| t20 | r1 | **r2** — a plan that may not come off (*nothing will be decided before eleven*) | `is supposed to + V` | `is supposed to start` ✔ |
+| t19 | r1, r2 | **r3** — *late last night*, and the hikers were seen rather than seeing | `to have been + V3` | `are reported to have been` ✔ |
+| t17 | r1, r2; **r3 no** — the event is earlier, but the manager is the one who warned | **r4** | `to have + V3` | `is said to have warned` ✔ |
+
+No rule returns a non-key option. Two things worth recording rather than
+fixing:
+
+- **r2 returns the whole key on t20.** Its `then` spells both halves —
+  `is supposed to + V` — so it rejects `was supposed to start`,
+  `is supposed to have started` and `was supposed to have started` at once.
+  That is the block doing more work than before, not less.
+- **r1 narrows t18 from four options to two, not to one.** Its `then` names the
+  frame, and both `It is believed that they` and `It is believed that they
+  have` instantiate it; the remaining choice is the tense of the reported clause, which
+  the paragraph's *summer of 1628* decides and which is ordinary tense
+  knowledge rather than reporting-structure knowledge. A block about *which
+  reporting structure* has no business choosing that, and I would rather
+  record the gap than widen a rule to cover a tense the lesson next door owns.
+- **r5 is now reached by no item**, where before it reached t17. It is the
+  contemporaneous branch that makes r3 and r4 mean anything — a learner runs
+  it on t17 and finds the event is *not* contemporaneous, which is how they
+  arrive at r4 — and `is said to warn` is a live distractor it names. It earns
+  its place by excluding, on the same reasoning the re-audit accepted for
+  `Passive with Modals` r5.
+
+### 5.2 The doubled-modal tell (re-audit §1.3) — **not broken, and why**
+
+The finding: in t6, t7, t9, t10 and t12 exactly one modal appears twice in the
+option set and the key is always its fuller form, so *"if one modal repeats,
+take the longer one"* answers five items with the paragraph deleted and is
+never wrong elsewhere in the file. The re-audit records it as a cost, not a
+block, and leaves the call here. I am leaving the five items alone. Three
+reasons, and the first is the one that changed my mind:
+
+1. **In every one of the five the doubling is the item's design, not an
+   accident.** t6 (`must be worn` / `must wear`) and t7 (`can be paid` /
+   `can pay`) hold the modal constant so that the item tests **voice**; change
+   the second modal and the active distractor starts failing for two reasons
+   at once, which is weaker, not stronger. t9, t10 and t12 hold the modal
+   constant so that the item tests **the perfect infinitive**. A minimal pair
+   is supposed to differ in one thing. What produces the tell is not the
+   doubling but the fact that in all five the *fuller* member happens to be
+   keyed.
+2. **The cheap fix is not cheap.** The re-audit's suggestion — change the
+   fourth option's modal on two of t9/t10/t12, as the untouched model t11 does
+   — collides with the corpus check for *"two questions in the same category
+   with an identical set of options"*. t11 is `can't have been` / `must have
+   been` / `should have been` / `might be`. Give t9 `might be` and t9 **is**
+   t11; give t10 `might be` and t10 is t11. `may be` is taken by t12. The
+   modal inventory in this category is four wide and the doubling is part of
+   what keeps the four option sets distinct.
+3. **The durable fix is a rewrite, in a category that ships.** What actually
+   kills the tell is keying the *present* form in one of the five — an item
+   where `must be` is right and `must have been` is wrong. That is a new item
+   in a category the re-audit passed, written by a round that owns it and can
+   re-substitute all three of its wrong options. Tonight's file already fails
+   four categories; adding a fifth rewrite to a passing one is how the last
+   nine rounds introduced defects.
+
+So: recorded, argued, and left. If the next round disagrees, the work is one
+item, not five, and §5.2 says which item to write.
+
+---
+
+## 6 · Giveaways, at the shipped threshold and below it
+
+`checkLessonGiveaway` from `tools/content-checks.mjs`, run over this topic
+before and after, and then re-run the way the re-audit found its four cases —
+threshold lowered to a **three-word** shared run, the lesson sentence required
+to contain the key, and at least one shared content word between stem and
+lesson sentence, so that a shared *pattern* is not counted as a shared
+*scenario*.
+
+| | shipped checker (run ≥ 6) | stricter sweep (run ≥ 3 + key + content word) |
+| --- | --- | --- |
+| before this round | 0 | 15 rows, 11 items |
+| after | **0** | **2 rows, 2 items** |
+
+The corpus-wide count over all ten topics is **0**, so
+`tests/content-checks.test.js`'s ratchet (`CEILING = 0`) still holds; the
+suite is green.
+
+What the stricter sweep still reports, and why both are left:
+
+| item | lesson sentence | shared content words |
+| --- | --- | --- |
+| t8 | *"The project might be postponed."* | `postponed` only |
+| t19 | *"Two paintings are reported to have been recovered from a garage."* | `reported` only |
+
+In both, the single shared word is the row's own pattern verb — the thing the
+`forms` table exists to exemplify — and the scenarios (a launch held back by
+an unheld board vote; missing hikers) share nothing with the lesson sentence.
+This is the line the re-audit itself drew and I have kept it.
+
+Cleared this round, all five of them sub-threshold and therefore invisible to
+CI: t3 (two sentences), t4, t17, t22, t23, plus t5's and t20's. Two were
+closed by moving a lesson sentence (§3), two by rewriting a `pitfall` (§4.1),
+and four by rewriting the item onto a scenario the lesson does not use (§1) —
+which is worth noting on its own: a giveaway can be closed from either end,
+and closing it from the item's end costs nothing when the item had to be
+rewritten anyway.
+
+One extra, outside the brief's list and recorded as such: the
+`Passive with Modals` `should` row was *"Applications should be submitted
+online."* against t5's *"your application should be submitted this week"*. The
+re-audit calls it worth a second look and not blocking; it is a one-line
+change to a `forms` example that no `decision` rule and no item depends on, so
+it was made (*"Damaged books should be reported at the desk."*) rather than
+left inconsistent with the identical calls made for t3 and t4. No item in that
+category changed, and the category's two `decision` blocks are untouched.
+
+---
+
+## 7 · What I did not do, and why
+
+- **`contentVersion` is still 2.** The re-audit asks for it and it is right to
+  ask, but `data/manifest.json` is explicitly outside this session's scope —
+  other sessions are working in it tonight. Whoever merges these rounds should
+  bump `passive-voice` to 3; sixteen of its twenty-four items have changed
+  materially across the two repairs and the "Yeni sorular eklendi" badge will
+  not fire until someone does.
+- **The doubled-modal tell is still there.** Argued at length in §5.2: the
+  doubling is each item's minimal-pair design, the cheap fix collides with the
+  identical-option-set check, and the real fix is a new item in a category that
+  ships.
+- **`npm run verify` was not run.** Content-only change, no HTML/CSS/JS, and
+  the sweep needs a browser.
+- **t16 is still unchanged**, and with it the re-audit's judgement that the
+  category keeps one contestable key. The blind pass rated it *probable*, plain
+  causative `had` reads acceptably, and every fix I could construct strained
+  the item; t14's repair does not depend on it.
+- **t1's thin exclusion of `has been baked`** — *"Fresh bread has been baked
+  every morning at this bakery"* is a sentence a competent teacher accepts, as
+  the re-audit says. It is a real `question-author.md` rule 2 failure and it
+  is **not fixed here**: the brief's list for `Tense Forms in Passive` is the
+  t3/t4 giveaways, the fix is a paragraph rewrite rather than a lesson move,
+  and I would rather hand the next round one clearly-stated item than fold an
+  unasked-for rewrite into a round already carrying four. It is the first thing
+  I would put on the next list.
+- **The register claim in `Passive Reporting`'s `contrast` gloss**
+  (*"akademik metinlerde daha sık görülür"*) is a claim the app cannot support,
+  and both audits say it should go. It sits in a category I rewrote three items
+  in, so leaving it is a judgement call: deleting the clause changes what the
+  learner is told about *when to use* the second frame, which is the axis t18
+  now tests, and I did not want to make that change in the same round that
+  rewrote the items. Recorded, unchanged, still true that it should go.
+- **`Passive with Modals` and `Modal Perfects in Passive` items are
+  untouched.** Both ship on the re-audit's verdict; the only thing changed in
+  either lesson is the one `forms` example in §6.
+- **I did not commit or push.** One snapshot commit
+  (`ce88106 Snapshot: passive-voice third round, in progress`) appeared
+  mid-session from the environment's own checkpointing, not from a git command
+  in this session; the remaining changes are in the working tree.
+
+---
+
+## 8 · What was run
+
+```
+npm run format          # after every content edit
+npm run check           # format --check + validate + palette + 136 unit tests
+```
+
+`npm run check` is clean. `npm run validate` prints two warnings, both
+pre-existing and both in other files (`academic-nouns-adjectives`,
+`roadmap.json`); none is attributable to `passive-voice`. All 136 tests pass,
+including `the corpus backlog only shrinks`, whose ceiling is 0.
+
+Per item, before it was accepted:
+
+- every wrong option substituted into the paragraph and judged one at a time
+  against `question-author.md`'s question — §1.1, §1.2, §1.3, §2, §4.2;
+- the paragraph-deleted test run on all four rewritten items, with the
+  category label in view because `js/quiz.js:225` prints it — all four pass,
+  t14 narrowly;
+- every `explanation`, `tip` and `optionNotes` entry re-read against the new
+  text, and every `optionNotes` key checked against its own option set (the
+  validator enforces this, and it passes);
+- all four `decision` blocks in the four categories traced rule by rule in
+  file order over all four of their own items — §2.1, §3.1, §4.3, §5.1. No
+  rule returns a non-key option anywhere.
+
+## 9 · Where I am least confident
+
+1. **t18's exclusion of `It was believed that they`.** It rests on the closing
+   apposition — *an account the island's guidebooks still repeat* — making the
+   belief current. That is a real signal and it is deliberately placed away
+   from the blank, but a learner who reads the past-tense narrative and matches
+   the reporting verb to it has made a mistake I want them to make, and a
+   marker who reads quickly might call the option defensible. Of everything
+   here this is the exclusion I would most like a second reader on.
+2. **t14's `got repaired`.** I judge it live — dropping the object is the
+   `pitfall` 7 error, and `get + V3` is real English — but it is the weakest of
+   the three, and if a reader calls it dead the item is back to three options
+   and the paragraph-deleted result gets narrower still.
+3. **t21 having two redundancy distractors.** `by someone` and `by a thief`
+   are distinct as errors and identical as judgements. I am confident the swap
+   is an improvement on an exclusion that did not survive substitution; I am
+   not confident it is the best available option set, and a round that wanted
+   to could instead give the category a second genuine include/omit item and
+   let t21 carry one redundancy only.
+4. **Editing `Passive with Modals`' lesson at all** (§6). It is a category the
+   re-audit passed and the brief did not assign me. One `forms` example, no
+   item, no rule — but the rule that "five of nine rounds introduced a new
+   defect" is about exactly this kind of confident small edit, and it is
+   recorded here so the next reader can undo it in one line if they disagree.
