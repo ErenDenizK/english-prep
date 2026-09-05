@@ -984,6 +984,62 @@ async function runEmptiedBook(browser) {
 }
 
 /**
+ * Reopening the app on a page that needs a session it no longer has.
+ *
+ * `quizRequest` and `quizResult` live in sessionStorage, which dies with
+ * the tab — but an installed app or a phone browser reopens the last URL
+ * it had, a day later, in a new session. A learner who left mid-test met
+ * a fullscreen page with no header, no nav and one button, saying there
+ * was no test in progress. The owner reported it as a bug and was right:
+ * they had not asked for a quiz screen, the app had reopened on one.
+ *
+ * Nothing checked either page, which is why the dead end survived every
+ * sweep to date. It is checked here as what it should be — a redirect —
+ * and the redirect must not leave the page it left in the history.
+ */
+async function runRestoredSession(browser) {
+  for (const page of ["quiz.html", "results.html"]) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const tab = await context.newPage();
+    await tab.goto(`${BASE}/${page}`, { waitUntil: "networkidle" });
+    await tab.waitForURL(/index\.html/, { timeout: 5000 });
+    ok(true, `${page} oturumsuz açılınca ana sayfaya düşüyor`);
+    ok(
+      await tab.locator("#shell-header").isVisible(),
+      `${page}'den dönünce başlık ve nav yerinde`
+    );
+    // Back must not bounce them straight out again.
+    await tab.goBack();
+    await tab.waitForTimeout(250);
+    ok(
+      !tab.url().includes(page),
+      `${page} geri tuşunda tekrar açılmıyor (${tab.url().split("/").pop()})`
+    );
+    await context.close();
+  }
+
+  // And the case that must still explain itself: a request the content
+  // cannot satisfy is a real error, not a restored session.
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await page.evaluate(() =>
+    sessionStorage.setItem(
+      "englishPrep.quizRequest",
+      JSON.stringify({ mode: "topic", topicIds: ["tenses"], category: "No Such Category", count: 5 })
+    )
+  );
+  await page.goto(`${BASE}/quiz.html`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#quiz-container p");
+  ok(
+    (await page.locator("#quiz-container").innerText()).includes("soru bulunamadı"),
+    "karşılanamayan bir istek hâlâ kendini açıklıyor"
+  );
+  ok(page.url().includes("quiz.html"), "gerçek bir hata ana sayfaya kaçmıyor");
+  await context.close();
+}
+
+/**
  * The option note — the line under a wrong answer that says what THAT
  * option would have meant.
  *
@@ -2430,6 +2486,9 @@ try {
 
   console.log("\n=== yanlış defteri ===");
   await runMistakeBook(browser);
+
+  console.log("\n=== oturumu biten sayfalar ===");
+  await runRestoredSession(browser);
 
   console.log("\n=== defteri boşaltan tur ===");
   await runEmptiedBook(browser);

@@ -5,6 +5,24 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.32 — 2026-09-05
+
+**"Devam eden bir test yok" is gone, and it should never have been a
+screen.** The owner reported meeting it on opening the app and never
+seeing it do anything useful, which was exactly right. `quizRequest`
+lives in `sessionStorage`, so it dies with the tab — but an installed app
+or a phone browser reopens the last URL it had, a day later, in a new
+session. A learner who left mid-test came back to a fullscreen page with
+no header, no nav and one button, telling them about a test they had not
+asked to resume. Nothing was lost behind it either: `recordPartialOnLeave`
+had already written down whatever they answered.
+
+Both pages go home now, with `replace` so Back does not bounce them
+straight out again. The failure modes that are *real* errors — a request
+the content cannot satisfy, a load that failed — still explain
+themselves, and the sweep now checks both halves. It checked neither
+before, which is why a dead end survived every pass to date.
+
 ## v0.31 — 2026-09-05
 
 **Vocabulary ships.** `Academic Verbs` and `Academic Nouns & Adjectives`
