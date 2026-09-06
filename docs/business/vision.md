@@ -115,21 +115,47 @@ as a code freeze.**
 | `so / such` | The one cloze blank type nothing covers. One category, four items, folded into an existing topic | ~half a day |
 | Paragraph completion | 9 points, a whole section, no schema. A ~120-word paragraph with one sentence removed; distractors are on-topic and grammatical and fail on **coherence** — a different authoring skill | schema ~1 day, then ~2 h/item |
 | The error-tracking screen | Task #32, unblocked since the chosen option started being stored. **Build it here, not in App 2** — see §3 | ~2 evenings |
+| Reading passages | 21 points, the largest section. A supply rather than a project: each passage is single-use, so six to ten of them is the realistic first stock | 2.5–3.5 h **per passage** |
 | The quality debt | §4. The gate on everything after this row | ~28 h, shareable |
 
-**v1.0 — the honest claim.** The definition already accepted in
-`docs/roadmap.md`: *every part of the exam it can honestly practise is
-practisable with reviewed content, and the app never tells a learner
-something it cannot support.* That is 39 of Session I's 60 points, and
-`x` moves from 0 to 1 only when the owner says so.
+**What that adds up to.** Paragraph completion at ~2 h an item is
+roughly 48 hours for 24 items; reading at 2.5–3.5 h a passage is 25–35
+hours for a first stock of ten. **Finishing App 1 is on the order of 75
+to 90 hours of review, plus the cold-solve debt on whatever is sold.**
+That is a real number and it is the price of the cleaner claim — and it
+is the reason App 1 finishing matters more than App 2 starting early.
 
-**v1.1 — reading.** Deliberately outside v1: 2.5–3.5 h of review per
-passage, and a passage is single-use. It is a supply to be replenished,
-not a project to be finished — one passage at a time, forever, or not at
-all.
+**v0.5 — reading.** Moved *into* App 1 by the owner on 2026-09-06:
+*"listening hariç tüm özellikler tamamlanır."* This supersedes the v1.0
+definition accepted on 2026-09-04, which had put reading outside v1
+because a passage costs 2.5–3.5 hours of review and is single-use.
 
-**v1.2 — the mock.** Cloze and restatement at exam scale, under time.
-Needs v1.1's passages to be honest, which is why it is last.
+That reasoning was not wrong; the decision overrides it, and the
+arithmetic is what makes the override attractive. Reading is **21 of
+Session I's 60 points** — the largest single section, larger than the
+cloze and the restatement together. With it in, App 1 practises **all
+four sections of Session I**, and what it does not cover is exactly one
+thing that is a separate sitting: listening.
+
+| Section | Items | Points |
+|---|---|---|
+| Cloze | 10 | 15 |
+| Closest meaning | 10 | 15 |
+| Reading — two texts | 14 | **21** |
+| Paragraph completion | 6 | 9 |
+| **Session I** | **40** | **60** |
+| Session II — listening, a separate paper | — | 20, and out |
+
+**v1.0 — the whole of Session I.** The definition becomes simpler and
+much stronger than the one it replaces: *every section of the paper this
+app can practise at all is practisable with reviewed content, and the app
+never tells a learner something it cannot support.* Not "39 of 60" — **60
+of 60 of Session I**, with listening named as the one thing that is
+elsewhere. `x` still moves from 0 to 1 only when the owner says so.
+
+**v1.1 — the mock.** Cloze, restatement, reading and paragraph
+completion at exam scale, under time. It comes after v1.0 because it
+needs all four sections to exist before it can be honest.
 
 **v2.0 — paid.** Everything in `shipping.md` and `pricing.md` becomes
 real here: source closed (the owner's decision, `brief.md` addendum),
@@ -188,6 +214,62 @@ That is why the error-tracking screen belongs in **App 1 v0.4x, not App
 validated against ground truth, because there the paper says whether the
 diagnosis was right.
 
+### The audience is global, and that does not cost what the research said
+
+**Decided by the owner, 2026-09-06: App 2 teaches English to learners
+worldwide, not to Turkish speakers.** This looks like it collides with
+`two-apps.md` §5.3, which is the most-cited finding in this directory:
+51 of 60 lessons argue against Turkish, translating them is re-authoring
+rather than translation, ~45–60 hours per language, so *each language is
+a co-author and localisation is a hiring decision.*
+
+**That finding is right about translation and wrong about necessity,
+because it assumed the learner's own language is the medium.** That is
+the Duolingo assumption, and it is correct for Duolingo: it teaches
+beginners, and a beginner needs their L1.
+
+This app's audience is defined as the opposite. *Competence without
+labels* — someone who already speaks English, picked it up from series
+and games, and is missing the scaffolding. **That learner can read an
+explanation in English.** Reading it is itself practice. So the
+localisation problem does not get solved cheaply; **it does not arise.**
+
+What the L1 contrast actually contributed, separated out:
+
+| | L1-dependent? | Travels to a global App 2 |
+|---|---|---|
+| The boundary taxonomy — *must / have to*, *few / a few* | No, it is about English | **Whole** |
+| The item bank | Barely — 21 of 241 items mention Turkish | **~90%** |
+| The diagnostic and the weakness measurement | No | **Whole** |
+| The explanation prose | **Yes** — ~37,000 words framed as *"Türkçede…"* | **Re-authored once, in English** |
+
+So the cost of going global is **one re-authoring pass of the
+explanations, in English** — on the order of the 45–60 hours §5.3 costed
+per language, but paid once rather than per language, and by the owner
+rather than by a hire.
+
+**And the deeper point is that going global improves the method rather
+than diluting it.** The L1 contrast was a *shortcut*: knowing the
+learner is Turkish let the app **predict** which boundaries they smear.
+Strip the known L1 and the app has to **measure** instead — which is the
+diagnostic, which is already the wedge from §3, and which is *better
+information than a prediction from somebody's passport*. A Turkish
+speaker who learned English from games does not smear the same
+boundaries as one who learned it in a classroom, and the L1 model cannot
+tell them apart. The empirical model can.
+
+That is also what makes the product defensible against a chat box. "Here
+is an explanation of *must* versus *have to*" is free everywhere. "Here
+are the eleven boundaries **your** answers show you conflate, and here is
+your state on each" is not, and it needs a corpus with a taxonomy behind
+it.
+
+**Where this could be wrong.** If the real audience turns out to be
+lower-level than "already functions in English", English-medium
+explanations fail and the L1 problem comes straight back. That is a
+question the v0.1 diagnostic answers cheaply and early — which is another
+reason it is the first thing built.
+
 ### What a longer life and a wider audience actually change
 
 The owner's framing — App 2 is born inside App 1 and then evolves
@@ -245,6 +327,72 @@ break something App 1 gets for free.
 - **Onboarding has thirty seconds to establish why you are here**, where
   App 1 could simply assume it.
 
+### Notifications, and the test that decides which ones
+
+**Decided in principle, 2026-09-06: App 2 may have notifications.** App 1
+refused them and should keep refusing them — it has a calendar. App 2
+does not, and a year-long product with no return mechanism dies quietly.
+
+But "we refused streaks and now we allow notifications" is only coherent
+if there is a line, so here is the one I would draw:
+
+> **A notification is acceptable if what it says would still be true and
+> useful even if the app had no interest in your returning.**
+
+*"Four boundaries are ready to look at again"* passes: it is a fact about
+the learner's own state, derived from what they actually did, and it is
+worth knowing whether or not they open the app. *"Your streak is at
+risk"* fails: it is only meaningful because the app created the stake it
+now threatens. The first is a due-date; the second is a debt the app
+invented and then called in.
+
+The test has a practical consequence. It means the notification cannot
+be designed before the scheduling model is — you cannot say *"ready to
+look at again"* without something that decides when. So notifications
+arrive with the review model, at v0.5, not as a growth feature bolted on
+later.
+
+**A research arm is running on the mechanics** — what web push actually
+requires on iOS in 2026, what it costs an app with no backend, opt-in
+rates, and whether the evidence supports the distinction above or breaks
+it. Its findings land in `retention-and-pricing.md` and this section
+should be read against them, not instead of them.
+
+### Subscription, and the thing it collides with
+
+**The owner's decision: a subscription at a reasonable price, whichever
+form the market accepts.** Recorded, and the arm above is researching the
+market half.
+
+The half that is not a market question is a tension inside the product,
+and it should be named before it is priced. **The boundary model gives
+the learner a stopping rule.** When your boundaries are closed, you are
+done — and that honesty is the entire content of the claim to be *more
+respectable than Duolingo*. A subscription's economics want the opposite:
+they want you not to finish.
+
+There are only three honest ways out, and the dishonest fourth is the one
+the category is full of:
+
+1. **Let them finish and leave.** Price so that a three-to-six-month
+   lifetime pays, and treat churn-on-completion as success rather than
+   failure. This is the only option that keeps the claim intact.
+2. **Grow the corpus so "done" recedes.** Legitimate — but it is exactly
+   the standing cadence promise §4 warns about, at 6–8 minutes of his own
+   attention per item, forever.
+3. **One-time or lifetime**, which fits a finite product honestly and
+   gives up recurring revenue.
+4. ~~Design retention mechanics that prevent finishing.~~ This is what a
+   streak is for. Taking it would cost the one thing that distinguishes
+   the product.
+
+**My recommendation before the research lands: (1), annual-first.** A
+learner who finishes and leaves after five months, having got what they
+came for, is a better outcome and a better advert than one retained by a
+counter. If the arm's numbers say that cannot pay at a reasonable price,
+(3) is the fallback — not (2), because (2) is a promise made with a
+resource that has one supplier.
+
 ### So: a shared core, and a new shell
 
 The practical form this takes, given the project's own no-build-step
@@ -267,14 +415,15 @@ teaches or how it looks.
 
 ### App 2's map
 
-**v0.1 — Teşhis, and nothing else.** The diagnostic alone: ~20 items
-across the boundaries, free, Turkish, no account, no store. It tests the
-one hypothesis everything else rests on — *does someone who does not
-know him find this useful* — and it is perhaps two weekends because the
-engine already exists.
+**v0.1 — the diagnostic, and nothing else.** ~20 items across the
+boundaries, free, **in English**, no account, no store. It tests the two
+hypotheses everything else rests on: *does someone who does not know him
+find this useful*, and *is the audience actually high enough to be
+taught in English*. Perhaps two weekends, because the engine exists.
 
-**v0.2 — 20 boundaries.** The diagnostic now has somewhere to send you.
-Still free, still Turkish, still no exam framing anywhere in the copy.
+**v0.2 — 20 boundaries.** The diagnostic now has somewhere to send
+you. Explanations in English, written for someone who already speaks it:
+the job is naming the boundary, never teaching the language.
 
 **v0.5 — 60 boundaries, plus state.** The mistake book, the boundary
 list, "43 of N closed". This is the first version that is a product
@@ -284,11 +433,13 @@ rather than a demo.
 your ear smears are named and closed" is a true sentence rather than an
 ambition. Paid depth begins here, if at all.
 
-**v2.0 — a second language.** Not a localisation ticket. 51 of 60
-lessons argue against Turkish specifically; a second language is 45–60
-hours from someone whose intuition in it is as good as his in Turkish.
-**Treat it as a hiring decision**, and do not take it before v1.0 has
-shown the thing works in one language.
+**v2.0 — localised interface, not localised teaching.** With English as
+the medium from v0.1, a "second language" is now a much smaller thing:
+the UI strings and the marketing, so a learner can navigate in their own
+language while still being taught in English. That is one or two evenings
+per language plus a translator, not a co-author. **The teaching stays in
+English** — and if it ever should not, that is a new product decision,
+not a translation ticket.
 
 ### Its ceiling, said out loud
 

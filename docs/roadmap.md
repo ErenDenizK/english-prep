@@ -200,9 +200,12 @@ half.
 
 Four criteria, each measurable:
 
-1. **Coverage.** Cloze (all ten blank types), closest meaning and
+1. **Coverage.** ~~Cloze (all ten blank types), closest meaning and
    paragraph completion are all practisable. That is **39 of Session I's
-   60 points**.
+   60 points**.~~ **Revised 2026-09-06: all four sections of Session I —
+   cloze, closest meaning, reading and paragraph completion — are
+   practisable. That is 60 of 60.** Listening (Session II, 20 points) is
+   the one thing named as elsewhere.
 2. **Quality.** Every shipped item has passed a blind pass and every
    shipped lesson a sufficiency pass, with zero known blocking defects.
 
@@ -227,7 +230,17 @@ Four criteria, each measurable:
    reading and listening are not covered. An app that silently omits 21
    of 60 points is worse than one that says so.
 
-**Reading is deliberately outside v1.** The arm re-derived the cost at
+> **Superseded 2026-09-06.** The owner's decision: *"App 1 bu projenin
+> bitmiş hâli… listening hariç tüm özellikler tamamlanır."* Reading is
+> **in**, which changes criterion 1 from *39 of Session I's 60 points*
+> to **all 60** — every section of the paper except the one that is a
+> separate sitting. Criteria 2–4 are unchanged, and the open question
+> inside criterion 2 is still open. The paragraph below records why
+> reading had been excluded; the reasoning was sound and the decision
+> overrides it. `docs/business/vision.md` §2 has the arithmetic and the
+> cost.
+
+**Reading was deliberately outside v1.** The arm re-derived the cost at
 **2.5–3.5 hours of review per passage**, and a passage is single-use —
 once read, all seven of its items are spent — so ten passages is five
 sittings and 25–35 hours. It is a supply to be replenished, not a project
@@ -251,7 +264,7 @@ both need roughly 15–20 items per category, against 4 today.
 
 | | Unblocked when |
 | --- | --- |
-| Reading section | v1 ships; then one passage at a time, as supply |
+| ~~Reading section~~ | **Moved into v1, 2026-09-06.** Still one passage at a time, as supply — but now before v1.0 rather than after it |
 | Listening (Session II, 20 points) | needs audio, which is a different project and a hosting decision |
 | Mastery levels | ~8–10 items per category |
 | Adaptive difficulty, item scheduling | ~15–20 items per category |
