@@ -207,6 +207,16 @@ That is already how every lesson in App 1 is built — `CLAUDE.md` says so
    says "I am B2". They say "I never know which one of these two to
    use."
 
+**But *"43 of N"* is the wrong way to draw it**, and
+`docs/app2/system-and-ui.md` §4 took my proposal apart on three counts:
+N moves as the corpus grows, a distant denominator demotivates rather
+than motivates, and `closed` can fall again — a counter that goes down
+reads as punishment. What replaces it is three state counts, a list that
+is its own picture, and one drawing whose cells are **boundaries in the
+order they were closed**. Never days: a day strip is arithmetically dead
+at 365 marks in 288 pixels, and semantically it is a streak wearing
+different clothes.
+
 ### The wedge: the diagnostic
 
 `two-apps.md` §3.2 is right that the competitor is ChatGPT, not
@@ -299,10 +309,14 @@ break something App 1 gets for free.
   the learner actually did, and unlike a streak it cannot be lost by
   going on holiday.
 - **The session shape inverts.** Exam prep is long sittings under a
-  deadline; year-long study is short and frequent. The current shell is
-  built around a twenty-question sitting that ends on a results screen.
-  A five-minute daily thing wants the opposite — practice in one tap and
-  no terminal screen — and that is a shell rewrite, not a setting.
+  deadline; year-long study is short and frequent. `docs/app2/system-and-ui.md`
+  takes this further than "shorter sessions": it deletes the sitting and
+  the results screen both, and replaces them with a **gate** — one
+  sentence, one button, the record strip — that is simultaneously the
+  start and the end of every session, in four states (queue ready,
+  nothing due, everything closed, first run). The rule that makes it work
+  is that **readiness is a property of a boundary, not of an item**,
+  which is what stops an Anki-style backlog wall from ever forming.
 - **Content exhaustion becomes the dominant constraint.** 241 items is a
   few weeks. App 1's corpus can be *finished*; App 2's can only be
   *grown*, at the same 6–8 minutes of undelegable attention per item.
@@ -455,6 +469,23 @@ would price this app at four to five times the category leader in
 exactly the markets its audience lives in. Per-storefront prices get set
 by hand against **local Duolingo**, not against a global number
 converted at the exchange rate.
+
+### One decision that has a deadline
+
+Everything else in this document can wait for App 1 to finish. This one
+cannot, because it is only cheap before the first screen is built.
+
+**The light theme.** App 1 committed to a single dark look on purpose and
+that was right for it. For a global audience it is not a freshness lever
+— it is a **reach requirement**, and `docs/app2/system-and-ui.md` §5
+prices it at **12–18 hours if the tokens carry `light dark` from v0.1,
+against 25–40 retrofitted afterwards.** So it is decided at v0.1 or it is
+decided never, and deciding it by default is deciding never.
+
+The same section unparks the per-tier accent hue, re-aimed. The owner
+looked at App 1's grouped index and felt nothing — which kills *tiers*
+as the axis, not *hue* as a mechanism. Grammatical family is the axis the
+audience statement predicts a learner actually thinks in.
 
 ### So: a shared core, and a new shell
 
