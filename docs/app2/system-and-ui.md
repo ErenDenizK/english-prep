@@ -28,41 +28,40 @@ repository. §8 lists what I could not check.
 
 ## 0 · The short version
 
-App 1's shell is built around a **sitting**: choose a count, answer
+App 1's shell is built around a **sitting** — choose a count, answer
 twenty, arrive at a results screen that assembles the picture. The count
 listbox, the progress bar, the score and the breakdown all exist because a
-sitting has a beginning and an end.
+sitting has a beginning and an end. A five-minute daily habit has neither.
+It has a **queue**, whose terminus is not a score but *emptiness*. So the
+answer is not "make the sitting shorter": delete the sitting, delete the
+results screen, and replace both with one surface that is the start and
+the end of every session.
 
-A five-minute daily habit has neither. It has a **queue**, whose terminus
-is not a score but *emptiness*. So the answer is not "make the sitting
-shorter": delete the sitting, delete the results screen, and replace both
-with one surface that is the start and the end of every session.
-
-1. **The gate.** One recurring arrival surface holding one sentence and at
-   most two controls. It says what is ready; when the queue empties you
-   return to it and it says the other thing. No results screen, no score.
+1. **The gate** — one recurring arrival surface, one sentence, at most two
+   controls. It says what is ready; when the queue empties you return to
+   it and it says the other thing. No results screen, no score. (§1)
 2. **Two destinations, App 1's shell.** Practice and Boundaries in the
    nav, identity in the header. The diagnostic and the review queue are
-   *states*, not places; putting either in the nav is the mistake.
+   *states*, not places; putting either in the nav is the mistake. (§2)
 3. **The boundary screen is one object in three states** — unmet, open,
    closed — over four block types, capped so a uniform page is not
-   expressible.
-4. **Progress is a set, not a number.** Never `43/104` as a ratio, never a
-   bar of it. Three state counts, a list that *is* the picture, and one
-   drawing whose cells are boundaries in the order you closed them — a
-   day-strip is a six-week instrument and dies at 320px over a year.
+   expressible. (§3)
+4. **Progress is a set, not a number.** Never `43/104` as a ratio. Three
+   state counts, a list that *is* the picture, and one drawing whose cells
+   are boundaries in the order you closed them — a day-strip is a
+   six-week instrument and dies at 320px over a year. (§4)
 5. **Three parked levers unpark, one as a reversal.** Lesson shape becomes
    a schema constraint rather than a brief; the accent hue unparks
-   *re-aimed at grammatical family, not difficulty tier*; and the light
-   theme stops being a freshness question and becomes a reach requirement,
-   roughly half the cost at v0.1 that it is retrofitted.
+   *re-aimed at grammatical family, not difficulty tier*; the light theme
+   stops being a freshness question and becomes a reach requirement,
+   roughly half the cost at v0.1 that it is retrofitted. (§5)
 
 What decides most of it: at 365 arrivals every surface is far past the
 exposure count where liking turns (§5.1), and variation will not outrun
-that. What works instead is making the most-seen surfaces carry the
-learner's own changing record and never moving the frame behind them —
-because the far side of the trough is familiarity-as-value, and an app
-that keeps changing its face never gets there.
+that. What works is making the most-seen surfaces carry the learner's own
+changing record and never moving the frame behind them — because the far
+side of the trough is familiarity-as-value, and an app that keeps changing
+its face never gets there.
 
 ---
 
@@ -84,42 +83,40 @@ sitting removes that screen's reason to exist, not merely its convenience.
 ### 1.2 What the evidence supports, and what it does not
 
 The microlearning literature returns confident numbers I do not trust:
-"5–10 minutes, 3–5 times weekly", "8–12 minutes optimal", d = 0.74 over
-controls, SMD 1.43 versus lectures, 62% versus 23% retention at 30 days
-`[S]`. The effect sizes are implausible for a format manipulation, several
-trace to vendor blogs, and the meta-analyses named are unopened here.
+"5–10 minutes, 3–5 times weekly", d = 0.74 over controls, SMD 1.43 versus
+lectures, 62% versus 23% retention at 30 days `[S]`. The effect sizes are
+implausible for a format manipulation and several trace to vendor blogs.
 **Nothing below rests on them.** `[?]`
 
 What is solid is enough. **Distributed practice**: spacing beats massing
 across domains, four 50-minute sessions beat one four-hour session, and
-Japanese learners of English trained across four sessions at 1-day and
-7-day intervals showed similar gains at 7 and 28 days `[S]`. Nothing says
-five minutes beats thirty; what it says is that **the same total time cut
-into more sessions is worth more**, which is the only claim the design
-needs. **Retrieval practice and desirable difficulties**: testing beats
-re-presentation, interleaving beats blocking, and the extra difficulty is
-where retention comes from `[S]` — all three favour a short mixed session
-over a long blocked one. **Habit formation is slow and cued by context,
-not length**: Lally's participants reached 95% of their automaticity
-asymptote between 18 and 254 days, median 66, and **missing a single
-opportunity did not materially affect the curve** `[S]`. So expect months
-before opening the app is automatic, and treat a missed day as a
-non-event — an argument against the streak from the habit literature
-rather than from SDT, worth having because that is where streaks are
-usually justified from.
+Japanese learners trained across four sessions at 1-day and 7-day
+intervals showed similar gains at 7 and 28 days `[S]`. Nothing says five
+minutes beats thirty; it says **the same total time cut into more sessions
+is worth more**, which is the only claim the design needs. **Retrieval
+practice and desirable difficulties**: testing beats re-presentation,
+interleaving beats blocking, and the extra difficulty is where retention
+comes from `[S]` — all three favour a short mixed session over a long
+blocked one. **Habit formation is slow and cued by context, not length**:
+Lally's participants reached 95% of their automaticity asymptote between
+18 and 254 days, median 66, and **missing a single opportunity did not
+materially affect the curve** `[S]`. So expect months before opening the
+app is automatic, and treat a missed day as a non-event — an argument
+against the streak from the habit literature rather than from SDT, worth
+having because that is where streaks are usually justified from.
 
-So the micro-session is not pedagogically inferior; cut the same study
+So the micro-session is not pedagogically inferior: cut the same study
 time into daily pieces and distributed practice says you gain. The costs
-are elsewhere and they are real. **Reading depth** — a boundary's first
-meeting needs 300–500 words plus practice and five minutes will not hold
-it; §3 resolves this by making the first meeting a declared, longer shape
-rather than pretending all sessions are equal. **The assembled picture** —
-six answers a day produce the same pattern as twenty in a sitting and
-nobody sees it; §4 is the replacement. **Warm-up** — a fixed orienting
-cost amortised over twenty items is not amortised over six `[≈]`, which is
-the argument for the gate being nearly empty: every pixel on it is paid
-365 times and taxes the shortest sessions hardest. **Exam stamina** — App
-1 needs it, App 2 does not, so this one is not paid.
+are elsewhere and real. **Reading depth** — a boundary's first meeting
+needs 300–500 words plus practice, which five minutes will not hold; §3
+resolves it by making the first meeting a declared, longer shape rather
+than pretending all sessions are equal. **The assembled picture** — six
+answers a day produce the same pattern as twenty and nobody sees it; §4 is
+the replacement. **Warm-up** — a fixed orienting cost amortised over
+twenty items is not amortised over six `[≈]`, which is the argument for
+the gate being nearly empty: every pixel on it is paid 365 times and taxes
+the shortest sessions hardest. **Exam stamina** — not paid at all, because
+App 2 has no exam.
 
 ### 1.3 The gate
 
@@ -279,12 +276,12 @@ destination that is often empty trains the learner to stop visiting it**
 `[≈]` — precisely the one you most need visited when it is not.
 
 **A tab for the diagnostic.** You take it once. Adaptive-testing work puts
-short diagnostics at few items — a stopping rule hitting reliability > 0.9
-at a mean of 8.5 items in one CAT, 4–6 for a depression screener `[S]` —
-which suggests `vision.md`'s ~20-item v0.1 diagnostic is generous rather
-than thin, and certainly not a fixture. It belongs as the first-run state
-of the gate, and afterwards as one row at the foot of Boundaries reading
-*Check again*, because a year-old diagnosis is stale.
+short diagnostics at few items — reliability > 0.9 at a mean of 8.5 items
+in one CAT, 4–6 for a depression screener `[S]` — which suggests
+`vision.md`'s ~20-item v0.1 diagnostic is generous rather than thin, and
+certainly not a fixture. It is the first-run state of the gate, and
+afterwards one row at the foot of Boundaries reading *Check again*,
+because a year-old diagnosis is stale.
 
 **No nav at all — everything from the gate.** Tempting, wrong for one
 reason: the learner who thinks *"I want to look at `since / for` right
@@ -301,19 +298,18 @@ reopened.
 
 Call the unit a **boundary** in the interface, not only in the docs.
 *"Pair"* is factually wrong — App 1 already ships a four-way contrast
-(`Must vs Have to vs Mustn't vs Don't Have to`) and a "pair" screen
-holding four forms is a lie in the label. *"Contrast"* collides with App
-1's block type. *"Confusion"* is accurate and insulting to a learner
-defined by competence. *"Boundary"* is abstract on first meeting and exact
-afterwards, and onboarding has one sentence to define it — which it needs
-anyway, because the product claim lives in that sentence: *"A boundary is
-a place two forms sit close enough that your ear stops telling them apart.
-This app names them and closes them."*
+(`Must vs Have to vs Mustn't vs Don't Have to`). *"Contrast"* collides
+with App 1's block type. *"Confusion"* is accurate and insulting to a
+learner defined by competence. *"Boundary"* is abstract on first meeting
+and exact afterwards, and onboarding has one sentence to define it — which
+it needs anyway, because the product claim lives in that sentence: *"A
+boundary is a place two forms sit close enough that your ear stops telling
+them apart. This app names them and closes them."*
 
-Individual boundaries are never referred to by a name, only by their
-notation — **`must / have to`**, serif, `lang="en"`, as App 1 sets
-English. The notation is the title, the row label, the heading, and the
-thing the learner says to a friend.
+Individual boundaries are never named, only notated — **`must / have
+to`**, serif, `lang="en"`, as App 1 sets English. The notation is the
+title, the row label, the heading, and the thing the learner says to a
+friend.
 
 ---
 
@@ -412,7 +408,7 @@ lesson is the loudest thing on a surface whose whole job is to be quiet").
 ├──────────────────────────────────────────┤
 │  must      the speaker decides           │  `line`: form serif/en,
 │  have to   something outside decides     │  gloss sans, on a 2px rule
-│                                          │  tinted by family (§5.4)
+│                                          │  tinted by family (§5.3)
 ├──────────────────────────────────────────┤  ← fold, ~452px
 │  WHY YOUR EAR SMEARS IT      (`why`)     │
 │  I must call her.   ← I decided          │  `evidence`, 2–6 rows
@@ -432,7 +428,7 @@ and the largest thing on screen** — `--t-display` 28/32, serif,
 wraps to two lines. Let it wrap: shrinking the title to fit the longest
 notation punishes every short one, and `text-wrap: balance` makes the
 two-line case look intentional. **The `line` block is the only place a
-family hue appears** (§5.4) — above the fold, the boundary's identity, the
+family hue appears** (§5.3) — above the fold, the boundary's identity, the
 most-seen non-text element in the app. **Practice is on the same page,
 below the teaching**; App 1 learned this in `renderLessonEnd`, where
 making the end of a lesson its own screen "would mean a tap to see two
@@ -591,7 +587,7 @@ this project's rule is that a category rename moves questions, manifest
 and content together or not at all. Fix the families before the first
 boundary is authored, as `docs/agents/README.md` has the supervisor fix
 the category taxonomy first. Five is also the number the colour arithmetic
-permits (§5.4) — a happy constraint, but a constraint: a sixth family
+permits (§5.3) — a happy constraint, but a constraint: a sixth family
 costs the hue axis.
 
 ---
@@ -602,9 +598,8 @@ costs the hue axis.
 
 The mechanism does not change. Consistency makes the interface fluent;
 fluency is hedonically marked, so it is experienced as beauty; and fluency
-is what stops a thing being attended to. The pleasure and the fading are
-the same process running forward, so anything buying freshness by making
-the interface less fluent spends the asset to pay the interest
+is what stops a thing being attended to. Anything buying freshness by
+making the interface less fluent spends the asset to pay the interest
 (`visual-longevity.md` §1, on processing fluency and the CHI 2023
 partialling, r ≈ .79 → .34 `[S]`).
 
@@ -612,23 +607,22 @@ What changes at a year is the **position on the curve**, and it changes
 enough to alter the conclusion. Montoya et al.'s meta-analytic fit turns
 over at roughly 37 exposures `[S]`. At six weeks App 1's arrival screen
 sits near 60 — just past the turn, which is why that document could
-sensibly ask how to delay it. **At a year App 2's gate sits at ~365. It is
-not near the turn; it is a long way down the far side, and no amount of
+sensibly ask how to delay it. **At a year App 2's gate sits at ~365: not
+near the turn, but a long way down the far side, and no amount of
 variation moves it back up.**
 
-So the question changes: not *how do we delay staleness* but *what is the
+So the question changes from *how do we delay staleness* to *what is the
 steady state after it*. Two findings answer it. **The edtech novelty curve
 is a U, not a slide** — Rodrigues et al. (2022) found the ~4-week drop
-followed by partial recovery as familiarisation set in `[S]`, so there is
-a far side, and things that survive the trough get liked *for being
-familiar*. And **change aversion is the price of never reaching it**:
-redesigns produce a reliable negative reaction, usually temporary, whose
-named mechanism is mere exposure — users lose familiarity and perceive the
-new experience as worse even where usability is unchanged `[S]`. An app
-that refreshes its face annually pays that toll annually and never banks
-the recovery. **So: do not spend the chrome.** `visual-longevity.md` §4.1
-got this right for the wrong horizon, and the longer horizon makes it more
-true rather than less.
+followed by partial recovery as familiarisation set in `[S]`, so things
+that survive the trough get liked *for being familiar*. And **change
+aversion is the price of never reaching it**: redesigns produce a reliable
+negative reaction whose named mechanism is mere exposure — users lose
+familiarity and perceive the new experience as worse even where usability
+is unchanged `[S]`. An app that refreshes its face annually pays that toll
+annually and never banks the recovery. **So: do not spend the chrome.**
+`visual-longevity.md` §4.1 got this right for the wrong horizon, and the
+longer horizon makes it more true rather than less.
 
 ### 5.2 The levers, re-ranked
 
@@ -636,11 +630,11 @@ true rather than less.
 | --- | --- | --- | --- |
 | 1 | Lesson shape follows the material | parked as a brief edit | **unparked, promoted to a schema constraint** (§3.2) |
 | 2 | Richness earned from the record | parked (five days to the exam) | **unparked, and it is now the progress representation** (§4) |
-| 3 | Accent per tier | parked — the owner felt nothing from tiers | **unparked, re-aimed at family** (§5.4) |
-| 4 | Motion, tightly scoped | available | **unparked, with a technical correction** (§5.5) |
+| 3 | Accent per tier | parked — the owner felt nothing from tiers | **unparked, re-aimed at family** (§5.3) |
+| 4 | Motion, tightly scoped | available | **unparked, with a technical correction** (§5.4) |
 | 5 | One drawn mark per topic | borderline, ten drawings | **unparked as five, one per family** |
 | 6 | Time or season | refused | **still refused, and weaker at a year** |
-| 7 | Light theme | "none for this question" | **reframed: reach, not freshness — first or never** (§5.6) |
+| 7 | Light theme | "none for this question" | **reframed: reach, not freshness — first or never** (§5.5) |
 | 8 | Subtract | 2 hours, worth doing | **carried, aimed at the gate first** |
 
 **Why 6 weakens rather than strengthens over a year.** The objections
@@ -652,22 +646,21 @@ spread over three months, so the lever delivers nothing while breaking
 three things that are hard to fix `[≈]`.
 
 **And one lever a year makes available that six weeks did not:
-progressive reduction.** Over a year the interface can legitimately get
-*simpler* as the learner gets more fluent with it — the line under the
-gate's sentence, the "what this is" copy on a first boundary screen, the
-hint explaining `closing`, all scaffolding for a learner who no longer
-needs it, and each a row on a surface seen 365 times. It is the only form
-of variation whose direction is *toward* fluency rather than against it,
-which is why the fluency argument does not veto it `[≈]`, and it is
-personalisation rather than customisation — the app derives it, the
-learner chooses nothing, no new state must be proved by `npm run color` —
-which is the class `visual-longevity.md` §3.6 prefers. Rules, because it
-goes wrong easily: it removes only **explanation**, never controls and
-never content; it is keyed on sessions with that surface, not days
-elapsed; it is reversible from Profile in one control, permanently; and it
-never removes anything the learner has not demonstrably used. I have no
-controlled evidence for it `[?]` — it rests on the fluency argument alone
-and should be built last.
+progressive reduction.** The interface can legitimately get *simpler* as
+the learner gets more fluent with it — the line under the gate's sentence,
+the "what this is" copy on a first boundary screen, the hint explaining
+`closing`: scaffolding for a learner who no longer needs it, each a row on
+a surface seen 365 times. It is the only variation whose direction is
+*toward* fluency rather than against it, which is why the fluency argument
+does not veto it `[≈]`, and it is personalisation rather than
+customisation — the app derives it, the learner chooses nothing, no new
+state must be proved by `npm run color` — which is the class
+`visual-longevity.md` §3.6 prefers. Rules, because it goes wrong easily:
+it removes only **explanation**, never controls and never content; it is
+keyed on sessions with that surface, not days elapsed; it is reversible
+from Profile in one control, permanently; and it never removes anything
+the learner has not demonstrably used. No controlled evidence `[?]` — it
+rests on the fluency argument alone, and it is built last.
 
 ### 5.3 The accent hue, unparked and re-aimed
 
@@ -808,24 +801,22 @@ that is not the sentence, the button and the strip.
 The ~1,990 reusable lines are not neutral: they make some things free and
 some things a three-file change.
 
-**Free, and to be used as-is.** `dom.js` — `el` / `clear` /
-`appendProse` / `appendInline` / `appendBlanked` / `sectionHeading`; every
-screen in §3 is buildable from those six, and `appendBlanked`'s "every
-blank is the same width on purpose — sizing it to the answer would leak
-the answer" is a content-security decision, not a style one.
-`quiz-engine.js` — pure scoring and shuffling. `storage.js`'s
-**derive-don't-store** pattern, which is what §3.4 rests on, plus its
-lattice merge: attempts union, progress takes the further of two, the
-device in your hand wins on name and preference — two devices, no backend,
-no conflict UI. `icons.js`'s §6 numeric contract, and `createElementNS` as
-the way to draw §4.4's strip. `modal.js`, for reset confirmation and
-nothing else. `shell.js`'s one persistent live region and `announce()`,
+**Free, and to be used as-is.** `dom.js`'s six builders, from which every
+screen in §3 is constructible — and `appendBlanked`'s "every blank is the
+same width on purpose, sizing it to the answer would leak the answer" is a
+content-security decision, not a style one. `quiz-engine.js`, pure.
+`storage.js`'s **derive-don't-store** pattern, which is what §3.4 rests
+on, plus its lattice merge: attempts union, progress takes the further of
+two, the device in your hand wins on name and preference — two devices, no
+backend, no conflict UI. `icons.js`'s numeric contract, and
+`createElementNS` as the way to draw §4.4's strip. `modal.js`, for reset
+confirmation. `shell.js`'s one persistent live region and `announce()`,
 both of which App 2 would otherwise get wrong. The tokens, the type scale
 and `--h-nav` / `--h-target`. And `tools/`, whole — including
 `verify-ui.mjs`, whose walk becomes **gate → item → feedback → gate →
-Boundaries → boundary → Profile**: maybe two hours to rewrite, with the
-~430 checks, the overflow detection, the 44px audit and the console-error
-trap all transferring.
+Boundaries → boundary → Profile**: two hours to rewrite, with the ~430
+checks, the overflow detection, the 44px audit and the console-error trap
+all transferring.
 
 **What the core cannot do, and what each costs.**
 
@@ -902,42 +893,37 @@ screens can be.
 WebFetch and curl are unavailable here, so every external claim reaches me
 through a search-index summary.
 
-- **The microlearning numbers** — "5–10 minutes, 3–5 times weekly", d =
-  0.74, SMD 1.43, 62% vs 23% at 30 days. Implausible for a format
-  manipulation, several tracing to vendor blogs. **Nothing in §1 rests on
-  them**; it rests on distributed practice and retrieval practice, which
-  are old, large and uncontested.
-- **The 2025 Zeigarnik / Ovsiankina meta-analysis** — "no memory
-  advantage, resumption ~two-thirds". The direction is reported
-  consistently and is the half I lean on; the pooled rate is a summary
-  figure.
+- **The microlearning numbers** (d = 0.74, SMD 1.43, 62% vs 23% at 30
+  days) — implausible for a format manipulation, several tracing to vendor
+  blogs. **Nothing in §1 rests on them**; §1 rests on distributed practice
+  and retrieval practice, which are old, large and uncontested.
+- **The 2025 Zeigarnik / Ovsiankina meta-analysis** — the direction ("no
+  memory advantage, but resumption is robust") is reported consistently
+  and is the half I lean on; the ~two-thirds rate is a summary figure.
 - **Kivetz, Urminsky & Zheng (2006)** and endowed progress — direction
-  only, not magnitude. **Lally et al. (2010)** — 18–254 days, median 66,
-  widely and consistently reported, including that 66 is the median of a
-  modelled 95%-of-asymptote figure rather than a switch-on point.
+  only. **Lally et al. (2010)** — 18–254 days, median 66, consistently
+  reported, including that 66 is the median of a modelled
+  95%-of-asymptote figure rather than a switch-on point.
 - **The SDT meta-analysis over 443,000 participants (2024)** — I could not
-  identify the paper; used only to say the triad is well supported, which
-  nothing rests on alone. **The CAT stopping-rule figures** (8.5 items
-  mean; 4–6 for a depression screener) come from other domains and are
-  used only to argue a 20-item diagnostic is generous, not to size one.
+  identify the paper; used only to say the triad is well supported.
+  **The CAT stopping rules** (8.5 items mean; 4–6 for a depression
+  screener) are from other domains, and argue only that a 20-item
+  diagnostic is generous, not what one should be.
 - **Change aversion** — almost entirely practitioner literature. The
-  mechanism (mere exposure) is well supported; "usually temporary" is not
-  measured in anything I could reach.
-- Everything `visual-longevity.md` §8 lists is still unverified, including
-  the Montoya coefficients, the CHI 2023 fluency partialling and the
+  mechanism (mere exposure) is well supported; "usually temporary" is not.
+- Everything `visual-longevity.md` §8 lists is still unverified — the
+  Montoya coefficients, the CHI 2023 fluency partialling, the
   seductive-details effect sizes.
 
 **Computed here, re-runnable:** the shell heights (56 / 60 / 68px) and the
 452px fold budget at 320×568, from `css/style.css`; the 288px column; the
 history-size arithmetic in §6; the strip's per-mark widths at 3 and 90
 marks. The 148-degree hue arc and the five-hue table are
-`visual-longevity.md`'s, computed with `tools/color.mjs`, and are
-unchanged by re-aiming the axis.
-
-**Not verified on a device.** Five family hues at 35° may be four and a
-duplicate in daylight; the light palette does not exist yet; and §3.3's
-claim that a two-line notation reads as intentional is a claim about
-`text-wrap: balance` on a real screen, not about CSS.
+`visual-longevity.md`'s, computed with `tools/color.mjs`, and unchanged by
+re-aiming the axis. **Nothing has been looked at on a device**: five
+hues at 35° may be four and a duplicate in daylight, the light palette
+does not exist, and §3.3's claim about a wrapped two-line notation is a
+claim about `text-wrap: balance` on a real screen.
 
 **The one question I would put to the owner before anything is built.**
 §5.3 rests on grammatical family being a category the learner thinks in —
