@@ -22,6 +22,7 @@ verify.
 | | | |
 |---|---|---|
 | **`ozet.md`** | **Türkçe özet — hepsi bir sayfada** | Where to start |
+| **`vision.md`** | **Which one, how big, in what order** | The decision and both version maps |
 | **`brief.md`** | What the owner actually said | The record. Where anything below disagrees with it, this is what he said and the other is an argument |
 | **`two-apps.md`** | Is the App 1 / App 2 split right? | Yes — but the seam is *exam / no exam*, not *Turkish / global* |
 | **`pricing.md`** | The 270 / 150 / three-schools arithmetic | It clears his bar. The production cost, which he never computed, is the interesting number |
