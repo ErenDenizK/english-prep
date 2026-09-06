@@ -189,9 +189,18 @@ missing is not knowledge in general. It is a finite, enumerable set of
 That is already how every lesson in App 1 is built — `CLAUDE.md` says so
 — and it has three consequences that solve the problem:
 
-1. **Done exists, and it is countable.** "There are N boundaries in this
-   corpus; you have closed 43 of them." Finite, personal, honest, and
-   nothing like a streak.
+1. **Done exists, and it is countable — of the corpus, not of the
+   language.** This precision is not pedantry; `docs/app2/boundaries.md`
+   §6 found that the denominator does not exist as a property of English
+   at all. Murphy is 145 units, that arm's own inventory is 110, App 1
+   is 60 categories — and Swan is 600+ entries while Cambridge's English
+   Grammar Profile enumerates 1,200+ competences. The gap is pure
+   resolution. So the honest sentence is *"there are N boundaries in
+   this app and you have closed 43"*, never *"there are N boundaries in
+   English"*. The first is finite, personal and true; the second is a
+   claim nobody can make. Everything else about the unit survives that
+   correction, and a product whose whole pitch is honesty had better
+   make it out loud.
 2. **The unit is smaller than a topic**, so supply can grow one boundary
    at a time and the product is never half-built.
 3. **It matches what the learner would say about themselves.** Nobody
@@ -470,10 +479,27 @@ teaches or how it looks.
 ### App 2's map
 
 **v0.1 — the diagnostic, and nothing else.** ~20 items across the
-boundaries, free, **in English**, no account, no store. It tests the two
+boundaries, free, **in English**, no account, no store. It tests the
 hypotheses everything else rests on: *does someone who does not know him
-find this useful*, and *is the audience actually high enough to be
-taught in English*. Perhaps two weekends, because the engine exists.
+find this useful*, *is the audience actually high enough to be taught in
+English*, and — added by `docs/app2/boundaries.md` §7 — **is the unit
+even right**.
+
+That third one has a designed test rather than a hope. The inventory
+found that 16 of its 110 candidates are not contrasts at all but single
+facts a learner simply does not know: articles, countability, agreement,
+plural *-s*, dependent prepositions. Those are close to the largest
+error categories every learner corpus reports, so **by item count the
+boundary unit survives and by error mass it may not.** The defence — that
+someone who acquired English from high-frequency input got those for
+free and only lacks the labelled contrasts — is reasoning, not
+measurement, and no error corpus of naturalistic acquirers appears to
+exist to settle it.
+
+**So v0.1 carries a few of those non-contrast items on purpose.** If
+they fail at the same rate as the contrasts, the product's spine is
+wrong and it is far better to learn that in twenty items than in sixty
+boundaries. Perhaps two weekends, because the engine exists.
 
 **v0.2 — 20 boundaries.** The diagnostic now has somewhere to send
 you. Explanations in English, written for someone who already speaks it:
@@ -483,9 +509,15 @@ the job is naming the boundary, never teaching the language.
 list, "43 of N closed". This is the first version that is a product
 rather than a demo.
 
-**v1.0 — ~100 boundaries, and the claim.** Enough that "the boundaries
-your ear smears are named and closed" is a true sentence rather than an
-ambition. Paid depth begins here, if at all.
+**v1.0 — the spine, which is nearer 60 than 100.** An earlier draft
+said ~100. `docs/app2/boundaries.md` §5 cut its own 110 candidates
+against *"is this worth it to someone who is not preparing for
+anything"* and roughly 50 came out as exam or writing furniture —
+*who/whom*, the formal connector inventory, *It is said that*, reduced
+relatives. Reaching 100 would mean re-importing the exam product into
+the app built to escape it. **The target is the ~60 that survive the
+cut**, and a smaller honest spine is the point rather than a
+compromise. Paid depth begins here, if at all.
 
 **v2.0 — localised interface, not localised teaching.** With English as
 the medium from v0.1, a "second language" is now a much smaller thing:
