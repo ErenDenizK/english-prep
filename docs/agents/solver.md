@@ -24,8 +24,14 @@ Bu külliyatta üç ayrı savunma hattı var ve üçü de aynı kusuru göremiyo
 Geriye tek bir şey kalıyor: yetkin bir insanın, anahtarı görmeden,
 soruyu gerçekten çözmesi.
 
-**Ölçüldü: soru başına ~7 dakika, 241 soru için ~28 saat.** Bu, projenin
-gerçek bilançosu (`docs/business/vision.md` §4).
+**Ve maliyeti henüz ölçülmedi.** Deponun kendi iki tahmini on kat
+ayrışıyor: `content-pipeline.md` §7.1 "on beş soru, on dakika" diyor
+(soru başına 40 saniye), başka bir yerde 6–8 dakika geçiyor. 241 soru
+için bu, 3 saat ile 28 saat arasında bir fark demek — ve
+`docs/business/` altındaki bütün planlar bu birime bağlı.
+
+**İlk oturumun asıl işi bu ölçümü üretmek.** Araç zaten kaydediyor;
+bir akşam, tahmini sayıya çeviriyor.
 
 ---
 
