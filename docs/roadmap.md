@@ -1,5 +1,12 @@
 # Roadmap
 
+> **App 1's planning closed on 2026-09-06.** What remains to be built is
+> in **`docs/app1-final.md`** — the complete task list, costed and
+> ordered, with the bar every item must clear and the list of things
+> already decided against. This file stays as the historical record of
+> how the plan got there, and where the two disagree, `app1-final.md` is
+> the plan. App 2 is researched separately in `docs/app2/`.
+
 What ships next, in what order, and the point at which this stops being
 `0.x`. Written 2026-09-04.
 

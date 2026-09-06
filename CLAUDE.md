@@ -179,8 +179,20 @@ by `npm run color`, which is in CI.
 
 ## Where the project is going
 
-`docs/roadmap.md` is the shorter, newer document: what ships next, in what
-order, and the proposed definition of 1.0. Read it first.
+**`docs/app1-final.md` is the plan for this app, and its planning is
+closed.** Everything left to build is there — costed, ordered, with the
+bar each item clears and a list of what was decided against and should
+not be reopened. App 1 finishes at the whole of Session I (60 of 60
+points); listening is a separate sitting and is out. Read it before
+proposing any work on this app.
+
+`docs/app2/` is the other half: research for the second app, which is
+born from this one and then diverges — a global audience taught in
+English, used for a year rather than six weeks, so the system and the UI
+change. Nothing there is built yet, on purpose.
+
+`docs/roadmap.md` is the historical record of how App 1's plan got to
+where it is.
 
 `docs/v1-plan.md` is the plan of record for v1, and `docs/research/` holds
 the research arms it was synthesised from. Read the plan before proposing
