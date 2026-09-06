@@ -82,6 +82,8 @@ npm run audit       # measures each screen against §7 — height, rows, filled 
 npm run icons       # redraws the app icons and the link-preview card
 npm run draft -- docs/agents/drafts/<topic>          # checks a topic that is not shipped yet
 npm run blind -- docs/agents/drafts/<topic>/questions.json <outDir>   # unkeys a set for review
+npm run solve                                        # cold-solve items in a terminal, unkeyed
+npm run solve -- --report                            # the cold-solve ledger
 npm run calibrate -- <outDir>                        # builds the reviewer's calibration corpus
 ```
 
@@ -263,6 +265,17 @@ discount their own agreement rate, which is the one number a blind pass
 exists to produce. `tools/blind-corpus.mjs` works by allow-list, shuffles
 the options, and writes the key back beside the source rather than into
 the directory the reviewer is pointed at.
+
+**The one step that cannot be delegated is a person solving the item.**
+`npm run solve` puts items in a terminal unkeyed, shuffled and with the
+category hidden, and records the result in `docs/audit/solve-log.json`;
+`docs/agents/solver.md` is the protocol, and it is written for a human
+rather than a session. The finding it exists to collect is not the score
+but the `b?` answer — *I chose b and another option is defensible too* —
+which is the project's "an option a competent teacher would accept is a
+wrong option" rule, seen from the solver's side. Measured cost: ~7
+minutes an item, ~28 hours for the corpus, which
+`docs/business/vision.md` argues is the gate on charging money.
 
 **Content is reviewed by a session that has not seen the key.** The one
 controlled comparison in the literature found teacher-plus-AI items
