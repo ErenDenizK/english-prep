@@ -147,7 +147,7 @@ and 12 lessons, through both review passes, two repair rounds and two
 independent re-audits. They close cloze blanks 5 and 10 and take the app
 to 241 questions across 10 topics.
 
-### Now — one defect, found by updating this table
+### Done — the defect this table found (2026-09-06)
 
 **The app understates its own cloze coverage.** `CLOZE_BLANKS` in
 `js/topics.js:296` maps each of the sample paper's ten blanks to the
@@ -159,12 +159,18 @@ existed yet. They were never repointed when the two shipped, so a `null`
 counts as missing for ever and the screen still says seven of ten when
 it is nine of ten.
 
-It errs in the safe direction — the app claims less than it does, which
-is the right way round for a screen whose whole job is honesty — so it
-is not urgent. But it falsifies the general claim: the number moves on
-its own only for a blank whose covering topic id was written down in
-advance. Two lines in `js/topics.js`, and a sweep assertion that the
-derived count matches the live manifest rather than a constant.
+Fixed. Blank 5's four options are all nouns and blank 10's are all
+verbs, so they point at `academic-nouns-adjectives` and `academic-verbs`
+respectively, and Profil now says nine of ten.
+
+The part worth keeping is what the tests were doing. `coverage.test.js`
+asserted *"two blanks are vocabulary, which no grammar topic can
+cover"* and *"seven of ten"* — so the suite did not miss the defect, it
+**locked it in**, because both tests were written as a description of
+the code rather than of the paper. They now assert the paper: no blank
+may be nameless, and the two vocabulary blanks resolve to two different
+topics. Naming a topic that does not exist yet is the correct form and
+`so-such` had always done it.
 
 ### Next — the two real holes
 

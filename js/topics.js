@@ -298,12 +298,20 @@ export const CLOZE_BLANKS = [
   { topicId: "modals", label: "modallar" },
   { topicId: "gerunds-infinitives", label: "ettirgen yapı" },
   { topicId: "modals", label: "modallar" },
-  { topicId: null, label: "kelime bilgisi" },
+  // Blank 5's options are all nouns (consumerism / gratitude / conflict /
+  // generosity) and blank 10's are all verbs (appreciate / devastate /
+  // smuggle / emerge), so the two vocabulary blanks go to different
+  // topics. Both were `null` until 2026-09-06 because no vocabulary topic
+  // existed when this list was written — and a null is permanently
+  // uncovered, so the screen kept saying seven of ten after the two
+  // shipped and made it nine. A blank now always names the topic that
+  // would cover it, existing or not, the way `so-such` already did.
+  { topicId: "academic-nouns-adjectives", label: "kelime bilgisi" },
   { topicId: "closest-meaning", label: "karşılaştırmalar" },
   { topicId: "so-such", label: "so / such" },
   { topicId: "relative-clauses", label: "ilgi zamirleri" },
   { topicId: "quantifiers", label: "miktar belirteçleri" },
-  { topicId: null, label: "kelime bilgisi" },
+  { topicId: "academic-verbs", label: "kelime bilgisi" },
 ];
 
 /**

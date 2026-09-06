@@ -25,9 +25,21 @@ test("the map is the sample passage: ten blanks", () => {
   assert.equal(CLOZE_BLANKS.length, 10);
 });
 
-test("two blanks are vocabulary, which no grammar topic can cover", () => {
-  const vocabulary = CLOZE_BLANKS.filter((blank) => blank.topicId === null);
+test("every blank names the topic that would cover it, shipped or not", () => {
+  // The guard on the defect this file used to assert. Blanks 5 and 10
+  // were `null` because no vocabulary topic existed when the map was
+  // written, and a null is uncovered for ever — so the screen kept
+  // saying seven of ten after the two shipped and made it nine. Naming
+  // an unbuilt topic is how `so-such` had always done it, and it is the
+  // only form in which the number can move on its own.
+  const unnamed = CLOZE_BLANKS.filter((blank) => !blank.topicId);
+  assert.deepEqual(unnamed, []);
+});
+
+test("the two vocabulary blanks are nouns and verbs, so two topics", () => {
+  const vocabulary = CLOZE_BLANKS.filter((blank) => blank.label === "kelime bilgisi");
   assert.equal(vocabulary.length, 2);
+  assert.equal(new Set(vocabulary.map((blank) => blank.topicId)).size, 2);
 });
 
 test("nothing is covered by a topic that has not shipped", () => {
@@ -52,10 +64,10 @@ test("what is missing is named once, not once per blank", () => {
   assert.ok(missing.includes("kelime bilgisi"));
 });
 
-test("against the real manifest: seven of ten, and the three left named", () => {
+test("against the real manifest: nine of ten, and the one left named", () => {
   const actual = clozeCoverage(manifest.topics);
-  assert.equal(actual.covered, 7);
-  assert.deepEqual(actual.missing, ["kelime bilgisi", "so / such"]);
+  assert.equal(actual.covered, 9);
+  assert.deepEqual(actual.missing, ["so / such"]);
 });
 
 test("coverage never exceeds the passage", () => {

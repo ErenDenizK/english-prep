@@ -93,11 +93,12 @@ blanks are mapped to the topics that cover them, and the app derives the
 number from what is actually live rather than stating it. A learner who
 does well here should not conclude anything false about Friday.
 
-The number on screen is currently "seven of ten" and the true figure is
-nine — two blanks were written before any vocabulary topic existed and
-were never repointed when those shipped, so they count as uncovered for
-ever. It is wrong in the direction the design prefers, and it is on the
-list (`docs/roadmap.md`).
+That mechanism only works for a blank that names its covering topic in
+advance. Two were written as `null` before any vocabulary topic existed,
+were never repointed when those shipped, and so counted as uncovered for
+ever — the screen said seven of ten when it was nine. Fixed 2026-09-06,
+with a test that no blank may be nameless, which is the form the bug
+could recur in.
 
 ---
 

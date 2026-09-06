@@ -35,23 +35,28 @@ structures, and each blank tests something different.
 
 The grammar the sample actually tests, blank by blank:
 
-| | Tests | In the app? |
+`CLOZE_BLANKS` in `js/topics.js` is the machine-readable copy of this
+table, and the coverage figure the app shows in Profil is derived from
+it — so the right-hand column and the screen cannot drift apart without
+a test failing.
+
+| | Tests | Covered by |
 | --- | --- | --- |
-| 1 | discourse markers (`Similarly / Nevertheless / In spite of / Since`) | no |
-| 2 | modals (`used to / must not / should / did not have to`) | **yes** |
-| 3 | causative `make + object + bare infinitive` | partly |
-| 4 | modals (`should not / do not have to / used to / had better`) | **yes** |
-| 5 | vocabulary (`consumerism / gratitude / conflict / generosity`) | no |
-| 6 | comparatives (`as advanced as / less advanced than / …`) | no |
-| 7 | `so / such` (`so smoothly / such a smooth / so smooth`) | no |
-| 8 | relative pronouns (`whom / whose / which / that`) | no |
-| 9 | quantifiers (`a few / much / plenty of / a little`) | no |
-| 10 | vocabulary (`appreciate / devastate / smuggle / emerge`) | no |
+| 1 | discourse markers (`Similarly / Nevertheless / In spite of / Since`) | `connectors` |
+| 2 | modals (`used to / must not / should / did not have to`) | `modals` |
+| 3 | causative `make + object + bare infinitive` | `gerunds-infinitives` |
+| 4 | modals (`should not / do not have to / used to / had better`) | `modals` |
+| 5 | vocabulary — all four options are nouns (`consumerism / gratitude / conflict / generosity`) | `academic-nouns-adjectives` |
+| 6 | comparatives (`as advanced as / less advanced than / …`) | `closest-meaning` |
+| 7 | `so / such` (`so smoothly / such a smooth / so smooth`) | **nothing — the one hole** |
+| 8 | relative pronouns (`whom / whose / which / that`) | `relative-clauses` |
+| 9 | quantifiers (`a few / much / plenty of / a little`) | `quantifiers` |
+| 10 | vocabulary — all four options are verbs (`appreciate / devastate / smuggle / emerge`) | `academic-verbs` |
 
 **This is the finding that matters most in the whole round.** Two of ten
-blanks are modals; the app's three topics are Tenses, Modals and Passive
-Voice, and *not one blank in the sample cloze tests a tense or the
-passive*. The grammar this section actually rewards is discourse markers,
+blanks are modals; the app's three topics *at the time* were Tenses,
+Modals and Passive Voice, and not one blank in the sample cloze tests a
+tense or the passive. The grammar this section actually rewards is discourse markers,
 relative clauses, quantifiers, comparatives, `so/such` and causatives —
 almost exactly the set the app does not cover. The learning-design arm
 predicted this from published error analyses of Turkish learners; the
