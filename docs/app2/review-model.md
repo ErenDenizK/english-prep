@@ -113,12 +113,10 @@ spacing was harmful when it interrupted the juxtaposition of interleaved
 categories, even with total spacing held constant** `[S]`. The
 discriminative-contrast account has since been contested for complex
 perceptual categories `[S]` — a live hypothesis, not a law, but it points
-at something a naive design gets wrong.
-
-A boundary is *definitionally* a discrimination. If the app spreads a
-boundary's probes uniformly across a session, so a *must* item and a
-*have to* item are eleven questions apart, it has spaced away the
-juxtaposition that makes the contrast visible.
+at something a naive design gets wrong. A boundary is *definitionally* a
+discrimination: if the app spreads its probes uniformly across a session,
+so a *must* item and a *have to* item sit eleven questions apart, it has
+spaced away the juxtaposition that makes the contrast visible.
 
 **Consequence, and it shapes the session UI rather than the scheduler:**
 
@@ -177,17 +175,17 @@ The best-supported part of this document, and it converges on a number.
 thing to a direct answer: **practise to an initial criterion of 3 correct
 recalls, then relearn to criterion in 3 further widely spaced sessions**
 `[S]`. Vaughn & Rawson (2011) crossed initial criteria of 1–4 correct
-recalls with 1–5 relearning sessions and found criterion **3** to be the
-efficient point, with more retrievals in the initial session adding
-nothing unless the material is unusually hard; that the effects of
-criterion and of relearning are **subadditive**, so criterion matters a
-lot without relearning and progressively less with it; that relearning
-has "pronounced effects on long-term retention with a relatively minimal
-cost in additional practice trials" — under 2 minutes per concept at the
-first relearning, under 1 by the fifth; and that three relearning
-sessions may be enough for maximal benefit `[S]`. Read with Rohrer &
-Taylor's overlearning null `[S]`: **spend the budget on more sessions,
-not on more correct answers per session.**
+recalls with 1–5 relearning sessions and found criterion **3** the
+efficient point, more retrievals in the initial session adding nothing
+unless the material is unusually hard; the effects of criterion and of
+relearning **subadditive**, so criterion matters a lot without relearning
+and progressively less with it; relearning giving "pronounced effects on
+long-term retention with a relatively minimal cost in additional practice
+trials" — under 2 minutes per concept at the first relearning, under 1 by
+the fifth; and three relearning sessions possibly enough for maximal
+benefit `[S]`. Read with Rohrer & Taylor's overlearning null `[S]`:
+**spend the budget on more sessions, not on more correct answers per
+session.**
 
 **Mastery learning** gives the other half — how strict the per-session
 bar should be. Kulik, Kulik & Bangert-Drowns (1990): mastery programmes
@@ -201,13 +199,12 @@ account for forgetting** `[S]`.
 
 ### 2.3 What four items can and cannot decide
 
-Criterion-referenced measurement is blunt about this. What matters for a
-mastery decision is not coefficient alpha but **decision consistency** —
-would the master/non-master classification replicate on a parallel form —
-and high-stakes practice wants P₀ ≥ 0.90 `[S]`. Unreachable from four
-four-option items, and the app should never pretend otherwise.
-
-The arithmetic that binds, with *g* = 0.25 `[≈]`:
+Criterion-referenced measurement is blunt about this: what matters is not
+coefficient alpha but **decision consistency** — would the
+master/non-master classification replicate on a parallel form — and
+high-stakes practice wants P₀ ≥ 0.90 `[S]`. Unreachable from four
+four-option items, and the app should never pretend otherwise. The
+arithmetic that binds, with *g* = 0.25 `[≈]`:
 
 | Visit shape | Pass rule | P(pass) by pure guessing | P(pass) at true 0.85 |
 | --- | --- | --- | --- |
@@ -331,14 +328,14 @@ stating on its own line:
 
 Three rules `[≈]`:
 
-**Never frame it as a loss.** The learner did not lose anything; the app
-asked, and the answer was no. Copy: *"since / for came back open."* Not
-*"you've forgotten since / for"*, and never a count of boundaries lost.
+**Never frame it as a loss.** The learner lost nothing; the app asked,
+and the answer was no. Copy: *"since / for came back open."* Not *"you've
+forgotten since / for"*, and never a count of boundaries lost.
 
 **Say why, with the evidence.** A re-opened boundary shows the probe that
-failed, and the date. Axiom 3 made visible: the learner can check the
-rule against their own history. It is also the only defence when the app
-is wrong, which §6.5 says happens about 3% of the time per confirmation.
+failed, and the date — axiom 3 made visible, and the only defence when
+the app is wrong, which §6.5 says happens ~3% of the time per
+confirmation.
 
 **The counter must move both ways, visibly.** "43 of 112 closed" going to
 42 is the honest form. A counter that only ever rises is a streak with
@@ -386,17 +383,15 @@ confirmations, then silence**:
 | **Sealed** | both confirmations passed | **never again** |
 
 Confirmations at **+60 days** and **+180 days** after closing. A sealed
-boundary is one the app has confirmed six times across roughly nine
-months, and has then decided to stop asking about.
-
-Why those two numbers `[≈]`: +60 sits at the top of Bahrick's tested band
-(14/28/**56** days, longest best) `[S]` and just past Cepeda's 18–36-day
-optimum for a one-year horizon — deliberately past it, because a
-*confirmation* is a measurement rather than a learning event and a longer
-gap is a stronger test. The second is one sample from the far side of the
-first year, where Bahrick's curve is still falling before it plateaus
-`[S]`. Both are guesses inside an evidenced range and I would not defend
-either to the day.
+boundary is one the app has confirmed six times across roughly seven
+months and has then decided to stop asking about. Why those numbers
+`[≈]`: +60 sits at the top of Bahrick's tested band (14/28/**56** days,
+longest best) `[S]` and just past Cepeda's 18–36-day optimum for a
+one-year horizon — deliberately past it, because a *confirmation* is a
+measurement rather than a learning event and a longer gap is a stronger
+test. The second is one sample from the far side of the first year, where
+Bahrick's curve is still falling `[S]`. Both are guesses inside an
+evidenced range and I would not defend either to the day.
 
 ### 4.3 What the app does for the learner who finished and comes back
 
@@ -422,11 +417,11 @@ twelve, and a product that spent this much effort on not lying should not
 start now `[≈]`.
 
 **The spot-check is learner-initiated and never notified.** It is on the
-screen when they arrive; it does not chase them. A "come back and
-re-check" push would be the streak in its final disguise — a debt the app
+screen when they arrive and does not chase them; a "come back and
+re-check" push would be the streak in its final disguise, a debt the app
 invented while nobody was there. It is also the honest answer to a
 subscription's problem (`vision.md` §3): a returning learner has a real,
-bounded thing to do, whether or not they are paying `[≈]`.
+bounded thing to do, paying or not `[≈]`.
 
 ### 4.4 The message the model exists to make possible
 
@@ -435,11 +430,10 @@ until there is something new."*
 
 The model above is what makes that sentence *true* rather than a
 marketing line, and the truth condition is precise: every boundary is
-Closed or Sealed, no confirmation is due, and the notification scheduler
-has nothing to fire. §6.6 gives the code path. §B's axiom 2 says a
-stranger reading the source should be able to find the branch that sends
-nothing — in this model it is the `dueCount === 0` branch, and it is
-three lines.
+Closed or Sealed, no confirmation is due, and the scheduler has nothing
+to fire. §B's axiom 2 says a stranger reading the source should be able
+to find the branch that sends nothing — here it is the `dueCount === 0`
+branch in §6.6, and it is three lines.
 
 ---
 
@@ -473,10 +467,9 @@ timestamp order** — and everything in §6 is written to that constraint.
 ### 5.2 Two things the fold needs that the current log does not have
 
 **A pass is a day-level fact, so group by day.** A visit is all probes of
-one boundary answered on one local day. Two devices used on the same day
-then contribute probes to the *same* visit — six probes, one decision —
-which is deterministic, order-independent, and better than two
-half-visits `[≈]`.
+one boundary answered on one local day, so two devices used on the same
+day contribute to the *same* visit — six probes, one decision:
+deterministic, order-independent, and better than two half-visits `[≈]`.
 
 **Store the local day key in the event; do not recompute it.** A live
 defect in the existing code, not a hypothetical: `dayKey`
@@ -488,12 +481,11 @@ graduation count, in either direction, with no way to notice. A recorded
 
 ### 5.3 The arithmetic, and what it costs
 
-Everything in §6 is integer comparison and small-array counting. Per
-boundary: group its events by day, decide each day's pass/fail by
-counting, walk the resulting `(day, pass)` sequence through the ladder.
-No exponentials, no optimisation pass, no fitted parameters, no floating
-point that matters. Cost, on `learner-model.md` §1.3's measured event
-sizes `[≈]`:
+Integer comparison and small-array counting. Per boundary: group its
+events by day, decide each day's pass/fail by counting, walk the
+resulting `(day, pass)` sequence through the ladder. No exponentials, no
+optimisation pass, no fitted parameters. Cost, on `learner-model.md`
+§1.3's measured event sizes `[≈]`:
 
 | | |
 | --- | --- |
@@ -504,10 +496,8 @@ sizes `[≈]`:
 
 The replay result is memoised in memory per screen entry, keyed by
 `(event count, last event day)`, and **never written to storage as
-truth**; if cached to storage at all, it carries the log length it was
-computed from and is discarded when that does not match. At ~100
-boundaries the derived state is ~100 rows of five small fields, under
-10 KiB `[≈]`. **Nothing in this model is a storage problem.**
+truth**. At ~100 boundaries the derived state is ~100 rows of five small
+fields, under 10 KiB `[≈]`. **Nothing here is a storage problem.**
 
 ### 5.4 Inspectability
 
@@ -530,39 +520,41 @@ learner `[≈]`.
 ```
 {
   phase:     "new" | "open" | "closed" | "sealed" | "resting",
-  level:     0..3,          // index into the ladder, open phase only
+  level:     0..3,          // rung on the ladder, open phase only
   visits:    [ {day, n, k, pass} … ],   // one row per day visited
   lastDay:   <day key>,
-  dueDay:    <day key>,     // lastDay + LADDER[level]
+  dueDay:    <day key>,     // lastDay + WAIT[level]  (see 6.2)
   closedOn:  <day key> | null,
   confirms:  0 | 1 | 2,
   fails:     <consecutive failed visits>
 }
 ```
 
-Not stored. Computed by `reviewState(events, boundaryId)` — a pure
-function in a module alongside `quiz-engine.js`, unit-tested the same
-way, replaceable wholesale without migrating anyone.
+Not stored. Computed by `reviewState(events, boundaryId)`: a pure
+function in a module beside `quiz-engine.js`, unit-tested the same way,
+replaceable wholesale without migrating anyone.
 
 ### 6.2 The ladder
 
-| Level | Interval to next visit | Where it comes from |
+`WAIT[level]` is the number of days until the next visit, for a boundary
+sitting at that level.
+
+| Level | Days to next visit | Where it comes from |
 | --- | --- | --- |
-| 0 → 1 | **2 days** | short enough that the second visit happens; long enough not to be the same sitting |
-| 1 → 2 | **7 days** | Bird (2010) / Rogers (2015)'s ≥7-day band for L2 syntax `[S]` |
-| 2 → 3 | **14 days** | ~20% of a 60-day horizon; Cepeda's weeks-scale optimum `[S]` |
-| 3 → close | **21 days** | inside Cepeda's 18–36-day window for a 1-year horizon `[S]`; near Anki's 21-day "mature" `[S]` |
-| closed → confirm 1 | **60 days** | Bahrick's best tested interval was 56 `[S]` |
-| confirm 1 → confirm 2 | **120 days** | one sample past the first year `[≈]` — the weakest constant here |
-| confirm 2 → | **nothing** | §4 |
+| **0** — met, first visit failed | **2** | retry soon, but not in the same sitting |
+| **1** — one pass | **2** | short enough that the second visit actually happens |
+| **2** — two passes | **7** | Bird (2010) / Rogers (2015)'s ≥7-day band for L2 syntax `[S]` |
+| **3** — three passes | **21** | inside Cepeda's 18–36-day window for a one-year horizon `[S]`; near Anki's 21-day "mature" `[S]` |
+| a pass at level 3 | — | **closes** |
+| closed → confirm 1 | **60** | Bahrick's best tested interval was 56 `[S]` |
+| confirm 1 → confirm 2 | **120** | one sample past the first year `[≈]` — the weakest constant here |
+| after confirm 2 | — | **nothing** |
 
-Time from first visit to closed, on a clean run: **44 days**, four
-visits, 13 probes. Time to sealed: **~7.5 months**, six visits, 19
-probes.
-
-The intervals do not double, and §1.1 is why: Karpicke & Roediger found
-equal spacing at least as good at delay `[S]`, and a ladder that stops
-growing is what a finite tail requires.
+First visit to closed, on a clean run: four visits at gaps of 2, 7 and 21
+days — **30 days**, 13 probes. To sealed: **~7 months**, six visits, 19
+probes. The intervals do not double, and §1.1 is why — equal spacing was
+at least as good at delay `[S]`, and a ladder that stops growing is what
+a finite tail requires.
 
 ### 6.3 Transitions
 
@@ -572,10 +564,11 @@ on a visit (all probes of boundary B answered on day d):
   pass = (first visit)  ? k >= 3 of n >= 4
                         : k >= 2 of n >= 3
 
-  phase "new"      + pass  → open, level 1, due d+2
-  phase "new"      + fail  → open, level 0, due d+2      (retry, no penalty)
+  phase "new"      + pass  → open, level 1, due d + WAIT[1]
+  phase "new"      + fail  → open, level 0, due d + WAIT[0]   (no penalty)
 
-  phase "open"     + pass  → level+1; at level 4 → CLOSED (see 6.4)
+  phase "open"     + pass  → level+1, due d + WAIT[level+1];
+                             a pass at level 3 → CLOSED (see 6.4)
   phase "open"     + fail  → level = max(0, level-1); fails += 1
                              at fails >= 3 → resting for 14 days,
                                              lesson offered instead
@@ -604,14 +597,13 @@ model for a corpus with known defects `[≈]`.
 ### 6.4 The closing criterion, in one sentence
 
 > **Closed** = four passing visits, on four separate days, spanning ≥28
-> days, with the final gap ≥14 days, and no failed visit since the first
-> pass at level 2.
+> days, with the final gap ≥14 days.
 
 The span and final-gap clauses are guards, not the mechanism — the ladder
-produces 44 days and gaps of 2/7/14/21 on a clean run, so they only bite
-when a learner does several visits early and the intervals compress. They
-exist because "closed" is a claim about durability and a 4-day run does
-not support one (§2.4).
+produces 30 days and gaps of 2/7/21 on a clean run, so they bite only if
+a learner visits early and the intervals compress. They exist because
+"closed" is a claim about durability and a four-day run does not support
+one (§2.4).
 
 Probes consumed: 13. **This sets a hard content requirement: a boundary
 needs at least 8 authored items for the closing sequence to avoid heavy
@@ -711,61 +703,51 @@ right: a model that took four years to finish 100 boundaries would
 contradict the product's claim, and one that finished them in six weeks
 would not mean anything.
 
-### 6.8 Every constant, and where it came from
+### 6.8 The constants not already in §6.2's table
 
 | Constant | Value | Source |
 | --- | --- | --- |
-| Ladder | 2, 7, 14, 21 days | Cepeda `[S]`, Bird/Rogers `[S]`, rounded `[≈]` |
-| Confirmation gaps | 60 then 120 days (so +60 and +180 after closing) | Bahrick `[S]`; the second is a guess `[≈]` |
 | First-visit pass | ≥3 of 4 | Rawson's criterion of 3 `[S]` + the guess table `[≈]` |
 | Later-visit pass | ≥2 of 3 | guess table `[≈]` |
 | Visits to close | 4 | successive relearning: 1 + 3 `[S]` |
 | Closing span / final gap | ≥28 / ≥14 days | Cepeda's 1-year window `[S]` |
 | Demotion on failure | one level | savings effect `[S]` |
-| Resting after | 3 failed visits | guess `[≈]`, Anki's leech threshold is 8 `[S]` |
+| Resting after | 3 failed visits | guess `[≈]`; Anki's leech threshold is 8 `[S]` |
 | Probes per boundary | ≥8, want 12 | 13 draws to close, 19 to seal `[≈]` |
-| Notification floor | dueCount ≥ 3 | `retention-and-pricing.md` §B.4 |
-| Reported cap | 5 | one session `[≈]` |
+| Notification floor / cap | dueCount ≥ 3 / report ≤ 5 | §B.4 `[S]`; one session `[≈]` |
 | Abandonment stop | 3 unanswered, then 90 days | guess `[≈]`, axiom 2 |
 
 ---
 
 ## 7 · Where I would be wrong
 
-**The whole model could be over-engineered for the evidence it will ever
-have.** Forty-four days and thirteen probes to close one boundary is a
-lot of machinery around a decision a teacher makes by looking. If the
-first hundred learners close 12 boundaries each and stop, none of §6.4's
+**The model may be over-engineered for the evidence it will ever have.**
+Thirty days and thirteen probes to close one boundary is a lot of
+machinery around a decision a teacher makes by looking. If the first
+hundred learners close 12 boundaries each and stop, none of §6.4's
 carefulness is ever exercised and a two-visit rule would have shipped a
-year earlier.
-
-**The 120-day second confirmation is the weakest thing here** — one guess
-inside an evidenced range, with no reason to prefer it over 90 or 180. If
-nobody is still using the app 300 days after their first closure, it
-never fires for anyone and the model has a limb no learner reaches.
+year earlier. The 120-day second confirmation is the weakest constant:
+one guess inside an evidenced range, and if nobody is still here 300 days
+after their first closure it never fires for anyone at all.
 
 **The false-seal rate is unbounded and I chose not to bound it.**
 Bahrick's plateau `[S]` and the savings effect `[S]` are the argument
 that sealing is cheap to be wrong about, and both are about vocabulary
 rather than grammatical contrasts. If boundary knowledge decays faster
-than I think, the app is confidently wrong about people in year two. The
-only defence built is the voluntary spot-check, and a voluntary defence
-protects only the learners who use it.
+than I think, the app is confidently wrong about people in year two, and
+the only defence built — a voluntary spot-check — protects only the
+learners who use it.
 
-**The multiple-choice format may not carry the weight.** §1.4: MC
-produces smaller testing effects than recall `[S]`, and the rescue is
-conditional on genuinely competitive distractors `[S]`. If the bank
-drifts toward easy distractors — which is what happens when items are
-authored fast — thirteen probes prove much less than §2.3's tables
-suggest, because those tables assume a guess floor of 0.25 and real
-discrimination above it.
+**The format may not carry the weight.** §1.4: MC produces smaller
+testing effects than recall `[S]`, and the rescue is conditional on
+genuinely competitive distractors. If the bank drifts toward easy ones —
+what happens when items are authored fast — thirteen probes prove much
+less than §2.3's tables suggest, because those tables assume a guess
+floor of 0.25 and real discrimination above it. And **juxtaposition may
+not matter**: §1.3's account is contested `[S]`, and if it is wrong I
+have argued for a session shape on decoration.
 
-**Juxtaposition may not matter.** §1.3's discriminative-contrast account
-is contested `[S]`. If it is wrong, the block structure is merely
-neutral — fine, except that I used it to argue for a session shape, and
-that argument would then be decoration.
-
-**And the notification may be moot**, for the reason §B already gave: at
+**The notification may be moot**, for the reason §B already gave: at
 default-off, once a week, deliberately unexciting, nobody may enable it,
 in which case §6.6 is careful work on a feature with no users.
 
@@ -773,45 +755,38 @@ in which case §6.6 is careful work on a feature with no users.
 
 ## 8 · What I would refuse
 
-- **FSRS, SM-2, or any fitted memory model.** Two independent reasons now:
-  the data volume (`learner-model.md` §2.2) and the merge (§5.1).
-- **A modelled decay curve that re-opens boundaries without asking.** §3.1.
-- **An infinite interval tail.** §4.
-- **A monotone "boundaries closed" counter.** §3.3.
-- **An uncapped due count, anywhere.** §6.6.
+- **FSRS, SM-2, or any fitted memory model** — two independent reasons
+  now: data volume (`learner-model.md` §2.2) and the merge (§5.1).
+- **A modelled decay curve that re-opens boundaries without asking** (§3.1);
+  **an infinite interval tail** (§4); **a monotone counter** (§3.3); **an
+  uncapped due count, anywhere** (§6.6); **per-item scheduling** (§1.2);
+  **confidence self-ratings** — SM-2's `q`.
 - **Any tuning of the intervals against usage.** Axiom 3. The project has
   no analytics, which means it *cannot* do this — and that accident should
   be written down as a commitment before someone proposes analytics "just
   to see whether the reminders work".
-- **Per-item scheduling.** §1.2.
-- **Confidence self-ratings.** SM-2's `q`; `learner-model.md` §2.5.
 
 ---
 
 ## 9 · Open questions for the owner
 
-1. **Can a boundary carry 12 items?** §6.4 says the model needs ≥8 and
-   wants 12. At ~100 boundaries that is 800–1,200 items, and at the
-   project's own measured 6–8 minutes of undelegable attention per item
-   that is **80–160 hours**. If it cannot, the honest lever is **fewer
-   boundaries, not fewer items per boundary** — because four items per
-   boundary is precisely what corrupted the measurement in App 1.
-2. **Is 44 days to close acceptable, or does the first closure need to
-   arrive sooner?** A learner who has closed nothing after six weeks may
-   not stay to see the model work. The cheap alternative is a shorter
-   first ladder (1, 4, 10, 21 → 36 days) at a real cost in what "closed"
-   means.
+1. **Can a boundary carry 12 items?** §6.4 needs ≥8 and wants 12. At ~100
+   boundaries that is 800–1,200 items, and at the project's measured 6–8
+   minutes of undelegable attention per item, **80–160 hours**. If it
+   cannot, the honest lever is **fewer boundaries, not fewer items per
+   boundary** — four per category is precisely what corrupted the
+   measurement in App 1.
+2. **Is 30 days to close acceptable?** A learner who has closed nothing
+   after a month may not stay to see the model work. The cheap
+   alternative is a shorter ladder (1, 4, 14 → 19 days) at a real cost in
+   what "closed" means.
 3. **Should the spot-check ever be offered without being asked for?**
    §4.3 says no. It is the single place where the design gives up the
    most retention, and it is a values call, not a research one.
-4. **Does "sealed" appear in the interface, or only "closed"?** Two words
-   is more honest and one word is more legible. I lean to one word in the
-   count and two on the detail screen.
-5. **What happens to a closed boundary when its items are rewritten?**
+4. **What happens to a closed boundary when its items are rewritten?**
    A corrected item changes what the four passing visits were evidence
-   *of*. The choices are to leave it closed, to reset it, or to add one
-   confirmation — and this is a content-pipeline decision, not a
-   scheduler one.
+   *of*. Leave it closed, reset it, or add one confirmation — a
+   content-pipeline decision, not a scheduler one.
 
 ---
 
