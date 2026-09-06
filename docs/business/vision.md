@@ -233,6 +233,38 @@ That is why the error-tracking screen belongs in **App 1 v0.4x, not App
 validated against ground truth, because there the paper says whether the
 diagnosis was right.
 
+**But the wedge only cuts against one of the two opponents.**
+`docs/app2/competitors.md` found that **Kwiziq shipped this design in
+2015** — a per-grammar-point mastery map with a placement test, a
+confidence score per point, grey for *not tested yet*, a generated study
+plan and periodic re-probing. That is the boundary map with a different
+noun, including the evidence-honesty bound this plan is proud of. So
+against ChatGPT the diagnostic is the wedge; **against Kwiziq it is not
+a wedge at all, because Kwiziq has one.**
+
+Three differences survive, and only one is load-bearing:
+
+- **the unit is a pair** — weak, because many Kwiziq topics are already
+  contrastive;
+- **no CEFR levels** — real, and it matters for an audience that does
+  not think of itself as a level;
+- **finiteness** — *"and then it stops"*. This is the only claim a
+  subscription business structurally cannot copy, and it is therefore
+  the whole of the differentiation rather than a nice line in it.
+
+**And the reason the English slot is vacant is the strongest argument
+against this plan in any of these documents — it is economic, not
+competitive.** Kwiziq charges around $190 a year because its customers
+are Anglophone hobbyists learning French. Duolingo Super is about $0.66
+a month in Turkey. Same product shape, same content cost, one-twentieth
+the price ceiling. **So App 2's audience may be a market the proven
+business model priced and declined, rather than one it missed.** That
+does not kill the plan — the owner has said profit is not the point —
+but it does mean the plan should stop expecting the economics to be
+better than they are, and it makes §D's *"the model is a values decision,
+not a revenue one"* look less like a consolation and more like the
+actual situation.
+
 ### The audience is global, and that does not cost what the research said
 
 **Decided by the owner, 2026-09-06: App 2 teaches English to learners
