@@ -9,18 +9,17 @@ loop speaks.
 
 1. **The sample needed to bound a defect rate does not grow with the
    corpus.** Sixty items cold-solved with nothing found bounds the corpus
-   at **4.9%** at 95% confidence, whether it holds 241 items or 2,400 —
-   the finite-population correction at *N* = 2,000 is 0.985.
-2. **Exposure is the larger half of the problem, and sampling cannot
-   close it.** A learner answering 1,500 items in a year meets **75
-   defective items at *p* = 5%** and **15 at *p* = 1%**. The gap closes
-   after shipping, from response data, or it does not close.
+   at **4.9%** at 95% confidence, whether it holds 241 items or 2,400.
+2. **Exposure is the larger half, and sampling cannot close it.** A
+   learner answering 1,500 items a year meets **75 defective items at
+   *p* = 5%**, **15 at *p* = 1%**. That gap closes after shipping, from
+   response data, or not at all.
 3. **"Only cold-solving is undelegable" is nearly right, stated
    wrongly.** What is undelegable is an *error process uncorrelated with
-   the generator's* — a person is the cheapest source of one, not the
-   only conceivable one. And three of the four judgements
-   `content-pipeline.md` §2.5 reserves for this human evaporate when App
-   2 stops being Turkish.
+   the generator's* — a person is the cheapest such source, not the only
+   conceivable one. And three of the four judgements §2.5 of
+   `content-pipeline.md` reserves for this human evaporate when App 2
+   stops being Turkish.
 4. **The five-in-seven repair defect rate is an argument against
    repairing.** With a boundary spec written, **discard-and-regenerate is
    cheaper than repair and deletes the independent re-audit step.**
@@ -55,14 +54,13 @@ as *measured*; `tools/solve.mjs` hard-codes `MINUTES_PER_ITEM = 7`. Nothing
 measured it. [≈]
 
 **And the repository's two estimates of that step differ by an order of
-magnitude.** `content-pipeline.md` §7.1 budgets *"take the batch as a test,
-cold — 10 min"* for 12–15 items: **40 seconds an item**. They are not the
+magnitude.** `content-pipeline.md` §7.1 budgets *"take the batch as a
+test, cold — 10 min"* for 12–15 items: **40 seconds an item**. Not the
 same activity — the seven minutes includes reading the explanation
-afterwards and recording the result — but every plan in `docs/business/`
-is denominated in the larger one. **The cheapest useful thing anybody could
-do this week is one evening of `npm run solve`**, which timestamps each
-entry, and then subtract consecutive dates. If the true cost is two
-minutes, §6's budget falls threefold and this document is too pessimistic.
+afterwards — but every plan in `docs/business/` uses the larger one.
+**The cheapest useful thing anybody could do this week is one evening of
+`npm run solve`**, which timestamps each entry; subtract consecutive
+dates. If the true cost is two minutes, §6's budget falls threefold.
 
 ---
 
@@ -84,16 +82,14 @@ hours of a person doing a model's job, and it is the largest block of
 *habitual* human time in the pipeline.
 
 The exception is **§1's second half, the honest bound** — what the
-category cannot discriminate. `should-vs-ought-to-vs-had-better.md` exists
-because a category could not discriminate what its own name promised. That
-is hard for the *author* model, for 1.5's reason: the model that believes
-*should* and *ought to* separate is the model being asked whether they do.
-It is not hard for a different pass with a different, falsifiable task:
-*write the four hardest items that turn on this boundary, then argue the
-second-best option into each.* A boundary where that succeeds four times
-out of four cannot discriminate, and that verdict is delegable.
-**Delegate the spec; have the human approve two lines — the discrimination
-sentence and the honest bound.** Twenty minutes, not an hour.
+category cannot discriminate. That is hard for the *author* model, for
+1.5's reason: the model that believes *should* and *ought to* separate is
+the model being asked whether they do. It is not hard for a different pass
+with a different, falsifiable task: *write the four hardest items that
+turn on this boundary, then argue the second-best option into each.* A
+boundary where that succeeds four times out of four cannot discriminate,
+and that verdict is delegable. **Delegate the spec; have the human approve
+two lines — the discrimination sentence and the honest bound.**
 
 **1.3 · Authoring — delegable, and nobody disputes it.** The only scale
 question is *yield*: items authored per item shipped, somewhere between
@@ -102,34 +98,29 @@ record was never built. At ten times the volume, yield decides whether
 "regenerate the rejects" is free or is a second pipeline.
 
 **1.4 · Mechanical checks — automated, and under-used.**
-`content-checks.mjs` implements seven corpus-wide checks. Six proposed in
-`content-pipeline.md` §2.3 were never built (option-length cue,
-stem–option overlap, banned option forms, transferable tip, provenance,
-counter-signal coverage), and §4 adds five that only matter at scale.
-Every one is human attention bought at a one-off price, which is the only
-saving that survives a tenfold multiplication.
+`content-checks.mjs` implements seven corpus-wide checks; six proposed in
+`content-pipeline.md` §2.3 were never built, and §4 adds five that only
+matter at scale. Every one is human attention bought at a one-off price —
+the only saving that survives a tenfold multiplication.
 
 **1.5 · The blind review pass — delegable, measurable, and not what it
 looks like.** A blind reviewer is not a second opinion; it is a
-*correlated* one. Author model and reviewer model share a prior over what
-English sounds right, and the defects that matter — `modals-t17`, where
-`ought to` is as good as `should` — are produced *by* that prior. A shared
-prior yields a defect the reviewer cannot see, and it passes the item at
-high confidence, which reads as evidence and is not.
-
-The calibration file shows this from the other side: the first reviewer
-run scored 5/5 recall — on defects planted *by a human*, found by hand
-while converting lessons to blocks. The set holds no defect a model
-produced and a model failed to see, because such a defect cannot be
-constructed on purpose: if you can name it, the reviewer can find it. [≈]
+*correlated* one. Author and reviewer share a prior over what English
+sounds right, and the defects that matter — `modals-t17`, where `ought to`
+is as good as `should` — are produced *by* that prior. A shared prior
+yields a defect the reviewer cannot see, and it passes the item at high
+confidence, which reads as evidence and is not. The calibration file shows
+this from the other side: the first reviewer scored 5/5 recall on defects
+planted *by a human*, and the set holds no defect a model produced and a
+model failed to see — such a defect cannot be constructed on purpose,
+because if you can name it the reviewer can find it. [≈]
 
 So the blind pass's job is not to certify but to **shrink the human's
-list**, and §3.6 makes "by how much" a number. Two consequences at scale:
-the calibration set must grow and absorb every defect a cold-solve finds,
-or it becomes a fixed test the brief is tuned to pass; and **a second
-model family stops being a luxury**, because decorrelating reviewer from
-author is the cheapest route to the specificity §3.6 shows is
-load-bearing.
+list**, and §3.6 makes "by how much" a number. Two consequences: the
+calibration set must grow and absorb every defect a cold-solve finds, or
+it becomes a fixed test the brief is tuned to pass; and **a second model
+family stops being a luxury**, because decorrelating reviewer from author
+is the cheapest route to the specificity §3.6 shows is load-bearing.
 
 **1.6 · Lesson sufficiency — half of it is habit.** Part judgement, part
 join. The join is `category-spec.md` §6's coverage ledger: every form the
@@ -141,23 +132,22 @@ remains — L2, L3, L5 — is genuine judgement and is delegable, because it
 is visible in the text without answering anything.
 
 **1.7 · Repair — delegable, and mostly should not happen.** Seven rounds,
-five introduced a defect: a **71% iatrogenic rate**. The standard response
-— audit every repair independently — accepts the cost instead of removing
-it. At App 1 scale that was right: the spec cost an hour, and throwing the
-item away threw the hour away. At App 2 scale it inverts. With a spec in
-place a *new* item costs agent time and a CI run; a repair costs a repair
-session, a re-audit session, and a 71% chance of buying a defect.
+five introduced a defect: a **71% iatrogenic rate**. Auditing every repair
+independently accepts that cost instead of removing it. At App 1 scale
+that was right — the spec cost an hour, and throwing the item away threw
+the hour away. At App 2 scale it inverts: with a spec in place a *new*
+item costs agent time and a CI run, while a repair costs a repair session,
+a re-audit session, and a 71% chance of buying a defect.
 **Repairs are for lessons; regeneration is for items.** A flagged item is
 dropped and its slot refilled from the spec, re-entering at the top with a
-new id — which is *more* review than a repaired item gets. The exception
-is real: a lesson edit changes a document that must agree with itself and
-with every item in its category, so lesson repairs keep the re-audit and
-their blast radius is the whole boundary.
+new id — which is *more* review than a repaired item gets.
 
-**1.8 · The independent re-audit — needed only where repairs remain.**
-Delete repairs from the item path and this goes with them. Keep it for
-lesson edits, where the repository's worst failure came from; it then runs
-at boundary rather than item granularity — a tenfold drop in frequency.
+**1.8 · The independent re-audit — needed only where repairs remain.** A
+lesson edit changes a document that must agree with itself and with every
+item in its category, and it is where the worst historical failure came
+from, so lesson repairs keep the re-audit. Item repairs no longer exist,
+so it runs at boundary rather than item granularity — a tenfold drop in
+frequency.
 
 **1.9 · Cold-solving — the claim, tested.** The undelegable input is not
 "a human". It is *a judgement whose errors are uncorrelated with the
@@ -190,13 +180,12 @@ guesswork wearing the confidence App 1 had earned.** [≈]
 
 **1.10 · What people would love to automate and cannot.** *Difficulty* —
 direct model prediction correlates with empirical difficulty at Spearman
-≈ .05–.35 and with discrimination at ≈ 0.15 **[S]**. *Distractor
+≈ .05–.35, with discrimination at ≈ 0.15 **[S]**. *Distractor
 plausibility* — the generated-versus-human gap is much larger for
 plausibility than for validity **[S]**: models produce options that are
-wrong, not options someone would choose. That is the D2 axis, and a global
-audience makes it unguessable. *Whether the review is working* — only a
-set with known answers can say, and it must keep growing or it becomes
-something the brief is tuned to pass.
+wrong, not options someone would choose. *Whether the review is working* —
+only a set with known answers can say, and it must keep growing or it
+becomes something the brief is tuned to pass.
 
 ## 2 · What the literature says, beyond the automation-bias study
 
@@ -207,16 +196,16 @@ largest increase, *d* = 1.06, with significantly lower interaction density
 **[S]**. The mechanism is the human accepting the draft.
 
 **2.2 · A companion finding, worse for reviewers than for authors.**
-Neither human raters nor AI models reliably identified item provenance —
+Neither human raters nor AI models reliably identified item provenance:
 generated MCQs have reached a surface quality "largely indistinguishable
-from human-authored material" **[S]**. Together with 2.1: **you cannot
-detect a generated item's defects by how it reads**, which is why every
-control here that works makes somebody *answer* something.
+from human-authored material" **[S]**. With 2.1: **you cannot detect a
+generated item's defects by how it reads**, which is why every control
+here that works makes somebody *answer* something.
 
 **2.3 · Base rates.** Human items in high-stakes settings: 46.2% violate
 at least one guideline (Tarrant, 2,770 nursing items). LLM items: ~50%
-carry at least one flaw, 28% two or more; 57% of generated sets contain at
-least one implausible distractor **[S]**. These make §3's thresholds look
+carry at least one flaw, 28% two or more; 57% of generated sets contain an
+implausible distractor **[S]**. These make §3's thresholds look
 embarrassing until you notice the human baseline would fail them.
 
 **2.4 · Distractors are the systematic weakness, distributionally.** An
@@ -238,22 +227,16 @@ certifies nothing. **The spec earns amortised review of the plan, not of
 the items**, and anyone arguing otherwise is importing a guarantee that
 came with a constraint this app does not accept. [≈]
 
-**2.6 · Review protocols with evidence.** Two independent screeners,
-conflicts to a third adjudicator, agreement rate reported. Judge
-calibration against human labels with a stated target — the recurring
-figure is **κ ≥ 0.60** before a judge is used; §5 would make a real κ
-computable here. Two-stage designs where the model labels everything and
-humans label a subsample — prediction-powered inference, plus a 2026 paper
-on how many human reviews are needed alongside an LLM judge; that is the
-formal answer to §3. And checklists beat prose. **[S]** for all four —
-the last is `re-audit.md`'s "run every `decision` block as a literal
-checklist" arrived at independently, and by the repository's own account
-its highest-yield check.
-
-**2.7 · Enemy items.** Item banking carries a first-class concept for two
-items that must not appear together — high overlap, or one giving away the
-other, even with different keys **[S]**. App 1 ships one paper's worth and
-does not need it. App 2 assembles sessions from a pool and does (§4.7).
+**2.6 · Review protocols with evidence.** Four, all **[S]**. Two
+independent screeners, conflicts to a third adjudicator, agreement rate
+reported. Judge calibration against human labels with a stated target —
+the recurring figure is **κ ≥ 0.60** before a judge is used, which §5
+would make computable here. Two-stage designs where the model labels
+everything and humans label a subsample — prediction-powered inference,
+plus a 2026 paper on how many human reviews are needed alongside an LLM
+judge; the formal answer to §3. And checklists beat prose, which is
+`re-audit.md`'s "run every `decision` block as a literal checklist"
+arrived at independently.
 
 ## 3 · Sampling instead of censusing
 
@@ -262,13 +245,12 @@ does not need it. App 2 assembles sessions from a pool and does (§4.7).
 **The number of items you must solve to bound the corpus's defect rate
 does not depend on the corpus size.** [≈] The binomial bound is a function
 of the sample; the finite-population correction at *N* = 2,000 is
-√(1 − n/N) = **0.985** at n = 60 and **0.975** at n = 100. Negligible.
-
-So the census instinct — "at 241 you can review everything" — was never
-why 241 was reviewable. **You could have sampled 241 too.** The 28 hours
-buy a guarantee about *individual items*, which is a different product
-from a bound on the *rate*, and saying which of the two you are buying is
-most of the discipline here.
+√(1 − n/N) = **0.985** at n = 60 and **0.975** at n = 100. Negligible. So
+the census instinct — "at 241 you can review everything" — was never why
+241 was reviewable: **you could have sampled 241 too.** The 28 hours buy a
+guarantee about *individual items*, a different product from a bound on
+the *rate*, and saying which of the two you are buying is most of the
+discipline here.
 
 ### 3.2 The base table
 
@@ -299,8 +281,8 @@ expect to meet on the way: [≈]
 At seven minutes: **"under 5%" is one long evening if the corpus is clean
 and three if it is not; "under 1%" is 35–90 hours and is not something
 this project can buy.** That is the honest ceiling and belongs in whatever
-the app tells learners. The zero-defect row is the rule of three — 95%
-bound ≈ 3/n — and is the only sampling arithmetic needed at the keyboard.
+the app tells learners. The zero-defect row is the rule of three (95%
+bound ≈ 3/n), the only sampling arithmetic needed at the keyboard.
 
 ### 3.3 The bound you can afford is not the bound App 2 needs
 
@@ -314,27 +296,24 @@ P(a learner meets ≥ 1 defective item): [≈]
 | 1% | 18% | 63% | 99.3% | ~100% | 15 |
 | 0.5% | 9.5% | 39% | 92% | ~100% | 7.5 |
 
-Read the App 1 row: at *p* = 5% a learner sitting one 20-item test has a
-64% chance of meeting a defective item — survivable, because they meet it
-once and then sit the exam. Now read the App 2 column. A year-long learner
-answers on the order of 1,500 items, so **at the rate seven hours of
-sampling can certify, they meet 75 broken ones each.**
-
-**This should govern App 2's quality plan.** The tenfold corpus is the
-smaller half; *exposure* is the larger, and no pre-ship budget closes it —
-1% is unaffordable and is still fifteen bad items a year per learner. The
-gap closes after shipping, by removing individual bad items found in
-response data. That is §5, and it is why §5 is not optional.
+At *p* = 5% an App 1 learner sitting one 20-item test has a 64% chance of
+meeting a defective item — survivable, because they meet it once and then
+sit the exam. An App 2 learner answers ~1,500 items a year, so **at the
+rate seven hours of sampling can certify they meet 75 broken ones each.**
+**This should govern App 2's quality plan:** the tenfold corpus is the
+smaller half, *exposure* is the larger, no pre-ship budget closes it — 1%
+is unaffordable and still means fifteen bad items a year per learner — and
+the gap closes after shipping from response data (§5) or not at all.
 
 ### 3.4 Sample across boundaries, not within them
 
 The defects this project finds cluster by category: `L5` was one finding
 over four items; three of nineteen categories were cue-only *as
-categories*. Whole boundaries fail, not scattered items — and clustered
-defects break simple-random arithmetic. With m items per sampled boundary
-and intra-boundary correlation ρ, DEFF = 1 + (m − 1)ρ and the effective
-sample is n/DEFF. At ρ = 0.2 (a guess; I have no measurement **[?]**),
-twenty-four solved items are worth: [≈]
+categories*. Whole boundaries fail, and clustered defects break
+simple-random arithmetic. With m items per sampled boundary and
+intra-boundary correlation ρ, DEFF = 1 + (m − 1)ρ and the effective sample
+is n/DEFF. At ρ = 0.2 (a guess; no measurement **[?]**), twenty-four
+solved items are worth: [≈]
 
 | design | clusters | n_eff | zero-defect bound |
 | --- | ---: | ---: | ---: |
@@ -347,13 +326,13 @@ twenty-four solved items are worth: [≈]
 **Spread the sample.** One or two items from many boundaries buys a
 tighter corpus bound than a deep dive into a few. This contradicts the
 natural workflow — solve the boundary you just shipped — and both are
-worth doing for different reasons: the deep pass is a *release gate on
-that boundary*, the spread pass is the *corpus estimate*. Do not let one
-masquerade as the other.
+worth doing: the deep pass is a *release gate on that boundary*, the
+spread pass is the *corpus estimate*, and neither may masquerade as the
+other.
 
 ### 3.5 Two gates, because they answer different questions
 
-**Gate A — the per-boundary release gate (LQAS).** Classify against
+**Gate A — the per-boundary release gate (LQAS)**, classifying against
 p₀ = 5% (fine) versus p₁ = 20% (broken): [≈]
 
 | n solved | accept if ≤ | P(reject a 5% boundary) | P(accept a 20% boundary) |
@@ -364,12 +343,11 @@ p₀ = 5% (fine) versus p₁ = 20% (broken): [≈]
 | 24 | 2 | 12% | 11% |
 | 30 | 2 | 19% | 4% |
 
-At boundary sizes of 12–16, n = 20 does not exist — that is more than the
-boundary holds, and the gate collapses into a census. The workable rule at
-this granularity is *solve 6–8 of a 14-item boundary; accept on zero,
-investigate on one, reject the boundary on two*, understanding that it
-catches a badly broken boundary and misses a mildly bad one. Which is
-fine: mildly bad is what Gate B and §5 are for.
+At boundary sizes of 12–16, n = 20 is more than the boundary holds and
+the gate collapses into a census. The workable rule is *solve 6–8 of a
+14-item boundary; accept on zero, investigate on one, reject on two* —
+catching a badly broken boundary and missing a mildly bad one, which is
+what Gate B and §5 are for.
 
 **Curtail it.** Stop the moment the rejection threshold is crossed.
 Simulated on a 24-item rule accepting ≤ 2: a truly bad batch (p = 20%) is
@@ -380,7 +358,7 @@ to throw away.
 **Gate B — the corpus audit.** Once per release: a spread sample per §3.4,
 sized from §3.2 to whatever claim you intend to make in public. Sixty
 items, one evening, *"we can defend under 5%"*. This is the number that
-goes in Profil's honesty section, and it should be a number and not an
+goes in Profil's honesty section, and it should be a number, not an
 adjective.
 
 ### 3.6 Making the delegated reviewer buy human sample size — and when it buys none
@@ -404,32 +382,27 @@ rather than Var(human). At a true defect rate of 6%: [≈]
 
 **Read the top row.** A plausible-sounding reviewer — 60% of defects
 found, 90% of sound items left alone — makes the estimate *worse* than
-ignoring it. And it is not sensitivity that decides this. It is
-**specificity**: when the defect rate is 6%, a 10% false-alarm rate
-produces more noise than the signal contains. That is `calibration.md`'s
-*"below 4/5 precision it is worse than nothing"*, recovered from
-arithmetic and sharpened — at a 2% defect rate, 95% specificity is worth
-**×0.38**.
+ignoring it. And it is not sensitivity that decides this but
+**specificity**: at a 6% defect rate, a 10% false-alarm rate produces more
+noise than the signal contains. That is `calibration.md`'s *"below 4/5
+precision it is worse than nothing"* recovered from arithmetic and
+sharpened — at a 2% defect rate, 95% specificity is worth **×0.38**.
 
-Two consequences. **Calibrate for precision at the corpus's actual defect
-rate:** you cannot measure a 1-in-100 false-alarm rate with five sound
-items, so the calibration set must grow to dozens of *sound* items, and
-the sound half is the half that matters — which inverts the current set's
-emphasis. And **a reviewer good enough to buy sample size has a short flag
-list**, which is the same property that makes adjudication cheap. There is
-one number to optimise and it is specificity.
+So: **calibrate for precision at the corpus's actual defect rate.** You
+cannot measure a 1-in-100 false-alarm rate with five sound items, so the
+calibration set must grow to dozens of *sound* items — inverting the
+current set's emphasis. There is one number to optimise and it is
+specificity.
 
 ### 3.7 Estimating what the review missed, for free
 
 Two cold solvers on overlapping samples give a capture–recapture estimate
-of what neither saw. Lincoln–Petersen N̂ = M₁M₂/m; Chapman
-(M₁+1)(M₂+1)/(m+1) − 1. Worked: A flags 14, B flags 11, 6 shared →
-N̂ ≈ 25.7 (Chapman 24.7) against a union of 19, so **≈ 6 defects were seen
-by neither**. [≈] The literature is blunt: with few inspectors these models
-underestimate, sometimes substantially, because defects have different
-detection probabilities **[S]**. Order of magnitude, not measurement — but
-it answers *is the review nearly done or nowhere near*, which nothing else
-does, and `solver.md` already wants a second solver on other grounds.
+of what neither saw: N̂ = M₁M₂/m (Chapman: (M₁+1)(M₂+1)/(m+1) − 1).
+Worked: A flags 14, B flags 11, 6 shared → N̂ ≈ 25.7 against a union of 19,
+so **≈ 6 defects were seen by neither**. [≈] With few inspectors these
+models underestimate, sometimes substantially **[S]** — an order of
+magnitude, not a measurement. It still answers *is the review nearly done
+or nowhere near*, and `solver.md` already wants a second solver anyway.
 
 ### 3.8 The bound is on solver-detectable defects, and must say so
 
@@ -450,8 +423,6 @@ more than one defensible answer or a wrong key"* is defensible from a
 solve sample. *"Under 5% of items have any defect"* is not, and the
 distance between the two sentences is a factor of two.
 
----
-
 ## 4 · Defects that only appear at scale
 
 **4.1 · A fixed similarity threshold is a moving standard.**
@@ -461,58 +432,50 @@ false-positive rate is not.** As the corpus densifies, the maximum
 similarity between two *legitimately distinct* items rises: more pairs,
 and the space of B2 grammar paragraphs is not large. A threshold tuned on
 241 items will fire at 2,000 on pairs nobody would call duplicates, and a
-warning list nobody finishes is exactly the failure mode
-`content-pipeline.md` §2.3 warns about. [≈] **Fix: replace the threshold
-with a budget** — report the top *k* = 20 most similar pairs per release.
-A fixed threshold promises a constant standard and delivers a growing
-workload; a fixed budget promises a constant workload and delivers a
-rising standard.
+warning list nobody finishes is the failure mode `content-pipeline.md`
+§2.3 warns about. [≈] **Fix: replace the threshold with a budget** —
+report the top *k* = 20 most similar pairs per release. A fixed threshold
+promises a constant standard and delivers a growing workload; a fixed
+budget promises a constant workload and delivers a rising standard.
 
 **4.2 · Semantic duplicates share no words.** Two items testing the same
 discrimination with different scenarios are invisible to Jaccard, and are
-the *more common* duplicate once a spec drives authoring — because both
-were written from the same item-plan row. **Fix: an authored fingerprint.**
-Each item declares `keys` (the form), `punishes` (misconception ids from
-the spec) and `decidedBy` (`signal` | `meaning`). Two items in a boundary
-with the same triple are one item written twice. Mechanical given the
-field; the field costs the author nothing, since `category-spec.md` §3's
+the *more common* duplicate once a spec drives authoring — both were
+written from the same item-plan row. **Fix: an authored fingerprint.** Each
+item declares `keys` (the form), `punishes` (misconception ids from the
+spec) and `decidedBy` (`signal` | `meaning`); two items in a boundary with
+the same triple are one item written twice. Mechanical given the field,
+and the field costs the author nothing, since `category-spec.md` §3's
 table already required the decision. It also enables 4.7's enemy-item rule.
 
 **4.3 · The option that is never a key anywhere.** Not "a distractor that
-is a key elsewhere" — that is healthy; `should` should be keyed here and
-distract there. The pathology is the inverse: index every option string
-corpus-wide and flag any option appearing **as a distractor ≥ 5 times and
-never as a key**. That is either a repeated dead option (D2 at corpus
-scale) or, worse, a form the corpus has quietly decided is always wrong —
-and a test-wise learner will learn that faster than the grammar. [≈] At 241
-items this check has no power; at 2,000 it does, which is what "only at
-scale" means. Its mirror — a form that is *always* keyed when present — is
-the same query with the polarity flipped. `reviewer.md` already names the
-property and asks a human to notice it. It is a `GROUP BY`.
+is a key elsewhere" — that is healthy. The pathology is the inverse: index
+every option string corpus-wide and flag any option appearing **as a
+distractor ≥ 5 times and never as a key**. That is either a repeated dead
+option (D2 at corpus scale) or a form the corpus has quietly decided is
+always wrong, which a test-wise learner will learn faster than the
+grammar. [≈] At 241 items the check has no power; at 2,000 it does, which
+is what "only at scale" means. `reviewer.md` names the property and asks a
+human to notice it. It is a `GROUP BY`.
 
 **4.4 · Distributional cues, corpus-wide rather than per item.** The
-option-length cue as a per-item warning is noisy — any one item may
-legitimately have a long key. As a corpus statistic it is not noisy at
-all. Compute the rate at which the key is the longest option; under the
-null it is 25%. At 2,000 items a rate of 32% is a large, real, test-wise
+option-length cue as a per-item warning is noisy; as a corpus statistic it
+is not. Compute the rate at which the key is the longest option — under
+the null 25%. At 2,000 items a rate of 32% is a large, real, test-wise
 cue; at 241 it is within noise. [≈] Report one line per release — *"key is
 longest option: 27.4% (null 25%, n = 1,842)"* — and the same for
 key-is-shortest, key-shares-most-words-with-stem, and
-key-is-the-only-option-with-an-auxiliary. This is the shape §2.4 predicts:
-distributional defects want distributional detectors.
+key-is-the-only-option-with-an-auxiliary. Distributional defects want
+distributional detectors, which is the shape §2.4 predicts.
 
 **4.5 · A contrast taught two ways in two places.** At 60 categories one
 person holds the taxonomy in their head; at 120 boundaries nobody does,
 and the failure is not a wrong lesson but two lessons that are each right
-and disagree. Two joins over structured blocks reach it. [≈]
-**Contrast collision:** two lessons whose `contrast` blocks carry the same
-pair of side labels — either one is redundant, or the boundary was cut
-twice and the learner meets it twice in different words. **Rule
+and disagree. Two joins reach it. [≈] **Contrast collision:** two lessons
+whose `contrast` blocks carry the same pair of side labels. **Rule
 contradiction:** two `decision` rules in different lessons whose `signals`
 overlap and whose `then` differ — L2 across lessons rather than within
-one, and the cross-document version of the check `re-audit.md` runs by
-hand. Neither is possible in prose lessons: a late dividend of the block
-schema.
+one. Neither is possible in prose lessons: a dividend of the block schema.
 
 **4.6 · The coverage ledger, as code.** Per boundary: every form named in
 the lesson appears in at least one option list (else taught-and-untested),
@@ -522,32 +485,31 @@ hand-written table that found a Future Passive taught twice and tested
 nowhere — the table nobody will fill in a hundred times.
 
 **4.7 · What no check reaches.** *Difficulty drift between boundaries* is
-not measurable pre-launch (§1.10). What is measurable is **construction**:
-stem word count, sentence count, authored distance from blank to deciding
-evidence, mean edit distance from each distractor to the key. Report the
-per-boundary distribution against the corpus and flag outliers — this does
-not measure difficulty and must not be described as if it did; it measures
-whether a boundary was *built* like the others, which is the AIG position
-**[S]**. *Enemy items* are a session-assembly constraint, not a content
-check: App 2's selector must not draw two items sharing a 4.2 fingerprint
-into one sitting. *Provenance* — spec version, brief commit, batch,
-cold-solved flag — makes a bad batch **recallable** ("which items came from
-the round with the broken spec" is otherwise unanswerable) and makes §6.5
-a check rather than a promise.
-
----
+not measurable pre-launch (§1.10). **Construction** is: stem word count,
+sentence count, authored distance from blank to deciding evidence, mean
+edit distance from each distractor to the key. Report the per-boundary
+distribution against the corpus and flag outliers — it does not measure
+difficulty and must not be described as if it did, it measures whether a
+boundary was *built* like the others, which is the AIG position **[S]**.
+*Enemy items* — item banking's first-class concept for two items that must
+not appear together, even with different keys **[S]** — are a
+session-assembly constraint rather than a content check: App 1 ships one
+paper's worth and does not need it; App 2 assembles sessions from a pool,
+and its selector must not draw two items sharing a 4.2 fingerprint into
+one sitting. *Provenance* —
+spec version, brief commit, batch, cold-solved flag — makes a bad batch
+**recallable** and makes §6.5 a check rather than a promise.
 
 ## 5 · Real learner responses
 
 **5.1 · What responses find that no reviewer can.** **Distractor
-plausibility** — the measured weakness (§1.10, §2.4); a distractor chosen
+plausibility** — the measured weakness (§1.10, §2.4): a distractor chosen
 by 2% is dead, one chosen by 25% is doing its job, and for a global
 audience nobody can guess which. **Miskeys and second defensible answers
 at population scale** — an item whose "wrong" option is chosen by strong
-learners is a D1/D6 detector that never gets tired. **Which boundaries
-this audience actually smears** — what §1.9 says App 2 loses with the L1
-model. Responses find nothing about D5, D8 or L1–L5: they grade items, not
-teaching.
+learners is a D1/D6 detector that never tires. **Which boundaries this
+audience actually smears** — what §1.9 says App 2 loses with the L1 model.
+Nothing about D5, D8 or L1–L5: responses grade items, not teaching.
 
 **5.2 · How many responses before the numbers mean anything.** Classical
 item analysis wants n ≥ 30 before statistics stabilise, and defines a
@@ -601,20 +563,18 @@ make casually, and "aggregate and anonymous" is the sentence every company
 says on the way to breaking it.
 
 1. **The report channel that already exists.** `js/report.js` is not
-   statistical and is the highest-honesty instrument available: a learner
-   who bothers to report an item has usually found something real. It
-   needs one change at scale — **carry the item id and the option the
-   learner chose**, because "this question is wrong" without the chosen
-   option is half a finding.
+   statistical and is the highest-honesty instrument available. One change
+   at scale: **carry the item id and the option the learner chose**,
+   because "this question is wrong" without the chosen option is half a
+   finding.
 2. **Donated exports.** The backup path exists; add a "send me my answers"
    screen and an address. Nothing leaves the device without a deliberate
    act, so the promise stands literally. Biased toward the engaged —
    useless for calibration, adequate for defect detection.
 3. **Explicit opt-in aggregate submission**, off by default, showing
-   exactly what would be sent (item id, chosen option, first-attempt flag
-   — no text, no timing, no identity). Needs a backend, the constraint the
-   architecture exists to avoid, and a rewrite of Profil's honesty copy.
-   **It is a promise change and should be versioned and announced as one.**
+   exactly what would be sent (item id, chosen option, first-attempt flag).
+   Needs a backend and a rewrite of Profil's honesty copy. **It is a
+   promise change and should be versioned and announced as one.**
 4. **Anything default-on.** Refuse. It buys a better dataset and spends
    the one thing `two-apps.md` says a funded competitor cannot buy.
 
@@ -625,13 +585,12 @@ responses arrive they attach to something.
 **5.5 · The honest way to act on it.** **Response data flags; it never
 adjudicates.** A flagged item joins the cold-solve queue at the same seven
 minutes as any other, so its value is not that it replaces human attention
-but that it **retargets** it — §3.2's seven hours bound a rate, the same
-seven hours spent on flagged items remove defects a learner actually hit.
-Three rules: **never auto-retire an item** (the negative point-biserial
-that "typically indicates the specified correct answer is actually wrong"
-**[S]** also fires on a hard item a weak cohort guessed); **report the
-flag with its evidence, not its verdict** — take-up vector, n, and the
-boundary's other items; and **publish the rate you can defend** (§3.8).
+but that it **retargets** it: §3.2's seven hours bound a rate, the same
+seven hours on flagged items remove defects a learner actually hit. Three
+rules — **never auto-retire** (the negative point-biserial that "typically
+indicates the specified correct answer is actually wrong" **[S]** also
+fires on a hard item a weak cohort guessed); **report the flag with its
+evidence, not its verdict**; **publish the rate you can defend** (§3.8).
 
 ## 6 · The pipeline as it should run at App 2 scale
 
@@ -654,22 +613,22 @@ boundary's other items; and **publish the rate you can defend** (§3.8).
 | 13 | Spot-read ten explanations | Owner | 20 |
 
 Step 3 is one-off per boundary. **Steady state: ~7.6 hours per 100 items;
-~10.3 including first-time spec approval.** Against today's 6–8 minutes an
-item — 10 to 13 hours per hundred — roughly a 35% saving, almost all of it
-from not cold-solving everything. Per *release* rather than per hundred
-items: **Gate B**, 60 spread items, **7 hours**, producing the one
-sentence the app may say in public; and **response triage** (§5) once it
-exists, 30–60 minutes a month plus the cold-solves it surfaces.
+~10.3 including first-time spec approval** — against today's 10 to 13
+hours per hundred, roughly a 35% saving, almost all of it from not
+cold-solving everything. Per *release*: **Gate B**, 60 spread items,
+**7 hours**, producing the one sentence the app may say in public; and
+**response triage** (§5) once it exists, 30–60 minutes a month plus the
+cold-solves it surfaces.
 
 ### 6.2 What that means for a 1,500-item App 2
 
 1,500 items ≈ 100 boundaries × 15. [≈] Spec approvals 100 × 20 min =
-**33 h**, once ever. Gate A across the build, 1,500 × 0.5 sampled × 7 min ≈
-**88 h**. Gate B four times a year: **28 h/yr**. **Total to a first complete
-corpus: ~120 hours**, against ~175 for a census that would still have
-missed the clustered defects. At `vision.md` §4's one-hour-an-evening
-cadence that is about eight months of evenings. **That is the real
-schedule, and the number to argue with rather than the feature list.**
+**33 h**, once ever; Gate A across the build, 1,500 × 0.5 sampled × 7 min
+≈ **88 h**; Gate B four times a year, **28 h/yr**. **Total to a first
+complete corpus: ~120 hours**, against ~175 for a census that would still
+have missed the clustered defects — about eight months at `vision.md`
+§4's one-hour-an-evening cadence. **That is the real schedule, and the
+number to argue with rather than the feature list.**
 
 ### 6.3 The claim this pipeline can defend
 
@@ -689,46 +648,42 @@ Four sentences, every one checkable against `docs/audit/solve-log.json`.
    the first pass; costs the honest-bound catch, which the falsification
    pass partly covers. Allowed, reluctantly.
 2. **Cut Gate A from 7 items per boundary to 4.** Saves ~2.8 h per
-   hundred; the boundary gate weakens from catching a 20%-defective
-   boundary ~93% of the time to roughly two-thirds. Allowed **if Gate B
-   stays intact**, because Gate B is the claim.
+   hundred; the gate weakens from catching a 20%-defective boundary ~93%
+   of the time to roughly two-thirds. Allowed **if Gate B stays intact**.
 3. **Cut the release cadence, not the depth.** Four boundaries a month
-   instead of eight. The honest cut, and the one `vision.md` §7.2 reached
-   from the other side: *pick fewer and finish them.* **The lever on
-   content supply is corpus size, not review depth.**
+   instead of eight — the honest cut, and the one `vision.md` §7.2 reached
+   from the other side. **The lever on content supply is corpus size, not
+   review depth.**
 4. **Cut Gate B, or shrink it below ~40 items.** *Not allowed.* At 40 a
-   clean run bounds the corpus at 7.2%; at 24 it is 12%; at 8 it is 31%,
-   which is not a bound but a gesture. A sample too small to support a
-   sentence costs the same evenings and buys nothing — and the temptation
-   to shrink it is strongest on exactly the evening the corpus is worst.
+   clean run bounds the corpus at 7.2%, at 24 it is 12%, at 8 it is 31% —
+   not a bound but a gesture. A sample too small to support a sentence
+   costs the same evenings and buys nothing, and the temptation is
+   strongest on exactly the evening the corpus is worst.
 
 ### 6.5 One mechanical rule worth writing down now
 
 `vision.md` §4's rule — *cold-solve everything you charge for, before you
 charge for it* — becomes enforceable the moment provenance exists: an item
 may enter the paid set only if its id appears in `solve-log.json` with
-`agreed: true` and `flagged: false` under at least one solver. Four lines,
-runs in CI, and it converts the project's central promise from a
-resolution into a build failure. At App 2 scale it is also what keeps the
-census tractable, because the census is only ever over what is sold.
+`agreed: true` and `flagged: false` under at least one solver. Four lines
+in CI, converting the project's central promise from a resolution into a
+build failure — and what keeps the census tractable, since the census is
+only ever over what is sold.
 
 ---
 
 ## 7 · Where I would be wrong
 
 **The 7-minute figure.** Every hour in §6 is a multiple of a number
-nothing in this repository measured, and the repository's own alternative
-estimate is 40 seconds. If the real cost is 2 minutes, §6 is 2–3 hours per
-hundred and most of this document's austerity is unnecessary. Measure it
-before planning around it.
+nothing in this repository measured, and its own alternative estimate is
+40 seconds. If the real cost is 2 minutes, §6 is 2–3 hours per hundred and
+most of this document's austerity is unnecessary. Measure it first.
 
 **ρ, the intra-boundary defect correlation.** §3.4 uses 0.2 as an
 illustration and I have no measurement. If defects are nearly independent
 within a boundary, spreading the sample buys much less than the table
-claims; if they cluster harder — which the history of category-level
-findings suggests — it buys more. **This is estimable today** from how
-findings distributed across categories in `docs/audit/`, and somebody
-should.
+claims. **This is estimable today** from how findings distributed across
+categories in `docs/audit/`, and somebody should.
 
 **The PPI argument assumes the reviewer's errors are independent of the
 human's.** They are not: a reviewer that misses a defect from a shared
@@ -740,11 +695,10 @@ optimistic. The direction — specificity, not sensitivity, buys sample size
 **"Regenerate, do not repair" could be wrong where it matters.** Five of
 seven is not a rate, it is an anecdote with a denominator. And a repair
 carries information a regeneration does not: somebody understood what was
-wrong. If regeneration reproduces the same defect from the same spec —
-exactly what a spec-driven pipeline would do — I have proposed an infinite
-loop. **The guard is that a regeneration must come with a spec amendment**;
-if the spec cannot be amended to exclude the defect, the item is repaired
-by hand after all.
+wrong. If regeneration reproduces the same defect from the same spec — what
+a spec-driven pipeline would do — I have proposed an infinite loop. **The
+guard is that a regeneration must come with a spec amendment**; if the spec
+cannot be amended to exclude the defect, repair by hand after all.
 
 **§3.3's exposure argument assumes defects are met uniformly.** They are
 not: a defective item in a boundary the learner needs is met repeatedly,
