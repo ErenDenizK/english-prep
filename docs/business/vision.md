@@ -13,11 +13,15 @@ can be checked rather than taken.
 
 ## The answer in five sentences
 
-**Both — but sequentially, and not as equals.** App 1 finishes first,
-because it is nearly built, because its market has a deadline that
-recurs every semester, and because it is the only way to obtain the one
-input App 2 cannot buy: evidence from people who are not his friends.
-App 2 starts only after App 1 has shipped and produced that evidence.
+**Both — but sequentially, and not as equals.** **App 1 is the final
+form of this system**, not a stepping stone: it finishes, and then it is
+left alone. App 2 is born from inside it and then diverges — a broader
+audience and a much longer usage life mean **the system and the UI
+change**, which is the owner's own framing and it is right (§5 measures
+how much). App 1 goes first because it is nearly built, because its
+market has a deadline that recurs every semester, and because it is the
+only way to obtain the one input App 2 cannot buy: evidence from people
+who are not his friends.
 **The binding constraint on both is not code and not money — it is
 roughly seven minutes of his own attention per question**, and every
 plan below is denominated in that. And the single most important
@@ -38,11 +42,14 @@ that. A solo evening project with no stopping rule does not ship late —
 it ships never. §3 below proposes App 2's substitute, and that substitute
 is *designed from what App 1 measures*.
 
-**2. The work is already paid for.** 241 questions, 60 lessons, 723
-option notes, the design system, the engine, the review pipeline, the
-1,500-check sweep. App 1 is not a detour that delays App 2; it is App 2's
-foundation with an exam bolted on. The only parts that do not travel are
-`docs/exam-spec.md`, `CLOZE_BLANKS` and the section weights.
+**2. The work is already paid for — the half that travels.** 241
+questions, the review pipeline, the tooling, the engine, the merge, the
+design tokens. Not the screens: §5 measures the split at roughly 2,000
+lines of shared core against 4,800 lines of shell, and the shell is the
+part App 2 rewrites. That still makes App 1 the cheapest possible way to
+build App 2's foundation, but "App 2 is App 1 with the exam removed" is
+not true and planning on it would under-cost App 2 by a factor of
+three.
 
 **3. Friends' feedback is not evidence.** Everything known about whether
 this app works comes from people who know the person who built it. App 1
@@ -72,10 +79,16 @@ it is finished.
 targets, sold once, to Turkish prep-school students. Turkish interface,
 English content, no accounts, no backend, offline.
 
-**Its ceiling is deliberate.** The paper defines done, so App 1 is a
-*finite* product. That is a feature. It can be finished, and a finished
-thing can be left alone while its author does something else — which is
-exactly what App 2 needs of it.
+**Its ceiling is deliberate, and v2.0 is where it stops.** The paper
+defines done, so App 1 is a *finite* product — and the owner's decision
+is that this system's final form is App 1, not a base that keeps
+evolving. That is a feature, and it should be honoured rather than
+drifted away from: after v2.0 the map below has no more rows. Errata,
+new passages as supply, a yearly check that the paper has not changed —
+maintenance, not a roadmap. A finished thing can be left alone while its
+author does something else, which is exactly what App 2 needs of it, and
+the way most solo projects die is by never letting the first one
+finish.
 
 ### Where it actually stands
 
@@ -175,6 +188,83 @@ That is why the error-tracking screen belongs in **App 1 v0.4x, not App
 validated against ground truth, because there the paper says whether the
 diagnosis was right.
 
+### What a longer life and a wider audience actually change
+
+The owner's framing — App 2 is born inside App 1 and then evolves
+somewhere very different, because it teaches a broader audience over a
+much longer period, so the system and the UI change — is not a
+concession. It is a design brief, and it names two variables that each
+break something App 1 gets for free.
+
+**Duration: six weeks becomes a year.**
+
+- **The exam supplies the reason to return.** App 1 never has to answer
+  "why open this tomorrow"; the calendar answers it. App 2 must, and
+  this project has explicitly refused streaks, notifications, timers and
+  numbers that go up. The boundary model is the honest substitute,
+  because *"four boundaries are ready to look at again"* is a *state*
+  rather than a score: it can be true or false, it is derived from what
+  the learner actually did, and unlike a streak it cannot be lost by
+  going on holiday.
+- **The session shape inverts.** Exam prep is long sittings under a
+  deadline; year-long study is short and frequent. The current shell is
+  built around a twenty-question sitting that ends on a results screen.
+  A five-minute daily thing wants the opposite — practice in one tap and
+  no terminal screen — and that is a shell rewrite, not a setting.
+- **Content exhaustion becomes the dominant constraint.** 241 items is a
+  few weeks. App 1's corpus can be *finished*; App 2's can only be
+  *grown*, at the same 6–8 minutes of undelegable attention per item.
+  This is the supply argument from §4 again, and a year-long product
+  makes it the central fact of the design rather than a scheduling
+  detail. It is also, doubly now, the argument against a subscription.
+- **Visual satiation stops being hypothetical**, and this one is worth
+  reopening deliberately. `docs/research/visual-longevity.md` asked
+  exactly the right question — how does an interface this consistent
+  stay worth looking at on day thirty — and parked almost every lever it
+  found. But both reasons for parking them were properties of App 1: the
+  exam was five days away, and the owner looked at the grouped index and
+  felt nothing. **That document was researching a problem App 1 does not
+  have.** It should be re-read from the top when App 2 starts, with its
+  own premise restored rather than its App 1 conclusions inherited.
+
+**Audience: exam candidates become "anyone refining their English".**
+
+- **No shared goal.** An exam makes every learner's target identical, so
+  App 1 never has to ask what someone wants. App 2 has to either ask or
+  infer — and inferring is the wedge, which is why the diagnostic is the
+  first thing built rather than a feature added later.
+- **No shared level.** B1–C1 becomes a wide spread. The boundary model
+  absorbs this where a level system would not: you only ever meet the
+  boundaries your own answers show you smear.
+- **No shared deadline, so no shared urgency**, and this reaches further
+  into the interface than it looks. The word *sınav* is load-bearing in
+  App 1's copy — in the onboarding, in Profil's honesty section, in the
+  reason every screen gives for existing. Removing it is not a
+  find-and-replace; it is re-answering "why is this screen here" for
+  every screen.
+- **Onboarding has thirty seconds to establish why you are here**, where
+  App 1 could simply assume it.
+
+### So: a shared core, and a new shell
+
+The practical form this takes, given the project's own no-build-step
+rule:
+
+**App 2 is a new codebase that copies the core, not a fork of the whole
+repository and not a shared package.** Sharing modules across two apps
+without duplication needs either a build step or a monorepo layout, and
+the no-build-step rule is a large part of why this project still works
+and costs nothing to run. **Copying ~2,000 lines once is cheaper than
+acquiring a toolchain**, and the two apps will diverge anyway — a shared
+module that both apps must agree about becomes a negotiation between a
+finished product and a moving one.
+
+What gets copied, and what genuinely does stay in sync, is `tools/`.
+6,065 lines of validator, formatter, blind pass, calibration, sweep and
+solve — the pipeline is the one asset that is identical for both apps,
+because it is about *how content is checked*, not about what the content
+teaches or how it looks.
+
 ### App 2's map
 
 **v0.1 — Teşhis, and nothing else.** The diagnostic alone: ~20 items
@@ -264,22 +354,45 @@ month of the one resource that cannot be bought.
 
 ---
 
-## 5 · What both apps share, and why that matters
+## 5 · What travels, measured
 
-Everything except the exam:
+An earlier draft of this document said "everything except the exam
+travels". That was wrong, and the owner's framing is what corrects it:
+if the system and the UI change, then what does *not* travel is the
+screens — which are most of the code.
 
-- the content schema, the typed blocks, the item types;
-- `validate-content.mjs`, `content-checks.mjs`, `blind-corpus.mjs`,
-  `make-calibration.mjs` — the most transferable thing this project
-  owns;
-- the agent briefs, minus their exam sections;
-- the design system, the a11y contract, the sweep;
-- the quiz engine, storage, backup, the mistake book, the weakness
-  bound.
+Counted over `js/` on 2026-09-06:
 
-This is the concrete reason "App 1 first" is not a delay. Roughly
-everything built for App 1 between now and v1.0 is App 2 infrastructure
-that happens to be validated against a real exam first.
+| | Lines | |
+|---|---|---|
+| **Shared core** | **~1,990 (29%)** | `dom` · `modal` · `listbox` · `icons` · `quiz-engine` · `backup` · `storage` · `config` · `session-state` · `prompt` |
+| **Rewritten shell** | **~4,790 (71%)** | `education` (1,768) · `home` · `profile` · `quiz` · `results` · `topics` · `shell` · `answers` · `feedback` · `quiz-launch` · `backup-ui` · `report` · `tiers` |
+
+Two caveats on the core, because a table like this flatters itself.
+`storage.js` travels as a mechanism — the lattice merge, the guarded
+reads, the export — but its *shapes* are attempt-and-topic shaped and
+App 2's are boundary-shaped, so call it mostly rather than wholly.
+`icons.js` and `listbox.js` travel as components; whether App 2 wants
+those particular fourteen icons is a design question, not a code one.
+
+And `css/style.css` (1,154 lines) splits the same way as `js/`: the
+tokens, the type scale and the accessibility contract travel; the
+component rules go with the screens they style.
+
+**What travels whole is `tools/`** — 6,065 lines, plus 2,098 lines of
+tests. The validator, the formatter, the blind pass, the calibration
+corpus, the browser sweep and the solve ledger are identical for both
+apps, because they are about how content is *checked* rather than what
+it teaches or how it looks. Together with the agent briefs and the
+review protocol, that is the asset `two-apps.md` §3 argues a
+better-funded competitor cannot cheaply buy.
+
+**So "App 1 first" is still not a delay — but for a narrower reason
+than the earlier draft claimed.** What App 1 buys App 2 is a proven
+pipeline, a validated engine, a design language and 241 items of
+evidence that the method works. It does not buy App 2 its screens, and
+anyone planning App 2 as "App 1 minus the exam" would under-cost it by
+roughly a factor of three.
 
 ---
 

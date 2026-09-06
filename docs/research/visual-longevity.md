@@ -6,6 +6,16 @@ without spending the consistency that makes it good.*
 Written 2026-09-05, against `docs/design-system.md` as it stands at v0.32
 (10 topics, 241 questions, 60 lessons).
 
+> **Read this before inheriting anything below.** Almost every lever
+> here is parked, and both reasons for parking them are properties of
+> App 1: the exam was five days away, and the owner looked at the
+> grouped index and felt nothing from the tier names. App 1 is used for
+> about six weeks. **This document is researching a problem App 1 does
+> not really have** — and App 2, used for a year by someone with no
+> deadline, does. When App 2 starts, re-read this from the top with its
+> premise restored rather than carrying its conclusions across.
+> See `docs/business/vision.md` §3.
+
 The owner's question, in his words:
 
 > "Uygulama çok güzel UI ve çok tutarlı, lakin çok vakit geçiren bir
