@@ -243,24 +243,22 @@ the two disagree.
 
 ## Branches
 
-- **`main`** — the intended published branch: verified content only.
-- **`test`** — day-to-day development. Work lands here, gets tried on a
-  real phone, then merges.
+- **`test`** — what GitHub Pages serves. Day-to-day development lands
+  here and is tried on a real phone, so **a push to `test` is a
+  deploy**.
+- **`main`** — one commit, the initial MVP of 2026-09-02. It was meant
+  to be the published branch and never became one.
 
 To publish: **Settings → Pages → Deploy from a branch**, pick the branch
 and the `/ (root)` folder. No Actions workflow builds it; CI only runs
 the checks.
 
-**As of 2026-09-05 that merge has never happened.** `main` holds a
-single commit — the initial MVP of 2026-09-02 — and `test` is 182
-commits ahead of it: the redesign, all ten topics, the review pipeline
-and every fix since. So one of two things is true, and which one matters
-a great deal: either Pages is pointed at `test`, in which case the first
-bullet above describes an intention rather than the deployment, or it is
-pointed at `main`, in which case everyone using the app is on the
-two-day-old MVP. It could not be checked from the session that wrote
-this (the live host is unreachable through its proxy), so it is written
-down rather than guessed at.
+The two-branch arrangement above is the plan the repository was set up
+for; it is not what happens. `main` never received the merge, and Pages
+was pointed at `test` instead. That is worth stating plainly rather than
+leaving the older sentence in place, because it changes what a push
+means: **there is no staging branch.** Work is verified before it lands,
+not after.
 
 ---
 

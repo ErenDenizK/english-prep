@@ -36,7 +36,19 @@ kapısı zaten açık bir odaya asılmış bir asma kilit — üstelik hedef
 kitlen teknik olarak becerikli ve birbirini tanıyan öğrenciler. Sınıfın
 grup sohbetine düşen tek bir ekran görüntüsü modeli bitirir.
 
-Üç dürüst çözüm var ve **birini bilerek seçmen gerekiyor**:
+**Karar verildi (6 Eylül):** kaynağı ücretliye geçmeden kapatırız, zaten
+o noktaya gelmeden içerikte önemli değişiklikler olur. Bu dördüncü ve
+daha temiz bir çözüm — dört araştırma kolu da "depo açık kalır"
+varsayımının içinde düşünüyordu, o varsayım hiç senin değildi.
+
+Taşınması gereken tek gerçek: **depoyu sonradan gizlemek, o güne kadar
+açık olanı geri almaz.** Klonlayan kimsenin elindeki kopya kalır. Yani
+eylül hâlindeki külliyat dışarıda — ama senin ikinci cümlen tam da bunu
+karşılıyor: ücretli sürüm o kopya olmayacak. Yani "önemli
+değişiklikler" kısmı süs değil, planın taşıyıcı ayağı.
+
+Belgelerin ulaştığı üç çözüm de duruyor, çünkü her birinin neye mal
+olduğunu gösteriyorlar:
 
 1. **Kabı sat, içeriği hediye et.** Web uygulaması sonsuza kadar
    ücretsiz ve eksiksiz kalır; insanların satın aldığı şey kurulum,
@@ -156,7 +168,7 @@ kopyalanması zor olmasının sebebi de bu.
 | **Arkadaşın içerik yazmadan önce** | Yazdığını kimin lisanslayabileceğine dair tek paragraf. Metin hazır: `contributing-draft.md` — hem repo için, hem gönderebileceğin Türkçe mesaj olarak |
 | Geliştirici hesabı birinin adına açılmadan önce | Adi ortaklık vergi istisnasını bozuyor mu — **SMMM'ye** |
 | 25 doları harcamadan önce | Türkiye Google Play'de satıcı ülkesi mi (doğrulanamadı) |
-| Para almadan önce | Yukarıdaki üç çözümden hangisi |
+| ~~Para almadan önce~~ | ~~Üç çözümden hangisi~~ — **karar verildi: önce kaynak kapatılır** |
 | Para almadan önce | Ücretli sürüm içeriği **çekiyor mu, gömüyor mu** — yanlış bir soru mağaza incelemesi bekleyecekse, tam da lazım olduğu hafta yanlış kalır |
 | Acelesi yok | `data/` için lisans (her hakkı saklı mı, CC BY-NC-ND mi) ve kod için MIT mi Apache mi |
 

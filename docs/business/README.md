@@ -51,8 +51,18 @@ Every question, lesson and option note is retrievable today with one
 `curl` and ten more. A paid unlock stored in `localStorage` is a lock on
 an open door, in a repository whose source anyone can read.
 
-**Three honest resolutions exist and he has to pick one deliberately**
-(`two-apps.md` §6.1 sets them out; the others agree with the framing):
+**Settled by the owner, 2026-09-06** (`brief.md`, addendum): the source
+gets closed before anything is charged for, and the content changes
+substantially before that point anyway. That is a fourth resolution and
+a cleaner one — all four arms were reasoning inside a constraint (the
+repository stays public) that was never actually his. The one fact it
+carries rather than removes: going private does not retract what was
+public, so the September corpus is out for good. His second clause is
+what makes that fine, which makes it load-bearing rather than
+incidental.
+
+The three the documents had reached, kept because they are still the
+map of what each choice costs (`two-apps.md` §6.1):
 
 1. **Sell the container, give away the content.** The web app stays free
    and complete; what people buy is installation, offline convenience,
@@ -134,7 +144,7 @@ have paid costs nothing. A shared code that unlocks the product does.
 | **Before his friend writes any content** | A one-paragraph note that contributions are licensed to the project and may be relicensed. Whoever writes a lesson owns it by default, and a later sale or relicence would need every author's individual agreement | `licensing.md` §5 |
 | Before a developer account is opened in anyone's name | Whether running this jointly costs the Turkish tax exemption — summaries say an *adi ortaklık* cannot use it. **For an SMMM, not a search engine** | `two-apps.md` §7.2 |
 | Before spending the $25 | Whether Türkiye is a supported Google Play merchant location. The whole Android route depends on it and it could not be confirmed | `shipping.md` §9 |
-| Before charging anything | Which of the three resolutions above | this file |
+| ~~Before charging anything~~ | ~~Which of the three resolutions above~~ — **decided: close the source first** | `brief.md` addendum |
 | Before charging anything | Whether the paid app *fetches* content or *embeds* it — a wrong question that needs a store review to fix stays wrong during the one week it matters | `pricing.md` §5.3 |
 | Whenever | `data/` all-rights-reserved or CC BY-NC-ND; MIT or Apache-2.0 for the code | `licensing.md` §3 |
 
