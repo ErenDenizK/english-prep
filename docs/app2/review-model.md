@@ -12,18 +12,15 @@ Research arm, 2026-09-06. Written against `vision.md` §3,
 
 ## 0 · What this is, and what it inherits
 
-Four things are settled before this document starts, and it does not
-reopen them:
-
-- **The unit is a boundary, not a flashcard.** A pair the learner's ear
-  conflates — *must / have to*, *few / a few*, *since / for* — taught by
-  contrast and tested by several interchangeable items.
-- **Progress is "boundaries closed."** The learner can finish.
-- **No streaks, no timers, no score that only goes up.**
-- **A crude graduation rule already exists**: an item leaves the mistake
-  book after two correct answers on two separate days, and a wrong answer
-  clears the count (`js/storage.js:224`). It was designed for a six-week
-  exam run.
+Four things are settled before this document starts. **The unit is a
+boundary, not a flashcard** — a pair the learner's ear conflates (*must /
+have to*, *few / a few*, *since / for*), taught by contrast, tested by
+several interchangeable items. **Progress is "boundaries closed"**, and
+the learner can finish. **No streaks, no timers, no score that only goes
+up.** And **a crude graduation rule already exists**: an item leaves the
+mistake book after two correct answers on two separate days, and a wrong
+answer clears the count (`js/storage.js:224`) — designed for a six-week
+exam run.
 
 Two documents here already did half the work. `learner-model.md` §2.3
 established that **the schedulable unit is the category, not the item**,
@@ -76,26 +73,23 @@ where *learned* starts, and close to the number §6 derives from Cepeda.
 ### 1.2 The real question: can you schedule a boundary and draw a fresh item?
 
 Every algorithm above schedules an *item*: an atomic cue–response pair
-with its own forgetting curve. Here the thing learned is a contrast, and
-the items are interchangeable probes of it. So the question is whether
-the spacing evidence survives substituting a different probe at each
-review.
+with its own forgetting curve. Here the thing learned is a contrast and
+the items are interchangeable probes of it, so the question is whether
+the spacing evidence survives substituting a different probe each time.
 
 **It survives, and the better reading is that it is improved by it.**
-
-- Butler et al. (2017) is the direct test: retrieval practice with
-  *different examples* of a concept versus repeated retrieval of the
-  *same* example. "Variability during retrieval practice produced
-  superior transfer of knowledge to new examples" `[S]`.
-- Kornell & Bjork (2008), the same result from the induction side; Butler
-  (2010), repeatedly tested material transferring to *new questions*
-  better than restudied material `[S]`.
+Butler et al. (2017) is the direct test — retrieval practice with
+*different examples* of a concept versus repeated retrieval of the *same*
+example: "variability during retrieval practice produced superior
+transfer of knowledge to new examples" `[S]`. Kornell & Bjork (2008) is
+the same result from the induction side, and Butler (2010) has repeatedly
+tested material transferring to *new questions* better than restudied
+material `[S]`.
 
 The mechanism spacing depends on — a retrieval attempt made after enough
-delay to be effortful — is a property of the *retrieval attempt*, not of
-the stimulus being byte-identical to last time. Nothing in Cepeda's
-design requires the same cue; it uses one because its unit is a fact
-`[≈]`.
+delay to be effortful — is a property of the *attempt*, not of the
+stimulus being byte-identical to last time. Nothing in Cepeda's design
+requires the same cue; it uses one because its unit is a fact `[≈]`.
 
 The converse is the strongest argument for boundary-level scheduling and
 it is not a matter of taste: **item-level scheduling here optimises the
@@ -139,16 +133,15 @@ annoying one to retrofit.
 ### 1.4 What the format costs, said once
 
 The probe is a four-option cloze, and multiple-choice tests generally
-produce **smaller** testing effects than cued recall, on the account that
-recognition bypasses retrieval `[S]`. Little, E. Bjork, R. Bjork &
-Angello (2012) is the partial rescue: items whose alternatives are
-*competitive and plausible* do produce retrieval-induced learning,
-including on **related** questions, because the learner must retrieve why
-each wrong option is wrong `[S]` — a finding that endorses a rule this
-project already enforces for a different reason
-(`question-author.md`). Worth knowing the rule is also what makes the
-format work; and worth accepting that 13 cloze probes do not prove what
-13 production tasks would `[≈]`.
+produce **smaller** testing effects than cued recall `[S]`. Little,
+E. Bjork, R. Bjork & Angello (2012) is the partial rescue: items whose
+alternatives are *competitive and plausible* do produce retrieval-induced
+learning, including on **related** questions, because the learner must
+retrieve why each wrong option is wrong `[S]` — a finding that endorses a
+rule this project already enforces for a different reason
+(`question-author.md`). The rule is also what makes the format work at
+all; and 13 cloze probes still do not prove what 13 production tasks
+would `[≈]`.
 
 ---
 
@@ -372,18 +365,14 @@ memory does decay and the app would be lying.
 ### 4.2 Three facts that reconcile it
 
 **One: a flat terminal interval is well supported.** Karpicke & Roediger
-found equally spaced retrieval beat expanding retrieval at delay `[S]`.
-The doubling tail is the folklore, not the evidence — so the model does
-not have to choose between honesty and an ever-growing interval.
-
-**Two: consolidated material plateaus.** Bahrick's permastore `[S]`. And
-boundary knowledge is more re-derivable than an arbitrary paired
-associate — it is a rule with a lesson behind it, and a learner who has
+found equally spaced retrieval beat expanding retrieval at delay `[S]`,
+so the model need not choose between honesty and an ever-growing
+interval. **Two: consolidated material plateaus** — Bahrick's permastore
+`[S]`, and boundary knowledge is more re-derivable than an arbitrary
+paired associate, being a rule with a lesson behind it (a learner who has
 "forgotten" *few / a few* has usually not lost it but stopped noticing
-the trigger (`learner-model.md` §2.3). Both point the same way: the decay
-the app would be modelling in year two is smaller than its own
-measurement error `[≈]`.
-
+the trigger). Both point the same way: the decay the app would be
+modelling in year two is smaller than its own measurement error `[≈]`.
 **Three: being wrong is cheap** (§3.2, savings).
 
 Together they license a terminal state — a **finite tail of exactly two
@@ -522,17 +511,15 @@ boundaries the derived state is ~100 rows of five small fields, under
 
 ### 5.4 Inspectability
 
-Axiom 3 requires the rule to be visible to the learner. That is cheap
-here and I would spend it: a boundary's detail screen lists its visits —
+Axiom 3 requires the rule to be visible to the learner, which is cheap
+here and worth spending: a boundary's detail screen lists its visits —
 date, probes, result — and the next due date with the interval that
-produced it; the ladder is printed as a table *in the app*, not only in
-the source; the spot-check names its sample size and what it did not
-check.
-
-A model made of six integers and a table of intervals can be shown to a
-learner. One made of 34 fitted parameters cannot, and choosing between
-them is partly choosing whether the app may keep secrets about the
-learner from the learner `[≈]`.
+produced it; the ladder is printed as a table *in the app*; the
+spot-check names its sample size and what it did not check. A model made
+of six integers and a table of intervals can be shown to a learner. One
+made of 34 fitted parameters cannot, and choosing between them is partly
+choosing whether the app may keep secrets about the learner from the
+learner `[≈]`.
 
 ---
 
@@ -603,16 +590,16 @@ on a visit (all probes of boundary B answered on day d):
 ```
 
 **One demotion, not a reset.** The savings effect (§3.2) says a learner
-who slips after three passes is not in the same state as one who has
-never passed `[S]`, and the existing rule's `days.clear()` charges them as
-if they were. A single demotion costs one visit and one shorter interval.
+who slips after three passes is not in the same state as one who never
+passed `[S]`; the existing rule's `days.clear()` charges them as if they
+were. A demotion costs one visit and one shorter interval.
 
 **The `resting` phase is the leech rule, and it points at the content.**
-Three failed visits with no pass means the drilling is not working. The
-app's response is to show the lesson, stop asking for two weeks, and — at
-five — say out loud that the item set may be wrong and offer the existing
-"bu soruda bir sorun var" path. A model that can only ever blame the
-learner is the wrong model for a corpus that has known defects `[≈]`.
+Three failed visits with no pass means the drilling is not working: show
+the lesson, stop asking for two weeks, and — at five — say out loud that
+the item set may be wrong and offer the existing "bu soruda bir sorun
+var" path. A model that can only ever blame the learner is the wrong
+model for a corpus with known defects `[≈]`.
 
 ### 6.4 The closing criterion, in one sentence
 
@@ -641,14 +628,12 @@ of 3. At a true command of 0.90 that happens 2.8% of the time; at 0.95,
 knows a boundary sees it wrongly re-opened about **5.5% of the time at
 p = 0.90, 1.4% at p = 0.95**.
 
-I would publish that number in the app. It is the cost of the app being
+I would publish that number in the app: it is the cost of the app being
 willing to check, it is small, and stating it is what makes the re-open
-message (§3.3) something other than an accusation.
-
-The false *seal* rate — a learner who has genuinely decayed and is never
-asked again — cannot be bounded without data the app deliberately does
-not collect. That asymmetry is the honest cost of §4, and §7 is where I
-say why I would pay it anyway.
+message (§3.3) something other than an accusation. The false *seal* rate
+— a learner who has genuinely decayed and is never asked again — cannot
+be bounded without data the app deliberately does not collect, which is
+the honest cost of §4 and the subject of §7.
 
 ### 6.6 The notification rule, exactly
 
@@ -674,19 +659,17 @@ The message names min(dueCount, SESSION_BOUNDARIES = 5), not dueCount:
 Backlog is never displayed as a number, in the notification or in the app.
 ```
 
-Two clauses are doing unobvious work.
-
-**Condition 3 exists so the app does not remind an active learner.**
-Someone who practised yesterday does not need to be told what is due.
-Without it, the reminder becomes a habit-nag for exactly the people who
-have the habit.
+Two clauses do unobvious work. **Condition 3 exists so the app does not
+remind an active learner** — someone who practised yesterday does not
+need to be told what is due, and without it the reminder becomes a
+habit-nag aimed at exactly the people who have the habit.
 
 **Capping the reported number is not cosmetic.** An uncapped due count
 grows while a learner is away, so "17 boundaries are ready" arrives at
-the worst moment and reads as an accusation. That is the streak's failure
-mode — a debt the app accumulated on your behalf — reconstructed out of
-honest parts. The capped number is still true (five *are* ready today,
-and five is a session) and it cannot become a stick `[≈]`.
+the worst moment and reads as an accusation — the streak's failure mode,
+a debt accumulated on your behalf, reconstructed out of honest parts. The
+capped number is still true (five *are* ready today, and five is a
+session) and it cannot become a stick `[≈]`.
 
 **And the two stopping paths, which are the point:**
 
@@ -722,11 +705,11 @@ Against `vision.md`'s v1.0 target of ~100 boundaries: a three-times-a-week
 learner finishes in about **14 months**; a daily learner exhausts the
 corpus in about **six**.
 
-Both numbers are useful and the second is uncomfortable, because it is
-the content-supply argument from `vision.md` §3 restated as a date. It
-also says the pacing is right: a model that took four years to finish 100
-boundaries would contradict the product's claim, and one that finished
-them in six weeks would not mean anything.
+The second number is uncomfortable, being the content-supply argument
+from `vision.md` §3 restated as a date. But it also says the pacing is
+right: a model that took four years to finish 100 boundaries would
+contradict the product's claim, and one that finished them in six weeks
+would not mean anything.
 
 ### 6.8 Every constant, and where it came from
 

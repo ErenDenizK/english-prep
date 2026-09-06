@@ -74,7 +74,7 @@ Step by step: does it need a person, or does it merely have one?
 not a content question; it is the answer to "what is this app", it is what
 makes *done* countable (`vision.md` §3), and there is no ground truth to
 grade a model against. But it is O(1) in the corpus — an afternoon for a
-hundred boundaries — so it can be ignored in the per-item budget.
+hundred boundaries — so it drops out of the per-item budget.
 
 **1.2 · The boundary spec — mostly delegable; one paragraph is not.**
 Five of `category-spec.md`'s six parts are inventory work a session does
@@ -86,15 +86,14 @@ hours of a person doing a model's job, and it is the largest block of
 The exception is **§1's second half, the honest bound** — what the
 category cannot discriminate. `should-vs-ought-to-vs-had-better.md` exists
 because a category could not discriminate what its own name promised. That
-is hard for the *author* model, for the reason in 1.5: the model that
-believes *should* and *ought to* separate is the model being asked whether
-they do. It is not hard for a different pass with a different task, and
-the task is falsifiable: *write the four hardest items that turn on this
-boundary, then argue the second-best option into each.* A boundary where
-that argument succeeds four times out of four cannot discriminate, and
-that verdict is delegable. **Delegate the spec; have the human approve two
-lines — the discrimination sentence and the honest bound.** Twenty minutes,
-not an hour.
+is hard for the *author* model, for 1.5's reason: the model that believes
+*should* and *ought to* separate is the model being asked whether they do.
+It is not hard for a different pass with a different, falsifiable task:
+*write the four hardest items that turn on this boundary, then argue the
+second-best option into each.* A boundary where that succeeds four times
+out of four cannot discriminate, and that verdict is delegable.
+**Delegate the spec; have the human approve two lines — the discrimination
+sentence and the honest bound.** Twenty minutes, not an hour.
 
 **1.3 · Authoring — delegable, and nobody disputes it.** The only scale
 question is *yield*: items authored per item shipped, somewhere between
@@ -112,11 +111,11 @@ saving that survives a tenfold multiplication.
 
 **1.5 · The blind review pass — delegable, measurable, and not what it
 looks like.** A blind reviewer is not a second opinion; it is a
-*correlated* one. The author model and the reviewer model share a prior
-over what English sounds right, and the defects that matter here —
-`modals-t17`, where `ought to` is as good as `should` — are produced *by*
-that prior. A shared prior yields a defect the reviewer cannot see, and it
-passes the item with high confidence, which reads as evidence and is not.
+*correlated* one. Author model and reviewer model share a prior over what
+English sounds right, and the defects that matter — `modals-t17`, where
+`ought to` is as good as `should` — are produced *by* that prior. A shared
+prior yields a defect the reviewer cannot see, and it passes the item at
+high confidence, which reads as evidence and is not.
 
 The calibration file shows this from the other side: the first reviewer
 run scored 5/5 recall — on defects planted *by a human*, found by hand
@@ -132,35 +131,33 @@ model family stops being a luxury**, because decorrelating reviewer from
 author is the cheapest route to the specificity §3.6 shows is
 load-bearing.
 
-**1.6 · Lesson sufficiency — half of it is habit.** "Does this lesson
-contain what its questions require" is part judgement, part join. The join
-is `category-spec.md` §6's coverage ledger: every form the lesson names
-appears in some option list (else taught-and-untested), every option is a
-form the lesson names (else **D7**). Both directions are computable from
-`forms`/`decision` blocks and option strings. A person is currently
-reading for this; at 120 boundaries they will simply stop. §4.6. What
-remains is genuine judgement — L2, L3, L5 — and that is delegable, because
-it is visible in the text without answering anything.
+**1.6 · Lesson sufficiency — half of it is habit.** Part judgement, part
+join. The join is `category-spec.md` §6's coverage ledger: every form the
+lesson names appears in some option list (else taught-and-untested), every
+option is a form the lesson names (else **D7**). Both directions are
+computable from `forms`/`decision` blocks and option strings. A person
+currently reads for this; at 120 boundaries they will stop (§4.6). What
+remains — L2, L3, L5 — is genuine judgement and is delegable, because it
+is visible in the text without answering anything.
 
 **1.7 · Repair — delegable, and mostly should not happen.** Seven rounds,
 five introduced a defect: a **71% iatrogenic rate**. The standard response
 — audit every repair independently — accepts the cost instead of removing
-it. At App 1 scale that was right: the spec cost an hour and throwing the
+it. At App 1 scale that was right: the spec cost an hour, and throwing the
 item away threw the hour away. At App 2 scale it inverts. With a spec in
-place, a *new* item costs agent time and a CI run; a repair costs a repair
+place a *new* item costs agent time and a CI run; a repair costs a repair
 session, a re-audit session, and a 71% chance of buying a defect.
 **Repairs are for lessons; regeneration is for items.** A flagged item is
-dropped, its slot refilled from the spec, and it re-enters at the top with
-a new id — which is *more* review than a repaired item gets. The exception
+dropped and its slot refilled from the spec, re-entering at the top with a
+new id — which is *more* review than a repaired item gets. The exception
 is real: a lesson edit changes a document that must agree with itself and
 with every item in its category, so lesson repairs keep the re-audit and
 their blast radius is the whole boundary.
 
 **1.8 · The independent re-audit — needed only where repairs remain.**
 Delete repairs from the item path and this goes with them. Keep it for
-lesson edits, where the repository's own worst failure came from. It then
-runs at boundary granularity rather than item granularity — roughly a
-tenfold reduction in frequency.
+lesson edits, where the repository's worst failure came from; it then runs
+at boundary rather than item granularity — a tenfold drop in frequency.
 
 **1.9 · Cold-solving — the claim, tested.** The undelegable input is not
 "a human". It is *a judgement whose errors are uncorrelated with the
@@ -170,10 +167,10 @@ the cheapest such source. Two others exist. A **different model family**,
 cold, on the same protocol, is three orders of magnitude cheaper and less
 correlated with the author than a same-family reviewer — but expert–judge
 agreement is heterogeneous, κ ≈ 0.17–0.86 across dimensions **[S]**, so it
-reduces the human sample and does not replace it. **The learners** are the
+reduces the human sample without replacing it. **The learners** are the
 one source that scales, and they arrive after shipping (§5): response data
-answers "would a competent speaker accept this option" better than any
-reviewer, because it watches people accept it.
+answers "would a competent speaker accept this" better than any reviewer,
+because it watches people accept it.
 
 **And three of the four judgements `content-pipeline.md` §2.5 reserves for
 this human do not survive App 2:**
@@ -187,22 +184,19 @@ this human do not survive App 2:**
 
 That cuts both ways. It removes the Turkish read-through. It also removes
 the **L1 model**: App 1 knew `had better to` was a live distractor and
-`am` was dead. App 2 does not know, and §5 is the only instrument that can
-tell it. **Until response data exists, App 2's distractor plausibility is
+`am` was dead. App 2 does not, and §5 is the only instrument that can tell
+it. **Until response data exists, App 2's distractor plausibility is
 guesswork wearing the confidence App 1 had earned.** [≈]
 
 **1.10 · What people would love to automate and cannot.** *Difficulty* —
 direct model prediction correlates with empirical difficulty at Spearman
-≈ .05–.35, and with discrimination at ≈ 0.15 **[S]**. *Distractor
-plausibility* — the gap between generated and human distractors is much
-larger for plausibility than for validity **[S]**: models produce options
-that are wrong, not options someone would choose. That is the D2 axis, the
-half nobody proofreads, and a global audience makes it unguessable.
-*Whether the review is working* — only a set with known answers can say,
-and it must keep growing or it becomes something the brief is tuned to
-pass.
-
----
+≈ .05–.35 and with discrimination at ≈ 0.15 **[S]**. *Distractor
+plausibility* — the generated-versus-human gap is much larger for
+plausibility than for validity **[S]**: models produce options that are
+wrong, not options someone would choose. That is the D2 axis, and a global
+audience makes it unguessable. *Whether the review is working* — only a
+set with known answers can say, and it must keep growing or it becomes
+something the brief is tuned to pass.
 
 ## 2 · What the literature says, beyond the automation-bias study
 
@@ -212,59 +206,54 @@ conditions carried more flaws; the *collaborative* condition showed the
 largest increase, *d* = 1.06, with significantly lower interaction density
 **[S]**. The mechanism is the human accepting the draft.
 
-**2.2 · A companion finding that is worse for reviewers than for
-authors.** Neither human raters nor AI models reliably identified item
-provenance — generated MCQs have reached a surface quality "largely
-indistinguishable from human-authored material" **[S]**. Together with
-2.1: **you cannot detect a generated item's defects by how it reads.**
-Which is why every control in this project that works makes somebody
-*answer* something.
+**2.2 · A companion finding, worse for reviewers than for authors.**
+Neither human raters nor AI models reliably identified item provenance —
+generated MCQs have reached a surface quality "largely indistinguishable
+from human-authored material" **[S]**. Together with 2.1: **you cannot
+detect a generated item's defects by how it reads**, which is why every
+control here that works makes somebody *answer* something.
 
 **2.3 · Base rates.** Human items in high-stakes settings: 46.2% violate
-at least one guideline (Tarrant, 2,770 nursing items) **[S]**. LLM items:
-~50% carry at least one flaw, 28% two or more; 57% of generated sets
-contain at least one implausible distractor **[S]**. These make §3's
-thresholds look embarrassing until you notice the human baseline would
-fail them.
+at least one guideline (Tarrant, 2,770 nursing items). LLM items: ~50%
+carry at least one flaw, 28% two or more; 57% of generated sets contain at
+least one implausible distractor **[S]**. These make §3's thresholds look
+embarrassing until you notice the human baseline would fail them.
 
 **2.4 · Distractors are the systematic weakness, distributionally.** An
 empirical LLM-versus-human comparison found human distractors "very
 similar to the correct answer and to each other", while model sets
 contained a comparable subset *plus a tail* ranging from very similar to
-very different **[S]**. That tail is D2 — not a random error but a
-distributional property, so it is detectable in aggregate (§4.4) rather
-than only item by item.
+very different **[S]**. That tail is D2 — a distributional property rather
+than a random error, so it is detectable in aggregate (§4.4) rather than
+only item by item.
 
-**2.5 · AIG says review the model, not the item.** The Gierl/Lai
-tradition generates 112 items from one item model and 1,728 from another,
-and its principle is that the expert reviews the *item model and cognitive
-model*, because item quality is inherited from them **[S]**. A boundary
-spec is an item model in all but name — **but AIG item models are
-templates with slots**, so certifying one sibling certifies the family.
-This project's items differ by scenario, register and reasoning path, so
-certifying one certifies nothing. **The spec earns amortised review of the
-plan, not of the items**, and anyone arguing otherwise is importing a
-guarantee that came with a constraint this app does not accept. [≈]
+**2.5 · AIG says review the model, not the item.** The Gierl/Lai tradition
+generates 112 items from one item model and 1,728 from another, and its
+principle is that the expert reviews the *item model and cognitive model*,
+because item quality is inherited from them **[S]**. A boundary spec is an
+item model in all but name — **but AIG item models are templates with
+slots**, so certifying one sibling certifies the family. This project's
+items differ by scenario, register and reasoning path, so certifying one
+certifies nothing. **The spec earns amortised review of the plan, not of
+the items**, and anyone arguing otherwise is importing a guarantee that
+came with a constraint this app does not accept. [≈]
 
 **2.6 · Review protocols with evidence.** Two independent screeners,
-conflicts to a third adjudicator, agreement rate reported **[S]**. Judge
-calibration against human labels with a stated target — the figure that
-recurs is **κ ≥ 0.60** before a judge is used **[S]**; this project's
-calibration set is the same instrument at a coarser scale, and §5 would
-make a real κ computable. Two-stage designs where the model labels
-everything and humans label a subsample — prediction-powered inference,
-plus a 2026 paper specifically on how many human reviews are needed
-alongside an LLM judge **[S]**; that is the formal answer to §3.
-Checklists beat prose **[S]**, which is `re-audit.md`'s "run every
-`decision` block as a literal checklist" arrived at independently — and,
-by the repository's own account, its highest-yield check.
+conflicts to a third adjudicator, agreement rate reported. Judge
+calibration against human labels with a stated target — the recurring
+figure is **κ ≥ 0.60** before a judge is used; §5 would make a real κ
+computable here. Two-stage designs where the model labels everything and
+humans label a subsample — prediction-powered inference, plus a 2026 paper
+on how many human reviews are needed alongside an LLM judge; that is the
+formal answer to §3. And checklists beat prose. **[S]** for all four —
+the last is `re-audit.md`'s "run every `decision` block as a literal
+checklist" arrived at independently, and by the repository's own account
+its highest-yield check.
 
 **2.7 · Enemy items.** Item banking carries a first-class concept for two
 items that must not appear together — high overlap, or one giving away the
 other, even with different keys **[S]**. App 1 ships one paper's worth and
-does not need it. App 2 assembles sessions from a pool and does. §4.7.
-
----
+does not need it. App 2 assembles sessions from a pool and does (§4.7).
 
 ## 3 · Sampling instead of censusing
 
@@ -550,24 +539,22 @@ a check rather than a promise.
 
 ## 5 · Real learner responses
 
-**5.1 · What responses find that no reviewer can.** Three things, and they
-are the three the pipeline is worst at. **Distractor plausibility** — the
-measured weakness (§1.10, §2.4); a distractor chosen by 2% is dead, one
-chosen by 25% is doing its job, and for a global audience nobody can guess
-which. **Miskeys and second defensible answers at population scale** — an
-item where the "wrong" option is chosen by strong learners is a D1/D6
-detector that never gets tired. **Which boundaries this audience actually
-smears** — what §1.9 says App 2 loses with the L1 model, and what
-`vision.md` §3 already argues is better information than a prediction from
-somebody's passport. Responses find nothing about D5, D8 or L1–L5: they
-grade items, not teaching.
+**5.1 · What responses find that no reviewer can.** **Distractor
+plausibility** — the measured weakness (§1.10, §2.4); a distractor chosen
+by 2% is dead, one chosen by 25% is doing its job, and for a global
+audience nobody can guess which. **Miskeys and second defensible answers
+at population scale** — an item whose "wrong" option is chosen by strong
+learners is a D1/D6 detector that never gets tired. **Which boundaries
+this audience actually smears** — what §1.9 says App 2 loses with the L1
+model. Responses find nothing about D5, D8 or L1–L5: they grade items, not
+teaching.
 
 **5.2 · How many responses before the numbers mean anything.** Classical
 item analysis wants n ≥ 30 before statistics stabilise, and defines a
-non-functioning distractor as one chosen by under 5% — a definition
-needing hundreds before "under 5%" separates from "nobody happened to pick
-it" **[S]**. For *defect detection*, which is coarser, exact power with the
-flag cutoff set for a 5% false-alarm rate against a sound item at 55%: [≈]
+non-functioning distractor as one chosen by under 5% — needing hundreds
+before "under 5%" separates from "nobody happened to pick it" **[S]**. For
+*defect detection*, which is coarser, exact power with the flag cutoff set
+for a 5% false-alarm rate against a sound item at 55%: [≈]
 
 | responses/item | power to catch p = 0.30 | power to catch p = 0.25 (vs 0.65) |
 | ---: | ---: | ---: |
@@ -579,9 +566,9 @@ flag cutoff set for a 5% false-alarm rate against a sound item at 55%: [≈]
 
 **Thirty responses per item catches a badly broken item; fifty makes it
 near-certain.** Dead-distractor detection needs more — with 50 wrong
-answers there is still a 7.7% chance of seeing zero picks on a genuinely
-5%-attractive option — so distractor retirement wants n ≈ 100+ and should
-never be automatic. [≈] Accrual over a 2,000-item corpus: [≈]
+answers there is still a 7.7% chance of zero picks on a genuinely
+5%-attractive option — so retirement wants n ≈ 100+ and must never be
+automatic. [≈] Accrual over a 2,000-item corpus: [≈]
 
 | weekly-active learners | items/week each | responses/item/week | weeks to 30/item |
 | ---: | ---: | ---: | ---: |
@@ -591,22 +578,21 @@ never be automatic. [≈] Accrual over a 2,000-item corpus: [≈]
 | 2,000 | 40 | 40 | 1 |
 
 **Below roughly 200 weekly-active learners, response data is not a quality
-instrument on a useful timescale.** Worth saying plainly, because "we will
-fix it with usage data" is the kind of plan that assumes an audience the
-app does not have.
+instrument on a useful timescale** — worth saying plainly, because "we
+will fix it with usage data" is the kind of plan that assumes an audience
+the app does not have.
 
 **5.3 · The confound nobody mentions: the app chooses the exposure.** If
-App 2 does what `vision.md` §3 says — show you the boundaries *your*
-answers say you smear — then the learners who see an item are selected
-*for weakness on its boundary*. Its correct rate is then a fact about the
-selector, not the item, and comparing two items compares two selection
-policies. [≈] This is not a nuance; it invalidates the tables above if
-ignored, and it is invisible in the data. **Fix, and it is cheap: reserve a
-random-exposure channel.** One item in twenty drawn uniformly from the
-whole corpus, ignoring the learner model; those responses, and only those,
-are the measurement sample. At 5% of a 200-learner cohort's 6,000 weekly
-answers that is 300 clean responses a week — 30 clean responses per item in
-about four months. Slower, and interpretable.
+App 2 shows you the boundaries *your* answers say you smear, the learners
+who see an item are selected *for weakness on its boundary*. Its correct
+rate is then a fact about the selector, not the item, and comparing two
+items compares two selection policies. [≈] This is not a nuance; it
+invalidates the tables above if ignored, and it is invisible in the data.
+**Fix, and it is cheap: reserve a random-exposure channel.** One item in
+twenty drawn uniformly from the whole corpus, ignoring the learner model;
+those responses, and only those, are the measurement sample. At 5% of a
+200-learner cohort's 6,000 weekly answers that is 300 clean responses a
+week — 30 per item in about four months. Slower, and interpretable.
 
 **5.4 · The promise, and four options in order of what they cost.** No
 accounts, no backend, no analytics, everything in the learner's own
@@ -616,40 +602,36 @@ says on the way to breaking it.
 
 1. **The report channel that already exists.** `js/report.js` is not
    statistical and is the highest-honesty instrument available: a learner
-   who bothers to report an item has usually found something real. Already
-   shipped; needs one change at App 2 scale — **carry the item id and the
-   option the learner chose**, because "this question is wrong" without
-   the chosen option is half a finding.
-2. **Donated exports.** The backup/export path exists; add a "send me my
-   answers" screen and an address. Nothing leaves the device without a
-   deliberate act, so the promise stands literally. Biased toward the
-   engaged — useless for calibration, adequate for defect detection.
-3. **Explicit opt-in aggregate submission**, off by default, with a screen
-   showing exactly what would be sent (item id, chosen option,
-   first-attempt flag — no text, no timing, no identity) and a working off
-   switch. Needs a backend, the constraint the architecture exists to
-   avoid, and a rewrite of Profil's honesty copy. **It is a promise change
-   and should be versioned and announced as one.**
+   who bothers to report an item has usually found something real. It
+   needs one change at scale — **carry the item id and the option the
+   learner chose**, because "this question is wrong" without the chosen
+   option is half a finding.
+2. **Donated exports.** The backup path exists; add a "send me my answers"
+   screen and an address. Nothing leaves the device without a deliberate
+   act, so the promise stands literally. Biased toward the engaged —
+   useless for calibration, adequate for defect detection.
+3. **Explicit opt-in aggregate submission**, off by default, showing
+   exactly what would be sent (item id, chosen option, first-attempt flag
+   — no text, no timing, no identity). Needs a backend, the constraint the
+   architecture exists to avoid, and a rewrite of Profil's honesty copy.
+   **It is a promise change and should be versioned and announced as one.**
 4. **Anything default-on.** Refuse. It buys a better dataset and spends
    the one thing `two-apps.md` says a funded competitor cannot buy.
 
-**Recommendation: 1 and 2 for the first year, and design so that 3 remains
-possible** — which mostly means having 4.7's provenance fields in place, so
-that when responses arrive they attach to something.
+**Recommendation: 1 and 2 for the first year, and design so 3 stays
+possible** — mostly meaning 4.7's provenance fields exist, so that when
+responses arrive they attach to something.
 
 **5.5 · The honest way to act on it.** **Response data flags; it never
 adjudicates.** A flagged item joins the cold-solve queue at the same seven
-minutes as any other. So its value is not that it replaces human attention
-but that it **retargets** it, from a random sample to the items most likely
-to be broken — §3.2's seven hours bound a rate, while the same seven hours
-spent on flagged items remove defects a learner actually hit. Three rules:
-**never auto-retire an item** (the negative point-biserial that "typically
-indicates the specified correct answer is actually wrong" **[S]** also
-fires on a hard item a weak cohort guessed); **report the flag with its
-evidence, not its verdict** — take-up vector, n, and the boundary's other
-items for comparison; and **publish the rate you can defend**, per §3.8.
-
----
+minutes as any other, so its value is not that it replaces human attention
+but that it **retargets** it — §3.2's seven hours bound a rate, the same
+seven hours spent on flagged items remove defects a learner actually hit.
+Three rules: **never auto-retire an item** (the negative point-biserial
+that "typically indicates the specified correct answer is actually wrong"
+**[S]** also fires on a hard item a weak cohort guessed); **report the
+flag with its evidence, not its verdict** — take-up vector, n, and the
+boundary's other items; and **publish the rate you can defend** (§3.8).
 
 ## 6 · The pipeline as it should run at App 2 scale
 
@@ -782,22 +764,18 @@ reviewed more cleverly. It is a smaller corpus.**
 
 Search summaries only; nothing below was opened in full.
 
-- [AI-assisted MCQ creation increases item-writing flaws through automation bias (Frontiers in Computer Science, 2026)](https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2026.1831250/full)
+- [AI-assisted MCQ creation increases item-writing flaws through automation bias (Frontiers in CS, 2026)](https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2026.1831250/full)
 - [Evaluating the instrumental quality of LLM-generated assessment items (Frontiers in Education, 2026)](https://www.frontiersin.org/journals/education/articles/10.3389/feduc.2026.1837523/full)
 - [Distractor Generation in Multiple-Choice Tasks: A Survey of Methods, Datasets, and Evaluation](https://arxiv.org/pdf/2402.01512)
-- [Exploring Automated Distractor Generation for Math MCQs via LLMs](https://arxiv.org/pdf/2404.02124)
 - [Generating Effective Distractors for Introductory Programming Challenges: LLMs vs Humans (LAK '25)](https://dl.acm.org/doi/10.1145/3706468.3706529)
 - [Automatic distractor generation in MCQs: a systematic literature review](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11623049/)
 - [Nonfunctional distractor analysis: an indicator for quality of MCQs](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7372664/)
-- [Module 34: Automated Item Generation (Gierl & Lai, NCME instructional module)](https://ncme.org/wp-content/uploads/2025/10/Module-34-Automated-Item-Generation-Gierl-Lai.pdf)
-- [Using a Hybrid of AI and Template-Based Method in AIG in Medical Education](https://pmc.ncbi.nlm.nih.gov/articles/PMC11990652/)
+- [Module 34: Automated Item Generation (Gierl & Lai, NCME)](https://ncme.org/wp-content/uploads/2025/10/Module-34-Automated-Item-Generation-Gierl-Lai.pdf)
 - [Prediction-Powered Inference (Angelopoulos & Bates)](https://arxiv.org/pdf/2301.09633)
 - [Augmenting Human Evaluation with LLM Judges: How Many Human Reviews Do You Need?](https://arxiv.org/abs/2605.16354)
 - [Using Human-LLM Disagreement to Improve Checklist-Based Quality Appraisal](https://arxiv.org/html/2608.20385)
 - [Lot quality assurance sampling](https://en.wikipedia.org/wiki/Lot_quality_assurance_sampling)
-- [LQAS, an efficient and rapid assessment technique in quality assurance and public health studies](https://pmc.ncbi.nlm.nih.gov/articles/PMC9104662/)
 - [Acceptance sampling / AQL](https://en.wikipedia.org/wiki/Acceptance_sampling)
 - [Capture–recapture in software inspections after 10 years research](https://www.sciencedirect.com/science/article/abs/pii/S0164121203000906)
 - [Classical Test Theory: item statistics and the point-biserial](https://assess.com/item-statistics-classical-test-theory/)
 - [Enemy items in psychometrics and assessment](https://assess.com/enemy-items/)
-- [The effect of sample size on cognitive interview findings](https://www.abtglobal.com/sites/default/files/2019-07/AAPOR06_Sample_Size_Cognitive_Interviews.pdf)
