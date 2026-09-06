@@ -437,8 +437,8 @@ the category is full of:
    lifetime pays, and treat churn-on-completion as success rather than
    failure. This is the only option that keeps the claim intact.
 2. **Grow the corpus so "done" recedes.** Legitimate — but it is exactly
-   the standing cadence promise §4 warns about, at 6–8 minutes of his own
-   attention per item, forever.
+   the standing cadence promise §4 warns about: his own attention per
+   item, forever, at a rate nobody has measured yet.
 3. **One-time or lifetime**, which fits a finite product honestly and
    gives up recurring revenue.
 4. ~~Design retention mechanics that prevent finishing.~~ This is what a
@@ -604,8 +604,26 @@ for it honestly is what stops v1.0 being scoped like a startup.
 Everything above is denominated in the wrong currency if it is counted
 in features. The real unit is this:
 
-> **~6–8 minutes of the owner's own undelegable attention per shipped
-> question** (`content-pipeline.md` §7.1–7.2).
+> **The owner's own undelegable attention, per shipped question.**
+
+**And that figure is not measured, which is a correction to an earlier
+draft of this document.** It cited `content-pipeline.md` §7.1–7.2 for
+"6–8 minutes an item". That citation is wrong: §7.1 says *"fifteen
+items, no key visible, ten minutes, on the phone"* — **forty seconds an
+item**, tenfold the other way. The two numbers are not really in
+conflict, because they measure different things: forty seconds is
+*answering* an item as the review's first pass, while several minutes is
+plausibly the total supervisor attention per shipped item across spec,
+review and adjudication. The mistake was attaching the larger number to
+the smaller task.
+
+So the honest position: **the cold-solve step is somewhere between forty
+seconds and a few minutes an item, and nobody has measured it.**
+`docs/audit/solve-log.json` does not exist. `npm run solve` was built
+last night precisely to produce this measurement, and **one evening of
+it settles a number that every plan in this directory is denominated
+in** — if the truth is nearer forty seconds, the whole content budget
+falls by a factor of several.
 
 Writing is delegable. The blind pass is delegable. Repairs are
 delegable. What is not delegable is **cold-solving the item before
@@ -614,9 +632,12 @@ question and finding out whether it actually discriminates. Every defect
 class the review rounds found is a defect that survives everything
 except somebody solving the item.
 
-**241 items × 7 minutes ≈ 28 hours, and the git history says it has not
-been spent.** That is not a criticism; the corpus is four days old. But
-it is the real balance sheet.
+**At seven minutes an item the debt is 28 hours; at forty seconds it is
+under three.** The git history says none of it has been spent either
+way, and the corpus is four days old, so this is a balance sheet rather
+than a criticism — but it is a balance sheet with an unmeasured unit,
+and measuring it is one evening's work that changes every other number
+below.
 
 ### Three rules that follow
 

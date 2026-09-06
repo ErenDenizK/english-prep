@@ -30,7 +30,7 @@ here. This is the plan.
 | Drafts not shipped | none |
 | Source TODO/FIXME markers | none |
 | Open validator warnings | 1 (§2, item C5) |
-| Cold-solve debt | 241 items, ~28 hours, **none of it paid** |
+| Cold-solve debt | 241 items, **none of it paid** — and the per-item cost is unmeasured: between 40 seconds (`content-pipeline.md` §7.1) and several minutes, so between 3 and 28 hours. `docs/audit/solve-log.json` does not exist yet |
 
 **Session I coverage today: 30 of 60 points.**
 
@@ -146,6 +146,11 @@ Last, because it cannot be honest until C2 has passages.
 
 **E1 · The cold-solve debt.** §5. It is the gate on money, not on
 shipping.
+**Do one evening of it first, before planning around it.** The per-item
+cost is the unit every estimate in `docs/business/` is denominated in
+and it has never been measured — the repo's own two figures differ
+tenfold. `npm run solve` records it; one sitting turns a guess into a
+number.
 
 **E2 · The duplicate-options warning.** `academic-nouns-adjectives-t13`
 and `-t16` offer an identical option set within one category. Currently a
@@ -166,7 +171,7 @@ corpus is at 723 of 723 and that is a property worth not losing.
 | Reading (10 passages + schema) | ~35–45 |
 | `so / such`, screens, debt items | ~15 |
 | **To v1.0** | **~110–120** |
-| Cold-solve, on whatever is sold | up to 28 more, shareable |
+| Cold-solve, on whatever is sold | 3–28, unmeasured (see §1), shareable |
 
 At an hour an evening that is roughly four months; at a weekend day a
 week, roughly three. **The number is large because reading is large**,
