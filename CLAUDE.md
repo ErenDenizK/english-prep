@@ -59,6 +59,14 @@ becomes later, and the consequences run through the whole corpus:
 - **Mobile first.** Verify at 320px before anything else. The app is a
   fixed-height shell: only `.app-content` scrolls, and answering a
   question must never move the button the learner is about to tap.
+- **There is a second layout, and it is additive.** From 1080px wide and
+  600px tall, five screens put a 320px pane beside the reading column
+  (`.split`, design-system §7.3). It never widens prose — the reading
+  column is the same 608px at every window width — and below the
+  breakpoint there is no rule at all, so the phone layout is not restored
+  by a media query but never left. The lesson reader and the quiz have no
+  pane at any width and that is a decision, not a gap: §7.3 says why. Do
+  not add a pane to either, and do not make the page wider instead.
 - **Navigation is settled, and it was settled by feedback.** The owner
   asked for the top menu to go and for Profil to leave the tab bar. Don't
   reopen either without being asked. Likewise lesson checks never gate
@@ -119,6 +127,7 @@ results.html          Score, breakdown, review
 js/
   home.js             The hash router (#egitim, #test, #profil,
                         #egitim/<lessonId>), the nav, and the Test tab
+                        (its topic list is `#topic-list`)
   education.js        Eğitim: lesson index, the topic overview screen
                         (#egitim/konu/<id>), and the focused lesson reader
   quiz.js             Test screen
@@ -323,7 +332,8 @@ npm run verify      # ~430 checks, four viewports, one full learner journey
 `tools/verify-ui.mjs` walks Eğitim → a lesson → a check → the Test tab →
 a full quiz → results → Profil at 320 / 390 / 768 / 1280, auditing each
 screen it lands on for horizontal overflow, touch targets under 44px and
-console errors, then runs the §8 accessibility contract once. This is not
+console errors, then measures the wide layout against §7.3 and runs the
+§8 accessibility contract once. This is not
 optional polish: WCAG conformance is defined per page and per responsive
 variation, so the sweep *is* the requirement.
 

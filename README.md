@@ -76,6 +76,19 @@ categories, an export/import of everything stored, and the roadmap.
 
 Nothing is sent anywhere.
 
+It is a phone app first and stays one — but on a tablet or a desktop the
+screens that have something worth putting beside them do: the start card
+next to all ten topics, a topic's overview next to its six lessons, a
+score next to the review of it. Not by widening the page. The reading
+measure is a constant, so the column of text is the same width on a
+2560px monitor as on a 320px phone; what the extra width buys is a second
+column of what would otherwise be below the fold. The lesson reader and
+the question screen have no second column at any width, on purpose —
+reading gains nothing from one, and a question with four options and one
+action is a decision rather than something to scan. Below 1080px, or on a
+short landscape window where two columns would be worse than one, every
+screen is the phone layout, pixel for pixel.
+
 ---
 
 ## What it does not cover, and why the app says so
@@ -166,9 +179,9 @@ npm run audit          # measures each screen against the design spec
 dependencies is not to acquire one for CI. It walks a whole learner
 journey at 320 / 390 / 768 / 1280, auditing every screen it lands on for
 horizontal overflow, touch targets under 44px and console errors, then
-runs the accessibility contract once. **About 1,500 checks** — the exact
-count moves with the draw; the run behind this sentence was 1,514, all
-green. Run it for anything that touches the interface: WCAG conformance
+measures the wide layout against the spec and runs the accessibility
+contract once. **About 1,550 checks** — the exact count moves with the
+draw; the run behind this sentence was 1,544, all green. Run it for anything that touches the interface: WCAG conformance
 is defined per page and per responsive variation, so the sweep *is* the
 requirement.
 

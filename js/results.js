@@ -20,7 +20,7 @@ import {
   MIN_ITEMS_FOR_WEAK_ENTRY,
 } from "./storage.js";
 import { startMistakeBook } from "./quiz-launch.js";
-import { el, clear, appendInline } from "./dom.js";
+import { el, clear, pane, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, createActionBar } from "./shell.js";
 import { renderPrompt } from "./prompt.js";
@@ -333,7 +333,17 @@ async function init() {
   }
 
   clear(container);
-  container.appendChild(renderScore(result));
+
+  // The score and the two breakdowns are the summary; the review is every
+  // question again with its explanation, and it is by far the longest
+  // thing in the app. On a wide window the summary becomes the pane and
+  // the review keeps the reading column, so "what did I get wrong" and
+  // "why" stop being separated by a scroll. On a phone: unchanged.
+  const aside = pane();
+  const main = pane();
+  container.classList.add("split");
+
+  aside.appendChild(renderScore(result));
   announce(
     `Test bitti. ${result.totalCount} sorudan ${result.correctCount} doğru.`
   );
@@ -344,7 +354,7 @@ async function init() {
     (topicId) => titleById.get(topicId) ?? result.topicTitles?.[topicId] ?? topicId
   );
   if (topicBreakdown) {
-    container.appendChild(topicBreakdown);
+    aside.appendChild(topicBreakdown);
   }
 
   if (result.categoryBreakdown) {
@@ -355,16 +365,17 @@ async function init() {
       (category) => lessonIdByCategory.get(category) ?? null
     );
     if (categoryBreakdown) {
-      container.appendChild(categoryBreakdown);
+      aside.appendChild(categoryBreakdown);
     }
   }
 
   const mistakeShortcut = renderMistakeShortcut(result);
   if (mistakeShortcut) {
-    container.appendChild(mistakeShortcut);
+    aside.appendChild(mistakeShortcut);
   }
 
-  container.appendChild(renderReview(result));
+  main.appendChild(renderReview(result));
+  container.append(aside, main);
 
   actionBar.set([
     { label: "Ana sayfa", level: "secondary", href: "index.html" },

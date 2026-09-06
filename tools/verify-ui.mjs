@@ -1513,7 +1513,7 @@ async function runIndexStates(browser) {
   const egitimGroups = await groupsOf(view.page, "#index-list");
   await view.page.locator('.nav__item[data-view="test"]').click();
   await view.page.waitForSelector("#test-panel .row");
-  const testGroups = await groupsOf(view.page, "#test-panel section:last-of-type");
+  const testGroups = await groupsOf(view.page, "#topic-list");
   ok(
     egitimGroups.length > 1 && egitimGroups.join("|") === testGroups.join("|"),
     `iki sekme konuları aynı şekilde gruplıyor (${egitimGroups.join(", ")})`
@@ -2640,6 +2640,155 @@ async function runAccessibility(page) {
   ok(await page.locator(".option[disabled]").count() === 0, "hiçbir yerde disabled kullanılmıyor");
 }
 
+/**
+ * The second layout, and the contract it has to keep.
+ *
+ * A wide window does not get a wider page: the measure is a constant
+ * (§2.3) and prose past it costs comprehension. What it gets is a second
+ * column, on the screens that have something to put there — and the four
+ * things below are what "and it did not cost the phone anything" means,
+ * stated as measurements rather than as a screenshot.
+ *
+ *   1. It engages where it should: two panes on one row at 1280.
+ *   2. It never widens prose: the reading column at 1280 is the same
+ *      width it is at 640, to the pixel.
+ *   3. It leaves every other screen alone: the quiz keeps the 640 page
+ *      at any window width, because it has no pane and never should —
+ *      a question, its four options and one action are one thing, and
+ *      splitting them is the documented way to make a decision screen
+ *      into a scanning screen.
+ *   4. It stands down when it cannot work: tablet portrait is too narrow
+ *      for two columns and a landscape tablet is wide and SHORT, which is
+ *      the case where two panes are worse than the phone layout they
+ *      replaced. Both fall back to the single column.
+ */
+async function runWideLayout(browser) {
+  // Where each split lives, and how to get to it. `pane` is the reading
+  // column — the one whose width must not move.
+  const screens = [
+    { name: "Eğitim indeksi", url: "index.html#egitim", host: "#lesson-index", wait: "#index-list .row" },
+    { name: "Test sekmesi", url: "index.html#test", host: "#test-panel", wait: "#topic-list .row" },
+    { name: "Profil", url: "index.html#profil", host: "#profile-container", wait: "#profile-container .stats" },
+  ];
+
+  /** The two panes' boxes, or null when the split is not in force. */
+  const panes = (page, host) =>
+    page.evaluate((selector) => {
+      const node = document.querySelector(selector);
+      if (!node || node.children.length !== 2) {
+        return null;
+      }
+      const [first, second] = [...node.children].map((child) => child.getBoundingClientRect());
+      return { first, second, split: node.classList.contains("split") };
+    }, host);
+
+  for (const size of [
+    { label: "1280×900", width: 1280, height: 900, sideBySide: true },
+    // Tablet portrait: wide enough to notice, not wide enough for two
+    // columns plus the measure.
+    { label: "768×1024", width: 768, height: 1024, sideBySide: false },
+    // Wide and short — a landscape tablet, or a desktop window with the
+    // dev tools open. Width alone would split this and should not.
+    { label: "1280×560", width: 1280, height: 560, sideBySide: false },
+  ]) {
+    const context = await browser.newContext({ viewport: { width: size.width, height: size.height } });
+    const page = await context.newPage();
+
+    for (const screen of screens) {
+      await page.goto(`${BASE}/${screen.url}`, { waitUntil: "networkidle" });
+      await page.waitForSelector(screen.wait);
+      const box = await panes(page, screen.host);
+      ok(box !== null, `${screen.name} ${size.label}: iki sütun olarak kuruluyor`);
+      if (!box) {
+        continue;
+      }
+      // Side by side means: same top, and one entirely left of the other.
+      const rowed = Math.abs(box.first.y - box.second.y) < 2 && box.first.right <= box.second.x + 1;
+      const stacked = box.second.y >= box.first.bottom - 1;
+      ok(
+        size.sideBySide ? rowed : stacked,
+        `${screen.name} ${size.label}: ${size.sideBySide ? "sütunlar yan yana" : "tek sütun, telefondaki gibi"}`
+      );
+    }
+
+    await context.close();
+  }
+
+  // The reading column does not move. Measured against the same screen at
+  // 640, which is the width every one of these was authored at.
+  const columnWidth = async (width, height) => {
+    const context = await browser.newContext({ viewport: { width, height } });
+    const page = await context.newPage();
+    await page.goto(`${BASE}/index.html#profil`, { waitUntil: "networkidle" });
+    await page.waitForSelector("#profile-container .stats");
+    const measured = await page.evaluate(
+      () => document.querySelector("#profile-container").firstElementChild.getBoundingClientRect().width
+    );
+    await context.close();
+    return Math.round(measured);
+  };
+  const narrow = await columnWidth(760, 900);
+  const wide = await columnWidth(1600, 900);
+  ok(narrow === wide, `geniş ekranda okuma sütunu genişlemiyor (${narrow}px → ${wide}px)`);
+
+  // The topic screen is the split that runs the other way round — prose in
+  // the reading column, its six lessons in the pane — so it is checked
+  // separately rather than assumed from the three above.
+  const introContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const introPage = await introContext.newPage();
+  const manifest = JSON.parse(await readFile(new URL("../data/manifest.json", import.meta.url), "utf8"));
+  const firstTopic = manifest.topics.find((topic) => !topic.comingSoon && topic.hasIntro);
+  await introPage.goto(`${BASE}/index.html#egitim/konu/${firstTopic.id}`, { waitUntil: "networkidle" });
+  await introPage.waitForSelector("#lesson-reader .row");
+  const introBox = await panes(introPage, "#lesson-reader .split");
+  ok(
+    introBox !== null && Math.abs(introBox.first.y - introBox.second.y) < 2,
+    "konu ekranı 1280×900: dersler metnin yanında"
+  );
+  // The pane is the narrow one here, not the reading column.
+  ok(
+    introBox !== null && introBox.first.width > introBox.second.width,
+    "konu ekranı: ölçüyü metin tutuyor, liste değil"
+  );
+  await auditLayout(introPage, "konu ekranı, 1280px", 1280);
+  await introContext.close();
+
+  // And a screen with no pane keeps the 640 page whatever the window does.
+  const context = await browser.newContext({ viewport: { width: 1600, height: 900 } });
+  const page = await context.newPage();
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#topic-list .row");
+  await page.locator("#test-panel .btn--primary").first().click();
+  await page.waitForSelector(".option");
+  const quizPage = await page.evaluate(
+    () => Math.round(document.querySelector("#quiz-container").getBoundingClientRect().width)
+  );
+  ok(quizPage === 640, `soru ekranı geniş ekranda da 640px (${quizPage}px)`);
+  await auditLayout(page, "soru, 1600px", 1600);
+
+  // Through to the results screen, which is the fourth split and the one
+  // the flow above cannot reach without answering a whole test.
+  for (let guard = 0; guard < 60 && !page.url().includes("results.html"); guard += 1) {
+    const option = page.locator(".option").first();
+    if (await option.count()) {
+      await option.click();
+    }
+    const advance = page.locator("#quiz-bar .btn--primary");
+    if (await advance.count()) {
+      await advance.click();
+    }
+    await page.waitForTimeout(30);
+  }
+  await page.waitForSelector("#results-container .row");
+  const resultBox = await panes(page, "#results-container");
+  ok(
+    resultBox !== null && Math.abs(resultBox.first.y - resultBox.second.y) < 2,
+    "sonuç ekranı 1600×900: özet incelemenin yanında"
+  );
+  await auditLayout(page, "sonuç, 1600px", 1600);
+  await context.close();
+}
+
 const browser = await chromium.launch({ executablePath: EXECUTABLE });
 
 try {
@@ -2711,6 +2860,9 @@ try {
   const lessonContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
   await runEveryLesson(await lessonContext.newPage());
   await lessonContext.close();
+
+  console.log("\n=== geniş ekran ===");
+  await runWideLayout(browser);
 
   console.log("\n=== erişilebilirlik sözleşmesi (§8) ===");
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });

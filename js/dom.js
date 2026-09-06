@@ -109,3 +109,18 @@ export function sectionHeading(text, hint) {
   }
   return head;
 }
+
+/**
+ * One column of a `.split` (css/style.css, utilities). A split's tracks are
+ * positional — the first child takes the first column — so a split is
+ * built from exactly two of these and never from three: a third child
+ * would silently start a second row instead of erroring.
+ *
+ * Below the split's breakpoint a pane is an ordinary `.stack stack--loose`,
+ * which is the class the containers being split already carried. That is
+ * deliberate: the phone layout is not restored by the media query, it is
+ * simply never left.
+ */
+export function pane() {
+  return el("div", "stack stack--loose");
+}
