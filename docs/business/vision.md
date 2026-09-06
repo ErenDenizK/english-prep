@@ -499,7 +499,39 @@ exist to settle it.
 **So v0.1 carries a few of those non-contrast items on purpose.** If
 they fail at the same rate as the contrasts, the product's spine is
 wrong and it is far better to learn that in twenty items than in sixty
-boundaries. Perhaps two weekends, because the engine exists.
+boundaries.
+
+**And the twenty items are two stages, not one list** —
+`docs/app2/diagnostic.md` settled the shape with one number. Under the
+obvious rule, *one wrong answer and the boundary is flagged*, a learner
+who has mastered everything still collects two false flags, and **88% of
+learners are told something untrue about themselves.** That is this
+project's own honesty rule failing inside the feature meant to embody
+it. So: **eleven screen items, base-rate weighted, one slot held
+uniformly random — then up to three flagged boundaries confirmed at
+three items each.** Simulated, that confirms one to two real boundaries
+and misleads about one learner in fifty.
+
+**The screen misses far more than it mis-claims, and that is the honest
+part.** A uniform twenty-item screen recalls roughly a quarter of a
+learner's real boundaries. There is no fixing that arithmetically, so
+the app prints the denominator instead — *"looked at 14 of 60; these
+families were never entered"* — which is both the honest disclosure and,
+not by accident, the sentence that bridges to the paid product.
+
+**One structural finding to design around rather than wait out:
+calibration never arrives.** Roughly 600 takers are needed to calibrate
+a 120-item pool to ±10 points, and this product's honest ceiling is
+hundreds of users. The diagnostic therefore runs on **author priors for
+its whole life** — so any design whose honesty depends on future
+response data is never honest, and the priors have to be good enough on
+day one.
+
+Perhaps two weekends, because the engine exists — and because the item
+pool already does too: 241 items over 60 categories is exactly the four
+per boundary that the confirmation stage needs. What is missing is a
+`prior` field, a `family` field, and the English re-authoring already
+costed above.
 
 **v0.2 — 20 boundaries.** The diagnostic now has somewhere to send
 you. Explanations in English, written for someone who already speaks it:
