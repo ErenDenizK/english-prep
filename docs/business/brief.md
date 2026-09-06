@@ -114,3 +114,55 @@ it and the README have been corrected.
 The consequence is worth stating in a business document as well as a
 technical one: **there is no staging branch.** A push to `test` is a
 deploy to every learner using the app.
+
+
+---
+
+## Addendum, 2026-09-06 — the second round
+
+Three more decisions, after reading the vision document.
+
+### App 2 goes global, and is taught in English
+
+Not "Turkish first, then maybe localise". English teaching for learners
+worldwide, positioned as *a higher-level, more instructive Duolingo*.
+
+This appears to collide with `two-apps.md` §5.3 — *each language is a
+co-author, 45–60 hours per L1* — and `vision.md` §3 now argues it does
+not, because that finding assumed the learner's own language is the
+medium. This app's audience already speaks English; the explanations can
+be in English, and reading them is practice. The localisation cost does
+not get solved cheaply, **it does not arise**. What remains is one
+re-authoring pass of ~37,000 words of explanation, in English, paid once
+rather than per language.
+
+### Notifications are allowed for App 2
+
+Explicitly flagged by the owner as needing research, and an arm is
+running (`retention-and-pricing.md`). The line proposed in `vision.md`
+§3: *a notification is acceptable if what it says would still be true
+and useful even if the app had no interest in your returning.* Due
+counts pass; streaks fail.
+
+### A subscription, at a reasonable price, in whatever form the market takes
+
+Recorded as the owner's direction. `vision.md` §3 names the tension it
+collides with — the boundary model gives the learner a stopping rule, and
+a subscription wants people not to finish — and recommends letting them
+finish and leave rather than building retention mechanics, with one-time
+as the fallback if the numbers do not work.
+
+### App 1 is settled: everything except listening
+
+> *"App 1 ise bu projenin bitmiş hâli, çok konuşulacak bir şey yok;
+> listening hariç tüm özellikler tamamlanır."*
+
+This supersedes the v1.0 definition accepted on 2026-09-04, which put
+reading outside v1 because a passage costs 2.5–3.5 hours of review and
+is single-use. Reading is 21 of Session I's 60 points — the largest
+section — so with it in, App 1 covers **all four sections of Session I,
+60 of 60**, and the only thing missing is a separate sitting.
+
+Cost of the override, stated because it is not small: roughly 75–90
+hours of review to finish App 1, plus the cold-solve debt on whatever is
+sold.
