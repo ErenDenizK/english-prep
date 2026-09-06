@@ -323,10 +323,13 @@ function renderCoverage(topics) {
   section.appendChild(el("h2", "t-label", "Sınavın hangi kısmı burada"));
 
   // "15 puan" next to a section the app practises reads as fifteen points
-  // earned. It means fifteen points *attempted*, and not all of them: of
-  // the sample cloze's ten blanks, two are vocabulary and one is
-  // `so / such`, and no lesson here teaches any of the three. The count
-  // is derived, so it moves on its own when a topic ships.
+  // earned. It means fifteen points *attempted*, and not all of them: one
+  // of the sample cloze's ten blanks is `so / such`, which no lesson here
+  // teaches. The count is derived, so it moves on its own when a topic
+  // ships — but only for a blank that names its covering topic in
+  // CLOZE_BLANKS, which is why a `null` there is a bug rather than a
+  // placeholder. Two of them sat as `null` through the vocabulary topics
+  // shipping and this line understated the app by two blanks.
   const cloze = clozeCoverage(topics);
   const covered = hasRestatement
     ? "paragraf içindeki boşluklar (15 puan) ve anlamca en yakın cümle (15 puan)"
