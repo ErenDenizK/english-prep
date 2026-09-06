@@ -27,6 +27,7 @@ verify.
 | **`two-apps.md`** | Is the App 1 / App 2 split right? | Yes — but the seam is *exam / no exam*, not *Turkish / global* |
 | **`pricing.md`** | The 270 / 150 / three-schools arithmetic | It clears his bar. The production cost, which he never computed, is the interesting number |
 | **`shipping.md`** | How this reaches a paying student | The cheapest path has no store in it. Android before Apple |
+| **`retention-and-pricing.md`** | Notifications, and what the market pays | Push is the wrong instrument; the model is a values decision, not a revenue one |
 | **`architecture.md`** | What "a bit online" costs the codebase | The app already contains the hard half of sync. One purchase is irreversible |
 | **`licensing.md`** | Who owns this | Public repo, no licence. Two assets wanting opposite answers |
 

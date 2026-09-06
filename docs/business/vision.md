@@ -282,8 +282,9 @@ break something App 1 gets for free.
 
 - **The exam supplies the reason to return.** App 1 never has to answer
   "why open this tomorrow"; the calendar answers it. App 2 must, and
-  this project has explicitly refused streaks, notifications, timers and
-  numbers that go up. The boundary model is the honest substitute,
+  App 1 has explicitly refused streaks, notifications, timers and numbers
+  that go up — a refusal that belongs to App 1's design, not to the
+  project as a rule, and App 2 reopens exactly one of the four. The boundary model is the honest substitute,
   because *"four boundaries are ready to look at again"* is a *state*
   rather than a score: it can be true or false, it is derived from what
   the learner actually did, and unlike a streak it cannot be lost by
@@ -346,17 +347,52 @@ risk"* fails: it is only meaningful because the app created the stake it
 now threatens. The first is a due-date; the second is a debt the app
 invented and then called in.
 
-The test has a practical consequence. It means the notification cannot
-be designed before the scheduling model is — you cannot say *"ready to
-look at again"* without something that decides when. So notifications
-arrive with the review model, at v0.5, not as a growth feature bolted on
-later.
+The test has a practical consequence: the notification cannot be
+designed before the scheduling model is, because you cannot say *"ready
+to look at again"* without something that decides when. So notifications
+arrive with the review model, at v0.5, and never as a growth feature
+bolted on later.
 
-**A research arm is running on the mechanics** — what web push actually
-requires on iOS in 2026, what it costs an app with no backend, opt-in
-rates, and whether the evidence supports the distinction above or breaks
-it. Its findings land in `retention-and-pricing.md` and this section
-should be read against them, not instead of them.
+**The research arm has landed** (`retention-and-pricing.md`) and it
+changed two things.
+
+**Notifications need no server.** Web push is the wrong instrument here:
+on iOS a page has no `PushManager` at all until the learner installs it
+to the Home Screen, and install rates are measured under 2% — so a push
+design reaches perhaps one in twenty of the iOS audience, and there are
+reports of subscription endpoints expiring on inactivity, which kills a
+weekly reminder specifically. But *"N boundaries are ready"* is a fact
+the device already knows. A push server would be this project's first
+per-person record and its first data-protection duty, bought in exchange
+for nothing. **Local notifications from the store wrapper that the paid
+unlock already requires deliver the whole design with no backend and no
+personal data.**
+
+**And the test above is only the first of four axioms.** The arm's
+correction is that *truth is not the test* — a streak is true. What the
+other three add: the app must be **willing to send the message that
+loses it the session**; every fact must come from a **rule visible to
+the learner and never tuned against engagement**; and the **rate ceiling
+is set before the first message is written**, not discovered later.
+
+That produces three messages and no more. *N boundaries are ready.* *M
+new boundaries shipped.* And the one that matters: **"You have closed
+everything currently here. I will stop reminding you until there is
+something new."** No engagement-optimised product would ever ship that
+third message. It is the notification form of this product's central
+claim — that you can finish — and if the notification layer cannot say
+the claim out loud, the claim is marketing.
+
+Defaults, from the same section: **off** unless turned on, the learner
+picks the day and hour *before* the OS dialog is raised, the ask fires
+after the first boundary is closed rather than in onboarding, and the
+cap is stated permanently in settings as a promise the learner can
+check.
+
+**Where this could still be nothing.** At default-off, once a week,
+soft-asked and deliberately unexciting, it is entirely possible nobody
+enables it. That is cheap to find out and the honest response is to
+delete the toggle rather than escalate it.
 
 ### Subscription, and the thing it collides with
 
@@ -386,12 +422,30 @@ the category is full of:
    streak is for. Taking it would cost the one thing that distinguishes
    the product.
 
-**My recommendation before the research lands: (1), annual-first.** A
-learner who finishes and leaves after five months, having got what they
-came for, is a better outcome and a better advert than one retained by a
-counter. If the arm's numbers say that cannot pay at a reasonable price,
-(3) is the fallback — not (2), because (2) is a promise made with a
-resource that has one supplier.
+**The research landed on (1) and (3) together, and the arithmetic behind
+it is the part worth keeping.** At the honest ceiling of a few hundred
+users, the spread between the best and the worst pricing model is around
+$9,000 over two years, while the spread between 400 users and 100 is
+around $16,000. **The model is therefore a values decision, not a
+revenue one** — which means it should be chosen for what it says about
+the product, and the thing to actually work on is whether anyone shows
+up.
+
+So: **an annual subscription plus a permanent lifetime tier, and no
+monthly.** Lifetime is the right instrument rather than the risky one
+here, because what it normally cannibalises — the learner who renews
+forever — *does not exist by design* in a product built to be finished.
+And the listing should say the corpus is finite, which is a strange
+thing to advertise and the correct one.
+
+**The pricing anchor changes too, and this is a correction to
+`pricing.md` §4.3.** Its heuristic was "about one month of a local
+Spotify". But Duolingo Super is roughly **$0.63–0.93 a month in Turkey
+and India against $6.99 in the United States** — so the Spotify anchor
+would price this app at four to five times the category leader in
+exactly the markets its audience lives in. Per-storefront prices get set
+by hand against **local Duolingo**, not against a global number
+converted at the exchange rate.
 
 ### So: a shared core, and a new shell
 
