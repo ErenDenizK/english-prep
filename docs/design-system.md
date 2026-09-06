@@ -248,7 +248,9 @@ does not resolve: 288px of usable width at 16px is roughly **36 characters
 per line**, below Bringhurst's 45 floor and Baymard's 50, and the only way
 to reach 45 would be dropping type below 16px, which is worse. **Accept the
 short measure and hold 16px.** The cap binds on tablet and desktop, which
-is where it was going to be needed anyway.
+is where it was going to be needed anyway — and it binds as a *ceiling*
+there, not as a target the layout grows towards: what a wide window is
+allowed to do with the width instead is §7.3.
 
 ### 2.4 Turkish
 
@@ -579,6 +581,89 @@ the control focusable and announced.
 mode and are not clipped by `overflow: hidden`. 2px solid `--c-focus`,
 2px offset.
 
+### 7.3 The second column
+
+Layout, like the shell — it draws nothing, owns no colour and adds no card
+level. `.split` is `.stack` with a second column, in the way `.cluster` is
+a row.
+
+**A wide window does not get a wider page.** §2.3 caps reading text at
+65ch and that cap is a constant, not a starting point: the comprehension
+evidence puts the useful band at roughly 55–75 characters and has raw
+reading *speed* still improving past it, which is the wrong dependent
+variable for a screen whose job is a learner deciding between four forms
+of one verb. The reading column is 608px at 320px of window and 608px at
+2560px, measured in the sweep.
+
+**What a wide window gets is a second column**, holding content that was
+otherwise below the fold. That is the one thing the desktop-layout
+research is unambiguous about: a page spread thin across a wide window
+measures *worse* than the same page condensed — more space, fewer elements
+per screenful, higher interaction cost — so the win is content per
+screenful, never pixels per line.
+
+| | |
+| --- | --- |
+| Pane | `--w-aside`, **320px** |
+| Reading column | `--w-page`, **640px** (608px of content) |
+| Frame | `--w-wide` = pane + `--s-8` + column = **1000px** |
+| Engages at | **`min-width: 1080px` and `min-height: 600px`** |
+
+1080 is the frame plus a section gutter either side, so the breakpoint is
+derived from the content rather than from a device. **The height condition
+is not optional**: a landscape tablet is wide and short at once, two panes
+on a short window is the documented way "tablet support" ends up worse
+than the phone layout it replaced, and 1024×600 and 1280×560 both fall
+back to one column on purpose.
+
+320px is not a new minimum to verify. It is *wider* than the 288px of
+content a 320px phone has, so nothing inside a pane meets a width the 320
+sweep has not already covered — which is why this could be added without
+re-authoring anything.
+
+**Where it applies, and where it deliberately does not.**
+
+| Screen | Pane | Reading column |
+| --- | --- | --- |
+| Eğitim index | the start card | search + all ten topics |
+| Topic overview | its six lessons | the overview prose |
+| Test | mixed test, mistake book, weak spots | the ten topics |
+| Profil | what the app says about itself | the learner's own figures and data |
+| Results | score and both breakdowns | the review |
+| **Lesson reader** | **none** | a reading surface gains nothing from a second column; the measure is already the whole answer |
+| **Quiz** | **none** | a question, four options and one action are *one thing*. Splitting a decision screen turns it into a scanning screen, and a 2×2 option grid additionally destroys the option order the distractors were written in |
+
+Three rules the pane keeps:
+
+1. **Source order is never rearranged to get a side.** It is the reading
+   order for a screen reader and the Tab order for a keyboard (1.3.2), so
+   the two stay the same thing; `.split--main-first` moves the *tracks*
+   when the reading column belongs on the left.
+2. **Which pane is which is decided by content, not by importance** —
+   prose keeps the measure, a scannable list takes the 320. The topic
+   overview is the case that makes this concrete: the lessons are the
+   list, so they take the pane even though they are what the learner came
+   to choose from.
+3. **A split has exactly two children**, because the tracks are
+   positional. Below the breakpoint there is no rule at all — a `.split`
+   is the `.stack stack--loose` it always was, and the phone layout is not
+   restored by a media query, it is never left. Verified as pixels: the
+   390 and 768 screens are byte-identical across this change.
+
+**Where it stops.** The frame stops at 1000px and centres. Past that there
+is no third content stream on any of these screens, and widening the two
+that exist would spend the width on eye travel — a row whose title and
+value are 2000px apart is the unscannable list §7.1 is about. A 2560px
+window showing the whole of Profil at once, with black either side, is the
+finished state and not an unfinished one.
+
+**The action bar follows the panes.** A frame with two columns has four
+keylines, and a bar sharing 1:2 of the whole width lands on none of them.
+Where the pane is on the left the retreat takes the pane's width and the
+advance takes the reading column — still §7.2's forward-takes-twice, now
+on the keylines. Where the pane is on the right the same rule would invert
+the two, so there the bar is left as it is.
+
 ---
 
 ## 8 · Accessibility contract
@@ -800,7 +885,12 @@ Nothing here is considered done because it looks right.
 - `npm test` — scoring and storage logic.
 - Playwright sweep at **320 / 390 / 768 / 1280**: no horizontal overflow,
   no target under 48px, no console error, on every screen and in both
-  orientations.
+  orientations. 1280 is also where the second column (§7.3) is in force,
+  so the wide layout conforms per this list rather than beside it, and a
+  section of its own additionally measures the split against §7.3: that it
+  engages at 1280×900, stands down at 768×1024 and at 1280×560, that the
+  reading column is the same width at 760 and at 1600, and that a screen
+  with no pane keeps the 640px page at any window width.
 - Text-spacing override (1.4.12) at 320px.
 - Keyboard only, tabbing to the last control with the action bar present —
   the 2.4.11 test.

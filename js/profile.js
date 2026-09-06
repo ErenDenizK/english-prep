@@ -32,7 +32,7 @@ import {
 import { SETTINGS } from "./config.js";
 import { createConfirmModal } from "./modal.js";
 import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
-import { el, clear } from "./dom.js";
+import { el, clear, pane } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce } from "./shell.js";
 
@@ -515,8 +515,27 @@ async function render() {
   const lessonIdByCategory = new Map(lessons.map((lesson) => [lesson.category, lesson.id]));
 
   clear(container);
-  container.appendChild(renderNameField());
-  container.appendChild(
+
+  // Main-first, and the line is what a block is ABOUT rather than where it
+  // happens to sit: everything that is the learner's — their name, their
+  // figures, what they are weakest at, their data and the switches over it
+  // — keeps the reading column, and everything that is the app describing
+  // itself goes in the pane.
+  //
+  // Drawn there and not one block earlier because of the empty profile,
+  // which is what a first visit is: with no history there are no weak
+  // lists, and a division that put only the name and the figures in the
+  // reading column left it a third full beside a pane running off the
+  // bottom of the screen. Four blocks against three holds either way.
+  //
+  // On a phone the order is unchanged, which is also the order a screen
+  // reader and the Tab key get.
+  const main = pane();
+  const aside = pane();
+  container.classList.add("split", "split--main-first");
+
+  main.appendChild(renderNameField());
+  main.appendChild(
     renderStats(getOverallStats(), countCompletedLessons(lessonIds), lessonIds.length)
   );
 
@@ -536,7 +555,7 @@ async function render() {
     }))
   );
   if (weakCategoryList) {
-    container.appendChild(weakCategoryList);
+    main.appendChild(weakCategoryList);
   }
 
   const weakTopics = renderWeakList(
@@ -550,14 +569,16 @@ async function render() {
     }))
   );
   if (weakTopics) {
-    container.appendChild(weakTopics);
+    main.appendChild(weakTopics);
   }
 
-  container.appendChild(renderData());
-  container.appendChild(renderSettings());
-  container.appendChild(renderCoverage(topics));
-  container.appendChild(renderRoadmap(topics, roadmap));
-  container.appendChild(renderAbout());
+  main.appendChild(renderData());
+  main.appendChild(renderSettings());
+  aside.appendChild(renderCoverage(topics));
+  aside.appendChild(renderRoadmap(topics, roadmap));
+  aside.appendChild(renderAbout());
+
+  container.append(main, aside);
 }
 
 export async function initProfileTab() {

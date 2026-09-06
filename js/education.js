@@ -51,7 +51,7 @@ import { renderOptions } from "./answers.js";
 import { startTopicTest, startCategoryPractice, startMixedTest } from "./quiz-launch.js";
 import { TOPIC_INTRO_PREFIX } from "./config.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
-import { el, clear, appendProse, appendInline, sectionHeading } from "./dom.js";
+import { el, clear, pane, appendProse, appendInline, sectionHeading } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
 
@@ -543,6 +543,10 @@ function renderIndex() {
   clear(indexContainer);
   actionBar.hide();
 
+  // A split needs both of its columns to have something in them; one line
+  // of "there is nothing here" is not a two-column screen.
+  indexContainer.classList.remove("split");
+
   if (lessons.length === 0) {
     indexContainer.appendChild(el("p", "t-meta", "Henüz ders eklenmedi."));
     return;
@@ -596,20 +600,31 @@ function renderIndex() {
           ? renderResumeCard(resumable, progress[resumable.id])
           : renderNextStepCard(lessons, progress, completed);
 
+  // Two columns on a wide window, one everywhere else, and the same nodes
+  // in the same order either way: what to do next in the pane, and the
+  // whole syllabus beside it instead of a screen further down. On a phone
+  // this is exactly the stack it has always been — see `pane` in
+  // js/dom.js and `.split` in css/style.css.
+  const aside = pane();
+  const main = pane();
+
   // A screen this app can reach only by running out of both suggestions
   // and lessons. The summary is what it always was.
-  indexContainer.appendChild(card ?? renderProgressSummary(lessons, completed));
+  aside.appendChild(card ?? renderProgressSummary(lessons, completed));
 
   const nudge = renderBackupNudge();
   if (nudge) {
-    indexContainer.appendChild(nudge);
+    aside.appendChild(nudge);
   }
 
-  indexContainer.appendChild(renderIndexFilter(lessons, progress));
+  main.appendChild(renderIndexFilter(lessons, progress));
   const list = el("div");
   list.id = "index-list";
   list.appendChild(renderTopicIndex(lessons, progress));
-  indexContainer.appendChild(list);
+  main.appendChild(list);
+
+  indexContainer.classList.add("split");
+  indexContainer.append(aside, main);
 }
 
 /**
@@ -876,7 +891,13 @@ function renderTopicGroup(heading, lessons, progress) {
  * structural slots; an intro written as one prose blob could not.
  */
 function renderIntro(topic, lessons, progress) {
-  const page = el("div", "stack stack--loose");
+  // The overview is prose and the lessons are rows, so on a wide window
+  // this is the one split that runs the other way round: the reading
+  // column stays first and keeps the measure, and the six lesson rows —
+  // which is what the learner came here to choose from, and which used to
+  // sit a screen and a half below the fold — move up beside it.
+  const screen = el("div", "stack stack--loose split split--main-first");
+  const page = pane();
   const intro = topic.intro;
 
   const head = el("div", "stack stack--tight");
@@ -962,9 +983,12 @@ function renderIntro(topic, lessons, progress) {
   }
 
   list.appendChild(rows);
-  page.appendChild(list);
 
-  return page;
+  const lessonPane = pane();
+  lessonPane.appendChild(list);
+  screen.append(page, lessonPane);
+
+  return screen;
 }
 
 /**
@@ -1653,6 +1677,7 @@ export async function showLessonIndex() {
   } catch (error) {
     console.error(error);
     clear(indexContainer);
+    indexContainer.classList.remove("split");
     indexContainer.appendChild(el("p", "t-meta", "Dersler yüklenemedi. Sayfayı yenile."));
   }
 }

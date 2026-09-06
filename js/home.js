@@ -32,7 +32,7 @@ import { createListbox } from "./listbox.js";
 import { showLessonIndex, openLesson, openTopicIntro, closeReader } from "./education.js";
 import { initProfileTab } from "./profile.js";
 import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook } from "./quiz-launch.js";
-import { el, clear, sectionHeading } from "./dom.js";
+import { el, clear, pane, sectionHeading } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
@@ -378,6 +378,12 @@ function renderTopicRow(topic) {
  */
 function renderTopicList(topics) {
   const section = el("section", "stack");
+  // Named, like the Eğitim index's `#index-list`, because it is the one
+  // thing on this tab a check or a filter has to be able to point at.
+  // It was reached as `#test-panel section:last-of-type`, which stopped
+  // meaning "the topic list" the moment the tab grew a second column and
+  // the cards became the last section of a pane of their own.
+  section.id = "topic-list";
   const tiersPresent = TIER_ORDER.filter((tier) => topics.some((topic) => topic.tier === tier));
 
   const group = (heading, inGroup) => {
@@ -410,6 +416,7 @@ async function renderTestTab() {
   } catch (error) {
     console.error(error);
     clear(testPanel);
+    testPanel.classList.remove("split");
     testPanel.appendChild(el("p", "t-meta", "Konular yüklenemedi. Sayfayı yenile."));
     return;
   }
@@ -424,26 +431,39 @@ async function renderTestTab() {
   );
 
   clear(testPanel);
+  testPanel.classList.remove("split");
+
+  // The ways *into* a test on one side — the mistake book, the mixed test,
+  // the weak categories — and the ten topics to pick from on the other. On
+  // a phone that is the stack it has always been; on a wide window the
+  // topic list stops being the thing below three cards. See `.split`.
+  const aside = pane();
+  const main = pane();
 
   const mistakeBook = renderMistakeBook();
   if (mistakeBook) {
-    testPanel.appendChild(mistakeBook);
+    aside.appendChild(mistakeBook);
   }
 
-  testPanel.appendChild(renderMixedTest({ primary: getMistakeBook().length === 0 }));
+  aside.appendChild(renderMixedTest({ primary: getMistakeBook().length === 0 }));
 
   const weakSpots = renderWeakSpots(
     getWeakCategories().filter((entry) => liveCategories.size === 0 || liveCategories.has(entry.category))
   );
   if (weakSpots) {
-    testPanel.appendChild(weakSpots);
+    aside.appendChild(weakSpots);
   }
 
   if (manifest.topics.length === 0) {
-    testPanel.appendChild(el("p", "t-meta", "Henüz konu eklenmedi."));
-  } else {
-    testPanel.appendChild(renderTopicList(manifest.topics));
+    // Nothing to put in the second column, so there is no second column.
+    aside.appendChild(el("p", "t-meta", "Henüz konu eklenmedi."));
+    testPanel.appendChild(aside);
+    return;
   }
+
+  main.appendChild(renderTopicList(manifest.topics));
+  testPanel.classList.add("split");
+  testPanel.append(aside, main);
 }
 
 /* ---- Chrome ---- */

@@ -128,6 +128,48 @@
     --h-target: 48px; /* clears WCAG 2.5.5 AAA, Material and Apple at once */
     --h-nav: 60px;
     --gutter: var(--s-5);
+
+    /* -- The supporting pane, and the frame that has to grow to hold it.
+          A wide window buys nothing by stretching the reading column: the
+          measure is a constant (§2.3), and prose past ~75 characters costs
+          comprehension rather than buying it. What a wide window can buy is
+          a SECOND column — content that was below the fold brought up
+          beside the reading column, which is the one thing the research on
+          desktop layouts is unambiguous about (more content per screenful,
+          not more pixels per line).
+
+          320px is the pane, and it is not a new minimum: it is wider than
+          the 288px of content a 320px phone gets, so nothing inside a pane
+          meets a width the 320 sweep has not already verified. -- */
+    --w-aside: 320px;
+    --w-wide: calc(var(--w-page) + var(--s-8) + var(--w-aside)); /* 1000px */
+
+    /* The shell's keyline. One token, so the header, the scrolling page and
+       the action bar cannot drift apart: they are all the same two vertical
+       lines, at whichever width the current screen is using. */
+    --w-frame: var(--w-page);
+  }
+
+  /* The frame widens for exactly the screens that have a second column to
+     put there, and only once the window can hold both plus a section
+     gutter either side — 1000 + 2 × 40. A screen with no pane keeps the
+     640px reading column it has always had, at every window width.
+
+     The height guard is not decoration: a landscape tablet is wide and
+     short at once, and two panes on a short window is the documented way
+     "tablet support" ends up worse than the phone layout it replaced.
+
+     Written as a token override rather than as layout rules, which is how
+     every other conditional in this sheet is written (§9.3) — it keeps the
+     decision in one place and out of any specificity fight. */
+  @media (min-width: 1080px) and (min-height: 600px) {
+    /* Two selectors because a pane can live in a tab (index.html, where the
+       inactive views are `hidden` and must not count) or be the page itself
+       (results.html). */
+    body:has(.view:not([hidden]) .split:not([hidden])),
+    body:has(.page.split) {
+      --w-frame: var(--w-wide);
+    }
   }
 
   /* OKLCH is the authoring space — equal lightness across hues means equal
@@ -300,7 +342,7 @@
   .shell__header-inner,
   .shell__bar-inner {
     width: 100%;
-    max-width: var(--w-page);
+    max-width: var(--w-frame);
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -360,8 +402,32 @@
     text-align: center;
   }
 
+  /* A frame with two columns in it has four keylines, not two, and a bar
+     sharing a 1:2 split of the whole width lands on none of them: on the
+     results screen the amber slab started 21px left of the review it
+     belongs to, which is exactly the kind of near-miss the one-token
+     keyline rule exists to prevent.
+
+     So the retreat takes the pane's width and the advance takes the
+     reading column. That is still §7.2's "the forward action takes twice
+     the width" — 320 against 608 — which is why this is only applied
+     where the two rules agree. On a main-first split the pane is on the
+     right, so the same rule would hand the retreat twice the advance's
+     width; there the bar stays as it is. `.page.split` is the one screen
+     that qualifies today, and the selector says so rather than naming it. */
+  @media (min-width: 1080px) and (min-height: 600px) {
+    body:has(.page.split:not(.split--main-first)) .shell__bar-inner {
+      column-gap: var(--s-8);
+    }
+
+    body:has(.page.split:not(.split--main-first)) .shell__bar-inner > .btn:first-child {
+      flex: none;
+      width: var(--w-aside);
+    }
+  }
+
   .page {
-    max-width: var(--w-page);
+    max-width: var(--w-frame);
     margin: 0 auto;
     padding-block: var(--s-5) var(--s-8);
     padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
@@ -1083,6 +1149,53 @@
        longest word plus, in practice, its content — which is the whole
        reason the row wrapped. */
     min-width: 0;
+  }
+
+  /* -- Split. A supporting pane beside the reading column.
+
+        Layout, not a component: it draws nothing, owns no colour and adds
+        no card level — it is `.stack` with a second column, in the same
+        way `.cluster` is a row.
+
+        Below the breakpoint there is deliberately NOTHING here. A `.split`
+        is a `.stack stack--loose` and renders exactly as it did before the
+        class existed, so the phone and tablet-portrait layouts are not
+        merely unbroken by this — they are untouched by it, which is what
+        "mobile first, verified from 320px up" has to mean once a second
+        layout exists.
+
+        The pane is used where the second column is content the learner
+        would otherwise have had to scroll past the fold to reach, and only
+        where it means something beside what it sits next to: the start
+        card beside the topic list, the score beside the review of it. It is
+        never a filler column, because a wide window with half of a page
+        spread across it reads worse than the same page in one column —
+        that is measured, not taste.
+
+        Which pane is which is a content decision, not a side: the *reading*
+        column keeps the measure and the *scannable* column takes the pane,
+        wherever each one falls in the source. Source order is never
+        rearranged to get a side — it is the reading order for a screen
+        reader and for the keyboard (1.3.2), so the two orders stay the
+        same thing and the modifier moves the tracks instead. -- */
+  @media (min-width: 1080px) and (min-height: 600px) {
+    .split {
+      /* minmax(0, …) rather than the bare width: without it a long
+         unbroken Turkish word in the reading column sets a min-content
+         floor and pushes the track past its share. */
+      grid-template-columns: var(--w-aside) minmax(0, var(--w-page));
+      column-gap: var(--s-8);
+      /* Panes size to their own content. Stretched, the shorter one's
+         auto rows would take the taller one's height and its internal
+         spacing would open up to fill it. */
+      align-items: start;
+    }
+
+    /* The reading column first, where the prose is the screen and the list
+       is what supports it — the topic overview, the profile. */
+    .split--main-first {
+      grid-template-columns: minmax(0, var(--w-page)) var(--w-aside);
+    }
   }
 
   /* Clipped, not display:none — a live region that is display:none is never

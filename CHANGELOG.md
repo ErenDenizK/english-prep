@@ -5,6 +5,72 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.40 — 2026-09-06
+
+**A second layout, for the window this app was never built for.** Until
+now a tablet or a desktop got the phone: one 608px column of content
+centred in whatever width the window had, so a 1680px screen was 62% empty
+and Profil still took three screens of scrolling to read. It was
+compatible with a wide window and used none of it.
+
+**And the fix is not a wider page.** The reading measure is a constant
+(design-system §2.3): the comprehension evidence puts the useful band at
+roughly 55–75 characters a line and has raw reading *speed* still
+improving past it, which is the wrong thing to optimise for a learner
+deciding between four forms of one verb. So the reading column is 608px
+at 320px of window and 608px at 2560px — verified, not asserted. What a
+wide window buys instead is a **second column**, holding what was
+otherwise below the fold, which is the one thing the desktop research is
+unambiguous about: more content per screenful, never more pixels per line.
+
+Five screens have something that belongs beside them, and now show it:
+
+- **Eğitim** — the start card in the pane, the search field and all ten
+  topics beside it. The index used to be a card and then a scroll.
+- **Konu ekranı** — the overview keeps the measure and its six lessons
+  move up next to it, from a screen and a half below the fold.
+- **Test** — mixed test, mistake book and weak spots on one side, the ten
+  topics on the other.
+- **Profil** — the learner's own figures, data and switches in the reading
+  column; what the app says about itself in the pane. The whole screen
+  fits in one now.
+- **Sonuç** — score and both breakdowns beside the review, so "what did I
+  get wrong" and "why" stop being separated by a scroll. The action bar's
+  two buttons land on the two columns' keylines rather than on a 1:2 share
+  of a frame that is no longer one column.
+
+**Two screens deliberately do not split, and that is the design.** A
+lesson is a reading surface and gains nothing from a second column. A
+question, its four options and one action are *one thing*: splitting a
+decision screen turns it into a scanning screen, and a 2×2 option grid
+would additionally destroy the order the distractors were written in.
+Both stay exactly as they were at every width.
+
+**It cost the phone nothing, and that is measured rather than claimed.**
+The 390px and 768px screens are byte-identical to the previous build,
+pixel for pixel. Below the breakpoint there is no rule: a `.split` is the
+`.stack stack--loose` it already was, so the phone layout is not restored
+by a media query — it is never left. The DOM is the same at every width
+too, which is what keeps the source order the reading order for a screen
+reader and the Tab order for a keyboard.
+
+**The breakpoint is `min-width: 1080px` and `min-height: 600px`**, and the
+height half is not decoration. 1080 is the frame (320 pane + 40 + 640
+column) plus a section gutter either side, so it is derived from the
+content rather than from a device. The height condition is there because a
+landscape tablet is wide and short at once, and two panes on a short
+window is the documented way "tablet support" ends up worse than the phone
+layout it replaced: 1024×600 and 1280×560 both stay one column on purpose.
+
+`npm run verify` gained a `geniş ekran` section that measures all of the
+above — that the split engages at 1280×900, stands down at 768×1024 and
+1280×560, that the reading column is identical at 760px and 1600px, and
+that the quiz keeps its 640px page at any width — plus the widths the
+existing 1280 sweep already walks. It also stopped reaching the Test
+tab's topic list as `section:last-of-type`, which quietly meant something
+else the moment that tab had two columns; the list is `#topic-list` now,
+named the way the Eğitim index's `#index-list` already was.
+
 ## v0.39 — 2026-09-06
 
 **The cloze coverage figure was understating the app by two blanks.**
