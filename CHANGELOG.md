@@ -5,6 +5,41 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.39 — 2026-09-06
+
+**The cloze coverage figure was understating the app by two blanks.**
+Profil derives its number from `CLOZE_BLANKS` rather than asserting it,
+which is what lets the screen be trusted to move on its own as topics
+ship — but that only works for a blank that names the topic which would
+cover it. Blanks 5 and 10 were written as `topicId: null` because no
+vocabulary topic existed then, and a null is uncovered for ever, so the
+screen kept saying seven of ten after the two vocabulary topics made it
+nine. Blank 5's four options are all nouns and blank 10's are all verbs,
+so they now resolve to `academic-nouns-adjectives` and `academic-verbs`.
+
+**And the tests had locked the defect in rather than missing it.**
+`coverage.test.js` asserted *"two blanks are vocabulary, which no
+grammar topic can cover"* and *"seven of ten"* — both written as a
+description of the code rather than of the paper. They now assert the
+paper, and one of them is the guard against a recurrence: no blank may
+be nameless. Naming a topic that does not exist yet is the correct form,
+and `so-such` had always done it.
+
+**A way to pay the cold-solve debt.** `npm run solve` puts items in a
+terminal one at a time, unkeyed and shuffled, with the category hidden
+and the explanation withheld until after the answer — the human
+counterpart to `npm run blind`, for the one step in the pipeline that
+cannot be delegated. Answering `b?` records "I chose b and another
+option is defensible too", which is this project's rule that an option a
+competent teacher would accept is a wrong option, seen from the solver's
+side. `docs/agents/solver.md` is the protocol; the ledger reports
+disagreements and flags rather than a score.
+
+Everything else this round is documentation: `docs/business/` — seven
+documents on what this becomes after the exam, with `ozet.md` as the
+Turkish one-pager and `vision.md` as the decision — plus a restored
+`CONTENT_GUIDE.md`, which a Write had overwritten two days earlier.
+
 ## v0.38 — 2026-09-05
 
 **All ten topic overviews now answer the same question: do I have to read
