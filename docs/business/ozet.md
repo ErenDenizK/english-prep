@@ -195,6 +195,58 @@ ucuz.**
 
 ---
 
+## 5c. App 2 global, bildirimler var, abonelik — ve App 1 bitiyor
+
+**Global gitmek düşündüğümüz kadar pahalı değil.** `two-apps.md` "her dil
+bir ortak yazar, dil başına 45–60 saat" diyordu. O bulgu çeviri konusunda
+haklı, **zorunluluk konusunda yanlış** — öğrencinin kendi dilinin öğretim
+dili olduğunu varsayıyor. Bu Duolingo varsayımı ve Duolingo için doğru:
+o sıfırdan başlayana ders veriyor. Senin kitlen zaten İngilizce konuşuyor;
+**İngilizce bir açıklamayı okuyabilir, üstelik okumak zaten pratik.**
+Lokalizasyon sorunu ucuza çözülmüyor — **doğmuyor.** Geriye ~37.000
+kelimelik açıklamanın **bir kez** İngilizce yeniden yazılması kalıyor,
+dil başına değil.
+
+Ve global gitmek yöntemi güçlendiriyor: Türkçe kontrastı bir kısayoldu,
+hangi sınırları karıştırdığını **tahmin** etmeye yarıyordu. Bilinen dil
+gidince uygulama **ölçmek** zorunda — ki bu zaten teşhis, ve birinin
+pasaportundan yapılan tahminden daha iyi bilgi.
+
+**Bildirimler sunucu istemiyor.** Araştırma bunu düzeltti: web push
+yanlış araç — iOS'ta sayfa ana ekrana eklenmeden `PushManager` bile yok
+ve ekleme oranı %2'nin altında ölçülmüş. Ama *"dört sınır hazır"*
+cihazın zaten bildiği bir olgu. **Ücretli kilit için zaten gereken mağaza
+sarmalayıcısının yerel bildirimi** bütün tasarımı sunucusuz, kişisel veri
+tutmadan veriyor.
+
+Ve benim testim dördün sadece birincisiymiş — **doğruluk test değil,
+streak de doğru.** Diğer üçü: uygulama **oturumu kaybettiren mesajı
+göndermeye razı olmalı**; her olgunun arkasındaki kural öğrenciye görünür
+olmalı ve etkileşime göre ayarlanmamalı; üst sınır ilk mesaj yazılmadan
+konmalı. Üç mesaj çıkıyor ve önemli olan üçüncüsü: **“Buradaki her şeyi
+kapattın. Yeni bir şey gelene kadar sana hatırlatmayacağım.”** Etkileşim
+için optimize edilmiş hiçbir ürün bunu göndermez.
+
+**Fiyat çıpası değişti.** Duolingo Super ABD'de ~$6.99 ama **Türkiye ve
+Hindistan'da ~$0.63–0.93/ay.** Yani `pricing.md`'nin "bir aylık yerel
+Spotify" çıpası, uygulamayı kitlenin yaşadığı pazarlarda kategori
+liderinin **4–5 katına** fiyatlardı. Öneri: **yıllık abonelik + kalıcı
+ömür boyu seçenek, aylık yok**, ülke fiyatları elle ve yerel Duolingo'ya
+göre.
+
+Asıl rakam şu: en iyi ve en kötü fiyat modeli arasındaki fark iki yılda
+~9.000 dolar; **400 kullanıcı ile 100 kullanıcı arasındaki fark ~16.000
+dolar.** Yani model bir gelir kararı değil, bir **değer kararı** — ve
+çalışılacak şey kimsenin gelip gelmediği.
+
+**App 1: 39 puan değil, 60.** "Listening hariç hepsi" aritmetiği temiz
+yapıyor: reading 21 puan, tek başına en büyük bölüm. İçeri girince App 1
+**Session I'in dört bölümünü de** kapsıyor; kapsamadığı tek şey ayrı bir
+oturum. Bedeli gömülü değil: **App 1'i bitirmek kabaca 75–90 saat
+inceleme**, artı sattığın şeyin soğuk çözüm borcu.
+
+---
+
 ## 6. Rakip Duolingo değil, ChatGPT
 
 Bu, sindirilmesi gereken cümle. App 2'nin ana özelliği "daha iyi
