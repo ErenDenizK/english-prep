@@ -69,3 +69,48 @@ this session cannot check a primary source: `WebFetch` is blocked here.
 Every claim about either must be marked as unverified and pointed at the
 person who can verify it. A number that looks authoritative and is a year
 out of date is worse than no number.
+
+---
+
+## Addendum, 2026-09-06
+
+Two things the owner settled after reading the first round of these
+documents.
+
+### Going private is the answer to "you cannot sell a public static file"
+
+The four arms independently found that the repository being public makes
+any paid tier decorative (`README.md` in this directory, §"The one
+finding that arrived four times"), and set out three resolutions. His
+answer is a fourth, and a simpler one:
+
+> *"Zaten açık kaynağı kapatırız, ücretliye geçmeden önemli
+> değişiklikler yaparız."*
+
+Close the source before charging, and make substantial changes to the
+content before that point anyway. This is coherent and it dissolves the
+problem the arms were circling: they were all reasoning inside the
+constraint that the repository stays public, and that constraint was
+never one of his.
+
+**One fact to carry, not an objection.** Making a repository private
+later does not retract what was public: anyone who cloned or forked it
+keeps that copy, permanently. What that costs depends entirely on his
+second clause — and his second clause is the answer. A snapshot of the
+corpus as it stands in September is out; the paid corpus is not that
+snapshot. The plan works *because* of the "önemli değişiklikler" half,
+so that half is load-bearing rather than incidental.
+
+It also reorders `architecture.md` §6: closing the source is the cheap
+prerequisite to rung 6, not part of the trapdoor itself.
+
+### GitHub Pages serves `test`, not `main`
+
+Confirmed by the owner. `main` is a single commit from 2026-09-02 and
+was never the published branch — the two-branch convention in
+`CLAUDE.md` described an intention that was never carried out, and both
+it and the README have been corrected.
+
+The consequence is worth stating in a business document as well as a
+technical one: **there is no staging branch.** A push to `test` is a
+deploy to every learner using the app.

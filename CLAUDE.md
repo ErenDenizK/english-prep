@@ -96,9 +96,17 @@ as a four-hundred-line diff. `check` fails when the files drift.
 
 ## Branches
 
-- `main` — verified content only; GitHub Pages serves this.
-- `test` — day-to-day development. Work lands here first, gets tried on a
-  real phone, then merges to `main`.
+- `test` — **what GitHub Pages actually serves**, confirmed by the owner
+  2026-09-06. Day-to-day development; work lands here and is tried on a
+  real phone.
+- `main` — one commit, the initial MVP of 2026-09-02, and 180+ commits
+  behind. It was meant to be the published branch and never became one.
+
+So `test` is live, and a push to it is a deploy. Treat it that way:
+nothing lands here that has not passed `npm run check`, and anything
+touching a screen wants `npm run verify` first. `main` is not a
+safety net — there is no staging branch, and pretending otherwise is
+how a bad push reaches a learner the night before an exam.
 
 ## Layout
 
