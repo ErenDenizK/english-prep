@@ -147,6 +147,54 @@ kat olabilecek tek satır bu.
 
 ---
 
+## 5b. App 1 biter, App 2 ondan doğup uzaklaşır
+
+Sahibinin kendi çerçevesi, 6 Eylül: **App 1 bu sistemin nihai hâli.**
+Bir basamak değil — bitiyor ve orada bırakılıyor. App 2 onun içinden
+doğuyor ama çok farklı bir yere evriliyor, çünkü daha geniş bir kitleye
+ve çok daha uzun bir süre boyunca ders veriyor; **sistem ve UI
+değişiyor.**
+
+Bu doğru ve bir şeyi düzeltiyor: daha önce "sınav dışında her şey
+taşınır" yazmıştım. Ölçtüm, öyle değil.
+
+| | Satır | |
+|---|---|---|
+| **Taşınan çekirdek** | **~1.990 (%29)** | dom, modal, listbox, icons, quiz motoru, yedek birleştirme, storage, config |
+| **Yeniden yazılan kabuk** | **~4.790 (%71)** | education (1.768), home, profile, quiz, results, topics, shell… |
+
+Yani App 2'yi "sınavı çıkarılmış App 1" diye planlamak maliyeti kabaca
+**üç kat eksik** hesaplamak olur.
+
+**Bütünüyle taşınan tek şey `tools/`** — 6.065 satır doğrulayıcı,
+biçimlendirici, kör geçiş, kalibrasyon, süpürme ve çözüm defteri. İçeriğin
+*ne öğrettiğiyle* değil *nasıl denetlendiğiyle* ilgili oldukları için iki
+uygulamada da aynı. Kopyalanamayan varlık bu.
+
+**Sürenin uzaması neyi bozuyor:** App 1'de "yarın niye açayım" sorusunu
+takvim cevaplıyor; App 2'de cevaplayacak bir şey yok — ve bu proje
+streak'i, bildirimi, artan sayıyı reddetti. Dürüst karşılığı sınır
+modeli: *"dört sınır tekrar bakılmaya hazır"* bir **durum**, puan değil;
+tatile çıkınca kaybedilmiyor. Ayrıca oturum biçimi tersine dönüyor
+(uzun oturum → kısa ve sık), içerik tükenmesi baş kısıt hâline geliyor,
+ve `visual-longevity.md` araştırması canlanıyor — o belge doğru soruyu
+sordu ama bütün kollarını park etti, park sebeplerinin ikisi de App 1'in
+özelliğiydi. **App 1'in olmadığı bir problemi araştırıyordu.**
+
+**Kitlenin genişlemesi neyi bozuyor:** ortak hedef yok (sormak ya da
+çıkarmak gerekiyor — çıkarmak zaten kama), ortak seviye yok (sınır modeli
+bunu soğuruyor), ortak son tarih yok. Ve "sınav" kelimesi App 1'in
+metninde taşıyıcı: onu çıkarmak bul-değiştir değil, her ekran için "bu
+ekran neden var" sorusunu yeniden cevaplamak.
+
+**Pratik biçim:** App 2 ayrı bir kod tabanı, çekirdeği kopyalayarak.
+Ortak paket ya da monorepo bir derleme adımı ister ve derleme adımının
+olmaması bu projenin hâlâ çalışmasının ve sıfıra mal olmasının büyük
+sebebi. **2.000 satırı bir kez kopyalamak, bir araç zinciri edinmekten
+ucuz.**
+
+---
+
 ## 6. Rakip Duolingo değil, ChatGPT
 
 Bu, sindirilmesi gereken cümle. App 2'nin ana özelliği "daha iyi
