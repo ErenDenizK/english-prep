@@ -58,7 +58,6 @@ function renderNameField() {
   const input = document.createElement("input");
   input.type = "text";
   input.className = "field";
-  input.placeholder = "İsmini yaz";
   input.value = getProfileName();
   input.maxLength = 40;
   input.autocomplete = "off";

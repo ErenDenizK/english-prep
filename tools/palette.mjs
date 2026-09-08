@@ -48,6 +48,102 @@ export const tokens = Object.fromEntries(
 /** Contrast is always measured against the lightest surface a token may sit on. */
 const WORST = surfaces["surface-2"];
 
+
+/* -- The size half of the requirement --------------------------------
+
+   A token on its own has no contrast requirement. APCA's model is that
+   contrast, size and weight are ONE requirement: the published
+   `fontMatrixAscend` returns, for a given Lc, the minimum font size at
+   each weight. Read backwards it gives the Lc a size/weight pair needs.
+
+   This exists because the check above could not see the defect that
+   shipped for weeks. Every token met its own fixed requirement and the
+   run was green, while the app set 54% of its rendered characters at
+   13px and 11px in the dimmest grey in the palette — pairs needing Lc
+   113 and 117 against a ceiling of 107. The defect was never in a token.
+   It was in a pair, and nothing measured pairs.
+
+   Rows transcribed from fontMatrixAscend for the weights this app ships.
+   APCA is a public beta and was pulled from the WCAG 3 draft in 2023, so
+   nothing here is a conformance claim — §1 of the design system explains
+   why it is the design bar anyway. [≈] the interpolation between rows is
+   ours, not APCA's. */
+const FONT_MATRIX = [
+  { lc: 60, px: { 400: 24, 600: 18, 700: 16 } },
+  { lc: 75, px: { 400: 18, 600: 15, 700: 14 } },
+  { lc: 90, px: { 400: 16, 600: 14.5, 700: 14 } },
+  { lc: 100, px: { 400: 15, 600: 13.5, 700: 13 } },
+  { lc: 110, px: { 400: 14, 600: 12, 700: 11 } },
+];
+
+/**
+ * The Lc a size/weight pair requires, interpolated between matrix rows.
+ * Returns null when the pair sits below the table entirely, which means
+ * no contrast this or any palette can produce will carry it.
+ */
+export function requiredLc(px, weight) {
+  const rows = FONT_MATRIX.filter((r) => r.px[weight] !== undefined);
+  if (px >= rows[0].px[weight]) return rows[0].lc;
+  for (let i = 0; i < rows.length - 1; i += 1) {
+    const hi = rows[i];
+    const lo = rows[i + 1];
+    if (px <= hi.px[weight] && px >= lo.px[weight]) {
+      const t = (hi.px[weight] - px) / (hi.px[weight] - lo.px[weight]);
+      return hi.lc + t * (lo.lc - hi.lc);
+    }
+  }
+  return null;
+}
+
+/* Every place the stylesheet sets text, as the pair it actually renders.
+   Adding a rule to css/style.css means adding its row here; a pair that
+   is not listed is not checked, which is the one way this can go stale.
+   `on` is the lightest surface the text can sit on. */
+export const PAIRS = [
+  { where: ".t-display", px: 28, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".t-title", px: 22, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".t-lead", px: 19, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".option (serif)", px: 17, weight: 400, token: "text-1", on: "surface-2" },
+  { where: "body prose", px: 16, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".t-ui", px: 15, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".row__title", px: 15, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".listbox__trigger", px: 15, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".field--multiline", px: 16, weight: 400, token: "text-1", on: "surface-1" },
+  { where: ".feedback__verdict", px: 15, weight: 700, token: "text-1", on: "surface-2" },
+  { where: ".t-meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".t-label", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".row__sub", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".row__lead", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".row__trail", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".nav__item", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".stat__label", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".option__key", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".chip", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".btn--quiet", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".feedback__body", px: 16, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".feedback__report", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".listbox__option", px: 15, weight: 600, token: "text-1", on: "surface-2" },
+];
+
+function checkPairs(failures, lines) {
+  lines.push("\n  size x weight, against the lightest surface each can sit on:");
+  for (const pair of PAIRS) {
+    const measured = Math.abs(apca(tokens[pair.token], surfaces[pair.on]));
+    const need = requiredLc(pair.px, pair.weight);
+    const label = `${pair.where} ${pair.px}/${pair.weight} ${pair.token}`;
+    if (need === null) {
+      failures.push(`${label}: below APCA's table — no contrast carries this pair`);
+      lines.push(`  ${label.padEnd(46)} Lc ${measured.toFixed(0).padStart(3)} / —    BELOW TABLE`);
+      continue;
+    }
+    const ok = measured >= need;
+    if (!ok) failures.push(`${label}: APCA ${measured.toFixed(0)}/${need.toFixed(0)}`);
+    lines.push(
+      `  ${label.padEnd(46)} Lc ${measured.toFixed(0).padStart(3)} / ${need.toFixed(0).padStart(3)}  ${ok ? "ok" : "SHORT"}`
+    );
+  }
+}
+
 function check() {
   const failures = [];
   const lines = [];
@@ -82,6 +178,7 @@ function check() {
   console.log("surfaces");
   for (const [k, v] of Object.entries(surfaces)) console.log(`  ${k.padEnd(12)} ${v}`);
   console.log(`\ntokens — measured against ${WORST}, the lightest surface`);
+  checkPairs(failures, lines);
   console.log(lines.join("\n"));
   console.log(
     `\n  on-accent on accent   WCAG ${inkW.toFixed(2)}  APCA ${inkLc.toFixed(0)}` +
@@ -92,7 +189,7 @@ function check() {
     console.log("\n✗ palette failed:\n" + failures.map((f) => "  - " + f).join("\n"));
     process.exit(1);
   }
-  console.log("\n✓ every token meets its contrast requirement");
+  console.log("\n✓ every token and every size pairing meets its requirement");
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

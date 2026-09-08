@@ -502,6 +502,7 @@
   .t-ui {
     font-size: var(--t-ui);
     line-height: var(--t-ui-lh);
+    font-weight: 600;
   }
 
   .t-meta {
@@ -794,7 +795,7 @@
     line-height: var(--t-body-lh);
     resize: vertical;
     font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-size: var(--t-ui);
+    font-size: var(--t-body);
   }
 
   /* -- The cloze blank. A rule on the baseline rather than a run of
@@ -848,6 +849,7 @@
     padding: 0 var(--s-3);
     border-radius: var(--r-1);
     font-size: var(--t-ui);
+    font-weight: 600;
     white-space: nowrap;
     cursor: pointer;
   }
@@ -967,8 +969,8 @@
   .feedback--no .feedback__verdict > svg { color: var(--c-no); }
 
   .feedback__body {
-    font-size: var(--t-meta);
-    line-height: 20px;
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
     color: var(--c-text-1);
   }
 

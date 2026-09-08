@@ -5,6 +5,35 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.42 — 2026-09-08
+
+**`npm run color` now measures the pairing, not just the token — and it
+immediately found four things v0.41 had missed.** The previous round
+moved the small tiers to 15px on the strength of an APCA table written
+from memory. The real `fontMatrixAscend` says **15px at weight 400 needs
+Lc 100**, not 90, and nothing on this ground reaches it. So four rules
+that had landed on 15px without a weight were still short by 9:
+`.t-ui`, `.listbox__option`, `.feedback__body` and `.field--multiline`.
+
+The rule, now enforced rather than intended: **15px carries text only at
+weight 600** (needs Lc 75, `--c-text-2` gives 75); **prose at weight 400
+takes the size instead and sits at 16px** (needs 90, `--c-text-1` gives
+91). `.t-ui` and `.listbox__option` take the weight; `.feedback__body`
+and the multiline field take the size.
+
+**The name field's placeholder is gone.** At 16/400 in `--c-text-2` it
+needed Lc 90 and had 77, and full strength would have made an empty
+field look filled. It repeated the label directly above it, so the
+honest fix was to delete the duplicate rather than colour it — and a
+placeholder that disappears on focus was never carrying its weight.
+
+`tools/palette.mjs` now holds the matrix, interpolates between its rows,
+and prints a line per pair. Every rule that sets text has a row in
+`PAIRS`; a pair that is not listed is not checked, which is the one way
+this can go stale, and the file says so.
+
+161 unit tests and 1,593 sweep checks green.
+
 ## v0.41 — 2026-09-08
 
 **No text in this app is set below 15px any more, and the reason is
