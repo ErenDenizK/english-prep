@@ -106,10 +106,17 @@
     --t-body-lh: 26px;
     --t-ui: 15px;
     --t-ui-lh: 20px;
-    --t-meta: 13px;
-    --t-meta-lh: 16px;
-    --t-micro: 11px;
-    --t-micro-lh: 16px;
+    /* The scale bottoms out at 15px, and that is a contrast decision as
+       much as a size one. APCA's font matrix wants Lc 113 at 13px/400 and
+       Lc 117 at 11px/600; the ceiling on this ground is Lc 107 with pure
+       white ink, which §1 forbids. So those two steps could not be fixed
+       by choosing a better grey — in this theme or any other — and the
+       app was setting 54% of its rendered characters in them.
+       --t-meta shares --t-ui's size and differs by weight and colour:
+       15px/600 needs Lc 75 and --c-text-2 measures 79. --t-micro is gone
+       rather than resized, so no call site can drift back below 15. */
+    --t-meta: 15px;
+    --t-meta-lh: 20px;
 
     /* -- Motion. Exits are shorter than entrances: a leaving element no
           longer needs to be read. Nothing exceeds 400ms, the Doherty
@@ -500,7 +507,8 @@
   .t-meta {
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
-    color: var(--c-text-3);
+    font-weight: 600;
+    color: var(--c-text-2);
   }
 
   /* A block label. Not uppercased: all-caps is harder to read, some screen
@@ -508,11 +516,11 @@
      transform would turn "Simple" into "SİMPLE". Weight and tracking do the
      same job without any of that. */
   .t-label {
-    font-size: var(--t-micro);
-    line-height: var(--t-micro-lh);
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
     font-weight: 600;
     letter-spacing: 0.09em;
-    color: var(--c-text-3);
+    color: var(--c-text-2);
   }
 
   /* English: the serif, always at block level.
@@ -616,7 +624,8 @@
     display: grid;
     place-items: center;
     width: var(--s-6);
-    color: var(--c-text-3);
+    font-weight: 600;
+    color: var(--c-text-2);
   }
 
   .row__main {
@@ -638,7 +647,8 @@
   .row__sub {
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
-    color: var(--c-text-3);
+    font-weight: 600;
+    color: var(--c-text-2);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -650,7 +660,8 @@
     align-items: center;
     gap: var(--s-3);
     white-space: nowrap;
-    color: var(--c-text-3);
+    font-weight: 600;
+    color: var(--c-text-2);
     font-size: var(--t-meta);
   }
 
@@ -748,8 +759,8 @@
     padding: var(--s-1) var(--s-3);
     border-radius: var(--r-pill);
     background: var(--c-surface-1);
-    font-size: var(--t-micro);
-    line-height: var(--t-micro-lh);
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
     font-weight: 600;
     color: var(--c-text-2);
   }
@@ -772,7 +783,7 @@
   }
 
   .field::placeholder {
-    color: var(--c-text-3);
+    color: var(--c-text-2);
   }
 
   /* A field that holds more than a line. The padding block is set
@@ -904,9 +915,9 @@
     justify-content: center;
     gap: var(--s-1);
     min-height: var(--h-nav);
-    font-size: var(--t-micro);
+    font-size: var(--t-meta);
     font-weight: 600;
-    color: var(--c-text-3);
+    color: var(--c-text-2);
     text-decoration: none;
   }
 
@@ -958,7 +969,7 @@
   .feedback__body {
     font-size: var(--t-meta);
     line-height: 20px;
-    color: var(--c-text-2);
+    color: var(--c-text-1);
   }
 
   /* The problem report. Pulled to the left edge of the block's text and
@@ -1018,7 +1029,8 @@
     font-family: var(--f-sans);
     font-size: var(--t-meta);
     font-variant-numeric: tabular-nums;
-    color: var(--c-text-3);
+    font-weight: 600;
+    color: var(--c-text-2);
   }
 
   .option__text {
@@ -1057,7 +1069,8 @@
 
   .stat__label {
     font-size: var(--t-meta);
-    color: var(--c-text-3);
+    font-weight: 600;
+    color: var(--c-text-2);
   }
 }
 

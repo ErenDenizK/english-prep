@@ -229,8 +229,34 @@ the lower edge of comfortable reading at phone distance.
 | `--t-lead` | 19 / 28 | Cloze prompt, lesson hook |
 | `--t-body` | 16 / 26 | Turkish prose, English examples |
 | `--t-ui` | 15 / 20 | Buttons, rows, labels |
-| `--t-meta` | 13 / 16 | Counters, captions |
-| `--t-micro` | 11 / 16 | Block labels, small caps |
+| `--t-meta` | 15 / 20 | Counters, captions, block labels — **always at weight 600 in `--c-text-2`** |
+
+**The scale bottoms out at 15px, and that is a contrast decision.**
+It used to run to 13 and 11. APCA's font matrix requires **Lc 113 at
+13px/400** and **Lc 117 at 11px/600**, and the ceiling on this ground is
+**Lc 107 with pure white ink**, which §1 forbids — so those two steps
+were unreachable by any grey, in this theme or any other, and a census
+found **54% of the app's rendered characters sitting in them**. They are
+gone rather than dimmed differently. `--t-micro` was removed instead of
+resized so that no call site can drift back below 15.
+
+At 15px there are exactly two legal pairings, and every small-type rule
+takes one of them:
+
+| | needs | measured | |
+|---|---|---|---|
+| 15px **/400** in `--c-text-1` | Lc 90 | 91 | prose |
+| 15px **/600** in `--c-text-2` | Lc 75 | 75 | labels, counters, row subs |
+
+Both clear against `--c-surface-2`, the lightest surface either can sit
+on, and both clear it **by almost nothing** — they have margin on
+`surface-0` and `surface-1` and none here. Treat 15/400 and 15/600 as
+the floor rather than as a range with room underneath.
+
+**`--c-text-3` is now used by no rule.** At Lc 60 it clears only 22px at
+weight 600, and nothing in the app pairs those. It survives as a token
+and in the `prefers-contrast: more` override; it should not come back as
+a text colour.
 
 Seven steps. Ratio around 1.2 for the UI end, wider at the top where the
 reader needs it. **Every line-height is a multiple of 4** so type lands on
@@ -922,10 +948,16 @@ contested in the sources.
 3. **The 20–30% accent desaturation figure** is a heuristic repeated by
    secondary sources, not a standard. The palette here was solved by
    measurement instead, which is why it does not appear as a rule.
-4. **Three text tiers this close in lightness** is what APCA demands on
-   dark, but it has not yet been tried by a learner in a dark room. If the
-   hierarchy reads flat, the answer is more size and weight separation, not
-   dimmer greys.
+4. ~~**Three text tiers this close in lightness**…~~ **Settled
+   2026-09-08, and the prediction held.** The owner reported skimming
+   past hierarchy and small type when reading quickly. Measurement found
+   the cause was not the tiers being close but the app pairing its two
+   smallest sizes with its weakest colour — contrast falling exactly as
+   size fell, which is backwards. This section's own prescription was
+   followed: more size and weight separation, not dimmer greys. The scale
+   now stops at 15px and `--c-text-3` carries no text. See
+   `docs/audit/type-contrast.md` for the measurement and
+   `docs/research/ui-improve.md` for the evidence.
 5. **Dark mode is worse for reading for most people.** NN/g's review of the
    Piepenbrock studies found light mode won on both visual acuity and
    proofreading, for young and older adults alike, with the gap widening as
