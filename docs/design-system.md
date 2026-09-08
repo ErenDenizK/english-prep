@@ -253,6 +253,18 @@ on, and both clear it **by almost nothing** — they have margin on
 `surface-0` and `surface-1` and none here. Treat 15/400 and 15/600 as
 the floor rather than as a range with room underneath.
 
+**And `npm run color` now checks the pairing, not just the token.**
+`tools/palette.mjs` carries APCA's `fontMatrixAscend` rows for the three
+weights this app ships, interpolates between them, and measures every
+(selector, size, weight, token, surface) the stylesheet actually
+produces. **Adding a rule that sets text means adding its row to `PAIRS`
+— a pair that is not listed is not checked, and that is the one way this
+can go stale.**
+
+The check exists because the old one could not have caught what it was
+green about: every token met its own fixed requirement while the app set
+more than half its characters in pairs that needed Lc 113 and 117.
+
 **`--c-text-3` is now used by no rule.** At Lc 60 it clears only 22px at
 weight 600, and nothing in the app pairs those. It survives as a token
 and in the `prefers-contrast: more` override; it should not come back as
