@@ -26,7 +26,7 @@
 // "remember to bump this" is a rule that gets forgotten once and then
 // silently stays forgotten, which is exactly what happened here.
 
-const VERSION = "english-prep-v0.42";
+const VERSION = "english-prep-v0.43";
 
 /**
  * Content lives in its own cache, and that cache is deliberately NOT
@@ -94,6 +94,7 @@ const SHELL = [
   "./js/shell.js",
   "./js/storage.js",
   "./js/tiers.js",
+  "./js/theme.js",
   "./js/topics.js",
 ];
 

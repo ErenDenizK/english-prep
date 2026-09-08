@@ -5,8 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Eğitim — English Prep</title>
   <meta name="description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
-  <meta name="color-scheme" content="dark" />
+  <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#13100d" />
+  <!-- Applied before the stylesheet, because the alternative is a flash of
+       the wrong theme on every cold start. Duplicated in all three pages:
+       there is no build step, and an external file would be a second
+       round trip in front of first paint. Keep the three copies
+       identical. -->
+  <script>
+    try {
+      var t = localStorage.getItem("englishPrep.theme");
+      if (t === "light" || t === "dark") {
+        document.documentElement.setAttribute("data-theme", t);
+        document.querySelector('meta[name="theme-color"]').content =
+          t === "light" ? "#fcfaf7" : "#13100d";
+        document.querySelector('meta[name="color-scheme"]').content = t;
+      }
+    } catch (e) {
+      /* Storage unavailable — the system preference decides, which is the
+         same thing that happens with no stored choice. */
+    }
+  </script>
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <!-- iOS ignores the manifest's icons for Add to Home Screen and wants
        this one. Without it the home-screen icon is a screenshot of the

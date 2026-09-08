@@ -24,6 +24,8 @@
 @layer tokens {
   :root {
     color-scheme: dark;
+    /* The light blocks below set `light`; this is the default and the
+       one the <meta> in each head matches for the cold-start paint. */
 
     /* -- Surfaces. Three levels; past three they stop being
           distinguishable, and each one costs contrast on every text token
@@ -200,6 +202,79 @@
     }
   }
 
+
+  /* -- The light theme -------------------------------------------------
+
+     Not an inversion. Every value was re-solved against the same
+     requirements on a warm off-white at the same hue, and came out
+     different rather than mirrored — `npm run color` measures both
+     themes and both sets of size pairings on every run.
+
+     Two of the design system's rules restate themselves rather than
+     flipping. **Elevation is a lightness step away from the page, in
+     whichever direction the page is not**, so these surfaces darken
+     while the dark ones lighten, on the same three-step budget. And the
+     worst case is still `--c-surface-2` for the opposite reason: on dark
+     it is the lightest surface and therefore closest to light text; here
+     it is the darkest and closest to dark text.
+
+     `--c-accent` and `--c-on-accent` are deliberately absent, which is
+     the one thing that does not survive the flip. Clearing 3:1 against
+     this page needs L <= 0.664 while keeping the ink on the fill needs
+     L >= 0.76, and there is no intersection — so the amber stays exactly
+     as it is and the filled button takes a boundary here instead.
+
+     Written twice because there is no build step. The media query carries
+     the system preference and yields to an explicit dark choice; the
+     attribute selector carries a manual choice and beats a light system.
+     Two copies of one list is the honest cost of that. */
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --c-surface-0: #fcfaf7;
+      --c-surface-1: #f4f0ec;
+      --c-surface-2: #ebe6e1;
+      --c-text-1: #1c1915;
+      --c-text-2: #4d4840;
+      --c-text-3: #756f66;
+      --c-accent-text: #654003;
+      --c-ok: #2c924d;
+      --c-no: #d55753;
+      --c-focus: #7f5c1d;
+      --c-hairline: #dbd9d5;
+      --c-edge: #84807c;
+      color-scheme: light;
+    }
+  }
+
+  :root[data-theme="light"] {
+      --c-surface-0: #fcfaf7;
+      --c-surface-1: #f4f0ec;
+      --c-surface-2: #ebe6e1;
+      --c-text-1: #1c1915;
+      --c-text-2: #4d4840;
+      --c-text-3: #756f66;
+      --c-accent-text: #654003;
+      --c-ok: #2c924d;
+      --c-no: #d55753;
+      --c-focus: #7f5c1d;
+      --c-hairline: #dbd9d5;
+      --c-edge: #84807c;
+      color-scheme: light;
+  }
+
+  /* The amber cannot carry itself on a light page — see above — so the
+     one filled button per screen gets the boundary it does not need on
+     dark. 1.4.11 does not require it of a text-labelled control; this is
+     a perceptual fix, not a conformance one. */
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .btn--primary {
+      box-shadow: inset 0 0 0 1px var(--c-edge);
+    }
+  }
+  :root[data-theme="light"] .btn--primary {
+    box-shadow: inset 0 0 0 1px var(--c-edge);
+  }
+
   /* Preference overrides redefine tokens rather than rules, which keeps
      them out of specificity fights entirely. */
   @media (prefers-contrast: more) {
@@ -208,6 +283,29 @@
       --c-text-3: #d6d1cb;
       --c-hairline: #6b665f;
       --c-edge: #a09a93;
+    }
+  }
+
+  /* The same preference on the light theme, with its own values: the
+     hexes above move *towards white*, which on a light page is the wrong
+     direction and would make the hairlines vanish. Chaining `var()` here
+     instead would be tidier and wrong — custom properties resolve at use,
+     so --c-hairline: var(--c-edge) would collapse to the text colour and
+     turn every divider into a full-strength rule. */
+  @media (prefers-contrast: more) and (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --c-text-2: var(--c-text-1);
+      --c-text-3: #4d4840;
+      --c-hairline: #b3afa9;
+      --c-edge: #5a564f;
+    }
+  }
+  @media (prefers-contrast: more) {
+    :root[data-theme="light"] {
+      --c-text-2: var(--c-text-1);
+      --c-text-3: #4d4840;
+      --c-hairline: #b3afa9;
+      --c-edge: #5a564f;
     }
   }
 }

@@ -5,6 +5,53 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.43 — 2026-09-08
+
+**A light theme, and it is not an inversion.** Every value was re-solved
+against the same requirements on a warm off-white at the same hue, and
+came out different rather than mirrored. The reason to build it is
+hierarchy rather than preference: the three text tiers span **0.328 in
+lightness on light against 0.156 on dark** — 2.1× the tonal range the
+design system admitted it had to spend, and the range is what hierarchy
+is made of.
+
+Two of the system's rules restate themselves rather than flipping.
+Elevation becomes **a lightness step away from the page, in whichever
+direction the page is not**, so these surfaces darken while the dark ones
+lighten. And the worst-case surface is still `--c-surface-2` for the
+opposite reason: on dark it is the lightest and closest to light text,
+here it is the darkest and closest to dark text.
+
+**The amber does not survive the flip, and the arithmetic is why.**
+Clearing 3:1 against this page needs L ≤ 0.664; keeping the ink readable
+on the fill needs L ≥ 0.76. No intersection. So the accent stays exactly
+as it is and the one filled button per screen takes a boundary on light —
+a perceptual fix, not a conformance one, since a text-labelled control
+passes 1.4.11 without it.
+
+**`npm run color` now checks both themes**, every token and every size
+pairing, on every run. The first draft of the light values hit their
+targets to the decimal and **failed the run** — a token solved exactly
+onto its requirement has no margin and fails on rounding, which is the
+same thing as having no margin. They were re-solved a step past instead.
+
+**Görünüm: Sistem · Açık · Koyu**, in Profil. Three states rather than a
+switch, because "follow the phone" is not the off position of a boolean;
+it reuses the Listbox, which already owns the whole select contract, so
+it costs no new primitive. A blocking script in the head of all three
+pages applies the stored choice before the stylesheet loads — without it
+every cold start flashes the wrong theme. It is duplicated three times
+because there is no build step, and the comment says to keep the copies
+identical.
+
+The default stays **dark**, so an install that has never chosen looks
+exactly as it did.
+
+161 unit tests and 1,595 sweep checks green. The sweep runs in the dark
+theme; the light theme was verified separately on three screens at 320px
+— it paints, `theme-color` follows, nothing overflows, no console
+errors. **Putting the light pass inside the sweep is the next round.**
+
 ## v0.42 — 2026-09-08
 
 **`npm run color` now measures the pairing, not just the token — and it
