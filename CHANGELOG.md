@@ -5,6 +5,41 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.41 — 2026-09-08
+
+**No text in this app is set below 15px any more, and the reason is
+contrast rather than taste.** The owner reported skimming past hierarchy
+and small type when reading quickly rather than carefully. Measured, that
+was not about his attention: the palette lowered contrast exactly as the
+type got smaller, which is backwards. `.t-meta` was 13px and `.t-label`
+11px, both in `--c-text-3` at Lc 60 — against APCA requirements of 113
+and 117. The ceiling on this ground is Lc 107 with pure white ink, which
+the design system forbids, so **those two steps were unreachable by any
+grey in any theme** and a census found 54% of the app's rendered
+characters sitting in them.
+
+`--t-micro` is deleted rather than resized, so no call site can drift
+back below 15. At 15px there are now exactly two legal pairings and every
+small-type rule takes one: **15/400 in `--c-text-1`** for prose, **15/600
+in `--c-text-2`** for labels, counters and row subs. `--c-text-3` is used
+by no rule at all — at Lc 60 it clears only 22px/600, which nothing
+pairs.
+
+The nav is the change a learner will notice most: the app's most
+permanent text was 11px at the weakest grey in the palette.
+
+**And `npm run color` could not have caught any of this**, which is the
+part worth keeping. It measures every token against the worst surface it
+can sit on, and every token met its own fixed requirement — the run was
+green. But the defect does not live in a token, it lives in a *pair*: a
+token rendered at a size. The tool never sees a size. Teaching it the
+APCA font matrix is the next round.
+
+Measurement in `docs/audit/type-contrast.md`, evidence in
+`docs/research/ui-improve.md`, and `docs/design-system.md` §2 now carries
+the two legal pairings as the rule. 1,596 sweep checks and 161 unit tests
+green.
+
 ## v0.40 — 2026-09-06
 
 **A second layout, for the window this app was never built for.** Until
