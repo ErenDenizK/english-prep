@@ -56,6 +56,58 @@ one or two.
 
 ---
 
+## 1b · And the hierarchy has almost no signal left to use
+
+The contrast finding is half of his report. The other half is
+*"hiyerarşi"*, and it measures just as badly.
+
+**Size carries no information in the middle of the scale.** The steps,
+with the ratio between each:
+
+| | ratio | |
+|---|---|---|
+| 28 → 22 | ×1.27 | a real step |
+| 22 → 19 | ×1.16 | a real step |
+| 19 → 17 | ×1.12 | a real step |
+| 17 → 16 | **×1.06** | **one pixel** |
+| 16 → 15 | **×1.07** | **one pixel** |
+| 15 → 13 | ×1.15 | a real step |
+| 13 → 11 | ×1.18 | a real step |
+
+Four sizes — 19, 17, 16, 15 — span 1.27× in total, with two consecutive
+ratios of about 1.06. Nobody distinguishes 16px from 15px on a phone.
+And this is the band where most of the app's text lives: body prose, UI
+labels, the answer options. **In the middle of the app, size is not a
+hierarchy signal at all.**
+
+**Weight is nearly binary.** The whole stylesheet contains three weight
+values: `600` twelve times, `700` twice, `400` once. So weight says
+"label-ish or not" and nothing else.
+
+**Which leaves lightness, alone, doing all the work** — and the three
+text tiers are separated by only 0.076 and 0.080 in OKLCH L, because
+that is what APCA demanded on this ground and the palette was solved
+rather than eyeballed.
+
+So the three findings compound into one sentence:
+
+> Size has no steps in the middle of the scale, weight is nearly binary,
+> so hierarchy rests entirely on three greys that are deliberately close
+> together — and those greys get **dimmer exactly as the type gets
+> smaller**.
+
+Under a careful read that is enough, because the reader is looking. Under
+a fast skim the only signal available is the weakest one the design has.
+**That is the owner's report, and it is a property of the system rather
+than of his attention.**
+
+*(The `17px` on the answer-option row is off-scale on purpose — serif,
+English, the single most important reading surface in the app — and is
+not a defect. It is in the table because it is part of why the middle
+band is crowded.)*
+
+---
+
 ## 2 · Why `npm run color` passes
 
 `tools/palette.mjs` measures **every token against the worst surface it
