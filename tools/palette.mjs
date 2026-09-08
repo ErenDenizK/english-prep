@@ -45,7 +45,65 @@ export const tokens = Object.fromEntries(
   Object.entries(SPEC).map(([name, s]) => [name, oklch(s.L, s.C, s.H).hex])
 );
 
-/** Contrast is always measured against the lightest surface a token may sit on. */
+/* -- The light theme -------------------------------------------------
+
+   Not an inversion. Every value below was solved against the same
+   requirements as the dark set, on a warm off-white at the same hue 75,
+   and the numbers came out different rather than mirrored.
+
+   Two rules restate themselves rather than flipping. Elevation is not
+   "lighter"; it is **a lightness step away from the page, in whichever
+   direction the page is not** — so the light surfaces darken while the
+   dark ones lighten, with the same three-step budget. And the worst case
+   is still `surface-2` for the opposite reason: on dark it is the
+   lightest surface and therefore closest to light text, on light it is
+   the darkest and closest to dark text. "Measure against the surface
+   closest in lightness" is the rule both instances obey.
+
+   The accent does not survive the flip and is deliberately unchanged.
+   Clearing 3:1 against an off-white page needs L <= 0.664; keeping
+   --c-on-accent readable on the fill needs L >= 0.76. There is no
+   intersection, so the amber stays as it is and the light-mode filled
+   button gets a boundary instead — a perceptual fix, not a conformance
+   one, since a text-labelled button passes 1.4.11 without it. */
+const LIGHT_SURFACE_SPEC = {
+  "surface-0": { L: 0.985, C: 0.004, H: 75 },
+  "surface-1": { L: 0.958, C: 0.007, H: 75 },
+  "surface-2": { L: 0.928, C: 0.009, H: 75 },
+};
+
+const LIGHT_SPEC = {
+  "text-1":      { L: 0.216, C: 0.010, H:  75, need: { lc: 90, wcag: 7.0 } },
+  /* Solved a step past each target rather than exactly onto it. The first
+     draft of these values hit their requirements to the decimal and then
+     failed the run, because a token with zero margin fails on rounding —
+     which is the same thing as having no margin at all. */
+  "text-2":      { L: 0.403, C: 0.014, H:  75, need: { lc: 75, wcag: 4.5 } },
+  "text-3":      { L: 0.544, C: 0.016, H:  75, need: { lc: 60, wcag: 3.0 } },
+  "accent":      { L: 0.800, C: 0.125, H:  72, need: {} },
+  "accent-text": { L: 0.406, C: 0.085, H:  72, need: { lc: 75, wcag: 4.5 } },
+  "on-accent":   { L: 0.180, C: 0.030, H:  72, need: {} },
+  "ok":          { L: 0.586, C: 0.140, H: 150, need: { ui: 3.0 } },
+  "no":          { L: 0.620, C: 0.160, H:  25, need: { ui: 3.0 } },
+  "focus":       { L: 0.500, C: 0.090, H:  78, need: { ui: 3.0 } },
+  "hairline":    { L: 0.885, C: 0.006, H:  75, need: {} },
+  "edge":        { L: 0.603, C: 0.008, H:  75, need: { ui: 3.0 } },
+};
+
+export const lightSurfaces = Object.fromEntries(
+  Object.entries(LIGHT_SURFACE_SPEC).map(([n, s]) => [n, oklch(s.L, s.C, s.H).hex])
+);
+export const lightTokens = Object.fromEntries(
+  Object.entries(LIGHT_SPEC).map(([n, s]) => [n, oklch(s.L, s.C, s.H).hex])
+);
+
+/** Both themes, so nothing can be solved for one and forgotten in the other. */
+const THEMES = [
+  { name: "dark", spec: SPEC, tokens, surfaces },
+  { name: "light", spec: LIGHT_SPEC, tokens: lightTokens, surfaces: lightSurfaces },
+];
+
+/** The surface closest in lightness to the text — `surface-2` in both. */
 const WORST = surfaces["surface-2"];
 
 
@@ -125,10 +183,10 @@ export const PAIRS = [
   { where: ".listbox__option", px: 15, weight: 600, token: "text-1", on: "surface-2" },
 ];
 
-function checkPairs(failures, lines) {
-  lines.push("\n  size x weight, against the lightest surface each can sit on:");
+function checkPairs(theme, failures, lines) {
+  lines.push("\n  size x weight, against the surface closest in lightness:");
   for (const pair of PAIRS) {
-    const measured = Math.abs(apca(tokens[pair.token], surfaces[pair.on]));
+    const measured = Math.abs(apca(theme.tokens[pair.token], theme.surfaces[pair.on]));
     const need = requiredLc(pair.px, pair.weight);
     const label = `${pair.where} ${pair.px}/${pair.weight} ${pair.token}`;
     if (need === null) {
@@ -144,24 +202,27 @@ function checkPairs(failures, lines) {
   }
 }
 
-function check() {
-  const failures = [];
+function checkTheme(theme, failures) {
   const lines = [];
+  const worst = theme.surfaces["surface-2"];
 
-  for (const [name, s] of Object.entries(SPEC)) {
-    const value = tokens[name];
-    const w = wcagContrast(value, WORST);
-    const lc = Math.abs(apca(value, WORST));
+  for (const [name, spec] of Object.entries(theme.spec)) {
+    const value = theme.tokens[name];
+    const w = wcagContrast(value, worst);
+    const lc = Math.abs(apca(value, worst));
     let note = "";
 
-    if (s.need.lc) {
-      const ok = lc >= s.need.lc && w >= s.need.wcag;
-      if (!ok) failures.push(`${name}: APCA ${lc.toFixed(0)}/${s.need.lc}, WCAG ${w.toFixed(2)}/${s.need.wcag}`);
-      note = `text  APCA ${lc.toFixed(0).padStart(3)}/${s.need.lc}  WCAG ${w.toFixed(2).padStart(5)}/${s.need.wcag}  ${ok ? "ok" : "FAIL"}`;
-    } else if (s.need.ui) {
-      const ok = w >= s.need.ui;
-      if (!ok) failures.push(`${name}: WCAG ${w.toFixed(2)}/${s.need.ui} (1.4.11)`);
-      note = `ui    WCAG ${w.toFixed(2).padStart(5)}/${s.need.ui}${" ".repeat(16)}${ok ? "ok" : "FAIL"}`;
+    if (spec.need.lc) {
+      const ok = lc >= spec.need.lc && w >= spec.need.wcag;
+      if (!ok)
+        failures.push(
+          `${theme.name}/${name}: APCA ${lc.toFixed(0)}/${spec.need.lc}, WCAG ${w.toFixed(2)}/${spec.need.wcag}`
+        );
+      note = `text  APCA ${lc.toFixed(0).padStart(3)}/${spec.need.lc}  WCAG ${w.toFixed(2).padStart(5)}/${spec.need.wcag}  ${ok ? "ok" : "FAIL"}`;
+    } else if (spec.need.ui) {
+      const ok = w >= spec.need.ui;
+      if (!ok) failures.push(`${theme.name}/${name}: WCAG ${w.toFixed(2)}/${spec.need.ui} (1.4.11)`);
+      note = `ui    WCAG ${w.toFixed(2).padStart(5)}/${spec.need.ui}${" ".repeat(16)}${ok ? "ok" : "FAIL"}`;
     } else {
       note = `—     WCAG ${w.toFixed(2).padStart(5)} (no requirement)`;
     }
@@ -170,26 +231,33 @@ function check() {
 
   // The label on the amber fill is the one place a foreground sits on a
   // colour rather than a surface, and amber caps what any ink can reach.
-  const inkLc = Math.abs(apca(tokens["on-accent"], tokens["accent"]));
-  const inkW = wcagContrast(tokens["on-accent"], tokens["accent"]);
-  if (inkW < 4.5) failures.push(`on-accent: WCAG ${inkW.toFixed(2)}/4.5 on the fill`);
-  if (inkLc < 60) failures.push(`on-accent: APCA ${inkLc.toFixed(0)}/60 on the fill`);
+  // The fill is the same in both themes, so this measures the same twice
+  // on purpose: it is the one token the light theme could not re-solve.
+  const inkLc = Math.abs(apca(theme.tokens["on-accent"], theme.tokens["accent"]));
+  const inkW = wcagContrast(theme.tokens["on-accent"], theme.tokens["accent"]);
+  if (inkW < 4.5) failures.push(`${theme.name}/on-accent: WCAG ${inkW.toFixed(2)}/4.5 on the fill`);
+  if (inkLc < 60) failures.push(`${theme.name}/on-accent: APCA ${inkLc.toFixed(0)}/60 on the fill`);
 
-  console.log("surfaces");
-  for (const [k, v] of Object.entries(surfaces)) console.log(`  ${k.padEnd(12)} ${v}`);
-  console.log(`\ntokens — measured against ${WORST}, the lightest surface`);
-  checkPairs(failures, lines);
+  console.log(`\n=== ${theme.name} ===\n\nsurfaces`);
+  for (const [k, v] of Object.entries(theme.surfaces)) console.log(`  ${k.padEnd(12)} ${v}`);
+  console.log(`\ntokens — measured against ${worst}, the surface closest in lightness`);
+  checkPairs(theme, failures, lines);
   console.log(lines.join("\n"));
   console.log(
     `\n  on-accent on accent   WCAG ${inkW.toFixed(2)}  APCA ${inkLc.toFixed(0)}` +
       `  → label must be >=16px at weight 700 (APCA font table)`
   );
+}
+
+function check() {
+  const failures = [];
+  for (const theme of THEMES) checkTheme(theme, failures);
 
   if (failures.length) {
     console.log("\n✗ palette failed:\n" + failures.map((f) => "  - " + f).join("\n"));
     process.exit(1);
   }
-  console.log("\n✓ every token and every size pairing meets its requirement");
+  console.log("\n✓ both themes: every token and every size pairing meets its requirement");
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

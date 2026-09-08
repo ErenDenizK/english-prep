@@ -31,6 +31,8 @@ import {
 } from "./storage.js";
 import { SETTINGS } from "./config.js";
 import { createConfirmModal } from "./modal.js";
+import { createListbox } from "./listbox.js";
+import { getTheme, setTheme, THEME_LABELS } from "./theme.js";
 import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
 import { el, clear, pane } from "./dom.js";
 import { icon } from "./icons.js";
@@ -256,6 +258,42 @@ function toggleRow({ name, title, description }) {
   });
 
   return row;
+}
+
+/**
+ * Three states, so not a switch.
+ *
+ * "Follow the phone" is a third thing rather than the off position of a
+ * boolean, and the Listbox already owns the whole select-only combobox
+ * contract — keyboard, `aria-activedescendant`, type-ahead — so this
+ * costs no new primitive and no new promise. A hand-rolled radiogroup
+ * would owe roving tabindex and arrow keys before it was honest.
+ */
+function renderTheme() {
+  const section = el("section", "stack stack--tight");
+  const heading = el("h2", "t-label", "Görünüm");
+  heading.id = "profile-theme-label";
+  section.appendChild(heading);
+  section.appendChild(
+    el(
+      "p",
+      "t-meta",
+      "Karanlık zeminde küçük yazı daha zor okunur; aydınlık tema onu " +
+        "kolaylaştırır. Sistem, telefonun ayarını izler."
+    )
+  );
+
+  const container = el("div");
+  section.appendChild(container);
+  createListbox({
+    container,
+    labelledBy: "profile-theme-label",
+    value: getTheme(),
+    options: Object.entries(THEME_LABELS).map(([value, label]) => ({ value, label })),
+    onChange: (value) => setTheme(value),
+  });
+
+  return section;
 }
 
 function renderSettings() {
@@ -572,6 +610,7 @@ async function render() {
   }
 
   main.appendChild(renderData());
+  main.appendChild(renderTheme());
   main.appendChild(renderSettings());
   aside.appendChild(renderCoverage(topics));
   aside.appendChild(renderRoadmap(topics, roadmap));
