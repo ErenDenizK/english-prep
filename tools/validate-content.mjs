@@ -645,6 +645,30 @@ function sameSet(a, b) {
   return a.size === b.size && [...a].every((value) => b.has(value));
 }
 
+/**
+ * Every string a learner reads may carry `**bold**` and `*emphasis*`, and
+ * nothing else — the same two marks `js/dom.js` resolves. An unbalanced
+ * mark is an error rather than a warning because the renderer prints it
+ * literally: the topic overviews shipped for days reading "*tutumunu*"
+ * before anyone looked at one on a phone.
+ */
+function checkInlineMarks(report, file, value, path = "") {
+  if (typeof value === "string") {
+    const stripped = value.replace(/\*\*[^*]+\*\*/g, "").replace(/\*[^*\s][^*]*\*/g, "");
+    if (stripped.includes("*")) {
+      report.error(`${file} ${path}`, `unbalanced inline mark — only **bold** and *emphasis* are rendered: ${JSON.stringify(value.slice(0, 80))}`);
+    }
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item, i) => checkInlineMarks(report, file, item, `${path}[${i}]`));
+  } else if (value && typeof value === "object") {
+    for (const [key, item] of Object.entries(value)) {
+      checkInlineMarks(report, file, item, path ? `${path}.${key}` : key);
+    }
+  }
+}
+
 async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, corpus) {
   const file = topic.file;
   let data;
@@ -654,6 +678,8 @@ async function validateTopicFile(report, topic, seenQuestionIds, seenLessonIds, 
     report.error(file, `could not read/parse: ${error.message}`);
     return;
   }
+
+  checkInlineMarks(report, file, data);
 
   if ((data.intro !== undefined) !== (topic.hasIntro === true)) {
     report.error(

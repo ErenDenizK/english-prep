@@ -659,6 +659,15 @@
     font-weight: 600;
     color: var(--c-text-1);
   }
+
+  /* No italic face ships — only 400 and 600 of the sans and 400 of the
+     serif — so an italic here would be a synthesised slant, which reads
+     as a rendering fault. Emphasis is a weight step instead; the element
+     stays <em> for what a screen reader says. */
+  em {
+    font-style: normal;
+    font-weight: 600;
+  }
 }
 
 /* ==========================================================================
