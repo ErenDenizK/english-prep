@@ -5,6 +5,16 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.52 — 2026-09-09
+
+**A finished row shows a check, not a chip.** The *"Tamamlandı"* chip
+beside the chevron doubled a row's trail and broke the lesson row at
+320 (audit A7). A finished lesson row and a finished topic row carry a
+check glyph in the ok ink — the shape says finished, the colour is the
+second channel, the label survives for a screen reader — and keep the
+chevron, because the row still opens. That was the last A-class finding
+of the beta1 audit not already closed by the six rounds.
+
 ## v0.51 — 2026-09-09
 
 **Beta1, round six: the design system catches up.** `docs/design-system.md`
