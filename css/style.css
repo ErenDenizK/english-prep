@@ -830,9 +830,15 @@
     line-height: var(--t-meta-lh);
     font-weight: 600;
     color: var(--c-text-2);
+    /* Two lines, then a clamp. It was one line with an ellipsis, and on
+       the index the sub is the row's only explanation of what the topic
+       is — "Olayın ne zaman olduğundan çok nasıl görül…" in the first row
+       of the app read unfinished. Two lines hold every gloss at 390 and
+       nearly every one at 320; the clamp is for the rest. */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .row__trail {
@@ -894,6 +900,16 @@
     padding: 0 var(--s-3);
     color: var(--c-text-2);
     font-weight: 600;
+  }
+
+  /* The text button: a quiet action on the keyline, left-aligned, in the
+     accent's text colour, with its chevron. The 48px target is kept by
+     the min-height; the padding goes so the label starts where the
+     card's text starts. */
+  .btn--text {
+    justify-self: start;
+    padding-inline: 0;
+    color: var(--c-accent-text);
   }
 
   /* A shape, not a fourth level: pairs with --secondary or --quiet. For a

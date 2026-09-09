@@ -5,6 +5,48 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.49 — 2026-09-09
+
+**Beta1, round four: the other screens.** Round two gave the scale its
+steps and round three gave the reader its shape; this round applies
+both to everything else, plus the smaller things the audit found that
+fit beside them.
+
+- **A sentence is never meta.** Every explanatory paragraph that was
+  set in the one-line 15/600 tier — Profil's five sections, the Test
+  tab's notes, the index's notes and nudge, the results hedge, the
+  intro's example notes, section hints — reads at body or as a quiet
+  sentence (`.t-quiet`, 18/400 in the second grey). Profil was 98% one
+  style; it is a settings screen now rather than an essay in bold.
+- **Rows.** The sub is two lines with a clamp, not one with an ellipsis
+  — the index gloss is the row's only explanation and it ended in
+  "görül…" in the first row of the app. *"Dersi aç"* under five rows
+  and *"Bu kategoriden pratik yap"* under five more are gone; the
+  chevron and the heading's hint say it once. Test rows say *"25
+  soru"*, not *"25 soru · 6 ders"* — a row here is the way into a test.
+- **The text button.** *"Ya da kısa bir testle başla"*, *"Kaldığın
+  yerden devam et"* and *"Sıradaki derse geç"* were centred grey labels
+  with no shape, which read as something that had lost its button.
+  They sit on the keyline now, left-aligned, in the accent's text
+  colour, with a chevron.
+- **Profil's settings are rows.** *Görünüm* was a section of its own
+  with a heading and a paragraph — the newest control, dressed as a
+  feature. It is a row beside *Önce kendin düşün*, the listbox in the
+  trail. *Geçmişi sıfırla* is quiet and last, not dressed as the backup
+  buttons' sibling. The first-run card no longer repeats the brand as
+  its title 150px under the header.
+- **The mistake book's count is a figure**, not a clause in a sentence.
+- **One failure surface.** Three vocabularies — *"Sayfayı yenile"*,
+  *"Tekrar dene"*, a quiz message with an *"Ana sayfa"* button — are
+  one card with one sentence and a retry that does the thing again.
+- Slash spacing is *n / N* everywhere; the reader sets
+  `document.title`.
+
+`TOPIC_BUDGET_SCREENS` is 5.25 from 5: the two-line sub is 20px on each
+of six rows and the example notes went from 15 to 18 — 3222px, 5.03
+screens, on the longest topic. The quarter is those two changes and
+nothing else. 3,222 sweep checks.
+
 ## v0.48 — 2026-09-09
 
 **Beta1, round three: the reader.** The lesson is the product, and it

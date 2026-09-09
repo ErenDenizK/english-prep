@@ -15,7 +15,7 @@ import { SETTINGS } from "./config.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
-import { el, clear } from "./dom.js";
+import { el, clear, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
 
@@ -45,7 +45,7 @@ const state = {
 
 function showMessage(text, { withHomeLink = true } = {}) {
   clear(container);
-  container.appendChild(el("p", "t-meta", text));
+  container.appendChild(el("p", "t-body", text));
   if (withHomeLink) {
     actionBar.set([{ label: "Ana sayfa", level: "primary", href: "index.html" }]);
   } else {
@@ -376,7 +376,11 @@ async function init() {
     renderQuestion();
   } catch (error) {
     console.error(error);
-    showMessage("Test yüklenirken bir sorun oluştu. Tekrar dene.");
+    clear(container);
+    container.appendChild(
+      failureCard("Test", () => init(), { label: "Ana sayfa", href: "index.html" })
+    );
+    actionBar.hide();
   }
 }
 
