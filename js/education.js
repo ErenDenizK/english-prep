@@ -511,10 +511,16 @@ function renderLessonRow(lesson, status) {
 
   const trail = el("span", "row__trail");
   if (status.done) {
-    // No tick inside the chip: the set is drawn with a 2px absolute stroke
-    // and a chip-sized icon would render it at 1.2px, which is exactly how
-    // an icon set starts going soft. The green tint is the second channel.
-    trail.appendChild(el("span", "chip chip--ok", "Tamamlandı"));
+    // A check glyph in the ok ink, at the icon size the set is drawn for,
+    // where a "Tamamlandı" chip used to sit: the chip plus the chevron
+    // doubled the trail and broke the row at 320. The glyph is its own
+    // channel — the shape, not the colour, says finished — and the row
+    // keeps the chevron because it still opens.
+    const done = el("span", "ink-ok");
+    done.setAttribute("aria-label", "Tamamlandı");
+    done.setAttribute("role", "img");
+    done.appendChild(icon("check", { size: 20 }));
+    trail.appendChild(done);
   } else if (status.label) {
     trail.appendChild(el("span", "t-num", status.label));
   }
@@ -819,14 +825,20 @@ function renderTopicGroup(heading, lessons, progress) {
     const main = el("span", "row__main");
     main.appendChild(englishTitle("span", "row__title t-en", inTopic[0].topicTitle));
     // The gloss becomes the row's secondary line rather than a paragraph
-    // of its own. §7.1: one line, always — the CSS clips it, and that is
-    // the point, because eight two-line glosses is 256px of nothing.
+    // of its own. §7.1: two lines at most, clamped — the gloss is the one
+    // sentence that says what the topic is, and one line cut it mid-word.
     main.appendChild(el("span", "row__sub", inTopic[0].topicGloss ?? `${inTopic.length} ders`));
     row.appendChild(main);
 
     const trail = el("span", "row__trail");
     if (done === inTopic.length) {
-      trail.appendChild(el("span", "chip chip--ok", "Tamamlandı"));
+      // The same glyph as a finished lesson row: a chip beside the
+      // chevron doubled the trail at 320.
+      const finished = el("span", "ink-ok");
+      finished.setAttribute("aria-label", "Tamamlandı");
+      finished.setAttribute("role", "img");
+      finished.appendChild(icon("check", { size: 20 }));
+      trail.appendChild(finished);
     } else {
       trail.appendChild(el("span", "t-num", `${done} / ${inTopic.length}`));
     }

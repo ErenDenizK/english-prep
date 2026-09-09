@@ -19,7 +19,7 @@ so and why.
 **Status, end of 2026-09-09: all six rounds shipped** — v0.46 (round
 one), v0.47 (the scale), v0.48 (the reader), v0.49 (the other screens),
 v0.50 (the sweep learns the light theme), v0.51 (the design system
-catches up). What §5 lists as "done means" holds except the last line,
+catches up), v0.52 (audit A7, the last open A-class finding). What §5 lists as "done means" holds except the last line,
 which is the owner's: the slate on an OLED at night and the light button
 on his own phone. Departures from the arms, decided while building: the
 mistake book's figure is a title-size stat rather than the display,
