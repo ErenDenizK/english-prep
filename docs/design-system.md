@@ -62,20 +62,30 @@ the one nearest the text.
 
 | Token | Dark | Light | Use |
 | --- | --- | --- | --- |
-| `--c-surface-0` | `#0C1117` · `oklch(0.175 0.014 255)` | `#F8FAFD` | The page. Everything sits on this by default. |
-| `--c-surface-1` | `#181D23` · `oklch(0.228 0.014 255)` | `#EEF1F5` | A raised block: the one card level, or the reader's full-bleed band. |
-| `--c-surface-2` | `#262B31` · `oklch(0.286 0.014 255)` | `#E4E8ED` | Overlay only: dialog, listbox menu, a control sitting on a card. |
+| `--c-surface-0` | `#0C1117` · `oklch(0.175 0.014 255)` | `#F6F1E7` | The page. Everything sits on this by default. |
+| `--c-surface-1` | `#181D23` · `oklch(0.228 0.014 255)` | `#EEE8DD` | A raised block: the one card level, or the reader's full-bleed band. |
+| `--c-surface-2` | `#262B31` · `oklch(0.286 0.014 255)` | `#E5DFD3` | Overlay only: dialog, listbox menu, a control sitting on a card. |
 
-**The ground is slate, hue 255, chroma 0.014 on dark and 0.004–0.008 on
-light.** It was warm (H 67–78) until 2026-09-09, and that was the
-structural cause of the interface reading *shallow*: every non-semantic
-token — page, cards, all three greys, the accent, the focus ring, the
-dividers — sat inside one eleven-degree hue band, so hierarchy and depth
-had a single channel, lightness, and on a dark ground APCA had already
-spent most of it. A cool ground gives the warm accent a second axis to
-stand against. The reasons and every solved value are in
-`docs/research/beta1-palette.md`; `tools/palette.mjs` is the source of
-truth and `npm run color` prints the measured table for both themes.
+**The dark ground is slate, hue 255, chroma 0.014.** It was warm (H
+67–78) until 2026-09-09, and that was the structural cause of the
+interface reading *shallow*: every non-semantic token — page, cards,
+all three greys, the accent, the focus ring, the dividers — sat inside
+one eleven-degree hue band, so hierarchy and depth had a single
+channel, lightness, and on a dark ground APCA had already spent most of
+it. A cool ground gives the warm accent a second axis to stand against.
+
+**The light ground is paper, hue 85, L 0.96** — cream, two lightness
+steps below the cool near-white the theme first shipped with, which the
+owner used and called unreadable. That was glare: a full-brightness
+cool white with maximal-contrast ink on it. The ink is a warm dark
+(hue 70). On light the accent and the ground share a family again, and
+that is not the dark theme's defect recurring: here the accent is a
+saturated dark on a pale ground, the classic ink-on-paper pairing, and
+depth runs in the direction the eye expects. `docs/research/premium.md`
+§1 has the evidence and the cross-check against `apca-w3`;
+`docs/research/beta1-palette.md` has the slate; `tools/palette.mjs` is
+the source of truth and `npm run color` prints the measured table for
+both themes.
 
 **Elevation is a lightness step away from the page, in whichever
 direction the page is not.** Dark surfaces lighten by ≈0.055 L per
@@ -97,9 +107,15 @@ dropping M2's alpha-based emphasis for solid roles.
 
 | Token | Dark | Light | APCA Lc (worst surface) | Use |
 | --- | --- | --- | --- | --- |
-| `--c-text-1` | `#E9ECEF` | `#161A1F` | 91 / 90 | Body prose, English sentences, headings, controls |
-| `--c-text-2` | `#D0D4DA` | `#474D55` | 76 / 76 | The one-line tier at 600; the quiet sentence at 18/400 |
-| `--c-text-3` | `#B5BAC2` | `#68707A` | 61 / 61 | **No text rule uses it.** Kept as a token and for `prefers-contrast` |
+| `--c-text-1` | `#E9ECEF` | `#211B14` | 91 / 85 | Body prose, English sentences, headings, controls |
+| `--c-text-2` | `#D0D4DA` | `#413A31` | 76 / 77 | The one-line tier at 600; the quiet sentence at 18/400 |
+| `--c-text-3` | `#B5BAC2` | `#685F54` | 61 / 63 | **No text rule uses it.** Kept as a token and for `prefers-contrast` |
+
+On light, `text-1`'s requirement is **Lc 85** rather than 90: it
+measures 85 against the darkest cream and 88–90 against the two
+surfaces prose sits on, and APCA's 90 is the *preferred* level on a
+ground that has no glare problem, which the old white did. Every size
+pairing still clears the font matrix by the same margins.
 
 **The weight axis points up.** 400 reads; 600 heads, labels and
 emphasises. No tier quieter than body is ever heavier than body, except
@@ -132,11 +148,11 @@ one window: a burnt amber with the page itself as the ink.
 
 | Token | Dark | Light | Use |
 | --- | --- | --- | --- |
-| `--c-accent` | `#F1AF5D` · `oklch(0.80 0.125 70)` | `#A55D0C` · `oklch(0.55 0.125 60)` | The one filled action per screen. |
-| `--c-on-accent` | `#1A0F03` | `#F8FAFD` (= `surface-0`) | Label on `--c-accent`, **body size at weight 600** — measured into `PAIRS` in both themes. |
-| `--c-accent-text` | `#F5CE95` | `#6B420E` | Emphasis, links, the text button. Lc 77 / 76. |
+| `--c-accent` | `#F1AF5D` · `oklch(0.80 0.125 70)` | `#A05801` · `oklch(0.535 0.125 60)` | The one filled action per screen. |
+| `--c-on-accent` | `#1A0F03` | `#F6F1E7` (= `surface-0`) | Label on `--c-accent`, **body size at weight 600** — measured into `PAIRS` in both themes. |
+| `--c-accent-text` | `#F5CE95` | `#623200` | Emphasis, links, the text button, section labels. Lc 77 / 76. |
 | `--c-accent-tint` | 14% of the accent | 14% of the accent | The tint behind an accented chip. |
-| `--c-focus` | `#F4DAB2` | `#855823` | Focus ring. |
+| `--c-focus` | `#F4DAB2` | `#825023` | Focus ring. |
 
 **Amber is structurally a dark-ink-on-fill colour**, the same class Radix
 puts amber, yellow, lime, mint and sky in — their solid step is designed
@@ -162,8 +178,8 @@ icon and copy, not by hue.
 
 | Token | Dark | Light | Use |
 | --- | --- | --- | --- |
-| `--c-ok` | `#7CCD8E` | `#2E944E` | Correct: icon, tint, indicator |
-| `--c-no` | `#E97871` | `#D65854` | Incorrect: icon, tint, indicator |
+| `--c-ok` | `#7CCD8E` | `#1F8944` | Correct: icon, tint, indicator |
+| `--c-no` | `#E97871` | `#D14B48` | Incorrect: icon, tint, indicator |
 
 **Red cannot reach Lc 75 at any usable chroma on the dark ground** —
 only at chroma 0.05, by which point it is pink. Red is inherently
@@ -183,11 +199,11 @@ and the answer itself — so it survives greyscale, colour-vision deficiency
 
 #### 1.6 Two lines, and the distinction is load-bearing
 
-`--c-hairline` (`#2F3339` / `#D5DAE0`) **separates**. Contrast against
+`--c-hairline` (`#2F3339` / `#D6D1C8`) **separates**. Contrast against
 the page is 1.12 — far below 1.4.11's 3:1, and legitimately so: a
 decorative separator is exempt.
 
-`--c-edge` (`#71767D` / `#7F8389`) **identifies a control's boundary**,
+`--c-edge` (`#71767D` / `#76736B`) **identifies a control's boundary**,
 which 1.4.11 requires at 3:1. It is the value nearest the page that
 clears 3:1 against all three surfaces, and it exists for exactly one
 reason: no two surfaces in this ramp are 3:1 apart, so a fill cannot

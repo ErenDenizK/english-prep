@@ -2520,7 +2520,7 @@ async function runThemes(browser) {
     const state = await paint(page);
     ok(state.theme === "light", `${path}: kayıtlı tercih ilk boyadan önce uygulanıyor (${state.theme})`);
     ok(luminance(state.background) > 200, `${path}: açık temada zemin açık (${state.background})`);
-    ok(state.themeColor === "#f8fafd", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
+    ok(state.themeColor === "#f6f1e7", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
     ok(state.colorScheme === "light", `${path}: color-scheme açık (${state.colorScheme})`);
     await context.close();
   }

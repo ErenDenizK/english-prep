@@ -225,9 +225,18 @@
      The accent is a PAIR. One amber cannot serve both modes: dark ink on
      a fill that clears 3:1 against a light page has no solution at any
      hue or chroma scanned. Inverting the ink opens one window — a burnt
-     amber, oklch(0.55 0.125 60), with the page itself as the ink — so
+     amber, oklch(0.535 0.125 60), with the page itself as the ink — so
      light `--c-accent` is darker and light `--c-on-accent` is
      `--c-surface-0`. Same hue family, one brand, two values.
+
+     And the ground is PAPER, not a white screen: cream at hue 85, L 0.96
+     — two steps below the cool near-white this theme first shipped with,
+     which the owner used and called unreadable. That was glare: a
+     full-brightness cool white with maximal-contrast ink on it. The ink
+     is a warm dark (hue 70) and measures Lc 85 against the darkest cream
+     and 88–90 where prose actually sits. tools/palette.mjs solves and
+     explains every value; the two contrast models were cross-checked
+     against the reference apca-w3 and colorjs.io.
 
      Written twice because there is no build step. The media query carries
      the system preference and yields to an explicit dark choice; the
@@ -235,45 +244,45 @@
      Two copies of one list is the honest cost of that. */
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
-      --c-surface-0: #f8fafd;
-      --c-surface-1: #eef1f5;
-      --c-surface-2: #e4e8ed;
-      --c-text-1: #161a1f;
-      --c-text-2: #474d55;
-      --c-text-3: #68707a;
-      --c-accent: #a55d0c;
-      --c-accent-tint: rgb(165 93 12 / 0.14);
-      --c-accent-text: #6b420e;
-      --c-on-accent: #f8fafd;
-      --c-ok: #2e944e;
-      --c-ok-tint: rgb(46 148 78 / 0.12);
-      --c-no: #d65854;
-      --c-no-tint: rgb(214 88 84 / 0.12);
-      --c-focus: #855823;
-      --c-hairline: #d5dae0;
-      --c-edge: #7f8389;
+      --c-surface-0: #f6f1e7;
+      --c-surface-1: #eee8dd;
+      --c-surface-2: #e5dfd3;
+      --c-text-1: #211b14;
+      --c-text-2: #413a31;
+      --c-text-3: #685f54;
+      --c-accent: #a05801;
+      --c-accent-tint: rgb(160 88 1 / 0.14);
+      --c-accent-text: #623200;
+      --c-on-accent: #f6f1e7;
+      --c-ok: #1f8944;
+      --c-ok-tint: rgb(31 137 68 / 0.12);
+      --c-no: #d14b48;
+      --c-no-tint: rgb(209 75 72 / 0.12);
+      --c-focus: #825023;
+      --c-hairline: #d6d1c8;
+      --c-edge: #76736b;
       color-scheme: light;
     }
   }
 
   :root[data-theme="light"] {
-      --c-surface-0: #f8fafd;
-      --c-surface-1: #eef1f5;
-      --c-surface-2: #e4e8ed;
-      --c-text-1: #161a1f;
-      --c-text-2: #474d55;
-      --c-text-3: #68707a;
-      --c-accent: #a55d0c;
-      --c-accent-tint: rgb(165 93 12 / 0.14);
-      --c-accent-text: #6b420e;
-      --c-on-accent: #f8fafd;
-      --c-ok: #2e944e;
-      --c-ok-tint: rgb(46 148 78 / 0.12);
-      --c-no: #d65854;
-      --c-no-tint: rgb(214 88 84 / 0.12);
-      --c-focus: #855823;
-      --c-hairline: #d5dae0;
-      --c-edge: #7f8389;
+      --c-surface-0: #f6f1e7;
+      --c-surface-1: #eee8dd;
+      --c-surface-2: #e5dfd3;
+      --c-text-1: #211b14;
+      --c-text-2: #413a31;
+      --c-text-3: #685f54;
+      --c-accent: #a05801;
+      --c-accent-tint: rgb(160 88 1 / 0.14);
+      --c-accent-text: #623200;
+      --c-on-accent: #f6f1e7;
+      --c-ok: #1f8944;
+      --c-ok-tint: rgb(31 137 68 / 0.12);
+      --c-no: #d14b48;
+      --c-no-tint: rgb(209 75 72 / 0.12);
+      --c-focus: #825023;
+      --c-hairline: #d6d1c8;
+      --c-edge: #76736b;
       color-scheme: light;
   }
 
@@ -298,17 +307,17 @@
   @media (prefers-contrast: more) and (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
       --c-text-2: var(--c-text-1);
-      --c-text-3: #474d55;
-      --c-hairline: #aab0b8;
-      --c-edge: #52585f;
+      --c-text-3: #413a31;
+      --c-hairline: #b8b3aa;
+      --c-edge: #5b564f;
     }
   }
   @media (prefers-contrast: more) {
     :root[data-theme="light"] {
       --c-text-2: var(--c-text-1);
-      --c-text-3: #474d55;
-      --c-hairline: #aab0b8;
-      --c-edge: #52585f;
+      --c-text-3: #413a31;
+      --c-hairline: #b8b3aa;
+      --c-edge: #5b564f;
     }
   }
 }

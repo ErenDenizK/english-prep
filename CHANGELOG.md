@@ -5,6 +5,22 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.54 — 2026-09-09
+
+**The light theme is paper.** The owner used the cool near-white of
+v0.43 on his phone and called it unreadable — glare, not contrast: a
+full-brightness cool white with a near-black on it at the maximum the
+palette could reach. The ground is cream now (`#F6F1E7`, OKLCH hue 85,
+two lightness steps below the old page), the cards two creams deeper,
+the ink a warm dark (`#211B14`), the amber a step darker to keep its
+label at 4.5. `text-1` is solved to Lc 85 on light rather than 90 — it
+measures 85 against the darkest cream and 88–90 where prose sits, and
+APCA's 90 is the preferred level, not a floor. Every token and every
+size pairing is green in both themes; the maths was cross-checked
+against the reference `apca-w3` and `colorjs.io`, which agree with
+`tools/color.mjs` to 0.1. `docs/research/premium.md` §1 is the evidence
+and the decisions; the dark theme is untouched.
+
 ## v0.53 — 2026-09-09
 
 **Three things a careful user would notice**, from the beta1 audit's B

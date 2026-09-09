@@ -83,24 +83,46 @@ export const tokens = Object.fromEntries(
    never share a screen, and chips carry words — but if a route ever
    puts them side by side, darken light `ok` and accept the protanopia
    cost instead. */
+/* -- The light theme: paper, not a white screen. ---------------------
+
+   The first light palette was a cool near-white (L 0.985, H 255) with a
+   cool near-black on it, solved to the same Lc 90 as dark. The owner
+   used it and called it unreadable — "aşırı göz yoruyor". He was
+   describing glare: a full-brightness cool white is the brightest thing
+   a phone can show, and maximal contrast on it is the opposite of a
+   page. The research is one-sided here (docs/research/premium.md §1):
+   an off-white ground lowers overall luminance while keeping contrast,
+   and APCA's own guidance sets Lc 90 as the *preferred* level for body
+   text, 75 as the floor — there is no "maximum" on light, but there is
+   no requirement to sit at the maximum either.
+
+   So the ground is cream — hue 85, the hue of paper under warm light —
+   at L 0.96, two steps darker than the old page, and the ink is a warm
+   dark rather than a cool one. `text-1` measures Lc 85–86 against
+   `surface-2`, the darkest cream, and 88–90 against the two surfaces
+   prose actually sits on; its requirement here is 85 rather than 90,
+   and the reasons are the two above. Every size pairing still clears
+   the font matrix by the same margins as dark. Both numbers were
+   cross-checked against the reference `apca-w3` and `colorjs.io`
+   (see the research note), which agree with tools/color.mjs to 0.1. */
 const LIGHT_SURFACE_SPEC = {
-  "surface-0": { L: 0.985, C: 0.004, H: 255 },
-  "surface-1": { L: 0.958, C: 0.006, H: 255 },
-  "surface-2": { L: 0.928, C: 0.008, H: 255 },
+  "surface-0": { L: 0.960, C: 0.014, H: 85 },
+  "surface-1": { L: 0.933, C: 0.016, H: 85 },
+  "surface-2": { L: 0.905, C: 0.018, H: 85 },
 };
 
 const LIGHT_SPEC = {
-  "text-1":      { L: 0.217, C: 0.012, H: 255, need: { lc: 90, wcag: 7.0 } },
-  "text-2":      { L: 0.417, C: 0.016, H: 255, need: { lc: 75, wcag: 4.5 } },
-  "text-3":      { L: 0.541, C: 0.018, H: 255, need: { lc: 60, wcag: 3.0 } },
-  "accent":      { L: 0.550, C: 0.125, H:  60, need: { ui: 3.0 } },
-  "accent-text": { L: 0.418, C: 0.085, H:  66, need: { lc: 75, wcag: 4.5 } },
-  "on-accent":   { L: 0.985, C: 0.004, H: 255, need: {} },
-  "ok":          { L: 0.590, C: 0.140, H: 150, need: { ui: 3.0 } },
-  "no":          { L: 0.623, C: 0.160, H:  25, need: { ui: 3.0 } },
-  "focus":       { L: 0.500, C: 0.090, H:  68, need: { ui: 3.0 } },
-  "hairline":    { L: 0.885, C: 0.010, H: 255, need: {} },
-  "edge":        { L: 0.608, C: 0.010, H: 255, need: { ui: 3.0 } },
+  "text-1":      { L: 0.225, C: 0.016, H: 70, need: { lc: 85, wcag: 7.0 } },
+  "text-2":      { L: 0.352, C: 0.018, H: 70, need: { lc: 75, wcag: 4.5 } },
+  "text-3":      { L: 0.490, C: 0.020, H: 70, need: { lc: 60, wcag: 3.0 } },
+  "accent":      { L: 0.535, C: 0.125, H: 60, need: { ui: 3.0 } },
+  "accent-text": { L: 0.372, C: 0.090, H: 60, need: { lc: 75, wcag: 4.5 } },
+  "on-accent":   { L: 0.960, C: 0.014, H: 85, need: {} },
+  "ok":          { L: 0.555, C: 0.140, H: 150, need: { ui: 3.0 } },
+  "no":          { L: 0.595, C: 0.170, H:  25, need: { ui: 3.0 } },
+  "focus":       { L: 0.480, C: 0.090, H:  60, need: { ui: 3.0 } },
+  "hairline":    { L: 0.862, C: 0.014, H:  85, need: {} },
+  "edge":        { L: 0.555, C: 0.012, H:  85, need: { ui: 3.0 } },
 };
 
 export const lightSurfaces = Object.fromEntries(
