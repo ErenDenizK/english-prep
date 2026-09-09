@@ -6,7 +6,10 @@ accessibility and mobile-web constraints; every rule below states *why* it
 exists, because a rule without a reason gets overturned by the next person
 who finds it inconvenient.
 
-**Scope.** Dark only. Mobile first, verified from 320 CSS px up. Static
+**Scope.** Two themes, both solved — dark by default and a light one
+that follows the phone or a choice in Profil (since v0.43; the light
+one is the one most people read better in, §11.5). Mobile first,
+verified from 320 CSS px up. Static
 HTML, one stylesheet, ES modules, no build step, no runtime dependencies.
 Interface language Turkish; English appears as example sentences, answer
 options and grammar terms.
@@ -24,16 +27,6 @@ options and grammar terms.
    carries none.
 
 ---
-
-> **2026-09-09 — the palette changed under this section.** The ground
-> is slate (H 255) rather than warm, the accent is a per-mode pair, and
-> the surfaces are OKLCH coordinates rather than an elevation curve. The
-> reasons and every solved value are in `docs/research/beta1-palette.md`;
-> `tools/palette.mjs` is the source of truth and `npm run color` prints
-> the measured table for both themes. The tables and prose below that
-> describe warm neutrals are historical until this section is rewritten
-> — §1.2's sentence about warm chroma keeping the neutrals from reading
-> cold is now the opposite of the decision.
 
 ## 1 · Colour
 
@@ -65,24 +58,35 @@ corrected ones.
 
 Three, not four. Past three steps the levels stop being distinguishable,
 and every extra step costs contrast on every text token that has to survive
-the brightest one.
+the one nearest the text.
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `--c-surface-0` | `#13100D` | The page. Everything sits on this by default. |
-| `--c-surface-1` | `#1F1C19` | A raised block: the one card level, a tinted band. |
-| `--c-surface-2` | `#2C2A27` | Overlay only: dialog, sheet, the pressed state of a row. |
+| Token | Dark | Light | Use |
+| --- | --- | --- | --- |
+| `--c-surface-0` | `#0C1117` · `oklch(0.175 0.014 255)` | `#F8FAFD` | The page. Everything sits on this by default. |
+| `--c-surface-1` | `#181D23` · `oklch(0.228 0.014 255)` | `#EEF1F5` | A raised block: the one card level, or the reader's full-bleed band. |
+| `--c-surface-2` | `#262B31` · `oklch(0.286 0.014 255)` | `#E4E8ED` | Overlay only: dialog, listbox menu, a control sitting on a card. |
 
-Derived from a warm near-black base — `oklch(0.175 0.008 75)` — with
-Material's verified elevation-overlay curve, `alpha = (4.5·ln(1+dp)+2)/100`
-([source](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/elevation/ElevationOverlayProvider.java)),
-at 1 dp and 6 dp.
+**The ground is slate, hue 255, chroma 0.014 on dark and 0.004–0.008 on
+light.** It was warm (H 67–78) until 2026-09-09, and that was the
+structural cause of the interface reading *shallow*: every non-semantic
+token — page, cards, all three greys, the accent, the focus ring, the
+dividers — sat inside one eleven-degree hue band, so hierarchy and depth
+had a single channel, lightness, and on a dark ground APCA had already
+spent most of it. A cool ground gives the warm accent a second axis to
+stand against. The reasons and every solved value are in
+`docs/research/beta1-palette.md`; `tools/palette.mjs` is the source of
+truth and `npm run color` prints the measured table for both themes.
 
-**Never `#000000`.** Light text on pure black blooms (halation), which is
-worst for exactly the sustained reading this app is for, and it leaves
-nowhere to go darker so elevation becomes inexpressible. The tiny warm
-chroma (0.008) keeps the greys from reading cold beside the amber; anything
-above ~0.015 and the neutrals start looking like a colour.
+**Elevation is a lightness step away from the page, in whichever
+direction the page is not.** Dark surfaces lighten by ≈0.055 L per
+step; light surfaces darken by the same budget. So the worst case for
+text is `--c-surface-2` in both themes, for opposite reasons — on dark
+it is the surface nearest light text, on light the one nearest dark
+text — and every foreground token is measured against it.
+
+**Never `#000000`, never `#FFFFFF`.** Light text on pure black blooms
+(halation), which is worst for exactly the sustained reading this app is
+for; and a pure ground leaves nowhere to go for elevation.
 
 ### 1.3 Text
 
@@ -91,40 +95,61 @@ Solid tokens, never white-at-N%-opacity. A translucent token has a
 would silently carry three contrast values. Material 3 made the same move,
 dropping M2's alpha-based emphasis for solid roles.
 
-| Token | Value | APCA Lc | WCAG | Use |
+| Token | Dark | Light | APCA Lc (worst surface) | Use |
 | --- | --- | --- | --- | --- |
-| `--c-text-1` | `#EDEAE6` | 91 | 11.9 | Body prose, English sentences, headings |
-| `--c-text-2` | `#D6D1CB` | 75 | 9.4 | Labels, secondary lines, metadata that must be read |
-| `--c-text-3` | `#BDB7B0` | 60 | 7.2 | Non-essential: hints, placeholders, counters |
+| `--c-text-1` | `#E9ECEF` | `#161A1F` | 91 / 90 | Body prose, English sentences, headings, controls |
+| `--c-text-2` | `#D0D4DA` | `#474D55` | 76 / 76 | The one-line tier at 600; the quiet sentence at 18/400 |
+| `--c-text-3` | `#B5BAC2` | `#68707A` | 61 / 61 | **No text rule uses it.** Kept as a token and for `prefers-contrast` |
 
-Measured against `--c-surface-2`, the worst case. Never `#FFFFFF`: maximum
-contrast maximises halation.
+**The weight axis points up.** 400 reads; 600 heads, labels and
+emphasises. No tier quieter than body is ever heavier than body, except
+a one-line label. The opposite arrangement was tried — every secondary
+tier at 15/600 in the second grey, because that pair clears APCA — and
+it made *quiet*, *label* and *subtitle* one style, 83% of the index's
+characters and 98% of Profil's. Each piece was legible and every piece
+was the same piece.
 
-These three are closer together in lightness than a light-theme palette
-would be. That is the cost of APCA compliance on a dark ground, and it is
-paid deliberately — **hierarchy is carried by size and weight first,
-lightness second.** If two tiers of grey are doing the work, the type is
-wrong.
+**`--c-text-2` is legal at exactly two pairs.** 15/600 anywhere (Lc 76
+against a requirement of 75, in both themes), and 18/400 on `surface-0`
+and `surface-1` only — the quiet sentence, `.t-quiet` — where it
+measures 79–80 against 75; on `surface-2` it measures exactly 75, which
+is the requirement and not a margin, so a paragraph never sits there in
+the second grey. Quiet text below 18px does not exist on either ground:
+15/400 needs Lc 100 and no ink reaches it.
+
+The three greys are closer together in lightness than a palette chosen by
+eye would put them. That is the cost of APCA compliance, and it is paid
+deliberately — **hierarchy is carried by size and weight first, lightness
+second.** If two tiers of grey are doing the work, the type is wrong;
+and if one style is doing every secondary job, the type is also wrong.
 
 ### 1.4 Accent
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `--c-accent` | `#EFB05C` | The one filled action per screen. Carries dark ink. |
-| `--c-on-accent` | `#1A0F03` | Label on `--c-accent`, **≥16px at weight 700**. |
-| `--c-accent-text` | `#F1CC92` | Emphasis and links on a dark surface. |
-| `--c-focus` | `#F4DAB2` | Focus ring. |
+**The accent is a pair — one value per theme — because one amber cannot
+serve both.** Dark ink on a fill that clears 3:1 against a light page
+has no solution at any hue or chroma scanned. Inverting the ink opens
+one window: a burnt amber with the page itself as the ink.
+
+| Token | Dark | Light | Use |
+| --- | --- | --- | --- |
+| `--c-accent` | `#F1AF5D` · `oklch(0.80 0.125 70)` | `#A55D0C` · `oklch(0.55 0.125 60)` | The one filled action per screen. |
+| `--c-on-accent` | `#1A0F03` | `#F8FAFD` (= `surface-0`) | Label on `--c-accent`, **body size at weight 600** — measured into `PAIRS` in both themes. |
+| `--c-accent-text` | `#F5CE95` | `#6B420E` | Emphasis, links, the text button. Lc 77 / 76. |
+| `--c-accent-tint` | 14% of the accent | 14% of the accent | The tint behind an accented chip. |
+| `--c-focus` | `#F4DAB2` | `#855823` | Focus ring. |
 
 **Amber is structurally a dark-ink-on-fill colour**, the same class Radix
 puts amber, yellow, lime, mint and sky in — their solid step is designed
 for dark foreground text
 ([Radix](https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale)).
-Never white on amber.
+Never white on the dark amber.
 
-**The measured ceiling: no ink reaches Lc 75 on this fill.** Pure black
-tops out at Lc 68. Lc 67 is comfortable for 16px/700 on APCA's own font
-table but not for body text — so **the amber fill carries short bold
-labels and nothing else. Never a paragraph, never a sentence.**
+**The measured ceiling on the dark fill: no ink reaches Lc 75.** Pure
+black tops out at Lc 68; the ink ships at 67, which APCA's font table
+clears at 18px/600 and not for body text — so **the amber fill carries
+short bold labels and nothing else. Never a paragraph, never a
+sentence.** The light fill has the same rule for the same reason from
+the other side.
 
 **Amber owns "highlight". There is no warning role.** The standard
 colour-universal warning hue is `#E69F00`, which is amber
@@ -135,19 +160,20 @@ icon and copy, not by hue.
 
 ### 1.5 Semantic — indicators, not text
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `--c-ok` | `#7CCD8E` | Correct: icon, tint, indicator |
-| `--c-no` | `#E97871` | Incorrect: icon, tint, indicator |
+| Token | Dark | Light | Use |
+| --- | --- | --- | --- |
+| `--c-ok` | `#7CCD8E` | `#2E944E` | Correct: icon, tint, indicator |
+| `--c-no` | `#E97871` | `#D65854` | Incorrect: icon, tint, indicator |
 
-**Red cannot reach Lc 75 at any usable chroma on this ground** — only at
-chroma 0.05, by which point it is pink. Red is inherently low-luminance;
-this is a property of the colour, not a palette flaw.
+**Red cannot reach Lc 75 at any usable chroma on the dark ground** —
+only at chroma 0.05, by which point it is pink. Red is inherently
+low-luminance; this is a property of the colour, not a palette flaw.
 
 The resolution is not a washed-out red. It is that **semantic colours are
 never text colours.** The words "Doğru" and "Yanlış" are set in
 `--c-text-1`; the hue lives in the ✓ / ✕ glyph and the row tint, where the
-requirement is 1.4.11's 3:1 for non-text, which both clear (7.5 and 5.0).
+requirement is 1.4.11's 3:1 for non-text, which both clear in both
+themes (7.5 / 5.0 dark, 3.1 / 3.2 light).
 
 This is also what WCAG **1.4.1 Use of Color (Level A)** demands anyway:
 correct/incorrect must never be conveyed by colour alone. The feedback
@@ -157,38 +183,50 @@ and the answer itself — so it survives greyscale, colour-vision deficiency
 
 #### 1.6 Two lines, and the distinction is load-bearing
 
-`--c-hairline: #36322D` **separates**. Contrast against the page is 1.12 —
-far below 1.4.11's 3:1, and legitimately so: a decorative separator is
-exempt.
+`--c-hairline` (`#2F3339` / `#D5DAE0`) **separates**. Contrast against
+the page is 1.12 — far below 1.4.11's 3:1, and legitimately so: a
+decorative separator is exempt.
 
-`--c-edge: #78746E` **identifies a control's boundary**, which 1.4.11
-requires at 3:1. It is the lightest value that clears 3:1 against all
-three surfaces, and it exists for exactly one reason: no two surfaces in
-this ramp are 3:1 apart, so a fill cannot delineate a text field. A field
-with no visible edge is a conformance failure and a usability one at once.
-This is the only place a border is required rather than forbidden.
+`--c-edge` (`#71767D` / `#7F8389`) **identifies a control's boundary**,
+which 1.4.11 requires at 3:1. It is the value nearest the page that
+clears 3:1 against all three surfaces, and it exists for exactly one
+reason: no two surfaces in this ramp are 3:1 apart, so a fill cannot
+delineate a text field. A field with no visible edge is a conformance
+failure and a usability one at once. This is the only place a border is
+required rather than forbidden.
 
-For everything else the rule is absolute: **no border ever carries state.** State is expressed by
-fill, glyph or text. This is the same conclusion the "no boxes" direction
-arrived at from the visual side, reached independently from the contrast
-maths — which is a good sign it is right.
+For everything else the rule is absolute: **no border ever carries
+state.** State is expressed by fill, glyph or text. This is the same
+conclusion the "no boxes" direction arrived at from the visual side,
+reached independently from the contrast maths — which is a good sign it
+is right.
 
 ### 1.7 Rules
 
-- Every foreground token is measured against the **lightest** surface it
-  may appear on, not the darkest. This one rule is what stops an elevation
-  ramp from quietly breaking text contrast.
+- Every foreground token is measured against the surface **nearest the
+  text in lightness** — the lightest on dark, the darkest on light. This
+  one rule is what stops an elevation ramp from quietly breaking text
+  contrast.
 - Tokens are named by **role**, never by value. `--c-surface-1` survives a
-  palette change; `--c-warm-grey-800` does not.
+  palette change; `--c-slate-800` does not. It survived one on 2026-09-09.
 - Author in OKLCH with a hex fallback declaration above it. Equal lightness
   across hues means equal measured contrast across hues, so contrast is
   calibrated once per level rather than once per colour.
-- `color-scheme: dark` in CSS **and** `<meta name="color-scheme"
-  content="dark">` in the head. The meta tag applies before the stylesheet
-  loads and prevents a white flash on every cold start.
-- `@media (prefers-contrast: more)` lifts `--c-text-2` and `--c-text-3` one
-  tier and makes hairlines visible. Cheap, and it directly serves low-vision
-  students.
+- **The light theme is written twice**, because there is no build step:
+  once under `@media (prefers-color-scheme: light)` guarded by
+  `:root:not([data-theme="dark"])`, once under `:root[data-theme="light"]`.
+  The media query carries the phone's preference and yields to an
+  explicit dark choice; the attribute carries a choice and beats a light
+  phone. `js/theme.js` owns the attribute, `<meta name="theme-color">`
+  and `<meta name="color-scheme">`; a blocking script in each page's head
+  reads the stored preference before the stylesheet lands, so a cold
+  start never flashes the wrong theme. The sweep checks all of this
+  (*iki tema*).
+- `<meta name="color-scheme" content="dark light">` in the head, so form
+  controls, scrollbars and the dialog backdrop follow the page.
+- `@media (prefers-contrast: more)` lifts `--c-text-2` one tier and makes
+  hairlines visible, re-solved per theme. Cheap, and it directly serves
+  low-vision students.
 - `@media (forced-colors: active)`: anything signalled by `background-color`
   alone disappears. Re-express state with system colours (`Highlight`,
   `ButtonText`, `GrayText`) and give inactive states a
@@ -228,18 +266,24 @@ line box for a signal stronger than the distinction warrants.
 
 ### 2.2 Scale
 
-Base **16px**, non-negotiable, for two independent reasons: iOS Safari
-zooms the viewport when a focused form control is under 16px, and 16px is
-the lower edge of comfortable reading at phone distance.
+Base **18px** for prose. Five steps, and every adjacent pair is at least
+1.2 apart:
 
-| Step | Size / line-height | Use |
-| --- | --- | --- |
-| `--t-display` | 28 / 32 | Screen title |
-| `--t-title` | 22 / 28 | Lesson title, section head |
-| `--t-lead` | 19 / 28 | Cloze prompt, lesson hook |
-| `--t-body` | 16 / 26 | Turkish prose, English examples |
-| `--t-ui` | 15 / 20 | Buttons, rows, labels |
-| `--t-meta` | 15 / 20 | Counters, captions, block labels — **always at weight 600 in `--c-text-2`** |
+| Step | Size / line-height | Weight | Use |
+| --- | --- | --- | --- |
+| `--t-display` | 36 / 40 | 600 sans · 400 serif | The lesson title; the results score |
+| `--t-title` | 28 / 32 | 600 | Screen title, card title, stat value |
+| `--t-lead` | 22 / 28 | 400 | Contrast side labels, example sentences, decision outcomes, cloze stems, the header's brand |
+| `--t-body` | 18 / 28 | 400 (600 on a button or a verdict) | Turkish prose, English examples, rows, options, buttons, fields, the listbox |
+| `--t-meta` | 15 / 20 | **600, always** | One line: a label, a counter, a row sub, a chip, a nav item, a quiet button |
+
+**The old scale had 19, 17, 16 and 15 in its middle** — two one-pixel
+"steps" where eighty per cent of the reader's characters lived — so
+size carried no hierarchy where it was needed most. Body is 18 rather
+than 16 because that is the smallest size at which the second grey at
+weight 400 clears its ground (§1.3); 16/400 needs Lc 90 and only
+`--c-text-1` reaches it, which is why a *quiet* tier could not exist
+below 18.
 
 **The scale bottoms out at 15px, and that is a contrast decision.**
 It used to run to 13 and 11. APCA's font matrix requires **Lc 113 at
@@ -250,52 +294,53 @@ found **54% of the app's rendered characters sitting in them**. They are
 gone rather than dimmed differently. `--t-micro` was removed instead of
 resized so that no call site can drift back below 15.
 
-At 15px there are exactly two legal pairings, and every small-type rule
-takes one of them:
+**At 15px there is exactly one legal pairing: weight 600 in
+`--c-text-2`** (needs Lc 75; measures 76 in both themes against the
+worst surface). 15/400 needs Lc 100 and nothing reaches it — an earlier
+edition of this table listed 15/400 in `--c-text-1` as legal at Lc 90,
+and that row was wrong; the tool built with the real matrix caught four
+rules set that way. Two consequences: **the meta tier is one line, and a
+sentence is never meta** — anything longer than a line that is quieter
+than body is `.t-quiet`, 18/400 in the second grey on `surface-0`/`1`,
+or it is body. And **English has a floor of 18px**: the serif ships at
+400 only, and 15/400 clears no ground.
 
-| | needs | measured | |
-|---|---|---|---|
-| 15px **/400** in `--c-text-1` | Lc 90 | 91 | prose |
-| 15px **/600** in `--c-text-2` | Lc 75 | 75 | labels, counters, row subs |
+**At most four sizes on a screen.** Display appears in the reader and on
+the results; a tab screen has the brand at 22, a title at 28, body and
+meta. The sweep counts the rendered sizes on every screen it lands on
+and fails at five; the component page is the one exemption, being the
+catalogue.
 
-Both clear against `--c-surface-2`, the lightest surface either can sit
-on, and both clear it **by almost nothing** — they have margin on
-`surface-0` and `surface-1` and none here. Treat 15/400 and 15/600 as
-the floor rather than as a range with room underneath.
+**`npm run color` checks the pairing, not just the token.**
+`tools/palette.mjs` carries APCA's `fontMatrixAscend` rows for the weights
+this app ships, interpolates between them, and measures every (selector,
+size, weight, token, ground) the stylesheet declares — including the
+primary button's label against the amber in both themes. **Adding a rule
+that sets text means adding its row to `PAIRS`** — a pair that is not
+listed is not checked. And because a utility class can override a
+component's weight where the table cannot see it, the sweep audits the
+*rendered* pairs too: nothing at 15px lighter than 600, nothing heavier
+than 600.
 
-**And `npm run color` now checks the pairing, not just the token.**
-`tools/palette.mjs` carries APCA's `fontMatrixAscend` rows for the three
-weights this app ships, interpolates between them, and measures every
-(selector, size, weight, token, surface) the stylesheet actually
-produces. **Adding a rule that sets text means adding its row to `PAIRS`
-— a pair that is not listed is not checked, and that is the one way this
-can go stale.**
-
-The check exists because the old one could not have caught what it was
-green about: every token met its own fixed requirement while the app set
-more than half its characters in pairs that needed Lc 113 and 117.
-
-**`--c-text-3` is now used by no rule.** At Lc 60 it clears only 22px at
+**`--c-text-3` is used by no rule.** At Lc 60 it clears only 22px at
 weight 600, and nothing in the app pairs those. It survives as a token
 and in the `prefers-contrast: more` override; it should not come back as
 a text colour.
 
-Seven steps. Ratio around 1.2 for the UI end, wider at the top where the
-reader needs it. **Every line-height is a multiple of 4** so type lands on
-the spacing grid; where the strict ratio lands off-grid it is rounded up,
-which is what design systems actually do rather than snapping to a baseline
-grid (that breaks on the first image or fluid element).
-
-Line-height ratio **falls as size rises** — 1.63 at body, 1.14 at display.
-A fixed ratio makes large text look loose.
+**Every line-height is a multiple of 4** so type lands on the spacing
+grid; where the strict ratio lands off-grid it is rounded up, which is
+what design systems actually do rather than snapping to a baseline grid
+(that breaks on the first image or fluid element). Line-height ratio
+**falls as size rises** — 1.56 at body, 1.11 at display. A fixed ratio
+makes large text look loose.
 
 ### 2.3 Measure
 
 Reading text is capped at **65ch**. At 320px this is inert — the arithmetic
-does not resolve: 288px of usable width at 16px is roughly **36 characters
+does not resolve: 288px of usable width at 18px is roughly **32 characters
 per line**, below Bringhurst's 45 floor and Baymard's 50, and the only way
-to reach 45 would be dropping type below 16px, which is worse. **Accept the
-short measure and hold 16px.** The cap binds on tablet and desktop, which
+to reach 45 would be dropping type below the size the second grey needs
+(§2.2), which is worse. **Accept the short measure and hold 18px.** The cap binds on tablet and desktop, which
 is where it was going to be needed anyway — and it binds as a *ceiling*
 there, not as a target the layout grows towards: what a wide window is
 allowed to do with the width instead is §7.3.
@@ -338,6 +383,14 @@ everywhere, taking its hierarchy from size and from the face rather than
 from weight, which is the cleaner pairing against a sans at 600 and takes
 the payload from 66.6 KB to 48.0 KB. `.t-en` pins `font-weight: 400` so
 nothing can ask for a weight that isn't shipped and get a faux-bold.
+
+**Nothing asks for a weight above 600.** A request for 700 resolves to
+the 600 face without synthesis in the sans — Chromium takes the nearest
+face at or above 600 — but the *fallback* face during the swap is a real
+700, so a label declared at 700 lightened as the webfont landed. The
+stylesheet declares 600 only; `strong`, `b` and `em` are pinned to 600
+rather than `bolder` (a bold inside a 600 label computes to 900); and
+the sweep fails on any rendered weight above 600.
 
 Subsetting is where the saving is: Google's `latin-ext` slice is ~33 KB
 against ~15 KB for `latin`, for hundreds of glyphs this app will never
@@ -383,7 +436,24 @@ adjustments without visual jumps. Most values still land on 8.
 
 `--s-1: 2px` · `--s-2: 4px` · `--s-3: 8px` · `--s-4: 12px` ·
 `--s-5: 16px` · `--s-6: 24px` · `--s-7: 32px` · `--s-8: 40px` ·
-`--s-9: 48px`
+`--s-9: 48px` · `--s-10: 64px`
+
+**Which step goes where** — the rule the scale lacked until the reader
+was measured against it:
+
+| relation | value | rule |
+|---|---|---|
+| label → its content | 8 | a label belongs to what is under it |
+| line → line inside one object (pattern → use, sentence → note) | 4 | one object (`.stack--snug`) |
+| item → item inside a block (contrast sides, examples, rules) | 24, plus a hairline where the items are homogeneous | `.items` |
+| paragraph → paragraph | 16 | |
+| block → block | 32 | `.stack--loose` |
+| **above a labelled block** | 48 | space above a heading is at least twice the space below it; a label with the same 32 above it that every unlabelled block had grouped nothing |
+| around the one band (the contrast) | 48 | a band without air is a stripe |
+| before a screen's last card (lesson end) | 64 | the end is a section, not a block |
+
+The principle is alternation: 4 / 24 / 48 in the reader, not 8 / 16 / 32.
+Three adjacent steps are arithmetic; hierarchy needs geometric.
 
 Dense at the bottom, coarse at the top — small steps for component
 internals, large jumps for section breaks. Named numerically: t-shirt sizes
@@ -544,10 +614,10 @@ is the point of the rebuild.
 
 | Primitive | Replaces | Notes |
 | --- | --- | --- |
-| **Surface** | `panel`, `hero`, `question-card`, `score-summary`, `lesson-step` | One level only |
+| **Surface** | `panel`, `hero`, `question-card`, `score-summary`, `lesson-step` | One level only — or a full-bleed band (`.bleed`, radius 0): the reader's contrast block |
 | **Row** | `topic-card`, `lesson-row`, `breakdown-list li`, `review-item` | The whole row is the target |
 | **Stat** | `stat-tile`, `stat-grid` | Figures use tabular numerals |
-| **Button** | `btn`, `option-btn`, `profile-trigger`, `quiz-nav__exit` | Three levels, one filled per screen |
+| **Button** | `btn`, `option-btn`, `profile-trigger`, `quiz-nav__exit` | Three levels, one filled per screen; the text button (`.btn--text`) is the quiet level on the keyline |
 | **Chip** | `badge`, `category-chip` | Pill radius, never interactive |
 | **Field** | `text-input` | 16px minimum, always |
 | **Listbox** | `dropdown` | Combobox pattern — §8.2 |
@@ -588,9 +658,13 @@ leading content is the single most common cause of an unscannable list.**
 Only **one separation mechanism per boundary**: a hairline, or a gap, or a
 background change. Never two.
 
-A row's secondary line is **one line, always** — clipped with an ellipsis.
-A hint that wraps to four lines gives every row in the list a different
-height, which is the same unscannability by another route.
+A row's title is body size — serif at 400 when it is English. Its
+secondary line is **one line, or a fixed two** when the sub *is* the
+distinguishing content (the index gloss, the lesson summary), clamped
+rather than ellipsised — never a ragged count. A hint that wraps to four
+lines gives every row in the list a different height, which is the same
+unscannability by another route; an ellipsis at "görül…" in the first
+row of the app is the other failure.
 
 **A control whose fill is `surface-1` steps up to `surface-2` when it sits
 on a Surface**, or it disappears into it. Depth here is surface lightness;
@@ -604,12 +678,14 @@ depth.
 | Height, primary | 52px |
 | Height, secondary | 44px minimum hit area |
 | Padding | `--s-5` to `--s-6` horizontal |
-| Label | `--t-ui`, weight 600 — **700 and ≥16px on the amber fill** (§1.4) |
+| Label | `--t-body`, weight 600 — on the amber fill measured into `PAIRS` in both themes (§1.4); never wraps in the action bar |
 | Icon | 20px, `--s-3` gap |
 | Minimum width | 88px, so short Turkish labels don't produce runts |
 
-Three levels, one filled per screen: filled → surface-1 → text. **No
-outlined buttons.** An outlined button inside a tinted band is a frame
+Three levels, one filled per screen: filled → surface-1 → text. In the
+action bar the retreat is as wide as its label and the advance takes the
+rest; a 1:2 split by width gave the retreat 93px at 320, which holds
+"Geri" and not "Konulara dön". **No outlined buttons.** An outlined button inside a tinted band is a frame
 inside a frame — it was the one genuine box-in-box the review of the first
 mockups found, and removing the variant removes the whole class of error.
 
@@ -846,8 +922,9 @@ router that changes the URL.
 
 ```
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#13100D">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0c1117">
+<!-- js/theme.js rewrites both when a preference is stored or chosen -->
 ```
 
 - **`100svh`, not `100dvh`**, for the shell height, with a `100vh`
@@ -926,14 +1003,18 @@ declaration sits above every `oklch()` one as the fallback.
 
 Nothing here is considered done because it looks right.
 
-- `npm run color` — every token re-measured against its requirement in both
-  contrast models. A failing token fails the build of the palette, not the
+- `npm run color` — every token and every declared size pairing
+  re-measured against its requirement in both contrast models, in both
+  themes. A failing token fails the build of the palette, not the
   reviewer's eye.
 - `npm run validate` — content schema and cross-file consistency.
 - `npm test` — scoring and storage logic.
-- Playwright sweep at **320 / 390 / 768 / 1280**: no horizontal overflow,
-  no target under 48px, no console error, on every screen and in both
-  orientations. 1280 is also where the second column (§7.3) is in force,
+- Playwright sweep at **320 / 390 / 768 / 1280, and 390 again in the
+  light theme**: no horizontal overflow, no target under 44px, no console
+  error, at most four rendered sizes, no rendered pair the scale forbids,
+  no bar label on two lines, on every screen the journey lands on; the
+  theme as a state (stored, followed, chosen, restored) in its own
+  section. 1280 is also where the second column (§7.3) is in force,
   so the wide layout conforms per this list rather than beside it, and a
   section of its own additionally measures the split against §7.3: that it
   engages at 1280×900, stands down at 768×1024 and at 1280×560, that the
@@ -962,11 +1043,12 @@ contested in the sources.
    MDN warns that language-specific casing support varies. If Safari does
    not honour it, the block labels must be authored in the correct case
    rather than transformed.
-2. **Dark-mode weight compensation.** Halation makes light-on-dark text
-   read bolder than its nominal weight. Sources contradict each other on
-   the fix — one says drop toward 350 to preserve apparent weight, another
-   says raise to 450 to counter perceived thinness at small sizes. Settle
-   it on a real phone at real brightness, not on a monitor.
+2. ~~**Dark-mode weight compensation.**~~ **Closed 2026-09-09.** The
+   question was moot while the weight axis pointed backwards — every
+   quiet tier heavier than body — and the app ships two weights, so
+   there is no 350 or 450 to reach for. Revisit only if a real phone at
+   real brightness shows the 400 body reading thin on dark, and then
+   with the light theme as the first answer.
 3. **The 20–30% accent desaturation figure** is a heuristic repeated by
    secondary sources, not a standard. The palette here was solved by
    measurement instead, which is why it does not appear as a rule.
@@ -987,6 +1069,11 @@ contested in the sources.
    while performing worse. Dark-only is a legitimate product decision, made
    here on the owner's preference and on the app being used at night. The
    cost is that **type size and contrast have to be more generous than a
-   light app would need**, which is why §1 targets Lc 90 and §2 holds 16px
-   as a floor. If a light theme is ever wanted, the token architecture
-   makes it a one-file change — the values would be new, not inverted.
+   light app would need**, which is why §1 targets Lc 90 and §2 holds
+   18px for prose. **The light theme shipped in v0.43** — as this item
+   predicted, the values were new rather than inverted, solved by the
+   same tool at the same bar — and the owner's report that small type
+   was being skimmed while the design "looked perfect" was this study's
+   signature. Two things only a real phone can settle remain: whether
+   the slate reads *blue* on an OLED at night (then chroma 0.010 or hue
+   240), and whether the light button reads *brown* (then hue 50–55).

@@ -182,7 +182,13 @@ Three rules generate most of the rest: depth comes from surface lightness
 rather than borders or shadows; at most one card level and nothing framed
 inside a framed thing; one accent doing one job. Colour values are not
 chosen by eye — they are solved against a contrast requirement and verified
-by `npm run color`, which is in CI.
+by `npm run color`, which is in CI, for both themes and for every size
+pairing the stylesheet declares. Two themes: slate dark by default, a
+light one that follows the phone or a choice in Profil; the accent is a
+pair, one value per theme. Five type sizes (36 · 28 · 22 · 18 · 15), at
+most four on a screen, 15px only at weight 600 and only for one line —
+a sentence is never meta. Adding a rule that sets text means adding its
+row to `PAIRS` in `tools/palette.mjs`.
 
 `docs/redesign-plan.md` tracks the staged rebuild against that spec.
 

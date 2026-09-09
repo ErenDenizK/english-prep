@@ -16,6 +16,19 @@ presentable app* — plus what I measured and looked at myself
 This file is the build order. Where it disagrees with an arm it says
 so and why.
 
+**Status, end of 2026-09-09: all six rounds shipped** — v0.46 (round
+one), v0.47 (the scale), v0.48 (the reader), v0.49 (the other screens),
+v0.50 (the sweep learns the light theme), v0.51 (the design system
+catches up). What §5 lists as "done means" holds except the last line,
+which is the owner's: the slate on an OLED at night and the light button
+on his own phone. Departures from the arms, decided while building: the
+mistake book's figure is a title-size stat rather than the display,
+because a tab screen has the brand at 22 and a card title at 28 and the
+cap is four; the pane heading of §6.3 item 15 was not built — the panes
+already start on one baseline and every pane but the index's list opens
+with a label, so the item had no defect left to fix; the intro height
+budget is 5.25 screens, measured, for the two-line row sub.
+
 ---
 
 ## 1 · The diagnosis, in one paragraph

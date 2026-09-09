@@ -241,8 +241,12 @@ Recorded so a future session does not spend a round rediscovering them.
   roughly 15–20 items per category against 4 today. Not a principle, a
   threshold — and the threshold is not reached in App 1.
 - **Flashcards.** Out.
-- **A theme toggle.** One deliberate look; the palette is solved against
-  contrast requirements and re-measured in CI.
+- ~~**A theme toggle.**~~ Reopened by the owner on 2026-09-08 and
+  shipped in v0.43 as a three-state preference (system / light / dark),
+  because the light theme is a legibility measure rather than a taste:
+  the owner's report of skimming small type is the documented signature
+  of dark-mode reading. Both palettes are solved and re-measured in CI.
+  What stays decided against is a *third* look.
 - **The per-tier accent hue.** Parked in
   `docs/research/visual-longevity.md` §5.3 — and that document is now
   marked as researching a problem App 1 does not have.
