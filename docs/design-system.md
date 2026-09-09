@@ -497,9 +497,17 @@ corners. In CSS that is
 inner element is square-cornered — and that is usually the signal it
 should not have been nested at all.
 
-**No shadows.** Elevation is `--c-surface-1` / `--c-surface-2`. A modal
-gets a scrim, not a shadow; the scrim does the separating work a shadow
-cannot do on a dark ground.
+**No shadows on anything that sits on the page.** Elevation is
+`--c-surface-1` / `--c-surface-2`. A modal gets a scrim, not a shadow;
+the scrim does the separating work a shadow cannot do on a dark ground.
+The one exception is the floating tab bar (§7, *the chrome*): it is not
+*on* the page, it floats *over* it, translucent, and a lightness step
+cannot separate a translucent thing from what shows through it — so it
+carries a soft 24px shadow at 18% and a hairline ring. Nothing else may
+borrow that.
+
+Cards are `--r-3` (16px); controls `--r-2`; the tab bar and chips the
+pill.
 
 A 1px inset top highlight — `inset 0 1px 0 rgb(255 255 255 / 0.04)` — is
 permitted on a raised surface. It reads as a light edge rather than a
@@ -549,8 +557,24 @@ meaningful feedback is never nuked along with the decoration. `reduce` also
 turns off `scroll-behavior: smooth` — smooth scrolling is vestibular
 motion, and it is the most commonly missed one.
 
-Page-to-page transitions use the CSS `@view-transition` at-rule, which
-needs no JavaScript and degrades to an instant swap where unsupported.
+**Route changes are one crossfade.** The app is one document with a hash
+router, so `js/home.js` wraps the synchronous part of a route change —
+showing the view, moving focus — in `document.startViewTransition()`,
+and the browser makes a 220 ms crossfade from two snapshots. Never the
+asynchronous part: a transition that waits on a fetch freezes the old
+screen under the finger. It is skipped under `prefers-reduced-motion:
+reduce` and where the API is missing (same-document view transitions
+are baseline in every engine since late 2025). The screen that arrives
+carries `.animate-in` — opacity only by default, a 6px rise when motion
+is welcome — and so do the reader, the topic screen and each quiz
+question. The feedback band does not: answering a question is the one
+action that must appear, not perform.
+
+**The header's light.** A soft radial glow of the accent's hue behind
+the brand, inside the header only, drifting ±8% over 14 s when motion
+is welcome and still otherwise. It is the app's one ambient element;
+it never sits under a paragraph, and its peak is measured against the
+brand (`header-glow` in `PAIRS`).
 
 ---
 
@@ -638,19 +662,33 @@ is the point of the rebuild.
 | **Field** | `text-input` | 16px minimum, always |
 | **Listbox** | `dropdown` | Combobox pattern — §8.2 |
 | **Dialog** | `modal`, `modal-overlay` | Native `<dialog>` — §8.3 |
-| **Nav** | `bottom-nav` | Two destinations, always labelled |
+| **Nav** | `bottom-nav` | Two destinations, always labelled; a floating capsule over the content (*the chrome*, below) |
 | **Progress** | `progress-track` | Also the reader's position indicator |
 | **Feedback** | `feedback` | Four redundant channels — §1.5 |
 
 Three things sit outside that inventory and are not primitives:
 
-- **The shell** — `.shell__header`, `.shell__scroll`, `.shell__nav`,
+- **The shell** — `.shell__header`, `.shell__scroll`, `.nav`,
   `.shell__bar`. Layout, not a component. The header and the bar share the
   page's measure and gutters so the brand, the content and the buttons all
   land on the same two keylines. `.shell__bar-inner` has a fixed minimum
   height — the tallest thing it can hold, a 52px primary button, plus its
   padding — so a bar holding a hint and a bar holding a button are the same
   size and answering a question cannot move it.
+- **The chrome** — the header, the tab bar, the action bar and the
+  reader's sticky strip are one layer *over* the content: a translucent
+  page colour (`--chrome-alpha`, 88%) with the content blurred behind it,
+  solid wherever `backdrop-filter` is missing or
+  `prefers-reduced-transparency` is set. Glass is for the chrome and never
+  for content — cards, rows and prose stay opaque (research/premium.md
+  §2.1). The bars take no height in the column: each pulls the scroll
+  region under itself and the region pads by the same amount, keyed on
+  which bars are present with `:has()`, so the first and last lines of
+  content start clear of them and everything between passes under. Their
+  labels are measured over the worst content that can pass under them —
+  the amber button — in `PAIRS`. The tab bar is a floating capsule, inset
+  12px, never wider than 400px, with a capsule highlight on the current
+  destination.
 - **`.btn--icon`** — a *shape*, orthogonal to the three levels, for a
   control whose whole content is one glyph or one letter. It carries
   `flex: none`, because the 48px square exists precisely so it cannot be

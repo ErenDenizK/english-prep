@@ -560,26 +560,50 @@ function parseRoute() {
 
 let routed = false;
 
+/**
+ * The screen switch as one crossfade, when the browser can and the person
+ * has not asked for less motion. Only the synchronous part is inside the
+ * transition — showing the view — never a fetch: a transition that waits
+ * on the network freezes the old screen under the finger.
+ */
+function withTransition(update) {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (routed && !reduced && typeof document.startViewTransition === "function") {
+    document.startViewTransition(update);
+  } else {
+    update();
+  }
+}
+
 async function applyRoute() {
   const { view, param } = parseRoute();
 
-  selectTab(view);
-  for (const id of VIEW_IDS) {
-    views[id].hidden = id !== view;
-  }
+  withTransition(() => {
+    selectTab(view);
+    for (const id of VIEW_IDS) {
+      views[id].hidden = id !== view;
+    }
+    // Re-run the screen's entrance on every arrival, not only the first.
+    views[view].classList.remove("animate-in");
+    void views[view].offsetWidth;
+    views[view].classList.add("animate-in");
+
+    // A hash route is a navigation, so focus has to move with it or the
+    // next Tab resumes from wherever the last screen left it — and the
+    // browser's own Back button strands it entirely. Not on first paint,
+    // though: a focus ring on a page nobody has interacted with is just
+    // noise. Inside the transition's update, because until it runs the
+    // view is still hidden and cannot take focus.
+    if (routed) {
+      views[view].focus({ preventScroll: true });
+    }
+  });
   // 2.4.2: the title has to say which screen this is, or the back button
   // walks through a history of identically-named entries.
   document.title = `${VIEW_TITLES[view]} — English Prep`;
   announce(VIEW_TITLES[view]);
   scrollToTop();
 
-  // A hash route is a navigation, so focus has to move with it or the next
-  // Tab resumes from wherever the last screen left it — and the browser's
-  // own Back button strands it entirely. Not on first paint, though: a
-  // focus ring on a page nobody has interacted with is just noise.
-  if (routed) {
-    views[view].focus({ preventScroll: true });
-  }
   routed = true;
 
   if (view === "egitim") {

@@ -904,7 +904,7 @@ function renderIntro(topic, lessons, progress) {
   // column stays first and keeps the measure, and the six lesson rows —
   // which is what the learner came here to choose from, and which used to
   // sit a screen and a half below the fold — move up beside it.
-  const screen = el("div", "stack stack--loose split split--main-first");
+  const screen = el("div", "stack stack--loose split split--main-first animate-in");
   const page = pane();
   const intro = topic.intro;
 
@@ -1602,7 +1602,7 @@ function renderLesson() {
   const pretest = state.reader.pretest;
 
   clear(readerContainer);
-  const page = el("article", "stack stack--loose");
+  const page = el("article", "stack stack--loose animate-in");
   page.appendChild(renderReaderTop());
 
   const heading = el("header", "stack stack--tight");

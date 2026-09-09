@@ -59,6 +59,7 @@
     --c-ok-tint: rgb(124 205 142 / 0.12);
     --c-no-tint: rgb(233 120 113 / 0.12);
     --c-accent-tint: rgb(241 175 93 / 0.14);
+    --c-glow: rgb(241 175 93 / 0.16); /* the header's light; measured as "header-glow" */
 
     /* -- Two different lines, and the distinction is load-bearing.
           A hairline *separates* — decorative, and exempt from 1.4.11.
@@ -137,7 +138,18 @@
     --w-page: 640px;
     --w-measure: 65ch;
     --h-target: 48px; /* clears WCAG 2.5.5 AAA, Material and Apple at once */
-    --h-nav: 60px;
+    /* -- The chrome layer. Header, tab bar and action bar float over the
+          scrolling content on a translucent, blurred material — the
+          navigation layer is a layer, the content stays solid (docs/
+          research/premium.md §2.1). Their heights are fixed so the scroll
+          region can pad itself by exactly that much; the alpha is the one
+          tools/palette.mjs measures the bars' labels against, over the
+          worst content that can scroll under them. -- */
+    --h-header: 56px;
+    --h-nav: 56px;
+    --nav-inset: 12px;
+    --h-bar: 68px; /* a 52px primary button plus 2 × --s-3 */
+    --chrome-alpha: 88%;
     --gutter: var(--s-5);
 
     /* -- The supporting pane, and the frame that has to grow to hold it.
@@ -252,6 +264,7 @@
       --c-text-3: #685f54;
       --c-accent: #a05801;
       --c-accent-tint: rgb(160 88 1 / 0.14);
+      --c-glow: rgb(160 88 1 / 0.10);
       --c-accent-text: #623200;
       --c-on-accent: #f6f1e7;
       --c-ok: #1f8944;
@@ -274,6 +287,7 @@
       --c-text-3: #685f54;
       --c-accent: #a05801;
       --c-accent-tint: rgb(160 88 1 / 0.14);
+      --c-glow: rgb(160 88 1 / 0.10);
       --c-accent-text: #623200;
       --c-on-accent: #f6f1e7;
       --c-ok: #1f8944;
@@ -429,9 +443,78 @@
         scrolls, so the frame never grows and never shifts sideways. -- */
 
   .shell__header,
-  .shell__nav,
+  .nav,
   .shell__bar {
     flex: none;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* The bars take no height in the column — each pulls the scroll region
+     up under itself by its own height with a negative margin — and the
+     scroll region pads by the same amount, so the first and last lines of
+     content start clear of the chrome and everything in between passes
+     under it. The padding is keyed on which bars are present rather than
+     on a class: the reader hides the header and the nav, the quiz has no
+     header at all, and `:has()` reads the state off the DOM. */
+  .shell__header {
+    height: var(--h-header);
+    margin-bottom: calc(-1 * var(--h-header));
+  }
+
+  .shell__bar {
+    margin-top: calc(-1 * (var(--h-bar) + env(safe-area-inset-bottom, 0px)));
+  }
+
+  body:has(> .shell__header:not([hidden])) .shell__scroll {
+    padding-top: var(--h-header);
+    scroll-padding-top: calc(var(--h-header) + var(--s-5));
+  }
+
+  body:has(> .nav:not([hidden])) .shell__scroll {
+    padding-bottom: calc(var(--h-nav) + 2 * var(--nav-inset) + env(safe-area-inset-bottom, 0px));
+  }
+
+  body:has(> .shell__bar:not([hidden])) .shell__scroll {
+    padding-bottom: calc(var(--h-bar) + env(safe-area-inset-bottom, 0px));
+    scroll-padding-bottom: calc(var(--h-bar) + env(safe-area-inset-bottom, 0px) + var(--s-5));
+  }
+
+  /* The material. A translucent page colour with the content blurred
+     behind it, a hairline where it meets the content. Solid wherever the
+     blur is unavailable or the person has asked for less transparency:
+     a bar that is translucent without the blur is content showing
+     through text. */
+  .shell__header,
+  .shell__bar,
+  .nav,
+  .reader__top,
+  .intro__top {
+    background: color-mix(in srgb, var(--c-surface-0) var(--chrome-alpha), transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .shell__header,
+    .shell__bar,
+    .nav,
+    .reader__top,
+    .intro__top {
+      background: var(--c-surface-0);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .shell__header,
+    .shell__bar,
+    .nav,
+    .reader__top,
+    .intro__top {
+      background: var(--c-surface-0);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 
   .shell__scroll {
@@ -444,9 +527,10 @@
     scrollbar-width: none;
     /* WCAG 2.4.11: a fixed bottom bar is the criterion's named offender and
        scroll-padding is its named fix — a focused control scrolls clear of
-       the bar instead of under it. */
-    scroll-padding-bottom: calc(var(--h-nav) + env(safe-area-inset-bottom, 0px) + var(--s-5));
+       the bar instead of under it. The values are set with the padding
+       above, per bar present. */
     scroll-padding-top: var(--s-5);
+    scroll-padding-bottom: calc(var(--h-nav) + 2 * var(--nav-inset) + env(safe-area-inset-bottom, 0px) + var(--s-5));
   }
 
   .shell__scroll::-webkit-scrollbar {
@@ -469,11 +553,42 @@
   .shell__header {
     padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
       max(var(--gutter), env(safe-area-inset-right, 0px));
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* The one ambient light in the app: a soft radial glow of the accent's
+     hue behind the brand, inside the header and nowhere else. It drifts a
+     little, slowly, when motion is welcome. Confined to the chrome so no
+     paragraph ever sits on it; its peak is measured against the brand in
+     tools/palette.mjs ("header-glow"). */
+  .shell__header::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -70px auto auto 50%;
+    width: 560px;
+    height: 200px;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--c-glow), transparent 70%);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .shell__header::before {
+      animation: glow-drift 14s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes glow-drift {
+    from { translate: -58% 0; }
+    to { translate: -42% 0; }
   }
 
   .shell__header-inner {
     justify-content: space-between;
-    min-height: 56px;
+    height: var(--h-header);
   }
 
   /* The app's own name, so it takes the serif like every other piece of
@@ -490,7 +605,6 @@
      alternative is the bar changing size as a question is answered and
      moving the control under the learner's thumb. */
   .shell__bar {
-    background: var(--c-surface-0);
     box-shadow: inset 0 1px 0 var(--c-hairline);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
@@ -572,7 +686,6 @@
     display: grid;
     gap: var(--s-3);
     padding-block: var(--s-3);
-    background: var(--c-surface-0);
   }
 
   /* The quiz strip's readout: the mode clips with an ellipsis if it must,
@@ -780,7 +893,7 @@
         own frame, the surface is wrong. -- */
   .surface {
     background: var(--c-surface-1);
-    border-radius: var(--r-2);
+    border-radius: var(--r-3);
     padding: var(--s-5);
     /* A light edge rather than a border: reads as elevation, not as a
        frame, and does not participate in the no-frames rule. */
@@ -1128,38 +1241,52 @@
   /* -- Nav. Two content modes. A <nav> landmark with aria-current, not a
         tablist: a tablist makes the whole bar one tab stop, implies panels
         in this document, and fights a hash router. -- */
+  /* A floating capsule, inset from the edges, over the content — the
+     shape a tab bar has on a 2026 phone (docs/research/premium.md §2.1)
+     — rather than a full-width strip. It takes no height in the column:
+     the negative margin pulls the scroll region up under it and the
+     region pads by the same amount. Two destinations, so the capsule is
+     never wider than 400px however wide the window. */
   .nav {
     display: flex;
-    /* The bar's ground spans the window, but its two destinations stay on
-       the page's measure — otherwise a desktop window throws them into
-       opposite corners while every other keyline is centred at 640. */
-    justify-content: center;
-    background: var(--c-surface-0);
-    box-shadow: inset 0 1px 0 var(--c-hairline);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    padding-inline: max(0px, env(safe-area-inset-left, 0px))
-      max(0px, env(safe-area-inset-right, 0px));
+    align-self: center;
+    width: min(100% - 2 * var(--gutter), 400px);
+    height: var(--h-nav);
+    padding: var(--s-2);
+    box-sizing: border-box;
+    border-radius: var(--r-pill);
+    /* The one drop shadow in the app, and §4 says why it is allowed here:
+       the capsule floats OVER the page, not on it, and a lightness step
+       cannot separate a translucent thing from what shows through it. */
+    box-shadow:
+      inset 0 0 0 1px var(--c-hairline),
+      0 8px 24px rgb(0 0 0 / 0.18);
+    margin-top: calc(-1 * (var(--h-nav) + var(--nav-inset) + env(safe-area-inset-bottom, 0px)));
+    margin-bottom: calc(var(--nav-inset) + env(safe-area-inset-bottom, 0px));
   }
 
   .nav__item {
     flex: 1 1 0;
-    max-width: calc(var(--w-page) / 2);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--s-1);
-    min-height: var(--h-nav);
+    gap: 0;
+    min-height: 44px;
+    border-radius: var(--r-pill);
     font-size: var(--t-meta);
     font-weight: 600;
     color: var(--c-text-2);
     text-decoration: none;
+    transition: background-color var(--d-micro) var(--ease-standard);
   }
 
-  /* Selected state is carried by a filled icon and full-strength text, not
-     by hue alone — so it survives greyscale and forced-colors. */
+  /* Selected state is carried by a filled icon, full-strength text and a
+     capsule — never by hue alone, so it survives greyscale and
+     forced-colors. */
   .nav__item[aria-current] {
     color: var(--c-text-1);
+    background: color-mix(in srgb, var(--c-surface-2) 85%, transparent);
   }
 
   /* -- Progress. Also the reader's position indicator: on mobile, readers
@@ -1176,6 +1303,7 @@
     height: 100%;
     background: var(--c-accent);
     border-radius: inherit;
+    transition: width var(--d-view) var(--ease-standard);
   }
 
   /* -- Feedback. Four redundant channels — glyph, word, tint and the answer
@@ -1488,6 +1616,17 @@
 
   /* Motion is opted into, so the reduced version is the fallback rather
      than an override that also nukes meaningful feedback. */
+  /* A route change is one crossfade, the same everywhere, made by the
+     browser from two snapshots (View Transitions, baseline in every
+     engine since late 2025); js/home.js only asks for it when the person
+     has not asked for less motion, and a browser without the API simply
+     switches. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--d-enter);
+    animation-timing-function: var(--ease-standard);
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     .animate-in {
       animation: fade-rise var(--d-enter) var(--ease-out) both;
