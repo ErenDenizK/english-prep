@@ -497,7 +497,15 @@ function newContentNote(lessons) {
   return `${fresh.length} konuya yeni sorular eklendi.`;
 }
 
-function renderLessonRow(lesson, status) {
+/**
+ * @param {{sub?: boolean}} [options] - `sub: false` drops the summary
+ *   line. The topic screen does: its prose has just described the six
+ *   lessons, each lesson opens on the same summary as its lead, and six
+ *   two-line subs were 240px of a five-screen page saying it a third
+ *   time. In search results the summary is what a hit is matched on, so
+ *   there it stays.
+ */
+function renderLessonRow(lesson, status, { sub = true } = {}) {
   const row = el("button", "row");
   row.type = "button";
   row.addEventListener("click", () => openLessonByHash(lesson.id));
@@ -506,7 +514,9 @@ function renderLessonRow(lesson, status) {
 
   const main = el("span", "row__main");
   main.appendChild(englishTitle("span", "row__title t-en", lesson.category));
-  main.appendChild(el("span", "row__sub", lesson.summary ?? ""));
+  if (sub) {
+    main.appendChild(el("span", "row__sub", lesson.summary ?? ""));
+  }
   row.appendChild(main);
 
   const trail = el("span", "row__trail");
@@ -940,10 +950,13 @@ function renderIntro(topic, lessons, progress) {
   if (intro.parts?.length) {
     const section = el("section", "stack stack--tight");
     section.appendChild(el("h2", "t-label", intro.partsHeading ?? "Parçaları"));
-    const list = el("ul", "stack stack--tight");
+    const list = el("ul", "items");
     for (const part of intro.parts) {
-      const entry = el("li", "stack stack--tight");
-      const name = el("p", "t-ui");
+      const entry = el("li", "stack stack--snug");
+      // Body, not the one-line tier: the name in 600, the gloss after it
+      // at 400. As a bold 15px line between serif examples this was the
+      // hardest-to-read thing on the screen, and the owner said so.
+      const name = el("p", "t-body");
       name.appendChild(el("strong", null, part.name));
       if (part.gloss) {
         name.appendChild(document.createTextNode(` — ${part.gloss}`));
@@ -979,7 +992,7 @@ function renderIntro(topic, lessons, progress) {
   list.appendChild(el("h2", "t-label", "Dersler"));
   const rows = el("div");
   for (const lesson of lessons) {
-    rows.appendChild(renderLessonRow(lesson, statusOf(lesson, progress)));
+    rows.appendChild(renderLessonRow(lesson, statusOf(lesson, progress), { sub: false }));
   }
 
   // And a way to test the topic, from the screen that introduces it. It

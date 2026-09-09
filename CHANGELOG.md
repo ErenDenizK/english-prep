@@ -5,6 +5,28 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.55 — 2026-09-09
+
+**Section labels in the accent; the bar's two buttons equal; the topic
+screen's parts list at body size.** Three things the owner named on the
+reader after v0.54:
+
+- `.t-label` — every section opener, every block label, the kicker over
+  a lesson's title — is the accent's text colour rather than the second
+  grey. A label in the same grey as every quiet line was a label the eye
+  skipped; this is the accent marking structure, its one job besides the
+  filled action, and it is measured as text (Lc 77 dark, 76 light at
+  15/600).
+- The action bar's retreat and advance are equal halves. The 1:2 split,
+  then the label-width retreat, both read as a broken structure; the fill
+  still says which is forward, and every pair the app has fits at 320.
+- The topic screen's *parts* list — the one thing between two serif
+  examples — was a bold 15px line and is a body line now, the name in
+  600. The same screen's lesson rows drop their summary line: the prose
+  above has just described the six lessons and each opens on the same
+  sentence, and six two-line subs were 240px of a five-screen page. In
+  search results, where the summary is what a hit matched on, it stays.
+
 ## v0.54 — 2026-09-09
 
 **The light theme is paper.** The owner used the cool near-white of

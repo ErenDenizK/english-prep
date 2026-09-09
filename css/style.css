@@ -515,15 +515,12 @@
     white-space: nowrap;
   }
 
-  /* Two buttons in a bar are a retreat and an advance, and they are not
-     equals. The retreat is as wide as its label and no wider; the advance
-     takes everything else. A 1:2 split by width gave the retreat 93px at
-     320, which holds "Geri" and not "Konulara dön" at any legal size —
-     the label wrapped and the bar grew. At the reading measure the same
-     rule still hands the forward action well over twice the width. */
-  .shell__bar-inner > .btn--secondary:not(:only-child) {
-    flex: 0 0 auto;
-  }
+  /* Two buttons in a bar are equals in width. They were not — the
+     advance took twice the retreat, then the retreat took only its
+     label's width — and the owner read both as a broken structure. The
+     fill still says which one is forward. Equal halves hold every pair
+     the app has at 320 (measured: "Konulara dön" / "Derse başla" at
+     140px each with the bar's 12px padding). */
 
   .shell__bar-inner > .shell__bar-hint {
     flex: 1;
@@ -709,7 +706,12 @@
     line-height: var(--t-meta-lh);
     font-weight: 600;
     letter-spacing: 0.09em;
-    color: var(--c-text-2);
+    /* The accent's text colour, not the second grey: a label in the same
+       grey as every quiet line was a label the eye skipped, which the
+       owner reported twice. This is the accent marking structure — the
+       one job it has besides the filled action — and it is measured as
+       text in PAIRS (Lc 77 dark, 76 light at 15/600). */
+    color: var(--c-accent-text);
   }
 
   /* English: the serif, always at block level.
