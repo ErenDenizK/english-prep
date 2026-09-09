@@ -368,40 +368,15 @@ async function runFlow(page, viewport) {
   // the check compares it to the manifest rather than to a number — the
   // whole point of counting it is that shipping a topic updates it and
   // nothing else has to remember to.
-  ok(profileText.includes("Neler var, neler geliyor"), "yol haritası Profil'de");
-  const expected = await page.evaluate(async () => {
-    const manifest = await (await fetch("data/manifest.json")).json();
-    const live = manifest.topics.filter((topic) => !topic.comingSoon);
-    return {
-      topics: live.length,
-      lessons: live.reduce((total, topic) => total + (topic.lessonCount ?? 0), 0),
-      questions: live.reduce((total, topic) => total + (topic.questionCount ?? 0), 0),
-    };
-  });
-  ok(
-    profileText.includes(
-      `Şu an ${expected.topics} konu, ${expected.lessons} ders, ${expected.questions} soru.`
-    ),
-    `var olan içerik manifestten sayılıyor (${expected.topics}/${expected.lessons}/${expected.questions})`
-  );
-  // A roadmap row must not look like a control: it would be promising a
-  // screen that does not exist, which is the one thing it must not do.
-  const roadmapRows = page.locator("#profile-container section", {
-    hasText: "Neler var, neler geliyor",
-  });
-  ok((await roadmapRows.locator(".row").count()) > 0, "yol haritası satırları çiziliyor");
-  ok(
-    (await roadmapRows.locator("button.row, a.row").count()) === 0,
-    "yol haritası satırları tıklanabilir görünmüyor"
-  );
-  // And no date is promised anywhere in it.
-  const roadmapText = await roadmapRows.first().innerText();
-  ok(
-    !/\b(20\d\d|ocak|şubat|mart|nisan|mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık)\b/i.test(
-      roadmapText
-    ),
-    "yol haritası tarih sözü vermiyor"
-  );
+  // Beta1 inverted this block. The roadmap section — "Neler var, neler
+  // geliyor", with Bitti/Planlandı chips and the app describing its own
+  // review process — was an admission that the app is unfinished, on the
+  // screen a stranger opens to see who they are dealing with. It is gone,
+  // and so is the first-run card's "Uygulama hâlâ yazılıyor". The
+  // coverage section stays: what the app does and does not practise is a
+  // fact about the exam, not an apology about the app.
+  ok(!profileText.includes("Neler var, neler geliyor"), "yol haritası bölümü Profil'de yok");
+  ok(!/hâlâ yazılıyor|geliştirme aşamasında/i.test(profileText), "Profil bitmemişlik itiraf etmiyor");
 
   // The banner that used to sit above every screen is gone, on every
   // screen: it cost 48px of the 320 fold on every arrival to say
@@ -1598,8 +1573,8 @@ async function runIndexStates(browser) {
     "başla düğmesi ilk derse değil, konunun kendisine giriyor"
   );
   ok(
-    (await view.page.locator("#lesson-bar .btn--primary").innerText()).trim() === "Derslere geç",
-    "konu ekranı oradan derslere devrediyor"
+    (await view.page.locator("#lesson-bar .btn--primary").innerText()).trim() === "Derse başla",
+    "konu ekranı oradan ilk derse devrediyor"
   );
   await view.context.close();
 
@@ -1792,7 +1767,9 @@ async function runIndexStates(browser) {
   // missing. Reading the whole view made the check pass by luck and fail
   // the moment an unrelated line mentioned a section by name.
   const doneCard = await view.page.locator("#view-egitim .surface").first().innerText();
-  ok(/okuma \(21 puan\)/.test(doneCard), "kapsanmayan bölümler adıyla söyleniyor");
+  // Case-insensitive since v0.46: the card now opens the sentence with
+  // the section name, capitalised, and ends it with "burada yok".
+  ok(/okuma \(21 puan\)/i.test(doneCard), "kapsanmayan bölümler adıyla söyleniyor");
   ok(
     !/anlamca en yakın cümle/.test(doneCard),
     "kapsanan bölüm eksik diye sayılmıyor (manifestten okunuyor)"

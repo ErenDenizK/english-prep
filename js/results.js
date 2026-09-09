@@ -58,7 +58,7 @@ function renderScore(result) {
  * @param {(key: string) => string|null} [resolveLessonId] - when a row maps
  *   to a lesson, the row becomes a link into the Eğitim tab
  */
-function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
+function renderBreakdown(heading, breakdown, resolveName, resolveLessonId, { hedge = true } = {}) {
   const keys = Object.keys(breakdown);
   // A one-row breakdown just restates the score above it.
   if (keys.length <= 1) {
@@ -73,8 +73,10 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
   // claim, not the data: the rows stay, because a learner is entitled to
   // see their own test broken down. Same hedge, same threshold and the
   // same reasoning as the weak-spot list in Profil.
+  // Printed once, on the first breakdown: the second one sits directly
+  // under it and the same sentence twice reads as a template.
   const most = Math.max(...keys.map((key) => breakdown[key].total));
-  if (most < MIN_ITEMS_FOR_WEAK_ENTRY) {
+  if (hedge && most < MIN_ITEMS_FOR_WEAK_ENTRY) {
     section.appendChild(
       el(
         "p",
@@ -362,7 +364,8 @@ async function init() {
       "Kategoriye göre",
       result.categoryBreakdown,
       (category) => category,
-      (category) => lessonIdByCategory.get(category) ?? null
+      (category) => lessonIdByCategory.get(category) ?? null,
+      { hedge: false }
     );
     if (categoryBreakdown) {
       aside.appendChild(categoryBreakdown);

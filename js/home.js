@@ -89,17 +89,17 @@ function renderMistakeBook() {
   const intro = el("div", "stack stack--tight");
   intro.appendChild(el("h2", "t-title", "Yanlış defteri"));
 
+  // An empty book is one line, not a card. A permanent card with a
+  // title, a paragraph and nothing to tap sat above the mixed test for
+  // every learner who had never got anything wrong — which is every new
+  // learner — and read as a feature that had not been built yet.
   if (book.length === 0) {
-    intro.appendChild(
-      el(
-        "p",
-        "t-body",
-        "Şu an defterinde bekleyen soru yok — yanlışlarını temizledin, " +
-          "soruların hepsini bildiğin anlamına gelmez."
-      )
+    return el(
+      "p",
+      "t-meta",
+      "Yanlış defterinde bekleyen soru yok — bu, hepsini bildiğin anlamına " +
+        "gelmez; yanlış yaptığın sorular burada birikir."
     );
-    surface.appendChild(intro);
-    return surface;
   }
 
   intro.appendChild(
