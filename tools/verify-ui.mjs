@@ -73,6 +73,14 @@ const VIEWPORTS = [
   { name: "390 (telefon)", width: 390, height: 844 },
   { name: "768 (tablet)", width: 768, height: 1024 },
   { name: "1280 (masaüstü)", width: 1280, height: 900 },
+  // The light theme is a second palette on the same geometry, so one
+  // full journey with the stored preference set to `light` is the
+  // honest cost: every screen the flow lands on is audited once more
+  // for console errors, overflow, targets and the rendered type. WCAG
+  // conformance is per page and per variation, and a colour mode is a
+  // variation. Before this the light theme had been looked at by eye on
+  // four screens and never measured.
+  { name: "390 (telefon, açık tema)", width: 390, height: 844, theme: "light" },
 ];
 
 // §8.1: 44 is the secondary-class minimum hit area, and 24 the absolute
@@ -2482,6 +2490,81 @@ async function runOffline(browser) {
 }
 
 /** The parts of §8 that do not vary with the viewport. */
+/**
+ * The theme is a state, not a stylesheet: the stored preference and the
+ * phone's setting both have to reach the page, and the page has to say
+ * which one it is painting in three places at once — the root attribute,
+ * the page colour, and the browser chrome's `theme-color`.
+ */
+async function runThemes(browser) {
+  const paint = async (page) =>
+    page.evaluate(() => ({
+      theme: document.documentElement.getAttribute("data-theme"),
+      background: getComputedStyle(document.body).backgroundColor,
+      themeColor: document.querySelector('meta[name="theme-color"]')?.content ?? null,
+      colorScheme: document.querySelector('meta[name="color-scheme"]')?.content ?? null,
+    }));
+  const luminance = (rgb) => {
+    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+    return (r + g + b) / 3;
+  };
+
+  // 1 — a stored `light` paints light, on every page, before first paint.
+  for (const path of ["index.html", "quiz.html", "results.html"]) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    await context.addInitScript(() => localStorage.setItem("englishPrep.theme", "light"));
+    const page = await context.newPage();
+    await page.goto(`${BASE}/${path}`, { waitUntil: "domcontentloaded" });
+    const state = await paint(page);
+    ok(state.theme === "light", `${path}: kayıtlı tercih ilk boyadan önce uygulanıyor (${state.theme})`);
+    ok(luminance(state.background) > 200, `${path}: açık temada zemin açık (${state.background})`);
+    ok(state.themeColor === "#f8fafd", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
+    ok(state.colorScheme === "light", `${path}: color-scheme açık (${state.colorScheme})`);
+    await context.close();
+  }
+
+  // 2 — no stored preference: the phone decides. (There is no third
+  // case to test — a browser with no opinion reports `light`, which is
+  // why the stylesheet's "default is dark" only ever means the dark
+  // branch of the media query.)
+  for (const [scheme, expectLight] of [["light", true], ["dark", false]]) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: scheme });
+    const page = await context.newPage();
+    await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+    const state = await paint(page);
+    ok(state.theme === null, `sistem: ${scheme} — kök öznitelik boş`);
+    ok(
+      (luminance(state.background) > 200) === expectLight,
+      `sistem: ${scheme} — zemin ${expectLight ? "açık" : "koyu"} (${state.background})`
+    );
+    await context.close();
+  }
+
+  // 3 — choosing in Profil repaints at once and survives a reload, and
+  // `Sistem` hands the decision back to the phone.
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: "light" });
+  const page = await context.newPage();
+  await page.goto(`${BASE}/index.html#profil`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#profile-container .listbox__trigger");
+  const themeBox = page.locator("#profile-container .listbox").last();
+  await themeBox.locator(".listbox__trigger").click();
+  await themeBox.locator(".listbox__option").filter({ hasText: "Koyu" }).click();
+  let state = await paint(page);
+  ok(state.theme === "dark" && luminance(state.background) < 60, `Koyu seçince hemen koyu (${state.background})`);
+  ok(state.themeColor === "#0c1117", `Koyu seçince theme-color koyu (${state.themeColor})`);
+  await page.reload({ waitUntil: "networkidle" });
+  state = await paint(page);
+  ok(state.theme === "dark", "seçim yenilemeden sonra duruyor");
+  await page.waitForSelector("#profile-container .listbox__trigger");
+  const again = page.locator("#profile-container .listbox").last();
+  await again.locator(".listbox__trigger").click();
+  await again.locator(".listbox__option").filter({ hasText: "Sistem" }).click();
+  state = await paint(page);
+  ok(state.theme === null && luminance(state.background) > 200, `Sistem seçince telefon karar veriyor (${state.background})`);
+  ok(state.colorScheme === "dark light", `Sistem seçince color-scheme ikisini de sayıyor (${state.colorScheme})`);
+  await context.close();
+}
+
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
   await page.waitForSelector(".row");
@@ -2844,10 +2927,18 @@ try {
     const context = await browser.newContext({
       viewport: { width: viewport.width, height: viewport.height },
     });
+    if (viewport.theme) {
+      // The stored preference, read by the blocking head script before
+      // the stylesheet lands — the same path a learner's choice takes.
+      await context.addInitScript((theme) => localStorage.setItem("englishPrep.theme", theme), viewport.theme);
+    }
     const page = await context.newPage();
     await runFlow(page, viewport);
     await context.close();
   }
+
+  console.log("\n=== iki tema ===");
+  await runThemes(browser);
 
   console.log("\n=== önce kendin düşün ===");
   await runThinkFirst(browser);
