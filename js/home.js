@@ -32,7 +32,7 @@ import { createListbox } from "./listbox.js";
 import { showLessonIndex, openLesson, openTopicIntro, closeReader } from "./education.js";
 import { initProfileTab } from "./profile.js";
 import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook } from "./quiz-launch.js";
-import { el, clear, pane, sectionHeading } from "./dom.js";
+import { el, clear, pane, sectionHeading, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
@@ -87,7 +87,11 @@ function renderMistakeBook() {
 
   const surface = el("section", "surface stack");
   const intro = el("div", "stack stack--tight");
-  intro.appendChild(el("h2", "t-title", "Yanlış defteri"));
+  // A label over a figure, where the mixed-test card is a title over a
+  // paragraph: this card is about a number. (Not the display size — the
+  // header's brand is 22, the other card's title 28, and a tab screen is
+  // capped at four sizes.)
+  intro.appendChild(el("h2", "t-label", "Yanlış defteri"));
 
   // An empty book is one line, not a card. A permanent card with a
   // title, a paragraph and nothing to tap sat above the mixed test for
@@ -96,18 +100,22 @@ function renderMistakeBook() {
   if (book.length === 0) {
     return el(
       "p",
-      "t-meta",
+      "t-quiet",
       "Yanlış defterinde bekleyen soru yok — bu, hepsini bildiğin anlamına " +
         "gelmez; yanlış yaptığın sorular burada birikir."
     );
   }
 
+  // The count is the one fact on this card and it sat inside a sentence.
+  const figure = el("div");
+  figure.appendChild(el("div", "stat__value t-num", String(book.length)));
+  figure.appendChild(el("div", "stat__label", "bekleyen soru"));
+  intro.appendChild(figure);
   intro.appendChild(
     el(
       "p",
       "t-body",
-      `Yanlış yaptığın ${book.length} soru burada; bir soru, ayrı iki günde ` +
-        "doğru cevapladığın anda listeden çıkar."
+      "Bir soru, ayrı iki günde doğru cevapladığın anda listeden çıkar."
     )
   );
   surface.appendChild(intro);
@@ -298,10 +306,11 @@ function renderWeakSpots(entries) {
     const title = el("span", "row__title t-en", entry.category);
     title.lang = "en";
     main.appendChild(title);
-    main.appendChild(el("span", "row__sub", "Bu kategoriden pratik yap"));
+    // No "Bu kategoriden pratik yap" under every row: the heading's hint
+    // says it once.
     row.appendChild(main);
 
-    const trail = el("span", "row__trail t-num", `${entry.correct}/${entry.total}`);
+    const trail = el("span", "row__trail t-num", `${entry.correct} / ${entry.total}`);
     row.appendChild(trail);
 
     row.addEventListener("click", () => {
@@ -315,11 +324,9 @@ function renderWeakSpots(entries) {
 }
 
 function topicMeta(topic) {
-  const parts = [`${topic.questionCount} soru`];
-  if (topic.lessonCount) {
-    parts.push(`${topic.lessonCount} ders`);
-  }
-  return parts.join(" · ");
+  // Questions only. "6 ders" on the Test tab was the other tab's number,
+  // and a row here is the way into a test, not into a lesson.
+  return `${topic.questionCount} soru`;
 }
 
 function renderTopicRow(topic) {
@@ -417,7 +424,7 @@ async function renderTestTab() {
     console.error(error);
     clear(testPanel);
     testPanel.classList.remove("split");
-    testPanel.appendChild(el("p", "t-meta", "Konular yüklenemedi. Sayfayı yenile."));
+    testPanel.appendChild(failureCard("Konular", () => renderTestTab()));
     return;
   }
 
@@ -456,7 +463,7 @@ async function renderTestTab() {
 
   if (manifest.topics.length === 0) {
     // Nothing to put in the second column, so there is no second column.
-    aside.appendChild(el("p", "t-meta", "Henüz konu eklenmedi."));
+    aside.appendChild(el("p", "t-quiet", "Henüz konu eklenmedi."));
     testPanel.appendChild(aside);
     return;
   }

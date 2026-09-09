@@ -58,8 +58,15 @@ const LANDING_BUDGET_SCREENS = 3;
  * Until then this was only measured on whichever topic the intro loop
  * ended on; it is measured on every one now, and the widest (academic
  * nouns) was already at 4.13 unmeasured.
+ *
+ * 5.25 since v0.49: a row's sub is two lines rather than one with an
+ * ellipsis (the gloss is the row's only explanation), which is 20px on
+ * each of six rows, and the intro's example notes are sentences at 18
+ * rather than captions at 15. Measured: 3222px, 5.03 screens, on the
+ * same longest topic. The quarter is those two changes and nothing else;
+ * the next thing that lands here pays for itself.
  */
-const TOPIC_BUDGET_SCREENS = 5;
+const TOPIC_BUDGET_SCREENS = 5.25;
 
 const VIEWPORTS = [
   { name: "320 (dar telefon)", width: 320, height: 640 },
@@ -248,6 +255,11 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
         (screens > maxScreens ? ` — bütçe ${maxScreens}` : "")
     );
   }
+}
+
+/** The mistake book's count, which is a Stat on its card rather than a clause. */
+async function bookCount(page) {
+  return (await page.locator("#test-panel .stat__value").first().textContent()).trim();
 }
 
 /**
@@ -662,7 +674,7 @@ async function runMistakeBook(browser) {
 
   const panel = await page.locator("#test-panel").textContent();
   ok(panel.includes("Yanlış defteri"), "yanlıştan sonra defter kartı çıkıyor");
-  ok(/Yanlış yaptığın 1 soru burada/.test(panel), "defter yalnızca yanlış olanı sayıyor");
+  ok((await bookCount(page)) === "1", "defter yalnızca yanlış olanı sayıyor");
   await auditLayout(page, "yanlış defteri", 390);
 
   await page.locator("button", { hasText: "Yanlışları çalış" }).click();
@@ -692,10 +704,7 @@ async function runMistakeBook(browser) {
   });
   await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
   await page.waitForSelector("#test-panel");
-  ok(
-    /Yanlış yaptığın 1 soru burada/.test(await page.locator("#test-panel").textContent()),
-    "tek doğru cevap soruyu defterden düşürmüyor"
-  );
+  ok((await bookCount(page)) === "1", "tek doğru cevap soruyu defterden düşürmüyor");
 
   // A second correct answer, on a second day, does.
   await page.evaluate(() => {
@@ -812,7 +821,7 @@ async function runMistakeRuns(browser) {
   await page.waitForSelector("#test-panel .surface");
 
   const panel = await page.locator("#test-panel").innerText();
-  ok(/Yanlış yaptığın 14 soru burada/.test(panel), "defter on dört soruyu sayıyor");
+  ok((await bookCount(page)) === "14", "defter on dört soruyu sayıyor");
   ok(panel.includes("Soru sayısı"), "defterde de soru sayısı seçilebiliyor");
 
   const bookListbox = page.locator("#test-panel .listbox").first();
@@ -980,10 +989,7 @@ async function runEmptiedBook(browser) {
   });
   await page.reload({ waitUntil: "networkidle" });
   await page.waitForSelector("#test-panel .surface");
-  ok(
-    /Yanlış yaptığın 1 soru burada/.test(await page.locator("#test-panel").innerText()),
-    "tek soruluk defter kuruldu"
-  );
+  ok((await bookCount(page)) === "1", "tek soruluk defter kuruldu");
 
   await page.locator("button", { hasText: "Yanlışları çalış" }).click();
   await page.waitForSelector(".option");
@@ -1070,9 +1076,9 @@ async function runBackupNote(browser) {
     });
     ok(!box.wrapped, `${width}px: kapatma düğmesi alt satıra düşmüyor`);
     ok(box.beside, `${width}px: düğme metnin sağında`);
-    // The band was 72–88px when the button wrapped; one row of target
-    // height is what it should be.
-    ok(box.rowHeight <= 56, `${width}px: not tek satır yüksekliğinde (${box.rowHeight}px)`);
+    // The band was 72–88px when the button wrapped. A quiet sentence at
+    // body size is two lines at 320 (56px) and must not be three.
+    ok(box.rowHeight <= 56, `${width}px: not en fazla iki satır (${box.rowHeight}px)`);
     await auditLayout(page, `yedek notu ${width}`, width);
 
     // And it goes away for good, which is the whole contract: a reminder
@@ -1523,7 +1529,11 @@ async function runIndexStates(browser) {
 
   // 1 — never opened. No tour, and no progress bar reading zero.
   let view = await open(null);
-  ok(view.text.includes("English Prep"), "ilk açılışta uygulamanın ne olduğu yazıyor");
+  ok(view.text.includes("yeterlik sınavı için"), "ilk açılışta uygulamanın ne olduğu yazıyor");
+  ok(
+    !(await view.page.locator("#view-egitim .surface").first().innerText()).includes("English Prep"),
+    "ilk açılış kartı markayı başlığın altında tekrarlamıyor"
+  );
 
   // The index is eight topic rows, not forty-eight lesson rows. It was
   // 5,332px — 8.3 screens — and a learner reported it as the topics
@@ -2555,7 +2565,7 @@ async function runAccessibility(page) {
   // §8.3 — native <dialog>: focus containment, Escape, focus restore.
   await page.locator("#profile-trigger").click();
   await page.waitForSelector("#profile-container .surface");
-  await page.locator("#profile-container .btn--secondary").last().click();
+  await page.locator("#profile-container button", { hasText: "Geçmişi sıfırla" }).click();
   await page.waitForSelector("dialog[open]");
   ok(
     await page.evaluate(() => document.activeElement.id) === "confirm-dialog-cancel",

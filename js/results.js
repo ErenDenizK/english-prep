@@ -109,7 +109,7 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
     main.appendChild(name);
     row.appendChild(main);
 
-    const trail = el("span", "row__trail t-num", `${stats.correct}/${stats.total}`);
+    const trail = el("span", "row__trail t-num", `${stats.correct} / ${stats.total}`);
     if (lessonId) {
       trail.appendChild(icon("chevron-right", { size: 20 }));
     }
@@ -377,7 +377,7 @@ async function init() {
     aside.appendChild(
       el(
         "p",
-        "t-meta",
+        "t-quiet",
         "Bu testte her başlıktan bir-iki soru çıktı; bu bir sıralama, bir sonuç değil."
       )
     );

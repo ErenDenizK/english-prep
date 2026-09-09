@@ -118,9 +118,67 @@ export function sectionHeading(text, hint) {
   const head = el("div", "stack stack--tight");
   head.appendChild(el("h2", "t-label", text));
   if (hint) {
-    head.appendChild(el("p", "t-meta", hint));
+    // A sentence, so the quiet pair and not the one-line tier.
+    head.appendChild(el("p", "t-quiet", hint));
   }
   return head;
+}
+
+/**
+ * The one way the app says something failed to load. It had three — a
+ * grey line saying "Sayfayı yenile", a card saying "Tekrar dene", and a
+ * quiz message with an "Ana sayfa" button — with three vocabularies for
+ * one event. One card, one sentence, and a retry that does the thing
+ * again rather than telling the learner to.
+ *
+ * @param {string} what - the noun that failed, in the nominative:
+ *   "Dersler", "Konular", "Test"
+ * @param {() => void} retry
+ * @param {{label: string, onClick?: () => void, href?: string}} [back]
+ */
+export function failureCard(what, retry, back) {
+  const card = el("section", "surface stack");
+  const head = el("div", "stack stack--tight");
+  head.appendChild(el("h2", "t-title", `${what} yüklenemedi`));
+  head.appendChild(
+    el("p", "t-body", "Bağlantını kontrol edip tekrar dene. İlerlemen olduğu gibi duruyor.")
+  );
+  card.appendChild(head);
+
+  const again = el("button", "btn btn--primary", "Tekrar dene");
+  again.type = "button";
+  again.addEventListener("click", retry);
+  card.appendChild(again);
+
+  if (back) {
+    const control = back.href ? el("a", "btn btn--quiet", back.label) : el("button", "btn btn--quiet", back.label);
+    if (back.href) {
+      control.href = back.href;
+    } else {
+      control.type = "button";
+      control.addEventListener("click", back.onClick);
+    }
+    card.appendChild(control);
+  }
+  return card;
+}
+
+/**
+ * A text button: a quiet action that sits on the keyline with a chevron,
+ * for the second thing a card offers. It was a centred grey label with
+ * no shape, which read as something that had lost its button.
+ *
+ * @param {string} label
+ * @param {() => void} onClick
+ * @param {(name: string, options?: object) => SVGElement} icon - passed
+ *   in rather than imported, so this module stays free of the icon set
+ */
+export function textButton(label, onClick, icon) {
+  const button = el("button", "btn btn--quiet btn--text", label);
+  button.type = "button";
+  button.appendChild(icon("chevron-right", { size: 20 }));
+  button.addEventListener("click", onClick);
+  return button;
 }
 
 /**

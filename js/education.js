@@ -51,7 +51,7 @@ import { renderOptions } from "./answers.js";
 import { startTopicTest, startCategoryPractice, startMixedTest } from "./quiz-launch.js";
 import { TOPIC_INTRO_PREFIX } from "./config.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
-import { el, clear, pane, appendProse, appendInline, sectionHeading } from "./dom.js";
+import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard, textButton } from "./dom.js";
 import { icon } from "./icons.js";
 import { announce, scrollToTop, createActionBar } from "./shell.js";
 
@@ -206,7 +206,9 @@ function renderWelcome(firstLesson) {
   const card = el("section", "surface stack");
 
   const head = el("div", "stack stack--tight");
-  head.appendChild(el("h2", "t-title", "English Prep"));
+  // Not the brand again: the header 150px above already says it, and the
+  // card's job is to say what to do. The sentence says what the app is.
+  head.appendChild(el("h2", "t-label", "Başlamak için"));
   head.appendChild(
     el(
       "p",
@@ -239,7 +241,7 @@ function renderWelcome(firstLesson) {
     card.appendChild(
       el(
         "p",
-        "t-meta",
+        firstLesson.hasIntro ? "t-quiet" : "t-meta",
         firstLesson.hasIntro
           ? "Önce bu konunun ne olduğu, sonra altı ders."
           : `${firstLesson.topicTitle} · ${firstLesson.category}`
@@ -247,12 +249,9 @@ function renderWelcome(firstLesson) {
     );
   }
 
-  const test = el("button", "btn btn--quiet", "Ya da kısa bir testle başla");
-  test.type = "button";
-  test.addEventListener("click", () => {
-    startMixedTest(5).catch(console.error);
-  });
-  card.appendChild(test);
+  card.appendChild(
+    textButton("Ya da kısa bir testle başla", () => startMixedTest(5).catch(console.error), icon)
+  );
 
   return card;
 }
@@ -314,20 +313,14 @@ function renderReEntryCard(lesson, entry, news, nextUnread, totals) {
   card.appendChild(recall);
 
   if (lesson) {
-    const resume = el("button", "btn btn--quiet", "Kaldığın yerden devam et");
-    resume.type = "button";
-    resume.addEventListener("click", () => openLessonByHash(lesson.id));
-    card.appendChild(resume);
+    card.appendChild(textButton("Kaldığın yerden devam et", () => openLessonByHash(lesson.id), icon));
   } else if (nextUnread) {
-    const next = el("button", "btn btn--quiet", "Sıradaki derse geç");
-    next.type = "button";
-    next.addEventListener("click", () => openLessonByHash(nextUnread.id));
-    card.appendChild(next);
+    card.appendChild(textButton("Sıradaki derse geç", () => openLessonByHash(nextUnread.id), icon));
     card.appendChild(el("p", "t-meta", `${nextUnread.topicTitle} · ${nextUnread.category}`));
   }
 
   if (news) {
-    card.appendChild(el("p", "t-meta", news));
+    card.appendChild(el("p", "t-quiet", news));
   }
 
   return card;
@@ -465,7 +458,7 @@ function renderAllDoneCard(lessons, missingSections) {
   // around the same phrase. This card printed the phrase bare, so the
   // all-done state ended on a lowercase fragment.
   const missing = `${missingSections.charAt(0).toLocaleUpperCase("tr")}${missingSections.slice(1)} burada yok.`;
-  card.appendChild(el("p", "t-meta", missing));
+  card.appendChild(el("p", "t-quiet", missing));
 
   return card;
 }
@@ -541,7 +534,7 @@ function renderIndex() {
   indexContainer.classList.remove("split");
 
   if (lessons.length === 0) {
-    indexContainer.appendChild(el("p", "t-meta", "Henüz ders eklenmedi."));
+    indexContainer.appendChild(el("p", "t-quiet", "Henüz ders eklenmedi."));
     return;
   }
 
@@ -641,9 +634,9 @@ function renderBackupNudge() {
   }
 
   const row = el("div", "note");
-  row.appendChild(
-    el("p", "t-meta", "Çalıştıkların yalnızca bu tarayıcıda. Profil'den yedek alabilirsin.")
-  );
+  // Two lines at 320 beside the 48px button, measured; the longer
+  // sentence it replaced was three at body size.
+  row.appendChild(el("p", "t-quiet", "İlerlemen yalnızca bu tarayıcıda; Profil'den yedek al."));
 
   const dismiss = el("button", "btn btn--quiet btn--icon");
   dismiss.type = "button";
@@ -780,7 +773,7 @@ function renderTopicIndex(lessons, progress) {
   // identical weight one line apart, which reads as a pile rather than
   // as a hierarchy. The sentence was the part worth keeping.
   section.appendChild(
-    el("p", "t-meta", "Her konu, önce ne olduğunu anlatır; dersler içinde.")
+    el("p", "t-quiet", "Her konu, önce ne olduğunu anlatır; dersler içinde.")
   );
 
   // Grouped the way the Test tab groups, which until now it was not: the
@@ -835,7 +828,7 @@ function renderTopicGroup(heading, lessons, progress) {
     if (done === inTopic.length) {
       trail.appendChild(el("span", "chip chip--ok", "Tamamlandı"));
     } else {
-      trail.appendChild(el("span", "t-num", `${done}/${inTopic.length}`));
+      trail.appendChild(el("span", "t-num", `${done} / ${inTopic.length}`));
     }
     trail.appendChild(icon("chevron-right", { size: 20 }));
     row.appendChild(trail);
@@ -908,7 +901,7 @@ function renderIntro(topic, lessons, progress) {
       const entry = el("li", "stack stack--tight");
       entry.appendChild(englishTitle("p", "t-lead t-en", item.en));
       if (item.note) {
-        const note = el("p", "t-meta");
+        const note = el("p", "t-quiet");
         appendInline(note, item.note);
         entry.appendChild(note);
       }
@@ -1040,9 +1033,7 @@ export async function openTopicIntro(topicId) {
     console.error(error);
     history.replaceState(null, "", "#egitim");
     await showLessonIndex();
-    indexContainer.prepend(
-      el("p", "t-meta", "Bu konu yüklenemedi. Bağlantını kontrol edip tekrar dene.")
-    );
+    indexContainer.prepend(failureCard("Konu", () => openTopicIntro(topicId)));
     return;
   }
 
@@ -1742,7 +1733,7 @@ export async function showLessonIndex() {
     console.error(error);
     clear(indexContainer);
     indexContainer.classList.remove("split");
-    indexContainer.appendChild(el("p", "t-meta", "Dersler yüklenemedi. Sayfayı yenile."));
+    indexContainer.appendChild(failureCard("Dersler", () => showLessonIndex()));
   }
 }
 
@@ -1797,22 +1788,9 @@ export async function openLesson(lessonId) {
     state.reader = null;
     setReaderChrome(false);
     clear(indexContainer);
-    const failure = el("section", "surface stack");
-    const head = el("div", "stack stack--tight");
-    head.appendChild(el("h2", "t-title", "Ders yüklenemedi"));
-    head.appendChild(
-      el("p", "t-body", "Bağlantını kontrol edip tekrar dene. İlerlemen olduğu gibi duruyor.")
+    indexContainer.appendChild(
+      failureCard("Ders", () => openLesson(lessonId), { label: "Derslere dön", onClick: showIndexByHash })
     );
-    failure.appendChild(head);
-    const retry = el("button", "btn btn--primary", "Tekrar dene");
-    retry.type = "button";
-    retry.addEventListener("click", () => openLesson(lessonId));
-    failure.appendChild(retry);
-    const back = el("button", "btn btn--quiet", "Derslere dön");
-    back.type = "button";
-    back.addEventListener("click", showIndexByHash);
-    failure.appendChild(back);
-    indexContainer.appendChild(failure);
     return;
   }
 
@@ -1837,6 +1815,9 @@ export async function openLesson(lessonId) {
     pretest: unread ? nextCheck() : null,
   };
   setReaderChrome(true);
+  // The intro sets the title and the reader did not, so the tab read
+  // "Eğitim" for every lesson.
+  document.title = `${lesson.category} — English Prep`;
   announce(lessons[lessonPosition].category);
   renderLesson();
 

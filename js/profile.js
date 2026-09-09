@@ -53,7 +53,7 @@ function renderNameField() {
   heading.id = "profile-name-label";
   surface.appendChild(heading);
   surface.appendChild(
-    el("p", "t-meta", "İsteğe bağlı — sadece bu cihazda saklanır, hiçbir yere gönderilmez.")
+    el("p", "t-quiet", "İsteğe bağlı — sadece bu cihazda saklanır, hiçbir yere gönderilmez.")
   );
 
   const input = document.createElement("input");
@@ -86,7 +86,7 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
   section.appendChild(el("h2", "t-label", "Genel durum"));
 
   const grid = el("div", "stats");
-  grid.appendChild(stat(lessonsTotal ? `${lessonsDone}/${lessonsTotal}` : "—", "Tamamlanan ders"));
+  grid.appendChild(stat(lessonsTotal ? `${lessonsDone} / ${lessonsTotal}` : "—", "Tamamlanan ders"));
   grid.appendChild(stat(String(stats.testsCompleted), "Çözülen test"));
   grid.appendChild(stat(String(stats.totalQuestions), "Çözülen soru"));
   // The label says which question the number answers. Three lifetime
@@ -111,7 +111,7 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
     section.appendChild(
       el(
         "p",
-        "t-meta",
+        "t-quiet",
         `Bu ortalamanın ${stats.accuracyFromBook} sorusu yanlış defterinden geliyor; ` +
           "defterdekiler zaten en zorlandıkların."
       )
@@ -120,7 +120,7 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
 
   if (stats.testsCompleted === 0 && lessonsDone === 0) {
     section.appendChild(
-      el("p", "t-meta", "Henüz başlamadın — bir ders okuyunca ya da test çözünce burası dolacak.")
+      el("p", "t-quiet", "Henüz başlamadın — bir ders okuyunca ya da test çözünce burası dolacak.")
     );
   }
 
@@ -140,7 +140,7 @@ function renderWeakList(heading, hint, rows) {
   const section = el("section", "stack stack--tight");
   const head = el("div", "stack stack--tight");
   head.appendChild(el("h2", "t-label", heading));
-  head.appendChild(el("p", "t-meta", hint));
+  head.appendChild(el("p", "t-quiet", hint));
   section.appendChild(head);
 
   const list = el("div");
@@ -158,9 +158,8 @@ function renderWeakList(heading, hint, rows) {
     const name = el("span", "row__title t-en", entry.name);
     name.lang = "en";
     main.appendChild(name);
-    if (entry.lessonId) {
-      main.appendChild(el("span", "row__sub", "Dersi aç"));
-    }
+    // No "Dersi aç" under every row: five identical secondary lines say
+    // nothing the chevron does not already say.
     row.appendChild(main);
 
     const trail = el("span", "row__trail t-num", entry.score);
@@ -192,7 +191,7 @@ function renderData() {
   section.appendChild(
     el(
       "p",
-      "t-meta",
+      "t-body",
       "İlerlemen sadece bu tarayıcıda saklanıyor — bir hesap yok, hiçbir yere " +
         "gönderilmiyor. Telefon değiştirirsen ya da tarayıcı verini silerse kaybolur. " +
         "Ara sıra yedek al; başka bir cihaza da böyle taşırsın."
@@ -268,22 +267,25 @@ function toggleRow({ name, title, description }) {
  * costs no new primitive and no new promise. A hand-rolled radiogroup
  * would owe roving tabindex and arrow keys before it was honest.
  */
-function renderTheme() {
-  const section = el("section", "stack stack--tight");
-  const heading = el("h2", "t-label", "Görünüm");
-  heading.id = "profile-theme-label";
-  section.appendChild(heading);
-  section.appendChild(
-    el(
-      "p",
-      "t-meta",
-      "Karanlık zeminde küçük yazı daha zor okunur; aydınlık tema onu " +
-        "kolaylaştırır. Sistem, telefonun ayarını izler."
-    )
+function renderThemeRow() {
+  // A Row like the switch beside it, not a section of its own: it was the
+  // newest control on the screen, dressed in its own heading and its own
+  // paragraph, and it read as a feature rather than a setting. The row's
+  // sub says the one thing worth saying; the listbox sits in the trail.
+  const row = el("div", "row");
+  const main = el("span", "row__main");
+  const title = el("span", "row__title", "Görünüm");
+  title.id = "profile-theme-label";
+  main.appendChild(title);
+  main.appendChild(
+    el("span", "row__sub", "Aydınlık zeminde küçük yazı daha kolay okunur. Sistem, telefonu izler.")
   );
+  row.appendChild(main);
 
-  const container = el("div");
-  section.appendChild(container);
+  const trail = el("span", "row__trail");
+  const container = el("span", "listbox-host");
+  trail.appendChild(container);
+  row.appendChild(trail);
   createListbox({
     container,
     labelledBy: "profile-theme-label",
@@ -292,27 +294,32 @@ function renderTheme() {
     onChange: (value) => setTheme(value),
   });
 
-  return section;
+  return row;
 }
 
 function renderSettings() {
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", "Ayarlar"));
 
-  section.appendChild(
+  const rows = el("div");
+  rows.appendChild(
     toggleRow({
       name: SETTINGS.THINK_FIRST,
       title: "Önce kendin düşün",
       description: "Testte şıklar, sen hazır olduğunu söyleyene kadar gizli kalır.",
     })
   );
+  rows.appendChild(renderThemeRow());
+  section.appendChild(rows);
 
-  const reset = el("button", "btn btn--secondary", "Geçmişi sıfırla");
+  // Quiet and last. It was dressed as the backup buttons, which made the
+  // one destructive action on the screen look like their sibling.
+  const reset = el("button", "btn btn--quiet btn--text", "Geçmişi sıfırla");
   reset.type = "button";
   reset.addEventListener("click", () => resetModal.open());
   section.appendChild(reset);
   section.appendChild(
-    el("p", "t-meta", "Sıfırlama, test geçmişini ve ders ilerlemeni bu cihazdan siler.")
+    el("p", "t-quiet", "Sıfırlama, test geçmişini ve ders ilerlemeni bu cihazdan siler.")
   );
 
   return section;
@@ -380,7 +387,7 @@ function renderCoverage(topics) {
   section.appendChild(
     el(
       "p",
-      "t-meta",
+      "t-body",
       `Session I'de 40 soru ve 60 puan var. Bu uygulama şu an ${covered} ` +
         `çalıştırıyor. ${missing}. Session II'nin tamamı dinleme ve not alma; o da yok.`
     )
@@ -389,7 +396,7 @@ function renderCoverage(topics) {
     section.appendChild(
       el(
         "p",
-        "t-meta",
+        "t-body",
         `Çalıştırdığı bölümleri de bütünüyle değil: örnek sınavdaki ` +
           `${cloze.total} boşluktan ${cloze.covered} tanesinin dersi burada var, ` +
           `${listPhrase(cloze.missing)} yok.`
@@ -399,7 +406,7 @@ function renderCoverage(topics) {
   section.appendChild(
     el(
       "p",
-      "t-meta",
+      "t-body",
       "Yani buradaki ilerleme sınavın tamamı hakkında bir şey söylemiyor. " +
         "Eksik bölümleri örnek sınav kâğıtlarından çalışman gerekiyor."
     )
@@ -413,7 +420,7 @@ function renderAbout() {
   section.appendChild(
     el(
       "p",
-      "t-meta",
+      "t-body",
       "Buradaki dersler ve sorular yapay zekâ ile yazıldı, sonra yazılı bir " +
         "ölçüte göre ayrı bir denetimden geçirildi. Yine de hata çıkabiliyor: " +
         "bazı soruların birden fazla savunulabilir cevabı olduğu, bazı " +
@@ -424,7 +431,7 @@ function renderAbout() {
   section.appendChild(
     el(
       "p",
-      "t-meta",
+      "t-body",
       "Bir soru sana yanlış geldiyse büyük ihtimalle haklısın. Cevabı " +
         "gördüğün ekranda \u201cBu soruda bir sorun var\u201d bağlantısı, " +
         "soruyu bulmaya yetecek bilgiyi hazırlar; kopyalayıp bize " +
@@ -492,7 +499,7 @@ async function render() {
       : "Şimdilik az veriyle sıralandı. Dokunduğunda o kategoriyi anlatan ders açılır.",
     weakCategories.map((entry) => ({
       name: entry.category,
-      score: `${entry.correct}/${entry.total}`,
+      score: `${entry.correct} / ${entry.total}`,
       lessonId: lessonIdByCategory.get(entry.category) ?? null,
     }))
   );
@@ -507,7 +514,7 @@ async function render() {
     "Her sorunun en son cevabına göre, şu an en çok yanıldığından başlayarak.",
     getWeakTopics().map((entry) => ({
       name: titleById.get(entry.topicId) ?? entry.topicId,
-      score: `${entry.correct}/${entry.total}`,
+      score: `${entry.correct} / ${entry.total}`,
     }))
   );
   if (weakTopics) {
@@ -515,7 +522,6 @@ async function render() {
   }
 
   main.appendChild(renderData());
-  main.appendChild(renderTheme());
   main.appendChild(renderSettings());
   aside.appendChild(renderCoverage(topics));
   aside.appendChild(renderAbout());
