@@ -5,6 +5,30 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.44 — 2026-09-09
+
+**Topic overviews were printing asterisks.** The Modals intro read *"o
+eyleme dair \*tutumunu\* söyleyen…"* — authors had used `*emphasis*`
+in 21 strings across eight topics, and the renderer resolved only
+`**bold**`. `appendInline` now resolves both marks in one pass, longest
+first, emitting `<em>` for a screen reader; it is styled as a weight
+step rather than a slant, because no italic face ships and a
+synthesised italic reads as a rendering fault.
+
+**And the validator now actually has the defence the renderer's
+comment claimed.** `validate-content.mjs` walks every string in a topic
+file and rejects an unbalanced mark of either kind, so a stray one
+cannot reach the screen again.
+
+Verified on the Modals overview: 0 asterisks, 7 `<em>`. 161 unit tests
+and 1,591 sweep checks green.
+
+`docs/audit/beta1-firsthand.md` records what else was seen first-hand
+on the way to beta1 — including that the whole palette sits in one hue
+band (67–85°), and that v0.41–0.42 made every small tier the same
+size, weight and grey and thereby flattened the very hierarchy they
+were meant to rescue.
+
 ## v0.43 — 2026-09-08
 
 **A light theme, and it is not an inversion.** Every value was re-solved

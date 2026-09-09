@@ -25,30 +25,43 @@ export function clear(node) {
 }
 
 /**
- * Appends text with `**bold**` spans resolved. The only inline markup the
- * content schema supports: enough to highlight the grammar form a rule is
- * about, without inviting a full Markdown parser into a static app. Odd
- * segments of the split are the emphasized ones; the content validator
- * rejects unbalanced markers, so a stray `**` can't reach here.
+ * Appends text with `**bold**` and `*emphasis*` spans resolved — the only
+ * two inline marks the content schema supports, enough to point at a
+ * grammar form or a Turkish example word without inviting a Markdown
+ * parser into a static app.
+ *
+ * Emphasis was added on 2026-09-09 because 21 authored strings across
+ * eight topics already used it, and the renderer was printing the
+ * asterisks: a stranger's first look at a topic overview read
+ * "*tutumunu*". Authors reach for `*x*` by instinct; forbidding it in a
+ * schema they never see does not stop them, and the validator now
+ * rejects an unbalanced mark of either kind so a stray one cannot reach
+ * here.
+ *
+ * `<em>` is the right element for a screen reader; how it looks is the
+ * stylesheet's decision, and no italic face ships, so it is not italic.
+ *
  * @param {Node} parent
  * @param {string} text
  */
 export function appendInline(parent, text) {
-  text.split("**").forEach((segment, index) => {
-    if (!segment) {
-      return;
-    }
-    if (index % 2 === 1) {
-      parent.appendChild(el("strong", null, segment));
+  // One pass, longest mark first, so `**` is never read as two `*`.
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*\s][^*]*\*)/);
+  for (const part of parts) {
+    if (!part) continue;
+    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+      parent.appendChild(el("strong", null, part.slice(2, -2)));
+    } else if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
+      parent.appendChild(el("em", null, part.slice(1, -1)));
     } else {
-      parent.appendChild(document.createTextNode(segment));
+      parent.appendChild(document.createTextNode(part));
     }
-  });
+  }
 }
 
 /**
  * Appends multi-paragraph prose: blank-line-separated paragraphs, each
- * with `**bold**` resolved.
+ * with `**bold**` and `*emphasis*` resolved.
  * @param {Node} parent
  * @param {string} text
  * @param {string} [paragraphClass]
