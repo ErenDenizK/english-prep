@@ -5,6 +5,29 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.51 — 2026-09-09
+
+**Beta1, round six: the design system catches up.** `docs/design-system.md`
+is the binding spec and it described an app that no longer existed: dark
+only, warm neutrals, a 16px body, a `--t-ui` token, a 15/400 row it
+listed as legal at Lc 90 (the tool says 100, and nothing reaches it), a
+row sub that is "one line, always", weight 700 on the amber. Rewritten
+against what shipped: *Scope*, §1.2–1.7 with both themes' values and
+the slate ground, §2.2 as the five-step scale with its two legal
+`--c-text-2` pairs, the four-size cap and *a sentence is never meta*,
+§2.5's weight fact, §3's relation table and `--s-10`, §7's inventory
+(the band, the text button), §7.1 (two-line sub, title at body), §7.2
+(the bar's widths), §9.1's meta tags, §10's sweep as it now runs, and
+§11 — item 2 closed, item 5 marked as shipped with the two questions
+only a real phone can settle. `CLAUDE.md`'s Design paragraph says the
+same in four sentences; `app1-final.md` §7 records that the theme toggle
+was reopened by the owner and why; `beta1-plan.md` carries the status
+and the three departures from the arms.
+
+No code changed. The version moves because the spec is part of the
+product and the service worker's name is the one place a release is
+counted.
+
 ## v0.50 — 2026-09-09
 
 **Beta1, round five: the sweep learns the light theme.** `npm run
