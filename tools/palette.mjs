@@ -212,7 +212,10 @@ export const PAIRS = [
   // The primary label sits on the amber, not on a surface.
   { where: ".btn--primary label", px: 18, weight: 600, token: "on-accent", on: "accent" },
   { where: ".t-meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".t-label", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  // The section label is the accent's text colour — the one place the
+  // accent marks structure rather than an action — so a section opens
+  // with a mark the eye finds before it reads. Measured like any text.
+  { where: ".t-label", px: 15, weight: 600, token: "accent-text", on: "surface-2" },
   { where: ".t-ui", px: 15, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".row__sub", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   { where: ".row__lead", px: 15, weight: 600, token: "text-2", on: "surface-2" },
