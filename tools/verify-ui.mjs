@@ -307,8 +307,12 @@ async function runFlow(page, viewport) {
   await page.waitForTimeout(150);
   const stickyBox = await page.locator("#lesson-reader .reader__top").boundingBox();
   ok(stickyBox !== null && stickyBox.y < 80, "okuyucu başlığı kaydırırken ekranda kaldı");
+  // The readout is the lesson's place in its topic ("2 / 6"); how far
+  // down the page the reader is shows on the bar, so that is what is read.
   const readout = await page.locator("#lesson-reader .reader__top .t-num").textContent();
-  ok(/^%\d+$/.test(readout) && readout !== "%0", `okuma yüzdesi ilerledi (${readout})`);
+  ok(/^\d+ \/ \d+$/.test(readout), `okuyucu başlığı konudaki yeri söylüyor (${readout})`);
+  const fillAfterScroll = await page.locator("#lesson-reader .progress__fill").evaluate((node) => parseFloat(node.style.width));
+  ok(fillAfterScroll > 0, `okuma çubuğu ilerledi (%${fillAfterScroll})`);
 
   // An inline check: answering must not throw the learner's place away,
   // because the feedback they just earned is right where they are looking.
@@ -346,7 +350,7 @@ async function runFlow(page, viewport) {
   });
   await page.waitForTimeout(250);
   ok(
-    (await page.locator("#lesson-reader .reader__top .t-num").textContent()) === "%100",
+    (await page.locator("#lesson-reader .progress__fill").evaluate((node) => node.style.width)) === "100%",
     "sona inince okuma %100"
   );
   ok(await page.locator("#lesson-reader .surface").count() > 0, "ders sonu kartı göründü");

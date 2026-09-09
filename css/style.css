@@ -576,6 +576,42 @@
     padding-inline: var(--gutter);
   }
 
+  /* -- The reader's blocks. The page is a loose stack (32 between blocks)
+        and the rhythm is made by what each block adds to that:
+
+        48 above a labelled block — the space above a heading is at least
+           twice the space below it, and a label that had 32 above and 8
+           below, the same 32 every unlabelled block had, grouped nothing;
+        48 around the one band, because a band without air is a stripe;
+        64 before the end card — the end is a section, not a block.
+
+        Margins on grid items add to the gap, which is the whole trick. -- */
+  .block--labelled {
+    margin-top: var(--s-5);
+  }
+
+  /* The contrast is the point of every lesson, and it rendered as the same
+     serif-line-Turkish-line list as its own illustrations. It is the one
+     band on the page: full-bleed, surface-1, no radius (§4 gives
+     full-bleed things none), 24 inside. The forms table gave up its card
+     for this — the contrast is heterogeneous, the forms are rows. */
+  .block--contrast {
+    margin-block: var(--s-5);
+    margin-inline: calc(-1 * var(--gutter));
+    padding: var(--s-6) var(--gutter);
+    background: var(--c-surface-1);
+  }
+
+  .block--end {
+    margin-top: var(--s-7);
+  }
+
+  /* Indented by the arrow's width, so the outcome reads as the consequence
+     of the triggers above it and not the title of the ones below. */
+  .decision__outcome {
+    padding-inline-start: calc(20px + var(--s-3));
+  }
+
   /* -- Type. Serif is English, sans is Turkish — the typeface tells the
         learner which language they are looking at before they read a word.
         Block level only: an English word inside a Turkish sentence stays in
@@ -621,6 +657,20 @@
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
     font-weight: 600;
+    color: var(--c-text-2);
+  }
+
+  /* A quiet sentence. Body size at 400 in the second grey — the one pair
+     at which --c-text-2 is legal for more than a line, and only on
+     surface-0 and surface-1 (measured 75 on surface-2, which is exactly
+     the requirement, and exactly is not enough for a paragraph). Quiet
+     text below 18px does not exist on this ground: 15/400 needs Lc 100
+     and no ink reaches it, so anything quieter than body that is more
+     than one line is this, or it is body. */
+  .t-quiet {
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+    font-weight: 400;
     color: var(--c-text-2);
   }
 
@@ -1263,6 +1313,24 @@
 
   .stack--tight { gap: var(--s-3); }
   .stack--loose { gap: var(--s-7); }
+  /* The lines of one object — a pattern over its use, a sentence over its
+     note. 4px, so the two read as a unit against the 24px between units. */
+  .stack--snug { gap: var(--s-2); }
+
+  /* Homogeneous items inside a block — the sides of a contrast, the
+     examples, the rules of a decision, the groups of a forms table. 24
+     between them and a hairline where one ends, the same hairline a row
+     carries. Where the stack is 4 / 24 / 48, hierarchy is geometric; at
+     8 / 16 / 32 it was arithmetic and the eye had no layer to land on. */
+  .items {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .items > * + * {
+    padding-top: var(--s-6);
+    box-shadow: inset 0 1px 0 var(--c-hairline);
+  }
 
   .cluster {
     display: flex;
