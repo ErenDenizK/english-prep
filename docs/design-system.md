@@ -25,6 +25,16 @@ options and grammar terms.
 
 ---
 
+> **2026-09-09 — the palette changed under this section.** The ground
+> is slate (H 255) rather than warm, the accent is a per-mode pair, and
+> the surfaces are OKLCH coordinates rather than an elevation curve. The
+> reasons and every solved value are in `docs/research/beta1-palette.md`;
+> `tools/palette.mjs` is the source of truth and `npm run color` prints
+> the measured table for both themes. The tables and prose below that
+> describe warm neutrals are historical until this section is rewritten
+> — §1.2's sentence about warm chroma keeping the neutrals from reading
+> cold is now the opposite of the decision.
+
 ## 1 · Colour
 
 ### 1.1 How these values were chosen

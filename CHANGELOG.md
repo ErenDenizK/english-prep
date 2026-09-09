@@ -5,6 +5,50 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.45 — 2026-09-09
+
+**A second hue.** Every non-semantic token in both themes used to sit in
+an eleven-degree band around the amber — the page, the cards, all three
+text tiers, the focus ring, the dividers. The warm ground was 0.008 from
+pure grey: invisible as colour, so the page was never brown, it was the
+*same temperature as the amber*, and the amber was warm against nothing.
+That is what the owner meant by *"minimalizm ve sığ arasında"* and by
+brown-and-orange going shallow over time: one hue, three greys, and
+depth with a single channel to work in.
+
+The ground is slate now — hue 255 at C 0.014 dark, C 0.004–0.008 light
+— solved from scratch through `tools/palette.mjs`, every token and every
+size pairing, both themes. The amber gets a second channel to differ on.
+The surfaces are OKLCH coordinates rather than Material's elevation
+curve, which reproduced the same lightnesses to the third decimal while
+drifting hue eleven degrees up the ramp.
+
+**The accent is a pair.** One amber cannot serve both modes: dark ink on
+a fill that clears 3:1 against a light page has no solution at any hue
+or chroma scanned. Inverting the ink opens one window — a burnt amber,
+`oklch(0.55 0.125 60)`, with the page itself as ink: Lc 76 on the fill,
+4.8:1, 4.1:1 against the darkest surface. So light `--c-accent` is
+`#a55d0c`, light `--c-on-accent` is the page, and the 1px boundary that
+v0.43 put on the light primary button is gone because the button can
+carry itself. The two hard-coded amber tints became `--c-accent-tint`.
+
+Every ground colour outside the stylesheet moved with it — the three
+heads, `theme.js`, the manifest, `make-icons.mjs` — and the icons and
+the link-preview card were redrawn on the new ground.
+
+One recorded cost: under a deuteranopia simulation the light accent and
+`ok` sit 0.06 ΔE apart. Acceptable, because the accent tint and the ok
+tint never share a screen; recorded in `palette.mjs` so it is not
+rediscovered.
+
+**What to look at on a real phone**, from `docs/research/beta1-palette.md`
+§9: whether the slate reads as blue on an OLED at night (then C 0.010 or
+H 240), and whether the light button reads as brown (then H 50–55, a
+redder terracotta, at the cost of sitting nearer `no`).
+
+161 unit tests and 1,595 sweep checks green; both themes looked at on
+the Eğitim index and the topic overview at 390px.
+
 ## v0.44 — 2026-09-09
 
 **Topic overviews were printing asterisks.** The Modals intro read *"o

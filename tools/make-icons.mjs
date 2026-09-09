@@ -61,8 +61,8 @@ const ICON_PAGE = (size) => `
 <!doctype html><meta charset="utf-8">
 <style>
   html, body { margin: 0; width: ${size}px; height: ${size}px; }
-  body { background: #13100d; display: grid; place-items: center; }
-  svg { width: ${Math.round(size * 0.62)}px; height: ${Math.round(size * 0.62)}px; color: #efb05c; }
+  body { background: #0c1117; display: grid; place-items: center; }
+  svg { width: ${Math.round(size * 0.62)}px; height: ${Math.round(size * 0.62)}px; color: #f1af5d; }
 </style>
 <div id="host"></div>
 <script type="module">
@@ -81,7 +81,7 @@ const CARD_PAGE = `
 <style>
   html, body { margin: 0; width: 1200px; height: 630px; }
   body {
-    background: #13100d; color: #edeae6;
+    background: #0c1117; color: #e9ecef;
     font-family: "Source Sans 3", system-ui, sans-serif;
     display: grid; align-content: center; gap: 28px;
     padding: 0 96px; box-sizing: border-box;
@@ -90,9 +90,9 @@ const CARD_PAGE = `
     margin: 0; font-family: "Source Serif 4", Georgia, serif; font-weight: 400;
     font-size: 96px; line-height: 1; letter-spacing: -0.015em;
   }
-  .rule { width: 96px; height: 4px; background: #efb05c; border-radius: 999px; }
-  p { margin: 0; font-size: 34px; line-height: 1.4; color: #d6d1cb; max-width: 22ch; }
-  .glyph { position: absolute; right: 96px; bottom: 84px; color: #efb05c; }
+  .rule { width: 96px; height: 4px; background: #f1af5d; border-radius: 999px; }
+  p { margin: 0; font-size: 34px; line-height: 1.4; color: #d0d4da; max-width: 22ch; }
+  .glyph { position: absolute; right: 96px; bottom: 84px; color: #f1af5d; }
 </style>
 <h1>English Prep</h1>
 <div class="rule"></div>
