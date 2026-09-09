@@ -216,10 +216,13 @@ what shipped.
 
 ## Design
 
-One deliberate look rather than a theme toggle: a warm dark ground, one
-amber accent doing one job, a serif display face against a sans for body
-text and a mono for numbers, and depth from surface lightness rather than
-borders or shadows.
+Two themes, both solved: a slate dark ground by default and a light one
+that follows the phone or a choice in Profil. One amber accent doing one
+job — a pair, one value per theme, because no single amber carries dark
+ink on a light page. Serif for English, sans for Turkish and the
+interface, tabular figures from the same sans. Five type sizes, at most
+four on a screen, nothing below 15px and nothing at 15px lighter than
+600. Depth from surface lightness rather than borders or shadows.
 
 The palette is not chosen by eye. Every colour is solved against a
 contrast requirement and re-measured by `npm run color`, which runs in CI

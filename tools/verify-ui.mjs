@@ -910,8 +910,10 @@ async function runMistakeRuns(browser) {
     (await forward.evaluate((node) => node.tagName)) === "BUTTON",
     "yanlış turundan sonra ileri düğmesi quiz.html bağlantısı değil"
   );
+  // The score line names the mode, so the words appear once; what must
+  // not appear is the shortcut row back into the book.
   ok(
-    !(await page.locator("#results-container").innerText()).includes("Yanlış defteri"),
+    (await page.locator("#results-container .row", { hasText: "Yanlış defteri" }).count()) === 0,
     "yanlış turunun sonunda deftere ayrı bir satır konmuyor"
   );
   await forward.click();

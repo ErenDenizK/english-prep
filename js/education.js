@@ -898,6 +898,21 @@ function renderIntro(topic, lessons, progress) {
   const page = pane();
   const intro = topic.intro;
 
+  // A way back and the topic's name at the top, like the reader's strip:
+  // the screen used to open on "Genel bakış" with the only way out at the
+  // bottom of a five-screen page, in the bar.
+  const top = el("div", "intro__top bleed");
+  const strip = el("div", "cluster cluster--spread");
+  const back = el("button", "btn btn--quiet", "Konular");
+  back.type = "button";
+  back.prepend(icon("arrow-left", { size: 20 }));
+  back.addEventListener("click", showIndexByHash);
+  strip.appendChild(back);
+  const done = lessons.filter((lesson) => progress[lesson.id]?.done).length;
+  strip.appendChild(el("p", "t-meta t-num", `${done} / ${lessons.length}`));
+  top.appendChild(strip);
+  page.appendChild(top);
+
   const head = el("div", "stack stack--tight");
   head.appendChild(el("p", "t-label", "Genel bakış"));
   head.appendChild(el("h1", "t-title", intro.title));

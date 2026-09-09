@@ -32,6 +32,24 @@ function formatPercent(correct, total) {
   return total === 0 ? "%0" : `%${Math.round((correct / total) * 100)}`;
 }
 
+/** The test this was, in words — the same vocabulary as the quiz strip. */
+function describeMode(result) {
+  switch (result.mode) {
+    case "mistakes":
+      return "Yanlış defteri";
+    case "topic": {
+      const titles = Object.values(result.topicTitles ?? {});
+      return titles.length === 1 ? titles[0] : "Konu testi";
+    }
+    case "category": {
+      const categories = Object.keys(result.categoryBreakdown ?? {});
+      return categories.length === 1 ? categories[0] : "Kategori testi";
+    }
+    default:
+      return "Karışık test";
+  }
+}
+
 function renderScore(result) {
   const block = el("section", "stack stack--tight");
   block.appendChild(el("p", "t-label", "Sonuç"));
@@ -45,9 +63,19 @@ function renderScore(result) {
   track.appendChild(fill);
   block.appendChild(track);
 
-  block.appendChild(
-    el("p", "t-meta t-num", `${formatPercent(result.correctCount, result.totalCount)} doğru`)
+  // Which test, on the line under the bar: the score alone never said
+  // whether it was the book, one topic or everything mixed.
+  const line = el("p", "t-meta t-num");
+  line.appendChild(
+    document.createTextNode(`${formatPercent(result.correctCount, result.totalCount)} doğru · `)
   );
+  const mode = describeMode(result);
+  const modeNode = el("span", null, mode);
+  if (result.mode === "topic" || result.mode === "category") {
+    modeNode.lang = "en";
+  }
+  line.appendChild(modeNode);
+  block.appendChild(line);
   return block;
 }
 
