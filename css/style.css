@@ -31,23 +31,23 @@
           distinguishable, and each one costs contrast on every text token
           that has to survive the brightest. Derived from a warm near-black
           with Material's elevation-overlay curve at 1dp and 6dp. -- */
-    --c-surface-0: #13100d;
-    --c-surface-1: #1f1c19;
-    --c-surface-2: #2c2a27;
+    --c-surface-0: #0c1117;
+    --c-surface-1: #181d23;
+    --c-surface-2: #262b31;
 
     /* -- Text. Solid, never white-at-opacity: a translucent token has a
           different contrast on every surface in the ramp. Measured against
           surface-2, the worst case. -- */
-    --c-text-1: #edeae6; /* APCA Lc 91 — body prose, English sentences */
-    --c-text-2: #d6d1cb; /* Lc 75 — labels, secondary lines */
-    --c-text-3: #bdb7b0; /* Lc 60 — non-essential: hints, counters */
+    --c-text-1: #e9ecef; /* APCA Lc 91 — body prose, English sentences */
+    --c-text-2: #d0d4da; /* Lc 75 — labels, secondary lines */
+    --c-text-3: #b5bac2; /* Lc 60 — non-essential: hints, counters */
 
     /* -- Accent. Amber is structurally a dark-ink-on-fill colour: no ink
           reaches Lc 75 on it (pure black tops out at 67), so the fill
           carries short bold labels and never a sentence. -- */
-    --c-accent: #efb05c;
+    --c-accent: #f1af5d;
     --c-on-accent: #1a0f03;
-    --c-accent-text: #f1cc92;
+    --c-accent-text: #f5ce95;
     --c-focus: #f4dab2;
 
     /* -- Semantic. Indicators, not text colours: red cannot reach Lc 75 at
@@ -58,6 +58,7 @@
     --c-no: #e97871;
     --c-ok-tint: rgb(124 205 142 / 0.12);
     --c-no-tint: rgb(233 120 113 / 0.12);
+    --c-accent-tint: rgb(241 175 93 / 0.14);
 
     /* -- Two different lines, and the distinction is load-bearing.
           A hairline *separates* — decorative, and exempt from 1.4.11.
@@ -65,8 +66,8 @@
           at 3:1, so it is the lightest token here that clears 3:1 against
           all three surfaces. A text field with no visible edge is both a
           conformance failure and a usability one. -- */
-    --c-hairline: #36322d;
-    --c-edge: #78746e;
+    --c-hairline: #2f3339;
+    --c-edge: #71767d;
 
     /* -- Space. 4pt base: a text-dense app on a 320px floor needs 4 and 12
           for icon gaps and chip padding. Dense at the bottom, coarse at the
@@ -187,18 +188,20 @@
      identical; this exists so the palette stays re-derivable. */
   @supports (color: oklch(0.5 0.1 75)) {
     :root {
-      --c-surface-0: oklch(0.175 0.008 75);
-      --c-text-1: oklch(0.938 0.006 75);
-      --c-text-2: oklch(0.862 0.01 75);
-      --c-text-3: oklch(0.782 0.012 75);
-      --c-accent: oklch(0.8 0.125 72);
-      --c-on-accent: oklch(0.18 0.03 72);
-      --c-accent-text: oklch(0.864 0.085 78);
+      --c-surface-0: oklch(0.175 0.014 255);
+      --c-surface-1: oklch(0.228 0.014 255);
+      --c-surface-2: oklch(0.286 0.014 255);
+      --c-text-1: oklch(0.941 0.006 255);
+      --c-text-2: oklch(0.869 0.01 255);
+      --c-text-3: oklch(0.788 0.012 255);
+      --c-accent: oklch(0.8 0.125 70);
+      --c-on-accent: oklch(0.18 0.03 70);
+      --c-accent-text: oklch(0.871 0.085 76);
       --c-focus: oklch(0.9 0.06 78);
       --c-ok: oklch(0.78 0.12 150);
       --c-no: oklch(0.7 0.14 25);
-      --c-hairline: oklch(0.32 0.01 75);
-      --c-edge: oklch(0.56 0.01 75);
+      --c-hairline: oklch(0.32 0.012 255);
+      --c-edge: oklch(0.564 0.012 255);
     }
   }
 
@@ -218,11 +221,12 @@
      it is the lightest surface and therefore closest to light text; here
      it is the darkest and closest to dark text.
 
-     `--c-accent` and `--c-on-accent` are deliberately absent, which is
-     the one thing that does not survive the flip. Clearing 3:1 against
-     this page needs L <= 0.664 while keeping the ink on the fill needs
-     L >= 0.76, and there is no intersection — so the amber stays exactly
-     as it is and the filled button takes a boundary here instead.
+     The accent is a PAIR. One amber cannot serve both modes: dark ink on
+     a fill that clears 3:1 against a light page has no solution at any
+     hue or chroma scanned. Inverting the ink opens one window — a burnt
+     amber, oklch(0.55 0.125 60), with the page itself as the ink — so
+     light `--c-accent` is darker and light `--c-on-accent` is
+     `--c-surface-0`. Same hue family, one brand, two values.
 
      Written twice because there is no build step. The media query carries
      the system preference and yields to an explicit dark choice; the
@@ -230,59 +234,57 @@
      Two copies of one list is the honest cost of that. */
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
-      --c-surface-0: #fcfaf7;
-      --c-surface-1: #f4f0ec;
-      --c-surface-2: #ebe6e1;
-      --c-text-1: #1c1915;
-      --c-text-2: #4d4840;
-      --c-text-3: #756f66;
-      --c-accent-text: #654003;
-      --c-ok: #2c924d;
-      --c-no: #d55753;
-      --c-focus: #7f5c1d;
-      --c-hairline: #dbd9d5;
-      --c-edge: #84807c;
+      --c-surface-0: #f8fafd;
+      --c-surface-1: #eef1f5;
+      --c-surface-2: #e4e8ed;
+      --c-text-1: #161a1f;
+      --c-text-2: #474d55;
+      --c-text-3: #68707a;
+      --c-accent: #a55d0c;
+      --c-accent-tint: rgb(165 93 12 / 0.14);
+      --c-accent-text: #6b420e;
+      --c-on-accent: #f8fafd;
+      --c-ok: #2e944e;
+      --c-ok-tint: rgb(46 148 78 / 0.12);
+      --c-no: #d65854;
+      --c-no-tint: rgb(214 88 84 / 0.12);
+      --c-focus: #855823;
+      --c-hairline: #d5dae0;
+      --c-edge: #7f8389;
       color-scheme: light;
     }
   }
 
   :root[data-theme="light"] {
-      --c-surface-0: #fcfaf7;
-      --c-surface-1: #f4f0ec;
-      --c-surface-2: #ebe6e1;
-      --c-text-1: #1c1915;
-      --c-text-2: #4d4840;
-      --c-text-3: #756f66;
-      --c-accent-text: #654003;
-      --c-ok: #2c924d;
-      --c-no: #d55753;
-      --c-focus: #7f5c1d;
-      --c-hairline: #dbd9d5;
-      --c-edge: #84807c;
+      --c-surface-0: #f8fafd;
+      --c-surface-1: #eef1f5;
+      --c-surface-2: #e4e8ed;
+      --c-text-1: #161a1f;
+      --c-text-2: #474d55;
+      --c-text-3: #68707a;
+      --c-accent: #a55d0c;
+      --c-accent-tint: rgb(165 93 12 / 0.14);
+      --c-accent-text: #6b420e;
+      --c-on-accent: #f8fafd;
+      --c-ok: #2e944e;
+      --c-ok-tint: rgb(46 148 78 / 0.12);
+      --c-no: #d65854;
+      --c-no-tint: rgb(214 88 84 / 0.12);
+      --c-focus: #855823;
+      --c-hairline: #d5dae0;
+      --c-edge: #7f8389;
       color-scheme: light;
   }
 
-  /* The amber cannot carry itself on a light page — see above — so the
-     one filled button per screen gets the boundary it does not need on
-     dark. 1.4.11 does not require it of a text-labelled control; this is
-     a perceptual fix, not a conformance one. */
-  @media (prefers-color-scheme: light) {
-    :root:not([data-theme="dark"]) .btn--primary {
-      box-shadow: inset 0 0 0 1px var(--c-edge);
-    }
-  }
-  :root[data-theme="light"] .btn--primary {
-    box-shadow: inset 0 0 0 1px var(--c-edge);
-  }
 
   /* Preference overrides redefine tokens rather than rules, which keeps
      them out of specificity fights entirely. */
   @media (prefers-contrast: more) {
     :root {
       --c-text-2: var(--c-text-1);
-      --c-text-3: #d6d1cb;
-      --c-hairline: #6b665f;
-      --c-edge: #a09a93;
+      --c-text-3: #d0d4da;
+      --c-hairline: #61666e;
+      --c-edge: #9ba0a8;
     }
   }
 
@@ -295,17 +297,17 @@
   @media (prefers-contrast: more) and (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
       --c-text-2: var(--c-text-1);
-      --c-text-3: #4d4840;
-      --c-hairline: #b3afa9;
-      --c-edge: #5a564f;
+      --c-text-3: #474d55;
+      --c-hairline: #aab0b8;
+      --c-edge: #52585f;
     }
   }
   @media (prefers-contrast: more) {
     :root[data-theme="light"] {
       --c-text-2: var(--c-text-1);
-      --c-text-3: #4d4840;
-      --c-hairline: #b3afa9;
-      --c-edge: #5a564f;
+      --c-text-3: #474d55;
+      --c-hairline: #aab0b8;
+      --c-edge: #52585f;
     }
   }
 }
@@ -855,7 +857,7 @@
      state is a Chip. `role="switch"` and `aria-checked` do the rest, so
      nothing here has to reinvent a control the platform names. */
   .row[aria-checked="true"] .chip {
-    background: rgb(239 176 92 / 0.14);
+    background: var(--c-accent-tint);
     color: var(--c-accent-text);
   }
 
@@ -874,7 +876,7 @@
   }
 
   .chip--ok { background: var(--c-ok-tint); color: var(--c-ok); }
-  .chip--accent { background: rgb(239 176 92 / 0.14); color: var(--c-accent-text); }
+  .chip--accent { background: var(--c-accent-tint); color: var(--c-accent-text); }
 
   /* -- Field. 16px is the whole fix for iOS focus-zoom. -- */
   .field {

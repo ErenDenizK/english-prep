@@ -11,34 +11,47 @@ import { oklch, wcagContrast, apca, hexToRgb } from "./color.mjs";
 
 const hex = (r, g, b) => "#" + [r, g, b].map((c) => Math.round(c).toString(16).padStart(2, "0")).join("").toUpperCase();
 
-/** Material's elevation-overlay curve: alpha = (4.5·ln(1+dp)+2)/100. */
-function elevate(base, dp) {
-  const a = Math.min(1, (4.5 * Math.log(1 + dp) + 2) / 100);
-  const [r, g, b] = hexToRgb(base);
-  return hex(r + (255 - r) * a, g + (255 - g) * a, b + (255 - b) * a);
-}
+/* -- Surfaces -----------------------------------------------------------
 
-const BASE = oklch(0.175, 0.008, 75).hex;
+   Both ramps are OKLCH coordinates now, derived the same way as every
+   other token. The dark ramp used to be produced by Material's
+   elevation-overlay curve from one base hex; an OKLCH constant-chroma
+   ramp reproduces it to the third decimal in lightness and removes the
+   curve's side effects — it drifted hue by +11 degrees and eroded chroma
+   by a fifth up the ramp, which was harmless at C 0.008 and is not at
+   the chroma a cool ground needs.
 
-export const surfaces = {
-  "surface-0": BASE,
-  "surface-1": elevate(BASE, 1),
-  "surface-2": elevate(BASE, 6),
+   The ground is slate — H 255 at C 0.014 dark, C 0.004–0.008 light. That
+   is the whole reason for this palette: every non-semantic token used
+   to sit in an 11-degree band around the amber (67–78), so the interface
+   was one hue and the accent was warm against nothing. A cool ground
+   gives the amber a second channel to differ on. C 0.014 is at the
+   design system's own "looks like a colour" line on purpose; if a real
+   OLED reads it as blue, C 0.010 or H 240 keeps everything else within
+   0.002 L. See docs/research/beta1-palette.md. */
+const SURFACE_SPEC = {
+  "surface-0": { L: 0.175, C: 0.014, H: 255 },
+  "surface-1": { L: 0.228, C: 0.014, H: 255 },
+  "surface-2": { L: 0.286, C: 0.014, H: 255 },
 };
+
+export const surfaces = Object.fromEntries(
+  Object.entries(SURFACE_SPEC).map(([n, c]) => [n, oklch(c.L, c.C, c.H).hex])
+);
 
 /** oklch coordinates kept alongside the hex so the palette stays re-derivable. */
 const SPEC = {
-  "text-1":      { L: 0.938, C: 0.006, H:  75, need: { lc: 90, wcag: 7.0 } },
-  "text-2":      { L: 0.862, C: 0.010, H:  75, need: { lc: 75, wcag: 4.5 } },
-  "text-3":      { L: 0.782, C: 0.012, H:  75, need: { lc: 60, wcag: 3.0 } },
-  "accent":      { L: 0.800, C: 0.125, H:  72, need: { ui: 3.0 } },
-  "accent-text": { L: 0.864, C: 0.085, H:  78, need: { lc: 75, wcag: 4.5 } },
-  "on-accent":   { L: 0.180, C: 0.030, H:  72, need: {} },
+  "text-1":      { L: 0.941, C: 0.006, H: 255, need: { lc: 90, wcag: 7.0 } },
+  "text-2":      { L: 0.869, C: 0.010, H: 255, need: { lc: 75, wcag: 4.5 } },
+  "text-3":      { L: 0.788, C: 0.012, H: 255, need: { lc: 60, wcag: 3.0 } },
+  "accent":      { L: 0.800, C: 0.125, H:  70, need: { ui: 3.0 } },
+  "accent-text": { L: 0.871, C: 0.085, H:  76, need: { lc: 75, wcag: 4.5 } },
+  "on-accent":   { L: 0.180, C: 0.030, H:  70, need: {} },
   "ok":          { L: 0.780, C: 0.120, H: 150, need: { ui: 3.0 } },
   "no":          { L: 0.700, C: 0.140, H:  25, need: { ui: 3.0 } },
   "focus":       { L: 0.900, C: 0.060, H:  78, need: { ui: 3.0 } },
-  "hairline":    { L: 0.320, C: 0.010, H:  75, need: {} },
-  "edge":        { L: 0.560, C: 0.010, H:  75, need: { ui: 3.0 } },
+  "hairline":    { L: 0.320, C: 0.012, H: 255, need: {} },
+  "edge":        { L: 0.564, C: 0.012, H: 255, need: { ui: 3.0 } },
 };
 
 export const tokens = Object.fromEntries(
@@ -47,47 +60,47 @@ export const tokens = Object.fromEntries(
 
 /* -- The light theme -------------------------------------------------
 
-   Not an inversion. Every value below was solved against the same
-   requirements as the dark set, on a warm off-white at the same hue 75,
-   and the numbers came out different rather than mirrored.
+   Not an inversion. Every value solved against the same requirements on
+   a light slate at the same hue, and different rather than mirrored.
 
-   Two rules restate themselves rather than flipping. Elevation is not
-   "lighter"; it is **a lightness step away from the page, in whichever
-   direction the page is not** — so the light surfaces darken while the
-   dark ones lighten, with the same three-step budget. And the worst case
-   is still `surface-2` for the opposite reason: on dark it is the
-   lightest surface and therefore closest to light text, on light it is
-   the darkest and closest to dark text. "Measure against the surface
-   closest in lightness" is the rule both instances obey.
+   Elevation is a lightness step away from the page in whichever
+   direction the page is not, so these surfaces darken while the dark
+   ones lighten. The worst case is still `surface-2` for the opposite
+   reason: darkest here, closest to dark text.
 
-   The accent does not survive the flip and is deliberately unchanged.
-   Clearing 3:1 against an off-white page needs L <= 0.664; keeping
-   --c-on-accent readable on the fill needs L >= 0.76. There is no
-   intersection, so the amber stays as it is and the light-mode filled
-   button gets a boundary instead — a perceptual fix, not a conformance
-   one, since a text-labelled button passes 1.4.11 without it. */
+   THE ACCENT IS A PAIR. One amber cannot serve both modes: on a light
+   page, dark ink on a fill that clears 3:1 against the page has no
+   solution at any hue 50–72 or chroma 0.12–0.17. Inverting the ink
+   opens one window — oklch(0.55 0.125 60), with the page itself as the
+   ink: Lc 76 on the fill, 4.8:1, and 4.1:1 against the darkest surface.
+   C 0.125 is the gamut ceiling at that lightness. So light `accent` is a
+   burnt amber and light `on-accent` is `surface-0`; the same hue family
+   as the dark pair, so it reads as one brand.
+
+   One recorded cost: under a deuteranopia simulation the light accent
+   and `ok` sit 0.06 ΔE apart, because the burnt amber now shares the
+   indicators' lightness. Acceptable — the accent tint and the ok tint
+   never share a screen, and chips carry words — but if a route ever
+   puts them side by side, darken light `ok` and accept the protanopia
+   cost instead. */
 const LIGHT_SURFACE_SPEC = {
-  "surface-0": { L: 0.985, C: 0.004, H: 75 },
-  "surface-1": { L: 0.958, C: 0.007, H: 75 },
-  "surface-2": { L: 0.928, C: 0.009, H: 75 },
+  "surface-0": { L: 0.985, C: 0.004, H: 255 },
+  "surface-1": { L: 0.958, C: 0.006, H: 255 },
+  "surface-2": { L: 0.928, C: 0.008, H: 255 },
 };
 
 const LIGHT_SPEC = {
-  "text-1":      { L: 0.216, C: 0.010, H:  75, need: { lc: 90, wcag: 7.0 } },
-  /* Solved a step past each target rather than exactly onto it. The first
-     draft of these values hit their requirements to the decimal and then
-     failed the run, because a token with zero margin fails on rounding —
-     which is the same thing as having no margin at all. */
-  "text-2":      { L: 0.403, C: 0.014, H:  75, need: { lc: 75, wcag: 4.5 } },
-  "text-3":      { L: 0.544, C: 0.016, H:  75, need: { lc: 60, wcag: 3.0 } },
-  "accent":      { L: 0.800, C: 0.125, H:  72, need: {} },
-  "accent-text": { L: 0.406, C: 0.085, H:  72, need: { lc: 75, wcag: 4.5 } },
-  "on-accent":   { L: 0.180, C: 0.030, H:  72, need: {} },
-  "ok":          { L: 0.586, C: 0.140, H: 150, need: { ui: 3.0 } },
-  "no":          { L: 0.620, C: 0.160, H:  25, need: { ui: 3.0 } },
-  "focus":       { L: 0.500, C: 0.090, H:  78, need: { ui: 3.0 } },
-  "hairline":    { L: 0.885, C: 0.006, H:  75, need: {} },
-  "edge":        { L: 0.603, C: 0.008, H:  75, need: { ui: 3.0 } },
+  "text-1":      { L: 0.217, C: 0.012, H: 255, need: { lc: 90, wcag: 7.0 } },
+  "text-2":      { L: 0.417, C: 0.016, H: 255, need: { lc: 75, wcag: 4.5 } },
+  "text-3":      { L: 0.541, C: 0.018, H: 255, need: { lc: 60, wcag: 3.0 } },
+  "accent":      { L: 0.550, C: 0.125, H:  60, need: { ui: 3.0 } },
+  "accent-text": { L: 0.418, C: 0.085, H:  66, need: { lc: 75, wcag: 4.5 } },
+  "on-accent":   { L: 0.985, C: 0.004, H: 255, need: {} },
+  "ok":          { L: 0.590, C: 0.140, H: 150, need: { ui: 3.0 } },
+  "no":          { L: 0.623, C: 0.160, H:  25, need: { ui: 3.0 } },
+  "focus":       { L: 0.500, C: 0.090, H:  68, need: { ui: 3.0 } },
+  "hairline":    { L: 0.885, C: 0.010, H: 255, need: {} },
+  "edge":        { L: 0.608, C: 0.010, H: 255, need: { ui: 3.0 } },
 };
 
 export const lightSurfaces = Object.fromEntries(
@@ -231,8 +244,8 @@ function checkTheme(theme, failures) {
 
   // The label on the amber fill is the one place a foreground sits on a
   // colour rather than a surface, and amber caps what any ink can reach.
-  // The fill is the same in both themes, so this measures the same twice
-  // on purpose: it is the one token the light theme could not re-solve.
+  // The accent is a pair now — one value per theme — so this measures
+  // two different fills, and the light one is the page as ink.
   const inkLc = Math.abs(apca(theme.tokens["on-accent"], theme.tokens["accent"]));
   const inkW = wcagContrast(theme.tokens["on-accent"], theme.tokens["accent"]);
   if (inkW < 4.5) failures.push(`${theme.name}/on-accent: WCAG ${inkW.toFixed(2)}/4.5 on the fill`);
