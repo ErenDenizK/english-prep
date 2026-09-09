@@ -185,7 +185,7 @@ export const PAIRS = [
   { where: ".feedback__verdict", px: 18, weight: 600, token: "text-1", on: "surface-2" },
   // The quiet sentence: the one place a paragraph may be --c-text-2, and
   // only on the page or a card — never on surface-2, where it is 75/75.
-  { where: "quiet sentence", px: 18, weight: 400, token: "text-2", on: "surface-1" },
+  { where: ".t-quiet / quiet sentence", px: 18, weight: 400, token: "text-2", on: "surface-1" },
   { where: "quiet sentence (page)", px: 18, weight: 400, token: "text-2", on: "surface-0" },
   // The primary label sits on the amber, not on a surface.
   { where: ".btn--primary label", px: 18, weight: 600, token: "on-accent", on: "accent" },

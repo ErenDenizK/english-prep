@@ -5,6 +5,51 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.48 — 2026-09-09
+
+**Beta1, round three: the reader.** The lesson is the product, and it
+rendered every block as the same shape — a label, some serif lines,
+some Turkish lines, 32px, again. The contrast, which is the point of
+every lesson, was indistinguishable from its own illustrations; the
+forms table was the only thing on the page with any mass, and it is a
+reference. The corpus says a lesson is four parts — the boundary, the
+reference, the practice, the exam rule — and the reader now shows
+four parts rather than thirteen sections. Nothing in `data/` changed:
+the block vocabulary was the last schema change, and this round is
+the proof.
+
+- **The contrast is the one band on the page.** Full-bleed
+  `surface-1`, no radius, 24 inside and 48 of air above and below; the
+  authored heading as its kicker, each side a 22 serif label over an
+  18 gloss over an 18 serif example, 24 and a hairline between sides.
+  At 320 it is the width of the phone and about a screen tall —
+  scrolling into and out of it is the boundary, made spatial.
+- **Forms are rows, not a card.** A label per form with a hairline
+  above each group; pattern 18 serif, use 15/600, example 18 serif in
+  the first grey rather than the second.
+- **A run of pitfalls is one block**, under *Sık yapılan hatalar* — 172
+  pitfalls in 60 lessons, fifty runs of three, none with a heading, so
+  the page said ✕ ✓ why, ✕ ✓ why, ✕ ✓ why, *Kontrol* at one beat. The
+  *why* reads at body; it was a caption.
+- **Decision rules are rows, the outcome indented** by the arrow's
+  width under its triggers. Flush left it sat 16px below its triggers
+  and 16px above the next rule's, and half the time read as a heading
+  for the chips beneath it — the one block where a learner could take
+  the wrong rule away.
+- **Checks are numbered** — *Kontrol 1*, *Kontrol 2* — and the reader's
+  header says the lesson's place in its topic (*2 / 6*) where it said a
+  percentage; the bar already shows how far down the page you are.
+- **Rhythm: 4 / 24 / 48.** Lines of one object 4 apart, items in a
+  list-shaped block 24 apart with a hairline, 48 above every labelled
+  block, 64 before the end card. It was 8 / 16 / 32 — three adjacent
+  steps, arithmetic, and a label had the same 32 above it that every
+  unlabelled block had, so it grouped nothing.
+- Example notes and the pretest's rationale are sentences and read as
+  sentences: body, and the new `.t-quiet` (18/400 in the second grey,
+  legal on the page and on `surface-1` only, and measured as such).
+
+3,214 sweep checks; both themes looked at across a whole lesson.
+
 ## v0.47 — 2026-09-09
 
 **Beta1, round two: the scale.** Five steps — **36 · 28 · 22 · 18 · 15**

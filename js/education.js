@@ -1143,12 +1143,9 @@ function renderTextBlock(block) {
  * and a hairline carries the boundary.
  */
 function renderContrastBlock(block) {
-  const list = el("ul", "stack");
-  block.sides.forEach((side, index) => {
-    const item = el("li", "stack stack--tight");
-    if (index > 0) {
-      item.appendChild(el("span", "divider"));
-    }
+  const list = el("ul", "items");
+  for (const side of block.sides) {
+    const item = el("li", "stack stack--snug");
     item.appendChild(englishTitle("p", "t-lead t-en", side.label));
     const gloss = el("p", "t-body");
     appendInline(gloss, side.gloss);
@@ -1157,18 +1154,23 @@ function renderContrastBlock(block) {
       item.appendChild(englishTitle("p", "t-body t-en", side.example));
     }
     list.appendChild(item);
-  });
+  }
   return list;
 }
 
 /**
- * The structural patterns — the one block that earns a card, because it is
- * a reference the learner scrolls back to rather than a paragraph they
- * read once. Grouped by form here rather than in the data: the schema
- * keeps rows flat so a content file never nests three deep.
+ * The structural patterns — a reference the learner scrolls back to
+ * rather than a paragraph they read once. It used to be the reader's one
+ * card, on the argument that a reference should be findable; but
+ * findability is a heading's job, not a fill's, and the fill made the
+ * least important block in the teaching half the first thing with any
+ * mass on the page (docs/research/beta1-hierarchy.md §3.3). Homogeneous
+ * content is rows (§7.1): a labelled group per form, a hairline between
+ * groups. Grouped by form here rather than in the data: the schema keeps
+ * rows flat so a content file never nests three deep.
  */
 function renderFormsBlock(block) {
-  const card = el("div", "surface stack");
+  const card = el("div", "items");
   const byForm = new Map();
   for (const row of block.rows) {
     if (!byForm.has(row.form)) {
@@ -1181,8 +1183,7 @@ function renderFormsBlock(block) {
     const group = el("div", "stack stack--tight");
     group.appendChild(englishTitle("p", "t-label", form));
     for (const row of rows) {
-      const line = el("div", "stack");
-      line.style.gap = "0";
+      const line = el("div", "stack stack--snug");
       const pattern = el("p", "t-body t-en");
       pattern.lang = "en";
       pattern.appendChild(document.createTextNode(row.pattern));
@@ -1203,19 +1204,20 @@ function renderFormsBlock(block) {
   return card;
 }
 
+/**
+ * Sentence first, then its reason. The note is the teaching, so it reads
+ * at body; as a meta line it was a caption under the thing it explained.
+ */
 function renderExamplesBlock(block) {
-  const list = el("ul", "stack");
-  block.items.forEach((item, index) => {
-    const entry = el("li", "stack stack--tight");
-    if (index > 0) {
-      entry.appendChild(el("span", "divider"));
-    }
+  const list = el("ul", "items");
+  for (const item of block.items) {
+    const entry = el("li", "stack stack--snug");
     entry.appendChild(englishTitle("p", "t-lead t-en", item.sentence));
-    const note = el("p", "t-meta");
+    const note = el("p", "t-body");
     appendInline(note, item.note);
     entry.appendChild(note);
     list.appendChild(entry);
-  });
+  }
   return list;
 }
 
@@ -1225,7 +1227,7 @@ function renderExamplesBlock(block) {
  * and colour alone would say nothing in greyscale.
  */
 function renderPitfallBlock(block) {
-  const wrap = el("div", "stack stack--tight");
+  const wrap = el("div", "stack stack--snug");
 
   const line = (kind, sentence) => {
     const row = el("p", "cluster");
@@ -1238,9 +1240,31 @@ function renderPitfallBlock(block) {
 
   wrap.appendChild(line("no", block.wrong));
   wrap.appendChild(line("ok", block.right));
-  const why = el("p", "t-meta");
+  const why = el("p", "t-body");
   appendInline(why, block.why);
   wrap.appendChild(why);
+  return wrap;
+}
+
+/**
+ * Consecutive pitfalls are one block, not three. The corpus writes them
+ * in runs — 172 pitfalls in 60 lessons, 50 runs of three — and none of
+ * them carries a heading, so the reader met ✕ ✓ why, 32px, ✕ ✓ why, 32px,
+ * ✕ ✓ why, 32px, *Kontrol*: four sections at one beat with nothing to
+ * say where the practice ends. A rendering decision, which is what the
+ * block vocabulary is for: the files say `pitfall` three times and the
+ * page says *Sık yapılan hatalar* once.
+ */
+function renderPitfallRun(blocks) {
+  const wrap = el("section", "stack stack--tight block block--pitfall block--labelled");
+  wrap.appendChild(el("h3", "t-label", blocks.length > 1 ? "Sık yapılan hatalar" : "Sık yapılan hata"));
+  const list = el("ul", "items");
+  for (const block of blocks) {
+    const item = el("li");
+    item.appendChild(renderPitfallBlock(block));
+    list.appendChild(item);
+  }
+  wrap.appendChild(list);
   return wrap;
 }
 
@@ -1250,7 +1274,7 @@ function renderPitfallBlock(block) {
  * sentence because no word list captures it.
  */
 function renderDecisionBlock(block) {
-  const list = el("ul", "stack");
+  const list = el("ul", "items");
 
   const trigger = (rule) => {
     if (rule.signals) {
@@ -1279,7 +1303,11 @@ function renderDecisionBlock(block) {
       index += 1;
     } while (index < block.rules.length && block.rules[index].then === outcome);
 
-    const line = el("p", "cluster");
+    // Indented under its triggers by the arrow's width. Flush left, the
+    // outcome sat 16px below its triggers and 16px above the next rule's,
+    // and half the time read as a heading for the chips beneath it — the
+    // one block where a learner can take the wrong rule away.
+    const line = el("p", "cluster decision__outcome");
     const arrow = el("span");
     arrow.appendChild(icon("arrow-right", { size: 20 }));
     line.appendChild(arrow);
@@ -1387,7 +1415,7 @@ function renderPretestBlock(question) {
   wrap.appendChild(
     el(
       "p",
-      "t-meta",
+      "t-quiet",
       "Bu dersi henüz okumadın, bilmiyorsan sorun değil: asıl işe yarayan " +
         "denemenin kendisi. Tahmin edip yanılmak, sonra okuduğunu daha iyi " +
         "aklında tutmanı sağlıyor."
@@ -1405,15 +1433,28 @@ const BLOCK_RENDERERS = {
   decision: renderDecisionBlock,
 };
 
-function renderBlock(block, index, nextCheck) {
-  const wrap = el("section", "stack stack--tight");
+/**
+ * @param {number} [checkNumber] - this check's ordinal in the lesson,
+ *   so two checks read *Kontrol 1* and *Kontrol 2* rather than the same
+ *   word twice.
+ */
+function renderBlock(block, index, nextCheck, checkNumber = 0) {
+  // The wrapper says what the block is, so the stylesheet can give the
+  // contrast its band and every labelled block its 48px of air without
+  // the renderers knowing about either.
+  const wrap = el("section", `stack stack--tight block block--${block.type}`);
 
   if (block.type === "check") {
     const question = nextCheck();
     // A lesson can ask for more checks than its category has questions.
     // Rendering nothing is the honest answer; the validator warns about it
     // at authoring time, which is where it can actually be fixed.
-    return question ? renderCheckBlock(question, index) : null;
+    if (!question) {
+      return null;
+    }
+    wrap.classList.add("block--labelled");
+    wrap.appendChild(renderCheckBlock(question, index, { label: `Kontrol ${checkNumber}` }));
+    return wrap;
   }
 
   const render = BLOCK_RENDERERS[block.type];
@@ -1425,6 +1466,7 @@ function renderBlock(block, index, nextCheck) {
   }
 
   if (block.heading) {
+    wrap.classList.add("block--labelled");
     wrap.appendChild(el("h3", "t-label", block.heading));
   }
   wrap.appendChild(render(block));
@@ -1445,7 +1487,6 @@ function readFraction() {
 }
 
 let progressFill = null;
-let readout = null;
 let scrollTicking = false;
 
 /**
@@ -1477,9 +1518,6 @@ function handleReaderScroll() {
     if (progressFill) {
       progressFill.style.width = `${percent}%`;
     }
-    if (readout) {
-      readout.textContent = `%${percent}`;
-    }
 
     const lesson = currentLesson();
     // Reaching the end *is* finishing. There is no "Dersi bitir" button to
@@ -1502,14 +1540,20 @@ function renderReaderTop() {
   back.prepend(icon("arrow-left", { size: 20 }));
   back.addEventListener("click", showIndexByHash);
   strip.appendChild(back);
-  strip.appendChild(el("p", "t-meta t-num", "%0"));
+  // The lesson's place in its topic, not a percentage: the bar already
+  // shows how far down the page the reader is, and "2 / 6" is the number
+  // a learner looks up for. The kicker at the left and the count at the
+  // right are two anchors on one line.
+  const lesson = currentLesson();
+  const inTopic = state.lessons.filter((entry) => entry.topicId === lesson.topicId);
+  const position = inTopic.indexOf(lesson) + 1;
+  strip.appendChild(el("p", "t-meta t-num", `${position} / ${inTopic.length}`));
   top.appendChild(strip);
 
   const track = progressBar(0);
   top.appendChild(track);
 
   progressFill = track.firstElementChild;
-  readout = strip.lastElementChild;
   return top;
 }
 
@@ -1542,12 +1586,27 @@ function renderLesson() {
     page.appendChild(renderPretestBlock(pretest));
   }
 
-  lesson.blocks.forEach((block, index) => {
-    const node = renderBlock(block, index, nextCheck);
+  let checkNumber = 0;
+  for (let index = 0; index < lesson.blocks.length; ) {
+    const block = lesson.blocks[index];
+    if (block.type === "pitfall") {
+      const run = [];
+      while (index < lesson.blocks.length && lesson.blocks[index].type === "pitfall") {
+        run.push(lesson.blocks[index]);
+        index += 1;
+      }
+      page.appendChild(renderPitfallRun(run));
+      continue;
+    }
+    if (block.type === "check") {
+      checkNumber += 1;
+    }
+    const node = renderBlock(block, index, nextCheck, checkNumber);
     if (node) {
       page.appendChild(node);
     }
-  });
+    index += 1;
+  }
 
   page.appendChild(renderLessonEnd(lesson));
   readerContainer.appendChild(page);
@@ -1575,7 +1634,7 @@ function renderLessonEnd(lesson) {
   // in the one journey nobody had designed.
   const crossesTopic = nextLesson !== null && nextLesson.topicId !== lesson.topicId;
 
-  const card = el("section", "surface stack");
+  const card = el("section", "surface stack block--end");
   const head = el("div", "stack stack--tight");
   head.appendChild(el("p", "t-label", crossesTopic ? "Konu bitti" : "Ders bitti"));
   head.appendChild(
@@ -1661,7 +1720,6 @@ function setReaderChrome(active) {
   } else {
     scrollRegion.removeEventListener("scroll", handleReaderScroll);
     progressFill = null;
-    readout = null;
   }
   // A class rather than `hidden`, because focused mode is a state of the
   // whole shell and CSS is what knows which parts step out of the way.
