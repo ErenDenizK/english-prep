@@ -5,6 +5,41 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.46 — 2026-09-09
+
+**Beta1, round one: nothing on screen says the app is unfinished.** The
+first-run card's *"Uygulama hâlâ yazılıyor…"* is gone, and so is the
+whole roadmap section in Profil — the Bitti/Sırada/Planlandı chips and
+the app describing its own review process to a stranger who opened
+Profil to see who they were dealing with. The coverage section stays:
+what the app practises and what it does not is a fact about the exam,
+not an apology about the app. The sweep now asserts the absence rather
+than the presence.
+
+Seven more things a stranger would judge, from `docs/audit/beta1-ui.md`:
+
+- **The all-done card ended on a fragment** — *"okuma (21 puan) ve
+  paragraf tamamlama (9 puan)"* — because it was handed the list phrase
+  Profil builds its own sentence around. It is a sentence now.
+- **The topic overview's two buttons said the same thing.** *"Derslere
+  dön / Derslere geç"* are *"Konulara dön / Derse başla"*: the back
+  action goes to the topics and the forward one starts a lesson.
+- **A topic file that failed to load did nothing visible** and left the
+  hash on `#egitim/konu/<id>`. It says so now and puts the hash back
+  where the screen is.
+- **The results hedge printed twice**, once under each breakdown. Once.
+- **An empty mistake book was a permanent card** with a title, a
+  paragraph and nothing to tap — for every learner who had never got
+  anything wrong, which is every new learner. It is one line, and it
+  still says the thing that mattered: empty does not mean you know
+  them all.
+- **`700` → `600`** in the two rules that asked for it. Source Sans
+  ships no 700; Chromium draws the 600 face regardless, but the
+  fallback during the font swap is a real 700, so the primary label
+  lightened as the webfont landed.
+
+161 unit tests and 1,584 sweep checks green; looked at in both themes.
+
 ## v0.45 — 2026-09-09
 
 **A second hue.** Every non-semantic token in both themes used to sit in

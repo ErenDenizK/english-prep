@@ -254,18 +254,6 @@ function renderWelcome(firstLesson) {
   });
   card.appendChild(test);
 
-  // The one thing the dismissible banner above every screen was for. It
-  // belongs here and only here: a first-time learner should know the app
-  // is still being built before they judge it, and everyone else has
-  // already been told once. Profil carries the list itself.
-  card.appendChild(
-    el(
-      "p",
-      "t-meta",
-      "Uygulama hâlâ yazılıyor. Neyin bitip neyin sırada olduğunu Profil'de görebilirsin."
-    )
-  );
-
   return card;
 }
 
@@ -472,7 +460,12 @@ function renderAllDoneCard(lessons, missingSections) {
   });
   card.appendChild(revise);
 
-  card.appendChild(el("p", "t-meta", missingSections));
+  // `missingSections` arrives as a list phrase — "okuma (21 puan) ve
+  // paragraf tamamlama (9 puan)" — because Profil builds its own sentence
+  // around the same phrase. This card printed the phrase bare, so the
+  // all-done state ended on a lowercase fragment.
+  const missing = `${missingSections.charAt(0).toLocaleUpperCase("tr")}${missingSections.slice(1)} burada yok.`;
+  card.appendChild(el("p", "t-meta", missing));
 
   return card;
 }
@@ -1038,8 +1031,16 @@ export async function openTopicIntro(topicId) {
     lessons = await ensureLessons();
     manifest = await loadManifest();
   } catch (error) {
+    // A topic file that will not load used to fall through to the index
+    // with the hash still on #egitim/konu/<id> — nothing visible happened
+    // and the URL lied about where the learner was. Say so, and put the
+    // hash back where the screen actually is.
     console.error(error);
+    history.replaceState(null, "", "#egitim");
     await showLessonIndex();
+    indexContainer.prepend(
+      el("p", "t-meta", "Bu konu yüklenemedi. Bağlantını kontrol edip tekrar dene.")
+    );
     return;
   }
 
@@ -1096,7 +1097,7 @@ export async function openTopicIntro(topicId) {
   const inTopic = lessons.filter((lesson) => lesson.topicId === topicId);
   const next = inTopic.find((lesson) => !progress[lesson.id]?.done) ?? null;
   const forward = next
-    ? { label: "Derslere geç", level: "primary", onClick: () => openLessonByHash(next.id) }
+    ? { label: "Derse başla", level: "primary", onClick: () => openLessonByHash(next.id) }
     : {
         label: "Bu konudan test çöz",
         level: "primary",
@@ -1105,7 +1106,7 @@ export async function openTopicIntro(topicId) {
         },
       };
   actionBar.set([
-    { label: "Derslere dön", level: "secondary", onClick: showIndexByHash },
+    { label: "Konulara dön", level: "secondary", onClick: showIndexByHash },
     ...(inTopic.length > 0 ? [forward] : []),
   ]);
 }
