@@ -227,13 +227,20 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
           badPairs.add(`${size}/${weight} ${parent.tagName.toLowerCase()}.${parent.className}`);
         }
       }
+      // The content's own height: the scroll region pads itself by the
+      // chrome's height so the first and last lines clear the bars, and
+      // that padding is the same pixels the bars used to occupy as flex
+      // items — not content, and not what "it never ends" is about.
+      const region = document.getElementById("shell-scroll");
+      const regionStyle = region ? getComputedStyle(region) : null;
+      const chrome = regionStyle ? parseFloat(regionStyle.paddingTop) + parseFloat(regionStyle.paddingBottom) : 0;
       return {
         overflow: root.scrollWidth > root.clientWidth ? `${root.scrollWidth}px` : null,
         small,
         wrapped,
         sizes: [...sizes].sort((a, b) => b - a),
         badPairs: [...badPairs],
-        height: Math.round(document.getElementById("shell-scroll")?.scrollHeight ?? 0),
+        height: Math.round((region?.scrollHeight ?? 0) - chrome),
       };
     },
     { minHit: MIN_HIT, minAxis: MIN_AXIS }
@@ -2567,6 +2574,95 @@ async function runThemes(browser) {
   await context.close();
 }
 
+/**
+ * The chrome layer: header, tab bar and action bar float over the content
+ * as a material, and the content starts and ends clear of them. And the
+ * motion system: nothing runs when the person asked for less, and a route
+ * change is an entrance when they did not.
+ */
+async function runChrome(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#index-list .row");
+  const chrome = await page.evaluate(() => {
+    const header = document.getElementById("shell-header");
+    const nav = document.getElementById("bottom-nav");
+    const h = header.getBoundingClientRect();
+    const n = nav.getBoundingClientRect();
+    const first = document.querySelector("#lesson-index > *")?.getBoundingClientRect();
+    const style = getComputedStyle(header);
+    return {
+      filter: style.backdropFilter || style.webkitBackdropFilter || "",
+      headerBottom: h.bottom,
+      firstTop: first?.top ?? null,
+      nav: { top: n.top, bottom: n.bottom, left: n.left, right: n.right, width: n.width, height: n.height },
+      viewport: { w: innerWidth, h: innerHeight },
+    };
+  });
+  ok(/blur/.test(chrome.filter), `üst bar bir malzeme: arkası bulanık (${chrome.filter})`);
+  ok(
+    chrome.firstTop !== null && chrome.firstTop >= chrome.headerBottom - 1,
+    `içerik başlığın altında başlıyor, altından değil (${Math.round(chrome.firstTop)} ≥ ${Math.round(chrome.headerBottom)})`
+  );
+  ok(
+    chrome.nav.width <= 400 &&
+      chrome.nav.height >= 44 &&
+      chrome.nav.left >= 8 &&
+      chrome.nav.right <= chrome.viewport.w - 8 &&
+      chrome.nav.bottom <= chrome.viewport.h - 8,
+    `sekme çubuğu yüzen bir kapsül (${Math.round(chrome.nav.width)}×${Math.round(chrome.nav.height)}, alt boşluk ${Math.round(chrome.viewport.h - chrome.nav.bottom)})`
+  );
+  await page.evaluate(() => {
+    const region = document.getElementById("shell-scroll");
+    region.scrollTo({ top: region.scrollHeight });
+  });
+  await page.waitForTimeout(150);
+  const lastClear = await page.evaluate(() => {
+    const rows = document.querySelectorAll("#index-list .row");
+    const last = rows[rows.length - 1].getBoundingClientRect();
+    const nav = document.getElementById("bottom-nav").getBoundingClientRect();
+    return last.bottom <= nav.top + 1;
+  });
+  ok(lastClear, "en alta inince son satır kapsülün altında kalmıyor");
+  await context.close();
+
+  // Less motion: nothing runs, and a route change still lands.
+  const still = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
+  const quiet = await still.newPage();
+  await quiet.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await quiet.waitForSelector("#index-list .row");
+  await quiet.waitForTimeout(300);
+  const running = () =>
+    quiet.evaluate(() => document.getAnimations().filter((a) => a.playState === "running").length);
+  ok((await running()) === 0, `azaltılmış hareket: çalışan animasyon yok (${await running()})`);
+  await quiet.locator('.nav__item[href="#test"]').click();
+  await quiet.waitForSelector("#test-panel .surface");
+  await quiet.waitForTimeout(300);
+  ok((await running()) === 0, "azaltılmış hareket: ekran değişince de çalışan animasyon yok");
+  ok(await quiet.evaluate(() => document.activeElement?.id === "view-test"), "azaltılmış harekette de odak yeni görünüme taşınıyor");
+  await still.close();
+
+  // Motion welcome: the screen arrives, and the header's light drifts.
+  const moving = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "no-preference" });
+  const lively = await moving.newPage();
+  await lively.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await lively.waitForSelector("#index-list .row");
+  await lively.locator('.nav__item[href="#test"]').click();
+  await lively.waitForSelector("#test-panel .surface");
+  ok(
+    await lively.evaluate(() => document.getElementById("view-test").classList.contains("animate-in")),
+    "hareket serbestken yeni ekran bir girişle geliyor"
+  );
+  ok(
+    await lively.evaluate(() =>
+      document.getAnimations().some((a) => a.playState === "running" && a.animationName === "glow-drift")
+    ),
+    "başlıktaki ışık yavaşça kayıyor"
+  );
+  await moving.close();
+}
+
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
   await page.waitForSelector(".row");
@@ -2941,6 +3037,9 @@ try {
 
   console.log("\n=== iki tema ===");
   await runThemes(browser);
+
+  console.log("\n=== krom katmanı ve hareket ===");
+  await runChrome(browser);
 
   console.log("\n=== önce kendin düşün ===");
   await runThinkFirst(browser);

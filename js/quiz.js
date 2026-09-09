@@ -251,7 +251,7 @@ function renderQuestion() {
   const selected = state.selectedAnswers[state.currentIndex] ?? null;
 
   clear(container);
-  const page = el("div", "stack stack--loose");
+  const page = el("div", "stack stack--loose animate-in");
   page.appendChild(renderTopStrip());
   page.appendChild(progressBar());
 

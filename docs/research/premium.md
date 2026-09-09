@@ -175,15 +175,16 @@ second accent are what the same sources list as the failure modes.
    at body size; `.t-label` in the accent's text colour so a section
    opens with a mark the eye can find, measured into `PAIRS`; the bar's
    two buttons equal.
-3. **Structure** — the header, the action bar and the tab bar as one
-   translucent chrome layer over the content, with the solid fallback;
-   the reader's sticky strip the same; corner radii one step up on the
-   card; the ambient glow behind the header only, both themes, measured.
-4. **Motion** — `document.startViewTransition` on every hash route;
-   a 220 ms crossfade with the standard ease; list rows and cards arrive
-   with a short stagger on first paint; the feedback band and the
-   progress fill ease; all of it under `prefers-reduced-motion: no-preference`.
-5. The sweep learns each: a check that the chrome's labels clear their
-   pairs against the darkest and lightest content, that
-   `prefers-reduced-motion` leaves no animation running, and that a
-   route change still moves focus and updates the title mid-transition.
+2. **v0.55 — the reader's middle, the labels, the bar.** Shipped.
+3. **v0.56 — structure and motion.** Shipped: the chrome layer (header,
+   tab bar, action bar, the reader's strip) translucent and blurred over
+   the content with the solid fallbacks; the tab bar a floating capsule;
+   the header's light; cards at 16px; the route crossfade through
+   `startViewTransition`; `.animate-in` on every arriving screen; the
+   progress fill eased. Not done from the plan, on purpose: a stagger on
+   list rows (a screen that arrives in pieces reads as slow, and the
+   crossfade already says "new screen"), and any entrance on the
+   feedback band (§5 of the design system: answering must appear, not
+   perform). `PAIRS` measures every chrome label over the amber; the
+   sweep checks the blur, the clearances, the capsule, no running
+   animation under reduced motion, and the drift under no-preference.

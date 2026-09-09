@@ -211,6 +211,15 @@ export const PAIRS = [
   { where: "quiet sentence (page)", px: 18, weight: 400, token: "text-2", on: "surface-0" },
   // The primary label sits on the amber, not on a surface.
   { where: ".btn--primary label", px: 18, weight: 600, token: "on-accent", on: "accent" },
+  // The chrome: labels on the translucent bars over the worst content
+  // that can pass under them, and the brand under the glow.
+  { where: ".nav__item (chrome)", px: 15, weight: 600, token: "text-2", on: "chrome-over-accent" },
+  { where: ".nav__item[aria-current] (chrome)", px: 15, weight: 600, token: "text-1", on: "chrome-over-accent" },
+  { where: ".shell__bar .btn--secondary (chrome)", px: 18, weight: 600, token: "text-1", on: "chrome-over-accent" },
+  { where: ".shell__bar-hint (chrome)", px: 15, weight: 600, token: "text-2", on: "chrome-over-accent" },
+  { where: ".reader__top .t-num (chrome)", px: 15, weight: 600, token: "text-2", on: "chrome-over-accent" },
+  { where: ".reader__top .t-num (chrome, over a card)", px: 15, weight: 600, token: "text-2", on: "chrome-over-surface-2" },
+  { where: ".shell__brand (header glow)", px: 22, weight: 400, token: "text-1", on: "header-glow" },
   { where: ".t-meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   // The section label is the accent's text colour — the one place the
   // accent marks structure rather than an action — so a section opens
@@ -228,10 +237,42 @@ export const PAIRS = [
   { where: ".feedback__report", px: 15, weight: 600, token: "text-2", on: "surface-2" },
 ];
 
+/* -- The chrome layer's grounds ---------------------------------------
+
+   The header, the tab bar and the action bar are translucent (css:
+   --chrome-alpha) over whatever scrolls under them, so their labels have
+   no fixed ground. The worst content is the amber button — the lightest
+   thing on dark, the darkest saturated thing on light — and the worst
+   ground for a bar is therefore the page at the chrome's alpha over the
+   accent, mixed in sRGB as `color-mix(in srgb, …)` mixes. The header
+   also carries the glow (--c-glow), so the brand is measured over the
+   chrome ground with the glow's peak on top. */
+const CHROME_ALPHA = 0.88;
+const GLOW_ALPHA = { dark: 0.16, light: 0.10 };
+
+function mix(top, alpha, under) {
+  const a = hexToRgb(top);
+  const b = hexToRgb(under);
+  const rgb = a.map((c, i) => Math.round(c * alpha + b[i] * (1 - alpha)));
+  return "#" + rgb.map((c) => c.toString(16).padStart(2, "0")).join("").toUpperCase();
+}
+
+function chromeGrounds(theme) {
+  const page = theme.surfaces["surface-0"];
+  const overAccent = mix(page, CHROME_ALPHA, theme.tokens.accent);
+  const overSurface2 = mix(page, CHROME_ALPHA, theme.surfaces["surface-2"]);
+  return {
+    "chrome-over-accent": overAccent,
+    "chrome-over-surface-2": overSurface2,
+    "header-glow": mix(theme.tokens.accent, GLOW_ALPHA[theme.name], overAccent),
+  };
+}
+
 function checkPairs(theme, failures, lines) {
   lines.push("\n  size x weight, against the surface closest in lightness:");
+  const grounds = { ...theme.surfaces, ...chromeGrounds(theme) };
   for (const pair of PAIRS) {
-    const ground = theme.surfaces[pair.on] ?? theme.tokens[pair.on];
+    const ground = grounds[pair.on] ?? theme.tokens[pair.on];
     const measured = Math.abs(apca(theme.tokens[pair.token], ground));
     const need = requiredLc(pair.px, pair.weight);
     const label = `${pair.where} ${pair.px}/${pair.weight} ${pair.token}`;

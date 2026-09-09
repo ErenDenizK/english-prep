@@ -5,6 +5,36 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.56 — 2026-09-09
+
+**The chrome is a layer.** The header, the floating tab bar, the action
+bar and the reader's sticky strip are one translucent material over the
+content — the page colour at 88% with the content blurred behind it, a
+hairline where it meets the page — and the content scrolls *under* them
+rather than stopping at them. Solid wherever the blur is unavailable or
+the person has asked for less transparency. Glass is for the chrome and
+never for content: cards, rows and prose stay opaque. The tab bar is a
+capsule inset from the edges, never wider than 400px, with a capsule on
+the current destination; the header carries the app's one ambient
+element, a soft glow of the accent's hue behind the brand that drifts
+slowly when motion is welcome. Cards are 16px-cornered.
+
+**Motion is one system.** A route change is a 220 ms crossfade made by
+the browser (`startViewTransition`, baseline in every engine since late
+2025), skipped under reduced motion and where the API is missing; every
+arriving screen — a tab, the topic screen, a lesson, a question —
+carries the same entrance; the progress fill eases. The feedback band
+deliberately does not animate: answering must appear, not perform.
+
+Measured before it shipped: `PAIRS` now carries the chrome's labels over
+the worst content that can pass under them (the amber button) and the
+brand under the glow's peak, both themes green. The sweep checks the
+blur, that content starts and ends clear of the bars, the capsule's
+geometry, that nothing runs under `prefers-reduced-motion: reduce`
+while a route change still moves focus, and that the light drifts when
+motion is welcome. 3,335 checks. `docs/research/premium.md` §2–3 is the
+research and what was left out on purpose.
+
 ## v0.55 — 2026-09-09
 
 **Section labels in the accent; the bar's two buttons equal; the topic
