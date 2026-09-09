@@ -27,6 +27,8 @@ const state = {
   selectedAnswers: [],
   currentIndex: 0,
   answered: false,
+  /** What kind of test this is, in words — see `modeLabel`. */
+  modeLabel: "",
   /**
    * "Önce kendin düşün": with the options hidden, answering is retrieval
    * rather than recognition — the learner has to produce the form before
@@ -128,6 +130,25 @@ function exitQuiz() {
   finishQuiz({ upTo: answeredCount() });
 }
 
+/**
+ * The test named in one word or a title, for the top strip and the tab:
+ * a screen of ten questions never said whether they were the mistake
+ * book, one topic or everything mixed, and the category label under the
+ * strip names the question, not the test.
+ */
+function modeLabel(request, titleById) {
+  switch (request?.mode) {
+    case "mistakes":
+      return "Yanlış defteri";
+    case "topic":
+      return titleById.get(request.topicIds?.[0]) ?? "Konu testi";
+    case "category":
+      return "Kategori testi";
+    default:
+      return "Karışık test";
+  }
+}
+
 function renderTopStrip() {
   const strip = el("div", "cluster cluster--spread");
 
@@ -142,9 +163,18 @@ function renderTopStrip() {
   exit.addEventListener("click", exitQuiz);
   strip.appendChild(exit);
 
-  strip.appendChild(
-    el("p", "t-meta t-num", `${state.currentIndex + 1} / ${state.session.length}`)
-  );
+  // The mode first and clipped if it must be, the count last and never
+  // clipped: "Academic Nouns & Adjectives · 3 / 10" does not fit beside
+  // the exit button at 320, and the count is the part that changes.
+  const readout = el("p", "t-meta t-num strip__readout");
+  const mode = el("span", "strip__mode", state.modeLabel);
+  if (/[A-Za-z]/.test(state.modeLabel) && !/test|defteri/.test(state.modeLabel)) {
+    mode.lang = "en";
+  }
+  readout.appendChild(mode);
+  readout.appendChild(document.createTextNode(" · "));
+  readout.appendChild(el("span", null, `${state.currentIndex + 1} / ${state.session.length}`));
+  strip.appendChild(readout);
   return strip;
 }
 
@@ -345,6 +375,11 @@ async function init() {
 
   try {
     const manifest = await loadManifest();
+    state.modeLabel = modeLabel(
+      request,
+      new Map(manifest.topics.map((topic) => [topic.id, topic.title]))
+    );
+    document.title = `${state.modeLabel} — English Prep`;
     const topics = manifest.topics.filter(
       (topic) => !topic.comingSoon && request.topicIds.includes(topic.id)
     );

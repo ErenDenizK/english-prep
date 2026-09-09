@@ -5,6 +5,25 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.53 — 2026-09-09
+
+**Three things a careful user would notice**, from the beta1 audit's B
+list, that the six rounds had not reached:
+
+- **The test says which test it is.** The quiz strip reads *"Karışık
+  test · 3 / 10"*, *"Yanlış defteri · …"* or the topic's title, clipped
+  if it must be while the count never is; the results screen says the
+  same under its bar; both set the tab's title. Ten questions had never
+  said whether they were the book, one topic or everything mixed.
+- **The topic screen has a top strip** — *Konular* to go back, and the
+  topic's finished count — like the reader's. The only way out used to
+  be the bar at the bottom of a five-screen page.
+- **Installing is mentioned**, once, in *Verilerin*, beside the backup
+  argument it belongs to: a home-screen app is exempt from the browser's
+  seven-day eviction, and iOS never prompts.
+
+The README's design paragraph describes the app that exists.
+
 ## v0.52 — 2026-09-09
 
 **A finished row shows a check, not a chip.** The *"Tamamlandı"* chip

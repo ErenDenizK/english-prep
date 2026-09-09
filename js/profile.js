@@ -197,6 +197,18 @@ function renderData() {
         "Ara sıra yedek al; başka bir cihaza da böyle taşırsın."
     )
   );
+  // Installing is the other half of the same argument — a home-screen app
+  // is exempt from WebKit's seven-day eviction — and nothing said it was
+  // possible; iOS never prompts.
+  section.appendChild(
+    el(
+      "p",
+      "t-quiet",
+      "Ana ekrana eklersen uygulama gibi açılır ve tarayıcı verini daha zor " +
+        "siler: Safari'de Paylaş → Ana Ekrana Ekle, Chrome'da menüden " +
+        "Ana ekrana ekle."
+    )
+  );
 
   const status = el("p", "t-meta");
   status.setAttribute("role", "status");
@@ -278,7 +290,7 @@ function renderThemeRow() {
   title.id = "profile-theme-label";
   main.appendChild(title);
   main.appendChild(
-    el("span", "row__sub", "Aydınlık zeminde küçük yazı daha kolay okunur. Sistem, telefonu izler.")
+    el("span", "row__sub", "Sistem, telefonun ayarını izler.")
   );
   row.appendChild(main);
 
