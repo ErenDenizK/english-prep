@@ -51,8 +51,15 @@ const LANDING_BUDGET_SCREENS = 3;
  * is orientation the learner chose to open, plus that topic's six lesson
  * rows. Still budgeted, because it is the obvious place for the next
  * unmeasured 768px to land.
+ *
+ * Five since v0.47, from four: body went from 16/26 to 18/28 and the
+ * words did not change, so the same page is 1.21× taller and the same
+ * budget in screens is 4 × 1.21 = 4.85. The longest intro measures 4.72.
+ * Until then this was only measured on whichever topic the intro loop
+ * ended on; it is measured on every one now, and the widest (academic
+ * nouns) was already at 4.13 unmeasured.
  */
-const TOPIC_BUDGET_SCREENS = 4;
+const TOPIC_BUDGET_SCREENS = 5;
 
 const VIEWPORTS = [
   { name: "320 (dar telefon)", width: 320, height: 640 },
@@ -146,7 +153,11 @@ function ok(condition, message) {
  * @param {{maxScreens?: number}} [options] - assert a height budget. Only
  *   for screens a learner lands on; see `LANDING_BUDGET_SCREENS`.
  */
-async function auditLayout(page, label, width, { maxScreens } = {}) {
+/**
+ * @param {boolean} [options.catalogue] - the component page shows every
+ *   size the scale has, by design; the four-size cap is for screens.
+ */
+async function auditLayout(page, label, width, { maxScreens, catalogue = false } = {}) {
   const report = await page.evaluate(
     ({ minHit, minAxis }) => {
       const root = document.documentElement;
@@ -165,9 +176,48 @@ async function auditLayout(page, label, width, { maxScreens } = {}) {
           );
         }
       }
+      // A bar label that wraps makes its button taller than the bar was
+      // sized for, and the bar's one job is a fixed height. 52 is the
+      // primary button's min-height; a one-line label never exceeds it.
+      const wrapped = [];
+      for (const node of document.querySelectorAll(".shell__bar-inner > .btn")) {
+        const box = node.getBoundingClientRect();
+        if (box.height > 52) {
+          wrapped.push(`"${node.textContent.trim()}" ${Math.round(box.height)}px`);
+        }
+      }
+      // The rendered type, as pairs. `npm run color` checks the pairs the
+      // stylesheet declares; this checks the ones the page actually paints,
+      // which is where a utility class overriding a component's weight
+      // shows up. Three rules from docs/beta1-plan.md round 2: at most
+      // four sizes on a screen; nothing at 15px lighter than 600 (15/400
+      // needs Lc 100 and no ink reaches it); nothing heavier than 600
+      // (no such face ships, so the number would be a fiction).
+      const sizes = new Set();
+      const badPairs = new Set();
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      let text;
+      while ((text = walker.nextNode())) {
+        if (!text.textContent.trim()) continue;
+        const parent = text.parentElement;
+        if (!parent || parent.closest("[hidden], script, style, noscript")) continue;
+        const box = parent.getBoundingClientRect();
+        if (box.width === 0 && box.height === 0) continue;
+        const style = getComputedStyle(parent);
+        if (style.visibility === "hidden") continue;
+        const size = Math.round(parseFloat(style.fontSize));
+        const weight = Number(style.fontWeight);
+        sizes.add(size);
+        if ((size < 16 && weight < 600) || weight > 600) {
+          badPairs.add(`${size}/${weight} ${parent.tagName.toLowerCase()}.${parent.className}`);
+        }
+      }
       return {
         overflow: root.scrollWidth > root.clientWidth ? `${root.scrollWidth}px` : null,
         small,
+        wrapped,
+        sizes: [...sizes].sort((a, b) => b - a),
+        badPairs: [...badPairs],
         height: Math.round(document.getElementById("shell-scroll")?.scrollHeight ?? 0),
       };
     },
@@ -176,6 +226,13 @@ async function auditLayout(page, label, width, { maxScreens } = {}) {
 
   ok(!report.overflow, `${label}: yatay taşma yok${report.overflow ? ` (${report.overflow} > ${width})` : ""}`);
   ok(report.small.length === 0, `${label}: dokunma hedefleri yeterli${report.small.length ? ` — ${report.small.join("; ")}` : ""}`);
+  if (!catalogue) {
+    ok(report.sizes.length <= 4, `${label}: en fazla dört punto (${report.sizes.join("/")})`);
+  }
+  ok(report.badPairs.length === 0, `${label}: her punto izinli ağırlıkta${report.badPairs.length ? ` — ${report.badPairs.join("; ")}` : ""}`);
+  if (report.wrapped.length > 0 || width === 320) {
+    ok(report.wrapped.length === 0, `${label}: bar etiketi tek satır${report.wrapped.length ? ` — ${report.wrapped.join("; ")}` : ""}`);
+  }
 
   // Vertical length — the axis this sweep never measured. It audited
   // horizontal overflow on every screen it visited and passed 1,051
@@ -1242,7 +1299,7 @@ async function runComponents(browser) {
     });
     ok(wrapped > 1, `${width}px: cümlelik seçenek gerçekten satır kırıyor (${wrapped} satır)`);
 
-    await auditLayout(page, `bileşen sayfası ${width}px`, width);
+    await auditLayout(page, `bileşen sayfası ${width}px`, width, { catalogue: true });
     ok(errors.length === 0, `${width}px: konsol temiz${errors.length ? ` — ${errors[0]}` : ""}`);
     await context.close();
   }
@@ -2071,9 +2128,8 @@ async function runTopicIntro(browser) {
       return nodes.filter((node) => node.closest("[lang=en]") === null).length;
     });
     ok(untagged === 0, `${topic.id}: İngilizce dizeler lang="en" taşıyor`);
+    await auditLayout(page, `${topic.id}: konu girişi`, 320, { maxScreens: TOPIC_BUDGET_SCREENS });
   }
-
-  await auditLayout(page, "konu girişi", 320, { maxScreens: TOPIC_BUDGET_SCREENS });
 
   // The test row actually launches the topic's test, and only its own.
   await page.goto(`${BASE}/index.html#egitim/konu/tenses`, { waitUntil: "networkidle" });
@@ -2110,7 +2166,7 @@ async function runTopicIntro(browser) {
     "bitmiş konuda satır çıkmıyor — bar zaten o eylemi taşıyor"
   );
   const forwardLabel = (await page.locator("#lesson-bar .btn--primary").innerText()).trim();
-  ok(forwardLabel === "Bu konudan test çöz", `bitmiş konuda ileri eylem test (${forwardLabel})`);
+  ok(forwardLabel === "Teste başla", `bitmiş konuda ileri eylem test (${forwardLabel})`);
   await page.locator("#lesson-bar .btn--primary").click();
   await page.waitForURL(/quiz\.html/);
   await page.waitForSelector(".option");

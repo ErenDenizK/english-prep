@@ -58,7 +58,24 @@ function renderScore(result) {
  * @param {(key: string) => string|null} [resolveLessonId] - when a row maps
  *   to a lesson, the row becomes a link into the Eğitim tab
  */
-function renderBreakdown(heading, breakdown, resolveName, resolveLessonId, { hedge = true } = {}) {
+/**
+ * Ten questions spread over six categories is one or two each, and a
+ * list sorted worst-first on one item reads as a finding. Same threshold
+ * and the same reasoning as the weak-spot list in Profil.
+ *
+ * Judged across every breakdown the screen shows, not per section: the
+ * category one is thinner than the topic one on the same test, and a
+ * draw with three questions in one topic and one in every category was
+ * printing no hedge at all when it was the one that needed it most.
+ */
+function isThin(breakdowns) {
+  return breakdowns.some((breakdown) => {
+    const totals = Object.values(breakdown ?? {}).map((entry) => entry.total);
+    return totals.length > 1 && Math.max(...totals) < MIN_ITEMS_FOR_WEAK_ENTRY;
+  });
+}
+
+function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
   const keys = Object.keys(breakdown);
   // A one-row breakdown just restates the score above it.
   if (keys.length <= 1) {
@@ -67,24 +84,6 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId, { hed
 
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", heading));
-
-  // Ten questions spread over six categories is one or two each, and a
-  // list sorted worst-first on one item reads as a finding. Drop the
-  // claim, not the data: the rows stay, because a learner is entitled to
-  // see their own test broken down. Same hedge, same threshold and the
-  // same reasoning as the weak-spot list in Profil.
-  // Printed once, on the first breakdown: the second one sits directly
-  // under it and the same sentence twice reads as a template.
-  const most = Math.max(...keys.map((key) => breakdown[key].total));
-  if (hedge && most < MIN_ITEMS_FOR_WEAK_ENTRY) {
-    section.appendChild(
-      el(
-        "p",
-        "t-meta",
-        "Bu testte her başlıktan bir-iki soru çıktı; bu bir sıralama, bir sonuç değil."
-      )
-    );
-  }
 
   // Worst first. A breakdown in whatever order the questions happened to
   // come out is a table; in this order it is a reading list.
@@ -214,7 +213,11 @@ function renderReview(result) {
 
     item.appendChild(renderPrompt(question, { lead: false }));
 
-    const answers = el("p", "t-meta");
+    // Body from here down, not meta. The review is the longest reading
+    // surface in the app and it was set in the one-line tier — seven-line
+    // explanations at 15/600 — and the English in it cannot be 15px at
+    // all: the serif ships at 400 only, and 15/400 clears no ground.
+    const answers = el("p", "t-body");
     answers.appendChild(document.createTextNode("Cevabın: "));
     const given = el("span", "t-en", question.selectedAnswer ?? "—");
     given.lang = "en";
@@ -234,7 +237,7 @@ function renderReview(result) {
       ? question.optionNotes?.[question.selectedAnswer]
       : null;
     if (note) {
-      const line = el("p", "t-meta");
+      const line = el("p", "t-body");
       const word = el("strong", "t-en", question.selectedAnswer);
       word.lang = "en";
       line.appendChild(word);
@@ -243,12 +246,12 @@ function renderReview(result) {
       item.appendChild(line);
     }
 
-    const explanation = el("p", "t-meta");
+    const explanation = el("p", "t-body");
     appendInline(explanation, question.explanation);
     item.appendChild(explanation);
 
     if (question.tip) {
-      const tip = el("p", "t-meta");
+      const tip = el("p", "t-body");
       tip.appendChild(el("strong", null, "Kural: "));
       appendInline(tip, question.tip);
       item.appendChild(tip);
@@ -350,26 +353,37 @@ async function init() {
     `Test bitti. ${result.totalCount} sorudan ${result.correctCount} doğru.`
   );
 
-  const topicBreakdown = renderBreakdown(
-    "Konuya göre",
-    result.topicBreakdown,
-    (topicId) => titleById.get(topicId) ?? result.topicTitles?.[topicId] ?? topicId
-  );
-  if (topicBreakdown) {
-    aside.appendChild(topicBreakdown);
-  }
+  const breakdowns = [
+    renderBreakdown(
+      "Konuya göre",
+      result.topicBreakdown,
+      (topicId) => titleById.get(topicId) ?? result.topicTitles?.[topicId] ?? topicId
+    ),
+    result.categoryBreakdown
+      ? renderBreakdown(
+          "Kategoriye göre",
+          result.categoryBreakdown,
+          (category) => category,
+          (category) => lessonIdByCategory.get(category) ?? null
+        )
+      : null,
+  ].filter(Boolean);
 
-  if (result.categoryBreakdown) {
-    const categoryBreakdown = renderBreakdown(
-      "Kategoriye göre",
-      result.categoryBreakdown,
-      (category) => category,
-      (category) => lessonIdByCategory.get(category) ?? null,
-      { hedge: false }
+  // Drop the claim, not the data: the rows stay, because a learner is
+  // entitled to see their own test broken down. Printed once, above the
+  // first breakdown — the second sits directly under it and the same
+  // sentence twice reads as a template.
+  if (breakdowns.length > 0 && isThin([result.topicBreakdown, result.categoryBreakdown])) {
+    aside.appendChild(
+      el(
+        "p",
+        "t-meta",
+        "Bu testte her başlıktan bir-iki soru çıktı; bu bir sıralama, bir sonuç değil."
+      )
     );
-    if (categoryBreakdown) {
-      aside.appendChild(categoryBreakdown);
-    }
+  }
+  for (const breakdown of breakdowns) {
+    aside.appendChild(breakdown);
   }
 
   const mistakeShortcut = renderMistakeShortcut(result);

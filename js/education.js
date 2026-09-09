@@ -930,7 +930,9 @@ function renderIntro(topic, lessons, progress) {
       }
       entry.appendChild(name);
       if (part.en) {
-        entry.appendChild(englishTitle("p", "t-meta t-en", part.en));
+        // Body, not meta: an example is a sentence, and English serif has
+        // no weight that clears the ground at 15px.
+        entry.appendChild(englishTitle("p", "t-body t-en", part.en));
       }
       list.appendChild(entry);
     }
@@ -1099,7 +1101,10 @@ export async function openTopicIntro(topicId) {
   const forward = next
     ? { label: "Derse başla", level: "primary", onClick: () => openLessonByHash(next.id) }
     : {
-        label: "Bu konudan test çöz",
+        // "Teste başla", beside "Derse başla": the screen is one topic,
+        // so the test needs no naming — and the long form did not fit
+        // beside the retreat at 320 at body size.
+        label: "Teste başla",
         level: "primary",
         onClick: () => {
           startTopicTest(topicId).catch(console.error);
@@ -1184,13 +1189,13 @@ function renderFormsBlock(block) {
       line.appendChild(pattern);
       const meta = el("p", "t-meta");
       meta.appendChild(document.createTextNode(row.use));
-      if (row.example) {
-        meta.appendChild(document.createTextNode(" · "));
-        const example = el("span", "t-en", row.example);
-        example.lang = "en";
-        meta.appendChild(example);
-      }
       line.appendChild(meta);
+      if (row.example) {
+        // Its own line at body: it was a serif span inside the meta
+        // line, which set an English sentence at 15/400 — the one pair
+        // no ink clears on either ground.
+        line.appendChild(englishTitle("p", "t-body t-en", row.example));
+      }
       group.appendChild(line);
     }
     card.appendChild(group);
