@@ -5,6 +5,55 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.47 — 2026-09-09
+
+**Beta1, round two: the scale.** Five steps — **36 · 28 · 22 · 18 · 15**
+— and every adjacent pair at least 1.2 apart. The old scale had 19, 17,
+16 and 15 in its middle, two one-pixel "steps" where most of the
+reader's characters lived, so size carried no hierarchy where it was
+needed most; and v0.41–0.42, fixing the small-type contrast honestly,
+had moved every quiet tier to 15/600 so that *quiet*, *label* and
+*subtitle* became one style. That is what "minimalizm ve sığ arasında"
+was describing. Now:
+
+- **Body is 18/28**, not 16/26 — the smallest size at which
+  `--c-text-2` at weight 400 clears its ground (Lc 75 needed; 75–79
+  measured). A quiet *sentence* is 18/400; **15px exists only at 600**
+  and only for one line — a meta line, a label, a chip, a nav item.
+- **Weight points up.** 400 reads, 600 heads and labels. `<strong>`
+  and `<em>` are both the shipped 600, never `bolder` — a bold inside a
+  600 label computed to 900, which no face answers.
+- `--t-ui` is gone; rows, buttons, the listbox, the answer options and
+  the feedback verdict take body. `--s-10: 64px` for the reader's rhythm.
+- The action bar's labels never wrap: the retreat is as wide as its
+  label, the advance takes the rest, and the bar's buttons carry a step
+  less padding. The old 1:2 split gave the retreat 93px at 320, which
+  holds *"Geri"* and not *"Konulara dön"* at any legal size. The
+  finished topic's forward action is *"Teste başla"*, beside *"Derse
+  başla"* — the long form did not fit and the screen is one topic.
+- **English has a floor of 18px**: the serif ships at 400 only, and
+  15/400 clears no ground in either theme. Three places set English at
+  15 — the intro's part examples, the forms block's examples, and the
+  results review — and are at body now. The review's explanations
+  were seven lines each in the one-line tier; they read at body.
+- The results hedge judges both breakdowns at once: a draw with three
+  questions in one topic and one in every category printed no hedge
+  when it was the one that needed it most.
+
+**The instrument first, as every round since v0.42.** `PAIRS` in
+`tools/palette.mjs` was rewritten from the real declarations before any
+CSS moved, including the primary button's label measured against the
+amber in both themes. And the sweep now audits *rendered* type on every
+screen it lands on, which is where a utility class overriding a
+component's weight shows up: at most four sizes on a screen, nothing at
+15px lighter than 600, nothing heavier than 600, no bar label taller
+than one line. The topic-intro height budget is measured on every topic
+rather than the one the loop ended on — the widest was already over the
+old budget, unmeasured — and is 5 screens from 4, because the same
+words at body 18 are 1.21× taller.
+
+2,938 sweep checks, both themes green in `npm run color`.
+
 ## v0.46 — 2026-09-09
 
 **Beta1, round one: nothing on screen says the app is unfinished.** The

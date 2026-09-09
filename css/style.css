@@ -81,6 +81,7 @@
     --s-7: 32px;
     --s-8: 40px;
     --s-9: 48px;
+    --s-10: 64px;
 
     /* -- Radius. 0 for anything full-bleed. Nested radius = outer minus
           padding; if that is <= 0 the inner element is square-cornered,
@@ -99,25 +100,25 @@
     --f-serif: "Source Serif 4", "Source Serif 4 Fallback", "Times New Roman", Georgia, serif;
     --f-sans: "Source Sans 3", "Source Sans 3 Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
 
-    --t-display: 28px;
-    --t-display-lh: 32px;
-    --t-title: 22px;
-    --t-title-lh: 28px;
-    --t-lead: 19px;
+    /* Five steps, and every adjacent pair is at least 1.2 apart:
+       36 · 28 · 22 · 18 · 15. The old scale had 19/17/16/15 in its middle
+       — two one-pixel "steps" where eighty per cent of the reader's
+       characters lived, so size carried no hierarchy at all there. Body
+       is 18 rather than 16 so that a quiet tier at weight 400 exists:
+       on this ground --c-text-2 at 400 is first legal at 18px (needs Lc
+       75; measured 75–79), and 16/400 needs 90, which only --c-text-1
+       reaches. 15 is the floor and it is only ever set at weight 600.
+       The weight axis points UP: 400 reads, 600 heads and labels; no
+       tier quieter than body is heavier than body except a one-line
+       label. See docs/research/beta1-hierarchy.md §6.1. */
+    --t-display: 36px;
+    --t-display-lh: 40px;
+    --t-title: 28px;
+    --t-title-lh: 32px;
+    --t-lead: 22px;
     --t-lead-lh: 28px;
-    --t-body: 16px;
-    --t-body-lh: 26px;
-    --t-ui: 15px;
-    --t-ui-lh: 20px;
-    /* The scale bottoms out at 15px, and that is a contrast decision as
-       much as a size one. APCA's font matrix wants Lc 113 at 13px/400 and
-       Lc 117 at 11px/600; the ceiling on this ground is Lc 107 with pure
-       white ink, which §1 forbids. So those two steps could not be fixed
-       by choosing a better grey — in this theme or any other — and the
-       app was setting 54% of its rendered characters in them.
-       --t-meta shares --t-ui's size and differs by weight and colour:
-       15px/600 needs Lc 75 and --c-text-2 measures 79. --t-micro is gone
-       rather than resized, so no call site can drift back below 15. */
+    --t-body: 18px;
+    --t-body-lh: 28px;
     --t-meta: 15px;
     --t-meta-lh: 20px;
 
@@ -493,15 +494,26 @@
       var(--s-3) max(var(--gutter), env(safe-area-inset-right, 0px));
   }
 
+  /* A bar's label never wraps: a two-line button is a different height
+     from its neighbour and the bar exists to keep its height fixed. If a
+     pair cannot fit at 320 the bar overflows, which the sweep sees; a
+     wrap it never did. The padding is a step below a free-standing
+     button's because the bar is the one place two labels share 288px. */
   .shell__bar-inner > .btn {
     flex: 1 1 0;
     min-width: 0;
+    padding-inline: var(--s-4);
+    white-space: nowrap;
   }
 
   /* Two buttons in a bar are a retreat and an advance, and they are not
-     equals. The forward action takes twice the width. */
-  .shell__bar-inner > .btn--primary:not(:only-child) {
-    flex-grow: 2;
+     equals. The retreat is as wide as its label and no wider; the advance
+     takes everything else. A 1:2 split by width gave the retreat 93px at
+     320, which holds "Geri" and not "Konulara dön" at any legal size —
+     the label wrapped and the bar grew. At the reading measure the same
+     rule still hands the forward action well over twice the width. */
+  .shell__bar-inner > .btn--secondary:not(:only-child) {
+    flex: 0 0 auto;
   }
 
   .shell__bar-inner > .shell__bar-hint {
@@ -600,8 +612,8 @@
   }
 
   .t-ui {
-    font-size: var(--t-ui);
-    line-height: var(--t-ui-lh);
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
     font-weight: 600;
   }
 
@@ -668,6 +680,15 @@
      stays <em> for what a screen reader says. */
   em {
     font-style: normal;
+    font-weight: 600;
+  }
+
+  /* And bold is the shipped 600, never `bolder`: a <strong> inside a
+     600 label computes to 900, which the browser answers with the 600
+     face — so the number was a lie the sweep now catches (it asserts no
+     rendered weight above 600). */
+  strong,
+  b {
     font-weight: 600;
   }
 }
@@ -746,9 +767,9 @@
   }
 
   .row__title {
-    font-size: var(--t-ui);
-    line-height: var(--t-ui-lh);
-    font-weight: 600;
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+    font-weight: 400;
   }
 
   /* One line, always. A row's secondary line is a hint, and a hint that
@@ -793,7 +814,7 @@
     min-width: 88px; /* short Turkish labels shouldn't produce runts */
     padding: 0 var(--s-5);
     border-radius: var(--r-2);
-    font-size: var(--t-ui);
+    font-size: var(--t-body);
     font-weight: 600;
     text-decoration: none;
     transition:
@@ -801,9 +822,10 @@
       transform var(--d-micro) var(--ease-standard);
   }
 
-  /* The filled action. Its label is 16px/700 because no ink reaches APCA
-     Lc 75 on amber — 67 is the ceiling, which the APCA font table clears
-     only at that size and weight. */
+  /* The filled action. Its label is body/600, and that pair is measured
+     against the amber in both themes by `npm run color` (PAIRS,
+     ".btn--primary label"): no ink reaches Lc 75 on the dark amber, so
+     the label cannot go smaller or lighter than this. */
   .btn--primary {
     background: var(--c-accent);
     color: var(--c-on-accent);
@@ -875,6 +897,14 @@
     color: var(--c-text-2);
   }
 
+  /* An English chip is serif, and the serif ships at 400 only — so it
+     cannot be 15px, where 400 clears no ground in either theme. It takes
+     the body size instead: English has a floor of 18px everywhere. */
+  .chip.t-en {
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+  }
+
   .chip--ok { background: var(--c-ok-tint); color: var(--c-ok); }
   .chip--accent { background: var(--c-accent-tint); color: var(--c-accent-text); }
 
@@ -934,7 +964,7 @@
     padding: 0 var(--s-4);
     border-radius: var(--r-1);
     background: var(--c-surface-1);
-    font-size: var(--t-ui);
+    font-size: var(--t-body);
     font-weight: 600;
   }
 
@@ -957,7 +987,7 @@
     min-height: 44px;
     padding: 0 var(--s-3);
     border-radius: var(--r-1);
-    font-size: var(--t-ui);
+    font-size: var(--t-body);
     font-weight: 600;
     white-space: nowrap;
     cursor: pointer;
@@ -1070,7 +1100,7 @@
     display: flex;
     align-items: center;
     gap: var(--s-3);
-    font-size: var(--t-ui);
+    font-size: var(--t-body);
     font-weight: 600;
   }
 
@@ -1122,7 +1152,7 @@
     padding: calc((var(--option-row) - var(--option-line)) / 2) var(--gutter);
     text-align: left;
     font-family: var(--f-serif);
-    font-size: 17px;
+    font-size: var(--t-body);
     line-height: var(--option-line);
     transition: background-color var(--d-micro) var(--ease-standard);
   }

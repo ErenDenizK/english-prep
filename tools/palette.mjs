@@ -171,18 +171,27 @@ export function requiredLc(px, weight) {
    is not listed is not checked, which is the one way this can go stale.
    `on` is the lightest surface the text can sit on. */
 export const PAIRS = [
-  { where: ".t-display", px: 28, weight: 400, token: "text-1", on: "surface-2" },
-  { where: ".t-title", px: 22, weight: 400, token: "text-1", on: "surface-2" },
-  { where: ".t-lead", px: 19, weight: 400, token: "text-1", on: "surface-2" },
-  { where: ".option (serif)", px: 17, weight: 400, token: "text-1", on: "surface-2" },
-  { where: "body prose", px: 16, weight: 400, token: "text-1", on: "surface-2" },
-  { where: ".t-ui", px: 15, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".row__title", px: 15, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".listbox__trigger", px: 15, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".field--multiline", px: 16, weight: 400, token: "text-1", on: "surface-1" },
-  { where: ".feedback__verdict", px: 15, weight: 700, token: "text-1", on: "surface-2" },
+  { where: ".t-display", px: 36, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".t-title", px: 28, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".stat__value", px: 28, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".t-lead", px: 22, weight: 400, token: "text-1", on: "surface-2" },
+  { where: "body prose", px: 18, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".option (serif)", px: 18, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".row__title", px: 18, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".feedback__body", px: 18, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".field", px: 18, weight: 400, token: "text-1", on: "surface-1" },
+  { where: ".btn", px: 18, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".listbox", px: 18, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".feedback__verdict", px: 18, weight: 600, token: "text-1", on: "surface-2" },
+  // The quiet sentence: the one place a paragraph may be --c-text-2, and
+  // only on the page or a card — never on surface-2, where it is 75/75.
+  { where: "quiet sentence", px: 18, weight: 400, token: "text-2", on: "surface-1" },
+  { where: "quiet sentence (page)", px: 18, weight: 400, token: "text-2", on: "surface-0" },
+  // The primary label sits on the amber, not on a surface.
+  { where: ".btn--primary label", px: 18, weight: 600, token: "on-accent", on: "accent" },
   { where: ".t-meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   { where: ".t-label", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".t-ui", px: 15, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".row__sub", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   { where: ".row__lead", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   { where: ".row__trail", px: 15, weight: 600, token: "text-2", on: "surface-2" },
@@ -191,15 +200,14 @@ export const PAIRS = [
   { where: ".option__key", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   { where: ".chip", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   { where: ".btn--quiet", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".feedback__body", px: 16, weight: 400, token: "text-1", on: "surface-2" },
   { where: ".feedback__report", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".listbox__option", px: 15, weight: 600, token: "text-1", on: "surface-2" },
 ];
 
 function checkPairs(theme, failures, lines) {
   lines.push("\n  size x weight, against the surface closest in lightness:");
   for (const pair of PAIRS) {
-    const measured = Math.abs(apca(theme.tokens[pair.token], theme.surfaces[pair.on]));
+    const ground = theme.surfaces[pair.on] ?? theme.tokens[pair.on];
+    const measured = Math.abs(apca(theme.tokens[pair.token], ground));
     const need = requiredLc(pair.px, pair.weight);
     const label = `${pair.where} ${pair.px}/${pair.weight} ${pair.token}`;
     if (need === null) {
