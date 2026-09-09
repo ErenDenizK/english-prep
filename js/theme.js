@@ -22,7 +22,7 @@ export const THEME_KEY = "englishPrep.theme";
 /** @typedef {"system"|"light"|"dark"} Theme */
 
 /** The page colour each theme paints, for `<meta name="theme-color">`. */
-const THEME_COLOR = { light: "#f8fafd", dark: "#0c1117" };
+const THEME_COLOR = { light: "#f6f1e7", dark: "#0c1117" };
 
 export const THEME_LABELS = {
   system: "Sistem",
