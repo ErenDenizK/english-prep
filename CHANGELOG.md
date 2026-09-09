@@ -5,6 +5,20 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.50 — 2026-09-09
+
+**Beta1, round five: the sweep learns the light theme.** `npm run
+verify` ran dark only; the light theme had been looked at by eye on
+four screens and never measured. Now one full learner journey at 390
+runs with the stored preference set to `light`, so every screen the
+flow lands on is audited once more — console errors, overflow, targets,
+the rendered type — and a new *iki tema* section checks the theme as a
+state: a stored `light` is applied on all three pages before first
+paint, with the page colour, `theme-color` and `color-scheme` agreeing;
+no preference follows the phone either way; choosing *Koyu* in Profil
+repaints at once and survives a reload; *Sistem* hands the decision
+back. 3,307 checks.
+
 ## v0.49 — 2026-09-09
 
 **Beta1, round four: the other screens.** Round two gave the scale its
