@@ -348,12 +348,12 @@ function renderWelcome(firstLesson) {
     // What the app is, in one line, and the privacy fact otherwise buried
     // in Profil. Not the brand: the manifest and the first-run flow say
     // it, and this card's job is to say what to do.
-    line: "Yeterlik sınavı için dersler ve paragraf soruları. Hesap yok; her şey bu telefonda kalır.",
+    line: "Üniversite yeterlik sınavı için dersler ve paragraf soruları. Hesap yok; her şey bu telefonda kalıyor.",
     primary,
     secondary: firstLesson
       ? { label: "Ya da kısa bir testle başla", onClick: () => startMixedTest(5).catch(console.error) }
       : undefined,
-    quiet: firstLesson ? "Önce bu konunun ne olduğu, sonra altı ders." : undefined,
+    facts: firstLesson ? ["Önce bu konunun ne olduğu, sonra altı ders."] : undefined,
   });
 }
 
@@ -448,7 +448,7 @@ function renderNextStepCard(lessons, progress, completed) {
   return renderHero({
     eyebrow: "Sıradaki adım",
     line: rereading
-      ? `${target.category}: dersi okudun ama son testlerde en çok burada zorlandın. Sırada okumak değil, soru çözmek var.`
+      ? `Bu dersi okudun ama son testlerde en çok ${target.category} sorularında zorlandın. Sırada okumak değil, soru çözmek var.`
       : weakLesson
         ? `${target.category}: son testlerde en çok burada zorlandın. Ders, aynı soruları tekrar çözmekten daha çok işe yarar.`
         : `${target.category} — buradan devam edebilirsin.`,
@@ -481,9 +481,7 @@ function renderAllDoneCard(lessons, missingSections) {
   const missing = `${missingSections.charAt(0).toLocaleUpperCase("tr")}${missingSections.slice(1)} burada yok.`;
   return renderHero({
     eyebrow: "Dersleri bitirdin",
-    line:
-      `${lessons.length} dersin hepsini okudun ve bankadaki soruların hepsini gördün. ` +
-      "Buradan sonrası tekrar — gördüğün bir soruyu yeniden çözmek, ilk seferki kadar öğretmez.",
+    line: `${lessons.length} dersin hepsini okudun ve bankadaki soruların hepsini gördün; buradan sonrası tekrar.`,
     primary: { label: "Karışık testle tekrar et", onClick: () => startMixedTest(20).catch(console.error) },
     quiet: missing,
   });
@@ -871,6 +869,12 @@ function renderTopicGroup(heading, lessons, progress) {
     head.appendChild(meta);
     tile.appendChild(head);
     tile.appendChild(englishTitle("span", "tile__title t-en", title));
+    // The one Turkish line that says what the topic IS, clamped to two
+    // lines: the orientation the index owes a learner who has never met
+    // the term (docs/research/orientation.md), kept on the tile.
+    if (inTopic[0].topicGloss) {
+      tile.appendChild(el("span", "tile__sub", inTopic[0].topicGloss));
+    }
     tile.appendChild(progressBar(inTopic.length === 0 ? 0 : done / inTopic.length));
 
     tile.addEventListener("click", () => openIntroByHash(topicId));

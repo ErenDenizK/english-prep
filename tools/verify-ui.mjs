@@ -45,7 +45,10 @@ const BASE = process.argv[2] ?? "http://localhost:8000";
 /** The page gutter at a phone width; the capsule keeps to it. */
 const MIN_GUTTER = 16;
 
-const LANDING_BUDGET_SCREENS = 3;
+// 3 held a list of rows; the UI 3 home is a hero, three figures and a
+// grid of glossed tiles, which is a different shape from the 8.3-screen
+// pile-up this budget exists to catch. Measured 3.3 at 320 on 2026-09-10.
+const LANDING_BUDGET_SCREENS = 3.5;
 
 /**
  * The topic screen gets its own, larger budget, because it is a different
@@ -1597,6 +1600,13 @@ async function runPretest(browser) {
 
   // It is a pretest, not a quiz: it appears once, and a lesson already
   // read opens on its own first words.
+  // Read some of it first — the pretest asks once a lesson has been
+  // opened, and "opened" is a read fraction the scroll handler writes.
+  await page.evaluate(() => {
+    const region = document.getElementById("shell-scroll");
+    region.scrollTo({ top: region.scrollHeight * 0.4 });
+  });
+  await page.waitForTimeout(400);
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
   // The same path as the first opening: the topic's tile, its screen,
   // its forward action — which is the same unfinished lesson.
@@ -1682,10 +1692,11 @@ async function runIndexStates(browser) {
   ok(await filter.count() === 1, "ders filtresi indekste");
   await filter.fill("ilgi");
   await view.page.waitForTimeout(120);
-  const lower = await view.page.locator("#index-list .tile").count();
+  // Search hits are lesson rows, not topic tiles.
+  const lower = await view.page.locator("#index-list .row").count();
   await filter.fill("İLGİ");
   await view.page.waitForTimeout(120);
-  const upper = await view.page.locator("#index-list .tile").count();
+  const upper = await view.page.locator("#index-list .row").count();
   // toLowerCase() is wrong here and wrong only in Turkish: I/ı and İ/i
   // are different pairs, so a learner typing "ilgi" would not match
   // "İlgi" under the default mapping.
@@ -1693,7 +1704,7 @@ async function runIndexStates(browser) {
   await filter.fill("gecmis");
   await view.page.waitForTimeout(120);
   ok(
-    (await view.page.locator("#index-list .tile").count()) > 0,
+    (await view.page.locator("#index-list .row").count()) > 0,
     "diyakritiksiz yazım da eşleşiyor (gecmis → geçmiş)"
   );
   await filter.fill("zzzz");
