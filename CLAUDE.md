@@ -190,7 +190,18 @@ most four on a screen, 15px only at weight 600 and only for one line —
 a sentence is never meta. Adding a rule that sets text means adding its
 row to `PAIRS` in `tools/palette.mjs`.
 
-`docs/redesign-plan.md` tracks the staged rebuild against that spec.
+**Structure first (design-system §0, `docs/ui2-plan.md`).** Every
+screen is bar · body · foot, and the bar's title is the screen's name;
+a body is sections, a section is a head and one of four containers
+(list, card, prose, band); everything drawn is one of fourteen
+components with an entry in `docs/components.html`, which the sweep
+enforces. A new feature is *placed*, not invented: say which screen,
+which section, which container, which components — if it cannot be
+said that way, it is not ready. Bars are opaque and nothing scrolls
+under them; that was tried and failed.
+
+`docs/ui2-plan.md` is the rebuild's programme; `docs/redesign-plan.md`
+and `docs/beta1-plan.md` are the two earlier rounds, kept as history.
 
 ## Where the project is going
 

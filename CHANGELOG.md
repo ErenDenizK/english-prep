@@ -5,6 +5,20 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.61 — 2026-09-10
+
+**UI 2, phase 4: the specification.** `docs/design-system.md` gains
+§0 *Structure* — the screen anatomy, the section grammar with its four
+containers, the fourteen components and the token layering — written
+as the rule a new feature is placed by: *which screen, which section,
+which container, which components*. §7 becomes the fourteen specs in
+one table (anatomy · sizes · states · tokens · accessibility), §4 and
+§5 drop the two exceptions v0.56 had introduced and v0.57 removed, §10
+records the anatomy and catalogue checks. `CLAUDE.md`'s Design
+paragraph says the same in a paragraph; the two earlier plans are
+marked historical and `docs/ui2-plan.md` records the four phases as
+shipped. No code changed.
+
 ## v0.60 — 2026-09-10
 
 **UI 2, phase 3: the screens on the section grammar.** A body is
