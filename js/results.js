@@ -22,11 +22,12 @@ import {
 import { startMistakeBook } from "./quiz-launch.js";
 import { el, clear, pane, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
-import { announce, createActionBar } from "./shell.js";
+import { announce, createActionBar, createBar } from "./shell.js";
 import { renderPrompt } from "./prompt.js";
 
 const container = document.getElementById("results-container");
 const actionBar = createActionBar("results-bar");
+const bar = createBar("shell-header");
 
 function formatPercent(correct, total) {
   return total === 0 ? "%0" : `%${Math.round((correct / total) * 100)}`;
@@ -52,7 +53,12 @@ function describeMode(result) {
 
 function renderScore(result) {
   const block = el("section", "stack stack--tight");
-  block.appendChild(el("p", "t-label", "Sonuç"));
+  // The bar says "Sonuç"; the section says which test.
+  const mode = el("p", "t-label", describeMode(result));
+  if (result.mode === "topic" || result.mode === "category") {
+    mode.lang = "en";
+  }
+  block.appendChild(mode);
 
   const figure = el("p", "t-display t-num", `${result.correctCount} / ${result.totalCount}`);
   block.appendChild(figure);
@@ -63,19 +69,9 @@ function renderScore(result) {
   track.appendChild(fill);
   block.appendChild(track);
 
-  // Which test, on the line under the bar: the score alone never said
-  // whether it was the book, one topic or everything mixed.
-  const line = el("p", "t-meta t-num");
-  line.appendChild(
-    document.createTextNode(`${formatPercent(result.correctCount, result.totalCount)} doğru · `)
+  block.appendChild(
+    el("p", "t-meta t-num", `${formatPercent(result.correctCount, result.totalCount)} doğru`)
   );
-  const mode = describeMode(result);
-  const modeNode = el("span", null, mode);
-  if (result.mode === "topic" || result.mode === "category") {
-    modeNode.lang = "en";
-  }
-  line.appendChild(modeNode);
-  block.appendChild(line);
   return block;
 }
 
@@ -293,6 +289,7 @@ function renderReview(result) {
 }
 
 async function init() {
+  bar.set({ title: "Sonuç", lead: null, trail: null });
   const result = getQuizResult();
   if (!result) {
     // The same restored-session case as quiz.html, and the same answer:

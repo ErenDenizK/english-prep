@@ -290,7 +290,7 @@ async function openFirstLesson(page) {
   await page.locator("#index-list .row").first().click();
   await page.waitForSelector("#lesson-bar .btn--primary");
   await page.locator("#lesson-bar .btn--primary").click();
-  await page.waitForSelector("#lesson-reader .reader__top");
+  await page.waitForSelector("#lesson-reader .lesson");
 }
 
 
@@ -321,8 +321,22 @@ async function runFlow(page, viewport) {
   await auditLayout(page, "konu ekranı", viewport.width, { maxScreens: TOPIC_BUDGET_SCREENS });
   await introBar.click();
 
-  await page.waitForSelector("#lesson-reader .reader__top");
-  ok(await page.locator("#shell-header").isHidden(), "okuyucuda başlık gizli (odaklı mod)");
+  await page.waitForSelector("#lesson-reader .lesson");
+  ok(
+    (await page.locator("#shell-header .bar__title").textContent()).trim().length > 0 &&
+      (await page.locator("#shell-header .bar__title").textContent()).trim() !== "Eğitim",
+    "okuyucuda bar dersin adını taşıyor"
+  );
+  ok(await page.locator("#shell-header .bar__lead button").count() === 1, "okuyucuda bar geri yolunu taşıyor");
+  const barBoxes = await page.evaluate(() => {
+    const box = (sel) => document.querySelector(sel).getBoundingClientRect();
+    const lead = box("#shell-header .bar__lead"), title = box("#shell-header .bar__title"), trail = box("#shell-header .bar__trail");
+    return { leadRight: lead.right, titleLeft: title.left, titleRight: title.right, trailLeft: trail.left };
+  });
+  ok(
+    barBoxes.leadRight <= barBoxes.titleLeft + 1 && barBoxes.titleRight <= barBoxes.trailLeft + 1,
+    `barın üç yuvası çakışmıyor (${Math.round(barBoxes.leadRight)} ≤ ${Math.round(barBoxes.titleLeft)}, ${Math.round(barBoxes.titleRight)} ≤ ${Math.round(barBoxes.trailLeft)})`
+  );
   ok(await page.locator("#bottom-nav").isHidden(), "okuyucuda alt navigasyon gizli");
   ok(await page.locator("#lesson-bar").isHidden(), "okuyucuda alt eylem barı yok");
   ok(/#egitim\//.test(page.url()), "ders URL ile adreslenebilir");
@@ -332,13 +346,13 @@ async function runFlow(page, viewport) {
   // to stay on screen however far down it the learner is.
   await page.evaluate(() => document.getElementById("shell-scroll").scrollBy({ top: 1200 }));
   await page.waitForTimeout(150);
-  const stickyBox = await page.locator("#lesson-reader .reader__top").boundingBox();
-  ok(stickyBox !== null && stickyBox.y < 80, "okuyucu başlığı kaydırırken ekranda kaldı");
+  const stickyBox = await page.locator("#shell-header").boundingBox();
+  ok(stickyBox !== null && stickyBox.y < 80, "okuyucunun barı kaydırırken ekranda kaldı");
   // The readout is the lesson's place in its topic ("2 / 6"); how far
-  // down the page the reader is shows on the bar, so that is what is read.
-  const readout = await page.locator("#lesson-reader .reader__top .t-num").textContent();
-  ok(/^\d+ \/ \d+$/.test(readout), `okuyucu başlığı konudaki yeri söylüyor (${readout})`);
-  const fillAfterScroll = await page.locator("#lesson-reader .progress__fill").evaluate((node) => parseFloat(node.style.width));
+  // down the page the reader is shows on the bar's edge.
+  const readout = (await page.locator("#shell-header .bar__trail").textContent()).trim();
+  ok(/^\d+ \/ \d+$/.test(readout), `bar dersin konudaki yerini söylüyor (${readout})`);
+  const fillAfterScroll = await page.locator("#shell-header .bar__progress .progress__fill").evaluate((node) => parseFloat(node.style.width));
   ok(fillAfterScroll > 0, `okuma çubuğu ilerledi (%${fillAfterScroll})`);
 
   // An inline check: answering must not throw the learner's place away,
@@ -377,19 +391,22 @@ async function runFlow(page, viewport) {
   });
   await page.waitForTimeout(250);
   ok(
-    (await page.locator("#lesson-reader .progress__fill").evaluate((node) => node.style.width)) === "100%",
+    (await page.locator("#shell-header .bar__progress .progress__fill").evaluate((node) => node.style.width)) === "100%",
     "sona inince okuma %100"
   );
   ok(await page.locator("#lesson-reader .surface").count() > 0, "ders sonu kartı göründü");
   await auditLayout(page, "ders sonu", viewport.width);
 
-  await page.locator("#lesson-reader .reader__top button").first().click();
+  await page.locator("#shell-header .bar__lead button").click();
   await page.waitForSelector("#lesson-index .row");
   ok(
     (await page.locator("#lesson-index").textContent()).includes("1 tanesi tamamlandı"),
     "sona kadar okumak dersi tamamladı"
   );
-  ok(await page.locator("#shell-header").isVisible(), "indekse dönünce başlık geri geldi");
+  ok(
+    (await page.locator("#shell-header .bar__title").textContent()).trim() === "Eğitim",
+    "indekse dönünce bar yine Eğitim diyor"
+  );
 
   await page.locator('.nav__item[data-view="test"]').click();
   await page.waitForSelector("#test-panel .surface");
@@ -514,7 +531,7 @@ async function runEveryLesson(page) {
       (wanted) => decodeURIComponent(window.location.hash) === `#${wanted}`,
       `egitim/${id}`
     );
-    await page.waitForSelector("#lesson-reader .reader__top");
+    await page.waitForSelector("#lesson-reader .lesson");
 
     const title = (await page.locator("#lesson-reader h1").textContent())?.trim() ?? `#${index}`;
     const blocks = await page.locator("#lesson-reader article > *").count();
@@ -1347,13 +1364,13 @@ async function runBackupRoundTrip(browser) {
   // Read a lesson to the end and sit one whole test, so there is real
   // progress of both kinds to carry.
   await openFirstLesson(first);
-  await first.waitForSelector("#lesson-reader .reader__top");
+  await first.waitForSelector("#lesson-reader .lesson");
   await first.evaluate(() => {
     const region = document.getElementById("shell-scroll");
     region.scrollTo({ top: region.scrollHeight });
   });
   await first.waitForTimeout(250);
-  await first.locator("#lesson-reader .reader__top button").first().click();
+  await first.locator("#shell-header .bar__lead button").click();
   await first.waitForSelector("#lesson-index .row");
   await first.locator('.nav__item[data-view="test"]').click();
   await first.waitForSelector("#test-panel .btn--primary");
@@ -2215,14 +2232,17 @@ async function runTopicIntro(browser) {
   await page.waitForSelector("#lesson-reader h1");
 
   // Focused mode, and a way out of it.
-  ok(await page.locator("#shell-header").isHidden(), "giriş ekranı odaklı modda");
+  ok(
+    await page.locator("#shell-header .bar__lead button", { hasText: "Konular" }).count() === 1,
+    "giriş ekranının barı konulara geri götürüyor"
+  );
   await page.locator(".shell__bar .btn").first().click();
   // `#view-egitim .row` is not "back on the index": the reader lives
   // inside that view, so its own rows match it and the wait returns
   // before anything has happened.
   await page.waitForSelector("#lesson-index .row");
-  await page.waitForFunction(() => !document.getElementById("shell-header").hidden);
-  ok(await page.locator("#shell-header").isVisible(), "geri dönünce başlık geri geliyor");
+  await page.waitForFunction(() => document.querySelector("#shell-header .bar__title")?.textContent === "Eğitim");
+  ok(true, "geri dönünce bar yine Eğitim diyor");
 
   // A hand-typed or stale id must not strand the learner on a dead screen.
   await page.goto(`${BASE}/index.html#egitim/konu/does-not-exist`, { waitUntil: "networkidle" });
@@ -2260,7 +2280,7 @@ async function runTopicBoundary(browser) {
   async function endCardOf(id) {
     await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "networkidle" });
     await page.reload({ waitUntil: "networkidle" });
-    await page.waitForSelector("#lesson-reader .reader__top");
+    await page.waitForSelector("#lesson-reader .lesson");
     for (let i = 0; i < 40; i += 1) {
       const atEnd = await page.evaluate(() => {
         const region = document.getElementById("shell-scroll");
@@ -2433,7 +2453,7 @@ async function runOffline(browser) {
   const id = lessonId(first.id, first.lessons[0].category);
   await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "networkidle" });
   await page.reload({ waitUntil: "networkidle" });
-  await page.waitForSelector("#lesson-reader .reader__top");
+  await page.waitForSelector("#lesson-reader .lesson");
 
   await context.setOffline(true);
 
@@ -2443,7 +2463,7 @@ async function runOffline(browser) {
   ok(rows > 0, `ağ yokken indeks açılıyor (${rows} konu)`);
 
   await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "domcontentloaded" });
-  await page.waitForSelector("#lesson-reader .reader__top", { timeout: 8000 });
+  await page.waitForSelector("#lesson-reader .lesson", { timeout: 8000 });
   const blocks = await page.locator("#lesson-reader article > *").count();
   ok(blocks > 3, `ağ yokken okunmuş bir ders açılıyor (${blocks} blok)`);
 
@@ -2484,7 +2504,7 @@ async function runOffline(browser) {
 
     await context.setOffline(true);
     await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "domcontentloaded" });
-    await page.waitForSelector("#lesson-reader .reader__top", { timeout: 8000 });
+    await page.waitForSelector("#lesson-reader .lesson", { timeout: 8000 });
     const afterDeploy = await page.locator("#lesson-reader article > *").count();
     ok(
       afterDeploy > 3,
@@ -2607,6 +2627,25 @@ async function runChrome(browser) {
   });
   // Opaque bars: nothing that scrolls can show through a label.
   ok(chrome.headerAlpha === 1 && chrome.navAlpha === 1, "barlar opak — arkasından metin sızmıyor");
+
+  // Every screen names itself in the bar (docs/ui2-plan.md §3.1).
+  const titleOf = async () => (await page.locator("#shell-header .bar__title").textContent()).trim();
+  ok((await titleOf()) === "Eğitim", `Eğitim'in barı "Eğitim" diyor (${await titleOf()})`);
+  await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#topic-list .row");
+  ok((await titleOf()) === "Test", `Test'in barı "Test" diyor (${await titleOf()})`);
+  await page.goto(`${BASE}/index.html#profil`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#profile-container .surface");
+  ok((await titleOf()) === "Profil", `Profil'in barı "Profil" diyor (${await titleOf()})`);
+  ok(
+    await page.locator("#shell-header .bar__lead button", { hasText: "Test" }).count() === 1,
+    "Profil'in barı açıldığı sekmeye geri götürüyor"
+  );
+  await page.goto(`${BASE}/index.html#egitim/konu/tenses`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#lesson-reader .row");
+  ok((await titleOf()) === "Tenses", `konu ekranının barı konunun adını taşıyor (${await titleOf()})`);
+  await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#index-list .row");
   ok(
     chrome.firstTop !== null && chrome.firstTop >= chrome.headerBottom - 1,
     `içerik başlığın altında başlıyor, altından değil (${Math.round(chrome.firstTop)} ≥ ${Math.round(chrome.headerBottom)})`

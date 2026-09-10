@@ -34,7 +34,7 @@ import { initProfileTab } from "./profile.js";
 import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook } from "./quiz-launch.js";
 import { el, clear, pane, sectionHeading, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
-import { announce, scrollToTop } from "./shell.js";
+import { announce, scrollToTop, createBar } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
 
 const VIEW_IDS = ["egitim", "test", "profil"];
@@ -52,8 +52,21 @@ const NAV_ICONS = {
 };
 
 const testPanel = document.getElementById("test-panel");
-const profileTrigger = document.getElementById("profile-trigger");
-const profileFace = document.getElementById("profile-trigger-face");
+// The profile control lives in the bar's trailing slot on a root screen.
+// Built once here; the bar takes the same node each time it is set.
+const profileTrigger = el("button", "btn btn--secondary btn--icon");
+profileTrigger.type = "button";
+profileTrigger.id = "profile-trigger";
+profileTrigger.setAttribute("aria-label", "Profilini aç");
+const profileFace = el("span");
+profileFace.id = "profile-trigger-face";
+profileFace.setAttribute("aria-hidden", "true");
+profileTrigger.appendChild(profileFace);
+
+const bar = createBar("shell-header");
+
+/** The tab Profil was opened from, so its back action names a real place. */
+let lastTab = DEFAULT_VIEW;
 const navItems = Array.from(document.querySelectorAll(".nav__item"));
 const views = Object.fromEntries(VIEW_IDS.map((id) => [id, document.getElementById(`view-${id}`)]));
 
@@ -577,6 +590,22 @@ function withTransition(update) {
 
 async function applyRoute() {
   const { view, param } = parseRoute();
+
+  // The bar names the screen. A root carries the profile control; Profil
+  // carries the way back to the tab it was opened from. Set here, before
+  // the transition, because a lesson or a topic screen sets its own bar
+  // once it has loaded (js/education.js) and must not be overwritten by
+  // a transition callback that runs a frame later.
+  if (view === "profil") {
+    bar.set({
+      title: VIEW_TITLES.profil,
+      lead: { label: VIEW_TITLES[lastTab], onClick: () => { window.location.hash = lastTab; } },
+      trail: null,
+    });
+  } else {
+    lastTab = view;
+    bar.set({ title: VIEW_TITLES[view], lead: null, trail: profileTrigger });
+  }
 
   withTransition(() => {
     selectTab(view);

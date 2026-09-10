@@ -53,10 +53,10 @@ import { TOPIC_INTRO_PREFIX } from "./config.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard, textButton } from "./dom.js";
 import { icon } from "./icons.js";
-import { announce, scrollToTop, createActionBar } from "./shell.js";
+import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
 
-const shellHeader = document.getElementById("shell-header");
 const bottomNav = document.getElementById("bottom-nav");
+const bar = createBar("shell-header");
 const indexContainer = document.getElementById("lesson-index");
 const readerContainer = document.getElementById("lesson-reader");
 const actionBar = createActionBar("lesson-bar");
@@ -908,20 +908,15 @@ function renderIntro(topic, lessons, progress) {
   const page = pane();
   const intro = topic.intro;
 
-  // A way back and the topic's name at the top, like the reader's strip:
-  // the screen used to open on "Genel bakış" with the only way out at the
-  // bottom of a five-screen page, in the bar.
-  const top = el("div", "intro__top bleed");
-  const strip = el("div", "cluster cluster--spread");
-  const back = el("button", "btn btn--quiet", "Konular");
-  back.type = "button";
-  back.prepend(icon("arrow-left", { size: 20 }));
-  back.addEventListener("click", showIndexByHash);
-  strip.appendChild(back);
+  // The bar names the topic and carries the way back and the count;
+  // nothing on the page has to.
   const done = lessons.filter((lesson) => progress[lesson.id]?.done).length;
-  strip.appendChild(el("p", "t-meta t-num", `${done} / ${lessons.length}`));
-  top.appendChild(strip);
-  page.appendChild(top);
+  const topicTitle = lessons[0]?.topicTitle ?? null;
+  bar.set({
+    title: topicTitle ? { text: topicTitle, lang: "en" } : intro.title,
+    lead: { label: "Konular", onClick: showIndexByHash },
+    trail: `${done} / ${lessons.length}`,
+  });
 
   const head = el("div", "stack stack--tight");
   head.appendChild(el("p", "t-label", "Genel bakış"));
@@ -1517,7 +1512,6 @@ function readFraction() {
   return scrollable <= 0 ? 1 : Math.min(scrollRegion.scrollTop / scrollable, 1);
 }
 
-let progressFill = null;
 let scrollTicking = false;
 
 /**
@@ -1545,10 +1539,7 @@ function handleReaderScroll() {
       return;
     }
     const read = readFraction();
-    const percent = Math.round(read * 100);
-    if (progressFill) {
-      progressFill.style.width = `${percent}%`;
-    }
+    bar.setProgress(read);
 
     const lesson = currentLesson();
     // Reaching the end *is* finishing. There is no "Dersi bitir" button to
@@ -1562,30 +1553,21 @@ function handleReaderScroll() {
   });
 }
 
-function renderReaderTop() {
-  const top = el("div", "reader__top bleed");
-
-  const strip = el("div", "cluster cluster--spread");
-  const back = el("button", "btn btn--quiet", "Dersler");
-  back.type = "button";
-  back.prepend(icon("arrow-left", { size: 20 }));
-  back.addEventListener("click", showIndexByHash);
-  strip.appendChild(back);
-  // The lesson's place in its topic, not a percentage: the bar already
-  // shows how far down the page the reader is, and "2 / 6" is the number
-  // a learner looks up for. The kicker at the left and the count at the
-  // right are two anchors on one line.
+/**
+ * The reader's bar: the way back, the lesson's name, its place in the
+ * topic ("2 / 6" — the number a learner looks up for), and the reading
+ * position along the bottom edge.
+ */
+function setReaderBar() {
   const lesson = currentLesson();
   const inTopic = state.lessons.filter((entry) => entry.topicId === lesson.topicId);
   const position = inTopic.indexOf(lesson) + 1;
-  strip.appendChild(el("p", "t-meta t-num", `${position} / ${inTopic.length}`));
-  top.appendChild(strip);
-
-  const track = progressBar(0);
-  top.appendChild(track);
-
-  progressFill = track.firstElementChild;
-  return top;
+  bar.set({
+    title: { text: lesson.category, lang: "en" },
+    lead: { label: "Dersler", onClick: showIndexByHash },
+    trail: `${position} / ${inTopic.length}`,
+    progress: 0,
+  });
 }
 
 function renderLesson() {
@@ -1602,8 +1584,8 @@ function renderLesson() {
   const pretest = state.reader.pretest;
 
   clear(readerContainer);
-  const page = el("article", "stack stack--loose animate-in");
-  page.appendChild(renderReaderTop());
+  setReaderBar();
+  const page = el("article", "stack stack--loose animate-in lesson");
 
   const heading = el("header", "stack stack--tight");
   heading.appendChild(englishTitle("p", "t-label", lesson.topicTitle));
@@ -1742,7 +1724,8 @@ function openIntroByHash(topicId) {
 }
 
 function setReaderChrome(active) {
-  shellHeader.hidden = active;
+  // The bar stays — it is the reader's way out and its position — and
+  // the tab bar steps aside: a lesson is something to read.
   bottomNav.hidden = active;
   indexContainer.hidden = active;
   readerContainer.hidden = !active;
@@ -1750,7 +1733,7 @@ function setReaderChrome(active) {
     scrollRegion.addEventListener("scroll", handleReaderScroll, { passive: true });
   } else {
     scrollRegion.removeEventListener("scroll", handleReaderScroll);
-    progressFill = null;
+    bar.setProgress(null);
   }
   // A class rather than `hidden`, because focused mode is a state of the
   // whole shell and CSS is what knows which parts step out of the way.

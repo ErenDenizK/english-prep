@@ -56,15 +56,17 @@
   <!-- The shell is a fixed-height column: header, one scrolling region, and
        either the bottom nav or a focused mode's action bar. Nothing else
        ever scrolls, so the frame cannot grow and cannot shift sideways. -->
-  <header class="shell__header" id="shell-header">
-    <div class="shell__header-inner">
-      <h1 class="shell__brand t-en">English Prep</h1>
-      <!-- Profil is identity and settings, not a content mode, so it opens
-           from here rather than taking a third slot in the bottom nav. -->
-      <button class="btn btn--secondary btn--icon" type="button" id="profile-trigger" aria-label="Profilini aç">
-        <span id="profile-trigger-face" aria-hidden="true"></span>
-      </button>
+  <!-- The bar: leading · title · trailing, set by whichever screen is
+       showing (js/shell.js createBar). Its title is the screen's name;
+       the brand is not a title. Profil opens from the trailing slot of
+       a root screen — identity and settings, not a content mode. -->
+  <header class="bar" id="shell-header">
+    <div class="bar__inner">
+      <div class="bar__lead"></div>
+      <p class="bar__title"></p>
+      <div class="bar__trail"></div>
     </div>
+    <div class="bar__progress" hidden><div class="progress__fill"></div></div>
   </header>
 
   <main class="shell__scroll" id="shell-scroll">
