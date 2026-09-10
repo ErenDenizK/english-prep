@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<header class="bar" id="shell-header">
+<header class="bar glass" id="shell-header">
   <div class="bar__inner">
     <div class="bar__lead"><button class="btn btn--quiet" type="button"><span data-icon="arrow-left"></span>Dersler</button></div>
     <p class="bar__title">Bileşenler</p>
@@ -43,12 +43,12 @@
 
   <section class="stack stack--tight">
     <h2 class="t-label">Yüzeyler</h2>
-    <p class="t-quiet">Üç seviye: sayfa, kart, yükseltilmiş. Derinlik yüzey açıklığıdır; kenarlık ya da gölge değil.</p>
+    <p class="t-quiet">Üç seviye: sayfa, kart, yükseltilmiş. Bir kart daha açık bir düzlemdir: bir kenar, ışık alan bir üst çizgi ve yumuşak bir gölge — hepsi jeton (--line, --lit, --shadow-1). Aksan bir gradyan çiftidir ve tek dolu eylemin altında parlar.</p>
     <div class="cluster">
       <div style="width:88px;height:56px;background:var(--page);border-radius:var(--r-2);box-shadow:inset 0 0 0 1px var(--hairline)"></div>
-      <div style="width:88px;height:56px;background:var(--card);border-radius:var(--r-2)"></div>
+      <div style="width:88px;height:56px;background:var(--card);border-radius:var(--r-2);box-shadow:inset 0 0 0 1px var(--line),inset 0 1px 0 var(--lit),var(--shadow-1)"></div>
       <div style="width:88px;height:56px;background:var(--raised);border-radius:var(--r-2)"></div>
-      <div style="width:88px;height:56px;background:var(--accent);border-radius:var(--r-2)"></div>
+      <div style="width:88px;height:56px;background:var(--grad-accent);border-radius:var(--r-2);box-shadow:var(--shadow-glow)"></div>
     </div>
   </section>
 
@@ -71,14 +71,14 @@
   <section class="stack stack--tight">
     <h2 class="t-label">1 · Bar</h2>
     <p class="t-quiet">Sol · başlık · sağ. Başlık ekranın adıdır; sol yuva geri yolu ya da boş; sağ yuva tek bir denetim ya da okuma. Alt kenarda ilerleme çizgisi olabilir. Bu sayfanın kendi barı yukarıda; iki hâl daha:</p>
-    <div class="bar" style="box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2)">
+    <div class="bar glass" style="position:relative;box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2)">
       <div class="bar__inner">
         <div class="bar__lead"></div>
         <p class="bar__title">Eğitim</p>
-        <div class="bar__trail"><button class="btn btn--secondary btn--icon" type="button" aria-label="Profilini aç" data-icon="user"></button></div>
+        <div class="bar__trail"><button class="btn btn--quiet btn--icon" type="button" aria-label="Profilini aç" id="cat-avatar-host"></button></div>
       </div>
     </div>
-    <div class="bar" style="box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2);overflow:hidden">
+    <div class="bar glass" style="position:relative;box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2);overflow:hidden">
       <div class="bar__inner">
         <div class="bar__lead"><button class="btn btn--quiet" type="button"><span data-icon="close"></span>Çık</button></div>
         <p class="bar__title">Karışık test</p>
@@ -92,8 +92,9 @@
 
   <section class="stack stack--tight">
     <h2 class="t-label">2 · Sekme çubuğu</h2>
-    <p class="t-quiet">İki hedef, tam genişlik, opak. Seçili olan dolu ikon, tam güçte metin ve bir kapsül taşır — asla yalnızca renk.</p>
-    <nav class="nav" aria-label="Örnek" style="box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2)">
+    <p class="t-quiet">İki hedef, yüzen bir cam kapsülde; gösterge seçili olanın altına bir yayla kayar. Seçili olan dolu ikon ve aksan metni taşır — asla yalnızca renk.</p>
+    <nav class="nav" aria-label="Örnek" style="position:relative;left:auto;bottom:auto;transform:none;margin:0 auto">
+      <span class="nav__indicator" aria-hidden="true" style="--nav-index:0;--nav-count:2"></span>
       <a class="nav__item" href="#" aria-current="page"><span data-icon="book-fill"></span><span>Eğitim</span></a>
       <a class="nav__item" href="#"><span data-icon="check-square"></span><span>Test</span></a>
     </nav>
@@ -102,13 +103,13 @@
   <section class="stack stack--tight">
     <h2 class="t-label">3 · Eylem çubuğu</h2>
     <p class="t-quiet">İleri eylemi olan ekranın ayağı. İki eylem eşit iki yarımdır; hiçbir etiket kırılmaz; eylemi henüz olmayan hâl bir ipucudur, devre dışı bir düğme değil.</p>
-    <div class="shell__bar" style="box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2)">
+    <div class="shell__bar glass" style="position:relative;box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2)">
       <div class="shell__bar-inner">
         <button class="btn btn--secondary" type="button">Konulara dön</button>
         <button class="btn btn--primary" type="button">Derse başla</button>
       </div>
     </div>
-    <div class="shell__bar" style="box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2)">
+    <div class="shell__bar glass" style="position:relative;box-shadow:inset 0 0 0 1px var(--hairline);border-radius:var(--r-2)">
       <div class="shell__bar-inner"><p class="shell__bar-hint t-meta">Bir seçenek seç</p></div>
     </div>
   </section>
@@ -140,7 +141,8 @@
       <button class="row" type="button"><span class="row__lead t-num t-meta">1</span><span class="row__main"><span class="row__title t-en" lang="en">Present Simple vs Present Continuous</span><span class="row__sub">Alışkanlık mı, şu an mı?</span></span><span class="row__trail"><span class="ink-ok" role="img" aria-label="Tamamlandı" data-icon="check"></span><span data-icon="chevron-right"></span></span></button>
       <button class="row" type="button"><span class="row__lead t-num t-meta">2</span><span class="row__main"><span class="row__title t-en" lang="en">Present Perfect vs Past Simple</span><span class="row__sub">Geçmiş bitti mi, şimdiye mi uzanıyor? Bu satırın alt metni iki satıra sığar ve üçüncüsünde kırpılır, çünkü liste taranabilir kalmalı.</span></span><span class="row__trail t-num">4 / 8<span data-icon="chevron-right"></span></span></button>
       <a class="row" href="#"><span class="row__lead"><span data-icon="target"></span></span><span class="row__main"><span class="row__title t-en" lang="en">Modals</span><span class="row__sub">24 soru</span></span><span class="row__trail"><span data-icon="chevron-right"></span></span></a>
-      <button class="row" type="button" role="switch" aria-checked="true"><span class="row__main"><span class="row__title">Önce kendin düşün</span><span class="row__sub">Şıklar, hazır olduğunu söyleyene kadar gizli.</span></span><span class="row__trail"><span class="chip">Açık</span></span></button>
+      <button class="row" type="button" role="switch" aria-checked="true"><span class="row__main"><span class="row__title">Önce kendin düşün</span><span class="row__sub">Şıklar, hazır olduğunu söyleyene kadar gizli.</span></span><span class="row__trail"><span class="switch"><span class="switch__thumb"></span></span></span></button>
+      <button class="row" type="button" role="switch" aria-checked="false"><span class="row__main"><span class="row__title">Kapalı bir anahtar</span></span><span class="row__trail"><span class="switch"><span class="switch__thumb"></span></span></span></button>
       <div class="row"><span class="row__main"><span class="row__title" id="cat-theme-label">Görünüm</span><span class="row__sub">Sistem, telefonun ayarını izler.</span></span><span class="row__trail"><span class="listbox-host" id="cat-theme-host"></span></span></div>
     </div>
   </section>
@@ -162,6 +164,71 @@
   </section>
 
   <section class="stack stack--tight">
+    <h2 class="t-label">15 · Hero</h2>
+    <p class="t-quiet">Parlayan tek kart: bir köşesinde aksanın küresi, altında aksanın gölgesi. Metin düzlemde kalır, asla gradyanın üstünde değil.</p>
+    <section class="surface hero">
+      <span class="hero__orb"></span>
+      <span class="hero__orb hero__orb--cool"></span>
+      <div class="hero__head">
+        <div class="stack stack--snug">
+          <p class="t-label">Kaldığın yer</p>
+          <p class="t-title">Merhaba, Eren</p>
+        </div>
+        <div id="cat-hero-ring"></div>
+      </div>
+      <div class="cluster">
+        <span class="chip chip--accent"><span data-icon="calendar"></span>Sınava 23 gün</span>
+        <span class="chip chip--ok"><span data-icon="flame"></span>4 gün seri</span>
+      </div>
+      <p class="t-body" lang="en">Future Forms · %40</p>
+      <div class="stack stack--tight">
+        <button class="btn btn--primary" type="button">Devam et</button>
+        <button class="btn btn--quiet btn--text" type="button">Ya da 5 soruyla hatırla<span data-icon="chevron-right"></span></button>
+      </div>
+      <div class="hero__figure"><span id="cat-hero-mono"></span><div><div class="stat__value t-num">12</div><div class="stat__label">bekleyen soru</div></div></div>
+    </section>
+  </section>
+
+  <section class="stack stack--tight">
+    <h2 class="t-label">16 · Kutucuk</h2>
+    <p class="t-quiet">Dokunulacak tek şey olan kart: monogram, ad, çubuk, sayı. Bir telefonda iki yan yana.</p>
+    <div class="tiles">
+      <button class="tile" type="button"><span class="tile__head"><span id="cat-tile-mono-1"></span><span class="tile__meta"><span class="t-num">3 / 6</span></span></span><span class="tile__title t-en" lang="en">Tenses</span><div class="progress"><div class="progress__fill" style="width:50%"></div></div></button>
+      <button class="tile" type="button"><span class="tile__head"><span id="cat-tile-mono-2"></span><span class="tile__meta"><span class="ink-ok cluster" role="img" aria-label="Tamamlandı" data-icon="check"></span><span class="t-num">6 ders</span></span></span><span class="tile__title t-en" lang="en">Relative Clauses</span><div class="progress"><div class="progress__fill" style="width:100%"></div></div></button>
+      <div class="tile tile--soon"><span class="tile__head"><span id="cat-tile-mono-3"></span><span class="tile__meta"><span class="chip">Yakında</span></span></span><span class="tile__title t-en" lang="en">Reading</span><div class="progress"><div class="progress__fill" style="width:0%"></div></div></div>
+    </div>
+  </section>
+
+  <section class="stack stack--tight">
+    <h2 class="t-label">17 · Monogram ve avatar</h2>
+    <p class="t-quiet">Bir konunun rengi: kimliğinden türeyen bir tonda gradyan kutu, baş harfleri beyaz. Öğrenen: aksan gradyanında baş harfi ya da figür.</p>
+    <div class="cluster" id="cat-monograms"></div>
+    <div class="cluster" id="cat-avatars"></div>
+  </section>
+
+  <section class="stack stack--tight">
+    <h2 class="t-label">18 · Halka</h2>
+    <p class="t-quiet">Bir kesir bir yay olarak: günün hedefi, bir konunun doğruluğu, skor. Değeri bir yayla çizer.</p>
+    <div class="cluster" id="cat-rings"></div>
+  </section>
+
+  <section class="stack stack--tight">
+    <h2 class="t-label">19 · Anahtar</h2>
+    <p class="t-quiet">Bir boolean ayarın anahtarı: ray ve topuz; durum dolguda ve topuzun tarafında, asla yalnızca renkte. Bir satırın kuyruğunda yaşar (5 · Satır).</p>
+    <div class="cluster">
+      <span role="switch" aria-checked="true" class="cluster"><span class="switch"><span class="switch__thumb"></span></span></span>
+      <span role="switch" aria-checked="false" class="cluster"><span class="switch"><span class="switch__thumb"></span></span></span>
+    </div>
+  </section>
+
+  <section class="stack stack--tight">
+    <h2 class="t-label">20 · Seçim</h2>
+    <p class="t-quiet">Etkileşimli olan çip: birkaç değerden biri — bir sayı, bir hedef, bir tema. Basılı hâl bir yayla gelir; kart biçimi bir başlık ve bir satır taşır.</p>
+    <div id="cat-choices"></div>
+    <div id="cat-choice-cards"></div>
+  </section>
+
+  <section class="stack stack--tight">
     <h2 class="t-label">7 · Bölüm başı</h2>
     <p class="t-quiet">Bir etiket ve isteğe bağlı tek satırlık bir ipucu. Üstünde 48, altında 8. Aksanın metin rengi: göz okumadan önce bulur.</p>
     <div class="stack stack--tight">
@@ -174,11 +241,12 @@
 
   <section class="stack stack--tight">
     <h2 class="t-label">8 · İstatistik</h2>
+    <p class="t-quiet">Bir sayı, etiketinin üstünde, küçük bir düzlemde; üçü yan yana. Bir kesir halka olur.</p>
+    <div class="stats stats--rings" id="cat-stat-rings"></div>
     <div class="stats">
-      <div><div class="stat__value t-num">3 / 18</div><div class="stat__label">Tamamlanan ders</div></div>
-      <div><div class="stat__value t-num">%74</div><div class="stat__label">Son 20 soruda</div></div>
-      <div><div class="stat__value t-num">126</div><div class="stat__label">Çözülen soru</div></div>
-      <div><div class="stat__value t-num">—</div><div class="stat__label">Doğruluk</div></div>
+      <div class="stat"><div class="stat__value t-num">7</div><div class="stat__label">Gün seri</div></div>
+      <div class="stat"><div class="stat__value t-num">126</div><div class="stat__label">Çözülen soru</div></div>
+      <div class="stat"><div class="stat__value t-num">—</div><div class="stat__label">Doğruluk</div></div>
     </div>
   </section>
 
@@ -238,20 +306,22 @@
     <h2 class="t-label">13 · İlerleme</h2>
     <div class="progress"><div class="progress__fill" style="width:0%"></div></div>
     <div class="progress"><div class="progress__fill" style="width:40%"></div></div>
-    <div class="progress"><div class="progress__fill" style="width:100%"></div></div>
+    <div class="progress progress--ok"><div class="progress__fill" style="width:100%"></div></div>
+    <div class="progress progress--no"><div class="progress__fill" style="width:25%"></div></div>
+    <div class="progress progress--thin"><div class="progress__fill" style="width:60%"></div></div>
   </section>
 
   <section class="stack stack--tight">
     <h2 class="t-label">14 · Seçenek ve geri bildirim</h2>
     <p class="t-quiet">Cevap satırı serif, tamamı dokunulabilir; geri bildirim dört kanal taşır — glif, sözcük, ton ve cevabın kendisi. Uygulamanın kendi modülleri çizer.</p>
-    <div class="bleed" id="answers"></div>
-    <div class="bleed" id="answers-right"></div>
+    <div class="stack" id="answers"></div>
+    <div class="stack" id="answers-right"></div>
   </section>
 
   <section class="surface stack">
     <p class="t-label">Restatement — cümlelik seçenekler</p>
     <div id="restatement"></div>
-    <div class="bleed" id="restatement-options"></div>
+    <div id="restatement-options"></div>
   </section>
 
   <section class="stack stack--tight">
@@ -323,6 +393,37 @@
     options: [["system", "Sistem"], ["light", "Açık"], ["dark", "Koyu"]].map(([value, label]) => ({ value, label })),
     onChange: () => {},
   });
+
+  const { ring, monogram, avatar, choices } = await import("../js/widgets.js");
+  document.getElementById("cat-avatar-host").appendChild(avatar("Eren"));
+  document.getElementById("cat-hero-ring").appendChild(ring({ ratio: 0.4, label: "4/10", describedAs: "Bugün 4 soru, hedef 10" }));
+  document.getElementById("cat-hero-mono").replaceWith(monogram("mistakes", "Yanlış Defteri"));
+  document.getElementById("cat-tile-mono-1").replaceWith(monogram("tenses", "Tenses"));
+  document.getElementById("cat-tile-mono-2").replaceWith(monogram("relative-clauses", "Relative Clauses"));
+  document.getElementById("cat-tile-mono-3").replaceWith(monogram("reading", "Reading"));
+  const monos = document.getElementById("cat-monograms");
+  for (const [id, title] of [["tenses", "Tenses"], ["modals", "Modals"], ["passive-voice", "Passive Voice"], ["relative-clauses", "Relative Clauses"], ["connectors", "Connectors"], ["gerunds-infinitives", "Gerunds & Infinitives"], ["quantifiers", "Quantifiers"], ["closest-meaning", "Closest Meaning"], ["academic-verbs", "Academic Verbs"], ["academic-nouns", "Academic Nouns"]]) {
+    monos.appendChild(monogram(id, title));
+  }
+  monos.appendChild(monogram("tenses", "Tenses", { size: "lg" }));
+  const avatars = document.getElementById("cat-avatars");
+  avatars.append(avatar("Eren"), avatar(""), avatar("İpek", { size: "lg" }), avatar("", { size: "lg" }));
+  const rings = document.getElementById("cat-rings");
+  rings.append(
+    ring({ ratio: 0.74, label: "%74", describedAs: "yüzde 74" }),
+    ring({ ratio: 1, label: "10/10", tone: "ok", describedAs: "hedef tamam" }),
+    ring({ ratio: 0.3, label: "3/10", tone: "no", describedAs: "yüzde 30" }),
+    ring({ ratio: 0.5, size: "sm" }),
+    ring({ ratio: 0.85, label: "%85", size: "lg", tone: "ok", describedAs: "yüzde 85" })
+  );
+  document.getElementById("cat-stat-rings").append(
+    (() => { const c = document.createElement("div"); c.className = "stat stat--row"; c.append(ring({ ratio: 0.17, label: "3/18" })); const l = document.createElement("div"); l.className = "stat__label"; l.textContent = "Tamamlanan ders"; c.append(l); return c; })(),
+    (() => { const c = document.createElement("div"); c.className = "stat stat--row"; c.append(ring({ ratio: 0.74, label: "%74", tone: "ok" })); const l = document.createElement("div"); l.className = "stat__label"; l.textContent = "Son 20 soruda"; c.append(l); return c; })()
+  );
+  const goalLabel = document.createElement("p"); goalLabel.className = "t-label"; goalLabel.id = "cat-choice-label"; goalLabel.textContent = "Günlük hedef";
+  document.getElementById("cat-choices").append(goalLabel, choices({ options: ["5", "10", "20"].map((v) => ({ value: v, label: v })), value: "10", onChange: () => {}, labelledBy: "cat-choice-label" }).element);
+  const cardLabel = document.createElement("p"); cardLabel.className = "t-label"; cardLabel.id = "cat-choice-card-label"; cardLabel.textContent = "Kart biçimi";
+  document.getElementById("cat-choice-cards").append(cardLabel, choices({ options: [{ value: "5", label: "5 soru", sub: "Hafif — günde üç dakika" }, { value: "10", label: "10 soru", sub: "Dengeli — günde altı dakika" }], value: "10", onChange: () => {}, labelledBy: "cat-choice-card-label", card: true }).element);
 
   for (const host of document.querySelectorAll("[data-icon]")) {
     host.appendChild(icon(host.dataset.icon, { size: host.closest(".nav") ? 24 : 20 }));

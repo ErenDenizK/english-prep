@@ -16,10 +16,12 @@ options and grammar terms.
 
 **Three rules that generate most of the others.**
 
-1. **Depth comes from surface lightness, never from borders or shadows.**
-   Shadows simulate blocked light; a dark ground has no light to block, so
-   they read as nothing. Elevation is expressed by making the raised thing
-   *lighter*.
+1. **Depth is a lighter plane with an edge and a shadow.** Since UI 3
+   (v0.62, `docs/ui3-plan.md`) a card is `--card` above `--page` with a
+   1px `--line` edge, a lit top (`--lit`) and `--shadow-1`; the hero
+   adds `--shadow-2` and the accent's glow. The old rule — lightness
+   alone, no shadows — produced a document, not a product, and the
+   owner said so. Shadows are tokens, never ad hoc.
 2. **At most one card level. Nothing framed inside a framed thing.** With
    only three usable surface steps, a card inside a card spends two of them
    and leaves the eye unable to locate the object boundary.
@@ -45,9 +47,10 @@ Every screen has the same anatomy and declares it:
 
 ```
 screen
-  bar    leading · title · trailing        opaque, 56px, hairline below
-  body   the one scroll region             sections; gutter 16; measure 608
-  foot   tabs | actions | none             opaque, hairline above
+  bar    leading · title · trailing        glass, 56px, floats over the body
+  body   the one scroll region             sections; gutter 16; measure 608;
+                                           padded by exactly the chrome's height
+  foot   tabs | actions | none             a floating capsule | a glass strip | nothing
 ```
 
 - **The bar always has a title, and the title is the screen's name.**
@@ -65,11 +68,20 @@ screen
 - **Foot** is the tab bar on a root, the action bar where the screen
   has a forward action (the topic screen, the quiz, the results), and
   nothing in the reader, whose forward actions are at its end.
-- **Bars are opaque and take their height in the column.** Nothing
-  scrolls under chrome. Translucent, floating chrome was tried
-  (v0.56) and failed as structure on every phone that did not
-  composite the blur: text through text, rows under a capsule.
-  `js/shell.js` `createBar` is the one place a top is made.
+- **Bars are glass and float over the body; the body pads itself past
+  them.** `.glass` is `--glass` (solid) and, under `@supports
+  (backdrop-filter)`, `--glass-blur` — at least 82 % opaque before an
+  18px blur, so text passing under a bar is a tint and never a word.
+  The scroll region's `padding-top` is the bar's height and its
+  `padding-bottom` the foot's (`--foot-space`, set per foot with
+  `:has()`), so the first and last lines always clear the chrome; the
+  sweep measures both, and measures the bars' alpha. v0.56's version
+  of this failed because its bars were too transparent and its capsule
+  narrower than the content; both are what the numbers above forbid.
+  The tab bar is a capsule `min(100% − 2·gutter, 420px)` wide, 64px
+  tall, 12px off the bottom edge, with an indicator that slides to the
+  selected item on `--spring-bouncy`. `js/shell.js` `createBar` is the
+  one place a top is made.
 
 ### 0.2 The section
 
@@ -80,7 +92,8 @@ optional one-line hint (`.t-quiet`) — and **one container**:
 | container | holds | separation | class |
 |---|---|---|---|
 | **list** | homogeneous rows | a hairline between rows, nothing around | rows in a `div`, or `.items` |
-| **card** | one heterogeneous group with an action | the card's fill, 16px radius | `.surface` |
+| **card** | one heterogeneous group with an action | the card's plane, 20px radius; the hero 28px with its orb | `.surface`, `.surface.hero` |
+| **grid** | homogeneous tiles | 12px gaps, two abreast on a phone | `.tiles` of `.tile` |
 | **prose** | paragraphs and inline marks | space only | `.prose` |
 | **band** | one raised block inside prose — the contrast | the card's fill, full-bleed, no radius | `.block--contrast` |
 
@@ -91,18 +104,23 @@ when that section is a card that carries its own label.
 
 ### 0.3 The component
 
-Fourteen, each with a spec in §7 and an entry in `docs/components.html`,
+Twenty-one, each with a spec in §7 and an entry in `docs/components.html`,
 and the sweep fails if a class in the components layer has no entry:
 
 Bar · TabBar · ActionBar · Button · Row · Card · SectionHead · Stat ·
-Chip · Field · Listbox · Dialog · Progress · Feedback/Option.
+Chip · Field · Listbox · Dialog · Progress · Feedback/Option — and, since
+UI 3 — Hero · Tile · Monogram · Avatar · Ring · Switch · Choice.
 
 Components reference the **semantic** tokens (`--page`, `--card`,
 `--raised`, `--ink`, `--ink-2`, `--accent`, `--accent-ink`,
-`--accent-text`, `--hairline`, `--edge`, `--focus`, `--ok`, `--no` and
-the tints) and the **component** tokens (`--target`, `--bar-h`,
-`--btn-h`, `--btn-h-primary`, `--row-min`). They never name a primitive
-(`--c-*`), which is what lets a theme be a rebinding.
+`--accent-text`, `--accent-2`, `--grad-accent`, `--hairline`, `--edge`,
+`--focus`, `--ok`, `--no`, the tints, and the light tokens `--line`,
+`--lit`, `--shadow-1/2`, `--glow`, `--shadow-glow`, `--wash-1/2`,
+`--glass`, `--glass-blur`, `--orb`) and the **component** tokens
+(`--target`, `--bar-h`, `--nav-h`, `--nav-inset`, `--btn-h`,
+`--btn-h-primary`, `--row-min`, `--ring-size`, `--ring-stroke`). They
+never name a primitive (`--c-*`), which is what lets a theme be a
+rebinding.
 
 ---
 
@@ -565,8 +583,9 @@ Page gutter is `--s-5` (16px), plus `env(safe-area-inset-left/right)`.
 
 ## 4 · Radius and elevation
 
-`--r-1: 8px` · `--r-2: 12px` · `--r-3: 16px` · `--r-pill: 999px` · and **0
-for anything full-bleed**.
+`--r-1: 8px` · `--r-2: 12px` · `--r-3: 20px` (a card) · `--r-4: 28px`
+(the hero) · `--r-pill: 999px` (every button, chip, choice, field) · and
+**0 for anything full-bleed**.
 
 **Nested radius = outer − padding.** Concentric corners are the only ones
 that keep a constant gap; equal radii make the gap visibly thicker at the
@@ -575,29 +594,42 @@ corners. In CSS that is
 inner element is square-cornered — and that is usually the signal it
 should not have been nested at all.
 
-**No shadows.** Elevation is `--card` / `--raised`. A modal gets a
-scrim, not a shadow; the scrim does the separating work a shadow cannot
-do on a dark ground. (v0.56 made one exception for a floating tab bar;
-v0.57 removed the bar and the exception with it.)
+**Elevation is a plane with light on it** (UI 3). Every card is
+`--card`, a 1px `--line` inset edge, a 1px `--lit` inset top, and
+`--shadow-1`; the hero and the dialog take `--shadow-2`; the primary
+button and the hero take `--shadow-glow`, the accent's own light. In
+the light theme the card plane is a warm white (`--c-surface-up`) above
+the cream, so a card is lighter than its ground in both themes. Shadows
+are these three tokens and no fourth; a shadow written inline is a
+defect. The dialog keeps its scrim and gains an 8px backdrop blur.
 
-Cards are `--r-3` (16px); controls and fields `--r-2`; chips and the
-tab bar's selected capsule the pill.
+Behind everything, `body::before` paints two radial washes (`--wash-1`
+the accent, `--wash-2` a cool violet in dark and a warm rose in light)
+on a fixed layer: the ambient light the glass above blurs.
 
-A 1px inset top highlight — `inset 0 1px 0 rgb(255 255 255 / 0.04)` — is
-permitted on a raised surface. It reads as a light edge rather than a
-border and does not participate in the "no frames" rule.
+Cards are `--r-3`; the hero `--r-4`; option cards `--r-3`; the
+monogram `--r-2`; everything tappable that is not a card is a pill.
 
 ---
 
 ## 5 · Motion
 
-| Class | Duration |
+| Class | Duration / easing |
 | --- | --- |
-| Micro state change (press, focus, colour) | 100–150 ms |
-| Element enter | 200–250 ms |
-| Element exit | 150–200 ms |
-| View transition | 250–300 ms |
-| Anything | never over 400 ms |
+| Micro state change (colour, surface) | 120 ms `--ease-standard` |
+| Element enter | 260 ms `--ease-out`, or `--spring-gentle` |
+| Element exit | 170 ms `--ease-in` |
+| View transition | 260 ms crossfade |
+| A thing that moves (press, indicator, ring, fill) | a spring: gentle 432 ms · bouncy 768 ms · pop 628 ms |
+| Anything | never over 800 ms; nothing appears over 400 ms |
+
+**Springs** (UI 3). Three `linear()` easings, each the sampled output
+of a damped spring (`scratchpad/ui3/spring.mjs`: stiffness, damping,
+settle at 0.1 % amplitude) — `--spring-gentle` (k 320, c 32) for a
+press, a card, a fill, an arriving screen; `--spring-bouncy` (k 260,
+c 18, one overshoot) for the tab indicator and a selected choice;
+`--spring-pop` (k 500, c 22) for a correct answer and a ring reaching
+its value. They are regenerated from the script, never tuned by eye.
 
 Exits are shorter than entrances: a leaving element no longer needs to be
 read. The 400ms ceiling is the Doherty threshold — past it the interface
@@ -615,8 +647,10 @@ which is the same fix the no-layout-shift rule already demands.
 
 **What never animates.**
 
-- Answering a question. It is the action performed hundreds of times a
-  session; feedback must appear, not perform.
+- Layout. The verdict on an option is a fill, an edge and a glyph plus
+  one transform — a pop for the right card, a shake for the wrong one —
+  and the feedback card rises in on a transform; nothing moves the
+  action bar or the options' positions.
 - Anything that moves layout under the thumb. A control that shifts between
   tap-down and tap-up is a pointer-cancellation hazard, not just a jank
   one.
@@ -644,10 +678,19 @@ is welcome — and so do the reader, the topic screen and each quiz
 question. The feedback band does not: answering a question is the one
 action that must appear, not perform.
 
-**Three things animate, and no fourth**: the route crossfade, the
-entrance of an arriving screen, the eased progress fill. Pressed states
-scale; hover changes surface. An ambient glow was tried (v0.56) and read
-as a smudge; it is gone.
+**The motion inventory** (UI 3, docs/ui3-plan.md §4): the route
+crossfade; the entrance of an arriving screen with its children
+staggered 40 ms apart, eight deep; the tab indicator's slide; a
+pressed control's compression (`scale(0.96)` on buttons, `0.97` on
+tiles, `0.98` on options); a switch's thumb; a progress fill and a
+ring's arc; a correct option's pop and a wrong one's shake; the
+feedback card's rise; the results figure counting up (`countUp`,
+700 ms, cubic ease-out, lands at once under reduced motion); confetti
+at 80 % and above (canvas, 1.6 s, never under reduced motion); the
+first-run orb's four-second breathe. Every one collapses to a fade or
+nothing under `prefers-reduced-motion: reduce`, and the sweep counts
+zero running animations there. Haptics: one 12 ms pulse on an answer
+where `navigator.vibrate` exists.
 
 ---
 
@@ -688,7 +731,7 @@ reason.
 
 ### 6.1 The set
 
-Fourteen drawings in `js/icons.js`: twelve outlines plus a filled variant
+Twenty drawings in `js/icons.js` (UI 3 added flame, calendar, spark, spark-fill, bolt, pen): outlines plus a filled variant
 for each of the two nav destinations. `icon(name, {size, title})` builds
 one; an unknown name throws rather than rendering nothing.
 
@@ -721,27 +764,34 @@ All inline SVG carries `focusable="false"`.
 
 ## 7 · Components
 
-Fourteen. Every one has an entry in `docs/components.html` showing every
-state it has, in both themes, and the sweep fails the day a class in the
-components layer has no entry (§0.3). The specs, one line each on
+Twenty-one. Every one has an entry in `docs/components.html` showing
+every state it has, in both themes, and the sweep fails the day a class
+in the components layer has no entry (§0.3). The specs, one line each on
 anatomy · sizes · states · tokens · accessibility:
 
 | # | Component | Anatomy | Sizes | States | Accessibility |
 |---|---|---|---|---|---|
 | 1 | **Bar** `.bar` | lead · title · trail; optional progress line | 56px; title 18/600 centred, clipped before it wraps | — | the title is a `<p>`, the screen's own heading stays in the body; back is a real button |
-| 2 | **TabBar** `.nav` | two `<a>` with icon + label | 48px items, capsule on the current | current | a `<nav>` landmark with `aria-current`, never a tablist |
+| 2 | **TabBar** `.nav` | a floating glass capsule; two `<a>` with icon + label; `.nav__indicator` | 64px, `min(100% − 32, 420)` wide, 12px off the edge; 48px items | current (filled icon, accent text, the indicator under it) | a `<nav>` landmark with `aria-current`, never a tablist |
 | 3 | **ActionBar** `.shell__bar` | one or two `.btn`, or a hint | 52 + 2×8, fixed | hint / one / two | equal halves; labels never wrap; no disabled button — a hint instead |
-| 4 | **Button** `.btn` | label, optional 20px icon | 48; primary 52; min 88 wide | hover (surface), pressed (scale .97), focus (outline), `aria-disabled` | filled / tonal (`--secondary`) / quiet / text (`--text`) / icon (`--icon`); one filled per screen |
+| 4 | **Button** `.btn` | label, optional 20px icon; a pill | 48; primary 52; min 88 wide | hover (surface), pressed (scale .96 on a spring), focus (outline), `aria-disabled` | filled (`--grad-accent` + `--shadow-glow`) / tonal (`--secondary`, a plane) / quiet / text (`--text`) / icon (`--icon`); one filled per screen |
 | 5 | **Row** `.row` | lead (24) · main (title, sub ≤2 lines) · trail | min 56 | hover, `aria-checked` as a switch | a `<button>` or `<a>`; the whole row is the target |
-| 6 | **Card** `.surface` | a label, content, an action | 16 padding, 16 radius | — | one level; controls on it step up to `--raised` |
+| 6 | **Card** `.surface` | a label, content, an action | 16 padding, 20 radius; `--line` edge, `--lit` top, `--shadow-1` | — | one level; controls on it step up to `--raised` |
 | 7 | **SectionHead** `.t-label` + `.t-quiet` | label, optional hint | 15/600 tracked; hint 18/400 | — | an `<h2>` or `<h3>` in the body's outline |
-| 8 | **Stat** `.stats` | value over label | 28/600 tabular over 15/600 | — | two by two at 8rem minimum |
+| 8 | **Stat** `.stats` of `.stat` | value over label on a small plane; `.stat--row` puts a ring beside the label | 28/600 tabular over 15/600; three abreast at 5.5rem, rings two abreast (`.stats--rings`) | — | the label says which question the number answers |
 | 9 | **Chip** `.chip` | one word | 15/600 pill; English 18 serif | ok / no / accent | never interactive |
 | 10 | **Field** `.field` | the one border in the app | 48; 18px | focus, `--multiline` | a label or `aria-label`, always |
 | 11 | **Listbox** `.listbox` | trigger + menu | 48 trigger; 44 options | open (raised trigger), active option | the select-only combobox contract, §8.2 |
 | 12 | **Dialog** `.dialog` | title, body, two equal actions | 22rem max | open | native `<dialog>`, §8.3 |
-| 13 | **Progress** `.progress` | a 3px track and fill | — | eased fill | the reader's position on the bar's edge |
-| 14 | **Feedback** `.feedback` + **Option** `.option` | verdict glyph + word, body, report; answer rows | 52 rows, serif | ok / no, `aria-disabled` once answered | four redundant channels, §1.5; the group points at its stem |
+| 13 | **Progress** `.progress` | a 6px track and gradient fill; `--thin` 3px on the bar's edge; `--ok` / `--no` | — | the fill moves on `--spring-gentle` | the reader's position on the bar's edge, a tile's completion |
+| 14 | **Feedback** `.feedback` + **Option** `.option` | a card: verdict glyph + word, the answer on its own line, body, report; options as cards in `.options` with a letter badge `.option__key` | 56 min, serif, 20 radius, 8 apart | ok / no (fill + 1.5px edge + glyph), `--picked` (pop or shake), `aria-disabled` once answered | four redundant channels, §1.5; the group points at its stem |
+| 15 | **Hero** `.surface.hero` | `.hero__orb` (+ `--cool`), `.hero__head` (titles · a ring or monogram), chips, a line, actions, facts | 28 radius, 24/16 padding; `--shadow-2` + `--shadow-glow` | — | text on the plane, never on the orb's centre; one per screen |
+| 16 | **Tile** `.tile` | `.tile__head` (monogram · `.tile__meta`), `.tile__title`, a progress | 108 min, 12 padding, 20 radius; two abreast from 320 | hover (`--shadow-2`), pressed (scale .97), `--soon` | a `<button>`; the whole tile is the target |
+| 17 | **Monogram** `.monogram` | a topic's initials on a gradient at `--hue` (derived from its id, `hueOf`) | 40; `--lg` 56 | — | `aria-hidden`; white on every stop ≥ Lc 73 |
+| 18 | **Avatar** `.avatar` | the learner's initial on `--grad-accent`, or the figure | 36; `--lg` 72 | — | `aria-hidden`; the control it sits in carries the name |
+| 19 | **Ring** `.ring` | `.ring__svg` (track + fill circles, r 44 of 100), `.ring__value` | 72 / 7; `--sm` 36 / 5; `--lg` 148 / 12 | `--ok`, `--no`; the arc draws on `--spring-pop` | `role="img"` with the fraction spoken, or `aria-hidden` |
+| 20 | **Switch** `.switch` | a track and `.switch__thumb`, in a Row's trail | 52 × 32 | `aria-checked` on the row: gradient track, thumb right | state in fill and position, never hue alone |
+| 21 | **Choice** `.choices` of `.choice` | the interactive chip: one of a few values; `--card` for a title and a line | 44 min; cards 56 | `aria-pressed` (gradient), pressed (scale .94 on `--spring-bouncy`) | a `role="group"` labelled by the caller; arrow keys move between them |
 
 Two shapes sit inside the inventory rather than beside it: `.btn--icon`,
 a fixed 48px square a flex row cannot squeeze; and `.blank`, the cloze
@@ -1120,10 +1170,19 @@ Nothing here is considered done because it looks right.
   no bar label on two lines, on every screen the journey lands on; the
   theme as a state (stored, followed, chosen, restored) in its own
   section; **the anatomy** — a titled bar on every screen, its three
-  slots never overlapping, opaque bars, content starting below the bar
-  and ending above the foot; **the catalogue** — every class in the
-  components layer present on `docs/components.html`, audited in both
-  themes. 1280 is also where the second column (§7.3) is in force,
+  slots never overlapping, bars at least 0.8 opaque before their blur,
+  the capsule inside the screen and as wide as the body, its indicator
+  under the selected tab, content starting below the bar and ending
+  above the foot; **the first run** — a fresh browser lands on
+  `#hosgeldin`, walks the four steps at 320, arrives on a home built
+  from its answers, is never asked again, a deep link is not
+  interrupted and a learner with history never sees it; **the feel** —
+  the results ring draws to the score and the figure lands, confetti at
+  90 % and none under reduced motion, zero running animations under
+  reduced motion; **the catalogue** — every class in the components
+  layer present on `docs/components.html`, audited in both themes.
+  Every sweep context is onboarded before its first script; the
+  first-run section asks for a fresh one. 1280 is also where the second column (§7.3) is in force,
   so the wide layout conforms per this list rather than beside it, and a
   section of its own additionally measures the split against §7.3: that it
   engages at 1280×900, stands down at 768×1024 and at 1280×560, that the

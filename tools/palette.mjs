@@ -45,6 +45,9 @@ const SPEC = {
   "text-2":      { L: 0.869, C: 0.010, H: 255, need: { lc: 75, wcag: 4.5 } },
   "text-3":      { L: 0.788, C: 0.012, H: 255, need: { lc: 60, wcag: 3.0 } },
   "accent":      { L: 0.800, C: 0.125, H:  70, need: { ui: 3.0 } },
+  // The gradient's second stop (UI 3). Solved so the filled label still
+  // clears 18/600 on it; body text never sits on the gradient.
+  "accent-2":    { L: 0.770, C: 0.140, H:  58, need: { ui: 3.0 } },
   "accent-text": { L: 0.871, C: 0.085, H:  76, need: { lc: 75, wcag: 4.5 } },
   "on-accent":   { L: 0.180, C: 0.030, H:  70, need: {} },
   "ok":          { L: 0.780, C: 0.120, H: 150, need: { ui: 3.0 } },
@@ -116,6 +119,7 @@ const LIGHT_SPEC = {
   "text-2":      { L: 0.352, C: 0.018, H: 70, need: { lc: 75, wcag: 4.5 } },
   "text-3":      { L: 0.490, C: 0.020, H: 70, need: { lc: 60, wcag: 3.0 } },
   "accent":      { L: 0.535, C: 0.125, H: 60, need: { ui: 3.0 } },
+  "accent-2":    { L: 0.530, C: 0.160, H: 42, need: { ui: 3.0 } },
   "accent-text": { L: 0.372, C: 0.090, H: 60, need: { lc: 75, wcag: 4.5 } },
   "on-accent":   { L: 0.960, C: 0.014, H: 85, need: {} },
   "ok":          { L: 0.555, C: 0.140, H: 150, need: { ui: 3.0 } },
@@ -209,8 +213,20 @@ export const PAIRS = [
   // only on the page or a card — never on surface-2, where it is 75/75.
   { where: ".t-quiet / quiet sentence", px: 18, weight: 400, token: "text-2", on: "surface-1" },
   { where: "quiet sentence (page)", px: 18, weight: 400, token: "text-2", on: "surface-0" },
-  // The primary label sits on the amber, not on a surface.
+  // The primary label sits on the gradient, not on a surface: both stops.
   { where: ".btn--primary label", px: 18, weight: 600, token: "on-accent", on: "accent" },
+  { where: ".btn--primary label (2nd stop)", px: 18, weight: 600, token: "on-accent", on: "accent-2" },
+  { where: ".choice[aria-pressed] label", px: 18, weight: 600, token: "on-accent", on: "accent-2" },
+  { where: ".avatar initial", px: 18, weight: 600, token: "on-accent", on: "accent-2" },
+  // UI 3's objects. A tile's title is body at 600; a ring's value is the
+  // one-line tier in the first ink; a stat's figure is the title size.
+  { where: ".tile__title", px: 18, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".tile__meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".ring__value", px: 15, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".ring--lg .ring__value", px: 36, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".choice", px: 18, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".score__verdict", px: 22, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".bar__title", px: 18, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".t-meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   // The section label is the accent's text colour — the one place the
   // accent marks structure rather than an action — so a section opens

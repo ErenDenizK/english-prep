@@ -26,7 +26,7 @@
 // "remember to bump this" is a rule that gets forgotten once and then
 // silently stays forgotten, which is exactly what happened here.
 
-const VERSION = "english-prep-v0.61";
+const VERSION = "english-prep-v0.62";
 
 /**
  * Content lives in its own cache, and that cache is deliberately NOT
@@ -96,6 +96,9 @@ const SHELL = [
   "./js/tiers.js",
   "./js/theme.js",
   "./js/topics.js",
+  "./js/widgets.js",
+  "./js/onboarding.js",
+  "./js/celebrate.js",
 ];
 
 self.addEventListener("install", (event) => {

@@ -60,7 +60,7 @@
        showing (js/shell.js createBar). Its title is the screen's name;
        the brand is not a title. Profil opens from the trailing slot of
        a root screen — identity and settings, not a content mode. -->
-  <header class="bar" id="shell-header">
+  <header class="bar glass" id="shell-header">
     <div class="bar__inner">
       <div class="bar__lead"></div>
       <p class="bar__title"></p>
@@ -84,6 +84,10 @@
         </div>
       </section>
 
+      <section id="view-hosgeldin" class="view" aria-label="Hoş geldin" tabindex="-1" hidden>
+        <div id="onboard-container" class="onboard"></div>
+      </section>
+
       <section id="view-profil" class="view stack stack--loose" aria-label="Profil" tabindex="-1" hidden>
         <div id="profile-container" class="stack stack--loose">
           <p class="t-meta">Profil yükleniyor&hellip;</p>
@@ -96,13 +100,14 @@
        whole bar one tab stop, implies panels in this document, and fights a
        hash router. -->
   <nav class="nav" id="bottom-nav" aria-label="Bölümler">
+    <span class="nav__indicator" aria-hidden="true"></span>
     <a class="nav__item" href="#egitim" data-view="egitim"><span data-icon></span><span>Eğitim</span></a>
     <a class="nav__item" href="#test" data-view="test"><span data-icon></span><span>Test</span></a>
   </nav>
 
   <!-- Shown only by the lesson reader, which runs as a focused mode with
        the header and the nav stepped out of the way. -->
-  <div class="shell__bar" id="lesson-bar" hidden>
+  <div class="shell__bar glass" id="lesson-bar" hidden>
     <div class="shell__bar-inner"></div>
   </div>
 

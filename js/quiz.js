@@ -17,6 +17,7 @@ import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { el, clear, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
+import { haptic } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
 
 const container = document.getElementById("quiz-container");
@@ -181,6 +182,7 @@ function handleOptionSelected(question, selectedOption) {
   state.selectedAnswers[state.currentIndex] = selectedOption;
 
   const correct = isCorrectAnswer(question, selectedOption);
+  haptic();
   announce(...answerAnnouncement(question, correct, selectedOption));
   // 4.1.3 is explicit that a status message arrives "without receiving
   // focus", and moving focus here would take the learner away from the
@@ -242,13 +244,16 @@ function renderQuestion() {
   const page = el("div", "stack stack--loose animate-in");
 
   const block = el("div", "stack");
+  // The prompt on a card of its own: the question is the object the
+  // options answer, and it reads as one when it has an edge.
+  const prompt = el("div", "quiz__prompt stack stack--tight");
   if (question.category) {
     const category = el("p", "t-label", question.category);
     category.lang = "en";
-    block.appendChild(category);
+    prompt.appendChild(category);
   }
-
-  block.appendChild(renderPrompt(question));
+  prompt.appendChild(renderPrompt(question));
+  block.appendChild(prompt);
 
   if (state.optionsHidden) {
     const reveal = el("button", "btn btn--secondary", "Şıkları göster");

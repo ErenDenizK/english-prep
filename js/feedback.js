@@ -28,19 +28,24 @@ import { announce } from "./shell.js";
  * @returns {HTMLDivElement}
  */
 export function renderAnswerFeedback(question, correct, { withTip = true, selected = null } = {}) {
-  const block = el("div", `feedback bleed ${correct ? "feedback--ok" : "feedback--no"}`);
+  const block = el("div", `feedback ${correct ? "feedback--ok" : "feedback--no"}`);
 
   const verdict = el("p", "feedback__verdict");
   verdict.appendChild(icon(correct ? "check" : "close", { size: 20 }));
-  if (correct) {
-    verdict.appendChild(document.createTextNode("Doğru"));
-  } else {
-    verdict.appendChild(document.createTextNode("Doğru cevap: "));
+  verdict.appendChild(document.createTextNode(correct ? "Doğru" : "Yanlış"));
+  block.appendChild(verdict);
+  if (!correct) {
+    // The answer on its own line, so a sentence-long option (a
+    // restatement) does not wrap around the glyph.
+    const line = el("p", "feedback__body feedback__answer");
+    line.appendChild(document.createTextNode("Doğru cevap: "));
+    // A span, not <strong>: the option note below opens with a <strong
+    // lang="en"> and that is how the note is told apart from this line.
     const answer = el("span", "t-en", question.correctAnswer);
     answer.lang = "en";
-    verdict.appendChild(answer);
+    line.appendChild(answer);
+    block.appendChild(line);
   }
-  block.appendChild(verdict);
 
   const explanation = el("p", "feedback__body");
   appendInline(explanation, question.explanation);

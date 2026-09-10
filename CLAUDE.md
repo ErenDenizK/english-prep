@@ -133,8 +133,12 @@ js/
   quiz.js             Test screen
   results.js          Results screen
   profile.js          Profil tab
-  shell.js            The scrolling region, the focused-mode action bar and
+  shell.js            The bar, the scrolling region, the action bar and
                         the one live region — shared by all three
+  widgets.js          Ring, monogram, avatar, choice group, count-up,
+                        haptic — the UI 3 objects
+  onboarding.js       The first run (#hosgeldin): four steps, skippable
+  celebrate.js        Confetti on a canvas, for a score that earned it
   answers.js          The answer options, shared by Test and Eğitim checks
   feedback.js         The one answer-feedback block, likewise
   quiz-engine.js      Pure scoring/shuffling logic — no DOM, no storage
@@ -143,7 +147,7 @@ js/
   quiz-launch.js      The one path that starts a test, from any entry point
   report.js           "Bu soruda bir sorun var" — the text, and the share
   dom.js              Shared node builders (el, appendProse, appendBlanked)
-  icons.js            The 14 hand-drawn icons, to the §6 contract
+  icons.js            The 20 hand-drawn icons, to the §6 contract
   listbox.js          Select-only combobox (replaces <select>)
   modal.js            Confirmation on a native <dialog>
   config.js           Cross-screen constants
@@ -178,9 +182,11 @@ spacing, icon contract, component inventory, the accessibility contract and
 the mobile-web constraints, each with its reasoning. Read it before
 touching `css/style.css`.
 
-Three rules generate most of the rest: depth comes from surface lightness
-rather than borders or shadows; at most one card level and nothing framed
-inside a framed thing; one accent doing one job. Colour values are not
+Three rules generate most of the rest: depth is a lighter plane with a
+tokenised edge and shadow (never an inline shadow); at most one card
+level and nothing framed inside a framed thing; one accent doing one
+job — and that accent is a gradient pair with a glow on the one filled
+action. Colour values are not
 chosen by eye — they are solved against a contrast requirement and verified
 by `npm run color`, which is in CI, for both themes and for every size
 pairing the stylesheet declares. Two themes: slate dark by default, a
@@ -192,16 +198,29 @@ row to `PAIRS` in `tools/palette.mjs`.
 
 **Structure first (design-system §0, `docs/ui2-plan.md`).** Every
 screen is bar · body · foot, and the bar's title is the screen's name;
-a body is sections, a section is a head and one of four containers
-(list, card, prose, band); everything drawn is one of fourteen
+a body is sections, a section is a head and one container (list,
+card, grid, prose, band); everything drawn is one of twenty-one
 components with an entry in `docs/components.html`, which the sweep
 enforces. A new feature is *placed*, not invented: say which screen,
 which section, which container, which components — if it cannot be
-said that way, it is not ready. Bars are opaque and nothing scrolls
-under them; that was tried and failed.
+said that way, it is not ready.
 
-`docs/ui2-plan.md` is the rebuild's programme; `docs/redesign-plan.md`
-and `docs/beta1-plan.md` are the two earlier rounds, kept as history.
+**Then light and motion (`docs/ui3-plan.md`, v0.62).** The owner
+found UI 2 ugly, and it was: structure dressed as a document. Now the
+chrome is glass that floats over the body (≥ 82 % opaque before the
+blur, the body padded past it, both measured by the sweep), the tab
+bar a capsule with a sliding indicator, every card a lit plane, the
+home a hero with a daily ring and a countdown, every topic a colour,
+every answer a card that pops or shakes, the score a ring that counts
+up, and a first run (`#hosgeldin`) that asks for the exam date, the
+daily goal and a name. Motion runs on three derived springs
+(`scratchpad/ui3/spring.mjs`), transform and opacity only, and every
+piece of it collapses under reduced motion. Do not add a shadow, an
+easing or a component inline: they are tokens, or they are not there.
+
+`docs/ui3-plan.md` and `docs/ui2-plan.md` are the two programmes;
+`docs/redesign-plan.md` and `docs/beta1-plan.md` are the earlier rounds,
+kept as history.
 
 ## Where the project is going
 

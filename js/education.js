@@ -43,6 +43,12 @@ import {
   shouldOfferBackup,
   dismissBackupNudge,
   RE_ENTRY_DAYS,
+  getProfileName,
+  getOverallStats,
+  getStreak,
+  getTodayCount,
+  getDailyGoal,
+  daysToExam,
 } from "./storage.js";
 import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
@@ -53,6 +59,7 @@ import { TOPIC_INTRO_PREFIX } from "./config.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard, textButton } from "./dom.js";
 import { icon } from "./icons.js";
+import { ring, monogram, hueOf } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
 
 const bottomNav = document.getElementById("bottom-nav");
@@ -143,6 +150,137 @@ function statusOf(lesson, progress) {
   return { done: false, label: null };
 }
 
+/**
+ * The home hero: who this is, how today is going, and the one thing to do
+ * next. Every state the index knows — never opened, half a lesson,
+ * tested but nothing read, away for a fortnight, everything done — fills
+ * the same shape (docs/ui3-plan.md §5), so the screen is one object with
+ * a changing offer rather than five different cards.
+ *
+ * `surface` as well as `hero`: a hero IS the screen's card, and the
+ * sweep's checks on "the card" keep pointing at it.
+ *
+ * @param {{eyebrow: string, line?: string, lineLang?: string, primary: {label: string, onClick: () => void},
+ *          secondary?: {label: string, onClick: () => void}, facts?: string[], quiet?: string}} spec
+ */
+function renderHero(spec) {
+  const card = el("section", "surface hero");
+  card.appendChild(el("span", "hero__orb"));
+
+  const head = el("div", "hero__head");
+  const titles = el("div", "stack stack--snug");
+  titles.appendChild(el("p", "t-label", spec.eyebrow));
+  const name = getProfileName().trim();
+  titles.appendChild(el("h2", "t-title", name ? `Merhaba, ${name}` : "Merhaba"));
+  head.appendChild(titles);
+
+  // Today against the goal. The ring is the day's one number; the goal
+  // is what the learner said they would do (Profil, or the first run).
+  const goal = getDailyGoal();
+  const today = getTodayCount();
+  const done = today >= goal;
+  head.appendChild(
+    ring({
+      ratio: goal === 0 ? 0 : today / goal,
+      label: `${today}/${goal}`,
+      tone: done ? "ok" : "accent",
+      describedAs: `Bugün ${today} soru, hedef ${goal}`,
+    })
+  );
+  card.appendChild(head);
+
+  // The exam and the streak, as chips — only when there is something to
+  // say. A countdown nobody set and a streak of nought are both silence.
+  const chips = el("div", "cluster");
+  const days = daysToExam();
+  if (days !== null && days >= 0) {
+    const chip = el("span", "chip chip--accent");
+    chip.appendChild(icon("calendar", { size: 18 }));
+    chip.appendChild(document.createTextNode(days === 0 ? "Sınav bugün" : `Sınava ${days} gün`));
+    chips.appendChild(chip);
+  }
+  const streak = getStreak();
+  if (streak.days >= 1) {
+    const chip = el("span", "chip chip--ok");
+    chip.appendChild(icon("flame", { size: 18 }));
+    chip.appendChild(document.createTextNode(`${streak.days} gün seri`));
+    chips.appendChild(chip);
+  }
+  if (done) {
+    const chip = el("span", "chip chip--ok");
+    chip.appendChild(icon("spark-fill", { size: 18 }));
+    chip.appendChild(document.createTextNode("Günlük hedef tamam"));
+    chips.appendChild(chip);
+  }
+  if (chips.childElementCount > 0) {
+    card.appendChild(chips);
+  }
+
+  if (spec.line) {
+    const line = el("p", "t-body", spec.line);
+    if (spec.lineLang) {
+      line.lang = spec.lineLang;
+    }
+    card.appendChild(line);
+  }
+
+  const actions = el("div", "stack stack--tight");
+  const primary = el("button", "btn btn--primary", spec.primary.label);
+  primary.type = "button";
+  primary.addEventListener("click", spec.primary.onClick);
+  actions.appendChild(primary);
+  if (spec.secondary) {
+    actions.appendChild(textButton(spec.secondary.label, spec.secondary.onClick, icon));
+  }
+  card.appendChild(actions);
+
+  for (const fact of spec.facts ?? []) {
+    card.appendChild(el("p", "t-meta t-num", fact));
+  }
+  if (spec.quiet) {
+    card.appendChild(el("p", "t-quiet", spec.quiet));
+  }
+  return card;
+}
+
+/**
+ * Three figures under the hero: the streak, the lessons, the accuracy.
+ * Tiles, so each is an object; the labels say which question each
+ * number answers, as Profil's do.
+ */
+function renderStatStrip(lessons, completed) {
+  const stats = getOverallStats();
+  const streak = getStreak();
+  const grid = el("div", "stats");
+  grid.id = "home-stats";
+
+  const tile = (value, label, iconName) => {
+    const cell = el("div", "stat");
+    const value_ = el("div", "stat__value t-num");
+    if (iconName) {
+      const mark = el("span", "cluster");
+      mark.appendChild(icon(iconName, { size: 22 }));
+      mark.appendChild(document.createTextNode(value));
+      value_.appendChild(mark);
+    } else {
+      value_.textContent = value;
+    }
+    cell.appendChild(value_);
+    cell.appendChild(el("div", "stat__label", label));
+    return cell;
+  };
+
+  grid.appendChild(tile(String(streak.days), "gün seri", "flame"));
+  grid.appendChild(tile(`${completed} / ${lessons.length}`, "ders bitti"));
+  grid.appendChild(
+    tile(
+      stats.accuracy === null ? "—" : `%${Math.round(stats.accuracy * 100)}`,
+      stats.accuracyWindow > 0 ? `son ${stats.accuracyWindow} soruda` : "doğruluk"
+    )
+  );
+  return grid;
+}
+
 function renderProgressSummary(lessons, completed) {
   const block = el("section", "stack stack--tight");
   block.appendChild(el("h2", "t-label", "İlerlemen"));
@@ -158,22 +296,13 @@ function renderProgressSummary(lessons, completed) {
  * homogeneous, so it is rows.
  */
 function renderResumeCard(lesson, entry) {
-  const card = el("section", "surface stack");
-
-  const head = el("div", "stack stack--tight");
-  head.appendChild(el("p", "t-label", "Kaldığın yer"));
-  head.appendChild(englishTitle("h2", "t-title t-en", lesson.category));
-  head.appendChild(el("p", "t-meta t-num", `${lesson.topicTitle} · %${Math.round(entry.read * 100)}`));
-  card.appendChild(head);
-
-  card.appendChild(progressBar(entry.read));
-
-  const button = el("button", "btn btn--primary", "Devam et");
-  button.type = "button";
-  button.addEventListener("click", () => openLessonByHash(lesson.id));
-  card.appendChild(button);
-
-  return card;
+  return renderHero({
+    eyebrow: "Kaldığın yer",
+    line: `${lesson.category} · %${Math.round(entry.read * 100)}`,
+    lineLang: "en",
+    primary: { label: "Devam et", onClick: () => openLessonByHash(lesson.id) },
+    facts: [lesson.topicTitle],
+  });
 }
 
 /**
@@ -203,57 +332,29 @@ function renderResumeCard(lesson, entry) {
  * a card saying "start here" are two ways of saying the same nothing.
  */
 function renderWelcome(firstLesson) {
-  const card = el("section", "surface stack");
-
-  const head = el("div", "stack stack--tight");
-  // Not the brand again: the header 150px above already says it, and the
-  // card's job is to say what to do. The sentence says what the app is.
-  head.appendChild(el("h2", "t-label", "Başlamak için"));
-  head.appendChild(
-    el(
-      "p",
-      "t-body",
-      "Üniversite İngilizce yeterlik sınavı için dersler ve paragraf soruları. " +
-        "Hesap açman gerekmiyor; ne yaptığın yalnızca bu telefonda kalıyor."
-    )
-  );
-  card.appendChild(head);
-
-  if (firstLesson) {
-    // The topic, not its first lesson.
-    //
-    // This button used to open `Present Simple vs Present Continuous`
-    // directly, which is the complaint the whole orientation round
-    // started from: every lesson in this app is a contrast, and dropping
-    // a learner into one before they have the category is dropping them
-    // into an argument about a word they have not met. The topic screen
-    // says what a tense IS and then hands them on, so "start" means
-    // start at the beginning rather than start at chapter one.
-    const label = firstLesson.hasIntro ? "Tenses ile başla" : "İlk dersi aç";
-    const start = el("button", "btn btn--primary", label);
-    start.type = "button";
-    start.addEventListener("click", () =>
-      firstLesson.hasIntro
-        ? openIntroByHash(firstLesson.topicId)
-        : openLessonByHash(firstLesson.id)
-    );
-    card.appendChild(start);
-    card.appendChild(
-      el(
-        "p",
-        firstLesson.hasIntro ? "t-quiet" : "t-meta",
-        firstLesson.hasIntro
-          ? "Önce bu konunun ne olduğu, sonra altı ders."
-          : `${firstLesson.topicTitle} · ${firstLesson.category}`
-      )
-    );
-  }
-
-  card.appendChild(
-    textButton("Ya da kısa bir testle başla", () => startMixedTest(5).catch(console.error), icon)
-  );
-
-  return card;
+  // The topic, not its first lesson: every lesson here is a contrast,
+  // and dropping a learner into one before they have the category is
+  // dropping them into an argument about a word they have not met. The
+  // topic screen says what a tense IS and then hands them on.
+  const primary = firstLesson
+    ? {
+        label: `${firstLesson.topicTitle} ile başla`,
+        onClick: () =>
+          firstLesson.hasIntro ? openIntroByHash(firstLesson.topicId) : openLessonByHash(firstLesson.id),
+      }
+    : { label: "Kısa bir testle başla", onClick: () => startMixedTest(5).catch(console.error) };
+  return renderHero({
+    eyebrow: "Başlamak için",
+    // What the app is, in one line, and the privacy fact otherwise buried
+    // in Profil. Not the brand: the manifest and the first-run flow say
+    // it, and this card's job is to say what to do.
+    line: "Yeterlik sınavı için dersler ve paragraf soruları. Hesap yok; her şey bu telefonda kalır.",
+    primary,
+    secondary: firstLesson
+      ? { label: "Ya da kısa bir testle başla", onClick: () => startMixedTest(5).catch(console.error) }
+      : undefined,
+    quiet: firstLesson ? "Önce bu konunun ne olduğu, sonra altı ders." : undefined,
+  });
 }
 
 /**
@@ -274,56 +375,42 @@ function renderWelcome(firstLesson) {
  * only message that gets better the longer they were gone.
  */
 function renderReEntryCard(lesson, entry, news, nextUnread, totals) {
-  const card = el("section", "surface stack");
-  const head = el("div", "stack stack--tight");
-
-  if (lesson) {
-    head.appendChild(el("p", "t-label", "Kaldığın yer"));
-    head.appendChild(englishTitle("h2", "t-title t-en", lesson.category));
-    head.appendChild(el("p", "t-meta t-num", `${lesson.topicTitle} · %${Math.round(entry.read * 100)}`));
-  } else {
-    // Someone who finishes what they start, and came back. There is no
-    // half-read lesson to resume, which does not make them a new learner —
-    // it makes them the tidier kind of returner, and the first version of
-    // this card gave them the same-day screen. The heading stays "a short
-    // reminder" rather than "where you left off", because for this learner
-    // there is no place they left off; what they get instead of the resume
-    // button is the next lesson they have not read.
-    head.appendChild(el("h2", "t-title", "Kısa bir hatırlatma"));
-    head.appendChild(
-      el("p", "t-body", "Beş soru, doksan saniye. Neyin durduğunu okumaktan daha hızlı gösterir.")
-    );
-    head.appendChild(
-      el("p", "t-meta t-num", `${totals.lessons} dersten ${totals.completed} tanesi tamamlandı`)
-    );
-  }
-  card.appendChild(head);
-
   // The weakest category when there is one, the abandoned lesson's own
   // category otherwise, and a short mixed test when the app knows neither.
   const weakest = getWeakCategories(1)[0] ?? null;
   const category = lesson ? lesson.category : weakest?.category ?? null;
-
-  const recall = el("button", "btn btn--primary", lesson ? "Önce 5 soruyla hatırla" : "5 soruyla başla");
-  recall.type = "button";
-  recall.addEventListener("click", () => {
+  const recall = () => {
     const start = category ? startCategoryPractice(category, 5) : startMixedTest(5);
     start.catch(console.error);
-  });
-  card.appendChild(recall);
+  };
 
   if (lesson) {
-    card.appendChild(textButton("Kaldığın yerden devam et", () => openLessonByHash(lesson.id), icon));
-  } else if (nextUnread) {
-    card.appendChild(textButton("Sıradaki derse geç", () => openLessonByHash(nextUnread.id), icon));
-    card.appendChild(el("p", "t-meta", `${nextUnread.topicTitle} · ${nextUnread.category}`));
+    return renderHero({
+      eyebrow: "Kaldığın yer",
+      line: `${lesson.category} · %${Math.round(entry.read * 100)}`,
+      lineLang: "en",
+      primary: { label: "Önce 5 soruyla hatırla", onClick: recall },
+      secondary: { label: "Kaldığın yerden devam et", onClick: () => openLessonByHash(lesson.id) },
+      facts: [lesson.topicTitle],
+      quiet: news ?? undefined,
+    });
   }
-
-  if (news) {
-    card.appendChild(el("p", "t-quiet", news));
-  }
-
-  return card;
+  // Someone who finishes what they start, and came back: no place they
+  // left off, so the next unread lesson is the way on. No count of days
+  // away, no "welcome back" — a returner is not apologised to.
+  return renderHero({
+    eyebrow: "Kısa bir hatırlatma",
+    line: "Beş soru, doksan saniye. Neyin durduğunu okumaktan daha hızlı gösterir.",
+    primary: { label: "5 soruyla başla", onClick: recall },
+    secondary: nextUnread
+      ? { label: "Sıradaki derse geç", onClick: () => openLessonByHash(nextUnread.id) }
+      : undefined,
+    facts: [
+      ...(nextUnread ? [`${nextUnread.topicTitle} · ${nextUnread.category}`] : []),
+      `${totals.lessons} dersten ${totals.completed} tanesi tamamlandı`,
+    ],
+    quiet: news ?? undefined,
+  });
 }
 
 /**
@@ -347,76 +434,36 @@ function renderReEntryCard(lesson, entry, news, nextUnread, totals) {
  * under "unlock progression".
  */
 function renderNextStepCard(lessons, progress, completed) {
-  // The weakest category that this app actually has a lesson for. A weak
-  // category always has one today, because lessons and questions share
-  // one taxonomy — but the fallback is what keeps that a property of the
-  // content rather than an assumption in the code.
   const weakest = getWeakCategories(1)[0] ?? null;
   const weakLesson = weakest ? lessons.find((lesson) => lesson.category === weakest.category) : null;
   const target = weakLesson ?? lessons.find((lesson) => !progress[lesson.id]?.done) ?? null;
   if (!target) {
     return null;
   }
-
-  // The weak category's lesson is often one the learner has already read
-  // — that is the normal case, not the odd one: the app knows a category
-  // is weak because it was tested, and it gets tested after the lesson.
-  // Saying "Bu dersi aç" there sends someone back through a page they
-  // finished and calls it the next step. What is actually next is
-  // practice, which is what the weak-spot rows on the Test tab offer.
+  // The weak category's lesson is often one already read — the app knows
+  // a category is weak because it was tested, and it gets tested after
+  // the lesson. What is next there is practice, not a re-read.
   const rereading = weakLesson !== null && Boolean(progress[weakLesson.id]?.done);
 
-  const card = el("section", "surface stack");
-  const head = el("div", "stack stack--tight");
-  head.appendChild(el("p", "t-label", "Sıradaki adım"));
-  head.appendChild(englishTitle("h2", "t-title t-en", target.category));
-
-  if (rereading) {
-    head.appendChild(
-      el(
-        "p",
-        "t-body",
-        "Bu dersi okudun ama son testlerinde en çok bu sorularda zorlandın. " +
-          "Sıradaki adım okumak değil, bu kategoriden soru çözmek."
-      )
-    );
-  } else if (weakLesson) {
-    // A ranking, not a verdict — the same hedge the weak-spot list on the
-    // Test tab carries, for the same reason: on four questions the app
-    // knows which one went worst, not that the learner cannot do it.
-    head.appendChild(
-      el(
-        "p",
-        "t-body",
-        "Son testlerinde en çok bu sorularda zorlandın. Dersi okumak, aynı " +
-          "soruları tekrar çözmekten daha çok işine yarar."
-      )
-    );
-  } else {
-    head.appendChild(el("p", "t-body", "Buradan devam edebilirsin."));
-  }
-  card.appendChild(head);
-
-  const open = el(
-    "button",
-    "btn btn--primary",
-    rereading ? "Bu kategoriden pratik yap" : "Bu dersi aç"
-  );
-  open.type = "button";
-  open.addEventListener("click", () => {
-    if (rereading) {
-      startCategoryPractice(target.category).catch(console.error);
-    } else {
-      openLessonByHash(target.id);
-    }
+  return renderHero({
+    eyebrow: "Sıradaki adım",
+    line: rereading
+      ? `${target.category}: dersi okudun ama son testlerde en çok burada zorlandın. Sırada okumak değil, soru çözmek var.`
+      : weakLesson
+        ? `${target.category}: son testlerde en çok burada zorlandın. Ders, aynı soruları tekrar çözmekten daha çok işe yarar.`
+        : `${target.category} — buradan devam edebilirsin.`,
+    primary: {
+      label: rereading ? "Bu kategoriden pratik yap" : "Bu dersi aç",
+      onClick: () => {
+        if (rereading) {
+          startCategoryPractice(target.category).catch(console.error);
+        } else {
+          openLessonByHash(target.id);
+        }
+      },
+    },
+    facts: [`${target.topicTitle} · ${lessons.length} dersten ${completed} tanesi tamamlandı`],
   });
-  card.appendChild(open);
-
-  card.appendChild(
-    el("p", "t-meta t-num", `${target.topicTitle} · ${lessons.length} dersten ${completed} tanesi tamamlandı`)
-  );
-
-  return card;
 }
 
 /**
@@ -431,36 +478,15 @@ function renderNextStepCard(lessons, progress, completed) {
  * rather than leaving %100 to be read as coverage.
  */
 function renderAllDoneCard(lessons, missingSections) {
-  const card = el("section", "surface stack");
-
-  const head = el("div", "stack stack--tight");
-  head.appendChild(el("h2", "t-title", "Dersleri bitirdin"));
-  head.appendChild(
-    el(
-      "p",
-      "t-body",
-      `${lessons.length} dersin hepsini okudun ve bankadaki soruların hepsini ` +
-        "gördün. Buradan sonrası tekrar — gördüğün bir soruyu yeniden çözmek, " +
-        "ilk seferki kadar öğretmez."
-    )
-  );
-  card.appendChild(head);
-
-  const revise = el("button", "btn btn--primary", "Karışık testle tekrar et");
-  revise.type = "button";
-  revise.addEventListener("click", () => {
-    startMixedTest(20).catch(console.error);
-  });
-  card.appendChild(revise);
-
-  // `missingSections` arrives as a list phrase — "okuma (21 puan) ve
-  // paragraf tamamlama (9 puan)" — because Profil builds its own sentence
-  // around the same phrase. This card printed the phrase bare, so the
-  // all-done state ended on a lowercase fragment.
   const missing = `${missingSections.charAt(0).toLocaleUpperCase("tr")}${missingSections.slice(1)} burada yok.`;
-  card.appendChild(el("p", "t-quiet", missing));
-
-  return card;
+  return renderHero({
+    eyebrow: "Dersleri bitirdin",
+    line:
+      `${lessons.length} dersin hepsini okudun ve bankadaki soruların hepsini gördün. ` +
+      "Buradan sonrası tekrar — gördüğün bir soruyu yeniden çözmek, ilk seferki kadar öğretmez.",
+    primary: { label: "Karışık testle tekrar et", onClick: () => startMixedTest(20).catch(console.error) },
+    quiet: missing,
+  });
 }
 
 /**
@@ -613,6 +639,7 @@ function renderIndex() {
   // A screen this app can reach only by running out of both suggestions
   // and lessons. The summary is what it always was.
   aside.appendChild(card ?? renderProgressSummary(lessons, completed));
+  aside.appendChild(renderStatStrip(lessons, completed));
 
   const nudge = renderBackupNudge();
   if (nudge) {
@@ -815,42 +842,41 @@ function renderTopicGroup(heading, lessons, progress) {
   const block = el("section", "stack stack--tight");
   block.appendChild(el("h2", "t-label", heading));
 
-  const list = el("div");
+  // Tiles, not rows: a topic is an object with a colour, a name and a
+  // bar, and two abreast is what a phone holds.
+  const grid = el("div", "tiles");
   const topicIds = [...new Set(lessons.map((lesson) => lesson.topicId))];
   for (const topicId of topicIds) {
     const inTopic = lessons.filter((lesson) => lesson.topicId === topicId);
     const done = inTopic.filter((lesson) => progress[lesson.id]?.done).length;
+    const title = inTopic[0].topicTitle;
 
-    const row = el("button", "row");
-    row.type = "button";
-
-    const main = el("span", "row__main");
-    main.appendChild(englishTitle("span", "row__title t-en", inTopic[0].topicTitle));
-    // The gloss becomes the row's secondary line rather than a paragraph
-    // of its own. §7.1: two lines at most, clamped — the gloss is the one
-    // sentence that says what the topic is, and one line cut it mid-word.
-    main.appendChild(el("span", "row__sub", inTopic[0].topicGloss ?? `${inTopic.length} ders`));
-    row.appendChild(main);
-
-    const trail = el("span", "row__trail");
+    const tile = el("button", "tile");
+    tile.type = "button";
+    // Monogram and count on one line, the name under them, the bar last:
+    // three rows, so two tiles abreast fit a 320px phone's budget.
+    const head = el("span", "tile__head");
+    head.appendChild(monogram(topicId, title));
+    const meta = el("span", "tile__meta");
     if (done === inTopic.length) {
-      // The same glyph as a finished lesson row: a chip beside the
-      // chevron doubled the trail at 320.
-      const finished = el("span", "ink-ok");
+      const finished = el("span", "ink-ok cluster");
       finished.setAttribute("aria-label", "Tamamlandı");
       finished.setAttribute("role", "img");
-      finished.appendChild(icon("check", { size: 20 }));
-      trail.appendChild(finished);
+      finished.appendChild(icon("check", { size: 18 }));
+      meta.appendChild(finished);
+      meta.appendChild(el("span", "t-num", `${inTopic.length} ders`));
     } else {
-      trail.appendChild(el("span", "t-num", `${done} / ${inTopic.length}`));
+      meta.appendChild(el("span", "t-num", `${done} / ${inTopic.length}`));
     }
-    trail.appendChild(icon("chevron-right", { size: 20 }));
-    row.appendChild(trail);
+    head.appendChild(meta);
+    tile.appendChild(head);
+    tile.appendChild(englishTitle("span", "tile__title t-en", title));
+    tile.appendChild(progressBar(inTopic.length === 0 ? 0 : done / inTopic.length));
 
-    row.addEventListener("click", () => openIntroByHash(topicId));
-    list.appendChild(row);
+    tile.addEventListener("click", () => openIntroByHash(topicId));
+    grid.appendChild(tile);
   }
-  block.appendChild(list);
+  block.appendChild(grid);
 
   return block;
 }
@@ -1470,7 +1496,7 @@ function renderBlock(block, index, nextCheck, checkNumber = 0) {
     if (!question) {
       return null;
     }
-    wrap.classList.add("block--labelled");
+    wrap.classList.add("block--labelled", "block--check");
     wrap.appendChild(renderCheckBlock(question, index, { label: `Kontrol ${checkNumber}` }));
     return wrap;
   }
@@ -1579,7 +1605,8 @@ function renderLesson() {
   setReaderBar();
   const page = el("article", "stack stack--loose animate-in lesson");
 
-  const heading = el("header", "stack stack--tight");
+  const heading = el("header", "stack stack--tight lesson__head");
+  heading.style.setProperty("--hue", String(hueOf(lesson.topicId)));
   heading.appendChild(englishTitle("p", "t-label", lesson.topicTitle));
   heading.appendChild(englishTitle("h1", "t-display t-en", lesson.category));
   if (lesson.summary) {
@@ -1639,9 +1666,13 @@ function renderLessonEnd(lesson) {
   // in the one journey nobody had designed.
   const crossesTopic = nextLesson !== null && nextLesson.topicId !== lesson.topicId;
 
-  const card = el("section", "surface stack block--end");
+  const card = el("section", "surface hero block--end");
+  card.appendChild(el("span", "hero__orb"));
   const head = el("div", "stack stack--tight");
-  head.appendChild(el("p", "t-label", crossesTopic ? "Konu bitti" : "Ders bitti"));
+  const eyebrow = el("p", "t-label cluster");
+  eyebrow.appendChild(icon("spark-fill", { size: 18 }));
+  eyebrow.appendChild(document.createTextNode(crossesTopic ? "Konu bitti" : "Ders bitti"));
+  head.appendChild(eyebrow);
   head.appendChild(
     el(
       "p",

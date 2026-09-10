@@ -26,6 +26,9 @@ import {
   getHistory,
   getChoice,
   setChoice,
+  isOnboarded,
+  setOnboarded,
+  getAllLessonProgress,
 } from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createListbox } from "./listbox.js";
@@ -34,16 +37,19 @@ import { initProfileTab } from "./profile.js";
 import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook } from "./quiz-launch.js";
 import { el, clear, pane, sectionHeading, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
+import { avatar, monogram } from "./widgets.js";
+import { renderOnboarding } from "./onboarding.js";
 import { announce, scrollToTop, createBar } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
 
-const VIEW_IDS = ["egitim", "test", "profil"];
+const VIEW_IDS = ["egitim", "test", "profil", "hosgeldin"];
 const DEFAULT_VIEW = "egitim";
 
 const VIEW_TITLES = {
   egitim: "Eğitim",
   test: "Test",
   profil: "Profil",
+  hosgeldin: "Hoş geldin",
 };
 
 const NAV_ICONS = {
@@ -54,14 +60,10 @@ const NAV_ICONS = {
 const testPanel = document.getElementById("test-panel");
 // The profile control lives in the bar's trailing slot on a root screen.
 // Built once here; the bar takes the same node each time it is set.
-const profileTrigger = el("button", "btn btn--secondary btn--icon");
+const profileTrigger = el("button", "btn btn--quiet btn--icon");
 profileTrigger.type = "button";
 profileTrigger.id = "profile-trigger";
 profileTrigger.setAttribute("aria-label", "Profilini aç");
-const profileFace = el("span");
-profileFace.id = "profile-trigger-face";
-profileFace.setAttribute("aria-hidden", "true");
-profileTrigger.appendChild(profileFace);
 
 const bar = createBar("shell-header");
 
@@ -120,9 +122,16 @@ function renderMistakeBook() {
   }
 
   // The count is the one fact on this card and it sat inside a sentence.
-  const figure = el("div");
-  figure.appendChild(el("div", "stat__value t-num", String(book.length)));
-  figure.appendChild(el("div", "stat__label", "bekleyen soru"));
+  const figure = el("div", "hero__figure");
+  const mark = el("span", "monogram");
+  mark.style.setProperty("--hue", "20");
+  mark.setAttribute("aria-hidden", "true");
+  mark.appendChild(icon("target", { size: 22 }));
+  figure.appendChild(mark);
+  const numbers = el("div");
+  numbers.appendChild(el("div", "stat__value t-num", String(book.length)));
+  numbers.appendChild(el("div", "stat__label", "bekleyen soru"));
+  figure.appendChild(numbers);
   intro.appendChild(figure);
   intro.appendChild(
     el(
@@ -187,47 +196,41 @@ function renderMistakeBook() {
  *   Yanlış defteri card is above this one and offering the better mode.
  */
 function renderMixedTest({ primary = true } = {}) {
-  const surface = el("section", "surface stack");
+  const surface = el("section", "surface hero");
+  surface.appendChild(el("span", "hero__orb"));
 
-  const intro = el("div", "stack stack--tight");
-  intro.appendChild(el("h2", "t-title", "Karışık test"));
-  // Not "the quickest way to see where you stand", which is what this
-  // said and which framed the app's best-evidenced mode as a convenience.
+  const head = el("div", "hero__head");
+  const titles = el("div", "stack stack--snug");
+  titles.appendChild(el("p", "t-label", "Sınav gibi"));
+  titles.appendChild(el("h2", "t-title", "Karışık test"));
+  head.appendChild(titles);
+  const mark = el("span", "monogram monogram--lg");
+  mark.style.setProperty("--hue", "60");
+  mark.setAttribute("aria-hidden", "true");
+  mark.appendChild(icon("bolt", { size: 28 }));
+  head.appendChild(mark);
+  surface.appendChild(head);
+
   // Interleaving — mixing topics rather than blocking them — is the one
   // practice format with a clean classroom trial behind it, and the
-  // reason is worth telling the learner: when the topic is not announced,
-  // choosing the rule becomes part of the question, exactly as it is on
-  // the paper.
-  intro.appendChild(
+  // reason is worth telling the learner in a line: when the topic is not
+  // announced, choosing the rule becomes part of the question, exactly
+  // as it is on the paper. And the half nobody was told: some of it comes
+  // from lessons not yet read, and that is the point, not a waste.
+  surface.appendChild(
     el(
       "p",
       "t-body",
-      "Sorular tüm konulardan karışık gelir, yani hangi kuralın gerektiğini " +
-        "de kendin bulursun — sınavda da öyle olacak."
+      "Sorular tüm konulardan karışık gelir; hangi kuralın gerektiğini de sen bulursun — sınavda olduğu gibi."
     )
   );
-  // And the half nobody was told. `startMixedTest` pools every live
-  // topic and `orderForPractice` draws unseen items first — both right —
-  // but the consequence is that someone who has read six of sixty
-  // lessons gets a test that is mostly categories no lesson has taught
-  // them yet: 24 of 241 items belong to what they have read. The
-  // machinery downstream handles that correctly, turning a low score
-  // into instruction rather than restudy. What was missing is that the
-  // learner is never told, so a 3/10 on day two reads as a verdict on
-  // them instead of a description of the draw.
-  //
-  // Said in the voice the reader already uses for the pretest block,
-  // because it is the same argument: attempting before studying is the
-  // point, not a waste.
-  intro.appendChild(
+  surface.appendChild(
     el(
       "p",
-      "t-body",
-      "Bir kısmı henüz okumadığın derslerden gelecek. Bilmediğin bir soruyu " +
-        "denemek boşa değil: yanıldığın yer, hangi dersi açacağını söyler."
+      "t-quiet",
+      "Bir kısmı henüz okumadığın derslerden gelir. Yanıldığın yer, hangi dersi açacağını söyler."
     )
   );
-  surface.appendChild(intro);
 
   const row = el("div", "cluster cluster--spread");
   const label = el("span", "t-ui", "Soru sayısı");
@@ -237,11 +240,8 @@ function renderMixedTest({ primary = true } = {}) {
   row.appendChild(listboxHost);
   surface.appendChild(row);
 
-  // §7.2: three button levels, one filled per screen. When the mistake
-  // book has questions in it, it is the better mode — the practice
-  // research ranked it first — so it takes the filled button and this
-  // one steps down. Nothing about the mode changes; only which of the
-  // two the screen recommends.
+  // §7.2: one filled button per screen. When the mistake book has
+  // questions in it, it is the better mode and takes the fill.
   const start = el("button", primary ? "btn btn--primary" : "btn btn--secondary", "Teste başla");
   start.type = "button";
   start.addEventListener("click", () => {
@@ -250,9 +250,6 @@ function renderMixedTest({ primary = true } = {}) {
   });
   surface.appendChild(start);
 
-  // The Test tab re-renders on every arrival, so an unremembered choice
-  // is re-made on every arrival — ten or more times across a week of
-  // revision, by someone who wants twenty questions every time.
   const options = [
     { value: "5", label: "5" },
     { value: "10", label: "10" },
@@ -348,6 +345,10 @@ function renderTopicRow(topic) {
   if (interactive) {
     row.type = "button";
   }
+
+  const lead = el("span", "row__lead");
+  lead.appendChild(monogram(topic.id, topic.title));
+  row.appendChild(lead);
 
   const main = el("span", "row__main");
   const title = el("span", "row__title t-en", topic.title);
@@ -496,6 +497,13 @@ function initNav() {
 }
 
 function selectTab(view) {
+  // The capsule's indicator slides to the selected item on a spring:
+  // its position is one custom property the stylesheet transitions.
+  const index = navItems.findIndex((item) => item.dataset.view === view);
+  const nav = document.getElementById("bottom-nav");
+  nav.style.setProperty("--nav-count", String(navItems.length));
+  nav.style.setProperty("--nav-index", String(Math.max(index, 0)));
+  nav.querySelector(".nav__indicator")?.toggleAttribute("hidden", index < 0);
   for (const item of navItems) {
     const selected = item.dataset.view === view;
     // The filled variant, not a recoloured outline: fill changes visual
@@ -521,13 +529,10 @@ function selectTab(view) {
  */
 function refreshProfileTrigger() {
   const name = getProfileName().trim();
-  if (name) {
-    profileFace.replaceChildren(document.createTextNode(name[0].toLocaleUpperCase("tr")));
-    profileTrigger.setAttribute("aria-label", `Profilini aç (${name})`);
-  } else {
-    profileFace.replaceChildren(icon("user", { size: 22 }));
-    profileTrigger.setAttribute("aria-label", "Profilini aç");
-  }
+  const face = avatar(name);
+  face.id = "profile-trigger-face";
+  profileTrigger.replaceChildren(face);
+  profileTrigger.setAttribute("aria-label", name ? `Profilini aç (${name})` : "Profilini aç");
 }
 
 /**
@@ -602,10 +607,15 @@ async function applyRoute() {
       lead: { label: VIEW_TITLES[lastTab], onClick: () => { window.location.hash = lastTab; } },
       trail: null,
     });
+  } else if (view === "hosgeldin") {
+    bar.set({ title: VIEW_TITLES.hosgeldin, lead: null, trail: null });
   } else {
     lastTab = view;
     bar.set({ title: VIEW_TITLES[view], lead: null, trail: profileTrigger });
   }
+  // The first run is a screen of its own: no bar, no tab bar, nothing to
+  // navigate away to until it is answered or skipped.
+  document.body.classList.toggle("is-onboarding", view === "hosgeldin");
 
   withTransition(() => {
     selectTab(view);
@@ -654,6 +664,12 @@ async function applyRoute() {
 
   if (view === "profil") {
     await initProfileTab();
+  } else if (view === "hosgeldin") {
+    renderOnboarding(document.getElementById("onboard-container"), {
+      onDone: () => {
+        window.location.hash = "egitim";
+      },
+    });
   } else {
     await renderTestTab();
   }
@@ -681,6 +697,17 @@ function init() {
   });
 
   registerServiceWorker();
+
+  // The first run, once. Anyone with history predates the flow and is
+  // not asked; anyone arriving on a deep link is not interrupted — the
+  // link is what they came for, and the flow waits for a plain open.
+  if (!isOnboarded()) {
+    if (getHistory().length > 0 || Object.keys(getAllLessonProgress()).length > 0) {
+      setOnboarded(true);
+    } else if (parseRoute().param === null && parseRoute().view === DEFAULT_VIEW && !window.location.hash.replace(/^#/, "")) {
+      window.location.replace("#hosgeldin");
+    }
+  }
   return applyRoute();
 }
 

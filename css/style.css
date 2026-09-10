@@ -1,23 +1,28 @@
 /* ==========================================================================
    English Prep — the stylesheet.
 
-   UI 2 (2026-09-10, docs/ui2-plan.md): rewritten from a blank file against
-   three contracts. Every screen is a SCREEN — bar, body, foot. A body is
-   SECTIONS, and a section is a head and one of four containers: list,
-   card, prose, band. Everything drawn is one of fourteen COMPONENTS, each
-   with a spec in docs/design-system.md.
+   UI 3 (2026-09-10, docs/ui3-plan.md): light, depth and motion on the
+   structure UI 2 built. Every screen is still a SCREEN — bar, body, foot
+   — a body is still SECTIONS of one container each, and everything drawn
+   is one of twenty COMPONENTS with a spec in docs/design-system.md. What
+   changed is the register: planes with edges and shadows, an ambient
+   ground, an accent that is a gradient with a glow, a hue per topic,
+   translucent chrome that floats over the content, and motion on
+   derived springs.
 
    Layers, in cascade order:
      tokens      primitive → semantic → component; both themes
      reset       the shell's ground rules
-     layout      the screen anatomy, sections, the four containers, stacks
-     components  the fourteen
-     screens     what only one screen needs (the reader's blocks, the quiz)
+     layout      the screen anatomy, the overlay chrome, sections, containers
+     components  the twenty
+     screens     what only one screen needs (the reader, the quiz, onboarding)
      utilities   type roles, motion, a11y, forced colours
 
    Colour values are solved and measured by tools/palette.mjs; they are
    copied here, never edited here. Every rule that sets text has a row in
-   PAIRS there.
+   PAIRS there. The spring easings are the output of
+   scratchpad/ui3/spring.mjs (a damped spring sampled into linear()), so
+   they are regenerated, not tuned.
    ========================================================================== */
 
 @layer tokens, reset, layout, components, screens, utilities;
@@ -27,38 +32,50 @@
    ========================================================================== */
 
 @layer tokens {
-  /* -- Primitive: the measured palette, dark. See tools/palette.mjs for
-        every value's derivation; docs/design-system.md §1 for the reasons.
-        Named by role already — surface-0 is "the page" in any theme — so
-        the semantic layer below is thin on purpose. -- */
   :root {
     color-scheme: dark;
 
+    /* -- Primitive: the measured palette, dark. -- */
     --c-surface-0: #0c1117;
     --c-surface-1: #181d23;
     --c-surface-2: #262b31;
+    --c-surface-up: #181d23; /* the card plane; lighter than the page in both themes */
 
     --c-text-1: #e9ecef; /* APCA Lc 91 against surface-2 */
     --c-text-2: #d0d4da; /* Lc 76 — the one-line tier at 600; quiet sentences at 18/400 */
     --c-text-3: #b5bac2; /* Lc 61 — no text rule uses it; prefers-contrast only */
 
     --c-accent: #f1af5d;
+    --c-accent-2: #f69c51; /* the gradient's second stop; label Lc 61 ≥ 60 at 18/600 */
     --c-on-accent: #1a0f03;
     --c-accent-text: #f5ce95;
     --c-focus: #f4dab2;
 
     --c-ok: #7ccd8e;
     --c-no: #e97871;
-    --c-ok-tint: rgb(124 205 142 / 0.12);
-    --c-no-tint: rgb(233 120 113 / 0.12);
-    --c-accent-tint: rgb(241 175 93 / 0.14);
+    --c-ok-tint: rgb(124 205 142 / 0.14);
+    --c-no-tint: rgb(233 120 113 / 0.14);
+    --c-accent-tint: rgb(241 175 93 / 0.16);
 
     --c-hairline: #2f3339; /* separates; exempt from 1.4.11 */
     --c-edge: #71767d; /* a control's boundary; 3:1 on every surface */
 
-    /* -- Space. 4pt base, dense at the bottom and coarse at the top. The
-          reader's rhythm is 4 / 24 / 48: three steps that are geometric,
-          not arithmetic. -- */
+    /* -- Light: what makes a plane a plane. -- */
+    --line: rgb(255 255 255 / 0.07); /* a card's edge */
+    --line-strong: rgb(255 255 255 / 0.12);
+    --lit: rgb(255 255 255 / 0.06); /* the top edge catching light */
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 0.24), 0 10px 28px -10px rgb(0 0 0 / 0.5);
+    --shadow-2: 0 2px 4px rgb(0 0 0 / 0.28), 0 18px 44px -12px rgb(0 0 0 / 0.6);
+    --glow: rgb(241 175 93 / 0.38);
+    --shadow-glow: 0 8px 26px -6px var(--glow);
+    --wash-1: rgb(241 175 93 / 0.2); /* the ambient washes behind the page */
+    --wash-2: rgb(120 110 235 / 0.22);
+    --glass: var(--c-surface-0); /* solid, when there is no blur */
+    --glass-blur: rgb(12 17 23 / 0.82); /* ≥ 0.8 always: text behind it is a tint, never a word */
+    --glass-raised: rgb(24 29 35 / 0.86);
+    --orb: radial-gradient(closest-side, rgb(241 175 93 / 0.55), rgb(241 175 93 / 0));
+
+    /* -- Space. 4pt base. -- */
     --s-1: 2px;
     --s-2: 4px;
     --s-3: 8px;
@@ -73,14 +90,11 @@
     /* -- Radius. 0 for anything full-bleed. -- */
     --r-1: 8px;
     --r-2: 12px;
-    --r-3: 16px;
+    --r-3: 20px; /* a card */
+    --r-4: 28px; /* the hero */
     --r-pill: 999px;
 
-    /* -- Type. Five steps, every adjacent pair ≥ 1.2 apart: 36 · 28 · 22 ·
-          18 · 15. Body is 18 because that is the first size at which the
-          second grey at weight 400 clears its ground; 15 is the floor and
-          is only ever set at 600, for one line. Serif is English, sans is
-          Turkish and the interface. -- */
+    /* -- Type. 36 · 28 · 22 · 18 · 15. -- */
     --f-serif: "Source Serif 4", "Source Serif 4 Fallback", "Times New Roman", Georgia, serif;
     --f-sans: "Source Sans 3", "Source Sans 3 Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -95,16 +109,24 @@
     --t-meta: 15px;
     --t-meta-lh: 20px;
 
-    /* -- Motion. Three things animate in this app and no fourth: a route
-          change crossfades, an arriving screen enters, a progress fill
-          eases. Exits are shorter than entrances; nothing exceeds 400ms. -- */
+    /* -- Motion. Durations for things that appear; springs for things
+          that move. Nothing over 800ms; exits shorter than entrances. -- */
     --d-micro: 120ms;
-    --d-enter: 220ms;
+    --d-enter: 260ms;
     --d-exit: 170ms;
-    --d-view: 280ms;
+    --d-view: 300ms;
     --ease-out: cubic-bezier(0, 0, 0, 1);
     --ease-in: cubic-bezier(0.3, 0, 1, 1);
     --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    /* gentle: k=320 c=32 — a screen arriving, a press, a fill */
+    --spring-gentle: linear(0, 0.011 2%, 0.049 4.5%, 0.614 25%, 0.794 34.5%, 0.94 49.5%, 1.002);
+    --d-spring-gentle: 432ms;
+    /* bouncy: k=260 c=18 — the tab indicator, a selected chip */
+    --spring-bouncy: linear(0, 0.007 1%, 0.028 2%, 0.06 3%, 0.124 4.5%, 0.233 6.5%, 0.668 13.5%, 0.802 16%, 0.892 18%, 0.967 20%, 1.037 22.5%, 1.084 25%, 1.114 28%, 1.116 33%, 0.988 56.5%, 1.001);
+    --d-spring-bouncy: 768ms;
+    /* pop: k=500 c=22 — a correct answer, a ring reaching its value */
+    --spring-pop: linear(0, 0.002 0.5%, 0.009 1%, 0.036 2%, 0.077 3%, 0.129 4%, 0.224 5.5%, 0.709 12%, 0.841 14%, 0.926 15.5%, 0.998 17%, 1.056 18.5%, 1.102 20%, 1.143 22%, 1.164 24%, 1.168 26.5%, 0.992 44%, 0.999);
+    --d-spring-pop: 628ms;
 
     /* -- Layout. One reading column, one keyline pair, one pane. -- */
     --w-page: 640px;
@@ -114,19 +136,20 @@
     --w-frame: var(--w-page);
     --gutter: var(--s-5);
 
-    /* -- Semantic. What a component asks for. A theme is a rebinding of
-          the primitives above; a component never names a primitive. -- */
+    /* -- Semantic. What a component asks for. -- */
     --page: var(--c-surface-0);
-    --card: var(--c-surface-1);
+    --card: var(--c-surface-up);
     --raised: var(--c-surface-2);
     --ink: var(--c-text-1);
     --ink-2: var(--c-text-2);
     --hairline: var(--c-hairline);
     --edge: var(--c-edge);
     --accent: var(--c-accent);
+    --accent-2: var(--c-accent-2);
     --accent-ink: var(--c-on-accent);
     --accent-text: var(--c-accent-text);
     --accent-tint: var(--c-accent-tint);
+    --grad-accent: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
     --focus: var(--c-focus);
     --ok: var(--c-ok);
     --no: var(--c-no);
@@ -134,17 +157,18 @@
     --no-tint: var(--c-no-tint);
 
     /* -- Component. The sizes the anatomy is built from. -- */
-    --target: 48px; /* WCAG 2.5.5 AAA, Material and Apple at once */
-    --bar-h: 56px; /* the top bar, and the tab bar's row */
+    --target: 48px;
+    --bar-h: 56px;
+    --nav-h: 64px; /* the floating capsule */
+    --nav-inset: var(--s-4); /* its distance from the bottom edge */
     --btn-h: var(--target);
     --btn-h-primary: 52px;
     --row-min: 56px;
     --foot-pad: var(--s-3);
+    --ring-size: 72px;
+    --ring-stroke: 7px;
   }
 
-  /* The frame widens for exactly the screens that have a second column,
-     once the window can hold both plus a gutter either side. The height
-     guard keeps a short landscape tablet on the phone layout. */
   @media (min-width: 1080px) and (min-height: 600px) {
     body:has(.view:not([hidden]) .split:not([hidden])),
     body:has(.page.split) {
@@ -152,17 +176,18 @@
     }
   }
 
-  /* OKLCH is the authoring space; the hexes above are what ship. Identical
-     values, so the palette stays re-derivable. */
+  /* OKLCH is the authoring space; the hexes above are what ship. */
   @supports (color: oklch(0.5 0.1 75)) {
     :root {
       --c-surface-0: oklch(0.175 0.014 255);
       --c-surface-1: oklch(0.228 0.014 255);
       --c-surface-2: oklch(0.286 0.014 255);
+      --c-surface-up: oklch(0.228 0.014 255);
       --c-text-1: oklch(0.941 0.006 255);
       --c-text-2: oklch(0.869 0.01 255);
       --c-text-3: oklch(0.788 0.012 255);
       --c-accent: oklch(0.8 0.125 70);
+      --c-accent-2: oklch(0.77 0.14 58);
       --c-on-accent: oklch(0.18 0.03 70);
       --c-accent-text: oklch(0.871 0.085 76);
       --c-focus: oklch(0.9 0.06 78);
@@ -173,9 +198,7 @@
     }
   }
 
-  /* -- The light theme: paper, not a white screen. Cream at hue 85, two
-        lightness steps below a cool white, with a warm dark ink measured
-        to Lc 85 against the darkest cream and 88–90 where prose sits.
+  /* -- The light theme: cream paper with a warm white plane above it.
         Written twice because there is no build step: the media query
         carries the phone's preference and yields to an explicit dark
         choice; the attribute carries a choice and beats a light phone. -- */
@@ -184,10 +207,12 @@
       --c-surface-0: #f6f1e7;
       --c-surface-1: #eee8dd;
       --c-surface-2: #e5dfd3;
+      --c-surface-up: #fffcf7;
       --c-text-1: #211b14;
       --c-text-2: #413a31;
       --c-text-3: #685f54;
       --c-accent: #a05801;
+      --c-accent-2: #b44200;
       --c-accent-tint: rgb(160 88 1 / 0.14);
       --c-accent-text: #623200;
       --c-on-accent: #f6f1e7;
@@ -198,6 +223,19 @@
       --c-focus: #825023;
       --c-hairline: #d6d1c8;
       --c-edge: #76736b;
+      --line: rgb(50 30 5 / 0.08);
+      --line-strong: rgb(50 30 5 / 0.14);
+      --lit: rgb(255 255 255 / 0.7);
+      --shadow-1: 0 1px 2px rgb(60 40 10 / 0.06), 0 10px 28px -10px rgb(60 40 10 / 0.18);
+      --shadow-2: 0 2px 4px rgb(60 40 10 / 0.08), 0 18px 44px -12px rgb(60 40 10 / 0.24);
+      --glow: rgb(160 88 1 / 0.3);
+      --wash-1: rgb(200 120 20 / 0.16);
+      --wash-2: rgb(210 110 140 / 0.14);
+      --glass: #f6f1e7;
+      --glass-blur: rgb(246 241 231 / 0.84);
+      --glass-raised: rgb(255 252 247 / 0.88);
+      --orb: radial-gradient(closest-side, rgb(240 150 40 / 0.4), rgb(240 150 40 / 0));
+      --raised: var(--c-surface-1);
       color-scheme: light;
     }
   }
@@ -206,10 +244,12 @@
     --c-surface-0: #f6f1e7;
     --c-surface-1: #eee8dd;
     --c-surface-2: #e5dfd3;
+    --c-surface-up: #fffcf7;
     --c-text-1: #211b14;
     --c-text-2: #413a31;
     --c-text-3: #685f54;
     --c-accent: #a05801;
+    --c-accent-2: #b44200;
     --c-accent-tint: rgb(160 88 1 / 0.14);
     --c-accent-text: #623200;
     --c-on-accent: #f6f1e7;
@@ -220,18 +260,30 @@
     --c-focus: #825023;
     --c-hairline: #d6d1c8;
     --c-edge: #76736b;
+    --line: rgb(50 30 5 / 0.08);
+    --line-strong: rgb(50 30 5 / 0.14);
+    --lit: rgb(255 255 255 / 0.7);
+    --shadow-1: 0 1px 2px rgb(60 40 10 / 0.06), 0 10px 28px -10px rgb(60 40 10 / 0.18);
+    --shadow-2: 0 2px 4px rgb(60 40 10 / 0.08), 0 18px 44px -12px rgb(60 40 10 / 0.24);
+    --glow: rgb(160 88 1 / 0.3);
+    --wash-1: rgb(200 120 20 / 0.16);
+    --wash-2: rgb(210 110 140 / 0.14);
+    --glass: #f6f1e7;
+    --glass-blur: rgb(246 241 231 / 0.84);
+    --glass-raised: rgb(255 252 247 / 0.88);
+    --orb: radial-gradient(closest-side, rgb(240 150 40 / 0.4), rgb(240 150 40 / 0));
+    --raised: var(--c-surface-1);
     color-scheme: light;
   }
 
-  /* More contrast, asked for: the second grey becomes the first and the
-     hairlines become visible. Per theme, in plain values — a chained
-     var() here collapsed the hairline into the text colour once. */
+  /* More contrast, asked for. */
   @media (prefers-contrast: more) {
     :root {
       --c-text-2: var(--c-text-1);
       --c-text-3: #d0d4da;
       --c-hairline: #5b6068;
       --c-edge: #a3a8af;
+      --line: rgb(255 255 255 / 0.2);
     }
   }
 
@@ -241,6 +293,7 @@
       --c-text-3: #413a31;
       --c-hairline: #b8b3aa;
       --c-edge: #5b564f;
+      --line: rgb(50 30 5 / 0.2);
     }
   }
 
@@ -250,6 +303,7 @@
       --c-text-3: #413a31;
       --c-hairline: #b8b3aa;
       --c-edge: #5b564f;
+      --line: rgb(50 30 5 / 0.2);
     }
   }
 }
@@ -265,13 +319,11 @@
     box-sizing: border-box;
   }
 
-  /* The native [hidden] rule loses to any author display rule. Force it. */
   [hidden] {
     display: none !important;
   }
 
   html {
-    /* 100%, not none: none would also block the person's own text scaling. */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
@@ -279,7 +331,7 @@
   html,
   body {
     height: 100vh;
-    height: 100svh; /* not dvh: it reflows as the toolbar animates */
+    height: 100svh;
     margin: 0;
     overflow: hidden;
   }
@@ -325,7 +377,10 @@
     flex: none;
   }
 
-  /* Reduced motion is written as an opt-in below; this catches the rest. */
+  canvas {
+    display: block;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -339,61 +394,91 @@
 }
 
 /* ==========================================================================
-   Layout — the screen, its sections, the four containers
+   Layout — the screen, its chrome, its sections, the four containers
    ========================================================================== */
 
 @layer layout {
-  /* -- The screen. A fixed-height column: bar, body, foot. Only the body
-        scrolls, so the frame never grows and the foot never moves under a
-        thumb. The bars are opaque and take their height in the column;
-        nothing passes under them (docs/ui2-plan.md §3.1). -- */
+  /* -- The screen. A fixed-height column whose one child that sizes is
+        the scroll region; the bar and the foot float over it as glass
+        and the region pads itself by exactly their height, so the first
+        and last lines always clear the chrome and content scrolls under
+        it in between (docs/ui3-plan.md §2). -- */
   body {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
-    /* The top inset belongs to the screen, so the bar sits below a notch. */
-    padding-top: env(safe-area-inset-top, 0px);
+    /* the foot's height, by which the region pads its end: the capsule
+       on a root, the action bar where one shows, little in the reader */
+    --foot-space: calc(var(--nav-h) + var(--nav-inset) + env(safe-area-inset-bottom, 0px) + var(--s-6));
   }
 
-  .bar,
-  .nav,
-  .shell__bar {
-    flex: none;
-    position: relative;
-    z-index: 10;
-    background: var(--page);
+  body:has(.shell__bar:not([hidden])) {
+    --foot-space: calc(var(--btn-h-primary) + 2 * var(--foot-pad) + env(safe-area-inset-bottom, 0px) + var(--s-6));
+  }
+
+  body.is-reading:not(:has(.shell__bar:not([hidden]))),
+  body:not(:has(.nav)):not(:has(.shell__bar:not([hidden]))) {
+    --foot-space: calc(var(--s-9) + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* The ambient ground: two washes on a fixed layer behind everything.
+     They move nothing and cost one paint; the glass above blurs them. */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(70% 45% at 8% -5%, var(--wash-1), transparent 70%),
+      radial-gradient(60% 40% at 105% 105%, var(--wash-2), transparent 70%);
   }
 
   .shell__scroll {
     flex: 1 1 auto;
     overflow-y: auto;
     overflow-x: hidden;
-    overscroll-behavior: contain; /* no pull-to-refresh mid-question */
+    overscroll-behavior: contain;
     scrollbar-width: none;
-    /* 2.4.11: a focused control scrolls clear of the foot, not under it. */
-    scroll-padding-block: var(--s-5);
+    padding-top: calc(var(--bar-h) + env(safe-area-inset-top, 0px));
+    padding-bottom: var(--foot-space);
+    scroll-padding-block: calc(var(--bar-h) + var(--s-5)) calc(var(--foot-space) + var(--s-3));
   }
 
   .shell__scroll::-webkit-scrollbar {
     display: none;
   }
 
-  /* -- The bar. leading · title · trailing, on the page's keylines. The
-        title is the screen's name, centred and clipped before it wraps;
-        the leading slot is a back action or nothing; the trailing slot is
-        one control or one readout. A progress line can run along its
-        bottom edge — the reader's position, the quiz's count. -- */
+  /* -- Glass: the chrome's material. Solid where there is no blur; ≥ 82%
+        opaque before the blur where there is, so nothing that passes under
+        it is ever legible through it. -- */
+  .glass {
+    background: var(--glass);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: var(--glass-blur);
+      -webkit-backdrop-filter: blur(18px) saturate(1.5);
+      backdrop-filter: blur(18px) saturate(1.5);
+    }
+  }
+
+  /* -- The bar. leading · title · trailing, floating over the top of the
+        region. -- */
   .bar {
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: 10;
+    padding-top: env(safe-area-inset-top, 0px);
     padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
       max(var(--gutter), env(safe-area-inset-right, 0px));
-    box-shadow: inset 0 -1px 0 var(--hairline);
+    box-shadow: inset 0 -1px 0 var(--line);
   }
 
   .bar__inner {
     display: grid;
-    /* The sides never shrink below their content and split what is left
-       equally, so the title sits centred when they are alike and never
-       under a long back label when they are not; the title is the track
-       that gives, clipping with an ellipsis. */
     grid-template-columns: minmax(max-content, 1fr) minmax(0, max-content) minmax(max-content, 1fr);
     align-items: center;
     gap: var(--s-3);
@@ -416,6 +501,7 @@
     font-size: var(--t-body);
     line-height: var(--t-body-lh);
     font-weight: 600;
+    letter-spacing: -0.01em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -430,8 +516,6 @@
     white-space: nowrap;
   }
 
-  /* The bar's own back button: a text button with its arrow, on the left
-     keyline, and no min-width so a short label does not push the title. */
   .bar__lead > .btn {
     min-width: 0;
     padding-inline: 0 var(--s-3);
@@ -447,8 +531,8 @@
 
   .bar__progress > .progress__fill {
     height: 100%;
-    background: var(--accent);
-    transition: width var(--d-view) var(--ease-standard);
+    background: var(--grad-accent);
+    transition: width var(--d-spring-gentle) var(--spring-gentle);
   }
 
   /* -- The body. One page column on the keylines, sections stacked. -- */
@@ -456,24 +540,42 @@
     width: 100%;
     max-width: var(--w-frame);
     margin: 0 auto;
-    padding-block: var(--s-6) var(--s-8);
+    padding-block: var(--s-6) var(--s-6);
     padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
       max(var(--gutter), env(safe-area-inset-right, 0px));
   }
 
-  /* -- The foot: the tab bar on a root, the action bar where the screen
-        has a forward action, nothing in the reader. Both opaque, both
-        full width, both a hairline above. -- */
+  /* -- The foot. The tab bar is a floating capsule; the action bar is a
+        glass strip on the bottom edge; the reader has neither. -- */
   .nav {
+    position: absolute;
+    bottom: calc(var(--nav-inset) + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    z-index: 10;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: center;
-    gap: var(--s-3);
-    padding: var(--s-2) var(--gutter) calc(var(--s-2) + env(safe-area-inset-bottom, 0px));
-    box-shadow: inset 0 1px 0 var(--hairline);
+    align-items: stretch;
+    width: min(calc(100% - 2 * var(--gutter)), 420px);
+    height: var(--nav-h);
+    padding: var(--s-2);
+    border-radius: var(--r-pill);
+    box-shadow: inset 0 0 0 1px var(--line-strong), inset 0 1px 0 var(--lit), var(--shadow-2);
+    background: var(--glass);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav {
+      background: var(--glass-raised);
+      -webkit-backdrop-filter: blur(20px) saturate(1.5);
+      backdrop-filter: blur(20px) saturate(1.5);
+    }
   }
 
   .shell__bar {
-    box-shadow: inset 0 1px 0 var(--hairline);
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 10;
+    box-shadow: inset 0 1px 0 var(--line);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
@@ -483,16 +585,12 @@
     gap: var(--s-3);
     width: 100%;
     max-width: var(--w-frame);
-    /* the tallest thing it can hold plus its padding, so an empty bar and
-       a full one are the same height and answering never moves a button */
     min-height: calc(var(--btn-h-primary) + 2 * var(--foot-pad));
     margin: 0 auto;
     padding: var(--foot-pad) max(var(--gutter), env(safe-area-inset-left, 0px))
       var(--foot-pad) max(var(--gutter), env(safe-area-inset-right, 0px));
   }
 
-  /* Two actions in a foot are equal halves; a label never wraps — if a
-     pair cannot fit at 320 the foot overflows and the sweep sees it. */
   .shell__bar-inner > .btn {
     flex: 1 1 0;
     min-width: 0;
@@ -505,9 +603,6 @@
     text-align: center;
   }
 
-  /* On a wide results screen the retreat takes the pane's width and the
-     advance the reading column, so the foot lands on the frame's four
-     keylines rather than beside them. */
   @media (min-width: 1080px) and (min-height: 600px) {
     body:has(.page.split:not(.split--main-first)) .shell__bar-inner {
       column-gap: var(--s-8);
@@ -519,18 +614,16 @@
     }
   }
 
-  /* -- Sections. A body is sections; a section is a head and one container.
-        48 above a head, 8 below; 32 between unlabelled sections. -- */
+  /* -- Sections. -- */
   .stack {
     display: grid;
     gap: var(--s-5);
   }
 
-  .stack--snug { gap: var(--s-2); } /* the lines of one object */
-  .stack--tight { gap: var(--s-3); } /* a head and its container */
-  .stack--loose { gap: var(--s-7); } /* section to section */
+  .stack--snug { gap: var(--s-2); }
+  .stack--tight { gap: var(--s-3); }
+  .stack--loose { gap: var(--s-7); }
 
-  /* Homogeneous items inside one container: 24 apart, a hairline between. */
   .items {
     display: grid;
     gap: var(--s-6);
@@ -552,8 +645,6 @@
     justify-content: space-between;
   }
 
-  /* A sentence with its one control beside it (the backup nudge). The
-     text shrinks and wraps; the control keeps its square. */
   .note {
     display: flex;
     align-items: center;
@@ -565,15 +656,21 @@
     min-width: 0;
   }
 
-  /* Full-bleed: out to the screen's edge, on a phone. */
   .bleed {
     margin-inline: calc(-1 * var(--gutter));
     padding-inline: var(--gutter);
   }
 
-  /* -- The pane. From 1080×600 a screen with a second column puts it
-        beside the reading column; below that there is no rule at all. The
-        reading column keeps the measure; source order is never moved. -- */
+  /* A grid of tiles: as many columns as 150px allows, so two on a phone
+     and three or four on a tablet. */
+  .tiles {
+    display: grid;
+    /* 128 + 12 + 128 = 268 fits the 288 a 320px phone leaves inside its
+       gutters, so two abreast holds all the way down. */
+    grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+    gap: var(--s-4);
+  }
+
   @media (min-width: 1080px) and (min-height: 600px) {
     .split {
       grid-template-columns: var(--w-aside) minmax(0, var(--w-page));
@@ -588,28 +685,249 @@
 }
 
 /* ==========================================================================
-   Components — fourteen, each with a spec, and no fifteenth without one
+   Components — twenty, each with a spec, and no twenty-first without one
    ========================================================================== */
 
 @layer components {
-  /* -- Card. The one card level; heterogeneous content with an action.
-        If something inside a card needs its own frame, the card is wrong.
-        A light top edge reads as elevation, not as a border. -- */
+  /* -- Card. A lighter plane with an edge, a lit top and a soft shadow.
+        The one card level: if something inside a card needs its own
+        frame, the card is wrong. -- */
   .surface {
+    position: relative;
     background: var(--card);
     border-radius: var(--r-3);
     padding: var(--s-5);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.045);
+    box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 var(--lit), var(--shadow-1);
   }
 
-  /* A control whose fill is the card's colour steps up a level on a card. */
   .surface .btn--secondary,
   .surface .listbox__trigger {
     background: var(--raised);
   }
 
-  /* -- Row. Homogeneous, scannable; the whole row is the target. Fixed
-        lead and trail slots keep every row's text on the same keylines. -- */
+  /* -- Hero. The one card that glows: the home's greeting, the quiz's
+        offer, the profile's identity. An orb of the accent in its corner,
+        the accent's shadow under it; text stays on the plane, never on
+        the gradient. -- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: var(--s-5);
+    padding: var(--s-6) var(--s-5);
+    border-radius: var(--r-4);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line-strong), inset 0 1px 0 var(--lit), var(--shadow-2), var(--shadow-glow);
+  }
+
+  .hero__orb {
+    position: absolute;
+    top: -90px;
+    right: -70px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: var(--orb);
+    pointer-events: none;
+  }
+
+  .hero__orb--cool {
+    top: auto;
+    right: auto;
+    bottom: -120px;
+    left: -60px;
+    background: radial-gradient(closest-side, var(--wash-2), transparent);
+  }
+
+  .hero > :not(.hero__orb) {
+    position: relative;
+  }
+
+  .hero__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+
+  .hero__figure {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+  }
+
+  /* -- Tile. A card that is one thing to tap: a monogram, a name, a
+        bar, a count. Whole tile is the target. -- */
+  .tile {
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+    width: 100%;
+    min-height: 108px;
+    padding: var(--s-4);
+    border-radius: var(--r-3);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 var(--lit), var(--shadow-1);
+    text-align: left;
+    color: inherit;
+    text-decoration: none;
+    transition: transform var(--d-spring-gentle) var(--spring-gentle), box-shadow var(--d-micro) var(--ease-standard);
+  }
+
+  .tile__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+  }
+
+  .tile__title {
+    font-size: var(--t-body);
+    line-height: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .tile__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-2);
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  .tile--soon {
+    opacity: 0.72;
+  }
+
+  @media (hover: hover) {
+    .tile:hover {
+      box-shadow: inset 0 0 0 1px var(--line-strong), inset 0 1px 0 var(--lit), var(--shadow-2);
+    }
+  }
+
+  .tile:active {
+    transform: scale(0.97);
+  }
+
+  /* -- Monogram. A topic's colour: a gradient tile at --hue with its
+        initials in white, measured ≥ Lc 73 on every stop. Decorative —
+        the name beside it is what a reader gets. -- */
+  .monogram {
+    --hue: 60;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--r-2);
+    background: linear-gradient(135deg, oklch(0.6 0.15 var(--hue)), oklch(0.5 0.16 calc(var(--hue) + 30)));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25), 0 4px 12px -4px oklch(0.5 0.16 var(--hue) / 0.6);
+    color: #fff;
+    font-family: var(--f-sans);
+    font-size: var(--t-meta);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .monogram--lg {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--r-3);
+    font-size: var(--t-body);
+  }
+
+  /* -- Avatar. The learner: a gradient circle with their initial, or the
+        figure until they have one. -- */
+  .avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--grad-accent);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 4px 12px -4px var(--glow);
+    color: var(--accent-ink);
+    font-size: var(--t-body);
+    line-height: 1;
+    font-weight: 600;
+  }
+
+  .avatar--lg {
+    width: 72px;
+    height: 72px;
+    font-size: var(--t-title);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), var(--shadow-glow);
+  }
+
+  /* -- Ring. A fraction as an arc: the day's goal, a topic's accuracy,
+        the score. The arc is a stroked circle whose dash offset is the
+        value; the number sits in the middle. -- */
+  .ring {
+    position: relative;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: var(--ring-size);
+    height: var(--ring-size);
+  }
+
+  .ring__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .ring__track {
+    fill: none;
+    stroke: var(--raised);
+    stroke-width: var(--ring-stroke);
+  }
+
+  .ring__fill {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: var(--ring-stroke);
+    stroke-linecap: round;
+    transition: stroke-dashoffset var(--d-spring-pop) var(--spring-pop);
+  }
+
+  .ring--ok .ring__fill { stroke: var(--ok); }
+  .ring--no .ring__fill { stroke: var(--no); }
+
+  .ring__value {
+    position: relative;
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ring--lg {
+    --ring-size: 148px;
+    --ring-stroke: 12px;
+  }
+
+  .ring--sm {
+    --ring-size: 36px;
+    --ring-stroke: 5px;
+  }
+
+  .ring--lg .ring__value {
+    font-size: var(--t-display);
+    line-height: var(--t-display-lh);
+  }
+
+  /* -- Row. Homogeneous, scannable; the whole row is the target. -- */
   .row {
     display: flex;
     align-items: center;
@@ -620,7 +938,8 @@
     text-align: left;
     color: inherit;
     text-decoration: none;
-    transition: background-color var(--d-micro) var(--ease-standard);
+    border-radius: var(--r-2);
+    transition: background-color var(--d-micro) var(--ease-standard), transform var(--d-spring-gentle) var(--spring-gentle);
   }
 
   .row + .row {
@@ -631,7 +950,7 @@
     flex: none;
     display: grid;
     place-items: center;
-    width: var(--s-6);
+    min-width: var(--s-6);
     font-weight: 600;
     color: var(--ink-2);
   }
@@ -649,8 +968,6 @@
     font-weight: 400;
   }
 
-  /* Two lines and a clamp: the sub is the row's only explanation where it
-     is a gloss, and one line cut it mid-word. */
   .row__sub {
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
@@ -674,19 +991,61 @@
   }
 
   @media (hover: hover) {
-    .row:hover {
-      background: var(--card);
+    button.row:hover,
+    a.row:hover {
+      background: var(--accent-tint);
     }
   }
 
-  /* A switch made of a Row: the state is a chip. */
+  button.row:active,
+  a.row:active {
+    transform: scale(0.985);
+  }
+
   .row[aria-checked="true"] .chip {
     background: var(--accent-tint);
     color: var(--accent-text);
   }
 
-  /* -- Button. Filled, tonal, text, icon; one filled per screen. No
-        outlined variant. Hover changes surface, pressed changes scale. -- */
+  /* -- Switch. A real toggle for a boolean setting: a track and a thumb,
+        the state in the fill and the thumb's side, never in hue alone. -- */
+  .switch {
+    flex: none;
+    position: relative;
+    width: 52px;
+    height: 32px;
+    border-radius: var(--r-pill);
+    background: var(--raised);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transition: background-color var(--d-micro) var(--ease-standard);
+  }
+
+  .switch__thumb {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ink-2);
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+    transition: transform var(--d-spring-bouncy) var(--spring-bouncy), background-color var(--d-micro) var(--ease-standard);
+  }
+
+  [aria-checked="true"] > .switch,
+  [aria-checked="true"] .row__trail > .switch {
+    background: var(--grad-accent);
+    box-shadow: inset 0 0 0 1px transparent, 0 2px 10px -2px var(--glow);
+  }
+
+  [aria-checked="true"] .switch__thumb {
+    transform: translateX(20px);
+    background: #fff;
+  }
+
+  /* -- Button. Filled, tonal, text, quiet, icon; one filled per screen.
+        The filled one is the gradient with the glow; every button is a
+        pill and compresses on a spring. -- */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -694,52 +1053,48 @@
     gap: var(--s-3);
     min-height: var(--btn-h);
     min-width: 88px;
-    padding: 0 var(--s-5);
-    border-radius: var(--r-2);
+    padding: 0 var(--s-6);
+    border-radius: var(--r-pill);
     font-size: var(--t-body);
     font-weight: 600;
+    letter-spacing: -0.005em;
     text-decoration: none;
     transition:
       background-color var(--d-micro) var(--ease-standard),
-      transform var(--d-micro) var(--ease-standard);
+      box-shadow var(--d-micro) var(--ease-standard),
+      transform var(--d-spring-gentle) var(--spring-gentle);
   }
 
-  /* Filled: the one forward action. Its label is measured against the
-     amber in both themes (PAIRS ".btn--primary label"). */
   .btn--primary {
-    background: var(--accent);
+    background: var(--grad-accent);
     color: var(--accent-ink);
     min-height: var(--btn-h-primary);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), var(--shadow-glow);
   }
 
-  /* Tonal: the card's colour, stepping up on a card. */
   .btn--secondary {
     background: var(--card);
     color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line-strong), inset 0 1px 0 var(--lit);
   }
 
-  /* Text, quiet: a way out, an exit, a dismiss. */
   .btn--quiet {
     min-width: 0;
     padding: 0 var(--s-3);
     color: var(--ink-2);
   }
 
-  /* Text, on the keyline, in the accent's text colour: the second thing a
-     card offers, with its chevron. */
   .btn--text {
     justify-self: start;
     padding-inline: 0;
     color: var(--accent-text);
   }
 
-  /* Icon: a fixed square that a flex row cannot squeeze. */
   .btn--icon {
     flex: none;
     width: var(--target);
     min-width: 0;
     padding: 0;
-    border-radius: var(--r-pill);
   }
 
   @media (hover: hover) {
@@ -749,11 +1104,9 @@
   }
 
   .btn:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
   }
 
-  /* Not disabled — an aria-disabled control stays focusable and can say
-     why — but quiet, and it does not press. */
   .btn[aria-disabled="true"] {
     color: var(--ink-2);
     cursor: default;
@@ -763,15 +1116,14 @@
     transform: none;
   }
 
-  /* -- Chip. Never interactive. English chips take the body size: the
-        serif ships at 400 only and 15/400 clears no ground. -- */
+  /* -- Chip. Never interactive. -- */
   .chip {
     display: inline-flex;
     align-items: center;
     gap: var(--s-2);
-    padding: var(--s-1) var(--s-3);
+    padding: var(--s-1) var(--s-4);
     border-radius: var(--r-pill);
-    background: var(--card);
+    background: var(--raised);
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
     font-weight: 600;
@@ -787,32 +1139,97 @@
   .chip--no { background: var(--no-tint); color: var(--no); }
   .chip--accent { background: var(--accent-tint); color: var(--accent-text); }
 
-  /* -- Field. The one border in the app: 1.4.11 wants a control's boundary
-        at 3:1 and no fill in the ramp can reach it. 18px, above the iOS
-        focus-zoom line. -- */
+  /* -- Choice. A chip that IS interactive: one of a few values (a count,
+        a theme, a goal), pressed state on a spring. A radiogroup of
+        buttons with aria-pressed. -- */
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  .choice {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    min-height: 44px;
+    min-width: 56px;
+    padding: 0 var(--s-5);
+    border-radius: var(--r-pill);
+    background: var(--raised);
+    box-shadow: inset 0 0 0 1px var(--line);
+    font-size: var(--t-body);
+    font-weight: 600;
+    color: var(--ink);
+    transition: background-color var(--d-micro) var(--ease-standard), transform var(--d-spring-bouncy) var(--spring-bouncy), box-shadow var(--d-micro) var(--ease-standard);
+  }
+
+  .choice[aria-pressed="true"] {
+    background: var(--grad-accent);
+    color: var(--accent-ink);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 4px 14px -4px var(--glow);
+  }
+
+  /* A pressed card's second line takes the label's ink too. */
+  .choice[aria-pressed="true"] .row__sub {
+    color: inherit;
+    opacity: 0.85;
+  }
+
+  .choice:active {
+    transform: scale(0.94);
+  }
+
+  /* A choice that is a card: a title and a line, for the goal step. */
+  .choice--card {
+    justify-content: flex-start;
+    width: 100%;
+    min-height: var(--row-min);
+    padding: var(--s-4) var(--s-5);
+    border-radius: var(--r-3);
+    text-align: left;
+  }
+
+  /* -- Field. -- */
   .field {
     width: 100%;
     min-height: var(--target);
-    padding: 0 var(--s-4);
+    padding: 0 var(--s-5);
     border: 1px solid var(--edge);
-    border-radius: var(--r-2);
-    background: transparent;
+    border-radius: var(--r-pill);
+    background: var(--card);
     font-size: var(--t-body);
+    transition: box-shadow var(--d-micro) var(--ease-standard);
   }
 
   .field::placeholder {
     color: var(--ink-2);
   }
 
+  .field:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-tint);
+    border-color: var(--accent);
+  }
+
   .field--multiline {
     padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-2);
     line-height: var(--t-body-lh);
     resize: vertical;
     font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     font-size: var(--t-body);
   }
 
-  /* -- Listbox. A select-only combobox; focus stays on the trigger. -- */
+  .field[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-block: 0;
+    line-height: var(--target);
+  }
+
+  /* -- Listbox. -- */
   .listbox {
     position: relative;
   }
@@ -824,15 +1241,21 @@
     gap: var(--s-3);
     min-height: var(--target);
     min-width: 6rem;
-    padding: 0 var(--s-4);
-    border-radius: var(--r-2);
+    padding: 0 var(--s-5);
+    border-radius: var(--r-pill);
     background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
     font-size: var(--t-body);
     font-weight: 600;
+    transition: transform var(--d-spring-gentle) var(--spring-gentle);
   }
 
   .listbox__trigger[aria-expanded="true"] {
     background: var(--raised);
+  }
+
+  .listbox__trigger:active {
+    transform: scale(0.96);
   }
 
   .listbox__menu {
@@ -844,8 +1267,9 @@
     max-height: 14rem;
     overflow-y: auto;
     padding: var(--s-2);
-    border-radius: var(--r-2);
+    border-radius: var(--r-3);
     background: var(--raised);
+    box-shadow: inset 0 0 0 1px var(--line-strong), var(--shadow-2);
   }
 
   .listbox__option {
@@ -853,7 +1277,7 @@
     align-items: center;
     min-height: 44px;
     padding: 0 var(--s-4);
-    border-radius: var(--r-1);
+    border-radius: var(--r-2);
     font-size: var(--t-body);
     font-weight: 600;
     white-space: nowrap;
@@ -870,19 +1294,26 @@
     outline-offset: -2px;
   }
 
-  /* -- Dialog. Native <dialog>: the top layer, the backdrop, focus
-        containment and inert-everything-else come from the platform. -- */
+  /* -- Dialog. -- */
   .dialog {
     width: min(22rem, calc(100vw - var(--s-8)));
     padding: var(--s-6);
     border: none;
-    border-radius: var(--r-3);
-    background: var(--raised);
+    border-radius: var(--r-4);
+    background: var(--card);
     color: var(--ink);
+    box-shadow: inset 0 0 0 1px var(--line-strong), var(--shadow-2);
   }
 
   .dialog::backdrop {
-    background: rgb(0 0 0 / 0.6);
+    background: rgb(0 0 0 / 0.55);
+  }
+
+  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .dialog::backdrop {
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
   }
 
   .dialog__actions {
@@ -896,16 +1327,32 @@
     min-width: 0;
   }
 
-  /* -- TabBar. Two destinations; a <nav> with aria-current, not a
-        tablist. Selected state is a filled icon, full-strength text and a
-        capsule — never hue alone. -- */
+  /* -- TabBar. Two destinations in a floating capsule; an indicator
+        slides under the selected one on a spring. Selected state is a
+        filled icon, full-strength text and the indicator — never hue
+        alone. -- */
+  .nav__indicator {
+    position: absolute;
+    top: var(--s-2);
+    bottom: var(--s-2);
+    left: var(--s-2);
+    width: calc((100% - 2 * var(--s-2)) / var(--nav-count, 2));
+    border-radius: var(--r-pill);
+    background: var(--accent-tint);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transform: translateX(calc(var(--nav-index, 0) * 100%));
+    transition: transform var(--d-spring-bouncy) var(--spring-bouncy);
+    pointer-events: none;
+  }
+
   .nav__item {
+    position: relative;
     flex: 1 1 0;
-    max-width: 200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: var(--s-1);
     min-height: var(--target);
     border-radius: var(--r-pill);
     font-size: var(--t-meta);
@@ -913,40 +1360,50 @@
     font-weight: 600;
     color: var(--ink-2);
     text-decoration: none;
-    transition: background-color var(--d-micro) var(--ease-standard);
+    transition: color var(--d-micro) var(--ease-standard), transform var(--d-spring-gentle) var(--spring-gentle);
   }
 
   .nav__item[aria-current] {
-    color: var(--ink);
-    background: var(--raised);
+    color: var(--accent-text);
   }
 
-  /* -- Progress. A position, not decoration. -- */
+  .nav__item:active {
+    transform: scale(0.94);
+  }
+
+  /* -- Progress. -- */
   .progress {
-    height: 3px;
+    height: 6px;
     border-radius: var(--r-pill);
-    background: var(--card);
+    background: var(--raised);
     overflow: hidden;
+  }
+
+  .progress--thin {
+    height: 3px;
   }
 
   .progress__fill {
     height: 100%;
-    background: var(--accent);
+    background: var(--grad-accent);
     border-radius: inherit;
-    transition: width var(--d-view) var(--ease-standard);
+    transition: width var(--d-spring-gentle) var(--spring-gentle);
   }
 
-  /* -- Feedback. Four redundant channels — glyph, word, tint, the answer —
-        so the verdict survives greyscale and forced colours. Appears; does
-        not perform. -- */
+  .progress--ok .progress__fill { background: var(--ok); }
+  .progress--no .progress__fill { background: var(--no); }
+
+  /* -- Feedback. Four redundant channels; arrives on a rise. -- */
   .feedback {
     display: grid;
     gap: var(--s-3);
-    padding-block: var(--s-5);
+    padding: var(--s-5);
+    border-radius: var(--r-3);
+    box-shadow: inset 0 0 0 1px var(--line);
   }
 
-  .feedback--ok { background: var(--ok-tint); }
-  .feedback--no { background: var(--no-tint); }
+  .feedback--ok { background: var(--ok-tint); box-shadow: inset 0 0 0 1px rgb(124 205 142 / 0.35); }
+  .feedback--no { background: var(--no-tint); box-shadow: inset 0 0 0 1px rgb(233 120 113 / 0.35); }
 
   .feedback__verdict {
     display: flex;
@@ -965,6 +1422,16 @@
     color: var(--ink);
   }
 
+  .feedback__answer {
+    font-weight: 600;
+  }
+
+  .feedback__answer > .t-en {
+    font-weight: 400;
+    font-size: var(--t-lead);
+    line-height: var(--t-lead-lh);
+  }
+
   .feedback__report {
     justify-self: start;
     margin-inline-start: calc(-1 * var(--s-3));
@@ -978,33 +1445,41 @@
     cursor: default;
   }
 
-  /* -- Option. An answer row: serif, whole row tappable, the number on
-        the first line. -- */
+  /* -- Option. An answer as a card: a letter badge, the English in serif,
+        the whole card the target; verdict as fill and edge and glyph. -- */
+  .options {
+    display: grid;
+    gap: var(--s-3);
+  }
+
   .option {
     --option-line: 24px;
-    --option-row: 52px;
+    --option-row: 56px;
 
     display: flex;
     align-items: flex-start;
     gap: var(--s-4);
     width: 100%;
     min-height: var(--option-row);
-    padding: calc((var(--option-row) - var(--option-line)) / 2) var(--gutter);
+    padding: calc((var(--option-row) - var(--option-line)) / 2) var(--s-4);
+    border-radius: var(--r-3);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 var(--lit), var(--shadow-1);
     text-align: left;
     font-family: var(--f-serif);
     font-size: var(--t-body);
     line-height: var(--option-line);
-    transition: background-color var(--d-micro) var(--ease-standard);
-  }
-
-  .option + .option {
-    box-shadow: inset 0 1px 0 var(--hairline);
+    transition: background-color var(--d-micro) var(--ease-standard), box-shadow var(--d-micro) var(--ease-standard), transform var(--d-spring-gentle) var(--spring-gentle);
   }
 
   @media (hover: hover) {
     .option:not([aria-disabled="true"]):hover {
-      background: var(--card);
+      box-shadow: inset 0 0 0 1px var(--line-strong), inset 0 1px 0 var(--lit), var(--shadow-2);
     }
+  }
+
+  .option:not([aria-disabled="true"]):active {
+    transform: scale(0.98);
   }
 
   .option[aria-disabled="true"] {
@@ -1013,9 +1488,15 @@
 
   .option__key {
     flex: none;
-    line-height: var(--option-line);
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: var(--option-line);
+    border-radius: var(--r-1);
+    background: var(--raised);
     font-family: var(--f-sans);
     font-size: var(--t-meta);
+    line-height: 1;
     font-variant-numeric: tabular-nums;
     font-weight: 600;
     color: var(--ink-2);
@@ -1031,22 +1512,63 @@
     margin-block-start: 2px;
   }
 
-  .option--ok { background: var(--ok-tint); }
-  .option--no { background: var(--no-tint); }
-  .option--ok .option__mark { color: var(--ok); }
-  .option--no .option__mark { color: var(--no); }
+  .option--ok {
+    background: var(--ok-tint);
+    box-shadow: inset 0 0 0 1.5px var(--ok);
+  }
 
-  /* -- Stat. A figure over its label; two by two on a phone. -- */
+  .option--no {
+    background: var(--no-tint);
+    box-shadow: inset 0 0 0 1.5px var(--no);
+  }
+
+  .option--ok .option__mark,
+  .option--ok .option__key { color: var(--ok); }
+  .option--no .option__mark,
+  .option--no .option__key { color: var(--no); }
+
+  .option--ok .option__key { background: var(--ok-tint); }
+  .option--no .option__key { background: var(--no-tint); }
+
+  /* -- Stat. A figure over its label, on a small plane; three across. -- */
   .stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-    gap: var(--s-5) var(--s-4);
+    /* 88 × 3 + 16 = 280: three abreast inside a 320px phone's gutters. */
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+    gap: var(--s-3);
+  }
+
+  /* Two ring stats side by side; each needs the width of a ring and a
+     two-word label. */
+  .stats--rings {
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  }
+
+  .stat {
+    display: grid;
+    align-content: start;
+    gap: var(--s-1);
+    padding: var(--s-4);
+    border-radius: var(--r-3);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 var(--lit), var(--shadow-1);
+  }
+
+  .stat--row {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: var(--s-4);
+  }
+
+  .stat--row > .ring {
+    grid-row: span 2;
   }
 
   .stat__value {
     font-size: var(--t-title);
     line-height: var(--t-title-lh);
     font-weight: 600;
+    letter-spacing: -0.01em;
     font-variant-numeric: tabular-nums;
   }
 
@@ -1057,7 +1579,7 @@
     color: var(--ink-2);
   }
 
-  /* -- The cloze blank: a rule on the baseline, uniform width. -- */
+  /* -- The cloze blank. -- */
   .blank {
     display: inline-block;
     width: 4.5ch;
@@ -1070,33 +1592,53 @@
    ========================================================================== */
 
 @layer screens {
-  /* -- The reader's blocks. The page is a loose stack (32 between blocks)
-        and each block adds to that: 48 above a labelled block, 48 around
-        the one band, 64 before the end card. Margins on grid items add to
-        the gap. -- */
+  /* -- The reader. A tinted band from the topic's hue behind the title;
+        the blocks as before; the contrast as the one band; check blocks as
+        cards; the end as a small celebration. -- */
+  .lesson__head {
+    --hue: 60;
+    position: relative;
+    margin-inline: calc(-1 * var(--gutter));
+    margin-top: calc(-1 * var(--s-6));
+    padding: var(--s-7) var(--gutter) var(--s-6);
+    background:
+      radial-gradient(80% 70% at 0% 0%, oklch(0.6 0.15 var(--hue) / 0.22), transparent 70%),
+      linear-gradient(180deg, oklch(0.6 0.15 var(--hue) / 0.08), transparent);
+  }
+
   .block--labelled {
     margin-top: var(--s-5);
   }
 
-  /* The contrast is the point of every lesson and the one band on the
-     page: full-bleed, the card's colour, no radius, 24 inside. */
   .block--contrast {
     margin-block: var(--s-5);
     margin-inline: calc(-1 * var(--gutter));
     padding: var(--s-6) var(--gutter);
     background: var(--card);
+    box-shadow: inset 0 1px 0 var(--line), inset 0 -1px 0 var(--line);
+  }
+
+  .block--check {
+    padding: var(--s-5);
+    border-radius: var(--r-3);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 var(--lit), var(--shadow-1);
+  }
+
+  .block--check .bleed {
+    margin-inline: 0;
+    padding-inline: 0;
   }
 
   .block--end {
     margin-top: var(--s-7);
   }
 
-  /* The outcome sits in from its triggers by the arrow's width. */
   .decision__outcome {
     padding-inline-start: calc(20px + var(--s-3));
   }
 
-  /* The quiz's readout in the bar: the mode clips first, the count never. */
+  /* -- The quiz. -- */
   .strip__readout {
     display: flex;
     align-items: baseline;
@@ -1110,6 +1652,94 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  .quiz__prompt {
+    padding: var(--s-5);
+    border-radius: var(--r-3);
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 var(--lit), var(--shadow-1);
+  }
+
+  /* -- Results: the ring, and the confetti layer over everything. -- */
+  .score {
+    display: grid;
+    justify-items: center;
+    gap: var(--s-4);
+    padding-block: var(--s-5);
+    text-align: center;
+  }
+
+  .score__verdict {
+    font-size: var(--t-lead);
+    line-height: var(--t-lead-lh);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .confetti {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+  }
+
+  /* -- Onboarding: a screen of its own, no chrome. -- */
+  .onboard {
+    display: grid;
+    align-content: start;
+    gap: var(--s-7);
+    min-height: 100%;
+  }
+
+  .onboard__orb {
+    position: relative;
+    width: 152px;
+    height: 152px;
+    margin: var(--s-6) auto 0;
+    border-radius: 50%;
+    background: var(--grad-accent);
+    box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.4), 0 20px 60px -10px var(--glow), 0 0 0 18px var(--accent-tint);
+    display: grid;
+    place-items: center;
+    color: var(--accent-ink);
+  }
+
+  .onboard__steps {
+    display: flex;
+    gap: var(--s-2);
+  }
+
+  .onboard__step {
+    flex: 1;
+    height: 4px;
+    border-radius: var(--r-pill);
+    background: var(--raised);
+    overflow: hidden;
+  }
+
+  .onboard__step--done {
+    background: var(--accent);
+  }
+
+  .onboard__actions {
+    display: grid;
+    gap: var(--s-3);
+    justify-items: center;
+  }
+
+  .onboard__actions > .btn--primary {
+    width: 100%;
+  }
+
+  body.is-onboarding .bar,
+  body.is-onboarding .nav {
+    display: none;
+  }
+
+  body.is-onboarding .shell__scroll {
+    padding-top: env(safe-area-inset-top, 0px);
+    --foot-space: calc(var(--s-6) + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* ==========================================================================
@@ -1117,18 +1747,18 @@
    ========================================================================== */
 
 @layer utilities {
-  /* -- Type roles. Five sizes; the weight axis points up. -- */
   .t-display,
   .t-title,
   .t-lead {
     text-wrap: balance;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
   }
 
   .t-display {
     font-size: var(--t-display);
     line-height: var(--t-display-lh);
     font-weight: 600;
+    letter-spacing: -0.02em;
   }
 
   .t-title {
@@ -1147,8 +1777,6 @@
     line-height: var(--t-body-lh);
   }
 
-  /* A quiet sentence: body at 400 in the second grey, legal on the page
-     and on a card only. */
   .t-quiet {
     font-size: var(--t-body);
     line-height: var(--t-body-lh);
@@ -1156,7 +1784,6 @@
     color: var(--ink-2);
   }
 
-  /* The one-line tier. A sentence is never meta. */
   .t-meta,
   .t-ui {
     font-size: var(--t-meta);
@@ -1168,9 +1795,6 @@
     color: var(--ink-2);
   }
 
-  /* A section's head: tracked, in the accent's text colour, so a section
-     opens with a mark the eye finds before it reads. Not uppercased —
-     under lang="tr" the transform would turn "Simple" into "SİMPLE". */
   .t-label {
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
@@ -1179,8 +1803,6 @@
     color: var(--accent-text);
   }
 
-  /* English is the serif, at block level, at 400 — the only serif weight
-     that ships, pinned here so no component can ask for a faux-bold. */
   .t-en {
     font-family: var(--f-serif);
     font-weight: 400;
@@ -1190,8 +1812,6 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* -- Prose: the measure, pretty wrapping, Turkish words that are wider
-        than a phone. -- */
   .prose {
     max-width: var(--w-measure);
     text-wrap: pretty;
@@ -1206,8 +1826,6 @@
     color: var(--ink);
   }
 
-  /* No italic face ships; emphasis is a weight step. Bold is the shipped
-     600, never `bolder`. */
   em {
     font-style: normal;
     font-weight: 600;
@@ -1220,14 +1838,13 @@
 
   .ink-ok { color: var(--ok); }
   .ink-no { color: var(--no); }
+  .ink-accent { color: var(--accent-text); }
 
   .divider {
     height: 1px;
     background: var(--hairline);
   }
 
-  /* -- Focus: an outline, never a shadow. Not on a view focused only to
-        move the reading position. -- */
   :focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
@@ -1238,7 +1855,6 @@
     outline: none;
   }
 
-  /* Clipped, not display:none — a hidden live region is never announced. */
   .visually-hidden:not(:focus):not(:active) {
     position: absolute;
     width: 1px;
@@ -1248,9 +1864,9 @@
     white-space: nowrap;
   }
 
-  /* -- Motion. The route crossfade, made by the browser from two
-        snapshots when js/home.js asks for it; the entrance of an arriving
-        screen, opacity only unless motion is welcome. -- */
+  /* -- Motion. The route crossfade; the entrance of an arriving screen,
+        its children staggered eight deep; the verdict on an option; the
+        feedback's rise. Opacity only when motion is not welcome. -- */
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation-duration: var(--d-enter);
@@ -1259,12 +1875,62 @@
 
   @media (prefers-reduced-motion: no-preference) {
     .animate-in {
-      animation: fade-rise var(--d-enter) var(--ease-out) both;
+      animation: fade-rise var(--d-spring-gentle) var(--spring-gentle) both;
     }
 
+    .animate-in > * {
+      animation: fade-rise var(--d-spring-gentle) var(--spring-gentle) both;
+    }
+
+    .animate-in > :nth-child(2) { animation-delay: 40ms; }
+    .animate-in > :nth-child(3) { animation-delay: 80ms; }
+    .animate-in > :nth-child(4) { animation-delay: 120ms; }
+    .animate-in > :nth-child(5) { animation-delay: 160ms; }
+    .animate-in > :nth-child(6) { animation-delay: 200ms; }
+    .animate-in > :nth-child(7) { animation-delay: 240ms; }
+    .animate-in > :nth-child(n + 8) { animation-delay: 280ms; }
+
     @keyframes fade-rise {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: none; }
+    }
+
+    .feedback {
+      animation: rise-in var(--d-spring-gentle) var(--spring-gentle) both;
+    }
+
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(14px) scale(0.98); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .option--ok {
+      animation: pop var(--d-spring-pop) var(--spring-pop) both;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.96); }
+      to { transform: scale(1); }
+    }
+
+    .option--no.option--picked {
+      animation: shake 420ms var(--ease-standard) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translateX(-2px); }
+      20%, 80% { transform: translateX(3px); }
+      30%, 50%, 70% { transform: translateX(-5px); }
+      40%, 60% { transform: translateX(5px); }
+    }
+
+    .onboard__orb {
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
     }
   }
 
@@ -1283,17 +1949,26 @@
   @media (forced-colors: active) {
     .option,
     .nav__item,
-    .chip {
+    .chip,
+    .choice,
+    .tile,
+    .surface,
+    .hero {
       border: 1px solid transparent;
     }
 
     .option--ok,
     .option--no,
-    .nav__item[aria-current] {
+    .nav__item[aria-current],
+    .choice[aria-pressed="true"] {
       border-color: Highlight;
     }
 
     .btn--primary {
+      border: 1px solid ButtonText;
+    }
+
+    .switch {
       border: 1px solid ButtonText;
     }
   }

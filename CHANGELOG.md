@@ -5,6 +5,50 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.62 — 2026-09-10
+
+**UI 3: light, depth and motion.** The owner's verdict on UI 2 was that
+it was ugly, and it was: the structure of a product dressed as a
+document. This round keeps the three UI 2 contracts (screen · section
+· component) and gives them a product's register — `docs/ui3-plan.md`.
+
+- **Light.** Two ambient washes behind every page; every card a lighter
+  plane with an edge, a lit top and a soft shadow; the primary action a
+  gradient with a glow; the bar and the action bar translucent glass
+  (≥ 82 % opaque before the blur, so nothing reads through); the tab
+  bar a floating capsule whose indicator slides on a spring. The
+  content scrolls under the chrome and is padded past it, measured.
+- **Objects.** Eğitim opens on a hero — the greeting by name, the exam
+  countdown, today's ring against the daily goal, the streak, one
+  forward action — then three figures, then topic tiles with a colour
+  each (`.monogram`, a hue derived from the topic id). Test's mixed
+  test is a hero; topic rows carry their monogram. Profil opens on an
+  avatar hero with the name field, ring stats, a *Hedefin* section for
+  the exam date and daily goal, and real switches.
+- **Feel.** Options are cards with a letter badge; the pressed one
+  compresses, the right one pops, the wrong one shakes; the feedback
+  card rises in; a haptic pulse where the platform has one. The score
+  is a ring that draws to its value while the number counts up, with a
+  verdict line, mini rings per topic, and confetti at 80 % and above
+  (never under reduced motion). Three easings derived from a damped
+  spring (`scratchpad/ui3/spring.mjs`), entrances staggered.
+- **First run.** `#hosgeldin`: four steps — what this is, the exam
+  date, the daily goal (5 · 10 · 20), a name and the theme — with a
+  progress line and *Atla* on every step. A learner with history is
+  never asked; a deep link is never interrupted; Profil can replay it.
+  `storage.js` gains the exam date, the daily goal, today's count and a
+  lenient streak, all in the backup.
+- **Reader.** A tinted band from the topic's hue behind the title;
+  check blocks as cards; the end card lit.
+- **Verification.** The sweep gains the onboarding walk at 320, the
+  results ring and confetti checks in both motion settings, a glass
+  legibility floor (bar alpha ≥ 0.8), the capsule's geometry and its
+  indicator; every context is onboarded by default and one is fresh.
+  `tools/palette.mjs` gains the gradient's second stop and eleven new
+  pairs; `docs/components.html` gains the seven new components (Hero,
+  Tile, Monogram, Avatar, Ring, Switch, Choice) and the coverage check
+  still passes. Six icons added (flame, calendar, spark, bolt, pen).
+
 ## v0.61 — 2026-09-10
 
 **UI 2, phase 4: the specification.** `docs/design-system.md` gains
