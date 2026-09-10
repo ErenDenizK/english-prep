@@ -2588,30 +2588,32 @@ async function runChrome(browser) {
   const chrome = await page.evaluate(() => {
     const header = document.getElementById("shell-header");
     const nav = document.getElementById("bottom-nav");
+    const alpha = (node) => {
+      const m = getComputedStyle(node).backgroundColor.match(/rgba?\(([^)]+)\)/);
+      const parts = m ? m[1].split(/[,\s\/]+/).map(Number) : [];
+      return parts.length === 4 ? parts[3] : 1;
+    };
     const h = header.getBoundingClientRect();
     const n = nav.getBoundingClientRect();
     const first = document.querySelector("#lesson-index > *")?.getBoundingClientRect();
-    const style = getComputedStyle(header);
     return {
-      filter: style.backdropFilter || style.webkitBackdropFilter || "",
+      headerAlpha: alpha(header),
+      navAlpha: alpha(nav),
       headerBottom: h.bottom,
       firstTop: first?.top ?? null,
-      nav: { top: n.top, bottom: n.bottom, left: n.left, right: n.right, width: n.width, height: n.height },
+      nav: { top: n.top, bottom: n.bottom, width: n.width, height: n.height },
       viewport: { w: innerWidth, h: innerHeight },
     };
   });
-  ok(/blur/.test(chrome.filter), `üst bar bir malzeme: arkası bulanık (${chrome.filter})`);
+  // Opaque bars: nothing that scrolls can show through a label.
+  ok(chrome.headerAlpha === 1 && chrome.navAlpha === 1, "barlar opak — arkasından metin sızmıyor");
   ok(
     chrome.firstTop !== null && chrome.firstTop >= chrome.headerBottom - 1,
     `içerik başlığın altında başlıyor, altından değil (${Math.round(chrome.firstTop)} ≥ ${Math.round(chrome.headerBottom)})`
   );
   ok(
-    chrome.nav.width <= 400 &&
-      chrome.nav.height >= 44 &&
-      chrome.nav.left >= 8 &&
-      chrome.nav.right <= chrome.viewport.w - 8 &&
-      chrome.nav.bottom <= chrome.viewport.h - 8,
-    `sekme çubuğu yüzen bir kapsül (${Math.round(chrome.nav.width)}×${Math.round(chrome.nav.height)}, alt boşluk ${Math.round(chrome.viewport.h - chrome.nav.bottom)})`
+    chrome.nav.width === chrome.viewport.w && chrome.nav.height >= 44 && chrome.nav.bottom <= chrome.viewport.h,
+    `sekme çubuğu tam genişlikte ve ekranın içinde (${Math.round(chrome.nav.width)}×${Math.round(chrome.nav.height)})`
   );
   await page.evaluate(() => {
     const region = document.getElementById("shell-scroll");
@@ -2624,7 +2626,7 @@ async function runChrome(browser) {
     const nav = document.getElementById("bottom-nav").getBoundingClientRect();
     return last.bottom <= nav.top + 1;
   });
-  ok(lastClear, "en alta inince son satır kapsülün altında kalmıyor");
+  ok(lastClear, "en alta inince son satır çubuğun altında kalmıyor");
   await context.close();
 
   // Less motion: nothing runs, and a route change still lands.
@@ -2643,7 +2645,7 @@ async function runChrome(browser) {
   ok(await quiet.evaluate(() => document.activeElement?.id === "view-test"), "azaltılmış harekette de odak yeni görünüme taşınıyor");
   await still.close();
 
-  // Motion welcome: the screen arrives, and the header's light drifts.
+  // Motion welcome: the screen arrives with its entrance.
   const moving = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "no-preference" });
   const lively = await moving.newPage();
   await lively.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
@@ -2653,12 +2655,6 @@ async function runChrome(browser) {
   ok(
     await lively.evaluate(() => document.getElementById("view-test").classList.contains("animate-in")),
     "hareket serbestken yeni ekran bir girişle geliyor"
-  );
-  ok(
-    await lively.evaluate(() =>
-      document.getAnimations().some((a) => a.playState === "running" && a.animationName === "glow-drift")
-    ),
-    "başlıktaki ışık yavaşça kayıyor"
   );
   await moving.close();
 }

@@ -5,6 +5,28 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.57 — 2026-09-10
+
+**What v0.56 got wrong, taken back.** Three of its ideas were checked on
+three emulated phones and every one failed as structure, not as taste:
+
+- The translucent, blurred bars let the page's text show *through* the
+  header and the reader's strip wherever the engine did not composite
+  the blur — text on text. The bars are opaque again and take their
+  height in the column; nothing scrolls under them.
+- The floating tab-bar capsule was narrower than the content, so rows
+  ran out from under it on both sides and the last row hid beneath it.
+  The bar is full-width again, with the capsule kept only as the
+  selected item's highlight.
+- The header's glow read as a smudge, not a light. Gone.
+
+The route crossfade, the entrance on each arriving screen, the eased
+progress fill, the cream light theme and the accent section labels
+stay — they were the parts that worked. The sweep's chrome section now
+asserts the opposite invariants (opaque bars, nothing under them), and
+`PAIRS` drops the chrome grounds it no longer needs. This is a hotfix
+to the live branch; `docs/ui2-plan.md` is what comes next.
+
 ## v0.56 — 2026-09-09
 
 **The chrome is a layer.** The header, the floating tab bar, the action
