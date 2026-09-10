@@ -5,6 +5,21 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.59 — 2026-09-10
+
+**UI 2, phase 2: the components and the catalogue.** The fourteen
+components carry every state they have — a button that is
+`aria-disabled` and does not press, a listbox whose open trigger is
+raised, an answered option that no longer hovers, a chip for *no* —
+and `docs/components.html` is rebuilt as the catalogue: one numbered
+section per component, foundations first, every state shown, the
+app's own modules drawing the option, the feedback and the listbox so
+the page cannot drift from the app, and a theme switch in its bar. The
+sweep audits it at 320 and 390 in both themes and asserts that **every
+class the components layer declares appears on the page** — a
+component without a catalogue entry does not exist. The one variant
+nothing used (`surface--flush`) is gone.
+
 ## v0.58 — 2026-09-10
 
 **UI 2, phase 1: the foundation and the shell.** `docs/ui2-plan.md` is
