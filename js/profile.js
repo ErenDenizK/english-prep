@@ -27,6 +27,14 @@ import {
   clearLessonProgress,
   getSetting,
   setSetting,
+  getExamDate,
+  setExamDate,
+  daysToExam,
+  getDailyGoal,
+  setDailyGoal,
+  DAILY_GOAL_OPTIONS,
+  getStreak,
+  setOnboarded,
 } from "./storage.js";
 import { SETTINGS } from "./config.js";
 import { createConfirmModal } from "./modal.js";
@@ -35,6 +43,7 @@ import { getTheme, setTheme, THEME_LABELS } from "./theme.js";
 import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
 import { el, clear, pane } from "./dom.js";
 import { icon } from "./icons.js";
+import { avatar, ring, choices } from "./widgets.js";
 import { announce } from "./shell.js";
 
 const container = document.getElementById("profile-container");
@@ -46,37 +55,121 @@ function formatPercent(value) {
   return value === null ? "—" : `%${Math.round(value * 100)}`;
 }
 
-function renderNameField() {
-  const surface = el("section", "surface stack stack--tight");
+function renderIdentity() {
+  const surface = el("section", "surface hero");
+  surface.appendChild(el("span", "hero__orb"));
 
-  const heading = el("h2", "t-label", "İsmin");
-  heading.id = "profile-name-label";
-  surface.appendChild(heading);
-  surface.appendChild(
-    el("p", "t-quiet", "İsteğe bağlı — sadece bu cihazda saklanır, hiçbir yere gönderilmez.")
+  const head = el("div", "hero__figure");
+  const name = getProfileName().trim();
+  head.appendChild(avatar(name, { size: "lg" }));
+  const titles = el("div", "stack stack--snug");
+  titles.appendChild(el("h2", "t-title", name || "Adını yaz"));
+  const days = daysToExam();
+  const goal = getDailyGoal();
+  titles.appendChild(
+    el(
+      "p",
+      "t-meta t-num",
+      days === null
+        ? `Günde ${goal} soru`
+        : days < 0
+          ? `Sınav geçti · günde ${goal} soru`
+          : `Sınava ${days} gün · günde ${goal} soru`
+    )
   );
+  head.appendChild(titles);
+  surface.appendChild(head);
 
+  const label = el("label", "t-label", "İsmin");
+  label.htmlFor = "profile-name";
+  surface.appendChild(label);
   const input = document.createElement("input");
   input.type = "text";
+  input.id = "profile-name";
   input.className = "field";
   input.value = getProfileName();
   input.maxLength = 40;
   input.autocomplete = "off";
-  input.setAttribute("aria-labelledby", "profile-name-label");
+  input.placeholder = "İsteğe bağlı";
   input.addEventListener("change", () => {
     setProfileName(input.value.trim());
     // The header shows the learner's initial; tell it to catch up without
     // the two modules having to import each other.
     document.dispatchEvent(new CustomEvent("profile:namechange"));
+    render();
   });
   surface.appendChild(input);
+  surface.appendChild(el("p", "t-quiet", "Sadece bu cihazda saklanır, hiçbir yere gönderilmez."));
 
   return surface;
 }
 
-function stat(value, label) {
-  const cell = el("div");
-  cell.appendChild(el("div", "stat__value", value));
+/**
+ * The two facts the home screen is built from, editable: when the exam
+ * is, and how many questions a day. The first run asks the same two.
+ */
+function renderGoals() {
+  const section = el("section", "stack stack--tight");
+  section.appendChild(el("h2", "t-label", "Hedefin"));
+
+  const rows = el("div");
+
+  const dateRow = el("div", "row");
+  const dateMain = el("span", "row__main");
+  const dateTitle = el("label", "row__title", "Sınav tarihi");
+  dateTitle.htmlFor = "profile-exam-date";
+  dateMain.appendChild(dateTitle);
+  dateMain.appendChild(el("span", "row__sub", "Ana ekranda geri sayım olarak görünür."));
+  dateRow.appendChild(dateMain);
+  const dateTrail = el("span", "row__trail");
+  const date = document.createElement("input");
+  date.type = "date";
+  date.id = "profile-exam-date";
+  date.className = "field";
+  date.style.width = "11rem";
+  date.value = getExamDate() ?? "";
+  date.addEventListener("change", () => {
+    setExamDate(date.value || null);
+    render();
+  });
+  dateTrail.appendChild(date);
+  dateRow.appendChild(dateTrail);
+  rows.appendChild(dateRow);
+
+  const goalRow = el("div", "row");
+  const goalMain = el("span", "row__main");
+  const goalTitle = el("span", "row__title", "Günlük hedef");
+  goalTitle.id = "profile-goal-label";
+  goalMain.appendChild(goalTitle);
+  goalMain.appendChild(el("span", "row__sub", "Ana ekrandaki halka buna göre dolar."));
+  goalRow.appendChild(goalMain);
+  const goalTrail = el("span", "row__trail");
+  goalTrail.appendChild(
+    choices({
+      options: DAILY_GOAL_OPTIONS.map((n) => ({ value: String(n), label: String(n) })),
+      value: String(getDailyGoal()),
+      onChange: (value) => {
+        setDailyGoal(Number(value));
+        render();
+      },
+      labelledBy: "profile-goal-label",
+    }).element
+  );
+  goalRow.appendChild(goalTrail);
+  rows.appendChild(goalRow);
+
+  section.appendChild(rows);
+  return section;
+}
+
+function stat(value, label, { ratio = null, tone = "accent" } = {}) {
+  const cell = el("div", ratio === null ? "stat" : "stat stat--row");
+  if (ratio !== null) {
+    cell.appendChild(ring({ ratio, label: value, tone }));
+    cell.appendChild(el("div", "stat__label", label));
+    return cell;
+  }
+  cell.appendChild(el("div", "stat__value t-num", value));
   cell.appendChild(el("div", "stat__label", label));
   return cell;
 }
@@ -85,20 +178,29 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", "Genel durum"));
 
+  const rings = el("div", "stats stats--rings");
   const grid = el("div", "stats");
-  grid.appendChild(stat(lessonsTotal ? `${lessonsDone} / ${lessonsTotal}` : "—", "Tamamlanan ders"));
+  // The two fractions as rings, the three counts as figures. The label
+  // says which question the number answers: three lifetime counters
+  // beside one recent average would otherwise read as four of the same
+  // kind of thing, and the learner would take the average for a lifetime
+  // one.
+  rings.appendChild(
+    stat(lessonsTotal ? `${lessonsDone}/${lessonsTotal}` : "—", "Tamamlanan ders", {
+      ratio: lessonsTotal ? lessonsDone / lessonsTotal : 0,
+    })
+  );
+  rings.appendChild(
+    stat(formatPercent(stats.accuracy), stats.accuracyWindow > 0 ? `Son ${stats.accuracyWindow} soruda` : "Doğruluk", {
+      ratio: stats.accuracy ?? 0,
+      tone: stats.accuracy === null ? "accent" : stats.accuracy >= 0.7 ? "ok" : "accent",
+    })
+  );
+  const streak = getStreak();
+  grid.appendChild(stat(String(streak.days), "Gün seri"));
   grid.appendChild(stat(String(stats.testsCompleted), "Çözülen test"));
   grid.appendChild(stat(String(stats.totalQuestions), "Çözülen soru"));
-  // The label says which question the number answers. Three lifetime
-  // counters beside one recent average would otherwise read as four of the
-  // same kind of thing, and the learner would take the average for a
-  // lifetime one — which is the reading that makes it discouraging.
-  grid.appendChild(
-    stat(
-      formatPercent(stats.accuracy),
-      stats.accuracyWindow > 0 ? `Son ${stats.accuracyWindow} soruda` : "Doğruluk"
-    )
-  );
+  section.appendChild(rings);
   section.appendChild(grid);
 
   // What is in the window, when part of it is the mistake book. The
@@ -252,13 +354,13 @@ function toggleRow({ name, title, description }) {
   main.appendChild(el("span", "row__sub", description));
   row.appendChild(main);
 
-  const state = el("span", "chip");
+  const state = el("span", "switch");
+  state.appendChild(el("span", "switch__thumb"));
   row.appendChild(el("span", "row__trail")).appendChild(state);
 
   const paint = () => {
     const on = getSetting(name);
     row.setAttribute("aria-checked", String(on));
-    state.textContent = on ? "Açık" : "Kapalı";
   };
   paint();
 
@@ -323,6 +425,17 @@ function renderSettings() {
   );
   rows.appendChild(renderThemeRow());
   section.appendChild(rows);
+
+  // The first-run flow, again, for whoever wants to change the three
+  // facts it asked in one place.
+  const replay = el("button", "btn btn--quiet btn--text", "İlk açılışı tekrar gör");
+  replay.type = "button";
+  replay.appendChild(icon("chevron-right", { size: 20 }));
+  replay.addEventListener("click", () => {
+    setOnboarded(false);
+    window.location.hash = "hosgeldin";
+  });
+  section.appendChild(replay);
 
   // Quiet and last. It was dressed as the backup buttons, which made the
   // one destructive action on the screen look like their sibling.
@@ -498,9 +611,11 @@ async function render() {
   // Figures first: the screen is the learner's, and the name is a
   // setting, so its card sits with the settings rather than opening the
   // screen as if it were the point.
+  main.appendChild(renderIdentity());
   main.appendChild(
     renderStats(getOverallStats(), countCompletedLessons(lessonIds), lessonIds.length)
   );
+  main.appendChild(renderGoals());
 
   const weakCategories = getWeakCategories();
   const weakCategoryList = renderWeakList(
@@ -536,7 +651,6 @@ async function render() {
   }
 
   main.appendChild(renderData());
-  main.appendChild(renderNameField());
   main.appendChild(renderSettings());
   aside.appendChild(renderCoverage(topics));
   aside.appendChild(renderAbout());

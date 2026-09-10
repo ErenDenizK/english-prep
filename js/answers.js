@@ -18,9 +18,9 @@ import { isCorrectAnswer } from "./quiz-engine.js";
  * @returns {HTMLDivElement}
  */
 export function renderOptions(question, { selected = null, answered = false, onSelect, labelledBy = "question-stem" } = {}) {
-  // Full bleed: on a phone the viewport is already the frame, and an
-  // option that runs to the gutter is a bigger target for free.
-  const wrap = el("div", "bleed");
+  // Cards in a column with air between them: each option is an object
+  // with an edge, and the verdict fills it.
+  const wrap = el("div", "options");
 
   // §8.7, WCAG 1.3.1: a question and its options are a group. Without
   // this a screen reader reads four unrelated buttons and never says
@@ -52,6 +52,11 @@ export function renderOptions(question, { selected = null, answered = false, onS
         button.classList.add("option--ok");
       } else if (chosen) {
         button.classList.add("option--no");
+      }
+      if (chosen) {
+        // The one the learner pressed: the wrong one shakes, the right
+        // one pops (css/style.css, utilities).
+        button.classList.add("option--picked");
       }
       if (correct || chosen) {
         const mark = el("span", "option__mark");

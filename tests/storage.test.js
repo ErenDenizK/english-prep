@@ -784,3 +784,89 @@ test("the chosen option is written down, not only whether it was right", () => {
   );
   assert.equal(storage.getHistory()[0].questions[0].selected, "went");
 });
+
+/* ---- UI 3: the exam, the goal, today, the streak ---------------------- */
+
+test("the exam date is a plain day and the countdown is whole days", () => {
+  assert.equal(storage.getExamDate(), null);
+  assert.equal(storage.daysToExam(), null);
+  storage.setExamDate("2026-10-15");
+  assert.equal(storage.getExamDate(), "2026-10-15");
+  const oct1 = new Date(2026, 9, 1, 13, 0).getTime();
+  assert.equal(storage.daysToExam(oct1), 14);
+  const oct15 = new Date(2026, 9, 15, 23, 59).getTime();
+  assert.equal(storage.daysToExam(oct15), 0);
+  const oct16 = new Date(2026, 9, 16, 0, 1).getTime();
+  assert.equal(storage.daysToExam(oct16), -1);
+  storage.setExamDate("not a date");
+  assert.equal(storage.getExamDate(), null, "a malformed date is forgotten, not stored");
+});
+
+test("the daily goal is one of the three offered, and defaults to ten", () => {
+  assert.equal(storage.getDailyGoal(), 10);
+  storage.setDailyGoal(20);
+  assert.equal(storage.getDailyGoal(), 20);
+  storage.setDailyGoal(7);
+  assert.equal(storage.getDailyGoal(), 20, "an unoffered goal is ignored");
+  entries.set("englishPrep.dailyGoal", "abc");
+  assert.equal(storage.getDailyGoal(), 10);
+});
+
+test("today's count is the answers given today, in the local day", () => {
+  const now = new Date(2026, 8, 10, 15, 0).getTime();
+  const today = new Date(2026, 8, 10, 9, 0).toISOString();
+  const yesterday = new Date(2026, 8, 9, 23, 0).toISOString();
+  storage.recordAttempt(attempt({ date: today, questions: answers(3, 2) }));
+  storage.recordAttempt(attempt({ date: yesterday, questions: answers(4, 0) }));
+  assert.equal(storage.getTodayCount(now), 5);
+});
+
+test("the streak counts consecutive active days and forgives one gap", () => {
+  const day = (offset, hour = 12) => new Date(2026, 8, 10 - offset, hour).toISOString();
+  const now = new Date(2026, 8, 10, 18, 0).getTime();
+  assert.deepEqual(storage.getStreak(now), { days: 0, activeToday: false });
+
+  // today, yesterday, two days ago: three
+  for (const offset of [0, 1, 2]) storage.recordAttempt(attempt({ date: day(offset), questions: answers(1, 0) }));
+  assert.deepEqual(storage.getStreak(now), { days: 3, activeToday: true });
+
+  // a gap of one day before that is forgiven; the run continues past it
+  storage.recordAttempt(attempt({ date: day(4), questions: answers(1, 0) }));
+  assert.equal(storage.getStreak(now).days, 4);
+
+  // a gap of two days ends it
+  storage.recordAttempt(attempt({ date: day(7), questions: answers(1, 0) }));
+  assert.equal(storage.getStreak(now).days, 4);
+
+  // today empty does not break yesterday's run
+  entries.clear();
+  for (const offset of [1, 2]) storage.recordAttempt(attempt({ date: day(offset), questions: answers(1, 0) }));
+  assert.deepEqual(storage.getStreak(now), { days: 2, activeToday: false });
+
+  // a lesson read counts as activity too
+  entries.clear();
+  storage.recordLessonRead("tenses-x", 0.5);
+  assert.equal(storage.getStreak().days, 1);
+});
+
+test("the exam date and goal travel in the backup, and a restore only fills a blank", () => {
+  storage.setExamDate("2026-12-01");
+  storage.setDailyGoal(5);
+  const state = storage.exportState();
+  assert.equal(state.examDate, "2026-12-01");
+  assert.equal(state.dailyGoal, 5);
+  entries.clear();
+  storage.importState({ data: { examDate: "2026-12-01", history: { attempts: [] } } });
+  assert.equal(storage.getExamDate(), "2026-12-01");
+  storage.setExamDate("2027-01-01");
+  storage.importState({ data: { examDate: "2026-12-01", history: { attempts: [] } } });
+  assert.equal(storage.getExamDate(), "2027-01-01", "the device being held wins");
+});
+
+test("onboarding is remembered, and storage failure means never asking", () => {
+  assert.equal(storage.isOnboarded(), false);
+  storage.setOnboarded(true);
+  assert.equal(storage.isOnboarded(), true);
+  storage.setOnboarded(false);
+  assert.equal(storage.isOnboarded(), false);
+});

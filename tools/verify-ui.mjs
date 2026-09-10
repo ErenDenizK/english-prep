@@ -42,6 +42,9 @@ const BASE = process.argv[2] ?? "http://localhost:8000";
  * So the budget is passed where length is a defect rather than a
  * property: the index and the topic screen, which are lists.
  */
+/** The page gutter at a phone width; the capsule keeps to it. */
+const MIN_GUTTER = 16;
+
 const LANDING_BUDGET_SCREENS = 3;
 
 /**
@@ -102,6 +105,32 @@ const IGNORED_CONSOLE = /fonts\.googleapis|ERR_CONNECTION|ERR_NAME_NOT_RESOLVED/
  * $PLAYWRIGHT_PATH. A CJS module reached that way puts everything on
  * `default` rather than on named exports, hence the two-way unwrap.
  */
+/**
+ * The first-run flow (`#hosgeldin`) opens for a browser that has never
+ * stored anything, which is every context this sweep makes. Every check
+ * here is about the app behind it, so a context is marked onboarded
+ * before its first script runs — except one asked for with
+ * `{ fresh: true }`, which is how the flow itself is walked.
+ */
+function onboardedByDefault(browser) {
+  const original = browser.newContext.bind(browser);
+  browser.newContext = async (options = {}) => {
+    const { fresh = false, ...rest } = options;
+    const context = await original(rest);
+    if (!fresh) {
+      await context.addInitScript(() => {
+        try {
+          localStorage.setItem("englishPrep.onboarded", "1");
+        } catch (e) {
+          /* storage unavailable */
+        }
+      });
+    }
+    return context;
+  };
+  return browser;
+}
+
 async function loadChromium() {
   const globalModules = join(dirname(dirname(process.execPath)), "lib", "node_modules");
   const directories = [join(globalModules, "playwright"), process.env.PLAYWRIGHT_PATH].filter(Boolean);
@@ -286,8 +315,8 @@ async function bookCount(page) {
  * to the route has one place to land rather than three.
  */
 async function openFirstLesson(page) {
-  await page.waitForSelector("#index-list .row");
-  await page.locator("#index-list .row").first().click();
+  await page.waitForSelector("#index-list .tile");
+  await page.locator("#index-list .tile").first().click();
   await page.waitForSelector("#lesson-bar .btn--primary");
   await page.locator("#lesson-bar .btn--primary").click();
   await page.waitForSelector("#lesson-reader .lesson");
@@ -305,7 +334,7 @@ async function runFlow(page, viewport) {
   page.on("pageerror", (error) => errors.push(String(error)));
 
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
-  await page.waitForSelector(".row");
+  await page.waitForSelector("#index-list .tile");
   ok(await page.title() === "Eğitim — English Prep", "Eğitim varsayılan görünüm");
   await auditLayout(page, "Eğitim indeksi", viewport.width, { maxScreens: LANDING_BUDGET_SCREENS });
 
@@ -313,7 +342,7 @@ async function runFlow(page, viewport) {
   // the routing the index change bought — a first row that used to open
   // a contrast the learner had no name for now opens the screen that
   // gives them the name, and hands them on.
-  await page.locator("#index-list .row").first().click();
+  await page.locator("#index-list .tile").first().click();
   await page.waitForSelector("#lesson-reader h1");
   ok(/#egitim\/konu\//.test(page.url()), "konu satırı konu ekranını açıyor");
   const introBar = page.locator("#lesson-bar .btn--primary");
@@ -398,7 +427,7 @@ async function runFlow(page, viewport) {
   await auditLayout(page, "ders sonu", viewport.width);
 
   await page.locator("#shell-header .bar__lead button").click();
-  await page.waitForSelector("#lesson-index .row");
+  await page.waitForSelector("#lesson-index .tile");
   ok(
     (await page.locator("#lesson-index").textContent()).includes("1 tanesi tamamlandı"),
     "sona kadar okumak dersi tamamladı"
@@ -1093,7 +1122,7 @@ async function runBackupNote(browser) {
       );
     });
     await page.reload({ waitUntil: "networkidle" });
-    await page.waitForSelector("#index-list .row");
+    await page.waitForSelector("#index-list .tile");
 
     const note = page.locator(".note");
     ok(await note.count() === 1, `${width}px: üç denemeden sonra yedek notu çıkıyor`);
@@ -1121,7 +1150,7 @@ async function runBackupNote(browser) {
     await page.waitForTimeout(120);
     ok(await page.locator(".note").count() === 0, `${width}px: kapatılınca gidiyor`);
     await page.reload({ waitUntil: "networkidle" });
-    await page.waitForSelector("#index-list .row");
+    await page.waitForSelector("#index-list .tile");
     ok(await page.locator(".note").count() === 0, `${width}px: bir daha gelmiyor`);
 
     await context.close();
@@ -1392,7 +1421,7 @@ async function runBackupRoundTrip(browser) {
   const source = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const first = await source.newPage();
   await first.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
-  await first.waitForSelector(".row");
+  await first.waitForSelector("#index-list .tile");
 
   // Read a lesson to the end and sit one whole test, so there is real
   // progress of both kinds to carry.
@@ -1404,7 +1433,7 @@ async function runBackupRoundTrip(browser) {
   });
   await first.waitForTimeout(250);
   await first.locator("#shell-header .bar__lead button").click();
-  await first.waitForSelector("#lesson-index .row");
+  await first.waitForSelector("#lesson-index .tile");
   await first.locator('.nav__item[data-view="test"]').click();
   await first.waitForSelector("#test-panel .btn--primary");
   await first.locator("#test-panel .btn--primary").click();
@@ -1528,6 +1557,9 @@ async function runPretest(browser) {
   const boxBefore = await option.boundingBox();
   await option.click();
   await page.waitForSelector(".feedback");
+  // Let the verdict's pop settle: it is a transform, not layout, and the
+  // rule here is that the layout under the thumb never moves.
+  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {}))));
   const after = await page.evaluate(() => document.querySelector(".shell__scroll").scrollTop);
   const boxAfter = await page.locator(".option").first().boundingBox();
   ok(before === after, `ön test cevaplanınca sayfa kaymıyor (${before} → ${after})`);
@@ -1549,7 +1581,7 @@ async function runPretest(browser) {
       const fresh = await browser.newContext({ viewport: { width: 390, height: 844 } });
       const trial = await fresh.newPage();
       await trial.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-      await trial.waitForSelector(".row");
+      await trial.waitForSelector("#index-list .tile");
       await openFirstLesson(trial);
       await trial.waitForSelector(".shell__scroll .option");
       const stems = await trial
@@ -1566,9 +1598,9 @@ async function runPretest(browser) {
   // It is a pretest, not a quiz: it appears once, and a lesson already
   // read opens on its own first words.
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-  await page.waitForSelector(".row, .card");
-  await page.locator(".row, .card").first().click();
-  await page.waitForSelector(".shell__scroll");
+  // The same path as the first opening: the topic's tile, its screen,
+  // its forward action — which is the same unfinished lesson.
+  await openFirstLesson(page);
   ok(
     !(await page.locator(".shell__scroll").innerText()).includes("Önce bir dene"),
     "okunmuş ders ikinci açılışta ön test göstermiyor"
@@ -1590,7 +1622,7 @@ async function runIndexStates(browser) {
     if (seed) await page.evaluate(seed, argument);
     await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
     await page.reload({ waitUntil: "networkidle" });
-    await page.waitForSelector("#view-egitim .surface, #view-egitim .row");
+    await page.waitForSelector("#view-egitim .surface, #view-egitim .tile");
     return { context, page, text: await page.locator("#view-egitim").innerText() };
   }
 
@@ -1606,14 +1638,14 @@ async function runIndexStates(browser) {
   // 5,332px — 8.3 screens — and a learner reported it as the topics
   // piling up; the lessons now live one level down, on the screen that
   // already explained them.
-  const topicRows = await view.page.locator("#index-list .row").count();
+  const topicRows = await view.page.locator("#index-list .tile").count();
   const liveTopics = await view.page.evaluate(async () => {
     const manifest = await (await fetch("data/manifest.json")).json();
     return manifest.topics.filter((topic) => !topic.comingSoon).length;
   });
   ok(topicRows === liveTopics, `indeks konu satırı gösteriyor (${topicRows}/${liveTopics})`);
   ok(
-    await view.page.locator("#index-list .row").first().locator(".row__sub").count() === 1,
+    await view.page.locator("#index-list .tile").first().locator(".tile__title").count() === 1,
     "her konu satırı ne olduğunu tek satırda söylüyor"
   );
 
@@ -1632,7 +1664,7 @@ async function runIndexStates(browser) {
     `iki sekme konuları aynı şekilde gruplıyor (${egitimGroups.join(", ")})`
   );
   await view.page.locator('.nav__item[data-view="egitim"]').click();
-  await view.page.waitForSelector("#index-list .row");
+  await view.page.waitForSelector("#index-list .tile");
   // And the umbrella is gone rather than sitting above the group names:
   // two labels of identical weight one line apart read as a pile.
   ok(
@@ -1650,10 +1682,10 @@ async function runIndexStates(browser) {
   ok(await filter.count() === 1, "ders filtresi indekste");
   await filter.fill("ilgi");
   await view.page.waitForTimeout(120);
-  const lower = await view.page.locator("#index-list .row").count();
+  const lower = await view.page.locator("#index-list .tile").count();
   await filter.fill("İLGİ");
   await view.page.waitForTimeout(120);
-  const upper = await view.page.locator("#index-list .row").count();
+  const upper = await view.page.locator("#index-list .tile").count();
   // toLowerCase() is wrong here and wrong only in Turkish: I/ı and İ/i
   // are different pairs, so a learner typing "ilgi" would not match
   // "İlgi" under the default mapping.
@@ -1661,7 +1693,7 @@ async function runIndexStates(browser) {
   await filter.fill("gecmis");
   await view.page.waitForTimeout(120);
   ok(
-    (await view.page.locator("#index-list .row").count()) > 0,
+    (await view.page.locator("#index-list .tile").count()) > 0,
     "diyakritiksiz yazım da eşleşiyor (gecmis → geçmiş)"
   );
   await filter.fill("zzzz");
@@ -1673,7 +1705,7 @@ async function runIndexStates(browser) {
   await filter.fill("");
   await view.page.waitForTimeout(120);
   ok(
-    (await view.page.locator("#index-list .row").count()) === liveTopics,
+    (await view.page.locator("#index-list .tile").count()) === liveTopics,
     "filtre temizlenince konu listesi geri geliyor"
   );
   // Every lesson in this app is a contrast, so the index used to offer
@@ -1812,7 +1844,7 @@ async function runIndexStates(browser) {
   );
   // A recommendation is not a gate: every lesson row stays open.
   ok(
-    (await view.page.locator("#index-list .row").count()) > 1,
+    (await view.page.locator("#index-list .tile").count()) > 1,
     "öneri kartı konu listesini kilitlemiyor"
   );
   await auditLayout(view.page, "sıradaki adım", 320, { maxScreens: LANDING_BUDGET_SCREENS });
@@ -2152,8 +2184,8 @@ async function runTopicIntro(browser) {
   ok(withIntro.length === live.length, `her konunun bir girişi var (${withIntro.length}/${live.length})`);
 
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#view-egitim .row");
-  const ways = await page.locator("#index-list .row").count();
+  await page.waitForSelector("#index-list .tile");
+  const ways = await page.locator("#index-list .tile").count();
   ok(ways === live.length, `indekste her konu için bir giriş yolu var (${ways})`);
 
   // Every one of them, not just the first: an intro that renders for
@@ -2273,13 +2305,13 @@ async function runTopicIntro(browser) {
   // `#view-egitim .row` is not "back on the index": the reader lives
   // inside that view, so its own rows match it and the wait returns
   // before anything has happened.
-  await page.waitForSelector("#lesson-index .row");
+  await page.waitForSelector("#lesson-index .tile");
   await page.waitForFunction(() => document.querySelector("#shell-header .bar__title")?.textContent === "Eğitim");
   ok(true, "geri dönünce bar yine Eğitim diyor");
 
   // A hand-typed or stale id must not strand the learner on a dead screen.
   await page.goto(`${BASE}/index.html#egitim/konu/does-not-exist`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#view-egitim .row");
+  await page.waitForSelector("#index-list .tile");
   ok(
     !page.url().includes("does-not-exist"),
     "bilinmeyen konu id'si indekse düşüyor, ölü ekrana değil"
@@ -2379,7 +2411,7 @@ async function runFailurePaths(browser) {
   // `decodeURIComponent` throws on `%` alone, which left the screen on
   // "Dersler yükleniyor…" for ever.
   await page.goto(`${BASE}/index.html#%`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#index-list .row", { timeout: 5000 });
+  await page.waitForSelector("#index-list .tile", { timeout: 5000 });
   ok(true, "bozuk bir hash uygulamayı kilitlemiyor");
 
   // 2 · The topic file does not arrive. The learner must keep a way out,
@@ -2471,7 +2503,7 @@ async function runOffline(browser) {
   const page = await context.newPage();
 
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#index-list .row");
+  await page.waitForSelector("#index-list .tile");
   const registered = await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
     return Boolean(await navigator.serviceWorker.getRegistration());
@@ -2491,8 +2523,8 @@ async function runOffline(browser) {
   await context.setOffline(true);
 
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "domcontentloaded" });
-  await page.waitForSelector("#index-list .row", { timeout: 8000 });
-  const rows = await page.locator("#index-list .row").count();
+  await page.waitForSelector("#index-list .tile", { timeout: 8000 });
+  const rows = await page.locator("#index-list .tile").count();
   ok(rows > 0, `ağ yokken indeks açılıyor (${rows} konu)`);
 
   await page.goto(`${BASE}/index.html#egitim/${id}`, { waitUntil: "domcontentloaded" });
@@ -2637,7 +2669,7 @@ async function runChrome(browser) {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#index-list .row");
+  await page.waitForSelector("#index-list .tile");
   const chrome = await page.evaluate(() => {
     const header = document.getElementById("shell-header");
     const nav = document.getElementById("bottom-nav");
@@ -2654,12 +2686,20 @@ async function runChrome(browser) {
       navAlpha: alpha(nav),
       headerBottom: h.bottom,
       firstTop: first?.top ?? null,
-      nav: { top: n.top, bottom: n.bottom, width: n.width, height: n.height },
+      nav: { top: n.top, bottom: n.bottom, left: n.left, right: n.right, width: n.width, height: n.height },
+      indicator: (() => {
+        const i = nav.querySelector(".nav__indicator")?.getBoundingClientRect();
+        return i ? { left: i.left, width: i.width } : null;
+      })(),
       viewport: { w: innerWidth, h: innerHeight },
     };
   });
-  // Opaque bars: nothing that scrolls can show through a label.
-  ok(chrome.headerAlpha === 1 && chrome.navAlpha === 1, "barlar opak — arkasından metin sızmıyor");
+  // Glass, not gauze: every bar is at least 0.8 opaque before its blur,
+  // so text passing under it is a tint and never a word (ui3-plan §2).
+  ok(
+    chrome.headerAlpha >= 0.8 && chrome.navAlpha >= 0.8,
+    `barlar en az %80 opak — arkasından metin okunmuyor (${chrome.headerAlpha.toFixed(2)} / ${chrome.navAlpha.toFixed(2)})`
+  );
 
   // Every screen names itself in the bar (docs/ui2-plan.md §3.1).
   const titleOf = async () => (await page.locator("#shell-header .bar__title").textContent()).trim();
@@ -2678,14 +2718,24 @@ async function runChrome(browser) {
   await page.waitForSelector("#lesson-reader .row");
   ok((await titleOf()) === "Tenses", `konu ekranının barı konunun adını taşıyor (${await titleOf()})`);
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#index-list .row");
+  await page.waitForSelector("#index-list .tile");
   ok(
     chrome.firstTop !== null && chrome.firstTop >= chrome.headerBottom - 1,
     `içerik başlığın altında başlıyor, altından değil (${Math.round(chrome.firstTop)} ≥ ${Math.round(chrome.headerBottom)})`
   );
+  // The floating capsule: inside the screen, never narrower than the
+  // content's own padding allows, and tall enough to tap.
   ok(
-    chrome.nav.width === chrome.viewport.w && chrome.nav.height >= 44 && chrome.nav.bottom <= chrome.viewport.h,
-    `sekme çubuğu tam genişlikte ve ekranın içinde (${Math.round(chrome.nav.width)}×${Math.round(chrome.nav.height)})`
+    chrome.nav.left >= 0 &&
+      chrome.nav.right <= chrome.viewport.w &&
+      chrome.nav.width >= chrome.viewport.w - 2 * MIN_GUTTER - 1 &&
+      chrome.nav.height >= 44 &&
+      chrome.nav.bottom <= chrome.viewport.h,
+    `sekme kapsülü ekranın içinde ve gövde genişliğinde (${Math.round(chrome.nav.width)}×${Math.round(chrome.nav.height)})`
+  );
+  ok(
+    chrome.indicator !== null && chrome.indicator.width > 0 && chrome.indicator.left >= chrome.nav.left,
+    "kapsülün göstergesi seçili sekmenin altında"
   );
   await page.evaluate(() => {
     const region = document.getElementById("shell-scroll");
@@ -2693,7 +2743,7 @@ async function runChrome(browser) {
   });
   await page.waitForTimeout(150);
   const lastClear = await page.evaluate(() => {
-    const rows = document.querySelectorAll("#index-list .row");
+    const rows = document.querySelectorAll("#index-list .tile");
     const last = rows[rows.length - 1].getBoundingClientRect();
     const nav = document.getElementById("bottom-nav").getBoundingClientRect();
     return last.bottom <= nav.top + 1;
@@ -2705,7 +2755,7 @@ async function runChrome(browser) {
   const still = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "reduce" });
   const quiet = await still.newPage();
   await quiet.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-  await quiet.waitForSelector("#index-list .row");
+  await quiet.waitForSelector("#index-list .tile");
   await quiet.waitForTimeout(300);
   const running = () =>
     quiet.evaluate(() => document.getAnimations().filter((a) => a.playState === "running").length);
@@ -2721,7 +2771,7 @@ async function runChrome(browser) {
   const moving = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: "no-preference" });
   const lively = await moving.newPage();
   await lively.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
-  await lively.waitForSelector("#index-list .row");
+  await lively.waitForSelector("#index-list .tile");
   await lively.locator('.nav__item[href="#test"]').click();
   await lively.waitForSelector("#test-panel .surface");
   ok(
@@ -2731,9 +2781,136 @@ async function runChrome(browser) {
   await moving.close();
 }
 
+/**
+ * The first run (docs/ui3-plan.md §5): a browser that has never stored
+ * anything lands on `#hosgeldin`, answers three questions and arrives on
+ * a home screen built from them. A learner with history never sees it,
+ * and a deep link is not interrupted by it.
+ */
+async function runOnboarding(browser) {
+  const context = await browser.newContext({ viewport: { width: 320, height: 640 }, fresh: true });
+  const page = await context.newPage();
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#onboard-container .btn--primary");
+  ok(await page.evaluate(() => location.hash === "#hosgeldin"), "ilk açılış hoş geldin akışına gidiyor");
+  ok(
+    await page.evaluate(() => document.getElementById("bottom-nav").getBoundingClientRect().height === 0),
+    "hoş geldin ekranında sekme çubuğu yok"
+  );
+  await auditLayout(page, "hoş geldin 1", 320);
+  await page.locator("#onboard-container .btn--primary").click();
+  await page.waitForSelector("#onboard-exam-date");
+  await auditLayout(page, "hoş geldin 2", 320);
+  await page.fill("#onboard-exam-date", "2026-11-20");
+  await page.locator("#onboard-container .btn--primary").click();
+  await page.waitForSelector("#onboard-container .choice--card");
+  await auditLayout(page, "hoş geldin 3", 320);
+  await page.locator("#onboard-container .choice--card").nth(2).click();
+  ok(
+    (await page.locator('#onboard-container .choice--card[aria-pressed="true"]').innerText()).includes("20"),
+    "günlük hedef seçilebiliyor"
+  );
+  await page.locator("#onboard-container .btn--primary").click();
+  await page.waitForSelector("#onboard-name");
+  await page.fill("#onboard-name", "Eren");
+  await page.locator("#onboard-container .choice", { hasText: "Koyu" }).click();
+  ok(await page.evaluate(() => document.documentElement.getAttribute("data-theme") === "dark"), "tema seçimi anında boyanıyor");
+  await auditLayout(page, "hoş geldin 4", 320);
+  await page.locator("#onboard-container .btn--primary").click();
+  await page.waitForSelector("#lesson-index .tile");
+  const home = await page.locator("#view-egitim .surface").first().innerText();
+  ok(home.includes("Merhaba, Eren"), "ana ekran adıyla sesleniyor");
+  ok(/Sınava \d+ gün/.test(home), "ana ekran sınava geri sayıyor");
+  ok(home.includes("/20"), "günün halkası seçilen hedefe göre");
+  ok(
+    await page.evaluate(() => localStorage.getItem("englishPrep.onboarded") === "1" && localStorage.getItem("englishPrep.examDate") === "2026-11-20"),
+    "cevaplar saklandı"
+  );
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForSelector("#lesson-index .tile");
+  ok(await page.evaluate(() => location.hash !== "#hosgeldin"), "ikinci açılışta akış bir daha çıkmıyor");
+  ok(errors.length === 0, `hoş geldin: konsol temiz${errors.length ? ` — ${errors[0]}` : ""}`);
+  await context.close();
+
+  // Skipped: one tap, and the app is the app.
+  const skipping = await browser.newContext({ viewport: { width: 320, height: 640 }, fresh: true });
+  const quick = await skipping.newPage();
+  await quick.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await quick.waitForSelector("#onboard-container .btn--quiet");
+  await quick.locator("#onboard-container .btn--quiet", { hasText: "atla" }).click();
+  await quick.waitForSelector("#lesson-index .tile");
+  ok(await quick.evaluate(() => localStorage.getItem("englishPrep.onboarded") === "1"), "atlayınca da bir daha sorulmuyor");
+  await skipping.close();
+
+  // A deep link is what the person came for; the flow waits.
+  const linked = await browser.newContext({ viewport: { width: 320, height: 640 }, fresh: true });
+  const deep = await linked.newPage();
+  await deep.goto(`${BASE}/index.html#egitim/konu/tenses`, { waitUntil: "networkidle" });
+  await deep.waitForSelector("#lesson-reader .row");
+  ok(await deep.evaluate(() => location.hash === "#egitim/konu/tenses"), "derin bağlantı hoş geldin akışıyla kesilmiyor");
+  await linked.close();
+
+  // History predates the flow: never asked.
+  const veteran = await browser.newContext({ viewport: { width: 320, height: 640 }, fresh: true });
+  await veteran.addInitScript(() =>
+    localStorage.setItem(
+      "englishPrep.history",
+      JSON.stringify({ attempts: [{ date: new Date().toISOString(), mode: "mixed", topicBreakdown: {}, categoryBreakdown: {}, questions: [{ id: "x", correct: true }] }] })
+    )
+  );
+  const old = await veteran.newPage();
+  await old.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await old.waitForSelector("#lesson-index .tile, #onboard-container");
+  ok(await old.evaluate(() => location.hash !== "#hosgeldin"), "geçmişi olan öğrenene akış sorulmuyor");
+  await veteran.close();
+}
+
+/**
+ * The results screen's ring and its celebration: the ring draws to the
+ * score, confetti only at 80 % and above, and never under reduced motion.
+ */
+async function runResultsFeel(browser) {
+  for (const [motion, expectCanvas] of [["no-preference", true], ["reduce", false]]) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: motion });
+    const page = await context.newPage();
+    await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+    await page.evaluate(() => {
+      sessionStorage.setItem(
+        "englishPrep.quizResult",
+        JSON.stringify({
+          date: new Date().toISOString(),
+          mode: "mixed",
+          correctCount: 9,
+          totalCount: 10,
+          topicBreakdown: { tenses: { correct: 5, total: 5 }, modals: { correct: 4, total: 5 } },
+          categoryBreakdown: null,
+          questionResults: [],
+          recorded: true,
+        })
+      );
+    });
+    await page.goto(`${BASE}/results.html`, { waitUntil: "networkidle" });
+    await page.waitForSelector(".ring--lg");
+    const seen = await page.evaluate(() => Boolean(document.querySelector("canvas.confetti")));
+    ok(seen === expectCanvas, `konfeti ${motion === "reduce" ? "azaltılmış harekette çizilmiyor" : "%90'da çiziliyor"}`);
+    await page.waitForTimeout(1900);
+    ok(!(await page.evaluate(() => document.querySelector("canvas.confetti"))), `konfeti kalkıyor (${motion})`);
+    const ringState = await page.evaluate(() => {
+      const fill = document.querySelector(".ring--lg .ring__fill");
+      const dash = Number(fill.getAttribute("stroke-dasharray"));
+      const offset = Number(fill.getAttribute("stroke-dashoffset"));
+      return { ratio: 1 - offset / dash, value: document.querySelector(".ring--lg .ring__value").textContent };
+    });
+    ok(Math.abs(ringState.ratio - 0.9) < 0.01 && ringState.value === "9 / 10", `halka skora çiziliyor ve sayı yerine oturuyor (${ringState.value})`);
+    await context.close();
+  }
+}
+
 async function runAccessibility(page) {
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
-  await page.waitForSelector(".row");
+  await page.waitForSelector("#index-list .tile");
 
   ok(await page.locator('nav[aria-label="Bölümler"]').count() === 1, "alt navigasyon bir landmark");
   ok(
@@ -2962,7 +3139,7 @@ async function runWideLayout(browser) {
   // Where each split lives, and how to get to it. `pane` is the reading
   // column — the one whose width must not move.
   const screens = [
-    { name: "Eğitim indeksi", url: "index.html#egitim", host: "#lesson-index", wait: "#index-list .row" },
+    { name: "Eğitim indeksi", url: "index.html#egitim", host: "#lesson-index", wait: "#index-list .tile" },
     { name: "Test sekmesi", url: "index.html#test", host: "#test-panel", wait: "#topic-list .row" },
     { name: "Profil", url: "index.html#profil", host: "#profile-container", wait: "#profile-container .stats" },
   ];
@@ -3085,7 +3262,7 @@ async function runWideLayout(browser) {
   await context.close();
 }
 
-const browser = await chromium.launch({ executablePath: EXECUTABLE });
+const browser = onboardedByDefault(await chromium.launch({ executablePath: EXECUTABLE }));
 
 try {
   for (const viewport of VIEWPORTS) {
@@ -3108,6 +3285,12 @@ try {
 
   console.log("\n=== krom katmanı ve hareket ===");
   await runChrome(browser);
+
+  console.log("\n=== ilk açılış ===");
+  await runOnboarding(browser);
+
+  console.log("\n=== sonuç ekranının hissi ===");
+  await runResultsFeel(browser);
 
   console.log("\n=== önce kendin düşün ===");
   await runThinkFirst(browser);

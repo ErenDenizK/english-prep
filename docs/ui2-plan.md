@@ -172,8 +172,10 @@ starts. Estimates are working days [≈].
 Roughly four days [≈]. **Shipped 2026-09-10 as v0.58 (phase 1), v0.59
 (phase 2), v0.60 (phase 3) and v0.61 (phase 4)** — the acceptance in
 each row holds, and design-system §0 is now the specification of the
-structure. What remains is the owner's: three emulated phones are not
-his phone.
+structure. The owner's verdict on the result was that it was ugly, and
+`docs/ui3-plan.md` (v0.62) is the answer: the same structure, given
+light, depth and motion. §5's first refusal — translucent chrome — is
+reversed there, with the defect that justified it engineered out.
 
 ## 5 · What this refuses
 

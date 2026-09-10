@@ -22,6 +22,9 @@ const PROFILE_NAME_KEY = "englishPrep.profileName";
 const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
 const SETTINGS_KEY = "englishPrep.settings";
 const BACKUP_NUDGE_KEY = "englishPrep.backupNudgeDismissed";
+const EXAM_DATE_KEY = "englishPrep.examDate";
+const DAILY_GOAL_KEY = "englishPrep.dailyGoal";
+const ONBOARDED_KEY = "englishPrep.onboarded";
 
 /**
  * Attempts before the app mentions that a backup exists.
@@ -198,7 +201,7 @@ export function getItemStats() {
 export const MISTAKE_BOOK_GRADUATION = 2;
 
 /** A local calendar day, because "on separate days" is what a learner means. */
-function dayKey(timestamp) {
+export function dayKey(timestamp) {
   const date = new Date(timestamp);
   return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 }
@@ -790,6 +793,160 @@ export function setChoice(name, value, allowed) {
    browser without asking. These two functions are how a learner takes it
    with them; the merge itself is pure and lives in js/backup.js. */
 
+/* ---- The learner's own facts: the exam, the goal, the streak ---------- */
+
+/**
+ * The exam date, as `YYYY-MM-DD`, or null when the learner has not said.
+ * Stored as the date string a native date field produces, so the day is
+ * the day they typed and never shifts with a time zone.
+ */
+export function getExamDate() {
+  try {
+    const raw = localStorage.getItem(EXAM_DATE_KEY);
+    return raw && /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw : null;
+  } catch {
+    return null;
+  }
+}
+
+/** @param {string|null} date - `YYYY-MM-DD`, or null to forget it */
+export function setExamDate(date) {
+  try {
+    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      localStorage.setItem(EXAM_DATE_KEY, date);
+    } else {
+      localStorage.removeItem(EXAM_DATE_KEY);
+    }
+  } catch {
+    // Unavailable; the home screen simply shows no countdown.
+  }
+}
+
+/**
+ * Whole days from today to the exam, in the learner's own calendar: 0 on
+ * the day, negative once it has passed, null when unknown.
+ * @param {number} [now]
+ */
+export function daysToExam(now = Date.now()) {
+  const date = getExamDate();
+  if (!date) {
+    return null;
+  }
+  const [y, m, d] = date.split("-").map(Number);
+  const exam = new Date(y, m - 1, d);
+  const today = new Date(now);
+  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  return Math.round((exam - start) / 86_400_000);
+}
+
+export const DAILY_GOAL_OPTIONS = [5, 10, 20];
+export const DAILY_GOAL_DEFAULT = 10;
+
+/** Questions a day the learner said they would do. */
+export function getDailyGoal() {
+  try {
+    const n = Number(localStorage.getItem(DAILY_GOAL_KEY));
+    return DAILY_GOAL_OPTIONS.includes(n) ? n : DAILY_GOAL_DEFAULT;
+  } catch {
+    return DAILY_GOAL_DEFAULT;
+  }
+}
+
+/** @param {number} goal - one of DAILY_GOAL_OPTIONS */
+export function setDailyGoal(goal) {
+  try {
+    if (DAILY_GOAL_OPTIONS.includes(goal)) {
+      localStorage.setItem(DAILY_GOAL_KEY, String(goal));
+    }
+  } catch {
+    // Unavailable; the default holds.
+  }
+}
+
+/**
+ * Questions answered today, in the learner's own calendar day — the
+ * number the home ring fills against the goal. Whole attempts count,
+ * partial ones too: an answer is an answer.
+ * @param {number} [now]
+ */
+export function getTodayCount(now = Date.now()) {
+  const today = dayKey(now);
+  let count = 0;
+  for (const attempt of getHistory()) {
+    const at = Date.parse(attempt?.date ?? "");
+    if (!Number.isNaN(at) && dayKey(at) === today) {
+      count += attempt.questions?.length ?? 0;
+    }
+  }
+  return count;
+}
+
+/**
+ * The streak: consecutive days with any activity — an answer or a page
+ * read — ending today or yesterday. Lenient the way Headspace's is: one
+ * missed day inside a run is forgiven, two break it. It counts, it never
+ * nags, and nothing in the app notifies (docs/ui3-plan.md §7).
+ *
+ * @param {number} [now]
+ * @returns {{days: number, activeToday: boolean}}
+ */
+export function getStreak(now = Date.now()) {
+  const active = new Set();
+  for (const attempt of getHistory()) {
+    const at = Date.parse(attempt?.date ?? "");
+    if (!Number.isNaN(at)) {
+      active.add(dayKey(at));
+    }
+  }
+  for (const entry of Object.values(getAllLessonProgress())) {
+    if (typeof entry.at === "number") {
+      active.add(dayKey(entry.at));
+    }
+  }
+  const activeToday = active.has(dayKey(now));
+  let days = 0;
+  let forgiven = false;
+  // Walk back one calendar day at a time from today. Today itself may be
+  // empty without breaking anything — the day is not over.
+  for (let back = 0; back < 400; back += 1) {
+    const key = dayKey(now - back * 86_400_000);
+    if (active.has(key)) {
+      days += 1;
+    } else if (back === 0) {
+      continue;
+    } else if (!forgiven) {
+      forgiven = true;
+    } else {
+      break;
+    }
+  }
+  // A forgiven gap at the very end of the walk is not part of the run.
+  return { days, activeToday };
+}
+
+/** Whether the first-run flow has been completed or skipped. */
+export function isOnboarded() {
+  try {
+    return localStorage.getItem(ONBOARDED_KEY) === "1";
+  } catch {
+    // Storage unavailable: nothing could be saved, so never show a flow
+    // whose answers would be lost.
+    return true;
+  }
+}
+
+export function setOnboarded(done = true) {
+  try {
+    if (done) {
+      localStorage.setItem(ONBOARDED_KEY, "1");
+    } else {
+      localStorage.removeItem(ONBOARDED_KEY);
+    }
+  } catch {
+    // Unavailable.
+  }
+}
+
 /**
  * The whole learner-owned state, raw. Reads through the same guarded
  * helpers as everything else, so a corrupt key exports as its empty
@@ -802,6 +959,8 @@ export function exportState() {
     seenVersions: readJson(SEEN_VERSIONS_KEY, {}, isPlainObject),
     profileName: getProfileName(),
     settings: getSettings(),
+    examDate: getExamDate(),
+    dailyGoal: getDailyGoal(),
   };
 }
 
@@ -837,6 +996,9 @@ export function importState(backup) {
   // does; a restore only fills in what has never been chosen here.
   if (isPlainObject(theirs.settings)) {
     writeJson(SETTINGS_KEY, { ...theirs.settings, ...getSettings() });
+  }
+  if (!getExamDate() && typeof theirs.examDate === "string") {
+    setExamDate(theirs.examDate);
   }
 
   return summary;
