@@ -1,5 +1,9 @@
 # Redesign plan
 
+> **Historical (2026-09-10).** This was the first rebuild, against the
+> design system's tokens and components. The second — the structure
+> above them — is `docs/ui2-plan.md`, and design-system §0 is its spec.
+
 Agreed 2026-09-03, after the owner's review of the `v0.11` build: the
 architecture is right, the interface isn't. This file is the plan of
 record for replacing it. Update it as decisions land — the point is that

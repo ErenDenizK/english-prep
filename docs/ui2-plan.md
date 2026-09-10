@@ -169,7 +169,11 @@ starts. Estimates are working days [≈].
 | **3 · Screens** (1½) | The seven screens recomposed on the section grammar: Eğitim root, topic, reader, Test root, quiz, results, Profil. Ad-hoc exceptions removed (the search field's placement, the lesson-end card, Profil's essay order, the quiz's counter). | The intro budget and index budget hold; every section has a head or is the screen's first; nothing on a screen is outside a section. |
 | **4 · Spec and hand-off** (½) | `docs/design-system.md` rewritten as the specification of *this* system — anatomy, sections, components, tokens, motion, theme, verification — so the next feature is placed rather than invented; CLAUDE.md's Design paragraph; `docs/redesign-plan.md` and `docs/beta1-plan.md` marked historical. | A new feature can be described entirely as "which screen, which section, which container, which components". |
 
-Roughly four days [≈]. Phase 1 starts now.
+Roughly four days [≈]. **Shipped 2026-09-10 as v0.58 (phase 1), v0.59
+(phase 2), v0.60 (phase 3) and v0.61 (phase 4)** — the acceptance in
+each row holds, and design-system §0 is now the specification of the
+structure. What remains is the owner's: three emulated phones are not
+his phone.
 
 ## 5 · What this refuses
 

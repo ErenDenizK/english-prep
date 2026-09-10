@@ -1,5 +1,8 @@
 # Beta1 — the plan
 
+> **Historical (2026-09-10).** Shipped in full as v0.46–v0.52; the
+> owner's verdict on the result, and what followed, is `docs/ui2-plan.md`.
+
 2026-09-09. Synthesised from three arms that ran in parallel on the
 owner's direction — *reading still not fixed, "minimalizm ve sığ
 arasında", the orange does not contrast on white, brown-and-orange goes

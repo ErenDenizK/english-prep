@@ -28,6 +28,84 @@ options and grammar terms.
 
 ---
 
+## 0 · Structure
+
+Rewritten 2026-09-10 as the first section, because it was the missing
+one: six rounds of measured, green increments still did not add up,
+and the reason was that nothing above the component level had ever
+been designed (`docs/ui2-plan.md` §1). Three contracts, and everything
+on a screen is an instance of one. **A new feature is placed, not
+invented: which screen, which section, which container, which
+components.** If it cannot be described that way, the feature is not
+ready.
+
+### 0.1 The screen
+
+Every screen has the same anatomy and declares it:
+
+```
+screen
+  bar    leading · title · trailing        opaque, 56px, hairline below
+  body   the one scroll region             sections; gutter 16; measure 608
+  foot   tabs | actions | none             opaque, hairline above
+```
+
+- **The bar always has a title, and the title is the screen's name.**
+  Roots are titled by their tab — *Eğitim*, *Test*, *Profil*; a child
+  by what it is — the topic's name, the lesson's category, the test's
+  name with its count, *Sonuç*. The brand is not a title and is not in
+  the chrome. A person always knows where they are; that is what
+  structure means.
+- **Leading** is the way back on a child, named for where it goes
+  (*Konular*, *Dersler*, the tab Profil was opened from; *Çık* or
+  *Bitir* in the quiz), and empty on a root. **Trailing** holds one
+  thing: the profile control on a root, a readout on a child. A
+  progress line may run along the bar's bottom edge — the reader's
+  position, the quiz's count.
+- **Foot** is the tab bar on a root, the action bar where the screen
+  has a forward action (the topic screen, the quiz, the results), and
+  nothing in the reader, whose forward actions are at its end.
+- **Bars are opaque and take their height in the column.** Nothing
+  scrolls under chrome. Translucent, floating chrome was tried
+  (v0.56) and failed as structure on every phone that did not
+  composite the blur: text through text, rows under a capsule.
+  `js/shell.js` `createBar` is the one place a top is made.
+
+### 0.2 The section
+
+A body is a vertical sequence of sections. A section is a **head** — a
+label (`.t-label`, 15/600 in the accent's text colour, tracked) with an
+optional one-line hint (`.t-quiet`) — and **one container**:
+
+| container | holds | separation | class |
+|---|---|---|---|
+| **list** | homogeneous rows | a hairline between rows, nothing around | rows in a `div`, or `.items` |
+| **card** | one heterogeneous group with an action | the card's fill, 16px radius | `.surface` |
+| **prose** | paragraphs and inline marks | space only | `.prose` |
+| **band** | one raised block inside prose — the contrast | the card's fill, full-bleed, no radius | `.block--contrast` |
+
+48 above a head, 8 below; 32 between unlabelled sections. A section
+never contains a section; a card never contains a card; a list is never
+inside a card. The head may be omitted only on a screen's first section
+when that section is a card that carries its own label.
+
+### 0.3 The component
+
+Fourteen, each with a spec in §7 and an entry in `docs/components.html`,
+and the sweep fails if a class in the components layer has no entry:
+
+Bar · TabBar · ActionBar · Button · Row · Card · SectionHead · Stat ·
+Chip · Field · Listbox · Dialog · Progress · Feedback/Option.
+
+Components reference the **semantic** tokens (`--page`, `--card`,
+`--raised`, `--ink`, `--ink-2`, `--accent`, `--accent-ink`,
+`--accent-text`, `--hairline`, `--edge`, `--focus`, `--ok`, `--no` and
+the tints) and the **component** tokens (`--target`, `--bar-h`,
+`--btn-h`, `--btn-h-primary`, `--row-min`). They never name a primitive
+(`--c-*`), which is what lets a theme be a rebinding.
+
+---
+
 ## 1 · Colour
 
 ### 1.1 How these values were chosen
@@ -497,17 +575,13 @@ corners. In CSS that is
 inner element is square-cornered — and that is usually the signal it
 should not have been nested at all.
 
-**No shadows on anything that sits on the page.** Elevation is
-`--c-surface-1` / `--c-surface-2`. A modal gets a scrim, not a shadow;
-the scrim does the separating work a shadow cannot do on a dark ground.
-The one exception is the floating tab bar (§7, *the chrome*): it is not
-*on* the page, it floats *over* it, translucent, and a lightness step
-cannot separate a translucent thing from what shows through it — so it
-carries a soft 24px shadow at 18% and a hairline ring. Nothing else may
-borrow that.
+**No shadows.** Elevation is `--card` / `--raised`. A modal gets a
+scrim, not a shadow; the scrim does the separating work a shadow cannot
+do on a dark ground. (v0.56 made one exception for a floating tab bar;
+v0.57 removed the bar and the exception with it.)
 
-Cards are `--r-3` (16px); controls `--r-2`; the tab bar and chips the
-pill.
+Cards are `--r-3` (16px); controls and fields `--r-2`; chips and the
+tab bar's selected capsule the pill.
 
 A 1px inset top highlight — `inset 0 1px 0 rgb(255 255 255 / 0.04)` — is
 permitted on a raised surface. It reads as a light edge rather than a
@@ -570,11 +644,10 @@ is welcome — and so do the reader, the topic screen and each quiz
 question. The feedback band does not: answering a question is the one
 action that must appear, not perform.
 
-**The header's light.** A soft radial glow of the accent's hue behind
-the brand, inside the header only, drifting ±8% over 14 s when motion
-is welcome and still otherwise. It is the app's one ambient element;
-it never sits under a paragraph, and its peak is measured against the
-brand (`header-glow` in `PAIRS`).
+**Three things animate, and no fourth**: the route crossfade, the
+entrance of an arriving screen, the eased progress fill. Pressed states
+scale; hover changes surface. An ambient glow was tried (v0.56) and read
+as a smudge; it is gone.
 
 ---
 
@@ -648,54 +721,32 @@ All inline SVG carries `focusable="false"`.
 
 ## 7 · Components
 
-Twelve primitives. The current build has **45 component roots**, which is
-what an ad-hoc system looks like from the outside; the consolidation below
-is the point of the rebuild.
+Fourteen. Every one has an entry in `docs/components.html` showing every
+state it has, in both themes, and the sweep fails the day a class in the
+components layer has no entry (§0.3). The specs, one line each on
+anatomy · sizes · states · tokens · accessibility:
 
-| Primitive | Replaces | Notes |
-| --- | --- | --- |
-| **Surface** | `panel`, `hero`, `question-card`, `score-summary`, `lesson-step` | One level only — or a full-bleed band (`.bleed`, radius 0): the reader's contrast block |
-| **Row** | `topic-card`, `lesson-row`, `breakdown-list li`, `review-item` | The whole row is the target |
-| **Stat** | `stat-tile`, `stat-grid` | Figures use tabular numerals |
-| **Button** | `btn`, `option-btn`, `profile-trigger`, `quiz-nav__exit` | Three levels, one filled per screen; the text button (`.btn--text`) is the quiet level on the keyline |
-| **Chip** | `badge`, `category-chip` | Pill radius, never interactive |
-| **Field** | `text-input` | 16px minimum, always |
-| **Listbox** | `dropdown` | Combobox pattern — §8.2 |
-| **Dialog** | `modal`, `modal-overlay` | Native `<dialog>` — §8.3 |
-| **Nav** | `bottom-nav` | Two destinations, always labelled; a floating capsule over the content (*the chrome*, below) |
-| **Progress** | `progress-track` | Also the reader's position indicator |
-| **Feedback** | `feedback` | Four redundant channels — §1.5 |
+| # | Component | Anatomy | Sizes | States | Accessibility |
+|---|---|---|---|---|---|
+| 1 | **Bar** `.bar` | lead · title · trail; optional progress line | 56px; title 18/600 centred, clipped before it wraps | — | the title is a `<p>`, the screen's own heading stays in the body; back is a real button |
+| 2 | **TabBar** `.nav` | two `<a>` with icon + label | 48px items, capsule on the current | current | a `<nav>` landmark with `aria-current`, never a tablist |
+| 3 | **ActionBar** `.shell__bar` | one or two `.btn`, or a hint | 52 + 2×8, fixed | hint / one / two | equal halves; labels never wrap; no disabled button — a hint instead |
+| 4 | **Button** `.btn` | label, optional 20px icon | 48; primary 52; min 88 wide | hover (surface), pressed (scale .97), focus (outline), `aria-disabled` | filled / tonal (`--secondary`) / quiet / text (`--text`) / icon (`--icon`); one filled per screen |
+| 5 | **Row** `.row` | lead (24) · main (title, sub ≤2 lines) · trail | min 56 | hover, `aria-checked` as a switch | a `<button>` or `<a>`; the whole row is the target |
+| 6 | **Card** `.surface` | a label, content, an action | 16 padding, 16 radius | — | one level; controls on it step up to `--raised` |
+| 7 | **SectionHead** `.t-label` + `.t-quiet` | label, optional hint | 15/600 tracked; hint 18/400 | — | an `<h2>` or `<h3>` in the body's outline |
+| 8 | **Stat** `.stats` | value over label | 28/600 tabular over 15/600 | — | two by two at 8rem minimum |
+| 9 | **Chip** `.chip` | one word | 15/600 pill; English 18 serif | ok / no / accent | never interactive |
+| 10 | **Field** `.field` | the one border in the app | 48; 18px | focus, `--multiline` | a label or `aria-label`, always |
+| 11 | **Listbox** `.listbox` | trigger + menu | 48 trigger; 44 options | open (raised trigger), active option | the select-only combobox contract, §8.2 |
+| 12 | **Dialog** `.dialog` | title, body, two equal actions | 22rem max | open | native `<dialog>`, §8.3 |
+| 13 | **Progress** `.progress` | a 3px track and fill | — | eased fill | the reader's position on the bar's edge |
+| 14 | **Feedback** `.feedback` + **Option** `.option` | verdict glyph + word, body, report; answer rows | 52 rows, serif | ok / no, `aria-disabled` once answered | four redundant channels, §1.5; the group points at its stem |
 
-Three things sit outside that inventory and are not primitives:
-
-- **The shell** — `.shell__header`, `.shell__scroll`, `.nav`,
-  `.shell__bar`. Layout, not a component. The header and the bar share the
-  page's measure and gutters so the brand, the content and the buttons all
-  land on the same two keylines. `.shell__bar-inner` has a fixed minimum
-  height — the tallest thing it can hold, a 52px primary button, plus its
-  padding — so a bar holding a hint and a bar holding a button are the same
-  size and answering a question cannot move it.
-- **The chrome** — the header, the tab bar, the action bar and the
-  reader's sticky strip are one layer *over* the content: a translucent
-  page colour (`--chrome-alpha`, 88%) with the content blurred behind it,
-  solid wherever `backdrop-filter` is missing or
-  `prefers-reduced-transparency` is set. Glass is for the chrome and never
-  for content — cards, rows and prose stay opaque (research/premium.md
-  §2.1). The bars take no height in the column: each pulls the scroll
-  region under itself and the region pads by the same amount, keyed on
-  which bars are present with `:has()`, so the first and last lines of
-  content start clear of them and everything between passes under. Their
-  labels are measured over the worst content that can pass under them —
-  the amber button — in `PAIRS`. The tab bar is a floating capsule, inset
-  12px, never wider than 400px, with a capsule highlight on the current
-  destination.
-- **`.btn--icon`** — a *shape*, orthogonal to the three levels, for a
-  control whose whole content is one glyph or one letter. It carries
-  `flex: none`, because the 48px square exists precisely so it cannot be
-  squeezed, and in a flex row it otherwise collapses to 23px at 320.
-- **`.blank`** — the cloze gap: a rule on the baseline, uniform width, with
-  the word for the synthesiser hidden inside it. Sizing the gap to the
-  answer would leak the answer.
+Two shapes sit inside the inventory rather than beside it: `.btn--icon`,
+a fixed 48px square a flex row cannot squeeze; and `.blank`, the cloze
+gap — a rule on the baseline, uniform width so it cannot leak the
+answer.
 
 ### 7.1 Row versus Surface
 
@@ -736,10 +787,10 @@ depth.
 | Icon | 20px, `--s-3` gap |
 | Minimum width | 88px, so short Turkish labels don't produce runts |
 
-Three levels, one filled per screen: filled → surface-1 → text. In the
-action bar the retreat is as wide as its label and the advance takes the
-rest; a 1:2 split by width gave the retreat 93px at 320, which holds
-"Geri" and not "Konulara dön". **No outlined buttons.** An outlined button inside a tinted band is a frame
+Three levels, one filled per screen: filled → tonal → text. In the
+action bar two actions are equal halves — a 1:2 split, then a
+label-width retreat, both read as a broken structure — and no label
+wraps. **No outlined buttons.** An outlined button inside a tinted band is a frame
 inside a frame — it was the one genuine box-in-box the review of the first
 mockups found, and removing the variant removes the whole class of error.
 
@@ -1068,7 +1119,11 @@ Nothing here is considered done because it looks right.
   error, at most four rendered sizes, no rendered pair the scale forbids,
   no bar label on two lines, on every screen the journey lands on; the
   theme as a state (stored, followed, chosen, restored) in its own
-  section. 1280 is also where the second column (§7.3) is in force,
+  section; **the anatomy** — a titled bar on every screen, its three
+  slots never overlapping, opaque bars, content starting below the bar
+  and ending above the foot; **the catalogue** — every class in the
+  components layer present on `docs/components.html`, audited in both
+  themes. 1280 is also where the second column (§7.3) is in force,
   so the wide layout conforms per this list rather than beside it, and a
   section of its own additionally measures the split against §7.3: that it
   engages at 1280×900, stands down at 768×1024 and at 1280×560, that the
