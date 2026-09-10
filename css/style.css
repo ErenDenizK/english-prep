@@ -1,77 +1,64 @@
-/* English Prep — stylesheet.
- *
- * The binding specification is docs/design-system.md. Read it before
- * changing anything here; every value below traces to a rule there, and
- * the colour tokens in particular were solved against a contrast
- * requirement rather than chosen — `npm run color` re-measures them and
- * fails if one drifts.
- *
- * Three rules generate most of this file:
- *   1. Depth is surface lightness. Never a shadow, never a border.
- *   2. One card level. Nothing framed inside a framed thing.
- *   3. One accent, one job.
- *
- * Cascade layers order the whole sheet, so nothing here ever needs a
- * specificity fight or an !important.
- */
+/* ==========================================================================
+   English Prep — the stylesheet.
 
-@layer reset, tokens, base, components, utilities;
+   UI 2 (2026-09-10, docs/ui2-plan.md): rewritten from a blank file against
+   three contracts. Every screen is a SCREEN — bar, body, foot. A body is
+   SECTIONS, and a section is a head and one of four containers: list,
+   card, prose, band. Everything drawn is one of fourteen COMPONENTS, each
+   with a spec in docs/design-system.md.
+
+   Layers, in cascade order:
+     tokens      primitive → semantic → component; both themes
+     reset       the shell's ground rules
+     layout      the screen anatomy, sections, the four containers, stacks
+     components  the fourteen
+     screens     what only one screen needs (the reader's blocks, the quiz)
+     utilities   type roles, motion, a11y, forced colours
+
+   Colour values are solved and measured by tools/palette.mjs; they are
+   copied here, never edited here. Every rule that sets text has a row in
+   PAIRS there.
+   ========================================================================== */
+
+@layer tokens, reset, layout, components, screens, utilities;
 
 /* ==========================================================================
    Tokens
    ========================================================================== */
 
 @layer tokens {
+  /* -- Primitive: the measured palette, dark. See tools/palette.mjs for
+        every value's derivation; docs/design-system.md §1 for the reasons.
+        Named by role already — surface-0 is "the page" in any theme — so
+        the semantic layer below is thin on purpose. -- */
   :root {
     color-scheme: dark;
-    /* The light blocks below set `light`; this is the default and the
-       one the <meta> in each head matches for the cold-start paint. */
 
-    /* -- Surfaces. Three levels; past three they stop being
-          distinguishable, and each one costs contrast on every text token
-          that has to survive the brightest. Derived from a warm near-black
-          with Material's elevation-overlay curve at 1dp and 6dp. -- */
     --c-surface-0: #0c1117;
     --c-surface-1: #181d23;
     --c-surface-2: #262b31;
 
-    /* -- Text. Solid, never white-at-opacity: a translucent token has a
-          different contrast on every surface in the ramp. Measured against
-          surface-2, the worst case. -- */
-    --c-text-1: #e9ecef; /* APCA Lc 91 — body prose, English sentences */
-    --c-text-2: #d0d4da; /* Lc 75 — labels, secondary lines */
-    --c-text-3: #b5bac2; /* Lc 60 — non-essential: hints, counters */
+    --c-text-1: #e9ecef; /* APCA Lc 91 against surface-2 */
+    --c-text-2: #d0d4da; /* Lc 76 — the one-line tier at 600; quiet sentences at 18/400 */
+    --c-text-3: #b5bac2; /* Lc 61 — no text rule uses it; prefers-contrast only */
 
-    /* -- Accent. Amber is structurally a dark-ink-on-fill colour: no ink
-          reaches Lc 75 on it (pure black tops out at 67), so the fill
-          carries short bold labels and never a sentence. -- */
     --c-accent: #f1af5d;
     --c-on-accent: #1a0f03;
     --c-accent-text: #f5ce95;
     --c-focus: #f4dab2;
 
-    /* -- Semantic. Indicators, not text colours: red cannot reach Lc 75 at
-          any usable chroma on this ground. The words are set in --c-text-1
-          and the hue lives in the glyph and the tint, which is what WCAG
-          1.4.1 requires anyway. -- */
     --c-ok: #7ccd8e;
     --c-no: #e97871;
     --c-ok-tint: rgb(124 205 142 / 0.12);
     --c-no-tint: rgb(233 120 113 / 0.12);
     --c-accent-tint: rgb(241 175 93 / 0.14);
 
-    /* -- Two different lines, and the distinction is load-bearing.
-          A hairline *separates* — decorative, and exempt from 1.4.11.
-          An edge *identifies a control's boundary*, which 1.4.11 requires
-          at 3:1, so it is the lightest token here that clears 3:1 against
-          all three surfaces. A text field with no visible edge is both a
-          conformance failure and a usability one. -- */
-    --c-hairline: #2f3339;
-    --c-edge: #71767d;
+    --c-hairline: #2f3339; /* separates; exempt from 1.4.11 */
+    --c-edge: #71767d; /* a control's boundary; 3:1 on every surface */
 
-    /* -- Space. 4pt base: a text-dense app on a 320px floor needs 4 and 12
-          for icon gaps and chip padding. Dense at the bottom, coarse at the
-          top. -- */
+    /* -- Space. 4pt base, dense at the bottom and coarse at the top. The
+          reader's rhythm is 4 / 24 / 48: three steps that are geometric,
+          not arithmetic. -- */
     --s-1: 2px;
     --s-2: 4px;
     --s-3: 8px;
@@ -83,34 +70,20 @@
     --s-9: 48px;
     --s-10: 64px;
 
-    /* -- Radius. 0 for anything full-bleed. Nested radius = outer minus
-          padding; if that is <= 0 the inner element is square-cornered,
-          which is usually the sign it should not have been nested. -- */
+    /* -- Radius. 0 for anything full-bleed. -- */
     --r-1: 8px;
     --r-2: 12px;
     --r-3: 16px;
     --r-pill: 999px;
 
-    /* -- Type. Base 16px is not negotiable: iOS Safari zooms a focused
-          control under 16px, and 16 is the floor for comfortable reading at
-          phone distance. Every line-height is a multiple of 4 so type lands
-          on the spacing grid; the ratio falls as size rises. -- */
-    /* The *-Fallback families are metric-matched (see css/fonts.css), so the
-       swap when the webfont arrives changes no line box and shifts nothing. */
+    /* -- Type. Five steps, every adjacent pair ≥ 1.2 apart: 36 · 28 · 22 ·
+          18 · 15. Body is 18 because that is the first size at which the
+          second grey at weight 400 clears its ground; 15 is the floor and
+          is only ever set at 600, for one line. Serif is English, sans is
+          Turkish and the interface. -- */
     --f-serif: "Source Serif 4", "Source Serif 4 Fallback", "Times New Roman", Georgia, serif;
     --f-sans: "Source Sans 3", "Source Sans 3 Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
 
-    /* Five steps, and every adjacent pair is at least 1.2 apart:
-       36 · 28 · 22 · 18 · 15. The old scale had 19/17/16/15 in its middle
-       — two one-pixel "steps" where eighty per cent of the reader's
-       characters lived, so size carried no hierarchy at all there. Body
-       is 18 rather than 16 so that a quiet tier at weight 400 exists:
-       on this ground --c-text-2 at 400 is first legal at 18px (needs Lc
-       75; measured 75–79), and 16/400 needs 90, which only --c-text-1
-       reaches. 15 is the floor and it is only ever set at weight 600.
-       The weight axis points UP: 400 reads, 600 heads and labels; no
-       tier quieter than body is heavier than body except a one-line
-       label. See docs/research/beta1-hierarchy.md §6.1. */
     --t-display: 36px;
     --t-display-lh: 40px;
     --t-title: 28px;
@@ -122,9 +95,9 @@
     --t-meta: 15px;
     --t-meta-lh: 20px;
 
-    /* -- Motion. Exits are shorter than entrances: a leaving element no
-          longer needs to be read. Nothing exceeds 400ms, the Doherty
-          threshold. Never ease-in on anything the user is waiting for. -- */
+    /* -- Motion. Three things animate in this app and no fourth: a route
+          change crossfades, an arriving screen enters, a progress fill
+          eases. Exits are shorter than entrances; nothing exceeds 400ms. -- */
     --d-micro: 120ms;
     --d-enter: 220ms;
     --d-exit: 170ms;
@@ -133,61 +106,54 @@
     --ease-in: cubic-bezier(0.3, 0, 1, 1);
     --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
-    /* -- Layout -- */
+    /* -- Layout. One reading column, one keyline pair, one pane. -- */
     --w-page: 640px;
     --w-measure: 65ch;
-    --h-target: 48px; /* clears WCAG 2.5.5 AAA, Material and Apple at once */
-    --h-header: 56px;
-    --h-nav: 56px;
-    --gutter: var(--s-5);
-
-    /* -- The supporting pane, and the frame that has to grow to hold it.
-          A wide window buys nothing by stretching the reading column: the
-          measure is a constant (§2.3), and prose past ~75 characters costs
-          comprehension rather than buying it. What a wide window can buy is
-          a SECOND column — content that was below the fold brought up
-          beside the reading column, which is the one thing the research on
-          desktop layouts is unambiguous about (more content per screenful,
-          not more pixels per line).
-
-          320px is the pane, and it is not a new minimum: it is wider than
-          the 288px of content a 320px phone gets, so nothing inside a pane
-          meets a width the 320 sweep has not already verified. -- */
     --w-aside: 320px;
     --w-wide: calc(var(--w-page) + var(--s-8) + var(--w-aside)); /* 1000px */
-
-    /* The shell's keyline. One token, so the header, the scrolling page and
-       the action bar cannot drift apart: they are all the same two vertical
-       lines, at whichever width the current screen is using. */
     --w-frame: var(--w-page);
+    --gutter: var(--s-5);
+
+    /* -- Semantic. What a component asks for. A theme is a rebinding of
+          the primitives above; a component never names a primitive. -- */
+    --page: var(--c-surface-0);
+    --card: var(--c-surface-1);
+    --raised: var(--c-surface-2);
+    --ink: var(--c-text-1);
+    --ink-2: var(--c-text-2);
+    --hairline: var(--c-hairline);
+    --edge: var(--c-edge);
+    --accent: var(--c-accent);
+    --accent-ink: var(--c-on-accent);
+    --accent-text: var(--c-accent-text);
+    --accent-tint: var(--c-accent-tint);
+    --focus: var(--c-focus);
+    --ok: var(--c-ok);
+    --no: var(--c-no);
+    --ok-tint: var(--c-ok-tint);
+    --no-tint: var(--c-no-tint);
+
+    /* -- Component. The sizes the anatomy is built from. -- */
+    --target: 48px; /* WCAG 2.5.5 AAA, Material and Apple at once */
+    --bar-h: 56px; /* the top bar, and the tab bar's row */
+    --btn-h: var(--target);
+    --btn-h-primary: 52px;
+    --row-min: 56px;
+    --foot-pad: var(--s-3);
   }
 
-  /* The frame widens for exactly the screens that have a second column to
-     put there, and only once the window can hold both plus a section
-     gutter either side — 1000 + 2 × 40. A screen with no pane keeps the
-     640px reading column it has always had, at every window width.
-
-     The height guard is not decoration: a landscape tablet is wide and
-     short at once, and two panes on a short window is the documented way
-     "tablet support" ends up worse than the phone layout it replaced.
-
-     Written as a token override rather than as layout rules, which is how
-     every other conditional in this sheet is written (§9.3) — it keeps the
-     decision in one place and out of any specificity fight. */
+  /* The frame widens for exactly the screens that have a second column,
+     once the window can hold both plus a gutter either side. The height
+     guard keeps a short landscape tablet on the phone layout. */
   @media (min-width: 1080px) and (min-height: 600px) {
-    /* Two selectors because a pane can live in a tab (index.html, where the
-       inactive views are `hidden` and must not count) or be the page itself
-       (results.html). */
     body:has(.view:not([hidden]) .split:not([hidden])),
     body:has(.page.split) {
       --w-frame: var(--w-wide);
     }
   }
 
-  /* OKLCH is the authoring space — equal lightness across hues means equal
-     measured contrast — but the hex values above are what ship, so the
-     override below only applies where oklch() is understood. Values are
-     identical; this exists so the palette stays re-derivable. */
+  /* OKLCH is the authoring space; the hexes above are what ship. Identical
+     values, so the palette stays re-derivable. */
   @supports (color: oklch(0.5 0.1 75)) {
     :root {
       --c-surface-0: oklch(0.175 0.014 255);
@@ -202,47 +168,17 @@
       --c-focus: oklch(0.9 0.06 78);
       --c-ok: oklch(0.78 0.12 150);
       --c-no: oklch(0.7 0.14 25);
-      --c-hairline: oklch(0.32 0.012 255);
-      --c-edge: oklch(0.564 0.012 255);
+      --c-hairline: oklch(0.31 0.012 255);
+      --c-edge: oklch(0.545 0.012 255);
     }
   }
 
-
-  /* -- The light theme -------------------------------------------------
-
-     Not an inversion. Every value was re-solved against the same
-     requirements on a warm off-white at the same hue, and came out
-     different rather than mirrored — `npm run color` measures both
-     themes and both sets of size pairings on every run.
-
-     Two of the design system's rules restate themselves rather than
-     flipping. **Elevation is a lightness step away from the page, in
-     whichever direction the page is not**, so these surfaces darken
-     while the dark ones lighten, on the same three-step budget. And the
-     worst case is still `--c-surface-2` for the opposite reason: on dark
-     it is the lightest surface and therefore closest to light text; here
-     it is the darkest and closest to dark text.
-
-     The accent is a PAIR. One amber cannot serve both modes: dark ink on
-     a fill that clears 3:1 against a light page has no solution at any
-     hue or chroma scanned. Inverting the ink opens one window — a burnt
-     amber, oklch(0.535 0.125 60), with the page itself as the ink — so
-     light `--c-accent` is darker and light `--c-on-accent` is
-     `--c-surface-0`. Same hue family, one brand, two values.
-
-     And the ground is PAPER, not a white screen: cream at hue 85, L 0.96
-     — two steps below the cool near-white this theme first shipped with,
-     which the owner used and called unreadable. That was glare: a
-     full-brightness cool white with maximal-contrast ink on it. The ink
-     is a warm dark (hue 70) and measures Lc 85 against the darkest cream
-     and 88–90 where prose actually sits. tools/palette.mjs solves and
-     explains every value; the two contrast models were cross-checked
-     against the reference apca-w3 and colorjs.io.
-
-     Written twice because there is no build step. The media query carries
-     the system preference and yields to an explicit dark choice; the
-     attribute selector carries a manual choice and beats a light system.
-     Two copies of one list is the honest cost of that. */
+  /* -- The light theme: paper, not a white screen. Cream at hue 85, two
+        lightness steps below a cool white, with a warm dark ink measured
+        to Lc 85 against the darkest cream and 88–90 where prose sits.
+        Written twice because there is no build step: the media query
+        carries the phone's preference and yields to an explicit dark
+        choice; the attribute carries a choice and beats a light phone. -- */
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
       --c-surface-0: #f6f1e7;
@@ -267,44 +203,38 @@
   }
 
   :root[data-theme="light"] {
-      --c-surface-0: #f6f1e7;
-      --c-surface-1: #eee8dd;
-      --c-surface-2: #e5dfd3;
-      --c-text-1: #211b14;
-      --c-text-2: #413a31;
-      --c-text-3: #685f54;
-      --c-accent: #a05801;
-      --c-accent-tint: rgb(160 88 1 / 0.14);
-      --c-accent-text: #623200;
-      --c-on-accent: #f6f1e7;
-      --c-ok: #1f8944;
-      --c-ok-tint: rgb(31 137 68 / 0.12);
-      --c-no: #d14b48;
-      --c-no-tint: rgb(209 75 72 / 0.12);
-      --c-focus: #825023;
-      --c-hairline: #d6d1c8;
-      --c-edge: #76736b;
-      color-scheme: light;
+    --c-surface-0: #f6f1e7;
+    --c-surface-1: #eee8dd;
+    --c-surface-2: #e5dfd3;
+    --c-text-1: #211b14;
+    --c-text-2: #413a31;
+    --c-text-3: #685f54;
+    --c-accent: #a05801;
+    --c-accent-tint: rgb(160 88 1 / 0.14);
+    --c-accent-text: #623200;
+    --c-on-accent: #f6f1e7;
+    --c-ok: #1f8944;
+    --c-ok-tint: rgb(31 137 68 / 0.12);
+    --c-no: #d14b48;
+    --c-no-tint: rgb(209 75 72 / 0.12);
+    --c-focus: #825023;
+    --c-hairline: #d6d1c8;
+    --c-edge: #76736b;
+    color-scheme: light;
   }
 
-
-  /* Preference overrides redefine tokens rather than rules, which keeps
-     them out of specificity fights entirely. */
+  /* More contrast, asked for: the second grey becomes the first and the
+     hairlines become visible. Per theme, in plain values — a chained
+     var() here collapsed the hairline into the text colour once. */
   @media (prefers-contrast: more) {
     :root {
       --c-text-2: var(--c-text-1);
       --c-text-3: #d0d4da;
-      --c-hairline: #61666e;
-      --c-edge: #9ba0a8;
+      --c-hairline: #5b6068;
+      --c-edge: #a3a8af;
     }
   }
 
-  /* The same preference on the light theme, with its own values: the
-     hexes above move *towards white*, which on a light page is the wrong
-     direction and would make the hairlines vanish. Chaining `var()` here
-     instead would be tidier and wrong — custom properties resolve at use,
-     so --c-hairline: var(--c-edge) would collapse to the text colour and
-     turn every divider into a full-strength rule. */
   @media (prefers-contrast: more) and (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
       --c-text-2: var(--c-text-1);
@@ -313,6 +243,7 @@
       --c-edge: #5b564f;
     }
   }
+
   @media (prefers-contrast: more) {
     :root[data-theme="light"] {
       --c-text-2: var(--c-text-1);
@@ -334,39 +265,28 @@
     box-sizing: border-box;
   }
 
-  /* The native [hidden] rule loses to any author class rule of equal or
-     higher specificity, so a hidden button with display:inline-flex stays
-     visible. Force it. */
+  /* The native [hidden] rule loses to any author display rule. Force it. */
   [hidden] {
     display: none !important;
   }
 
   html {
-    /* Mobile browsers inflate text in full-width blocks, which breaks a
-       fixed-height shell. 100%, not none: none would also block the user's
-       own text scaling, which is a 1.4.4 failure. */
+    /* 100%, not none: none would also block the person's own text scaling. */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
   html,
   body {
-    height: 100vh; /* fallback for engines without svh */
-    height: 100svh; /* not dvh: dvh reflows as the toolbar animates, and
-                       this shell is entirely fixed elements */
+    height: 100vh;
+    height: 100svh; /* not dvh: it reflows as the toolbar animates */
     margin: 0;
     overflow: hidden;
   }
 
   body {
-    display: flex;
-    flex-direction: column;
-    /* The top inset belongs to the shell, not to the header: the reader
-       and the quiz run with the header hidden, and without this their
-       first line would sit under a notch. */
-    padding-top: env(safe-area-inset-top, 0px);
-    background: var(--c-surface-0);
-    color: var(--c-text-1);
+    background: var(--page);
+    color: var(--ink);
     font-family: var(--f-sans);
     font-size: var(--t-body);
     line-height: var(--t-body-lh);
@@ -393,12 +313,11 @@
     border: none;
     padding: 0;
     cursor: pointer;
-    /* Removes the legacy tap delay without disabling pan or pinch-zoom. */
     touch-action: manipulation;
   }
 
   a {
-    color: var(--c-accent-text);
+    color: var(--accent-text);
   }
 
   svg {
@@ -406,8 +325,7 @@
     flex: none;
   }
 
-  /* Reduced motion is written as an opt-in below, so the safe version is
-     always the fallback. This only catches anything that slipped through. */
+  /* Reduced motion is written as an opt-in below; this catches the rest. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -421,109 +339,160 @@
 }
 
 /* ==========================================================================
-   Base — the shell, and type
+   Layout — the screen, its sections, the four containers
    ========================================================================== */
 
-@layer base {
-  /* -- App shell. A fixed-height column: header, one scrolling region,
-        bottom nav or a focused-mode action bar. Only .shell__scroll ever
-        scrolls, so the frame never grows and never shifts sideways. -- */
+@layer layout {
+  /* -- The screen. A fixed-height column: bar, body, foot. Only the body
+        scrolls, so the frame never grows and the foot never moves under a
+        thumb. The bars are opaque and take their height in the column;
+        nothing passes under them (docs/ui2-plan.md §3.1). -- */
+  body {
+    display: flex;
+    flex-direction: column;
+    /* The top inset belongs to the screen, so the bar sits below a notch. */
+    padding-top: env(safe-area-inset-top, 0px);
+  }
 
-  .shell__header,
+  .bar,
   .nav,
   .shell__bar {
     flex: none;
     position: relative;
     z-index: 10;
-  }
-
-  /* Opaque, every one of them. v0.56 made the bars a translucent blurred
-     material with the content passing under; on an engine that does not
-     composite the blur (and the owner's phone did not) that is the page's
-     text showing through the bar's labels — text on text. A reading app
-     cannot gamble its chrome on a filter. */
-  .shell__header,
-  .shell__bar,
-  .nav,
-  .reader__top,
-  .intro__top {
-    background: var(--c-surface-0);
+    background: var(--page);
   }
 
   .shell__scroll {
     flex: 1 1 auto;
     overflow-y: auto;
     overflow-x: hidden;
-    /* Stops a fast flick at the top of a lesson triggering pull-to-refresh
-       mid-question. Note this prevents chaining, not scrolling. */
-    overscroll-behavior: contain;
+    overscroll-behavior: contain; /* no pull-to-refresh mid-question */
     scrollbar-width: none;
-    /* WCAG 2.4.11: a fixed bottom bar is the criterion's named offender and
-       scroll-padding is its named fix — a focused control scrolls clear of
-       the bar instead of under it. */
-    scroll-padding-top: var(--s-5);
-    scroll-padding-bottom: var(--s-5);
+    /* 2.4.11: a focused control scrolls clear of the foot, not under it. */
+    scroll-padding-block: var(--s-5);
   }
 
   .shell__scroll::-webkit-scrollbar {
     display: none;
   }
 
-  /* Header and action bar share the page's measure and gutters, so the
-     brand, the content and the buttons all sit on the same two keylines
-     however wide the window gets. */
-  .shell__header-inner,
-  .shell__bar-inner {
+  /* -- The bar. leading · title · trailing, on the page's keylines. The
+        title is the screen's name, centred and clipped before it wraps;
+        the leading slot is a back action or nothing; the trailing slot is
+        one control or one readout. A progress line can run along its
+        bottom edge — the reader's position, the quiz's count. -- */
+  .bar {
+    padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
+      max(var(--gutter), env(safe-area-inset-right, 0px));
+    box-shadow: inset 0 -1px 0 var(--hairline);
+  }
+
+  .bar__inner {
+    display: grid;
+    /* The sides never shrink below their content and split what is left
+       equally, so the title sits centred when they are alike and never
+       under a long back label when they are not; the title is the track
+       that gives, clipping with an ellipsis. */
+    grid-template-columns: minmax(max-content, 1fr) minmax(0, max-content) minmax(max-content, 1fr);
+    align-items: center;
+    gap: var(--s-3);
     width: 100%;
     max-width: var(--w-frame);
+    min-height: var(--bar-h);
     margin: 0 auto;
+  }
+
+  .bar__lead {
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .bar__title {
+    min-width: 0;
+    text-align: center;
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bar__trail {
+    justify-self: end;
     display: flex;
     align-items: center;
     gap: var(--s-3);
+    min-width: 0;
+    white-space: nowrap;
   }
 
-  .shell__header {
+  /* The bar's own back button: a text button with its arrow, on the left
+     keyline, and no min-width so a short label does not push the title. */
+  .bar__lead > .btn {
+    min-width: 0;
+    padding-inline: 0 var(--s-3);
+    margin-inline-start: calc(-1 * var(--s-1));
+  }
+
+  .bar__progress {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 3px;
+    background: transparent;
+  }
+
+  .bar__progress > .progress__fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width var(--d-view) var(--ease-standard);
+  }
+
+  /* -- The body. One page column on the keylines, sections stacked. -- */
+  .page {
+    width: 100%;
+    max-width: var(--w-frame);
+    margin: 0 auto;
+    padding-block: var(--s-6) var(--s-8);
     padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
       max(var(--gutter), env(safe-area-inset-right, 0px));
-    box-shadow: inset 0 -1px 0 var(--c-hairline);
   }
 
-  .shell__header-inner {
-    justify-content: space-between;
-    min-height: var(--h-header);
+  /* -- The foot: the tab bar on a root, the action bar where the screen
+        has a forward action, nothing in the reader. Both opaque, both
+        full width, both a hairline above. -- */
+  .nav {
+    display: flex;
+    justify-content: center;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--gutter) calc(var(--s-2) + env(safe-area-inset-bottom, 0px));
+    box-shadow: inset 0 1px 0 var(--hairline);
   }
 
-  /* The app's own name, so it takes the serif like every other piece of
-     English on the page. Not a link: on the only screen that shows it,
-     it would link to itself. */
-  .shell__brand {
-    font-size: var(--t-lead);
-    line-height: var(--t-lead-lh);
-    letter-spacing: -0.01em;
-  }
-
-  /* The focused-mode action bar — the reader, the quiz and the results
-     screen all end in one. Fixed height whatever it holds, because the
-     alternative is the bar changing size as a question is answered and
-     moving the control under the learner's thumb. */
   .shell__bar {
-    box-shadow: inset 0 1px 0 var(--c-hairline);
+    box-shadow: inset 0 1px 0 var(--hairline);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .shell__bar-inner {
-    /* the tallest thing it can hold — a 52px primary button — plus its
-       padding, so an empty bar and a full one are the same height */
-    min-height: calc(52px + 2 * var(--s-3));
-    padding: var(--s-3) max(var(--gutter), env(safe-area-inset-left, 0px))
-      var(--s-3) max(var(--gutter), env(safe-area-inset-right, 0px));
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    width: 100%;
+    max-width: var(--w-frame);
+    /* the tallest thing it can hold plus its padding, so an empty bar and
+       a full one are the same height and answering never moves a button */
+    min-height: calc(var(--btn-h-primary) + 2 * var(--foot-pad));
+    margin: 0 auto;
+    padding: var(--foot-pad) max(var(--gutter), env(safe-area-inset-left, 0px))
+      var(--foot-pad) max(var(--gutter), env(safe-area-inset-right, 0px));
   }
 
-  /* A bar's label never wraps: a two-line button is a different height
-     from its neighbour and the bar exists to keep its height fixed. If a
-     pair cannot fit at 320 the bar overflows, which the sweep sees; a
-     wrap it never did. The padding is a step below a free-standing
-     button's because the bar is the one place two labels share 288px. */
+  /* Two actions in a foot are equal halves; a label never wraps — if a
+     pair cannot fit at 320 the foot overflows and the sweep sees it. */
   .shell__bar-inner > .btn {
     flex: 1 1 0;
     min-width: 0;
@@ -531,31 +500,14 @@
     white-space: nowrap;
   }
 
-  /* Two buttons in a bar are equals in width. They were not — the
-     advance took twice the retreat, then the retreat took only its
-     label's width — and the owner read both as a broken structure. The
-     fill still says which one is forward. Equal halves hold every pair
-     the app has at 320 (measured: "Konulara dön" / "Derse başla" at
-     140px each with the bar's 12px padding). */
-
   .shell__bar-inner > .shell__bar-hint {
     flex: 1;
     text-align: center;
   }
 
-  /* A frame with two columns in it has four keylines, not two, and a bar
-     sharing a 1:2 split of the whole width lands on none of them: on the
-     results screen the amber slab started 21px left of the review it
-     belongs to, which is exactly the kind of near-miss the one-token
-     keyline rule exists to prevent.
-
-     So the retreat takes the pane's width and the advance takes the
-     reading column. That is still §7.2's "the forward action takes twice
-     the width" — 320 against 608 — which is why this is only applied
-     where the two rules agree. On a main-first split the pane is on the
-     right, so the same rule would hand the retreat twice the advance's
-     width; there the bar stays as it is. `.page.split` is the one screen
-     that qualifies today, and the selector says so rather than naming it. */
+  /* On a wide results screen the retreat takes the pane's width and the
+     advance the reading column, so the foot lands on the frame's four
+     keylines rather than beside them. */
   @media (min-width: 1080px) and (min-height: 600px) {
     body:has(.page.split:not(.split--main-first)) .shell__bar-inner {
       column-gap: var(--s-8);
@@ -567,31 +519,563 @@
     }
   }
 
-  .page {
-    max-width: var(--w-frame);
-    margin: 0 auto;
-    padding-block: var(--s-5) var(--s-8);
-    padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px))
-      max(var(--gutter), env(safe-area-inset-right, 0px));
+  /* -- Sections. A body is sections; a section is a head and one container.
+        48 above a head, 8 below; 32 between unlabelled sections. -- */
+  .stack {
+    display: grid;
+    gap: var(--s-5);
   }
 
-  /* The lesson reader's own header. A lesson is one long page, so the way
-     out and the position indicator have to stay reachable — scrolling
-     3000px back to the top to find a Back button is not a way out. Sticky
-     rather than a fixed bar, so it belongs to the page it heads and does
-     not eat the reading height on a short screen. */
-  .reader__top,
-  .intro__top {
-    position: sticky;
-    top: 0;
-    z-index: 5;
+  .stack--snug { gap: var(--s-2); } /* the lines of one object */
+  .stack--tight { gap: var(--s-3); } /* a head and its container */
+  .stack--loose { gap: var(--s-7); } /* section to section */
+
+  /* Homogeneous items inside one container: 24 apart, a hairline between. */
+  .items {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .items > * + * {
+    padding-top: var(--s-6);
+    box-shadow: inset 0 1px 0 var(--hairline);
+  }
+
+  .cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .cluster--spread {
+    justify-content: space-between;
+  }
+
+  /* A sentence with its one control beside it (the backup nudge). The
+     text shrinks and wraps; the control keeps its square. */
+  .note {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .note > p {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Full-bleed: out to the screen's edge, on a phone. */
+  .bleed {
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+  }
+
+  /* -- The pane. From 1080×600 a screen with a second column puts it
+        beside the reading column; below that there is no rule at all. The
+        reading column keeps the measure; source order is never moved. -- */
+  @media (min-width: 1080px) and (min-height: 600px) {
+    .split {
+      grid-template-columns: var(--w-aside) minmax(0, var(--w-page));
+      column-gap: var(--s-8);
+      align-items: start;
+    }
+
+    .split--main-first {
+      grid-template-columns: minmax(0, var(--w-page)) var(--w-aside);
+    }
+  }
+}
+
+/* ==========================================================================
+   Components — fourteen, each with a spec, and no fifteenth without one
+   ========================================================================== */
+
+@layer components {
+  /* -- Card. The one card level; heterogeneous content with an action.
+        If something inside a card needs its own frame, the card is wrong.
+        A light top edge reads as elevation, not as a border. -- */
+  .surface {
+    background: var(--card);
+    border-radius: var(--r-3);
+    padding: var(--s-5);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.045);
+  }
+
+  .surface--flush {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* A control whose fill is the card's colour steps up a level on a card. */
+  .surface .btn--secondary,
+  .surface .listbox__trigger {
+    background: var(--raised);
+  }
+
+  /* -- Row. Homogeneous, scannable; the whole row is the target. Fixed
+        lead and trail slots keep every row's text on the same keylines. -- */
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    width: 100%;
+    min-height: var(--row-min);
+    padding: var(--s-4) 0;
+    text-align: left;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color var(--d-micro) var(--ease-standard);
+  }
+
+  .row + .row {
+    box-shadow: inset 0 1px 0 var(--hairline);
+  }
+
+  .row__lead {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: var(--s-6);
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  .row__main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: grid;
+    gap: var(--s-1);
+  }
+
+  .row__title {
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+    font-weight: 400;
+  }
+
+  /* Two lines and a clamp: the sub is the row's only explanation where it
+     is a gloss, and one line cut it mid-word. */
+  .row__sub {
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    font-weight: 600;
+    color: var(--ink-2);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .row__trail {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    white-space: nowrap;
+    font-size: var(--t-meta);
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  @media (hover: hover) {
+    .row:hover {
+      background: var(--card);
+    }
+  }
+
+  /* A switch made of a Row: the state is a chip. */
+  .row[aria-checked="true"] .chip {
+    background: var(--accent-tint);
+    color: var(--accent-text);
+  }
+
+  /* -- Button. Filled, tonal, text, icon; one filled per screen. No
+        outlined variant. Hover changes surface, pressed changes scale. -- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+    min-height: var(--btn-h);
+    min-width: 88px;
+    padding: 0 var(--s-5);
+    border-radius: var(--r-2);
+    font-size: var(--t-body);
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background-color var(--d-micro) var(--ease-standard),
+      transform var(--d-micro) var(--ease-standard);
+  }
+
+  /* Filled: the one forward action. Its label is measured against the
+     amber in both themes (PAIRS ".btn--primary label"). */
+  .btn--primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    min-height: var(--btn-h-primary);
+  }
+
+  /* Tonal: the card's colour, stepping up on a card. */
+  .btn--secondary {
+    background: var(--card);
+    color: var(--ink);
+  }
+
+  /* Text, quiet: a way out, an exit, a dismiss. */
+  .btn--quiet {
+    min-width: 0;
+    padding: 0 var(--s-3);
+    color: var(--ink-2);
+  }
+
+  /* Text, on the keyline, in the accent's text colour: the second thing a
+     card offers, with its chevron. */
+  .btn--text {
+    justify-self: start;
+    padding-inline: 0;
+    color: var(--accent-text);
+  }
+
+  /* Icon: a fixed square that a flex row cannot squeeze. */
+  .btn--icon {
+    flex: none;
+    width: var(--target);
+    min-width: 0;
+    padding: 0;
+    border-radius: var(--r-pill);
+  }
+
+  @media (hover: hover) {
+    .btn--primary:hover { filter: brightness(1.06); }
+    .btn--secondary:hover { background: var(--raised); }
+    .btn--quiet:hover { color: var(--ink); }
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  /* -- Chip. Never interactive. English chips take the body size: the
+        serif ships at 400 only and 15/400 clears no ground. -- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--r-pill);
+    background: var(--card);
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  .chip.t-en {
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+  }
+
+  .chip--ok { background: var(--ok-tint); color: var(--ok); }
+  .chip--accent { background: var(--accent-tint); color: var(--accent-text); }
+
+  /* -- Field. The one border in the app: 1.4.11 wants a control's boundary
+        at 3:1 and no fill in the ramp can reach it. 18px, above the iOS
+        focus-zoom line. -- */
+  .field {
+    width: 100%;
+    min-height: var(--target);
+    padding: 0 var(--s-4);
+    border: 1px solid var(--edge);
+    border-radius: var(--r-2);
+    background: transparent;
+    font-size: var(--t-body);
+  }
+
+  .field::placeholder {
+    color: var(--ink-2);
+  }
+
+  .field--multiline {
+    padding: var(--s-3) var(--s-4);
+    line-height: var(--t-body-lh);
+    resize: vertical;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: var(--t-body);
+  }
+
+  /* -- Listbox. A select-only combobox; focus stays on the trigger. -- */
+  .listbox {
+    position: relative;
+  }
+
+  .listbox__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    min-height: var(--target);
+    min-width: 6rem;
+    padding: 0 var(--s-4);
+    border-radius: var(--r-2);
+    background: var(--card);
+    font-size: var(--t-body);
+    font-weight: 600;
+  }
+
+  .listbox__menu {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + var(--s-2));
+    right: 0;
+    min-width: 100%;
+    max-height: 14rem;
+    overflow-y: auto;
+    padding: var(--s-2);
+    border-radius: var(--r-2);
+    background: var(--raised);
+  }
+
+  .listbox__option {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 var(--s-4);
+    border-radius: var(--r-1);
+    font-size: var(--t-body);
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .listbox__option[aria-selected="true"] {
+    color: var(--accent-text);
+  }
+
+  .listbox__option--active {
+    background: var(--card);
+    outline: 2px solid var(--focus);
+    outline-offset: -2px;
+  }
+
+  /* -- Dialog. Native <dialog>: the top layer, the backdrop, focus
+        containment and inert-everything-else come from the platform. -- */
+  .dialog {
+    width: min(22rem, calc(100vw - var(--s-8)));
+    padding: var(--s-6);
+    border: none;
+    border-radius: var(--r-3);
+    background: var(--raised);
+    color: var(--ink);
+  }
+
+  .dialog::backdrop {
+    background: rgb(0 0 0 / 0.6);
+  }
+
+  .dialog__actions {
+    display: flex;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+  }
+
+  .dialog__actions .btn {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* -- TabBar. Two destinations; a <nav> with aria-current, not a
+        tablist. Selected state is a filled icon, full-strength text and a
+        capsule — never hue alone. -- */
+  .nav__item {
+    flex: 1 1 0;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--target);
+    border-radius: var(--r-pill);
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    font-weight: 600;
+    color: var(--ink-2);
+    text-decoration: none;
+    transition: background-color var(--d-micro) var(--ease-standard);
+  }
+
+  .nav__item[aria-current] {
+    color: var(--ink);
+    background: var(--raised);
+  }
+
+  /* -- Progress. A position, not decoration. -- */
+  .progress {
+    height: 3px;
+    border-radius: var(--r-pill);
+    background: var(--card);
+    overflow: hidden;
+  }
+
+  .progress__fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: inherit;
+    transition: width var(--d-view) var(--ease-standard);
+  }
+
+  /* -- Feedback. Four redundant channels — glyph, word, tint, the answer —
+        so the verdict survives greyscale and forced colours. Appears; does
+        not perform. -- */
+  .feedback {
     display: grid;
     gap: var(--s-3);
-    padding-block: var(--s-3);
+    padding-block: var(--s-5);
   }
 
-  /* The quiz strip's readout: the mode clips with an ellipsis if it must,
-     the count beside it never does. */
+  .feedback--ok { background: var(--ok-tint); }
+  .feedback--no { background: var(--no-tint); }
+
+  .feedback__verdict {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: var(--t-body);
+    font-weight: 600;
+  }
+
+  .feedback--ok .feedback__verdict > svg { color: var(--ok); }
+  .feedback--no .feedback__verdict > svg { color: var(--no); }
+
+  .feedback__body {
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+    color: var(--ink);
+  }
+
+  .feedback__report {
+    justify-self: start;
+    margin-inline-start: calc(-1 * var(--s-3));
+    font-size: var(--t-meta);
+    font-weight: 600;
+    text-align: start;
+  }
+
+  .feedback__report[aria-disabled="true"] {
+    color: var(--ink-2);
+    cursor: default;
+  }
+
+  /* -- Option. An answer row: serif, whole row tappable, the number on
+        the first line. -- */
+  .option {
+    --option-line: 24px;
+    --option-row: 52px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-4);
+    width: 100%;
+    min-height: var(--option-row);
+    padding: calc((var(--option-row) - var(--option-line)) / 2) var(--gutter);
+    text-align: left;
+    font-family: var(--f-serif);
+    font-size: var(--t-body);
+    line-height: var(--option-line);
+    transition: background-color var(--d-micro) var(--ease-standard);
+  }
+
+  .option + .option {
+    box-shadow: inset 0 1px 0 var(--hairline);
+  }
+
+  .option__key {
+    flex: none;
+    line-height: var(--option-line);
+    font-family: var(--f-sans);
+    font-size: var(--t-meta);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  .option__text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .option__mark {
+    flex: none;
+    margin-block-start: 2px;
+  }
+
+  .option--ok { background: var(--ok-tint); }
+  .option--no { background: var(--no-tint); }
+  .option--ok .option__mark { color: var(--ok); }
+  .option--no .option__mark { color: var(--no); }
+
+  /* -- Stat. A figure over its label; two by two on a phone. -- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: var(--s-5) var(--s-4);
+  }
+
+  .stat__value {
+    font-size: var(--t-title);
+    line-height: var(--t-title-lh);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat__label {
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  /* -- The cloze blank: a rule on the baseline, uniform width. -- */
+  .blank {
+    display: inline-block;
+    width: 4.5ch;
+    border-bottom: 2px solid var(--accent);
+  }
+}
+
+/* ==========================================================================
+   Screens — what only one screen needs
+   ========================================================================== */
+
+@layer screens {
+  /* -- The reader's blocks. The page is a loose stack (32 between blocks)
+        and each block adds to that: 48 above a labelled block, 48 around
+        the one band, 64 before the end card. Margins on grid items add to
+        the gap. -- */
+  .block--labelled {
+    margin-top: var(--s-5);
+  }
+
+  /* The contrast is the point of every lesson and the one band on the
+     page: full-bleed, the card's colour, no radius, 24 inside. */
+  .block--contrast {
+    margin-block: var(--s-5);
+    margin-inline: calc(-1 * var(--gutter));
+    padding: var(--s-6) var(--gutter);
+    background: var(--card);
+  }
+
+  .block--end {
+    margin-top: var(--s-7);
+  }
+
+  /* The outcome sits in from its triggers by the arrow's width. */
+  .decision__outcome {
+    padding-inline-start: calc(20px + var(--s-3));
+  }
+
+  /* The quiz's readout in the bar: the mode clips first, the count never. */
   .strip__readout {
     display: flex;
     align-items: baseline;
@@ -605,57 +1089,14 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+}
 
-  /* Full-bleed: escapes the page gutter to run edge to edge. On a phone the
-     viewport is already the frame, so a band that interrupts the reading
-     flow does it without becoming a card. */
-  .bleed {
-    margin-inline: calc(-1 * var(--gutter));
-    padding-inline: var(--gutter);
-  }
+/* ==========================================================================
+   Utilities — type roles, motion, accessibility
+   ========================================================================== */
 
-  /* -- The reader's blocks. The page is a loose stack (32 between blocks)
-        and the rhythm is made by what each block adds to that:
-
-        48 above a labelled block — the space above a heading is at least
-           twice the space below it, and a label that had 32 above and 8
-           below, the same 32 every unlabelled block had, grouped nothing;
-        48 around the one band, because a band without air is a stripe;
-        64 before the end card — the end is a section, not a block.
-
-        Margins on grid items add to the gap, which is the whole trick. -- */
-  .block--labelled {
-    margin-top: var(--s-5);
-  }
-
-  /* The contrast is the point of every lesson, and it rendered as the same
-     serif-line-Turkish-line list as its own illustrations. It is the one
-     band on the page: full-bleed, surface-1, no radius (§4 gives
-     full-bleed things none), 24 inside. The forms table gave up its card
-     for this — the contrast is heterogeneous, the forms are rows. */
-  .block--contrast {
-    margin-block: var(--s-5);
-    margin-inline: calc(-1 * var(--gutter));
-    padding: var(--s-6) var(--gutter);
-    background: var(--c-surface-1);
-  }
-
-  .block--end {
-    margin-top: var(--s-7);
-  }
-
-  /* Indented by the arrow's width, so the outcome reads as the consequence
-     of the triggers above it and not the title of the ones below. */
-  .decision__outcome {
-    padding-inline-start: calc(20px + var(--s-3));
-  }
-
-  /* -- Type. Serif is English, sans is Turkish — the typeface tells the
-        learner which language they are looking at before they read a word.
-        Block level only: an English word inside a Turkish sentence stays in
-        the sans, because inline typeface switching costs baseline alignment
-        for a signal stronger than the distinction warrants. -- */
-
+@layer utilities {
+  /* -- Type roles. Five sizes; the weight axis points up. -- */
   .t-display,
   .t-title,
   .t-lead {
@@ -685,6 +1126,17 @@
     line-height: var(--t-body-lh);
   }
 
+  /* A quiet sentence: body at 400 in the second grey, legal on the page
+     and on a card only. */
+  .t-quiet {
+    font-size: var(--t-body);
+    line-height: var(--t-body-lh);
+    font-weight: 400;
+    color: var(--ink-2);
+  }
+
+  /* The one-line tier. A sentence is never meta. */
+  .t-meta,
   .t-ui {
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
@@ -692,69 +1144,36 @@
   }
 
   .t-meta {
-    font-size: var(--t-meta);
-    line-height: var(--t-meta-lh);
-    font-weight: 600;
-    color: var(--c-text-2);
+    color: var(--ink-2);
   }
 
-  /* A quiet sentence. Body size at 400 in the second grey — the one pair
-     at which --c-text-2 is legal for more than a line, and only on
-     surface-0 and surface-1 (measured 75 on surface-2, which is exactly
-     the requirement, and exactly is not enough for a paragraph). Quiet
-     text below 18px does not exist on this ground: 15/400 needs Lc 100
-     and no ink reaches it, so anything quieter than body that is more
-     than one line is this, or it is body. */
-  .t-quiet {
-    font-size: var(--t-body);
-    line-height: var(--t-body-lh);
-    font-weight: 400;
-    color: var(--c-text-2);
-  }
-
-  /* A block label. Not uppercased: all-caps is harder to read, some screen
-     readers spell short all-caps strings out, and under lang="tr" the CSS
-     transform would turn "Simple" into "SİMPLE". Weight and tracking do the
-     same job without any of that. */
+  /* A section's head: tracked, in the accent's text colour, so a section
+     opens with a mark the eye finds before it reads. Not uppercased —
+     under lang="tr" the transform would turn "Simple" into "SİMPLE". */
   .t-label {
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
     font-weight: 600;
     letter-spacing: 0.09em;
-    /* The accent's text colour, not the second grey: a label in the same
-       grey as every quiet line was a label the eye skipped, which the
-       owner reported twice. This is the accent marking structure — the
-       one job it has besides the filled action — and it is measured as
-       text in PAIRS (Lc 77 dark, 76 light at 15/600). */
-    color: var(--c-accent-text);
+    color: var(--accent-text);
   }
 
-  /* English: the serif, always at block level.
-     No font-optical-sizing here: the shipped faces are static instances, so
-     Source Serif 4's opsz axis is not present and the property would be a
-     no-op. Restoring it means shipping the variable font at roughly +20 KB
-     per weight — see docs/design-system.md §2.5.
-     The weight pin lives in the utilities layer, not here: a component's
-     own font-weight would otherwise outrank it and ask for a 600 that is
-     not shipped, which the browser answers with a faux-bold. */
+  /* English is the serif, at block level, at 400 — the only serif weight
+     that ships, pinned here so no component can ask for a faux-bold. */
   .t-en {
     font-family: var(--f-serif);
+    font-weight: 400;
   }
 
-  /* Figures that change. A counter whose width shifts between questions
-     moves the button under the learner's thumb — a layout-shift bug and a
-     pointer-cancellation hazard at once. */
   .t-num {
     font-variant-numeric: tabular-nums;
   }
 
-  /* -- Prose. The measure cap is inert at 320px (the arithmetic gives ~36
-        characters and the only way to reach 45 would be dropping below
-        16px, which is worse); it binds on tablet and up. -- */
+  /* -- Prose: the measure, pretty wrapping, Turkish words that are wider
+        than a phone. -- */
   .prose {
     max-width: var(--w-measure);
     text-wrap: pretty;
-    /* Turkish agglutination produces single words wider than the viewport. */
     overflow-wrap: break-word;
   }
 
@@ -763,730 +1182,42 @@
   }
 
   .prose strong {
-    font-weight: 600;
-    color: var(--c-text-1);
+    color: var(--ink);
   }
 
-  /* No italic face ships — only 400 and 600 of the sans and 400 of the
-     serif — so an italic here would be a synthesised slant, which reads
-     as a rendering fault. Emphasis is a weight step instead; the element
-     stays <em> for what a screen reader says. */
+  /* No italic face ships; emphasis is a weight step. Bold is the shipped
+     600, never `bolder`. */
   em {
     font-style: normal;
     font-weight: 600;
   }
 
-  /* And bold is the shipped 600, never `bolder`: a <strong> inside a
-     600 label computes to 900, which the browser answers with the 600
-     face — so the number was a lie the sweep now catches (it asserts no
-     rendered weight above 600). */
   strong,
   b {
     font-weight: 600;
   }
-}
 
-/* ==========================================================================
-   Components — twelve primitives, and no thirteenth without a reason
-   ========================================================================== */
+  .ink-ok { color: var(--ok); }
+  .ink-no { color: var(--no); }
 
-@layer components {
-  /* -- Surface. The one card level. If something inside a surface needs its
-        own frame, the surface is wrong. -- */
-  .surface {
-    background: var(--c-surface-1);
-    border-radius: var(--r-3);
-    padding: var(--s-5);
-    /* A light edge rather than a border: reads as elevation, not as a
-       frame, and does not participate in the no-frames rule. */
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.045);
+  .divider {
+    height: 1px;
+    background: var(--hairline);
   }
 
-  .surface--flush {
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  /* A control whose fill is surface-1 disappears when it sits *on*
-     surface-1, so on a card it steps up a level. Depth is surface
-     lightness here; if two things at the same depth overlap, one of them
-     is at the wrong depth. */
-  .surface .btn--secondary,
-  .surface .listbox__trigger {
-    background: var(--c-surface-2);
-  }
-
-  /* -- Row. Homogeneous, scannable content. The whole row is the target;
-        leading and trailing slots are fixed-width so every row's text starts
-        and ends on the same keyline — ragged edges from variable-width
-        leading content is what makes a list unscannable. -- */
-  .row {
-    /* Flex, not grid: a list whose rows have no leading icon should not
-       pay for the column, and a grid would either keep the empty track or
-       need a second class to drop it. The keyline still holds, because
-       the lead is a fixed width wherever it appears. */
-    display: flex;
-    align-items: center;
-    gap: var(--s-4);
-    width: 100%;
-    min-height: var(--h-target);
-    padding: var(--s-4) 0;
-    text-align: left;
-    color: inherit;
-    text-decoration: none;
-    transition: background-color var(--d-micro) var(--ease-standard);
-  }
-
-  /* One separation mechanism per boundary: a hairline, or a gap, or a
-     background change. Never two. */
-  .row + .row {
-    box-shadow: inset 0 1px 0 var(--c-hairline);
-  }
-
-  .row__lead {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: var(--s-6);
-    font-weight: 600;
-    color: var(--c-text-2);
-  }
-
-  .row__main {
-    flex: 1 1 auto;
-    min-width: 0;
-    display: grid;
-    gap: var(--s-1);
-  }
-
-  .row__title {
-    font-size: var(--t-body);
-    line-height: var(--t-body-lh);
-    font-weight: 400;
-  }
-
-  /* One line, always. A row's secondary line is a hint, and a hint that
-     wraps to four lines gives every row a different height — which is the
-     single most common way a list stops being scannable. */
-  .row__sub {
-    font-size: var(--t-meta);
-    line-height: var(--t-meta-lh);
-    font-weight: 600;
-    color: var(--c-text-2);
-    /* Two lines, then a clamp. It was one line with an ellipsis, and on
-       the index the sub is the row's only explanation of what the topic
-       is — "Olayın ne zaman olduğundan çok nasıl görül…" in the first row
-       of the app read unfinished. Two lines hold every gloss at 390 and
-       nearly every one at 320; the clamp is for the rest. */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
-
-  .row__trail {
-    flex: none;
-    display: flex;
-    align-items: center;
-    gap: var(--s-3);
-    white-space: nowrap;
-    font-weight: 600;
-    color: var(--c-text-2);
-    font-size: var(--t-meta);
-  }
-
-  @media (hover: hover) {
-    .row:hover {
-      background: var(--c-surface-1);
-    }
-  }
-
-  /* -- Button. Three levels, one filled per screen. No outlined variant:
-        an outlined button inside a tinted band is a frame inside a frame,
-        which is the one box-in-box the first mockups actually shipped. -- */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--s-3);
-    min-height: var(--h-target);
-    min-width: 88px; /* short Turkish labels shouldn't produce runts */
-    padding: 0 var(--s-5);
-    border-radius: var(--r-2);
-    font-size: var(--t-body);
-    font-weight: 600;
-    text-decoration: none;
-    transition:
-      background-color var(--d-micro) var(--ease-standard),
-      transform var(--d-micro) var(--ease-standard);
-  }
-
-  /* The filled action. Its label is body/600, and that pair is measured
-     against the amber in both themes by `npm run color` (PAIRS,
-     ".btn--primary label"): no ink reaches Lc 75 on the dark amber, so
-     the label cannot go smaller or lighter than this. */
-  .btn--primary {
-    background: var(--c-accent);
-    color: var(--c-on-accent);
-    font-size: var(--t-body);
-    font-weight: 600;
-    min-height: 52px;
-  }
-
-  .btn--secondary {
-    background: var(--c-surface-1);
-    color: var(--c-text-1);
-  }
-
-  .btn--quiet {
-    min-width: 0;
-    padding: 0 var(--s-3);
-    color: var(--c-text-2);
-    font-weight: 600;
-  }
-
-  /* The text button: a quiet action on the keyline, left-aligned, in the
-     accent's text colour, with its chevron. The 48px target is kept by
-     the min-height; the padding goes so the label starts where the
-     card's text starts. */
-  .btn--text {
-    justify-self: start;
-    padding-inline: 0;
-    color: var(--c-accent-text);
-  }
-
-  /* A shape, not a fourth level: pairs with --secondary or --quiet. For a
-     control whose whole content is one glyph or one letter, where a
-     min-width meant for a Turkish word would only make it lopsided. */
-  .btn--icon {
-    /* flex: none, because this is the shape whose whole point is a fixed
-       size — inside a flex row (the header, the note band) a shrinkable
-       48px square becomes a 23px one the moment the text beside it needs
-       the room, which is a target failure at 320px and nowhere else. */
-    flex: none;
-    width: var(--h-target);
-    min-width: 0;
-    padding: 0;
-    border-radius: var(--r-pill);
-  }
-
-  @media (hover: hover) {
-    /* On a dark ground hover and pressed both want to go lighter and would
-       collapse into each other, so they are separated by channel: hover
-       moves the surface, pressed moves scale. */
-    .btn--primary:hover { background: #f5bd72; }
-    .btn--secondary:hover { background: var(--c-surface-2); }
-    .btn--quiet:hover { color: var(--c-text-1); }
-  }
-
-  .btn:active {
-    transform: scale(0.97);
-  }
-
-  /* A switch built out of a Row rather than as a thirteenth primitive:
-     the whole row is the target, which is the Row's own rule, and the
-     state is a Chip. `role="switch"` and `aria-checked` do the rest, so
-     nothing here has to reinvent a control the platform names. */
-  .row[aria-checked="true"] .chip {
-    background: var(--c-accent-tint);
-    color: var(--c-accent-text);
-  }
-
-  /* -- Chip. Never interactive. -- */
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--s-2);
-    padding: var(--s-1) var(--s-3);
-    border-radius: var(--r-pill);
-    background: var(--c-surface-1);
-    font-size: var(--t-meta);
-    line-height: var(--t-meta-lh);
-    font-weight: 600;
-    color: var(--c-text-2);
-  }
-
-  /* An English chip is serif, and the serif ships at 400 only — so it
-     cannot be 15px, where 400 clears no ground in either theme. It takes
-     the body size instead: English has a floor of 18px everywhere. */
-  .chip.t-en {
-    font-size: var(--t-body);
-    line-height: var(--t-body-lh);
-  }
-
-  .chip--ok { background: var(--c-ok-tint); color: var(--c-ok); }
-  .chip--accent { background: var(--c-accent-tint); color: var(--c-accent-text); }
-
-  /* -- Field. 16px is the whole fix for iOS focus-zoom. -- */
-  .field {
-    width: 100%;
-    min-height: var(--h-target);
-    padding: 0 var(--s-4);
-    /* The one place a border is required rather than forbidden: 1.4.11
-       wants a control's boundary identifiable at 3:1, and a fill cannot
-       do it — no two surfaces in this ramp are 3:1 apart. */
-    border: 1px solid var(--c-edge);
-    border-radius: var(--r-1);
-    background: transparent;
-    font-size: var(--t-body);
-  }
-
-  .field::placeholder {
-    color: var(--c-text-2);
-  }
-
-  /* A field that holds more than a line. The padding block is set
-     explicitly because a textarea does not centre its text the way an
-     input does. */
-  .field--multiline {
-    padding: var(--s-3) var(--s-4);
-    line-height: var(--t-body-lh);
-    resize: vertical;
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-size: var(--t-body);
-  }
-
-  /* -- The cloze blank. A rule on the baseline rather than a run of
-        underscores: five underscore glyphs break the sentence's rhythm,
-        and a screen reader reads them out one at a time. The width is
-        deliberately uniform — sizing the gap to the answer would leak
-        the answer. -- */
-  .blank {
-    display: inline-block;
-    width: 4.5ch;
-    border-bottom: 2px solid var(--c-accent);
-  }
-
-  /* -- Listbox. A select-only combobox: focus stays on the trigger and the
-        active option is tracked with aria-activedescendant. -- */
-  .listbox {
-    position: relative;
-  }
-
-  .listbox__trigger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-3);
-    min-height: var(--h-target);
-    min-width: 6rem;
-    padding: 0 var(--s-4);
-    border-radius: var(--r-1);
-    background: var(--c-surface-1);
-    font-size: var(--t-body);
-    font-weight: 600;
-  }
-
-  .listbox__menu {
-    position: absolute;
-    z-index: 20;
-    top: calc(100% + var(--s-2));
-    left: 0;
-    min-width: 100%;
-    max-height: 14rem;
-    overflow-y: auto;
-    padding: var(--s-2);
-    border-radius: var(--r-1);
-    background: var(--c-surface-2);
-  }
-
-  .listbox__option {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 var(--s-3);
-    border-radius: var(--r-1);
-    font-size: var(--t-body);
-    font-weight: 600;
-    white-space: nowrap;
-    cursor: pointer;
-  }
-
-  .listbox__option[aria-selected="true"] {
-    color: var(--c-accent-text);
-  }
-
-  /* Focus stays on the trigger, so the active option needs its own visible
-     marker rather than relying on :focus. */
-  .listbox__option--active {
-    background: var(--c-surface-1);
-    outline: 2px solid var(--c-focus);
-    outline-offset: -2px;
-  }
-
-  /* -- Dialog. Native <dialog>: the browser gives the top layer, the
-        backdrop, focus containment and inert-everything-else for free. -- */
-  .dialog {
-    width: min(22rem, calc(100vw - var(--s-8)));
-    padding: var(--s-6);
-    border: none;
-    border-radius: var(--r-3);
-    background: var(--c-surface-2);
-    color: var(--c-text-1);
-  }
-
-  .dialog::backdrop {
-    background: rgb(0 0 0 / 0.6);
-  }
-
-  .dialog__actions {
-    display: flex;
-    gap: var(--s-3);
-    margin-top: var(--s-6);
-  }
-
-  .dialog__actions .btn {
-    flex: 1;
-    min-width: 0;
-  }
-
-  /* -- Nav. Two content modes. A <nav> landmark with aria-current, not a
-        tablist: a tablist makes the whole bar one tab stop, implies panels
-        in this document, and fights a hash router. -- */
-  /* Full width, and it takes its height in the column. v0.56 floated it
-     as a narrow capsule over the content and the rows ran out from under
-     it on both sides. The bar's ground spans the window; its two
-     destinations stay on the page's measure, each with a capsule for its
-     selected state. */
-  .nav {
-    display: flex;
-    justify-content: center;
-    gap: var(--s-3);
-    padding: var(--s-2) var(--gutter) calc(var(--s-2) + env(safe-area-inset-bottom, 0px));
-    box-shadow: inset 0 1px 0 var(--c-hairline);
-  }
-
-  .nav__item {
-    flex: 1 1 0;
-    max-width: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    min-height: 44px;
-    border-radius: var(--r-pill);
-    font-size: var(--t-meta);
-    font-weight: 600;
-    color: var(--c-text-2);
-    text-decoration: none;
-    transition: background-color var(--d-micro) var(--ease-standard);
-  }
-
-  /* Selected state is carried by a filled icon, full-strength text and a
-     capsule — never by hue alone, so it survives greyscale and
-     forced-colors. */
-  .nav__item[aria-current] {
-    color: var(--c-text-1);
-    background: var(--c-surface-2);
-    background: color-mix(in srgb, var(--c-surface-2) 85%, transparent);
-  }
-
-  /* -- Progress. Also the reader's position indicator: on mobile, readers
-        lose their place and cannot tell how much is left, so this is a
-        comprehension aid rather than decoration. -- */
-  .progress {
-    height: 3px;
-    border-radius: var(--r-pill);
-    background: var(--c-surface-1);
-    overflow: hidden;
-  }
-
-  .progress__fill {
-    height: 100%;
-    background: var(--c-accent);
-    border-radius: inherit;
-    transition: width var(--d-view) var(--ease-standard);
-  }
-
-  /* -- Feedback. Four redundant channels — glyph, word, tint and the answer
-        itself — so the verdict survives greyscale, colour-vision deficiency,
-        sunlight and forced-colors. Colour alone would fail WCAG 1.4.1. -- */
-  .feedback {
-    display: grid;
-    gap: var(--s-3);
-    padding-block: var(--s-5);
-  }
-
-  .feedback--ok { background: var(--c-ok-tint); }
-  .feedback--no { background: var(--c-no-tint); }
-
-  .feedback__verdict {
-    display: flex;
-    align-items: center;
-    gap: var(--s-3);
-    font-size: var(--t-body);
-    font-weight: 600;
-  }
-
-  .feedback--ok .feedback__verdict > svg { color: var(--c-ok); }
-  .feedback--no .feedback__verdict > svg { color: var(--c-no); }
-
-  .feedback__body {
-    font-size: var(--t-body);
-    line-height: var(--t-body-lh);
-    color: var(--c-text-1);
-  }
-
-  /* The problem report. Pulled to the left edge of the block's text and
-     sized down, because it is the one control here that most learners
-     should never notice: a prominent "something is wrong" button invites
-     a shrug, and this channel is only worth having while it is
-     believable. It keeps the full 48px target height regardless — a
-     control nobody notices is still a control somebody has to hit. */
-  .feedback__report {
-    justify-self: start;
-    margin-inline-start: calc(var(--s-3) * -1);
-    font-size: var(--t-meta);
-    font-weight: 600;
-    text-align: start;
-  }
-
-  .feedback__report[aria-disabled="true"] {
-    color: var(--c-text-2);
-    cursor: default;
-  }
-
-  /* -- Option. An answer row: reading-sized, whole row tappable. -- */
-  .option {
-    /* The number belongs to the first line of the option, not to the
-       middle of the block — a restatement's options are whole sentences
-       and run to three or four lines, where a vertically centred "2"
-       floats beside nothing. The padding is derived rather than picked:
-       at one line it makes the row exactly its minimum height, so a
-       short option is still optically centred and nothing about the
-       existing screens moves. */
-    --option-line: 24px;
-    --option-row: 52px;
-
-    display: flex;
-    align-items: flex-start;
-    gap: var(--s-4);
-    width: 100%;
-    min-height: var(--option-row);
-    padding: calc((var(--option-row) - var(--option-line)) / 2) var(--gutter);
-    text-align: left;
-    font-family: var(--f-serif);
-    font-size: var(--t-body);
-    line-height: var(--option-line);
-    transition: background-color var(--d-micro) var(--ease-standard);
-  }
-
-  .option + .option {
-    box-shadow: inset 0 1px 0 var(--c-hairline);
-  }
-
-  .option__key {
-    flex: none;
-    /* The number shares the option's own line box rather than bringing
-       its own: the meta face is smaller, and a taller box of its own was
-       what made the row 56px instead of 52. */
-    line-height: var(--option-line);
-    font-family: var(--f-sans);
-    font-size: var(--t-meta);
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    color: var(--c-text-2);
-  }
-
-  .option__text {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  .option__mark {
-    flex: none;
-    /* A 20px glyph on a 24px line: two pixels puts it on the line rather
-       than above it, now that the row aligns to its first line. */
-    margin-block-start: 2px;
-  }
-
-  .option--ok { background: var(--c-ok-tint); }
-  .option--no { background: var(--c-no-tint); }
-  .option--ok .option__mark { color: var(--c-ok); }
-  .option--no .option__mark { color: var(--c-no); }
-
-  /* -- Stat -- */
-  /* 8rem, not 5.5: at the narrower minimum a 390px phone fits three
-     columns and leaves the fourth figure stranded on a row of its own.
-     Two-by-two, then four across once there is room. */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
-    gap: var(--s-5) var(--s-4);
-  }
-
-  .stat__value {
-    font-size: var(--t-title);
-    line-height: var(--t-title-lh);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .stat__label {
-    font-size: var(--t-meta);
-    font-weight: 600;
-    color: var(--c-text-2);
-  }
-}
-
-/* ==========================================================================
-   Utilities
-   ========================================================================== */
-
-@layer utilities {
-  /* Only the 400 serif is shipped. This sits in the last layer so a
-     component's own font-weight cannot ask for a 600 that does not exist
-     and get a synthesised faux-bold — English takes its hierarchy from size
-     and from the face, never from weight. */
-  .t-en {
-    font-weight: 400;
-  }
-
-  /* Outline, never box-shadow: outlines survive forced-colors mode and are
-     not clipped by an overflow:hidden ancestor. :focus-visible so a thumb
-     tap never paints a ring. */
+  /* -- Focus: an outline, never a shadow. Not on a view focused only to
+        move the reading position. -- */
   :focus-visible {
-    outline: 2px solid var(--c-focus);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
 
-  /* Except on a container that is focused only to move the reading
-     position. Changing tab focuses the whole <section class="view">
-     (js/home.js) so the next Tab resumes on the new screen instead of
-     wherever the old one left off — right and required by 2.4.3. But the
-     section is the entire screen, so a ring on it is a two-pixel box
-     around 1,400px of content, drawn over whatever sits at its edges.
-
-     `:focus-visible` is supposed to prevent that and does not: its
-     heuristic is per-browser, and WebKit matches it on a programmatically
-     focused tabindex="-1" element, which is why this showed up on a phone
-     and never in the harness.
-
-     Suppressing it costs nothing under 2.4.7, which is about controls a
-     keyboard can reach. tabindex="-1" means this one cannot be tabbed to
-     — it is a destination, not a stop. */
   .view:focus,
   .view:focus-visible {
     outline: none;
   }
 
-  .stack {
-    display: grid;
-    gap: var(--s-5);
-  }
-
-  .stack--tight { gap: var(--s-3); }
-  .stack--loose { gap: var(--s-7); }
-  /* The lines of one object — a pattern over its use, a sentence over its
-     note. 4px, so the two read as a unit against the 24px between units. */
-  .stack--snug { gap: var(--s-2); }
-
-  /* Homogeneous items inside a block — the sides of a contrast, the
-     examples, the rules of a decision, the groups of a forms table. 24
-     between them and a hairline where one ends, the same hairline a row
-     carries. Where the stack is 4 / 24 / 48, hierarchy is geometric; at
-     8 / 16 / 32 it was arithmetic and the eye had no layer to land on. */
-  .items {
-    display: grid;
-    gap: var(--s-6);
-  }
-
-  .items > * + * {
-    padding-top: var(--s-6);
-    box-shadow: inset 0 1px 0 var(--c-hairline);
-  }
-
-  .cluster {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--s-3);
-  }
-
-  /* A label on one side, its control on the other. */
-  .cluster--spread {
-    justify-content: space-between;
-  }
-
-  /* A dismissible line with its close button beside it — the "note band"
-     the .btn--icon rule already mentions.
-
-     It used to be a `.cluster--spread`, and that was wrong at every phone
-     width. `.cluster` wraps, and a paragraph inside it is a flex item
-     sized to its own max-content: this sentence wants 337px, so below
-     about 430px there was no room left for the 48px button and it
-     dropped to a line of its own, at the far left, leaving a 48px empty
-     band under the text. The owner met it on a real phone and reported
-     it as a bug, which is what it looked like — an empty box between the
-     resume card and the search field.
-
-     The fix is to let the text shrink and wrap instead of the row
-     wrapping: the button keeps its fixed square and the sentence takes
-     whatever is left. */
-  .note {
-    display: flex;
-    align-items: center;
-    gap: var(--s-3);
-  }
-
-  .note > p {
-    flex: 1;
-    /* A flex item's default `min-width: auto` refuses to go below its
-       longest word plus, in practice, its content — which is the whole
-       reason the row wrapped. */
-    min-width: 0;
-  }
-
-  /* -- Split. A supporting pane beside the reading column.
-
-        Layout, not a component: it draws nothing, owns no colour and adds
-        no card level — it is `.stack` with a second column, in the same
-        way `.cluster` is a row.
-
-        Below the breakpoint there is deliberately NOTHING here. A `.split`
-        is a `.stack stack--loose` and renders exactly as it did before the
-        class existed, so the phone and tablet-portrait layouts are not
-        merely unbroken by this — they are untouched by it, which is what
-        "mobile first, verified from 320px up" has to mean once a second
-        layout exists.
-
-        The pane is used where the second column is content the learner
-        would otherwise have had to scroll past the fold to reach, and only
-        where it means something beside what it sits next to: the start
-        card beside the topic list, the score beside the review of it. It is
-        never a filler column, because a wide window with half of a page
-        spread across it reads worse than the same page in one column —
-        that is measured, not taste.
-
-        Which pane is which is a content decision, not a side: the *reading*
-        column keeps the measure and the *scannable* column takes the pane,
-        wherever each one falls in the source. Source order is never
-        rearranged to get a side — it is the reading order for a screen
-        reader and for the keyboard (1.3.2), so the two orders stay the
-        same thing and the modifier moves the tracks instead. -- */
-  @media (min-width: 1080px) and (min-height: 600px) {
-    .split {
-      /* minmax(0, …) rather than the bare width: without it a long
-         unbroken Turkish word in the reading column sets a min-content
-         floor and pushes the track past its share. */
-      grid-template-columns: var(--w-aside) minmax(0, var(--w-page));
-      column-gap: var(--s-8);
-      /* Panes size to their own content. Stretched, the shorter one's
-         auto rows would take the taller one's height and its internal
-         spacing would open up to fill it. */
-      align-items: start;
-    }
-
-    /* The reading column first, where the prose is the screen and the list
-       is what supports it — the topic overview, the profile. */
-    .split--main-first {
-      grid-template-columns: minmax(0, var(--w-page)) var(--w-aside);
-    }
-  }
-
-  /* Clipped, not display:none — a live region that is display:none is never
-     announced. */
+  /* Clipped, not display:none — a hidden live region is never announced. */
   .visually-hidden:not(:focus):not(:active) {
     position: absolute;
     width: 1px;
@@ -1496,24 +1227,9 @@
     white-space: nowrap;
   }
 
-  .divider {
-    height: 1px;
-    background: var(--c-hairline);
-  }
-
-  /* For a glyph, never for a sentence: neither hue clears APCA Lc 75 as
-     text on this ground (§1.5). The word beside the glyph stays
-     --c-text-1 and the colour is the second channel, not the only one. */
-  .ink-ok { color: var(--c-ok); }
-  .ink-no { color: var(--c-no); }
-
-  /* Motion is opted into, so the reduced version is the fallback rather
-     than an override that also nukes meaningful feedback. */
-  /* A route change is one crossfade, the same everywhere, made by the
-     browser from two snapshots (View Transitions, baseline in every
-     engine since late 2025); js/home.js only asks for it when the person
-     has not asked for less motion, and a browser without the API simply
-     switches. */
+  /* -- Motion. The route crossfade, made by the browser from two
+        snapshots when js/home.js asks for it; the entrance of an arriving
+        screen, opacity only unless motion is welcome. -- */
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation-duration: var(--d-enter);
@@ -1542,9 +1258,7 @@
     }
   }
 
-  /* Forced colours discard background-color, so anything signalled by fill
-     alone disappears. Give inactive states a transparent border for the
-     active one to become. */
+  /* -- Forced colours discard fills; give state a border to become. -- */
   @media (forced-colors: active) {
     .option,
     .nav__item,

@@ -53,9 +53,17 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- A focused mode: no header, no nav. Answering a question must never
-       move the control the learner is about to tap, so the action bar is
-       part of the shell rather than part of the scrolling content. -->
+  <!-- bar · body · foot, like every screen. The bar carries the way out
+       and the count; the foot the forward action; answering a question
+       never moves either. -->
+  <header class="bar" id="shell-header">
+    <div class="bar__inner">
+      <div class="bar__lead"></div>
+      <p class="bar__title"></p>
+      <div class="bar__trail"></div>
+    </div>
+    <div class="bar__progress" hidden><div class="progress__fill"></div></div>
+  </header>
   <main class="shell__scroll" id="shell-scroll">
     <div class="page stack stack--loose" id="quiz-container">
       <p class="t-meta">Sorular yükleniyor&hellip;</p>

@@ -5,6 +5,34 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.58 — 2026-09-10
+
+**UI 2, phase 1: the foundation and the shell.** `docs/ui2-plan.md` is
+the programme; this is its first round. The stylesheet is rewritten from
+a blank file in six layers — tokens in three tiers (primitive, semantic,
+component), reset, the screen anatomy, the fourteen components under
+their existing class names, the reader's and the quiz's own rules,
+utilities — with every measured value carried over unchanged.
+
+**Every screen is bar · body · foot, and the bar names the screen.** A
+root tab is titled *Eğitim*, *Test*, *Profil*; a topic screen carries
+the topic's name, the reader the lesson's, the quiz the test's, the
+results *Sonuç*. The leading slot is the way back, named for where it
+goes (*Konular*, *Dersler*, the tab Profil was opened from, *Çık* /
+*Bitir* in the quiz); the trailing slot is one thing — the profile
+control on a root, a count on a child; the reader's position and the
+quiz's progress run along the bar's bottom edge. The brand is not a
+title and leaves the chrome. The three focused screens no longer carry
+their own strips: `js/shell.js`'s `createBar` is the one place a top is
+made, and `quiz.html` and `results.html` gain the same header as
+`index.html`. Bars are opaque and take their height in the column.
+
+The sweep gained an anatomy section — a titled bar on every screen it
+lands on, the three slots never overlapping, content starting below the
+bar and ending above the foot — and follows the reader's progress on
+the bar's edge. 3,462 checks; looked at on three emulated phones in both
+themes.
+
 ## v0.57 — 2026-09-10
 
 **What v0.56 got wrong, taken back.** Three of its ideas were checked on

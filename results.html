@@ -53,8 +53,17 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- Still the focused mode the quiz ran in: the way out is the action
-       bar, not a header link that would be a 23px tap target. -->
+  <!-- bar · body · foot, like every screen. The bar carries the way out
+       and the count; the foot the forward action; answering a question
+       never moves either. -->
+  <header class="bar" id="shell-header">
+    <div class="bar__inner">
+      <div class="bar__lead"></div>
+      <p class="bar__title"></p>
+      <div class="bar__trail"></div>
+    </div>
+    <div class="bar__progress" hidden><div class="progress__fill"></div></div>
+  </header>
   <main class="shell__scroll" id="shell-scroll">
     <div class="page stack stack--loose" id="results-container">
       <p class="t-meta">Sonuçlar yükleniyor&hellip;</p>

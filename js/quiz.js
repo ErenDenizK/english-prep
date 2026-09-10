@@ -17,10 +17,11 @@ import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { el, clear, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
-import { announce, scrollToTop, createActionBar } from "./shell.js";
+import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
 
 const container = document.getElementById("quiz-container");
 const actionBar = createActionBar("quiz-bar");
+const bar = createBar("shell-header");
 
 const state = {
   session: [],
@@ -46,6 +47,7 @@ const state = {
 };
 
 function showMessage(text, { withHomeLink = true } = {}) {
+  bar.set({ title: "Test", lead: null, trail: null });
   clear(container);
   container.appendChild(el("p", "t-body", text));
   if (withHomeLink) {
@@ -149,41 +151,26 @@ function modeLabel(request, titleById) {
   }
 }
 
-function renderTopStrip() {
-  const strip = el("div", "cluster cluster--spread");
-
-  // A button, not a link, because it does something before it navigates.
-  // Once anything is answered it stops being an exit and becomes an early
-  // finish, and the word has to change with it: "Çık" beside work that is
-  // about to be saved would describe the old behaviour, not this one.
+/**
+ * The bar: the way out on the left — "Çık" before anything is answered,
+ * "Bitir" once something is, because from then on leaving saves — the
+ * test's name in the middle, the count on the right, the position along
+ * the bottom edge.
+ */
+function setQuizBar() {
   const early = answeredCount() > 0;
-  const exit = el("button", "btn btn--quiet", early ? "Bitir" : "Çık");
-  exit.type = "button";
-  exit.prepend(icon(early ? "check" : "close", { size: 20 }));
-  exit.addEventListener("click", exitQuiz);
-  strip.appendChild(exit);
-
-  // The mode first and clipped if it must be, the count last and never
-  // clipped: "Academic Nouns & Adjectives · 3 / 10" does not fit beside
-  // the exit button at 320, and the count is the part that changes.
   const readout = el("p", "t-meta t-num strip__readout");
   const mode = el("span", "strip__mode", state.modeLabel);
   if (/[A-Za-z]/.test(state.modeLabel) && !/test|defteri/.test(state.modeLabel)) {
     mode.lang = "en";
   }
-  readout.appendChild(mode);
-  readout.appendChild(document.createTextNode(" · "));
   readout.appendChild(el("span", null, `${state.currentIndex + 1} / ${state.session.length}`));
-  strip.appendChild(readout);
-  return strip;
-}
-
-function progressBar() {
-  const track = el("div", "progress");
-  const fill = el("div", "progress__fill");
-  fill.style.width = `${((state.currentIndex + 1) / state.session.length) * 100}%`;
-  track.appendChild(fill);
-  return track;
+  bar.set({
+    title: state.modeLabel,
+    lead: { label: early ? "Bitir" : "Çık", icon: early ? "check" : "close", onClick: exitQuiz },
+    trail: readout,
+    progress: (state.currentIndex + 1) / state.session.length,
+  });
 }
 
 function handleOptionSelected(question, selectedOption) {
@@ -251,9 +238,8 @@ function renderQuestion() {
   const selected = state.selectedAnswers[state.currentIndex] ?? null;
 
   clear(container);
+  setQuizBar();
   const page = el("div", "stack stack--loose animate-in");
-  page.appendChild(renderTopStrip());
-  page.appendChild(progressBar());
 
   const block = el("div", "stack");
   if (question.category) {
