@@ -165,7 +165,6 @@ function renderMistakeShortcut(result) {
   }
 
   const section = el("section", "stack stack--tight");
-  section.appendChild(el("span", "divider"));
 
   const row = el("a", "row");
   row.href = "index.html#test";
@@ -221,12 +220,11 @@ function renderReview(result) {
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", "İnceleme"));
 
-  const list = el("div", "stack stack--loose");
+  // One list of homogeneous items: 24 between them and a hairline where
+  // one ends, the same rhythm the reader's lists have.
+  const list = el("div", "items");
   result.questionResults.forEach((question, index) => {
     const item = el("article", "stack stack--tight");
-    if (index > 0) {
-      item.appendChild(el("span", "divider"));
-    }
 
     const verdict = el("p", "cluster");
     const mark = el("span", question.correct ? "ink-ok" : "ink-no");

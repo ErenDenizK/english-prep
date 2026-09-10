@@ -5,6 +5,26 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.60 — 2026-09-10
+
+**UI 2, phase 3: the screens on the section grammar.** A body is
+sections; a section is a head and one container (list, card, prose,
+band). Where a screen broke that, it is recomposed:
+
+- **Eğitim** — the search field was a stray control between the card
+  and a sentence between two headings. It is a section now: *Konular*,
+  the one line that says what the app is for as its hint, the field as
+  its container; the tier groups follow as sections of their own.
+- **Profil** — opened on the name field as if the name were the point.
+  It opens on the figures; the name's card sits with the settings.
+- **Sonuç** — the review's items were separated by hand-placed
+  dividers; they are one list with the reader's rhythm (24 and a
+  hairline), and the mistake-book row lost its stray divider.
+
+The topic screen, the reader, the Test root and the quiz already kept
+the grammar after phases 1 and 2. 3,468 checks; looked at on three
+emulated phones in both themes.
+
 ## v0.59 — 2026-09-10
 
 **UI 2, phase 2: the components and the catalogue.** The fourteen

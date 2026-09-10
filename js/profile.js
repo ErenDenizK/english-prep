@@ -495,7 +495,9 @@ async function render() {
   const aside = pane();
   container.classList.add("split", "split--main-first");
 
-  main.appendChild(renderNameField());
+  // Figures first: the screen is the learner's, and the name is a
+  // setting, so its card sits with the settings rather than opening the
+  // screen as if it were the point.
   main.appendChild(
     renderStats(getOverallStats(), countCompletedLessons(lessonIds), lessonIds.length)
   );
@@ -534,6 +536,7 @@ async function render() {
   }
 
   main.appendChild(renderData());
+  main.appendChild(renderNameField());
   main.appendChild(renderSettings());
   aside.appendChild(renderCoverage(topics));
   aside.appendChild(renderAbout());
