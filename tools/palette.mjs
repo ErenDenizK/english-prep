@@ -222,6 +222,7 @@ export const PAIRS = [
   // one-line tier in the first ink; a stat's figure is the title size.
   { where: ".tile__title", px: 18, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".tile__meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".tile__sub", px: 15, weight: 600, token: "text-2", on: "surface-2" },
   { where: ".ring__value", px: 15, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".ring--lg .ring__value", px: 36, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".choice", px: 18, weight: 600, token: "text-1", on: "surface-2" },

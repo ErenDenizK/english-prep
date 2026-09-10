@@ -789,6 +789,17 @@
     text-wrap: balance;
   }
 
+  .tile__sub {
+    font-size: var(--t-meta);
+    line-height: var(--t-meta-lh);
+    font-weight: 600;
+    color: var(--ink-2);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
   .tile__meta {
     display: flex;
     align-items: center;
