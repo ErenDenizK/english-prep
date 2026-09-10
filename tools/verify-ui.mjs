@@ -1345,6 +1345,39 @@ async function runComponents(browser) {
 
     await auditLayout(page, `bileşen sayfası ${width}px`, width, { catalogue: true });
     ok(errors.length === 0, `${width}px: konsol temiz${errors.length ? ` — ${errors[0]}` : ""}`);
+
+    // A component without a catalogue entry does not exist (ui2-plan
+    // §3.3): every class the components layer declares is on this page,
+    // except the three the listbox only creates while its menu is open.
+    if (width === 390) {
+      const css = await readFile(new URL("../css/style.css", import.meta.url), "utf8");
+      const block = css.slice(css.indexOf("@layer components {"), css.indexOf("@layer screens {"));
+      const runtimeOnly = new Set(["listbox__menu", "listbox__option", "listbox__option--active"]);
+      const classes = [...new Set([...block.matchAll(/\.([a-z][a-z0-9_-]*)/g)].map((m) => m[1]))].filter(
+        (name) => !runtimeOnly.has(name)
+      );
+      const missing = await page.evaluate(
+        (names) => names.filter((name) => !document.querySelector(`.${name}`)),
+        classes
+      );
+      ok(missing.length === 0, `her bileşen sınıfı katalogda (${classes.length})${missing.length ? ` — eksik: ${missing.join(", ")}` : ""}`);
+
+      // And the same page in the other theme, audited the same way.
+      const light = await browser.newContext({ viewport: { width, height: 900 } });
+      await light.addInitScript(() => localStorage.setItem("englishPrep.theme", "light"));
+      const lightPage = await light.newPage();
+      const lightErrors = [];
+      lightPage.on("pageerror", (error) => lightErrors.push(error.message));
+      await lightPage.goto(`${BASE}/docs/components.html`, { waitUntil: "networkidle" });
+      await lightPage.waitForSelector("#restatement-options .option");
+      ok(
+        await lightPage.evaluate(() => document.documentElement.getAttribute("data-theme") === "light"),
+        "katalog açık temada da açılıyor"
+      );
+      await auditLayout(lightPage, `bileşen sayfası ${width}px, açık tema`, width, { catalogue: true });
+      ok(lightErrors.length === 0, "açık temada konsol temiz");
+      await light.close();
+    }
     await context.close();
   }
 }
