@@ -701,7 +701,12 @@ function fold(text) {
  * strings the app already has in memory.
  */
 function renderIndexFilter(lessons, progress) {
-  const wrap = el("div", "stack stack--tight");
+  // A section like any other: a head — the one line at runtime that says
+  // what the app is for — and one container, the search field. The tier
+  // groups below are sections of their own, so the field is neither a
+  // stray control above a list nor a sentence between two headings.
+  const wrap = el("section", "stack stack--tight");
+  wrap.appendChild(sectionHeading("Konular", "Her konu, önce ne olduğunu anlatır; dersler içinde."));
 
   const field = el("input", "field");
   field.type = "search";
@@ -777,20 +782,7 @@ function renderIndexFilter(lessons, progress) {
  * person who uses the app most.
  */
 function renderTopicIndex(lessons, progress) {
-  const section = el("section", "stack");
-
-  // The one place at runtime the app says what it is for. It used to be
-  // on the welcome card only, so the learner's first test destroyed it.
-  //
-  // It is a line rather than a heading now, because the rows below are
-  // grouped and the group names are the headings. js/home.js settled
-  // this shape for the Test tab and the reasoning holds here: an
-  // umbrella "Konular" above four tier names puts two labels of
-  // identical weight one line apart, which reads as a pile rather than
-  // as a hierarchy. The sentence was the part worth keeping.
-  section.appendChild(
-    el("p", "t-quiet", "Her konu, önce ne olduğunu anlatır; dersler içinde.")
-  );
+  const section = el("section", "stack stack--loose");
 
   // Grouped the way the Test tab groups, which until now it was not: the
   // same ten topics were four headed groups on one tab and one flat list
