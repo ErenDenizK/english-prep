@@ -1,0 +1,66 @@
+/* 07-tasarim-dokumani.md'nin çözülmüş değerleri. Hiçbiri uydurma:
+   hepsi tools/color.mjs ile uygulamanın kendi PAIRS tablosuna karşı
+   üretildi. A1 (işaret H45), A2 (sıcak zemin H70) ve A7 (serif) sahibi
+   tarafından cevaplandı; A3–A6 bu levhada sorulan sorular. */
+
+:root {
+  /* --- AÇIK --- */
+  --page:      #f6f1e7;   /* surface-0  L 0.960 C 0.014 H 85 */
+  --tint:      #fffcf5;   /* cam panonun tinti */
+  --worst:     #e5dfd3;   /* surface-2 — PAIRS'in ölçtüğü yüzey */
+  --ink:       #211b14;
+  --ink-2:     #413a31;
+  --ink-3:     #685f54;
+  --accent-ink:#623200;
+  --mark:      #ce5500;   /* [K] H 45 · C 0.171 · 3.21:1 */
+  --action:    #c35000;   /* [K] L 0.574 C 0.164 · etiket beyaz, Lc 77 */
+  --on-action: #ffffff;
+  --plane:     #241e18;   /* A3'ün alternatifi: düzlem */
+  --on-plane:  #f6f1e7;   /* Lc 97 */
+  --lit:       #eb8656;   /* alanın 1. durağı */
+  --edge:      #76736b;
+  --divider:   #bbb7af;
+  --ok:        #2f6d3f;
+  --no:        #a3301f;
+  --lit-edge:  rgb(255 255 255 / 0.70);
+  --shadow-rest: 0 1px 2px rgb(40 25 5 / 0.06), 0 8px 24px -10px rgb(40 25 5 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(40 25 5 / 0.08), 0 18px 40px -16px rgb(40 25 5 / 0.28);
+  --tex-op: 0.06;
+
+  /* alan — tek radyal gradyan, sol üste çapalı, %135 × %115 */
+  --alan-tam:   radial-gradient(135% 115% at 6% -8%,
+                  #eb8656 0%, #eea17a 34%, #f1c1a6 62%, #f4dcca 80%, var(--page) 100%);
+  --alan-kisik: radial-gradient(118% 50% at 6% -6%,
+                  #eea17a 0%, #f1c1a6 30%, #f4dcca 56%, var(--page) 82%);
+  --alan-yok:   none;
+}
+
+[data-theme="dark"] {
+  /* --- KOYU · [K] sıcak, H 70 --- */
+  --page:      #14100b;   /* L 0.175 C 0.012 H 70 */
+  --tint:      #322d27;   /* L 0.300 — kart adımı 0.053 → 0.125 */
+  --worst:     #413c36;   /* L 0.360 — sıfır PAIRS hatası */
+  --ink:       #f4f1ed;   /* L 0.971 — beyaza 0.028 pay */
+  --ink-2:     #ded9d3;
+  --ink-3:     #c6c0b9;
+  --accent-ink:#fcd49b;
+  --mark:      #fe6a00;   /* [K] H 45 · C 0.200 · 3.74:1 */
+  --action:    #ffa401;   /* L 0.790 C 0.171 · etiket sayfa rengi, Lc 65 */
+  --on-action: #14100b;
+  --plane:     #ece7e1;
+  --on-plane:  #14100b;   /* Lc 92 */
+  --lit:       #ab4400;
+  --edge:      #8c867f;
+  --divider:   #514c46;
+  --ok:        #7fd492;
+  --no:        #ff9d95;
+  --lit-edge:  rgb(255 255 255 / 0.10);
+  --shadow-rest: 0 1px 2px rgb(0 0 0 / 0.40), 0 10px 28px -12px rgb(0 0 0 / 0.60);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.45), 0 20px 44px -18px rgb(0 0 0 / 0.70);
+  --tex-op: 0.10;
+
+  --alan-tam:   radial-gradient(135% 115% at 6% -8%,
+                  #ab4400 0%, #853703 34%, #582706 62%, #321a09 80%, var(--page) 100%);
+  --alan-kisik: radial-gradient(118% 50% at 6% -6%,
+                  #853703 0%, #582706 30%, #321a09 56%, var(--page) 82%);
+}

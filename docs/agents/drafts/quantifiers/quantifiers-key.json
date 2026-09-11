@@ -1,0 +1,266 @@
+{
+  "quantifiers-t1": {
+    "answer": "a few",
+    "original": 1,
+    "shown": 3,
+    "order": [
+      0,
+      3,
+      2,
+      1
+    ]
+  },
+  "quantifiers-t2": {
+    "answer": "few",
+    "original": 1,
+    "shown": 0,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "quantifiers-t3": {
+    "answer": "a little",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      2,
+      3,
+      0,
+      1
+    ]
+  },
+  "quantifiers-t4": {
+    "answer": "little",
+    "original": 2,
+    "shown": 2,
+    "order": [
+      1,
+      3,
+      2,
+      0
+    ]
+  },
+  "quantifiers-t5": {
+    "answer": "much",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      2,
+      1,
+      3,
+      0
+    ]
+  },
+  "quantifiers-t6": {
+    "answer": "many",
+    "original": 1,
+    "shown": 2,
+    "order": [
+      2,
+      0,
+      1,
+      3
+    ]
+  },
+  "quantifiers-t7": {
+    "answer": "plenty of",
+    "original": 0,
+    "shown": 3,
+    "order": [
+      2,
+      3,
+      1,
+      0
+    ]
+  },
+  "quantifiers-t8": {
+    "answer": "a lot of",
+    "original": 3,
+    "shown": 0,
+    "order": [
+      3,
+      0,
+      2,
+      1
+    ]
+  },
+  "quantifiers-t9": {
+    "answer": "any",
+    "original": 0,
+    "shown": 2,
+    "order": [
+      3,
+      2,
+      0,
+      1
+    ]
+  },
+  "quantifiers-t10": {
+    "answer": "some",
+    "original": 1,
+    "shown": 0,
+    "order": [
+      1,
+      3,
+      2,
+      0
+    ]
+  },
+  "quantifiers-t11": {
+    "answer": "no",
+    "original": 2,
+    "shown": 2,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "quantifiers-t12": {
+    "answer": "none",
+    "original": 1,
+    "shown": 2,
+    "order": [
+      3,
+      2,
+      1,
+      0
+    ]
+  },
+  "quantifiers-t13": {
+    "answer": "both",
+    "original": 2,
+    "shown": 1,
+    "order": [
+      3,
+      2,
+      0,
+      1
+    ]
+  },
+  "quantifiers-t14": {
+    "answer": "every",
+    "original": 3,
+    "shown": 0,
+    "order": [
+      3,
+      1,
+      2,
+      0
+    ]
+  },
+  "quantifiers-t15": {
+    "answer": "each",
+    "original": 1,
+    "shown": 2,
+    "order": [
+      0,
+      2,
+      1,
+      3
+    ]
+  },
+  "quantifiers-t16": {
+    "answer": "all",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      3,
+      1,
+      2,
+      0
+    ]
+  },
+  "quantifiers-t17": {
+    "answer": "neither",
+    "original": 3,
+    "shown": 0,
+    "order": [
+      3,
+      2,
+      0,
+      1
+    ]
+  },
+  "quantifiers-t18": {
+    "answer": "nor",
+    "original": 1,
+    "shown": 0,
+    "order": [
+      1,
+      0,
+      2,
+      3
+    ]
+  },
+  "quantifiers-t19": {
+    "answer": "either",
+    "original": 2,
+    "shown": 3,
+    "order": [
+      0,
+      3,
+      1,
+      2
+    ]
+  },
+  "quantifiers-t20": {
+    "answer": "neither",
+    "original": 2,
+    "shown": 3,
+    "order": [
+      1,
+      3,
+      0,
+      2
+    ]
+  },
+  "quantifiers-t21": {
+    "answer": "most",
+    "original": 2,
+    "shown": 1,
+    "order": [
+      1,
+      2,
+      3,
+      0
+    ]
+  },
+  "quantifiers-t22": {
+    "answer": "most of",
+    "original": 2,
+    "shown": 3,
+    "order": [
+      3,
+      0,
+      1,
+      2
+    ]
+  },
+  "quantifiers-t23": {
+    "answer": "the most",
+    "original": 1,
+    "shown": 1,
+    "order": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "quantifiers-t24": {
+    "answer": "most of",
+    "original": 1,
+    "shown": 0,
+    "order": [
+      1,
+      2,
+      0,
+      3
+    ]
+  }
+}

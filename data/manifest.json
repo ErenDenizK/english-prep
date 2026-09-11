@@ -1,18 +1,307 @@
 {
   "topics": [
     {
-      "id": "present-simple",
-      "title": "Present Simple",
+      "id": "tenses",
+      "title": "Tenses",
+      "gloss": "Olayın ne zaman olduğundan çok nasıl görüldüğü: bitti mi, sürüyor mu, bugüne mi uzanıyor?",
       "tier": "foundations",
-      "file": "data/tenses/present-simple.json",
-      "questionCount": 8
+      "file": "data/tenses/tenses.json",
+      "questionCount": 25,
+      "lessonCount": 6,
+      "contentVersion": 4,
+      "categories": [
+        "Present Simple vs Present Continuous",
+        "Present Perfect vs Past Simple",
+        "Past Simple vs Past Continuous vs Past Perfect",
+        "Future Forms",
+        "Perfect Aspects: Simple vs Continuous vs Been/Gone",
+        "Time Expressions & Signal Words"
+      ],
+      "lessons": [
+        { "category": "Present Simple vs Present Continuous", "summary": "Alışkanlık mı, şu an olan bir şey mi?" },
+        { "category": "Present Perfect vs Past Simple", "summary": "Geçmiş kapandı mı, şimdiye mi uzanıyor?" },
+        { "category": "Past Simple vs Past Continuous vs Past Perfect", "summary": "Hangisi önce bitti, hangisi o sırada sürüyordu?" },
+        { "category": "Future Forms", "summary": "Kararı ne zaman verdin: şimdi mi, önceden mi?" },
+        { "category": "Perfect Aspects: Simple vs Continuous vs Been/Gone", "summary": "Ne kadarı bitti mi, ne kadar süredir mi?" },
+        { "category": "Time Expressions & Signal Words", "summary": "Hangi kelime hangi zamanı çağırır?" }
+      ],
+      "hasIntro": true
     },
     {
-      "id": "past-simple",
-      "title": "Past Simple",
-      "tier": "foundations",
-      "file": "data/tenses/past-simple.json",
-      "questionCount": 8
+      "id": "modals",
+      "title": "Modals",
+      "gloss": "can, must, should gibi yardımcı fiiller — zorunluluk, izin, ihtimal ve tahmin.",
+      "tier": "core-grammar",
+      "file": "data/modals/modals.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 3,
+      "categories": [
+        "Must vs Have to vs Mustn't vs Don't Have to",
+        "Can vs Could vs May vs Might",
+        "Must vs Can't vs Might/Could",
+        "Modal Perfects: Must / Can't / Should / Needn't Have",
+        "Should vs Ought To vs Had Better",
+        "Can vs Could vs Be Able To"
+      ],
+      "lessons": [
+        { "category": "Must vs Have to vs Mustn't vs Don't Have to", "summary": "Kuralı kim koyuyor — ve olumsuzu yasak mı, gereksiz mi?" },
+        { "category": "Can vs Could vs May vs Might", "summary": "İzin mi istiyorsun, yoksa bir ihtimalden mi bahsediyorsun?" },
+        { "category": "Must vs Can't vs Might/Could", "summary": "Kanıt ne kadar güçlü: kesin mi, imkânsız mı, belki mi?" },
+        { "category": "Modal Perfects: Must / Can't / Should / Needn't Have", "summary": "Geçmişe dair tahmin mi, pişmanlık mı, gereksiz çaba mı?" },
+        { "category": "Should vs Ought To vs Had Better", "summary": "Sıradan bir tavsiye mi, yoksa uymazsan kötü olur mu?" },
+        { "category": "Can vs Could vs Be Able To", "summary": "Genel bir yetenek mi, o gün başarılan tek bir şey mi?" }
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "passive-voice",
+      "title": "Passive Voice",
+      "gloss": "İşi kimin yaptığını söylemeden kurulan cümle: fail değil, eylemin kendisi öne çıkar.",
+      "tier": "core-grammar",
+      "file": "data/passive-voice/passive-voice.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 3,
+      "categories": [
+        "Tense Forms in Passive",
+        "Passive with Modals",
+        "Modal Perfects in Passive",
+        "Causative: Have/Get Something Done",
+        "Passive Reporting Structures",
+        "By + Agent: Include vs Omit"
+      ],
+      "lessons": [
+        { "category": "Tense Forms in Passive", "summary": "Aktif cümledeki zaman, edilgende ne olur?" },
+        { "category": "Passive with Modals", "summary": "Zorunluluk ve olasılık, faili söylemeden nasıl kurulur?" },
+        { "category": "Modal Perfects in Passive", "summary": "'Yapılmış olmalı' mı, 'yapılmalıydı' mı?" },
+        { "category": "Causative: Have/Get Something Done", "summary": "Kendin mi yapıyorsun, birine mi yaptırıyorsun?" },
+        { "category": "Passive Reporting Structures", "summary": "Kaynağı belirtmeden bir bilgi nasıl aktarılır?" },
+        { "category": "By + Agent: Include vs Omit", "summary": "'By' ne zaman gerekli, ne zaman fazlalık?" }
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "closest-meaning",
+      "title": "Closest Meaning",
+      "gloss": "Aynı şeyi başka bir yapıyla söyleme — sınavın 'anlamca en yakın cümle' bölümü.",
+      "tier": "compound-structures",
+      "file": "data/closest-meaning/closest-meaning.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Third Conditional vs Mixed Conditional",
+        "Unless vs If Not vs Otherwise",
+        "Despite vs Although vs However",
+        "As...As vs Comparatives vs The More...The More",
+        "Too vs Enough vs So...That",
+        "Passive Reporting: It Is Said vs Is Said To"
+      ],
+      "lessons": [
+        { "category": "Third Conditional vs Mixed Conditional", "summary": "Sonuç da geçmişte mi kaldı, bugüne mi uzanıyor?" },
+        { "category": "Unless vs If Not vs Otherwise", "summary": "Olumsuzluk hangi cümleye düşüyor: koşula mı, sonuca mı?" },
+        { "category": "Despite vs Although vs However", "summary": "Zıtlığı hangi cümle taşıyor, asıl söylenen hangisi?" },
+        { "category": "As...As vs Comparatives vs The More...The More", "summary": "Karşılaştırmada fazlası hangi tarafta kaldı?" },
+        { "category": "Too vs Enough vs So...That", "summary": "Derece sonucu engelledi mi, yoksa doğurdu mu?" },
+        { "category": "Passive Reporting: It Is Said vs Is Said To", "summary": "Kaynak orijinalde ne kadarsa o kadar: ne ekle, ne çıkar." }
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "connectors",
+      "title": "Connectors & Discourse Markers",
+      "gloss": "Cümleleri birbirine bağlayan sözcükler: ekleme mi, zıtlık mı, sonuç mu, örnek mi?",
+      "tier": "compound-structures",
+      "file": "data/connectors/connectors.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Addition vs Similarity: Moreover / Similarly / Likewise",
+        "Contrast vs Concession: However / Nevertheless / On the Other Hand",
+        "Result vs Purpose: Therefore / Thus / So That / In Order To",
+        "Exemplification vs Restatement: For Instance / Namely / In Other Words",
+        "Time & Sequence: Meanwhile / Subsequently / By Then",
+        "Emphasis & Summary: Above All / In Short / Overall"
+      ],
+      "lessons": [
+        { "category": "Addition vs Similarity: Moreover / Similarly / Likewise", "summary": "Yeni bilgi mi ekliyor, ikinci bir örnek de aynı mı davranıyor?" },
+        {
+          "category": "Contrast vs Concession: However / Nevertheless / On the Other Hand",
+          "summary": "Düz zıtlık mı, beklentiyi boşa çıkarma mı, iki yüz mü?"
+        },
+        { "category": "Result vs Purpose: Therefore / Thus / So That / In Order To", "summary": "Gerçekleşmiş bir sonuç mu, hedeflenen bir amaç mı?" },
+        {
+          "category": "Exemplification vs Restatement: For Instance / Namely / In Other Words",
+          "summary": "Örnek mi veriyor, tam olarak hangisi olduğunu mu söylüyor?"
+        },
+        { "category": "Time & Sequence: Meanwhile / Subsequently / By Then", "summary": "Aynı anda mı sürüyor, sonra mı oldu, o ana kadar bitmiş mi?" },
+        { "category": "Emphasis & Summary: Above All / In Short / Overall", "summary": "En önemlisini mi seçiyor, hepsini tek cümlede mi topluyor?" }
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "quantifiers",
+      "title": "Quantifiers & Determiners",
+      "gloss": "Miktar belirten sözcükler — ve çoğu, ismin sayılabilir olup olmadığına göre değişir.",
+      "tier": "core-grammar",
+      "file": "data/quantifiers/quantifiers.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "A Few vs Few vs A Little vs Little",
+        "Much vs Many vs A Lot Of vs Plenty Of",
+        "Some vs Any vs No vs None",
+        "Each vs Every vs Both vs All",
+        "Either vs Neither vs Nor",
+        "Most vs Most Of vs The Most"
+      ],
+      "lessons": [
+        { "category": "A Few vs Few vs A Little vs Little", "summary": "Tek bir 'a', 'azdı ama yetti' ile 'neredeyse hiç'i ayırır." },
+        { "category": "Much vs Many vs A Lot Of vs Plenty Of", "summary": "İsim sayılabilir mi, ve cümle düz olumlu mu?" },
+        { "category": "Some vs Any vs No vs None", "summary": "Olumsuzluğu fiil mi taşıyor, kelime mi?" },
+        { "category": "Each vs Every vs Both vs All", "summary": "Fiil tekil mi çoğul mu? Karar oradan başlar." },
+        { "category": "Either vs Neither vs Nor", "summary": "İkisinden biri mi, ikisi de değil mi?" },
+        { "category": "Most vs Most Of vs The Most", "summary": "Genel olarak çoğu mu, bu grubun çoğu mu, yoksa en mi?" }
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "relative-clauses",
+      "title": "Relative Clauses",
+      "gloss": "Bir ismi arkasından gelen bir cümleyle tanımlama: who, which, that, whose.",
+      "tier": "compound-structures",
+      "file": "data/relative-clauses/relative-clauses.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Who vs Whom vs Whose",
+        "Defining vs Non-defining: That vs Which",
+        "Where vs When vs Why vs Which",
+        "Preposition + Relative Pronoun: In Which / For Whom / Of Which",
+        "Reduced Relative Clauses: -ing vs -ed",
+        "Quantifier + Relative Pronoun: Some Of Which / All Of Whom"
+      ],
+      "lessons": [
+        { "category": "Who vs Whom vs Whose", "summary": "Kişi yan cümlede özne mi, nesne mi, yoksa sahip mi?" },
+        { "category": "Defining vs Non-defining: That vs Which", "summary": "Virgül var mı? Cümlenin anlamı orada değişiyor." },
+        { "category": "Where vs When vs Why vs Which", "summary": "Boşluktan sonrası eksiksiz mi, bir öğe mi eksik?" },
+        { "category": "Preposition + Relative Pronoun: In Which / For Whom / Of Which", "summary": "Edat öne geçtiğinde who ve that neden elenir?" },
+        { "category": "Reduced Relative Clauses: -ing vs -ed", "summary": "İsim eylemi kendisi mi yapıyor, eylem ona mı yapılıyor?" },
+        { "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom", "summary": "İki cümleyi 'some of them' bağlamaz — peki ne bağlar?" }
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "gerunds-infinitives",
+      "title": "Gerunds & Infinitives",
+      "gloss": "Bir fiilden sonraki ikinci fiil: -ing mi, 'to' mu — ve bu seçim anlamı değiştirir mi?",
+      "tier": "core-grammar",
+      "file": "data/gerunds-infinitives/gerunds-infinitives.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Verb + Gerund vs Verb + Infinitive",
+        "Both, With a Meaning Change: Remember / Stop / Try / Regret",
+        "Causative Verb Patterns: Make / Let / Have / Get",
+        "Adjective + Infinitive vs Preposition + Gerund",
+        "Infinitive of Purpose vs For + Gerund",
+        "Used To vs Be Used To vs Get Used To"
+      ],
+      "lessons": [
+        { "category": "Verb + Gerund vs Verb + Infinitive", "summary": "Kural değil liste: hangi fiil -ing, hangisi 'to' istiyor?" },
+        { "category": "Both, With a Meaning Change: Remember / Stop / Try / Regret", "summary": "İkinci eylem ana fiilden önce mi, sonra mı?" },
+        { "category": "Causative Verb Patterns: Make / Let / Have / Get", "summary": "Yaptırma cümlesinde nesneden sonra 'to' var mı, yok mu?" },
+        { "category": "Adjective + Infinitive vs Preposition + Gerund", "summary": "Sıfat kendi edatını taşıyor mu, taşımıyor mu?" },
+        { "category": "Infinitive of Purpose vs For + Gerund", "summary": "Amaç mı bildiriliyor, yoksa bir gerekçe mi?" },
+        { "category": "Used To vs Be Used To vs Get Used To", "summary": "Eskiden mi yapardın, alışkın mısın, yoksa alışıyor musun?" }
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "academic-nouns-adjectives",
+      "title": "Academic Nouns & Adjectives",
+      "gloss": "Akademik metnin döndüğü isim ve sıfatlar: aynı Türkçe karşılığa çıkan dört sözcükten doğrusunu seçmek.",
+      "tier": "vocabulary",
+      "file": "data/academic-nouns-adjectives/academic-nouns-adjectives.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Scale & Extent (extent / scope / magnitude / margin / threshold)",
+        "Evidence & Inference (evidence / indication / assumption / implication / consensus)",
+        "Certainty & Doubt (apparent / plausible / questionable / conclusive / tentative)",
+        "Significance & Priority (crucial / substantial / marginal / negligible / considerable)",
+        "Constraint & Requirement (constraint / obligation / provision / criterion / exemption)",
+        "Stance & Disposition (reluctant / deliberate / cautious / persistent / indifferent)"
+      ],
+      "lessons": [
+        { "category": "Scale & Extent (extent / scope / magnitude / margin / threshold)", "summary": "Ne kadar ileri gittiği mi, neyi kapsadığı mı?" },
+        {
+          "category": "Evidence & Inference (evidence / indication / assumption / implication / consensus)",
+          "summary": "Elde veri mi var, yoksa yalnızca bir işaret mi?"
+        },
+        {
+          "category": "Certainty & Doubt (apparent / plausible / questionable / conclusive / tentative)",
+          "summary": "Cümle konuyu kapatıyor mu, açık mı bırakıyor?"
+        },
+        {
+          "category": "Significance & Priority (crucial / substantial / marginal / negligible / considerable)",
+          "summary": "Miktar mı büyük, yoksa sonuç mu ona bağlı?"
+        },
+        {
+          "category": "Constraint & Requirement (constraint / obligation / provision / criterion / exemption)",
+          "summary": "Yapmak zorunda mısın, yoksa yapamıyor musun?"
+        },
+        {
+          "category": "Stance & Disposition (reluctant / deliberate / cautious / persistent / indifferent)",
+          "summary": "İstemiyor mu, riskten mi çekiniyor, umursamıyor mu?"
+        }
+      ],
+      "hasIntro": true
+    },
+    {
+      "id": "academic-verbs",
+      "title": "Academic Verbs",
+      "gloss": "Akademik metnin yükünü taşıyan fiiller: aynı karşılığa çıkan dört fiilden paragrafın seçtiğini bulmak.",
+      "tier": "vocabulary",
+      "file": "data/academic-verbs/academic-verbs.json",
+      "questionCount": 24,
+      "lessonCount": 6,
+      "contentVersion": 1,
+      "categories": [
+        "Change & Emergence (emerge / evolve / shift / decline / fade)",
+        "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+        "Claim & Concede (assert / imply / concede / dispute / acknowledge)",
+        "Examine & Establish (assess / determine / verify / estimate / monitor)",
+        "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+        "Allocate & Withhold (allocate / distribute / assign / withhold / retain)"
+      ],
+      "lessons": [
+        { "category": "Change & Emergence (emerge / evolve / shift / decline / fade)", "summary": "Yeni mi çıktı, biçim mi değiştirdi, yoksa sönüyor mu?" },
+        {
+          "category": "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+          "summary": "Yeni mi başlattı, hızlandırdı mı, yoksa var olanı mı sarstı?"
+        },
+        { "category": "Claim & Concede (assert / imply / concede / dispute / acknowledge)", "summary": "Açıkça mı söyledi, sezdirdi mi, yoksa kabul mü etti?" },
+        {
+          "category": "Examine & Establish (assess / determine / verify / estimate / monitor)",
+          "summary": "Yargı mı verildi, kesin cevap mı bulundu, kontrol mü edildi?"
+        },
+        {
+          "category": "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+          "summary": "Aynı düzeyde mi tutuldu, geçici mi durdu, büsbütün mü bırakıldı?"
+        },
+        {
+          "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
+          "summary": "Pay mı verildi, görev mi — yoksa hiç verilmedi mi?"
+        }
+      ],
+      "hasIntro": true
     }
   ]
 }

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cam çalışması v2 — koyu ve sade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../css/fonts.css">
+<link rel="stylesheet" href="cam.css">
+<style>
+@keyframes kay{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(2.5%,1.5%) scale(1.05)}}
+.alan--canli::before{animation:kay 10s ease-in-out infinite}
+@keyframes gel{0%{opacity:0;transform:translateY(9px) scale(.988)}60%,100%{opacity:1;transform:none}}
+.anim-gel{animation:gel 2.6s cubic-bezier(0,0,0,1) infinite}
+@media (prefers-reduced-motion:reduce){.alan--canli::before,.anim-gel{animation:none}}
+</style></head><body><div class="wrap">
+
+<h1>Cam çalışması v2</h1>
+<p class="lede">İki düzeltme uygulandı. <b>Köken artık v0.57</b> — UI turlarından
+hemen önceki, v1'e en yaklaştığımız hâl: soğuk arduvaz H 255 (0.175 / 0.228 /
+0.286), serin ak mürekkep <code>#e9ecef</code>, kehribar <code>#f1af5d</code>
+C 0.125. Ve <b>cam karartıldı</b>: beyaz bir tabaka değil, arduvazın kendisi
+biraz açılmış hâli. Tip modern grotesk (Inter).</p>
+
+<h2>A · <b>Camın koyuluğu — hangisi?</b></h2>
+<p class="say">Sağdaki reddedilen: beyaz tabaka, göze gri geliyordu. Soldaki üçü
+arduvazın kendisinden yapılmış, üç koyulukta. Hiçbirinde beyaz tint yok — tek
+beyaz, pervazın ışık gören köşesinde.</p>
+<div class="grid">
+  <figure><div class="alan" data-s="c1" style="width:262px;height:210px;display:grid;place-items:center">
+    <div class="pano cam-1" style="width:196px;height:126px"></div></div>
+    <figcaption>1 · açık</figcaption></figure>
+  <figure><div class="alan" data-s="c2" style="width:262px;height:210px;display:grid;place-items:center">
+    <div class="pano" style="width:196px;height:126px"></div></div>
+    <figcaption><em>2 · orta</em></figcaption></figure>
+  <figure><div class="alan" data-s="c3" style="width:262px;height:210px;display:grid;place-items:center">
+    <div class="pano cam-3" style="width:196px;height:126px"></div></div>
+    <figcaption>3 · koyu</figcaption></figure>
+  <figure><div class="alan" data-s="c0" style="width:262px;height:210px;display:grid;place-items:center">
+    <div class="pano cam-beyaz" style="width:196px;height:126px"></div></div>
+    <figcaption>reddedilen — beyaz tabaka</figcaption></figure>
+</div>
+
+<h2>B · <b>Tip — Helvetica ayarında bir grotesk</b></h2>
+<p class="say">Aynı blok üç seste. Inter, Helvetica'nın çağdaş karşılığı:
+kapalı apertürler, dar boşluklar, nötr. Source Sans hümanist — daha sıcak, daha
+konuşkan. Serif kökenin başlık sesi.</p>
+<div class="grid">
+  <figure><div class="alan" data-s="t1" style="width:330px;height:238px;padding:22px;display:grid;place-items:center">
+    <div class="pano grotesk" style="width:100%;padding:22px 22px">
+      <p style="font-size:12px;font-weight:600;letter-spacing:.11em;color:var(--kehribar)">BUGÜN</p>
+      <p style="font-size:27px;line-height:33px;font-weight:600;color:var(--mum);margin-top:9px;letter-spacing:-0.022em">Perfect Aspects</p>
+      <p style="font-size:16px;line-height:25px;color:var(--mum-2);margin-top:8px">Dün iki soruda been ile gone karıştı.</p>
+      <p class="tab" style="font-size:14px;color:var(--mum-3);margin-top:14px">6 soru · ~8 dk</p>
+    </div></div><figcaption><em>Inter — modern grotesk</em></figcaption></figure>
+  <figure><div class="alan" data-s="t2" style="width:330px;height:238px;padding:22px;display:grid;place-items:center">
+    <div class="pano eski" style="width:100%;padding:22px 22px">
+      <p style="font-size:12px;font-weight:600;letter-spacing:.11em;color:var(--kehribar)">BUGÜN</p>
+      <p style="font-size:27px;line-height:33px;font-weight:600;color:var(--mum);margin-top:9px">Perfect Aspects</p>
+      <p style="font-size:16px;line-height:25px;color:var(--mum-2);margin-top:8px">Dün iki soruda been ile gone karıştı.</p>
+      <p class="tab" style="font-size:14px;color:var(--mum-3);margin-top:14px">6 soru · ~8 dk</p>
+    </div></div><figcaption>Source Sans — bugünkü</figcaption></figure>
+  <figure><div class="alan" data-s="t3" style="width:330px;height:238px;padding:22px;display:grid;place-items:center">
+    <div class="pano eski" style="width:100%;padding:22px 22px">
+      <p style="font-size:12px;font-weight:600;letter-spacing:.11em;color:var(--kehribar)">BUGÜN</p>
+      <p class="serif" style="font-size:27px;line-height:33px;color:var(--mum);margin-top:9px">Perfect Aspects</p>
+      <p style="font-size:16px;line-height:25px;color:var(--mum-2);margin-top:8px">Dün iki soruda been ile gone karıştı.</p>
+      <p class="tab" style="font-size:14px;color:var(--mum-3);margin-top:14px">6 soru · ~8 dk</p>
+    </div></div><figcaption>başlık serif — v0.57'nin sesi</figcaption></figure>
+</div>
+
+<h2>C · Alan — arkadan vuran ışık, kehribarın tonunda</h2>
+<p class="say">Kehribar H 70, zemin soğuk arduvaz H 255. Işık zeminin üstünde
+yanıyor, zeminin kendisi olmuyor — kökenin soğuk-sıcak karşıtlığı korunuyor.
+Gren bantlaşmayı öldürüp blur'a tutunacak yüzey veriyor.</p>
+<div class="grid">
+  <figure><div class="alan alan--duz" data-s="a1" style="width:250px;height:320px"></div>
+    <figcaption>önceki — tek gradyan, sıcak zemin</figcaption></figure>
+  <figure><div class="alan" data-s="a2" style="width:250px;height:320px"></div>
+    <figcaption><em>şimdi — üç lob, soğuk zemin</em></figcaption></figure>
+  <figure><div class="alan alan--canli" data-s="a3" style="width:250px;height:320px"></div>
+    <figcaption>ışık kayıyor · 10s</figcaption></figure>
+</div>
+
+<h2>D · Telefon oranında</h2>
+<div class="grid">
+  <figure><div class="alan" data-s="p1" style="width:262px;height:566px;padding:20px;display:flex;flex-direction:column;justify-content:center">
+    <div class="pano grotesk" style="padding:24px 22px">
+      <p style="font-size:12px;font-weight:600;letter-spacing:.11em;color:var(--kehribar)">BUGÜN</p>
+      <p style="font-size:27px;line-height:33px;font-weight:600;color:var(--mum);margin-top:10px;letter-spacing:-0.022em">Perfect<br>Aspects</p>
+      <p style="font-size:16px;line-height:25px;color:var(--mum-2);margin-top:10px">Dün iki soruda been ile gone karıştı.</p>
+      <p class="tab" style="font-size:14px;color:var(--mum-3);margin-top:16px">6 soru · ~8 dk</p>
+    </div></div><figcaption><em>cam 2 · Inter</em></figcaption></figure>
+  <figure><div class="alan" data-s="p2" style="width:262px;height:566px;padding:20px;display:flex;flex-direction:column;justify-content:center">
+    <div class="pano cam-3 grotesk" style="padding:24px 22px">
+      <p style="font-size:12px;font-weight:600;letter-spacing:.11em;color:var(--kehribar)">BUGÜN</p>
+      <p style="font-size:27px;line-height:33px;font-weight:600;color:var(--mum);margin-top:10px;letter-spacing:-0.022em">Perfect<br>Aspects</p>
+      <p style="font-size:16px;line-height:25px;color:var(--mum-2);margin-top:10px">Dün iki soruda been ile gone karıştı.</p>
+      <p class="tab" style="font-size:14px;color:var(--mum-3);margin-top:16px">6 soru · ~8 dk</p>
+    </div></div><figcaption>cam 3 · koyu</figcaption></figure>
+  <figure><div class="alan" data-s="p3" style="width:262px;height:566px;padding:20px;display:flex;flex-direction:column;justify-content:center">
+    <div class="pano anim-gel grotesk" style="padding:24px 22px">
+      <p style="font-size:12px;font-weight:600;letter-spacing:.11em;color:var(--kehribar)">BUGÜN</p>
+      <p style="font-size:27px;line-height:33px;font-weight:600;color:var(--mum);margin-top:10px;letter-spacing:-0.022em">Perfect<br>Aspects</p>
+      <p style="font-size:16px;line-height:25px;color:var(--mum-2);margin-top:10px">Dün iki soruda been ile gone karıştı.</p>
+      <p class="tab" style="font-size:14px;color:var(--mum-3);margin-top:16px">6 soru · ~8 dk</p>
+    </div></div><figcaption>geliş · 260ms</figcaption></figure>
+</div>
+
+</div></body></html>

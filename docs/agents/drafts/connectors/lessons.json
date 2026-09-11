@@ -1,0 +1,795 @@
+[
+  {
+    "category": "Addition vs Similarity: Moreover / Similarly / Likewise",
+    "summary": "Yeni bilgi mi ekliyor, ikinci bir örnek de aynı mı davranıyor?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede **ayrıca**, **bunun yanı sıra** ve **benzer şekilde** kulağa aynı işi yapıyormuş gibi gelir: hepsi bir şey daha söyler. İngilizce bu ikisini ayırır. Soru şu: ikinci cümle **aynı konuya yeni bir bilgi** mi ekliyor, yoksa **başka bir örneğin aynı biçimde davrandığını** mı söylüyor? Boşluğa bakmadan önce bu ilişkiyi adlandır."
+      },
+      {
+        "type": "contrast",
+        "heading": "İki işlev, üç kelime",
+        "sides": [
+          {
+            "label": "Moreover",
+            "gloss": "Konu aynı kalır ve ikinci cümle **yeni, farklı** bir bilgi ekler. Aynı yönde bir madde daha koyar, birinciyi tekrar etmez.",
+            "example": "The software is free. Moreover, it runs on old computers."
+          },
+          {
+            "label": "Similarly / Likewise",
+            "gloss": "**Başka** bir özne ya da durum, birincisiyle **aynı** biçimde davranır; iki cümle paralel kurulur. Bu ikisi eşanlamlıdır, aralarında anlam farkı aranmaz.",
+            "example": "The first method failed. Similarly, the second one produced no result."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Boşluktan sonra ne gelir",
+        "rows": [
+          {
+            "form": "Moreover",
+            "use": "Aynı konuda ek bilgi",
+            "pattern": "S + V. Moreover, + S + V.",
+            "example": "It is cheap. Moreover, it is fast."
+          },
+          {
+            "form": "Similarly",
+            "use": "Birinciye paralel yeni bir özne",
+            "pattern": "S + V. Similarly, + new S + V.",
+            "example": "Prices rose. Similarly, rents rose."
+          },
+          {
+            "form": "Likewise",
+            "use": "Similarly ile birebir aynı",
+            "pattern": "S + V. Likewise, + new S + V.",
+            "example": "Prices rose. Likewise, rents rose."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The jacket is waterproof. Moreover, it folds into a pocket.",
+            "note": "Aynı özne, ikinci bir özellik → Moreover"
+          },
+          {
+            "sentence": "The course is short. Moreover, it is cheap.",
+            "note": "Benzetme yok, ek bilgi var → Moreover"
+          },
+          {
+            "sentence": "The first survey showed no change. Similarly, the second found nothing.",
+            "note": "İki ayrı durum, aynı sonuç → Similarly"
+          },
+          {
+            "sentence": "Sugar harms the teeth. Likewise, acidic drinks damage the enamel.",
+            "note": "Farklı özne, aynı davranış → Likewise (similarly ile aynı)"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The book is short. Similarly, it is cheap.",
+        "right": "The book is short. Moreover, it is cheap.",
+        "why": "Similarly **iki ayrı** durumun aynı biçimde davrandığını söyler. Burada tek bir özne var ve ikinci cümle ona yeni bir özellik ekliyor; ortada karşılaştırılacak ikinci bir örnek yok."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The software is free, moreover it runs on old computers.",
+        "right": "The software is free. Moreover, it runs on old computers.",
+        "why": "Moreover bir bağlaç değil, zarftır: iki cümleciği tek başına virgülle bağlayamaz. Türkçede **ayrıca** virgülden sonra rahatça gelir, İngilizcede ise kendi cümlesini başlatır: önünde nokta ya da noktalı virgül olur. Cümlenin ortasında da durabilir (It is, moreover, cheap), ama iki cümleciği tek başına birleştiremez."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "Sınav ipucu: **similarly** ile **likewise** arasında anlam farkı yoktur, sadece üslup farkı vardır. İkisi birlikte seçeneklerdeyse doğru cevap ikisi de olamaz — soru aslında boşluğun hangi **işlevi** istediğini soruyordur, hangi eşanlamlının daha güzel durduğunu değil."
+      },
+      {
+        "type": "decision",
+        "heading": "Önce ilişkiyi adlandır, sonra kelimeyi seç",
+        "rules": [
+          {
+            "condition": "Boşluktan sonraki cümlede **farklı** bir özne var ve birincisiyle aynı sonucu, aynı davranışı gösteriyorsa",
+            "then": "Similarly / Likewise"
+          },
+          {
+            "condition": "İki cümle yapıca paralelse: aynı kalıp, iki ayrı özneyle tekrarlanıyorsa",
+            "then": "Similarly / Likewise"
+          },
+          {
+            "condition": "İkinci cümle **in the same way** ya da **the same is true of** ile yeniden yazılabiliyorsa",
+            "then": "Similarly / Likewise"
+          },
+          {
+            "condition": "Cümlenin öznesi aynı kalıyor ve ikinci cümle ona yeni bir bilgi ekliyorsa",
+            "then": "Moreover"
+          },
+          {
+            "condition": "Ortada hiçbir benzerlik iddiası yok, sadece aynı yönde bir madde daha ekleniyorsa",
+            "then": "Moreover"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Contrast vs Concession: However / Nevertheless / On the Other Hand",
+    "summary": "Düz zıtlık mı, beklentiyi boşa çıkarma mı, iki yüz mü?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede **ama**, **yine de** ve **öte yandan** üçü de zıtlık kurar, ama sınavda üçü ayrı işi yapar. Boşluğa bakmadan önce sor: ikinci cümle birinciye düz bir karşı çıkış mı, birincinin beklettiğini boşa mı çıkarıyor, yoksa aynı konunun öbür yüzünü mü açıyor?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Üç kelime, üç ilişki",
+        "sides": [
+          {
+            "label": "However",
+            "gloss": "Önceki cümleye doğrudan karşı çıkar ya da ona bir sınır koyar. Zıtlığın en genel işaretleyicisidir; özel bir koşul aramaz.",
+            "example": "The design is simple. However, it is not cheap."
+          },
+          {
+            "label": "Nevertheless",
+            "gloss": "Birinci cümle ikincisinin olmasını **beklenmez** kılar, olay yine de olur. Türkçedeki **buna rağmen** anlamı buradadır.",
+            "example": "The rules were strict. Nevertheless, most students passed."
+          },
+          {
+            "label": "On the Other Hand",
+            "gloss": "Aynı konunun **iki yüzünü** tartar: birinci cümle bir tarafı, ikinci cümle öbür tarafı verir ve ikisi de doğrudur.",
+            "example": "Cars are fast. On the other hand, they are expensive to run."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Üçü de zarftır, bağlaç değil",
+        "rows": [
+          {
+            "form": "However",
+            "use": "Zıt bilgiyi tek başına verir",
+            "pattern": "S + V. However, + S + V.",
+            "example": "The test was short. However, it was hard."
+          },
+          {
+            "form": "Nevertheless",
+            "use": "Önceki cümleye rağmen",
+            "pattern": "S + V. Nevertheless, + S + V.",
+            "example": "The test was hard. Nevertheless, she passed."
+          },
+          {
+            "form": "On the Other Hand",
+            "use": "İkinci tarafı açar",
+            "pattern": "S + V. On the other hand, + S + V.",
+            "example": "The test was hard. On the other hand, it was short."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The phone is light. However, the battery is weak.",
+            "note": "Düz zıt bilgi → However"
+          },
+          {
+            "sentence": "The results look clear. However, the sample was small.",
+            "note": "Önceki iddiaya sınır koyuyor → However"
+          },
+          {
+            "sentence": "The road was closed. Nevertheless, the bus arrived on time.",
+            "note": "Birinci cümle bunu beklenmez kılıyordu, yine de oldu → Nevertheless"
+          },
+          {
+            "sentence": "Trains are cheap. On the other hand, they are slow.",
+            "note": "Aynı şeyin artısı ve eksisi tartılıyor → On the Other Hand"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The fee was high. On the other hand, most families paid it.",
+        "right": "The fee was high. Nevertheless, most families paid it.",
+        "why": "İkinci cümle yeni bir taraf açmıyor: birincinin beklettiği sonucu boşa çıkarıyor. Yüksek ücrete **rağmen** ödeme yapılmışsa ilişki ödündür (concession), iki yüzün tartılması değil."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Living in a big city offers many jobs. Nevertheless, it is stressful.",
+        "right": "Living in a big city offers many jobs. On the other hand, it is stressful.",
+        "why": "Burada boşa çıkan bir beklenti yok: iş bulmak kolay olması, şehrin yorucu olmamasını beklenir kılmaz. Aynı seçeneğin bir artısı ve bir eksisi yan yana konuyor; bu **on the other hand** işidir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The device is small, however it is powerful.",
+        "right": "The device is small. However, it is powerful.",
+        "why": "However bir zarftır, bağlaç değil: iki cümleciği tek başına virgülle bağlayamaz. Türkçede **ama** bunu yapabildiği için en sık düşülen hata budur. Boşluk iki cümleciği birleştiriyorsa oraya bağlaç girer (but, while, whereas)."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Önce ilişkiyi adlandır, sonra kelimeyi seç",
+        "rules": [
+          {
+            "condition": "Boşluktan önce nokta ya da noktalı virgül yok ve boşluk iki tam cümleciği tek başına birleştiriyorsa, bu üç zarf oraya giremez",
+            "then": "but / while / whereas"
+          },
+          {
+            "condition": "Boşluktan önce nokta ya da noktalı virgül var; iki cümle aynı şeyin ya da aynı seçeneğin iki yüzünü tartıyor, ikisi de aynı anda doğru, birinci cümle ikincisini şaşırtıcı kılmıyor ve ikinci cümle birincinin iddiasını yalanlamıyorsa",
+            "then": "On the Other Hand"
+          },
+          {
+            "condition": "Birinci cümle ikincisini şaşırtıcı kılıyor ama olay yine de olduysa (**buna rağmen** anlamı)",
+            "then": "Nevertheless"
+          },
+          {
+            "condition": "Yukarıdaki koşulların hiçbiri yoksa ve ikinci cümle birinci cümlenin kurduğu beklentiyi ya da iddiayı yalanlıyor veya sınırlıyorsa",
+            "then": "However"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Result vs Purpose: Therefore / Thus / So That / In Order To",
+    "summary": "Gerçekleşmiş bir sonuç mu, hedeflenen bir amaç mı?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede **bu yüzden** ile **-mek için** arasındaki fark açıktır, ama sınavda dördü tek seçenek listesinde yan yana durur. Bu kategoride iki karar üst üste biner: ilişki **sonuç** mu **amaç** mı, ve boşluktan sonra **cümle** mi **yalın fiil** mi geliyor? İkincisi çoğu soruyu tek başına bitirir."
+      },
+      {
+        "type": "contrast",
+        "heading": "Sonuç mu, amaç mı",
+        "sides": [
+          {
+            "label": "Therefore / Thus",
+            "gloss": "**Sonuç**: olan olmuştur, ikinci cümle birincinin doğal sonucudur. İkisi eşanlamlıdır; aralarındaki fark yalnızca üsluptur.",
+            "example": "The road was closed. Therefore, the bus was late."
+          },
+          {
+            "label": "So That",
+            "gloss": "**Amaç**: eylem, ardından gelen durumun gerçekleşmesi için yapılır. Ardından özneli bir cümlecik gelir, çoğunlukla can, could ya da would ile.",
+            "example": "She kept the receipt so that she could claim the fare back."
+          },
+          {
+            "label": "In Order To",
+            "gloss": "Aynı **amaç** ilişkisi, farklı dilbilgisi: ardından yalın fiil gelir ve amacın öznesi ana cümlenin öznesiyle aynıdır.",
+            "example": "She left early in order to avoid the traffic."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Boşluktan sonra ne gelir",
+        "rows": [
+          {
+            "form": "Therefore",
+            "use": "Sonuç, yeni cümle",
+            "pattern": "S + V. Therefore, + S + V.",
+            "example": "It rained. Therefore, we stayed in."
+          },
+          {
+            "form": "Therefore",
+            "use": "Yardımcı fiil ile asıl fiilin arasında",
+            "pattern": "S + have/has + therefore + V3",
+            "example": "The board has therefore raised the fee."
+          },
+          {
+            "form": "Thus",
+            "use": "Sonuç, yeni cümle",
+            "pattern": "S + V. Thus, + S + V.",
+            "example": "It rained. Thus, we stayed in."
+          },
+          {
+            "form": "So That",
+            "use": "Amaç, özneli cümlecik",
+            "pattern": "S + V + so that + S + can/could/would + V",
+            "example": "He saved money so that he could travel."
+          },
+          {
+            "form": "In Order To",
+            "use": "Amaç, yalın fiil",
+            "pattern": "S + V + in order to + V",
+            "example": "He saved money in order to travel."
+          },
+          {
+            "form": "In Order To",
+            "use": "Amaç, cümlenin başında",
+            "pattern": "In order to + V, + S + V.",
+            "example": "In order to save time, they left early."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The machine broke down. Therefore, the work stopped.",
+            "note": "Gerçekleşmiş sonuç, yeni cümle → Therefore"
+          },
+          {
+            "sentence": "Costs rose sharply. Thus, the project was cancelled.",
+            "note": "Aynı sonuç ilişkisi; thus ile therefore eşanlamlı → Thus"
+          },
+          {
+            "sentence": "They built a fence so that the animals could not escape.",
+            "note": "Amaç + özneli cümlecik (they → the animals) → So That"
+          },
+          {
+            "sentence": "They built a fence in order to protect the garden.",
+            "note": "Amaç, ardından yalın fiil ve aynı özne → In Order To"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "She saved money in order to she could travel.",
+        "right": "She saved money so that she could travel.",
+        "why": "In order to ardından **yalın fiil** ister. Amaç cümleciğinin kendi öznesi varsa (she could travel) oraya **so that** girer."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "He saved money so that to buy a laptop.",
+        "right": "He saved money in order to buy a laptop.",
+        "why": "So that ardından **özneli bir cümlecik** ister, to + fiil değil. Amaç yalın fiille anlatılacaksa **in order to** kullanılır."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The road was closed, therefore the bus was late.",
+        "right": "The road was closed. Therefore, the bus was late.",
+        "why": "Therefore ve thus zarftır: iki cümleciği tek başına virgülle bağlamaz. Boşluk gerçekten iki cümleciği bağlıyorsa oraya bağlaç olan **so** girer."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "text",
+        "body": "**Therefore** ile **thus** arasında anlam farkı yoktur; thus daha resmîdir, o kadar. İkisi birlikte seçeneklerdeyse doğru cevap ikisi de değildir — soru, boşluğun sonuç mu amaç mı istediğini soruyordur."
+      },
+      {
+        "type": "decision",
+        "heading": "Önce ilişkiyi adlandır, sonra boşluktan sonrasına bak",
+        "rules": [
+          {
+            "condition": "Boşluktan önce nokta ya da noktalı virgül yok, boşluk iki tam cümleciği virgülle birleştiriyor ve ikinci cümlecik birincisinin gerçekleşmiş sonucuysa; therefore ile thus oraya giremez",
+            "then": "so"
+          },
+          {
+            "condition": "Boşluk iki cümleciği virgülle birleştirmiyorsa — kendi cümlesinin başında ya da yardımcı fiil ile asıl fiilin arasında duruyorsa — ve ikinci cümle eylemin hedeflediği durumu değil, ondan çıkan gerçekleşmiş sonucu anlatıyorsa",
+            "then": "Therefore / Thus"
+          },
+          {
+            "condition": "İlişki amaçsa ve boşluktan sonra kendi öznesi olan bir cümlecik geliyorsa (çoğunlukla can, could ya da would ile)",
+            "then": "So That"
+          },
+          {
+            "condition": "İlişki amaçsa ve boşluktan sonra özne yok, doğrudan yalın fiil geliyorsa",
+            "then": "In Order To"
+          },
+          {
+            "condition": "İkinci bölüm eylemin hedefini değil, eylemden önce zaten var olan sebebini veriyorsa amaç bağlacı giremez",
+            "then": "because"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Exemplification vs Restatement: For Instance / Namely / In Other Words",
+    "summary": "Örnek mi veriyor, tam olarak hangisi olduğunu mu söylüyor?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçedeki **yani** hem *tam olarak şunlar* hem de *başka bir deyişle* anlamına gelir; İngilizce bunları ikiye böler. Üstüne bir de örnek verme işlevi eklenir. Boşluğa bakmadan önce sor: gelen bölüm **bir örnek** mi, **eksiksiz bir belirtme** mi, yoksa aynı şeyin **yeniden ifadesi** mi?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Üç işlev",
+        "sides": [
+          {
+            "label": "For Instance",
+            "gloss": "Birden çok olası durumdan **birini** örnek verir. Liste eksiktir: sonuna *ve başkaları* eklenebilir.",
+            "example": "Some materials expand in heat. For instance, metal does."
+          },
+          {
+            "label": "Namely",
+            "gloss": "Önceki cümlede belirsiz bırakılan şeyin **tam olarak hangisi** olduğunu söyler ve listeyi kapatır.",
+            "example": "Two documents are required, namely a passport and a photo."
+          },
+          {
+            "label": "In Other Words",
+            "gloss": "Yeni bir bilgi vermez: az önce söyleneni **başka sözcüklerle** tekrar eder, genelde daha yalın biçimde.",
+            "example": "The offer is not final. In other words, it can change."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Boşluktan sonra ne gelir",
+        "rows": [
+          {
+            "form": "For Instance",
+            "use": "Yeni cümlede örnek",
+            "pattern": "S + V. For instance, + S + V.",
+            "example": "Costs vary. For instance, rents differ."
+          },
+          {
+            "form": "For Instance",
+            "use": "Cümle içinde isim öbeği",
+            "pattern": "…, for instance + NP",
+            "example": "Some subjects, for instance physics, are harder."
+          },
+          {
+            "form": "Namely",
+            "use": "İsim öbeğini eksiksiz belirtir",
+            "pattern": "…, namely + NP",
+            "example": "One factor decides, namely cost."
+          },
+          {
+            "form": "In Other Words",
+            "use": "Tam bir cümleyle yeniden ifade",
+            "pattern": "S + V. In other words, + S + V.",
+            "example": "The data is limited. In other words, we cannot be sure."
+          },
+          {
+            "form": "for instance",
+            "use": "Özne ile yüklemin arasında",
+            "pattern": "S, + for instance, + V",
+            "example": "The oldest teacher, for instance, still marks by hand."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "Prices vary by region. For instance, rents are higher in the west.",
+            "note": "Birçok durumdan biri örnek veriliyor → For Instance"
+          },
+          {
+            "sentence": "The delay had a single cause, namely the storm.",
+            "note": "Belirsiz bırakılan şeyin tam karşılığı → Namely"
+          },
+          {
+            "sentence": "Two documents are required, namely a passport and a photo.",
+            "note": "Hangileri olduğu eksiksiz sayılıyor → Namely"
+          },
+          {
+            "sentence": "The report is inconclusive. In other words, it proves nothing.",
+            "note": "Yeni bilgi yok, aynı şey başka sözcüklerle → In Other Words"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The test has two parts, in other words reading and writing.",
+        "right": "The test has two parts, namely reading and writing.",
+        "why": "Türkçede ikisi de **yani** ile karşılanır, ama in other words aynı şeyi yeniden ifade eder ve burada istenen, belirsiz bırakılan şeyin eksiksiz karşılığıdır. Burada belirsiz bırakılan **two parts**ın hangileri olduğu eksiksiz sayılıyor; bu namely işidir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Some materials expand in heat, namely metal.",
+        "right": "Some materials expand in heat, for instance metal.",
+        "why": "Namely listeyi kapatır, yani *sadece bunlar* der. Cümle **some materials** diyor; metal bunlardan yalnızca biri. Eksik bir liste örnektir."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The deadline cannot be changed. For instance, no extension will be given.",
+        "right": "The deadline cannot be changed. In other words, no extension will be given.",
+        "why": "İkinci cümle yeni bir örnek getirmiyor; birinci cümlenin aynısını başka sözcüklerle söylüyor. Örnek, birçok durumdan birini gösterirse örnektir."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Önce ilişkiyi adlandır, sonra kelimeyi seç",
+        "rules": [
+          {
+            "condition": "Boşluktan sonra tam bir cümle var ve bu cümle birincinin söylediğini yeni bir olgu ya da örnek getirmeden, daha yalın sözcüklerle yeniden söylüyorsa (arkasına eklenen sonuç cümleciği bunu bozmaz)",
+            "then": "In Other Words"
+          },
+          {
+            "condition": "Birinci cümlede belirsiz bırakılmış bir şeyin (one factor, two parts) tam olarak hangisi olduğu eksiksiz veriliyorsa",
+            "then": "Namely"
+          },
+          {
+            "condition": "Gelen şey birçok olası durumdan yalnızca biriyse ve sonuna **and others** eklenebiliyorsa",
+            "then": "For Instance"
+          },
+          {
+            "condition": "Bağlaç, örneklenen şeyin adı ile yüklemi arasında iki virgül içinde duruyorsa karar yine küme-üye ilişkisine göre verilir: önceki cümlede tanımlanan kümenin üyelerinden biri anlatılıyorsa",
+            "then": "For Instance"
+          },
+          {
+            "condition": "Boşluktan sonra yüklemi olmayan tek bir isim öbeği varsa: bu öbek belirsiz bırakılan şeyin tamamını veriyorsa namely, birçok olasılıktan yalnızca birini veriyorsa for instance, aynı şeyi başka bir adla söylüyorsa in other words",
+            "then": "Namely / For Instance / In Other Words"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Time & Sequence: Meanwhile / Subsequently / By Then",
+    "summary": "Aynı anda mı sürüyor, sonra mı oldu, o ana kadar bitmiş mi?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Türkçede **bu arada** hem *aynı sırada* hem de *sonra* anlamında kullanılabilir; İngilizcede meanwhile yalnızca birincisini söyler. Bu kategoride üç ayrı zaman ilişkisi var: eşzamanlı, ardışık, ve anılan bir ana kadar tamamlanmış. Boşluğa bakmadan önce hangisi olduğunu adlandır."
+      },
+      {
+        "type": "contrast",
+        "heading": "Üç zaman ilişkisi",
+        "sides": [
+          {
+            "label": "Meanwhile",
+            "gloss": "İki olay **aynı zaman aralığında** yan yana sürer; ikinci cümle, birincisi olurken başka yerde olanı anlatır.",
+            "example": "Prices fell. Meanwhile, wages stayed the same."
+          },
+          {
+            "label": "Subsequently",
+            "gloss": "Birinci olaydan **sonra** gelen olay: sıradaki adımdır. Resmî bir *daha sonra* demektir.",
+            "example": "The plan was approved. Subsequently, work began."
+          },
+          {
+            "label": "By Then",
+            "gloss": "Metinde **anılmış bir ana kadar** bir şeyin çoktan olmuş olduğunu söyler; bu yüzden yanında genelde had + V3 bulunur.",
+            "example": "The office opened in May. By then, the staff had moved."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Boşluktan sonra hangi zaman gelir",
+        "rows": [
+          {
+            "form": "Meanwhile",
+            "use": "Aynı anda süren olay",
+            "pattern": "Meanwhile, + S + was/were + V-ing",
+            "example": "Meanwhile, the others were waiting."
+          },
+          {
+            "form": "Meanwhile",
+            "use": "Aynı dönemde geçerli durum",
+            "pattern": "Meanwhile, + S + V2",
+            "example": "Meanwhile, prices stayed high."
+          },
+          {
+            "form": "Subsequently",
+            "use": "Sıradaki olay",
+            "pattern": "Subsequently, + S + V2",
+            "example": "Subsequently, the rule changed."
+          },
+          {
+            "form": "By Then",
+            "use": "O ana kadar bitmiş olay",
+            "pattern": "By then, + S + had + V3",
+            "example": "By then, the work had finished."
+          },
+          {
+            "form": "By Then",
+            "use": "O ana kadar geçerli olmuş durum",
+            "pattern": "By then, + S + was/were + ...",
+            "example": "By then, it was too late."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The report was delayed. Meanwhile, the team continued testing.",
+            "note": "İki olay aynı dönemde sürüyor → Meanwhile"
+          },
+          {
+            "sentence": "The company opened a branch in 2015. Subsequently, it opened two more.",
+            "note": "Sıradaki olay, daha sonra → Subsequently"
+          },
+          {
+            "sentence": "The results arrived in June. By then, the deadline had passed.",
+            "note": "Anılan ana kadar çoktan olmuş → By Then"
+          },
+          {
+            "sentence": "The talks began at nine. Meanwhile, reporters waited outside.",
+            "note": "Aynı saatlerde başka yerde süren → Meanwhile"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The meeting ended at five. Meanwhile, the report was sent.",
+        "right": "The meeting ended at five. Subsequently, the report was sent.",
+        "why": "Meanwhile iki olayın **aynı anda** sürdüğünü söyler. Burada ikinci olay birincisi bittikten sonra oluyor; sıra ilişkisi subsequently ister."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The office moved in May. Subsequently, most staff had already left.",
+        "right": "The office moved in May. By then, most staff had already left.",
+        "why": "Subsequently anılan olaydan **sonra** olanı anlatır; burada ayrılma o tarihten **önce** tamamlanmış. Anılan ana kadar bitmiş bir şey by then ister."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The train left at six. By then, we arrived at the station.",
+        "right": "The train left at six. By then, we had arrived at the station.",
+        "why": "By then bir ana kadar tamamlanmış olmayı anlatır; anlatılan şey bir olaysa yanındaki fiil had + V3 olur. Durum bildiren cümlelerde Past Simple doğaldır: By then it was too late."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Önce zaman ilişkisini adlandır, sonra kelimeyi seç",
+        "rules": [
+          {
+            "condition": "İki olay aynı zaman aralığında yan yana sürüyorsa",
+            "then": "Meanwhile"
+          },
+          {
+            "condition": "İkinci olay birincisinden sonra, sıradaki adım olarak geliyorsa",
+            "then": "Subsequently"
+          },
+          {
+            "condition": "Metinde geçen bir ana kadar bir şeyin çoktan tamamlandığı söyleniyorsa (yanında genelde had + V3 vardır); anlatılan, o ana kadar süren bir durum değil o ana gelindiğinde çoktan geçerli olan durum olduğu için until then elenir",
+            "then": "By Then"
+          },
+          {
+            "condition": "Boşluk, anılan ana kadar süren bir durumu (until then) değil, o ana gelindiğinde çoktan geçerli olmuş durumu bildiriyorsa",
+            "then": "By Then"
+          },
+          {
+            "condition": "Metinde daha önce belirli bir an ya da tarih hiç anılmamışsa by then elenir; ilişkinin eşzamanlı mı ardışık mı olduğuna bak",
+            "then": "Meanwhile / Subsequently"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Emphasis & Summary: Above All / In Short / Overall",
+    "summary": "En önemlisini mi seçiyor, hepsini tek cümlede mi topluyor?",
+    "blocks": [
+      {
+        "type": "text",
+        "body": "Bu üçü de paragrafın sonunda, birkaç ayrıntı sayıldıktan sonra çıkar; bu yüzden kulakla seçilmeye çalışılır ve yanlış seçilir. Kararı veren, son cümlenin **ne yaptığıdır**: sayılanlardan birini öne mi çıkarıyor, hepsini tek cümlede mi topluyor, yoksa artı ve eksileri tartıp genel bir yargı mı veriyor?"
+      },
+      {
+        "type": "contrast",
+        "heading": "Son cümle ne yapıyor",
+        "sides": [
+          {
+            "label": "Above All",
+            "gloss": "Sayılanlar arasından ya da onlara eklenen yeni bir madde olarak, en önemli olanı öne çıkarır: hepsi önemli ama asıl olan budur.",
+            "example": "Many factors delayed the work. Above all, the weather was bad."
+          },
+          {
+            "label": "In Short",
+            "gloss": "Az önce söylenenleri **tek cümlede** toplar ve kısaltır; yeni bilgi eklemez.",
+            "example": "The room is small, dark and noisy. In short, it is unusable."
+          },
+          {
+            "label": "Overall",
+            "gloss": "Ayrıntılar karışıkken **genel tabloyu** verir: iyi ve kötü yanlar toplandığında ortaya çıkan yargıdır.",
+            "example": "Some results were poor and some were good. Overall, the study was useful."
+          }
+        ]
+      },
+      {
+        "type": "forms",
+        "heading": "Cümlede nereye girer",
+        "rows": [
+          {
+            "form": "Above All",
+            "use": "Öne çıkan tek madde",
+            "pattern": "Above all, + S + V.",
+            "example": "Above all, reliability matters."
+          },
+          {
+            "form": "Above All",
+            "use": "Listenin son maddesinden önce",
+            "pattern": "A, B and, above all, C",
+            "example": "Speed, comfort and, above all, safety."
+          },
+          {
+            "form": "In Short",
+            "use": "Özet cümlesi",
+            "pattern": "In short, + S + V.",
+            "example": "In short, the plan failed."
+          },
+          {
+            "form": "Overall",
+            "use": "Genel değerlendirme",
+            "pattern": "Overall, + S + V.",
+            "example": "Overall, the results were positive."
+          }
+        ]
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "examples",
+        "items": [
+          {
+            "sentence": "The room is small, dark and noisy. In short, it is unusable.",
+            "note": "Üç ayrıntı tek cümlede toplanıyor → In Short"
+          },
+          {
+            "sentence": "Speed, price and, above all, safety guide the choice.",
+            "note": "Sayılanlardan biri öne çıkarılıyor → Above All"
+          },
+          {
+            "sentence": "Many factors delayed the work. Above all, the weather was bad.",
+            "note": "Birçok etken içinden asıl olan → Above All"
+          },
+          {
+            "sentence": "Some sections were weak, but most were strong. Overall, the book is worth reading.",
+            "note": "Artı ve eksiler tartılıp yargı veriliyor → Overall"
+          }
+        ]
+      },
+      {
+        "type": "pitfall",
+        "wrong": "The plan is late, costly and unclear. Above all, it is not ready.",
+        "right": "The plan is late, costly and unclear. In short, it is not ready.",
+        "why": "Son cümle listeden bir maddeyi ya da listeye eklenen yeni bir maddeyi 'asıl olan bu' diye ayırmıyor; üçünü birden tek cümlede topluyor."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Some chapters were weak and others excellent. In short, the book is worth reading.",
+        "right": "Some chapters were weak and others excellent. Overall, the book is worth reading.",
+        "why": "Son cümle söylenenleri kısaltmıyor: birbirine zıt ayrıntıları tartıp bir **genel yargı** veriyor. In short yalnızca aynı bilgiyi daha kısa biçimde tekrar ediyorsa doğrudur."
+      },
+      {
+        "type": "pitfall",
+        "wrong": "Three things delayed the work. Overall, the weather was the worst problem.",
+        "right": "Three things delayed the work. Above all, the weather was the worst problem.",
+        "why": "Overall tek bir maddeyi öne çıkarmaz, bütünün genel yargısını verir. Burada sayılan üç etkenden biri asıl sebep olarak ayrılıyor; bu vurgudur."
+      },
+      {
+        "type": "check"
+      },
+      {
+        "type": "decision",
+        "heading": "Önce son cümlenin işini adlandır, sonra kelimeyi seç",
+        "rules": [
+          {
+            "condition": "Son cümle, sayılanlarla aynı türden bir madde daha ekleyip onu en önemlisi diye öne çıkarıyorsa ya da sayılanlardan birini diğerlerinden önemli diye ayırıyorsa; madde anlatım sırasında sonuncu bile olsa önem sırasında birinci olduğu için first of all elenir",
+            "then": "Above All"
+          },
+          {
+            "condition": "Boşluk **A, B and ____ C** kalıbında, yani listenin son maddesinin hemen önündeyse",
+            "then": "Above All"
+          },
+          {
+            "condition": "Son cümle yeni bir olgu eklemeden, aynı yöndeki ayrıntıların tamamını tek bir sonuçta topluyorsa",
+            "then": "In Short"
+          },
+          {
+            "condition": "Önce hem olumlu hem olumsuz ayrıntılar verilmiş ve son cümle bunları tartıp genel bir yargı veriyorsa",
+            "then": "Overall"
+          }
+        ]
+      }
+    ]
+  }
+]

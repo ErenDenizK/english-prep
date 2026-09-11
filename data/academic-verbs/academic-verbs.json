@@ -1,0 +1,1133 @@
+{
+  "topicId": "academic-verbs",
+  "title": "Academic Verbs",
+  "level": "B2-C1",
+  "note": "Two of the sample cloze's ten blanks are vocabulary, and every reading text carries a vocabulary-in-context item. Written to docs/agents/kickoff-vocabulary.md.",
+  "intro": {
+    "title": "Akademik fiil nedir?",
+    "what": "Akademik bir metinde cümlenin yükünü fiil taşır: bir sürecin nasıl ilerlediği, bir bulgunun neye yol açtığı, bir yazarın iddiasını hangi güçle ileri sürdüğü çoğu zaman tek bir fiilde saklıdır.\n\nTürkçede bu farkı genellikle fiilin yanındaki belirteç ya da cümlenin gerisi taşır — **yavaş yavaş**, **üstü kapalı**, **bir süreliğine**. İngilizce farkı fiilin içine koyar: aynı Türkçe karşılığa çıkan dört fiil arasından paragrafın seçtiğini bulman istenir.",
+    "examples": [
+      { "en": "The committee overlooked the second report.", "note": "Dikkate alınmadı — ama fark edilmediği için." },
+      { "en": "The committee dismissed the second report.", "note": "Yine dikkate alınmadı — bu kez bilerek." }
+    ],
+    "partsHeading": "Doğru fiili seçtiren üç şey",
+    "parts": [
+      { "name": "Küme", "gloss": "dört seçenek de aynı anlam komşuluğundan gelir ve Türkçede çoğu aynı fiile çıkar", "en": "overlook · dismiss · ignore" },
+      { "name": "Seçici", "gloss": "paragrafta üyelerden yalnız birini doğru kılan ayrıntı: niyet, süre, yön ya da sonuç", "en": "Nobody had read it at all." },
+      {
+        "name": "Nesne",
+        "gloss": "fiilin ne aldığı: bir nesne ister mi, ne tür bir nesne alır — bu, cümlenin hangi fiile yer açtığını belirler",
+        "en": "The scheme collapsed. · The board postponed the scheme."
+      }
+    ],
+    "choice": "Türkçede genel bir fiille yetinip ayrıntıyı belirtece bırakabilirsin; cümle yine de doğru kurulur. İngilizcede fiili seçtiğin anda ayrıntıyı da söylemiş olursun, ve kümenin komşu üyesini seçmek üslup hatası değildir: paragrafın söylemediği bir şeyi söyler.",
+    "lessons": "Altı ders altı kümedir: değişim ve ortaya çıkış, neden ve sonuç, iddia ve kabul, inceleme ve saptama, sürdürme ve kısıtlama, dağıtma ve elde tutma. Aralarında sıra yok; biri ötekinin önkoşulu değil. Ama bir kümenin üyeleri ancak birbirine karşı okunduğunda ayrışır, o yüzden bir dersi yarım bırakmak işe yaramaz.",
+    "exam": "Örnek kâğıdın on boşluklu boşluk doldurma bölümünde iki boşluk doğrudan kelime bilgisi soruyor, okuma parçalarının her birinde de bir soru bir sözcüğün bağlamdaki anlamını soruyor. Ayrı bir kelime bölümü yok."
+  },
+  "lessons": [
+    {
+      "category": "Change & Emergence (emerge / evolve / shift / decline / fade)",
+      "summary": "Yeni mi çıktı, biçim mi değiştirdi, yoksa sönüyor mu?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Türkçede beşi de kolayca \"değişti\" ya da \"azaldı\" ile karşılanır: bir eğilim ortaya çıkar, bir yaklaşım değişir, ilgi azalır. İngilizce bu fiilleri **değişimin şekliyle** ayırır: bir şey ilk kez mi görünüyor, bir noktadan başka bir noktaya mı geçiyor, uzun sürede mi gelişiyor, ölçülebilir biçimde mi düşüyor, yoksa yavaşça mı siliniyor?"
+        },
+        {
+          "type": "contrast",
+          "heading": "Değişim nasıl oluyor?",
+          "sides": [
+            {
+              "label": "emerge",
+              "gloss": "Görünmeyen ya da bilinmeyen bir şey görünür hâle gelir: ilk kez ortaya çıkabilir, ya da onu örten şey kalktığı için yeniden. Belirleyici olan, öncesinde görünmüyor olmasıdır — var olmaması değil.",
+              "example": "A new approach emerged."
+            },
+            {
+              "label": "evolve",
+              "gloss": "Var olan bir şey uzun sürede kademe kademe gelişir, başka bir biçime dönüşür; yok olmaz, aynı şeyin sonraki hâlidir.",
+              "example": "The method evolved slowly."
+            },
+            {
+              "label": "shift",
+              "gloss": "Bir odak, denge ya da tercih bir noktadan başka bir noktaya geçer; cümle çoğu zaman nereden nereye geçildiğini verir.",
+              "example": "The focus shifted to prevention."
+            }
+          ]
+        },
+        {
+          "type": "contrast",
+          "heading": "İkisi de aşağı yönlü",
+          "sides": [
+            {
+              "label": "decline",
+              "gloss": "Ölçülebilir bir miktar, oran ya da düzey düşer. Cümle bir sayı ya da eski bir düzeyle karşılaştırma taşır.",
+              "example": "Membership declined sharply."
+            },
+            {
+              "label": "fade",
+              "gloss": "Bir şeyin yoğunluğu, görünürlüğü ya da etkisi yavaşça sönerek yok olmaya yaklaşır; sayıyla ölçülmez.",
+              "example": "The effect faded quickly."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Hangi fiil ne alır",
+          "rows": [
+            {
+              "form": "emerge",
+              "use": "Nesne almaz · özne: eğilim, kanıt, sorun",
+              "pattern": "S + emerge (from + N)",
+              "example": "A pattern emerged from the results."
+            },
+            {
+              "form": "evolve",
+              "use": "Nesne almaz · özne: yöntem, sistem, tür",
+              "pattern": "S + evolve (from/into + N)",
+              "example": "The system evolved into a network."
+            },
+            { "form": "shift", "use": "Nesnesiz: kendisi yer değiştirir", "pattern": "S + shift (from + N) (to + N)", "example": "Attention shifted to costs." },
+            { "form": "shift", "use": "Nesneli: bir şeyi kaydırır", "pattern": "S + shift + N (to + N)", "example": "The report shifted the debate." },
+            {
+              "form": "decline",
+              "use": "Nesne almaz · özne: sayı, oran, düzey",
+              "pattern": "S + decline (by + N)",
+              "example": "Applications declined by half."
+            },
+            { "form": "fade", "use": "Nesne almaz · özne: ilgi, etki, anı", "pattern": "S + fade (away)", "example": "Support gradually faded." }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "A pattern emerged only later.", "note": "Önce yoktu, ilk kez göründü → emerge" },
+            { "sentence": "The theory evolved through several stages.", "note": "Aynı şey, kademeli gelişme → evolve" },
+            { "sentence": "The debate shifted from cost to safety.", "note": "Bir noktadan diğerine geçiş → shift" },
+            { "sentence": "Attendance declined for three years.", "note": "Ölçülen bir düşüş → decline" },
+            { "sentence": "Public interest gradually faded.", "note": "Yoğunluk sönüyor, ortada sayı yok → fade" },
+            { "sentence": "She declined the offer.", "note": "decline'ın ikinci anlamı: bir teklifi reddetmek" }
+          ]
+        },
+        {
+          "type": "text",
+          "body": "İki yerde ikisi de doğrudur, ve bunu bilmek zaman kazandırır. Uzun bir sürede \"X'ten Y'ye geçildi\" diyen bir cümlede hem **shift** hem **evolve** kabul edilir; ayıran şey vurgudur — varılan nokta mı, aradaki gelişme mi. Ölçüsüz bir düşüşte de hem **decline** hem **fade** olur; ama cümlede bir sayı ya da oran varsa decline tek başına doğrudur."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The number of applicants faded last year.",
+          "right": "The number of applicants declined last year.",
+          "why": "fade sayılan bir miktar için kullanılmaz; sönen şeyler yoğunluğu olan şeylerdir: ilgi, etki, renk, anı. Cümlede sayılabilen bir miktar varsa decline gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "A new research area evolved in the 1990s.",
+          "right": "A new research area emerged in the 1990s.",
+          "why": "evolve, bir şeyin daha önceki hâlinden kademe kademe gelişmesini anlatır. Yeni kurulan bir araştırma alanının öncesinde bir hâli yoktur; burada anlatılan bir gelişme değil, ortaya çıkıştır — o da emerge'dir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The reforms declined the number of accidents.",
+          "right": "The reforms reduced the number of accidents.",
+          "why": "decline bu anlamda nesne almaz: bir şey düşer, ama bir şey başka bir şeyi düşürmez. Türkçede \"azaldı\" ve \"azalttı\" aynı kökten geldiği için bu karışır; azaltmak reduce/cut ile söylenir."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Sınavda ne yapacaksın",
+          "rules": [
+            {
+              "condition": "Cümle bir şeyin görünür ya da bilinir hâle geldiğini söylüyorsa — ilk kez, ya da onu örten şey ortadan kalktığı için yeniden — ve boşluğun öznesi görünür hâle gelen şeyin kendisiyse",
+              "then": "emerge"
+            },
+            {
+              "condition": "Cümle bir başlangıç noktası ile bir varış noktası veriyorsa ve odak, denge ya da tercih ikisi arasında yer değiştirmişse",
+              "then": "shift"
+            },
+            {
+              "condition": "Cümle uzun bir süre boyunca kademeli gelişmeyi vurguluyorsa (aşamalar, kuşaklar, on yıllar) ve şey aynı şey kalıp biçim değiştiriyorsa",
+              "then": "evolve"
+            },
+            {
+              "condition": "Cümle ölçülebilir bir miktar, oran ya da eski bir düzeyle karşılaştırma veriyorsa, yön aşağıysa ve boşluğun öznesi o miktarın kendisiyse",
+              "then": "decline"
+            },
+            {
+              "condition": "Cümle bir şeyin yoğunluğunun ya da görünürlüğünün yavaşça kaybolduğunu söylüyorsa ve ortada ölçülen bir miktar yoksa",
+              "then": "fade"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+      "summary": "Yeni mi başlattı, hızlandırdı mı, yoksa var olanı mı sarstı?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Türkçede \"yol açtı\", \"artırdı\" ve \"güçlendirdi\" bu beş fiilin hepsini karşılayabilir. İngilizcede seçimi yapan şey, cümlede **etkilenen şeyin hangi durumda olduğudur**: o şey henüz ortada yok mu, zaten sürüyor mu, yoksa zaten var ve sağlamlığı mı değişiyor?"
+        },
+        {
+          "type": "contrast",
+          "heading": "Etkilenen şey hangi durumda?",
+          "sides": [
+            {
+              "label": "trigger",
+              "gloss": "Bir olay, plansız ve çoğu zaman ani bir tepkiyi başlatır. Tepki öncesinde yoktur; olayın hemen ardından başlar.",
+              "example": "The report triggered a public debate."
+            },
+            {
+              "label": "prompt",
+              "gloss": "Bir gelişme, birini ya da bir kurumu düşünülmüş bir adım atmaya yöneltir. Tepkiyi veren bir özne ve bilinçli bir karar vardır.",
+              "example": "The findings prompted a review."
+            },
+            {
+              "label": "accelerate",
+              "gloss": "Zaten süren bir sürecin hızı artar — miktarı değil. Öncesinde o süreç vardır ve devam etmektedir.",
+              "example": "The policy accelerated the decline."
+            }
+          ]
+        },
+        {
+          "type": "contrast",
+          "heading": "Zaten var olana ne oluyor?",
+          "sides": [
+            {
+              "label": "undermine",
+              "gloss": "Ayakta duran bir şeyi — güveni, otoriteyi, bir savı — alttan alta zayıflatır; çoğu zaman doğrudan karşı çıkmadan.",
+              "example": "The delay undermined public confidence."
+            },
+            {
+              "label": "reinforce",
+              "gloss": "Zaten var olan bir inancı, eğilimi ya da yapıyı daha da sağlamlaştırır. Yeni bir şey kurmaz, olanı pekiştirir.",
+              "example": "The results reinforced the existing view."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Hangi fiil ne alır",
+          "rows": [
+            { "form": "trigger", "use": "Nesne: başlayan tepki ya da süreç", "pattern": "S + trigger + N", "example": "The news triggered a sell-off." },
+            { "form": "prompt", "use": "Nesne: kişi/kurum + to + V", "pattern": "S + prompt + N + to V", "example": "The letter prompted officials to act." },
+            { "form": "prompt", "use": "Nesne: alınan işlemin kendisi", "pattern": "S + prompt + N", "example": "The complaint prompted an inquiry." },
+            {
+              "form": "undermine",
+              "use": "Nesne: soyut bir dayanak (güven, otorite, sav)",
+              "pattern": "S + undermine + N",
+              "example": "The error undermined the argument."
+            },
+            { "form": "reinforce", "use": "Nesne: var olan bir inanç ya da yapı", "pattern": "S + reinforce + N", "example": "The data reinforced the theory." },
+            {
+              "form": "accelerate",
+              "use": "Nesneli: süren bir süreci hızlandırır",
+              "pattern": "S + accelerate + N",
+              "example": "The grant accelerated the work."
+            },
+            { "form": "accelerate", "use": "Nesnesiz: sürecin kendisi hızlanır", "pattern": "S + accelerate", "example": "The decline accelerated." }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "The announcement triggered an immediate reaction.", "note": "Plansız, ani tepki → trigger" },
+            { "sentence": "The delay prompted the board to intervene.", "note": "Bilinçli bir adım atan bir özne var → prompt" },
+            { "sentence": "The grant accelerated a process already under way.", "note": "Süren süreç, artan hız → accelerate" },
+            { "sentence": "The error undermined trust in the method.", "note": "Var olan güven zayıflıyor → undermine" },
+            { "sentence": "The new data reinforced an earlier conclusion.", "note": "Var olan sonuç pekişiyor → reinforce" }
+          ]
+        },
+        {
+          "type": "text",
+          "body": "Bir noktada ikisi de kabul edilir: bir olayın ardından resmî bir işlem başlıyorsa (bir soruşturma, bir inceleme) hem **trigger** hem **prompt** doğru sayılır. Cümle tepkinin anında ve kendiliğinden olduğunu söylüyorsa trigger, tepkiyi veren bir karar mercii varsa prompt öne çıkar; cümle bunlardan hiçbirini söylemiyorsa iki fiil de savunulabilir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The subsidy accelerated the number of applications.",
+          "right": "The subsidy increased the number of applications.",
+          "why": "Türkçede ikisi de \"artırdı\" olur, ama accelerate bir sayıyı değil, süren bir sürecin hızını artırır. Sayılan bir miktar için increase gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The report triggered the ministry to review the rules.",
+          "right": "The report prompted the ministry to review the rules.",
+          "why": "trigger nesne olarak kişi ya da kurum + to almaz; başlattığı tepkinin kendisini nesne alır. Birini bir adım atmaya yönelten fiil prompt'tur."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The findings reinforced that the method works.",
+          "right": "The findings reinforced the view that the method works.",
+          "why": "reinforce bir yan cümleyi değil, bir isim öbeğini pekiştirir: var olan bir görüşü, eğilimi ya da yapıyı. Pekiştirilen şeyin adı cümlede geçmelidir."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Sınavda ne yapacaksın",
+          "rules": [
+            { "condition": "Etkilenen şey cümleye göre zaten sürüyorsa ve değişen tek şey ne kadar hızlı ilerlediğiyse", "then": "accelerate" },
+            { "condition": "Tepki bir olayın hemen ardından, kimsenin karar vermesine gerek kalmadan başlıyorsa", "then": "trigger" },
+            { "condition": "Tepki bir kişinin ya da kurumun aldığı bilinçli bir karar veya işlemse ve cümlede o özne varsa", "then": "prompt" },
+            { "condition": "Cümlede öncesinde de var olan bir güven, otorite ya da sav varsa ve bu daha zayıf hâle geliyorsa", "then": "undermine" },
+            { "condition": "Öncesinde de var olan bir inanç, eğilim ya da yapı daha sağlam hâle geliyorsa", "then": "reinforce" }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Claim & Concede (assert / imply / concede / dispute / acknowledge)",
+      "summary": "Açıkça mı söyledi, sezdirdi mi, yoksa kabul mü etti?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Türkçede \"ileri sürdü\" hem assert hem imply için, \"kabul etti\" hem concede hem acknowledge için kullanılır. İngilizcede ayrım iki soruda toplanır: söz cümlede **açıkça söylendi mi, yoksa çıkarıldı mı**; ve kabul eden taraf bunu yaparken kendi savından bir şey **kaybediyor mu**?"
+        },
+        {
+          "type": "contrast",
+          "heading": "Söylendi mi, sezdirildi mi?",
+          "sides": [
+            {
+              "label": "assert",
+              "gloss": "Konuşan kendi görüşünü açık ve kesin bir dille ortaya koyar; kanıt sunması şart değildir, ama söz cümlede yer alır.",
+              "example": "The author asserts a direct link."
+            },
+            {
+              "label": "imply",
+              "gloss": "Söz açıkça söylenmez, söylenenlerden çıkar. Öznesi bir kişi olabileceği gibi bir bulgu, sayı ya da sonuç da olabilir.",
+              "example": "The results imply a weaker link."
+            }
+          ]
+        },
+        {
+          "type": "contrast",
+          "heading": "Kabul mü, karşı çıkma mı?",
+          "sides": [
+            {
+              "label": "concede",
+              "gloss": "Tartışmada karşı tarafa bir puan verir: o noktada direnmekten vazgeçer, ama onu benimsemiş olmak zorunda değildir. Verdiği şey kendi savını zayıflatır.",
+              "example": "He conceded that the sample was small."
+            },
+            {
+              "label": "acknowledge",
+              "gloss": "Bir şeyin doğru ya da geçerli olduğunu benimseyerek, açıkça teslim eder; bunda bir geri adım ya da kayıp yoktur.",
+              "example": "She acknowledges the earlier work."
+            },
+            {
+              "label": "dispute",
+              "gloss": "Başkasının öne sürdüğü bir iddianın, sayının ya da bulgunun doğruluğuna karşı çıkar.",
+              "example": "Critics dispute the figure."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Hangi fiil ne alır",
+          "rows": [
+            {
+              "form": "assert",
+              "use": "Nesne: that-cümlesi ya da isim · resmî üslup",
+              "pattern": "S + assert + that-clause / N",
+              "example": "They assert that the data are reliable."
+            },
+            {
+              "form": "imply",
+              "use": "Nesne: that-cümlesi ya da isim · özne kanıt da olabilir",
+              "pattern": "S + imply + that-clause / N",
+              "example": "The figures imply a change."
+            },
+            { "form": "concede", "use": "Nesne: that-cümlesi ya da isim", "pattern": "S + concede + that-clause / N", "example": "She conceded the point." },
+            {
+              "form": "acknowledge",
+              "use": "Nesne: isim, that-cümlesi ya da V-ing",
+              "pattern": "S + acknowledge + N / that-clause",
+              "example": "He acknowledged the mistake."
+            },
+            { "form": "dispute", "use": "Nesne: bir iddia, sayı ya da bulgu", "pattern": "S + dispute + N", "example": "They dispute the claim." }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "The author asserts a causal link.", "note": "Kendi görüşü, açık ve kesin → assert" },
+            { "sentence": "The numbers imply a slower recovery.", "note": "Söylenmiyor, çıkarılıyor → imply" },
+            { "sentence": "The study acknowledges two limitations.", "note": "Yansız teslim, kayıp yok → acknowledge" },
+            { "sentence": "She conceded that her figure was wrong.", "note": "Kendi savını zayıflatan kabul → concede" },
+            { "sentence": "Several researchers dispute the finding.", "note": "Başkasının iddiasına karşı çıkma → dispute" }
+          ]
+        },
+        {
+          "type": "text",
+          "body": "Bir yerde ikisi de doğrudur: bir yazar kendi çalışmasının sınırını kabul ettiğinde hem **acknowledge** hem **concede** kullanılabilir. Cümle bu kabulün bir karşı kanıttan sonra ya da isteksizce geldiğini söylüyorsa concede öne çıkar; kabul yalnızca dürüst bir teslimse acknowledge yeter. Cümlede ne baskı ne direniş varsa iki fiil de savunulabilir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The data assert that the trend is slowing.",
+          "right": "The data imply that the trend is slowing.",
+          "why": "assert'in öznesi görüş bildiren bir taraftır; veriler bir iddiada bulunmaz, yalnızca bir sonucu sezdirir. Söz açıkça söylenmiyorsa imply gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The committee disputed the proposal for two hours.",
+          "right": "The committee discussed the proposal for two hours.",
+          "why": "Türkçede \"tartışmak\" hem discuss hem dispute'u karşılar. dispute bir konuyu görüşmek değil, bir iddianın doğruluğuna karşı çıkmaktır."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "From this table we can imply a decline.",
+          "right": "From this table we can infer a decline.",
+          "why": "Sezdiren kaynaktır (metin, veri, konuşan); çıkarımı yapan ise okuyucudur. Türkçede ikisi de \"çıkarmak\" olduğu için karışır: kaynak implies, okuyucu infers."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Sınavda ne yapacaksın",
+          "rules": [
+            { "condition": "Söylenen şey metinde açıkça yazmıyor, verilerden ya da söylenenin gerisinden çıkarılıyorsa", "then": "imply" },
+            { "condition": "Özne kendi görüşünü, kanıt sunmadan, açık ve kesin bir dille ortaya koyuyorsa", "then": "assert" },
+            { "condition": "Özne başkasının iddiasının, sayısının ya da bulgusunun doğruluğuna karşı çıkıyorsa", "then": "dispute" },
+            {
+              "condition": "Verilen nokta öznenin kendi savını zayıflatıyorsa — bir karşı kanıttan ya da baskıdan sonra geliyorsa, ya da özne onu benimsemeden yalnızca tartışma uğruna veriyorsa",
+              "then": "concede"
+            },
+            {
+              "condition": "Özne bir şeyin doğru ya da geçerli olduğunu benimsiyorsa ve bunu kendi konumuna zarar vermeden teslim ediyorsa",
+              "then": "acknowledge"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Examine & Establish (assess / determine / verify / estimate / monitor)",
+      "summary": "Yargı mı verildi, kesin cevap mı bulundu, kontrol mü edildi?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Türkçede \"belirlemek\", \"değerlendirmek\" ve \"kontrol etmek\" bu beş fiilin hepsini karşılayabilir. İngilizcede ayrım işin **sonucunda ne elde edildiğine** bakar: bir yargı mı, kesin bir cevap mı, yaklaşık bir sayı mı, önceden söylenmiş bir şeyin doğrulanması mı, yoksa bitmeyen bir gözlem mi?"
+        },
+        {
+          "type": "contrast",
+          "heading": "Sonuçta elde edilen ne?",
+          "sides": [
+            {
+              "label": "assess",
+              "gloss": "Sonuç bir yargıdır: ne kadar iyi, ne kadar ağır, ne kadar etkili. Tek doğru bir cevabı yoktur, bir derecelendirme verir.",
+              "example": "The team assessed the risk."
+            },
+            {
+              "label": "determine",
+              "gloss": "Sonuç tek ve kesin bir cevaptır: nedeni, kimliği, olup olmadığı. Cevap bulunduğunda soru kapanır.",
+              "example": "The tests determined the cause."
+            },
+            {
+              "label": "estimate",
+              "gloss": "Sonuç yaklaşık bir sayıdır. Kesin ölçüm mümkün değildir; verilen rakam bir tahmindir.",
+              "example": "They estimated the cost."
+            }
+          ]
+        },
+        {
+          "type": "contrast",
+          "heading": "Öncesi ve süresi olan iki fiil",
+          "sides": [
+            {
+              "label": "verify",
+              "gloss": "Ortada zaten ileri sürülmüş bir sayı ya da iddia vardır; verify onun gerçekten doğru olup olmadığını kontrol eder.",
+              "example": "An outside team verified the figures."
+            },
+            {
+              "label": "monitor",
+              "gloss": "Bir şey süre boyunca, düzenli aralıklarla izlenir; amaç bir sonuca varmak değil, değişimi fark etmektir.",
+              "example": "The agency monitors air quality."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Hangi fiil ne alır",
+          "rows": [
+            {
+              "form": "assess",
+              "use": "Nesne: derecesi olan bir şey (etki, risk, başarı)",
+              "pattern": "S + assess + N (as + adj)",
+              "example": "They assessed the impact."
+            },
+            {
+              "form": "determine",
+              "use": "Nesne: isim ya da wh-cümlesi",
+              "pattern": "S + determine + N / wh-clause",
+              "example": "The court determined whether the signature was genuine."
+            },
+            {
+              "form": "verify",
+              "use": "Nesne: önceden söylenmiş bir sayı, iddia ya da kimlik",
+              "pattern": "S + verify + N / that-clause",
+              "example": "The bank verified the payment."
+            },
+            {
+              "form": "estimate",
+              "use": "Nesne: bir miktar · sonuç yaklaşıktır",
+              "pattern": "S + estimate + N (at + figure)",
+              "example": "They estimated the loss at 3%."
+            },
+            {
+              "form": "monitor",
+              "use": "Nesne: süregelen bir durum · süreklilik bildirir",
+              "pattern": "S + monitor + N",
+              "example": "Staff monitor the system daily."
+            }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "The panel assessed the quality of the evidence.", "note": "Sonuç bir yargı → assess" },
+            { "sentence": "The inquiry determined who was responsible.", "note": "Tek ve kesin bir cevap → determine" },
+            { "sentence": "An auditor verified the reported totals.", "note": "Önceden söylenmiş sayının kontrolü → verify" },
+            { "sentence": "Officials estimated the crowd at 20,000.", "note": "Kesin ölçüm yok, yaklaşık sayı → estimate" },
+            { "sentence": "The lab monitors the samples weekly.", "note": "Süren, tekrarlı gözlem → monitor" }
+          ]
+        },
+        {
+          "type": "text",
+          "body": "Örtüşme şurada: bir şeyin ne kadar büyük olduğunu söylemek hem **assess** hem **estimate** ile kurulabilir. Cümle bir sayı ya da aralık veriyorsa estimate, cevap iyi/kötü, ağır/hafif gibi bir derecelendirmeyse assess. **determine** bunların ikisinden de farklıdır: cevabın kesinleştiğini, tartışmaya kapandığını söyler."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The team verified how many species live in the area.",
+          "right": "The team determined how many species live in the area.",
+          "why": "verify, önceden ileri sürülmüş bir sayının doğruluğunu kontrol eder. Ortada henüz bir iddia yoksa sayı ilk kez bulunuyordur ve determine gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The report estimated the damage as very serious.",
+          "right": "The report assessed the damage as very serious.",
+          "why": "estimate bir sayı verir; \"çok ciddi\" bir sayı değil bir yargıdır. Derecelendirme yapan fiil assess'tir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The librarian monitored which of the two copies was the older.",
+          "right": "The librarian determined which of the two copies was the older.",
+          "why": "monitor süre boyunca değişen bir şeyi izlemektir. Hangi nüshanın daha eski olduğu değişmeyen, geçmişte kapanmış bir olgudur; böyle bir soruyu bir kerede cevaplayıp kapatmak determine'dir."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Sınavda ne yapacaksın",
+          "rules": [
+            {
+              "condition": "Cümlede önceden ileri sürülmüş bir sayı ya da iddia varsa ve yapılan iş onun doğru olup olmadığını kontrol etmekse",
+              "then": "verify"
+            },
+            { "condition": "Cümle kesin ölçümün mümkün olmadığını söylüyorsa ya da yuvarlak, yaklaşık bir sayı veriyorsa", "then": "estimate" },
+            { "condition": "İşin sonucu tek bir kesin cevapsa — nedeni, kimliği, olup olmadığı — ve bulunduğunda soru kapanıyorsa", "then": "determine" },
+            { "condition": "İstenen cevap bir derecelendirmeyse (ne kadar iyi, ne kadar ağır, ne kadar etkili) ve tek doğru bir sayı yoksa", "then": "assess" },
+            { "condition": "İş bir kerede bitmiyor, belirli aralıklarla sürüyorsa ve amaç değişimi fark etmekse", "then": "monitor" }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+      "summary": "Aynı düzeyde mi tutuldu, geçici mi durdu, büsbütün mü bırakıldı?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Türkçede \"korumak\" iki ayrı İngilizce fiili birden karşılar: bir düzeyi korumak (maintain) ile bir değeri kaybolmaktan korumak (preserve). \"Durdurmak\" da aynı biçimde geçici ile kalıcıyı ayırmaz. İngilizce bu farkları bağlama değil, **fiilin kendisine** yükler — yani şıklardan biri o farkı zaten söylüyordur."
+        },
+        {
+          "type": "contrast",
+          "heading": "Aynı kalması için ne yapılıyor?",
+          "sides": [
+            {
+              "label": "maintain",
+              "gloss": "Bir düzeyi, hızı ya da işleyişi sürekli çabayla aynı yerde tutar. Çaba kesilirse o şey kendiliğinden düşer.",
+              "example": "The plant maintained full output."
+            },
+            {
+              "label": "preserve",
+              "gloss": "Kaybolabilecek ya da zarar görebilecek değerli bir şeyi geleceğe taşımak için korur; tehdit dışarıdan gelir.",
+              "example": "The archive preserves early recordings."
+            }
+          ]
+        },
+        {
+          "type": "contrast",
+          "heading": "Durdurmanın üç derecesi",
+          "sides": [
+            {
+              "label": "restrict",
+              "gloss": "Tamamen durdurmaz: bir sınır, tavan ya da koşul koyar. Faaliyet daralmış hâlde sürer.",
+              "example": "The permit restricts fishing to the winter months."
+            },
+            {
+              "label": "suspend",
+              "gloss": "Geçici olarak durdurur; yeniden başlaması beklenir ya da bir koşula bağlanmıştır.",
+              "example": "The service was suspended for a week."
+            },
+            { "label": "abandon", "gloss": "Büsbütün bırakır; cümlede geri dönüş öngörülmez.", "example": "They abandoned the plan." }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Hangi fiil ne alır",
+          "rows": [
+            { "form": "maintain", "use": "Nesne: düzey, hız, standart, ilişki", "pattern": "S + maintain + N", "example": "They maintained the pace." },
+            {
+              "form": "maintain",
+              "use": "Ayrı anlam: bir görüşü savunmak",
+              "pattern": "S + maintain + that-clause",
+              "example": "He maintains that the data are sound."
+            },
+            {
+              "form": "preserve",
+              "use": "Nesne: benzersiz ya da kırılgan bir değer",
+              "pattern": "S + preserve + N",
+              "example": "The law preserves old buildings."
+            },
+            {
+              "form": "restrict",
+              "use": "Nesne: erişim, miktar, kapsam · sınır 'to' ile",
+              "pattern": "S + restrict + N + to + N",
+              "example": "They restricted entry to staff."
+            },
+            { "form": "suspend", "use": "Nesne: bir faaliyet, hizmet ya da izin", "pattern": "S + suspend + N", "example": "The board suspended the trial." },
+            { "form": "abandon", "use": "Nesne: plan, proje, yer", "pattern": "S + abandon + N", "example": "The team abandoned the approach." }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "The company maintained its output all winter.", "note": "Çabayla aynı düzeyde tutma → maintain" },
+            { "sentence": "The museum preserves fragile documents.", "note": "Kaybolmasın diye koruma → preserve" },
+            { "sentence": "The policy restricts the number of visitors.", "note": "Sınır konuyor, faaliyet sürüyor → restrict" },
+            { "sentence": "Talks were suspended until March.", "note": "Geçici durdurma, dönüş bekleniyor → suspend" },
+            { "sentence": "The project was abandoned after two years.", "note": "Kalıcı vazgeçiş → abandon" },
+            { "sentence": "He maintains that the figures are correct.", "note": "maintain'in ikinci anlamı: bir görüşü savunmak" }
+          ]
+        },
+        {
+          "type": "text",
+          "body": "Bir binadan söz eden bir cümlede hem **maintain** hem **preserve** doğru olabilir, ama ikisi aynı şeyi söylemez: maintain onu çalışır ve bakımlı tutmaktır, preserve onu değişmekten ya da yok olmaktan korumaktır. Cümle düzenli bakımdan söz ediyorsa maintain, kaybolma tehlikesinden söz ediyorsa preserve."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "They suspended the plan and never returned to it.",
+          "right": "They abandoned the plan and never returned to it.",
+          "why": "suspend geçici durdurmadır ve yeniden başlamayı ima eder. Cümle dönüşün hiç olmadığını söylüyorsa kalıcı bırakma anlatılıyordur ve abandon gerekir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "Bidding is restricted for local firms.",
+          "right": "Bidding is restricted to local firms.",
+          "why": "restrict ... to ... kalıbı sınırın nereye kadar olduğunu verir: ihaleye yalnızca yerel firmalar girebilir. \"for\" ile cümle \"yerel firmalar için sınırlandı\" gibi tam tersi bir anlama kayar."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The pump preserves the pressure in the pipes.",
+          "right": "The pump maintains the pressure in the pipes.",
+          "why": "Bir düzeyi sürekli çabayla aynı yerde tutmak maintain'dir. preserve, kaybolma veya bozulma tehlikesindeki bir şeyi geleceğe taşır; bir basınç böyle bir şey değildir."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Sınavda ne yapacaksın",
+          "rules": [
+            {
+              "condition": "Boşluğun nesnesi bir faaliyet, hizmet ya da izinse ve durdurulması geçiciyse — bir süre, bir koşul ya da yeniden başlama beklentisi varsa",
+              "then": "suspend"
+            },
+            {
+              "condition": "Boşluğun nesnesi bir plan, proje ya da işse ve ondan büsbütün vazgeçiliyorsa; cümlede geri dönüş öngörülmüyorsa",
+              "then": "abandon"
+            },
+            {
+              "condition": "Boşluğun nesnesi bir erişim, miktar ya da kapsamsa ve faaliyet durmadan bir sınır, tavan ya da koşulla daraltılıyorsa",
+              "then": "restrict"
+            },
+            {
+              "condition": "Boşluğun nesnesi kaybolabilecek ya da zarar görebilecek değerli şeyin kendisiyse ve amaç onu geleceğe taşımaksa",
+              "then": "preserve"
+            },
+            { "condition": "Boşluğun nesnesi bir düzey, hız ya da işleyişse ve çaba kesilirse düşeceği anlaşılıyorsa", "then": "maintain" }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
+      "summary": "Pay mı verildi, görev mi — yoksa hiç verilmedi mi?",
+      "blocks": [
+        {
+          "type": "text",
+          "body": "Türkçede \"dağıtmak\" hem allocate hem distribute'u, \"vermek\" hem assign hem allocate'i karşılar. İngilizcede seçim üç soruya bakar: verilen şey bir **pay** mı yoksa bir **görev** mi, alıcı **tek** biri mi yoksa **çok** kişi mi, ve verilmiyorsa bu bir **esirgeme** mi yoksa yalnızca elde tutma mı?"
+        },
+        {
+          "type": "contrast",
+          "heading": "Verilen ne, kime gidiyor?",
+          "sides": [
+            {
+              "label": "allocate",
+              "gloss": "Sınırlı bir kaynağın bir bölümü belirli bir amaç ya da başlık için resmen ayrılır; vurgu payın büyüklüğündedir.",
+              "example": "The council allocated funds to housing."
+            },
+            {
+              "label": "distribute",
+              "gloss": "Aynı şey çok sayıda alıcıya yayılır; vurgu kimlere ve ne kadar geniş bir alana ulaştığındadır.",
+              "example": "The agency distributed supplies to schools."
+            },
+            {
+              "label": "assign",
+              "gloss": "Bir görev, rol ya da yer belirli bir kişiye veya ekibe verilir; nesne bu görev de olabilir, göreve gönderilen kişi de. Nesne hiçbir zaman bir miktar değildir.",
+              "example": "The dean assigned the evening class to a new lecturer."
+            }
+          ]
+        },
+        {
+          "type": "contrast",
+          "heading": "Verilmediğinde",
+          "sides": [
+            {
+              "label": "withhold",
+              "gloss": "Karşı tarafın hak ettiği ya da alacağı olan bir şey bilerek verilmez. Belirleyici olan, karşı tarafın o şey üzerinde bir hakkının bulunmasıdır.",
+              "example": "The firm withheld the report."
+            },
+            {
+              "label": "retain",
+              "gloss": "Özne zaten kendinin olan bir şeyi elden çıkarmaz, kendinde tutar. Başkasının o şey üzerinde bir alacağı yoktur; birinin ondan bir şey beklemesi bunu değiştirmez.",
+              "example": "The company retained control."
+            }
+          ]
+        },
+        {
+          "type": "forms",
+          "heading": "Hangi fiil ne alır",
+          "rows": [
+            {
+              "form": "allocate",
+              "use": "Nesne: pay ya da kaynak · amaç 'to/for' ile",
+              "pattern": "S + allocate + N + to/for + N",
+              "example": "They allocated time for questions."
+            },
+            {
+              "form": "distribute",
+              "use": "Nesne: çoğaltılabilir bir şey · alıcılar 'to/among' ile",
+              "pattern": "S + distribute + N + to/among + N",
+              "example": "They distributed copies to members."
+            },
+            {
+              "form": "assign",
+              "use": "Nesne: görev ya da rol · kişi 'to' ile",
+              "pattern": "S + assign + N + to + N",
+              "example": "They assigned the case to a team."
+            },
+            { "form": "assign", "use": "İki nesneli biçim", "pattern": "S + assign + N + N", "example": "They assigned her the case." },
+            {
+              "form": "assign",
+              "use": "Ters yön: kişi bir göreve ya da yere verilir",
+              "pattern": "S + assign + person + to + N",
+              "example": "The coach assigned the youngest runner to the final leg."
+            },
+            {
+              "form": "withhold",
+              "use": "Nesne: bilgi, ödeme, onay · alıcı 'from' ile",
+              "pattern": "S + withhold + N (from + N)",
+              "example": "They withheld approval from the contractor."
+            },
+            { "form": "retain", "use": "Nesne: zaten elde olan bir şey", "pattern": "S + retain + N", "example": "She retained her seat." }
+          ]
+        },
+        { "type": "check" },
+        {
+          "type": "examples",
+          "items": [
+            { "sentence": "The trust allocates a fixed share of its income to bursaries.", "note": "Sınırlı kaynaktan bir pay ayrılıyor → allocate" },
+            { "sentence": "Volunteers distributed leaflets across the city.", "note": "Aynı şey çok alıcıya yayılıyor → distribute" },
+            { "sentence": "The manager assigned each student a role.", "note": "Belirli kişilere görev → assign" },
+            { "sentence": "The office withheld the results from applicants.", "note": "Beklenen şey bilerek verilmiyor → withhold" },
+            { "sentence": "The founder retained a majority stake.", "note": "Elindekini bırakmıyor → retain" }
+          ]
+        },
+        {
+          "type": "text",
+          "body": "Bir bütçe birden çok birime paylaştırıldığında hem **allocate** hem **distribute** kabul edilir. Ayıran şey cümlenin neyi öne çıkardığıdır: bir başlığa ayrılan payın büyüklüğü mü, yoksa aynı şeyin kaç alıcıya ulaştığı mı? Cümle ikisinden birini vurgulamıyorsa iki fiil de savunulabilir; vurgulayan bir ifade varsa şıklardan yalnızca biri ona uyar."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "The company withheld its licence for another year.",
+          "right": "The company retained its licence for another year.",
+          "why": "withhold, karşı tarafın hak ettiği bir şeyi vermemektir; oysa lisans zaten şirketin ve kimsenin onun üzerinde bir alacağı yok. Kendinin olanı elde tutmak retain'dir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "Half of the fund was distributed to a single laboratory.",
+          "right": "Half of the fund was allocated to a single laboratory.",
+          "why": "distribute aynı şeyin çok sayıda alıcıya yayılmasıdır. Bir kaynağın bir bölümünün tek bir başlık için ayrılması allocate'tir."
+        },
+        {
+          "type": "pitfall",
+          "wrong": "They withheld the information to the committee.",
+          "right": "They withheld the information from the committee.",
+          "why": "withhold vermemek demektir, bu yüzden alıcı \"from\" ile gelir. \"to\" vermek bildiren fiillerin edatıdır ve cümleyi tersine çevirir."
+        },
+        { "type": "check" },
+        {
+          "type": "decision",
+          "heading": "Sınavda ne yapacaksın",
+          "rules": [
+            {
+              "condition": "Verilen şey bir miktar değil de bir görev, rol ya da vakaysa ve belirli bir kişiye veya ekibe gidiyorsa — ya da belirli bir kişi belirli bir göreve veya yere gönderiliyorsa",
+              "then": "assign"
+            },
+            { "condition": "Sınırlı bir kaynaktan bir bölüm, belirli bir amaç ya da başlık için ayrılıyorsa", "then": "allocate" },
+            { "condition": "Aynı şey çok sayıda alıcıya yayılıyorsa ve cümle kapsamı ya da erişimi öne çıkarıyorsa", "then": "distribute" },
+            { "condition": "Verilmeyen şey karşı tarafın hakkı ya da alacağıysa ve özne onu bilerek vermiyorsa", "then": "withhold" },
+            { "condition": "Özne zaten kendinin olan bir şeyi bırakmayıp kendinde tutuyorsa ve başkasının o şey üzerinde bir alacağı yoksa", "then": "retain" }
+          ]
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "academic-verbs-t1",
+      "category": "Change & Emergence (emerge / evolve / shift / decline / fade)",
+      "paragraph": "For half a century the reservoir covered the old stone bridge completely. After three rainless summers the water dropped so far that the parapet ____ above the surface again, and people drove out from the city on Sundays to photograph it.",
+      "options": ["emerged", "declined", "faded", "evolved"],
+      "correctIndex": 0,
+      "explanation": "Paragraf yönü açıkça veriyor: köprü elli yıl suyun altındaydı, su çekilince görünür oldu. 'Emerge' gizli ya da görünmez olan bir şeyin ortaya çıkmasıdır. 'Faded' tam tersini söylerdi — bir şeyin giderek silikleşip kaybolması; oysa burada yeni yeni görünen bir şey var. 'Declined' ise azalan bir miktar için kullanılır; su seviyesi için doğru olurdu ama boşluğun öznesi parapet.",
+      "tip": "'Emerge' bir şeyin ilk kez ya da yeniden görünür hale gelmesidir; boşluktan önce o şeyin görünmediği söyleniyorsa güçlü adaydır.",
+      "optionNotes": {
+        "declined": "Bir miktarın ya da düzeyin giderek azalması. Burada azalan su; boşluğun öznesi ise görünür hale gelen parapet.",
+        "faded": "Rengin, sesin ya da bir anının yavaşça silinip kaybolması. Paragrafta bir şey kaybolmuyor, tersine ortaya çıkıyor.",
+        "evolved": "Var olan bir şeyin uzun sürede başka bir biçime dönüşmesi. Köprü değişmiyor, yalnızca sudan çıkıyor."
+      }
+    },
+    {
+      "id": "academic-verbs-t2",
+      "category": "Change & Emergence (emerge / evolve / shift / decline / fade)",
+      "paragraph": "Nobody expected the change to be so abrupt. The magazine kept its page count, its typeface and its price, but within three issues of the new editor's arrival its coverage ____ from foreign politics to household budgeting, and readers of thirty years' standing wrote in to ask what had happened.",
+      "options": ["shifted", "faded", "evolved", "emerged"],
+      "correctIndex": 0,
+      "explanation": "Seçici olan iki şey var: 'from … to …' ile verilen iki uç ve değişimin aniliği. Sayfa sayısı da fiyatı da aynı kalıyor; yalnızca konu bir yerden başka bir yere geçiyor, ki bu 'shift'tir. 'Evolved' da bir değişimi anlatır ama aşamalı bir gelişme gerektirir; 'abrupt' ve 'within three issues' bunu dışlıyor.",
+      "tip": "'Shift' odağın ya da konumun yer değiştirmesidir ve ani olabilir; 'evolve' uzun sürede aşamalı gelişmeyi şart koşar.",
+      "optionNotes": {
+        "faded": "Bir şeyin gücünü yitirip yavaşça silinmesi. Burada derginin haberciliği zayıflamıyor, konusu değişiyor.",
+        "evolved": "Aşamalı gelişerek başka bir biçime dönüşmek. Paragraf değişimin ani olduğunu ve üç sayı içinde tamamlandığını söylüyor.",
+        "emerged": "İlk kez ortaya çıkmak. Derginin haberciliği zaten vardı; yeni ortaya çıkan bir şey yok."
+      }
+    },
+    {
+      "id": "academic-verbs-t3",
+      "category": "Change & Emergence (emerge / evolve / shift / decline / fade)",
+      "paragraph": "The school in the valley had four hundred pupils on its books when it opened in 1961. As families left for work on the coast, enrolment ____ year after year, and the last two classrooms were closed in 2004.",
+      "options": ["declined", "evolved", "emerged", "shifted"],
+      "correctIndex": 0,
+      "explanation": "Sayılabilir bir miktar — kayıtlı öğrenci sayısı — yıllar boyunca aşağı gidiyor ve sonucu da veriliyor: sınıflar kapanıyor. Bir sayının ya da düzeyin düşmesi 'decline' ile anlatılır. 'Shifted' bir konum ya da odak değişimini anlatır, bir azalmayı değil; öğrenciler başka bir yere gitmiş olsa da cümlenin söylediği şey sayının düşmesidir.",
+      "tip": "Bir sayı, oran ya da düzey aşağı gidiyorsa fiil 'decline'dır; 'shift' miktarı değil konumu değiştirir.",
+      "optionNotes": {
+        "evolved": "Zaman içinde gelişerek başka bir biçime dönüşmek. Okul biçim değiştirmiyor, öğrencisi azalıyor.",
+        "emerged": "Ortaya çıkmak, görünür hale gelmek. Paragrafta ortaya çıkan değil, giderek eksilen bir şey var.",
+        "shifted": "Bir konumdan başka bir konuma geçmek. Sayı bir yere geçmiyor, düşüyor; 'shift' miktar değişimi bildirmez."
+      }
+    },
+    {
+      "id": "academic-verbs-t4",
+      "category": "Change & Emergence (emerge / evolve / shift / decline / fade)",
+      "paragraph": "The two of them agreed to meet at the reunion without either one apologising first. Whatever they had shouted at each other in 1998 had ____ from memory by then, and neither could say afterwards who had walked out of the room.",
+      "options": ["faded", "emerged", "shifted", "declined"],
+      "correctIndex": 0,
+      "explanation": "Paragraf hatırlamamayı anlatıyor: ikisi de odadan kimin çıktığını söyleyemiyor. Bir anının zamanla silinip yok olması 'fade' ile anlatılır. 'Emerged from memory' tam tersini söylerdi — bir şeyin akla geri gelmesi, yeniden belirmesi; oysa burada kaybolmuş bir ayrıntı var.",
+      "tip": "'Fade' renk, ses ya da anı gibi algılanan şeylerin yavaşça silinmesidir; sayısal bir düşüş için 'decline', ortaya çıkış için 'emerge' kullanılır.",
+      "optionNotes": {
+        "emerged": "Ortaya çıkmak, belirmek. Kimse ayrıntıyı hatırlamıyor; yani anı geri gelmiyor, kaybolmuş durumda.",
+        "shifted": "Bir konumdan başkasına geçmek. Anı başka bir yere geçmiyor, tümüyle siliniyor.",
+        "declined": "Ölçülebilir bir miktarın azalması. Bir anı için sayı ya da düzey dili kullanılmaz."
+      }
+    },
+    {
+      "id": "academic-verbs-t5",
+      "category": "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+      "paragraph": "Nothing in a substation waits for a person to decide: the protective switches open the instant a line touches anything. On the hottest evening of the year a sagging power line brushed a poplar branch and ____ a cascade of shutdowns that had reached the coast before an engineer could pick up a telephone.",
+      "options": ["triggered", "prompted", "accelerated", "undermined"],
+      "correctIndex": 0,
+      "explanation": "Küçük bir temas, kimsenin karar vermesine gerek kalmadan zincirleme bir kesinti başlatıyor: şalterler kendiliğinden açıyor. Olmayan bir tepkiyi anında başlatmak 'trigger'dır. 'Prompted' burada yanlıştır, çünkü prompt bir kişiyi ya da kurumu düşünüp harekete geçmeye yöneltir; oysa paragraf trafo merkezinde hiçbir şeyin bir insanın kararını beklemediğini söylüyor.",
+      "tip": "'Trigger' kimsenin karar vermediği, kendiliğinden başlayan bir tepkiyi başlatır; 'prompt' ise düşünüp adım atan bir kişi ya da kurum ister.",
+      "optionNotes": {
+        "prompted": "Bir kişiyi ya da kurumu düşünülmüş bir adım atmaya yöneltmek. Burada karar veren kimse yok; şalterler kendiliğinden açıyor.",
+        "accelerated": "Zaten süren bir süreci hızlandırmak. Kesinti zinciri temastan önce yok; onunla başlıyor.",
+        "undermined": "Bir savın, güvenin ya da otoritenin altını oymak. Burada zayıflatılan değil, sıfırdan başlatılan bir zincir var."
+      }
+    },
+    {
+      "id": "academic-verbs-t6",
+      "category": "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+      "paragraph": "For two years the tenants' letters about the damp went into the same inbox and nothing came of them. It was a local reporter's photograph of a bedroom ceiling that finally ____ an independent survey of the whole block.",
+      "options": ["prompted", "undermined", "reinforced", "accelerated"],
+      "correctIndex": 0,
+      "explanation": "İki yıl boyunca hiçbir adım atılmıyor; fotoğraf, daha önce var olmayan bir incelemeyi başlatıyor. 'Prompt' bir kişiyi ya da kurumu düşünüp harekete geçmeye yöneltmektir. 'Accelerated' önceden başlamış bir işin hızlanması olurdu — oysa 'nothing came of them' ortada henüz bir inceleme bulunmadığını söylüyor.",
+      "tip": "'Prompt' olmayan bir tepkiyi başlatır; 'accelerate' ve 'reinforce' ise zaten var olan bir şeyi hızlandırır ya da güçlendirir.",
+      "optionNotes": {
+        "undermined": "Zayıflatmak, altını oymak. Fotoğraf bir şeyi zayıflatmıyor; bir incelemenin açılmasını sağlıyor.",
+        "reinforced": "Var olan bir şeyi güçlendirmek. Güçlendirilecek bir inceleme yok; inceleme fotoğraftan sonra başlıyor.",
+        "accelerated": "Süren bir işi hızlandırmak. Paragraf iki yıl boyunca hiçbir şeyin başlamadığını söylüyor."
+      }
+    },
+    {
+      "id": "academic-verbs-t7",
+      "category": "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+      "paragraph": "Her argument was careful and generously sourced, but every figure in it came from a single year's data. One graph showing the same pattern reversed in 2019 was enough to ____ the case she had spent forty pages building.",
+      "options": ["undermine", "trigger", "prompt", "reinforce"],
+      "correctIndex": 0,
+      "explanation": "Yeni grafik, tezin dayandığı örüntüyü tersine çeviriyor; yani tezi temelinden zayıflatıyor. 'Undermine' bir savın, otoritenin ya da güvenin altını oymaktır. 'Reinforce' aynı nesneleri alır ama yönü terstir — var olan bir görüşü destekleyip sağlamlaştırmak; oysa grafik tezi doğrulamıyor, çürütüyor.",
+      "tip": "'Undermine' ile 'reinforce' aynı şeyleri nesne alır (sav, güven, otorite); aralarındaki seçimi paragrafın yönü, yani destekleme mi çürütme mi olduğu yapar.",
+      "optionNotes": {
+        "trigger": "Bir tepkiyi ya da mekanizmayı ani biçimde başlatmak. Bir sav 'başlatılmaz'; burada bir savın gücü sarsılıyor.",
+        "prompt": "Birini ya da bir kurumu harekete geçmeye yöneltmek. Grafik kimseyi bir işe yöneltmiyor, bir savı çürütüyor.",
+        "reinforce": "Var olan bir görüşü güçlendirmek. Grafik örüntünün tersini gösteriyor, yani tezi desteklemiyor."
+      }
+    },
+    {
+      "id": "academic-verbs-t8",
+      "category": "Cause & Consequence (trigger / prompt / undermine / reinforce / accelerate)",
+      "paragraph": "None of it was news to anyone who lived on that road. The engineer's own maps, published thirty years late, simply ____ what the residents had believed all along: that the bypass had been routed to serve the quarry and not the houses.",
+      "options": ["reinforced", "prompted", "undermined", "triggered"],
+      "correctIndex": 0,
+      "explanation": "Bilgi yeni değil; haritalar sakinlerin zaten inandığı şeyi doğruluyor ve o inancı sağlamlaştırıyor. 'Reinforce' var olan bir inancı ya da izlenimi güçlendirmektir. 'Undermined' tam tersini söylerdi — inancı sarsmak; oysa 'none of it was news' inancın değişmediğini, yalnızca güçlendiğini belirtiyor.",
+      "tip": "'Reinforce' boşluktan önce zaten var olan bir inancı güçlendirir; inanç paragrafta yoksa doğru aday 'reinforce' değildir.",
+      "optionNotes": {
+        "prompted": "Bir kişiyi ya da kurumu harekete geçmeye yöneltmek. Haritalar kimseyi bir işe yöneltmiyor; eski bir kanıyı doğruluyor.",
+        "undermined": "Bir inancı ya da savı zayıflatmak. Paragraf inancın sarsıldığını değil, doğrulandığını söylüyor.",
+        "triggered": "Var olmayan bir tepkiyi ani biçimde başlatmak. Sakinlerin inancı haritalardan önce de vardı; başlatılan yeni bir şey yok."
+      }
+    },
+    {
+      "id": "academic-verbs-t9",
+      "category": "Claim & Concede (assert / imply / concede / dispute / acknowledge)",
+      "paragraph": "In the preface Halloway ____ that the folding technique is entirely his own invention, and he repeats the claim twice more before the chapter ends. Nowhere in the book does he give a date, a drawing or a witness.",
+      "options": ["asserts", "implies", "concedes", "acknowledges"],
+      "correctIndex": 0,
+      "explanation": "Halloway iddiayı açıkça ve üç kez dile getiriyor, üstelik hiçbir kanıt sunmadan. 'Assert' bir şeyi kesin bir dille, kanıt göstermeden ileri sürmektir. 'Implies' söylemeden sezdirmek demektir — oysa paragraf iddianın kitapta açıkça yazıldığını, hatta tekrarlandığını söylüyor.",
+      "tip": "'Assert' açıkça ve iddialı biçimde söylemektir, 'imply' ise söylemeden sezdirmek. Metin 'açıkça söylüyor' diyorsa 'imply' elenir.",
+      "optionNotes": {
+        "implies": "Söylemeden sezdirmek. Halloway iddiayı üç kez açıkça yazıyor; ortada ima değil doğrudan bir öne sürüş var.",
+        "concedes": "İsteksizce, kendi aleyhine bir şeyi kabul etmek. Buradaki cümle yazarın kendi lehine bir iddiası.",
+        "acknowledges": "Doğru ya da bilinen bir şeyi kabul etmek. Ortada kabul edilen değil, kanıtsız ileri sürülen bir iddia var."
+      }
+    },
+    {
+      "id": "academic-verbs-t10",
+      "category": "Claim & Concede (assert / imply / concede / dispute / acknowledge)",
+      "paragraph": "The report never says that the ward was short of nurses. It ____ as much, though, when it records that one nurse covered thirty beds that night and calls the ratio 'a matter for the trust to explain'.",
+      "options": ["implies", "asserts", "disputes", "acknowledges"],
+      "correctIndex": 0,
+      "explanation": "Rapor o cümleyi hiç kurmuyor; ama verdiği rakam ve seçtiği ifade okuru o sonuca götürüyor. Söylemeden sezdirmek 'imply'dır. 'Asserts' açıkça ve kesin bir dille ifade etmek olurdu — oysa ilk cümle raporun bunu hiç söylemediğini belirtiyor.",
+      "tip": "'Imply' yazarın söylemediği ama okurun çıkardığı şeydir; metin 'never says' diyorsa açık söz gerektiren tüm seçenekler elenir.",
+      "optionNotes": {
+        "asserts": "Açıkça ve kesin bir dille ileri sürmek. Rapor bunu hiç söylemiyor; yalnızca rakamla sezdiriyor.",
+        "disputes": "Bir iddianın doğruluğuna itiraz etmek. Rapor bir iddiayı reddetmiyor, kendi sonucunu ima ediyor.",
+        "acknowledges": "Bir şeyi açıkça kabul etmek. Kabul de açık söz ister; rapor ise konuyu hiç dile getirmiyor."
+      }
+    },
+    {
+      "id": "academic-verbs-t11",
+      "category": "Claim & Concede (assert / imply / concede / dispute / acknowledge)",
+      "paragraph": "For three days the minister had insisted that the delay had nothing to do with the new software. Under questioning on the Thursday afternoon she ____ that two of her department's deadlines had gone because the system could not read the old files — a sentence she offered for the sake of argument and withdrew the next morning.",
+      "options": ["conceded", "acknowledged", "asserted", "implied"],
+      "correctIndex": 0,
+      "explanation": "Bakan üç gün direndiği bir noktayı, baskı altında ve kendi aleyhine olacak biçimde karşı tarafa veriyor; üstelik onu benimsemiş değil, ertesi sabah geri alıyor. Tartışmada karşı tarafa böyle verilen puan 'concede'dir. 'Acknowledged' bir şeyin doğruluğunu benimseyerek teslim etmek olurdu; oysa paragraf bu kabulün yalnızca tartışma uğruna yapıldığını ve geri alındığını söylüyor.",
+      "tip": "'Concede' direndikten sonra karşı tarafa verilen bir puandır; özne onu benimsemek zorunda değildir. 'Acknowledge' ise doğruluğunu benimseyerek teslim etmektir.",
+      "optionNotes": {
+        "acknowledged": "Bir şeyin doğru olduğunu benimseyerek teslim etmek. Bakan bunu benimsemiyor; tartışma uğruna söyleyip ertesi sabah geri alıyor.",
+        "asserted": "Kendi görüşünü kesin bir dille ileri sürmek. Söylenen şey bakanın kendi savını çürütüyor; ortada onun bir iddiası yok.",
+        "implied": "Söylemeden sezdirmek. Bakan bunu sorgu sırasında açıkça söylüyor; ortada ima değil, dile getirilmiş bir kabul var."
+      }
+    },
+    {
+      "id": "academic-verbs-t12",
+      "category": "Claim & Concede (assert / imply / concede / dispute / acknowledge)",
+      "paragraph": "Nobody questioned the measurements themselves. What the other three laboratories ____ was the conclusion the authors had drawn from them, and all three had published their objections within a month.",
+      "options": ["disputed", "asserted", "conceded", "acknowledged"],
+      "correctIndex": 0,
+      "explanation": "Üç laboratuvar da itirazlarını yayımlıyor: çıkarılan sonuca karşı çıkıyorlar. Bir iddianın doğruluğuna itiraz etmek 'dispute'tur. 'Acknowledged' tam tersini söylerdi — kabul etmek; laboratuvarların kabul ettiği şey zaten ölçümler, itiraz ettikleri şey ise sonuç.",
+      "tip": "'Dispute' ret yönünde, 'acknowledge' ve 'concede' kabul yönündedir; paragrafta itiraz mı kabul mü olduğunu sonuçtaki eylem söyler.",
+      "optionNotes": {
+        "asserted": "Bir şeyi kesin bir dille ileri sürmek. Laboratuvarlar yeni bir iddia kurmuyor, mevcut sonuca karşı çıkıyor.",
+        "conceded": "Direndikten sonra istemeye istemeye kabul etmek. Burada kabul değil, yayımlanmış bir itiraz var.",
+        "acknowledged": "Doğru olduğunu kabul etmek. Kabul edilen şey ölçümler; boşluk ise reddedilen sonucu anlatıyor."
+      }
+    },
+    {
+      "id": "academic-verbs-t13",
+      "category": "Examine & Establish (assess / determine / verify / estimate / monitor)",
+      "paragraph": "The fire had been out for a fortnight before anyone could get into the roof space safely. It took the investigators another six weeks to ____ what had started it, and the answer — a fault in a twenty-year-old extractor fan — surprised everyone.",
+      "options": ["determine", "verify", "estimate", "assess"],
+      "correctIndex": 0,
+      "explanation": "Boşluğun nesnesi bir 'what' sorusu: yangını başlatan tek ve kesin sebep aranıyor ve sonunda bulunuyor. Araştırıp kesin olarak saptamak 'determine'dir. 'Verify' ise ortada önceden ileri sürülmüş bir bilgi olmasını şart koşar — burada doğrulanacak bir iddia yok, sebebi kimse bilmiyor.",
+      "tip": "'Verify' önce bir iddia olmasını gerektirir; hiçbir iddia yokken bilinmeyen bir gerçeği bulmak 'determine'dir.",
+      "optionNotes": {
+        "verify": "Önceden söylenmiş bir bilginin doğru olup olmadığını sınamak. Burada sınanacak bir iddia yok; sebep hiç bilinmiyor.",
+        "estimate": "Tam ölçmeden yaklaşık bir sayı vermek. Aranan şey bir sayı değil, yangının sebebi.",
+        "assess": "Bir şeyin değerini, kalitesini ya da boyutunu değerlendirmek. Burada değerlendirilen değil, bulunup saptanan bir sebep var."
+      }
+    },
+    {
+      "id": "academic-verbs-t14",
+      "category": "Examine & Establish (assess / determine / verify / estimate / monitor)",
+      "paragraph": "Applicants type their own grades into the online form and no certificates are asked for at that stage. Only once a place has been offered does the registry ____ what the applicant has written, and about one file in forty turns out not to match the school's records.",
+      "options": ["verify", "determine", "monitor", "assess"],
+      "correctIndex": 0,
+      "explanation": "Notlar zaten formda yazılı; kurum bunların doğru olup olmadığını okul kayıtlarıyla karşılaştırıyor. Önceden ileri sürülmüş bir bilgiyi kanıta karşı sınamak 'verify'dır. 'Determine' henüz bilinmeyen bir şeyi saptamak olurdu — oysa burada bilgi ortada, eksik olan yalnızca doğruluğu.",
+      "tip": "'Verify' ortada bir iddia varken doğruluğunu sınar; 'determine' ortada cevap yokken onu bulur.",
+      "optionNotes": {
+        "determine": "Bilinmeyen bir şeyi araştırıp kesin olarak saptamak. Notlar zaten yazılı; bulunacak değil, sınanacak bir bilgi var.",
+        "monitor": "Bir şeyi zaman içinde sürekli izlemek. Bu, teklif sonrası bir kez yapılan bir kontrol.",
+        "assess": "Bir şeyin niteliğini ya da değerini değerlendirmek. Burada notlar değerlendirilmiyor, doğru olup olmadıkları sınanıyor."
+      }
+    },
+    {
+      "id": "academic-verbs-t15",
+      "category": "Examine & Establish (assess / determine / verify / estimate / monitor)",
+      "paragraph": "Counting the birds directly is impossible: they leave the cliff before dawn and come back long after dark. Working from the number of occupied nests, the survey team ____ that about five thousand pairs breed on the island each spring.",
+      "options": ["estimated", "determined", "monitored", "assessed"],
+      "correctIndex": 0,
+      "explanation": "Paragraf kesin sayımın mümkün olmadığını söylüyor ve sonuç dolaylı bir yoldan, yaklaşık olarak veriliyor: 'about five thousand'. Ölçmeden yaklaşık bir değere ulaşmak 'estimate'tir. 'Determined' kesin ve tartışmasız bir sonuca varmak anlamına gelir; 'impossible' ve 'about' bunu dışlıyor.",
+      "tip": "Sayı 'about, roughly, somewhere between' gibi ifadelerle veriliyorsa ve doğrudan ölçüm yoksa fiil 'estimate'tir.",
+      "optionNotes": {
+        "determined": "Kesin ve tartışmasız bir sonuca varmak. Paragraf doğrudan saymanın imkânsız olduğunu ve sayının yaklaşık olduğunu söylüyor.",
+        "monitored": "Zaman içinde sürekli izlemek. Burada tek seferlik bir sayı üretiliyor, sürekli bir izleme anlatılmıyor.",
+        "assessed": "Bir şeyin değerini ya da niteliğini değerlendirmek. Burada değerlendirme değil, dolaylı bir sayı hesabı var."
+      }
+    },
+    {
+      "id": "academic-verbs-t16",
+      "category": "Examine & Establish (assess / determine / verify / estimate / monitor)",
+      "paragraph": "The sensors stay on when the plant closes for the night. They ____ the temperature of every tank around the clock, and what the inspectors ask for first is not any single reading but the twelve-month record the system builds up.",
+      "options": ["monitor", "verify", "estimate", "assess"],
+      "correctIndex": 0,
+      "explanation": "Seçici olan şey süreklilik: sensörler gece gündüz ölçüyor ve on iki aylık bir kayıt biriktiriyor. Bir şeyi zaman içinde kesintisiz izlemek 'monitor'dır. 'Verify' tek seferlik bir doğrulama olurdu, üstelik önceden söylenmiş bir değeri gerektirirdi; burada doğrulanan bir iddia değil, biriken bir kayıt var.",
+      "tip": "'Monitor' süreklilik ister: 'around the clock', 'at regular intervals', 'over twelve months' gibi ifadeler onu seçer.",
+      "optionNotes": {
+        "verify": "Önceden söylenmiş bir bilgiyi doğrulamak. Ortada doğrulanacak bir iddia yok; sensörler kayıt biriktiriyor.",
+        "estimate": "Ölçmeden yaklaşık bir değer vermek. Sensörler tam olarak ölçüyor, tahmin yürütmüyor.",
+        "assess": "Bir şeyin niteliğini değerlendirmek. Sensörler değerlendirme yapmaz, veriyi kaydeder."
+      }
+    },
+    {
+      "id": "academic-verbs-t17",
+      "category": "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+      "paragraph": "When the mains supply failed for nine hours in February, the generators in the yard took over before anyone noticed. That is what they are there for: whatever happens outside, the seed vault has to ____ a temperature of minus eighteen degrees, for decades and without an hour's interruption.",
+      "options": ["maintain", "suspend", "abandon", "preserve"],
+      "correctIndex": 0,
+      "explanation": "Boşluğun nesnesi bir sıcaklık, yani sabit tutulması gereken bir düzey; bir düzeyi değişmeden sürdürmek 'maintain'dir. 'Preserve' korunan şeyin kendisini nesne alır — tohumları, bir binayı, bir dili — bir düzeyi değil. Kasa tohumları 'preserve' eder; bunu da sıcaklığı 'maintain' ederek yapar.",
+      "tip": "'Maintain' bir düzeyi (sıcaklık, hız, sefer sayısı) sabit tutar; 'preserve' bozulmaktan korunan değerli şeyin kendisini alır.",
+      "optionNotes": {
+        "suspend": "Bir işi geçici olarak durdurmak. Paragraf tam tersini söylüyor: tek saatlik bir kesinti bile olmayacak.",
+        "abandon": "Bir şeyden temelli vazgeçmek. Burada vazgeçilen değil, onlarca yıl sürdürülmesi gereken bir koşul var.",
+        "preserve": "Değerli ya da bozulabilir bir şeyi kaybolmaktan korumak. Korunan şey tohumlar; boşluğun nesnesi ise sıcaklık düzeyi."
+      }
+    },
+    {
+      "id": "academic-verbs-t18",
+      "category": "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+      "paragraph": "No part of the beach is closed to walkers at any point in the year. Between April and July, while the terns are nesting, the warden simply ____ access to the eastern half, and walkers are asked to keep to the marked line.",
+      "options": ["restricts", "maintains", "suspends", "preserves"],
+      "correctIndex": 0,
+      "explanation": "İlk cümle sahilin hiçbir bölümünün yılın hiçbir döneminde kapanmadığını söylüyor: erişim tümüyle durmuyor, yalnızca bir bölümle sınırlanıyor. Bir şeyi belirli bir ölçüde sınırlamak 'restrict'tir. 'Suspends' erişimin bir süreliğine tamamen durdurulması olurdu; sahilin hiçbir bölümünün kapanmadığı bilgisi bunu açıkça dışlıyor.",
+      "tip": "'Restrict' kısmen sınırlar, 'suspend' tümüyle ama geçici olarak durdurur; paragraf 'kapanmıyor' diyorsa 'suspend' elenir.",
+      "optionNotes": {
+        "maintains": "Bir şeyi olduğu gibi sürdürmek. Burada erişim aynı kalmıyor; nisan-temmuz arası daraltılıyor.",
+        "suspends": "Bir süreliğine tamamen durdurmak. Paragraf sahilin hiçbir bölümünün yıl içinde kapanmadığını söylüyor.",
+        "preserves": "Bir şeyi korumak, kaybolmasını önlemek. Korunan şey kuşlar; boşluğun nesnesi ise sınırlanan erişim."
+      }
+    },
+    {
+      "id": "academic-verbs-t19",
+      "category": "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+      "paragraph": "The trial had run smoothly until a participant fell ill in the third month. The team ____ the study while an independent panel looked into the case, and enrolment started again in September with a revised consent form.",
+      "options": ["suspended", "maintained", "restricted", "abandoned"],
+      "correctIndex": 0,
+      "explanation": "Çalışma durduruluyor ama eylülde yeniden başlıyor; yani durma baştan geçici. Geçici olarak durdurmak 'suspend'dir. 'Abandoned' temelli vazgeçmek anlamına gelir ve 'started again in September' bununla çelişir — bırakılmış bir çalışma yeniden katılımcı almaz.",
+      "tip": "'Suspend' geri dönüşü varsayar, 'abandon' varsaymaz; paragrafta yeniden başlama ya da bir bitiş koşulu varsa 'suspend' seçilir.",
+      "optionNotes": {
+        "maintained": "Olduğu gibi sürdürmek. Çalışma sürmüyor; panel incelemesi boyunca duruyor.",
+        "restricted": "Sınırlamak, daraltmak. Burada daraltılan değil, tümüyle durdurulan bir çalışma var.",
+        "abandoned": "Temelli vazgeçmek. Eylülde yeniden başlayan bir çalışma bırakılmış sayılmaz."
+      }
+    },
+    {
+      "id": "academic-verbs-t20",
+      "category": "Sustain & Restrict (maintain / preserve / restrict / suspend / abandon)",
+      "paragraph": "Two winters of frost got into the stonework and every new estimate came in higher than the last. In 1994 the trust ____ the restoration altogether, sold the site to the local authority and took down the scaffolding for the last time.",
+      "options": ["abandoned", "restricted", "suspended", "preserved"],
+      "correctIndex": 0,
+      "explanation": "Vakıf yalnızca ara vermiyor: araziyi satıyor ve iskeleyi son kez indiriyor. Geri dönüşü olmayan bu vazgeçiş 'abandon'dır. 'Suspended' işin ileride kaldığı yerden süreceğini ima ederdi — oysa satılmış bir arazide restorasyona devam edilemez.",
+      "tip": "'Abandon' kalıcıdır ve çoğunlukla geri dönüşü imkânsız kılan bir eylemle birlikte gelir; geçici duruş 'suspend'dir.",
+      "optionNotes": {
+        "restricted": "Kapsamı daraltmak. Paragrafta iş küçültülmüyor, tümüyle bırakılıyor.",
+        "suspended": "Geçici olarak durdurmak. Arazi satıldığı ve iskele son kez indirildiği için geri dönüş yok.",
+        "preserved": "Bir şeyi bozulmaktan koruyup ayakta tutmak. Vakıf tam tersini yapıyor: koruma işinden vazgeçiyor."
+      }
+    },
+    {
+      "id": "academic-verbs-t21",
+      "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
+      "paragraph": "Nothing has been spent yet and no contractor has been chosen. Next year's budget ____ two hundred thousand lira to the repair of the harbour wall, and the money cannot be moved to anything else without a second vote.",
+      "options": ["allocates", "distributes", "withholds", "retains"],
+      "correctIndex": 0,
+      "explanation": "Para henüz kimseye ödenmiş değil; bütçede tek bir amaç için ayrılmış ve başka bir yere aktarılamıyor. Bir kaynağı belirli bir amaca ayırmak 'allocate'tir. 'Distributes' parayı birçok alıcıya dağıtmak olurdu — oysa paragraf hiçbir şeyin harcanmadığını ve tek bir kalem bulunduğunu söylüyor.",
+      "tip": "'Allocate' bir kaynağı bir amaç için ayırır, henüz dağıtmaz; 'distribute' onu birçok alıcıya fiilen paylaştırır.",
+      "optionNotes": {
+        "distributes": "Bir şeyi birçok alıcıya paylaştırmak. Burada tek bir amaç var ve henüz hiçbir ödeme yapılmamış.",
+        "withholds": "Hak edilen bir şeyi bilerek vermemek. Bütçe parayı esirgemiyor, tersine bir işe ayırıyor.",
+        "retains": "Elde tutmak, elden çıkarmamak. Cümle paranın nereye ayrıldığını söylüyor, kimde kaldığını değil."
+      }
+    },
+    {
+      "id": "academic-verbs-t22",
+      "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
+      "paragraph": "The inquiry into the sluice gates needed somebody who could read a tide table, and Selin was the only reporter on the paper who could. The editor ____ her to the hearings the same afternoon, and the planning meeting waited until she was back from the coast.",
+      "options": ["assigned", "allocated", "withheld", "retained"],
+      "correctIndex": 0,
+      "explanation": "Ortada bölüştürülecek bir şey yok: gazetede bu işi yapabilecek tek muhabir var ve editör onu belirli bir işe gönderiyor. Bir kişiyi belirli bir göreve ya da yere görevlendirmek 'assign'dır. 'Allocated' sınırlı bir kaynaktan bir payın ayrılmasını anlatır; nesnesi para, süre, kontenjan gibi bölüştürülebilir bir miktardır — adı anılan tek bir insan değil.",
+      "tip": "'Assign' bir işi bir kişiye ya da bir kişiyi bir işe bağlar; 'allocate'in nesnesi para, süre, kontenjan gibi bölüştürülebilir bir miktardır — bir kişi değil.",
+      "optionNotes": {
+        "allocated": "Sınırlı bir kaynaktan bir payı bir amaca ayırmak. Burada bölüştürülen bir miktar yok; bir kişi belirli bir işe gönderiliyor.",
+        "withheld": "Hak edilen bir şeyi bilerek vermemek; alıcıyı 'from' ile alır. Muhabir bir işten alıkonmuyor, tersine o işe gönderiliyor.",
+        "retained": "Zaten elde olanı bırakmayıp tutmak; 'to' almaz. Muhabir zaten kadroda; soru onu tutmak değil, hangi işe göndereceği."
+      }
+    },
+    {
+      "id": "academic-verbs-t23",
+      "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
+      "paragraph": "The insurer has not said that the claim is invalid, and it does not dispute that the repairs are covered. It has simply ____ its authorisation until the garage sends the photographs it asked for in March, and the family has been driving a hire car ever since.",
+      "options": ["withheld", "assigned", "retained", "distributed"],
+      "correctIndex": 0,
+      "explanation": "Şirket ödemeyi tartışmıyor: onarımın kapsamda olduğunu kabul ediyor, ama ailenin hak ettiği onayı bir koşul yerine gelene kadar bilerek vermiyor. Karşı tarafın hak ettiği bir şeyi kasten vermemek 'withhold'dur. 'Retained' öznenin elinde tuttuğu bir şeyi gerektirir; oysa onay verilmiş değil, hiç verilmemiş bir karardır — elde tutulan bir nesne yok.",
+      "tip": "'Withhold' verilmesi beklenen ve karşı tarafın hak ettiği bir şeyi bilerek vermemektir; 'retain' ise öznenin zaten elinde olan bir şeyi bırakmamasıdır.",
+      "optionNotes": {
+        "assigned": "Bir görevi ya da rolü belirli birine vermek. Burada verilen bir iş değil, verilmeyen bir onay var.",
+        "retained": "Elde olan bir şeyi bırakmayıp tutmak. Onay hiç verilmemiş bir karardır; ortada elde tutulan bir nesne yok.",
+        "distributed": "Aynı şeyi birçok alıcıya paylaştırmak. Tek bir dosya ve tek bir aileye verilecek tek bir onay var."
+      }
+    },
+    {
+      "id": "academic-verbs-t24",
+      "category": "Allocate & Withhold (allocate / distribute / assign / withhold / retain)",
+      "paragraph": "A doctoral thesis is written by one person and published by another. Under the deposit agreement the rights pass to the university the day the thesis goes into the repository, and it ____ them from then on — so an author who wants to reprint her own chapter in a book has to write and ask permission first.",
+      "options": ["retains", "withholds", "allocates", "assigns"],
+      "correctIndex": 0,
+      "explanation": "Haklar, tez teslim edildiği gün sözleşmeyle üniversiteye geçiyor ve orada kalıyor; yazar kendi bölümünü yeniden basmak için bile izin istemek zorunda. Kendinin olan bir şeyi elden çıkarmayıp tutmak 'retain'dir. 'Withholds' başkasının hak ettiği bir şeyin verilmemesi olurdu — oysa haklar artık üniversitenin ve kimsenin bekleyen bir alacağı yok. 'Assigns' ise ters yönü gösterir: bir şeyi başkasına vermek.",
+      "tip": "'Retain' zaten kendinin olan bir şeyi elde tutmaktır, 'withhold' başkasının hak ettiği bir şeyi vermemektir; hakkın kime ait olduğuna bak.",
+      "optionNotes": {
+        "withholds": "Borçlu olunan ya da verilmesi beklenen bir şeyi vermemek. Haklar sözleşmeyle üniversitenin olmuş; kimsenin bir alacağı yok.",
+        "allocates": "Sınırlı bir kaynaktan bir payı bir amaca ayırmak. Telif hakkı pay edilen bir kaynak değil, elde tutulan bir haktır.",
+        "assigns": "Bir görevi ya da rolü belirli bir kişiye vermek. Telif hakkı bir iş değil; üstelik üniversite hakkı vermiyor, kendinde tutuyor."
+      }
+    }
+  ]
+}

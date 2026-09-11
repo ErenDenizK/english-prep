@@ -1,0 +1,78 @@
+/* The solved values from docs/design/03-research.md. Nothing here is
+   improvised: every hex came out of tools/color.mjs against the app's own
+   PAIRS table, and the dark ladder passes it with zero failures in both
+   ground hues. See 04-brief.md §2.2 for which rule each one answers. */
+
+:root {
+  /* --- light, surfaces unchanged from the shipped palette --- */
+  --page: #f6f1e7;          /* surface-0  L 0.960 C 0.014 H 85 */
+  --card: #fffcf5;          /* the card plane, lighter than the page */
+  --raised: #eee8dd;        /* surface-1 */
+  --worst: #e5dfd3;         /* surface-2 — what PAIRS measures against */
+
+  --ink: #211b14;           /* text-1  Lc 85+ */
+  --ink-2: #413a31;         /* text-2  Lc 75 */
+  --ink-3: #685f54;         /* text-3  Lc 60 */
+  --accent-ink: #623200;    /* coloured text, Lc 86 on the page */
+
+  /* M1 + M2 · the one filled action, and the counter-plane, one material */
+  --plane: #241e18;         /* L 0.24 · 14.64:1 on the page */
+  --on-plane: #f6f1e7;      /* the page colour as its ink · Lc 97 */
+  --plane-2: #3a332b;       /* a quiet division inside the plane */
+
+  /* M3 · the mark. Never written on. */
+  --mark: #ce5500;          /* H 45 · C 0.171 · 3.21:1 on surface-2 */
+  --mark-soft: #f0dcc9;     /* the mark at low opacity over the page */
+
+  --ok: #2f6d3f;
+  --no: #a3301f;
+
+  --divider: #bbb7af;       /* M9 · 1.78:1 — decorative, and visible */
+  --shadow: 0 1px 2px rgb(40 25 5 / 0.06), 0 8px 24px -10px rgb(40 25 5 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(40 25 5 / 0.08), 0 18px 40px -16px rgb(40 25 5 / 0.28);
+}
+
+:root[data-mark="36"] { --mark: #e13f00; }   /* choice A · the ceiling */
+
+/* --- dark, on the widened ladder: 0.175 / 0.300 / 0.360 --- */
+:root[data-theme="dark"] {
+  --page: #0d1116;
+  --card: #2a2e34;          /* the card step is 0.125, not 0.053 */
+  --raised: #393e43;
+  --worst: #393e43;
+
+  --ink: #eff2f5;
+  --ink-2: #d6dae1;
+  --ink-3: #bcc2c9;
+  --accent-ink: #fcd49b;
+
+  --plane: #ece7e1;         /* the action inverts with the theme */
+  --on-plane: #0d1116;      /* Lc 92 */
+  --plane-2: #d6d1ca;
+
+  --mark: #fe6a00;          /* H 45 · C 0.200 · 3.74:1 */
+  --mark-soft: #38251a;
+
+  --ok: #7fd492;
+  --no: #ff9d95;
+
+  --divider: #4a4f55;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 28px -12px rgb(0 0 0 / 0.6);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.45), 0 20px 44px -18px rgb(0 0 0 / 0.7);
+}
+
+:root[data-theme="dark"][data-mark="36"] { --mark: #ff4b0c; }
+
+/* choice B · the warm dark ground. Measured to cost nothing: the same
+   ladder at H 70 and H 255 gives identical PAIRS results. */
+:root[data-theme="dark"][data-ground="warm"] {
+  --page: #14100b;
+  --card: #322d27;
+  --raised: #413c36;
+  --worst: #413c36;
+  --ink: #f4f1ed;
+  --ink-2: #ded9d3;
+  --ink-3: #c6c0b9;
+  --on-plane: #14100b;
+  --divider: #514c46;
+}
