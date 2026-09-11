@@ -22,6 +22,12 @@ Columns, all defined in 02-references.md §2:
   conc        share of chromatic pixels in the busiest 32 of a 10x16 grid
   counter     share on the far side of L 0.5 from the screen's own ground
   ink         share more than 0.35 in OKLab L from the ground, at 390px
+  event       share that departs from the ground at all: 0.25 in OKLab L
+              away from it, or OKLab chroma >= 0.06. How much of the
+              screen is doing something.
+  hues        accent hue families present: OKLab chroma >= 0.08, binned
+              at 30 degrees, families merged within +-45 degrees, each
+              at least 0.5% of the screen. Printed as H<hue>:<area>.
 """
 
 import math
@@ -33,6 +39,10 @@ from PIL import Image
 C_NEUTRAL = 0.035   # OKLab chroma below this counts as neutral
 G_EDGE = 0.08       # CIE L* step to the next pixel that counts as structure
 INK_DELTA = 0.35    # OKLab L distance from the ground that counts as ink
+EVENT_DELTA = 0.25  # OKLab L distance from the ground that counts as an event
+EVENT_C = 0.06      # OKLab chroma that counts as an event on its own
+HUE_C = 0.08        # OKLab chroma that counts as accent colour
+HUE_FLOOR = 0.005   # smallest share that counts as a hue family
 
 
 def _lin(c):
@@ -119,15 +129,34 @@ def measure(path, inset=0.0):
     flat = sorted((cell[r][c] for r in range(rows) for c in range(cols)), reverse=True)
     conc = sum(flat[: max(1, round(rows * cols / 5))]) / total if total else 0.0
 
-    oks = [oklab(q)[0] for q in p]
+    labs = [oklab(q) for q in p]
+    oks = [v[0] for v in labs]
     if g_l >= 0.5:
         counter = sum(1 for v in oks if v <= 0.45) / n
     else:
         counter = sum(1 for v in oks if v >= 0.60) / n
 
+    event = sum(
+        1 for (lv, a, b) in labs
+        if abs(lv - g_l) >= EVENT_DELTA or math.hypot(a, b) >= EVENT_C
+    ) / n
+
+    bucket = Counter()
+    for lv, a, b in labs:
+        if math.hypot(a, b) >= HUE_C:
+            bucket[int((math.degrees(math.atan2(b, a)) % 360) // 30) * 30] += 1
+    families, taken = [], []
+    for hue, count in sorted(bucket.items(), key=lambda kv: -kv[1]):
+        if count / n < HUE_FLOOR:
+            continue
+        if any(abs(((hue - t + 180) % 360) - 180) <= 45 for t in taken):
+            continue
+        taken.append(hue)
+        families.append((hue, count / n))
+
     return dict(
-        ground=g_l, neutral=neutral, structure=structure,
-        tonal=tonal, conc=conc, counter=counter, ink=ink,
+        ground=g_l, neutral=neutral, structure=structure, tonal=tonal,
+        conc=conc, counter=counter, ink=ink, event=event, hues=families,
     )
 
 
@@ -142,14 +171,15 @@ def main(argv):
     if not paths:
         print(__doc__)
         return 1
-    print(f"{'screen':28s} {'ground':>6} {'neutral':>8} {'struct':>7} "
-          f"{'tonal':>6} {'conc':>5} {'counter':>8} {'ink':>6}")
+    print(f"{'screen':24s} {'ground':>6} {'neutral':>8} {'struct':>7} "
+          f"{'tonal':>6} {'conc':>5} {'counter':>8} {'ink':>6} {'event':>7}  hues")
     for path in paths:
         m = measure(path, inset)
         name = path.split("/")[-1]
-        print(f"{name[:28]:28s} {m['ground']:6.2f} {m['neutral']*100:7.1f}% "
+        hues = ", ".join(f"H{h}:{s * 100:.1f}%" for h, s in m["hues"]) or "—"
+        print(f"{name[:24]:24s} {m['ground']:6.2f} {m['neutral']*100:7.1f}% "
               f"{m['structure']*100:6.1f}% {m['tonal']:6.2f} {m['conc']*100:4.0f}% "
-              f"{m['counter']*100:7.1f}% {m['ink']*100:5.1f}%")
+              f"{m['counter']*100:7.1f}% {m['ink']*100:5.1f}% {m['event']*100:6.1f}%  {hues}")
     return 0
 
 

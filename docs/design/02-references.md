@@ -15,6 +15,12 @@ Two batches.
   stilimize uygun bulamadım ama ikisi kitap okuma app'i… glassmorphism
   canlı güzel aydınlatılmış buton ve yapı önerisi bize oldukça uygun ve
   modern."*
+- **Batch 3**, two more — the studio's wearable control screen and a
+  light insurance app — with an instruction about *how* to read all
+  eleven: *"sadece ölçüm değil aynı zamanda organizasyon, renk
+  dağılımı, özellikle rondesignlab'e ait olanların şekilsel formu, UI
+  elementlerinin yapısı… hem ölçüm, hem hissiyat ve bütüncül elementler
+  bir arada değerlendirilmeli."* §10 to §12 are that reading.
 
 That is the right way to give them, and it is also why they have to be
 *measured* rather than described. "Modern, clean, alive" is the kind of
@@ -46,10 +52,12 @@ Marks as elsewhere: [S] read from the source; [≈] an estimate.
 | 7 | the same app — Library and the **reading view** | white, orange serif chapter head, selection popover |
 | 8 | *MidnightReads* — home · **reading view** · notes | warm dark, glass cards, gold accent |
 | 9 | a solar dashboard — today · stored · impact | cream, orange, big light figures |
+| 10 | *rondesignlabs* — a wearable's control screen | near-black, squircle tiles, two gradients, one yellow |
+| 11 | an insurance app — home · hospital · map | white, one orange hero, black pill actions, grey map |
 
-Batch 1 contains no paragraph at all. Batch 2 contains three genuine
-reading surfaces (7's chapter page, 8's article page, 6's glossary
-entries), which is why it was asked for: our core screen is a
+Batch 1 and reference 10 contain no paragraph at all. Batch 2 contains
+three genuine reading surfaces (7's chapter page, 8's article page,
+6's glossary entries), which is why it was asked for: our core screen is a
 198-character English paragraph followed by a 377-character Turkish
 explanation, and the first five could not say anything about that.
 
@@ -83,6 +91,8 @@ drop anywhere, because there is no longer a background:
 | **concentration** | share of all chromatic pixels falling in the busiest 32 of a 10 × 16 grid |
 | **counter-plane** | share of pixels on the far side of L 0.5 from the screen's own modal ground — dark area on a light screen, light area on a dark one |
 | **ink coverage** | share of pixels more than 0.35 in OKLab L away from the ground, at 390px, for a reading surface |
+| **event area** | share of pixels that depart from the ground at all: 0.25 away in OKLab L, or OKLab chroma ≥ 0.06. How much of the screen is doing something |
+| **hue families** | accent hues present: chroma ≥ 0.08, binned at 30°, merged within ±45°, each covering ≥ 0.5% of the screen |
 
 Re-running the old method reproduces the first pass's published figures
 to within 4 points, so the difference below is the crop, not the maths.
@@ -95,34 +105,65 @@ captures need no inset.
 
 ## 3 · The measurements
 
-**The fifteen reference screens.**
+**The nineteen reference screens.** `event` is the share of the screen
+that departs from its own ground at all — 0.25 away from it in OKLab L,
+or chromatic; `hues` are the accent hue families it carries.
 
-| screen | neutral | structure | tonal | conc. | counter-plane |
-|---|---|---|---|---|---|
-| v0.62 ana (light) | 88.7% | 11.5% | 0.55 | 89% | 0.7% |
-| v0.62 ana (dark) | 89.4% | 12.5% | 0.69 | 89% | 8.4% |
-| v0.62 Eğitim (light) | 88.9% | 12.4% | 0.55 | 95% | 0.7% |
-| v0.62 Eğitim (dark) | 89.7% | 13.8% | 0.69 | 95% | 8.0% |
-| v0.62 ders (light) | 98.1% | 17.3% | 0.44 | 100% | 2.2% |
-| v0.62 ders (dark) | 98.0% | 18.3% | 0.52 | 98% | 5.2% |
-| v0.62 cevap (light) | 93.1% | 18.7% | 0.51 | 99% | 0.1% |
-| v0.62 cevap (dark) | 92.8% | 25.8% | 0.69 | 91% | 12.7% |
-| v0.62 sonuç (dark) | 95.6% | 9.9% | 0.59 | 99% | 5.8% |
-| v0.62 Profil (dark) | 94.6% | 10.4% | 0.36 | 100% | 3.1% |
-| ui4 Bugün (light) | 93.0% | 12.2% | 0.51 | 91% | 0.7% |
-| ui4 Bugün (dark) | 92.8% | 13.4% | 0.72 | 86% | 8.3% |
-| ui4 cevap (dark) | 91.5% | 19.2% | 0.72 | 76% | 9.1% |
-| ui4 ders (light) | 98.0% | 17.0% | 0.38 | 55% | 1.3% |
-| ui4 ders (dark) | 97.4% | 18.4% | 0.48 | 53% | 4.6% |
-| ui4 Öğren (dark) | 98.4% | 12.3% | 0.30 | 64% | 2.1% |
-| **median** | **93.1%** | **13.6%** | **0.54** | **91%** | **3.9%** |
+| screen | neutral | struct. | tonal | conc. | counter | ink | **event** | hues |
+|---|---|---|---|---|---|---|---|---|
+| 1 Traffic | 100.0% | 13.9% | 0.32 | 100% | 1.1% | 1.8% | 4.4% | — |
+| 2 Flask | 23.1% | 21.3% | 0.79 | 26% | 29.4% | 29.1% | 88.8% | H240 |
+| 3 Log | 30.2% | 7.8% | 0.86 | 29% | 68.3% | 77.8% | 78.2% | H0 |
+| 4 Wallet | 69.5% | 6.4% | 0.48 | 64% | 1.3% | 10.7% | 17.5% | H120 |
+| 5 Salesforce | 62.2% | 6.6% | 0.88 | 53% | 5.9% | 6.2% | 43.4% | **H300 H240 H0 H60** |
+| 6a Books | 87.3% | 21.0% | 0.91 | 83% | **31.6%** | 36.9% | **45.0%** | H30 (+H240 0.7%) |
+| 6b Overview | 85.6% | 11.0% | 0.91 | 82% | 8.7% | 11.2% | 23.3% | H30 |
+| 6c Glossary | 97.1% | 14.2% | 0.32 | 89% | 1.2% | 3.9% | 7.1% | H60 |
+| 7c **Reading** | 98.1% | **29.5%** | 0.91 | 100% | 12.0% | 17.4% | 21.7% | H30 |
+| 8a Home | 81.6% | 20.1% | 0.76 | 81% | **40.0%** | 53.7% | **67.0%** | H60 |
+| 8b **Reading** | 92.2% | **26.9%** | 0.49 | 100% | 10.7% | 7.1% | 14.4% | H60 |
+| 8c Notes | 89.9% | 20.7% | 0.42 | 99% | 8.7% | 3.7% | 7.7% | H60 |
+| 9a Today | 92.8% | 15.4% | 0.62 | 93% | 4.9% | 9.5% | 11.9% | H30 |
+| 9b Stored | 94.2% | 8.8% | 0.39 | 99% | 0.7% | 1.9% | 7.4% | H30 |
+| 9c Impact | 96.2% | 8.5% | 0.30 | 97% | 1.0% | 1.8% | 5.5% | H30 |
+| 10 Wearable | 66.6% | 9.3% | 0.73 | 59% | 10.7% | 18.9% | **31.2%** | **H300 H90** |
+| 11a Home | 71.7% | 8.9% | 0.48 | 69% | 2.4% | 14.7% | **30.3%** | H30 |
+| 11b Hospital | 96.3% | 10.0% | 0.42 | 100% | 2.7% | 5.3% | 8.9% | H30 |
+| 11c Map | 95.4% | 16.1% | 0.30 | 100% | 0.9% | 3.1% | 6.7% | H30 |
+| **median** | **89.9%** | **13.9%** | **0.62** | **89%** | **5.9%** | **9.5%** | **17.5%** | **one** |
 
-## 4 · The first finding is that four of our metrics say nothing
+References 3 and 4 are photographed at a steep angle and their crops
+keep a little hand and bezel; every other crop is screen only.
+
+**Sixteen of ours**, v0.62 as shipped and the ui4 prototype, both
+themes.
+
+| screen | neutral | struct. | tonal | conc. | counter | ink | **event** | hues |
+|---|---|---|---|---|---|---|---|---|
+| v0.62 ana (light) | 88.7% | 11.5% | 0.55 | 89% | 0.7% | 8.2% | 9.9% | H30 |
+| v0.62 ana (dark) | 89.4% | 12.5% | 0.69 | 89% | 8.4% | 8.4% | 10.7% | H60 |
+| v0.62 Eğitim (light) | 88.9% | 12.4% | 0.55 | 95% | 0.7% | 8.2% | 9.9% | H30 |
+| v0.62 Eğitim (dark) | 89.7% | 13.8% | 0.69 | 95% | 8.0% | 8.5% | 10.7% | H60 |
+| v0.62 ders (light) | 98.1% | 17.3% | 0.44 | 100% | 2.2% | 5.1% | 6.8% | — |
+| v0.62 ders (dark) | 98.0% | 18.3% | 0.52 | 98% | 5.2% | 5.7% | 8.0% | — |
+| v0.62 cevap (light) | 93.1% | 18.7% | 0.51 | 99% | 0.1% | 8.8% | 10.2% | H30 |
+| v0.62 cevap (dark) | 92.8% | 25.8% | 0.69 | 91% | 12.7% | 12.5% | 15.3% | H60 |
+| v0.62 sonuç (dark) | 95.6% | 9.9% | 0.59 | 99% | 5.8% | 6.3% | 7.5% | H60 |
+| v0.62 Profil (dark) | 94.6% | 10.4% | 0.36 | 100% | 3.1% | 3.2% | 5.2% | H60 |
+| ui4 Bugün (light) | 93.0% | 12.2% | 0.51 | 91% | 0.7% | 8.5% | 9.7% | H30 |
+| ui4 Bugün (dark) | 92.8% | 13.4% | 0.72 | 86% | 8.3% | 9.5% | 10.9% | H60 |
+| ui4 cevap (dark) | 91.5% | 19.2% | 0.72 | 76% | 9.1% | 10.8% | 12.8% | H60 |
+| ui4 ders (light) | 98.0% | 17.0% | 0.38 | 55% | 1.3% | 4.9% | 6.5% | — |
+| ui4 ders (dark) | 97.4% | 18.4% | 0.48 | 53% | 4.6% | 6.0% | 8.1% | — |
+| ui4 Öğren (dark) | 98.4% | 12.3% | 0.30 | 64% | 2.1% | 3.6% | 5.1% | — |
+| **median** | **93.1%** | **13.6%** | **0.54** | **91%** | **3.9%** | **8.2%** | **9.8%** | **one** |
+
+## 4 · The first finding is that four of the five metrics say nothing
 
 | | references | ours | gap |
 |---|---|---|---|
 | neutral | 89.9% | 93.1% | 3 points |
-| drawn structure | 14.2% | 13.6% | 0.6 points |
+| drawn structure | 13.9% | 13.6% | 0.3 points |
 | tonal range | 0.62 | 0.54 | 0.08 |
 | concentration | 89% | 91% | none |
 
@@ -137,13 +178,21 @@ is not an average property of the screen, which is why five rounds of
 adjusting average properties — more tint, less tint, a wash, a
 gradient, a glow, then subtract the glow — could not reach it. The
 difference is where the values *sit*, not what they average to. The
-next four sections are the four places they sit differently, each one
-measurable and each one checkable after the fact.
+fifth column is the exception, and it is the loudest number in the
+file: **event area, 17.5% against our 9.8%**, and on the screen that
+opens the app 30–67% against our 10 — §10.
 
-## 5 · F1 · Every reference screen has a counter-plane. Our light theme never does
+The sections from here to §12 are the places the values sit
+differently: five findings, then the shape language, then how an
+element is built. Each is measurable and each is checkable after the
+fact.
 
-A reference screen puts a large area on the far side of the lightness
-range from its own ground:
+## 5 · F1 · Every reference has one large area that is not its ground
+
+A reference screen puts a large area somewhere other than its own
+ground — and in the whole set there are only two ways it is done: the
+area is **dark** (or light, on a dark screen), or it is **saturated**.
+Nine of the eleven references take the first route:
 
 - a **near-black card covering 32% of a white book app** (6a) — the
   hero with the cover, the title and the orange button;
@@ -151,12 +200,23 @@ range from its own ground:
 - 29.4% and 68.3% in the two Hydroflask screens;
 - 12.0% and 10.7% on the two reading pages themselves.
 
-The median reference screen is 8.7%; its home or index screen is 30–40%.
+The median reference screen is 5.9%; its home or index screen is 30–40%.
 
-Ours, light theme, every screen without exception: **0.1% · 0.7% · 0.7%
-· 0.7% · 1.3% · 2.2%.** There is no dark plane anywhere in our light
-theme. The screen is cream, the cards are a slightly lighter cream, the
-type is ink, and nothing else happens. That is a document, and the word
+The other route is reference 11's, and it matters because 11 is the
+lightest, quietest product in the set: its home screen's counter-plane
+is only 2.4%, but a **16% orange hero** does the same work, and the one
+black pill inside it does the rest. Reference 9 is the same shape at a
+smaller scale. So the rule is not "put a black card on it" — it is
+**a large area that is not the ground**, by lightness or by colour, and
+a light product may choose either.
+
+Ours, light theme, chooses neither. Counter-plane on every screen
+without exception: **0.1% · 0.7% · 0.7% · 0.7% · 1.3% · 2.2%**, and the
+accent area that might have stood in for it is 4.6–5.4%, spread over
+chrome rather than gathered into one object. There is no dark plane and
+no colour plane anywhere in our light theme. The screen is cream, the
+cards are a slightly lighter cream, the type is ink, and nothing else
+happens. That is a document, and the word
 for a document that was supposed to be a product is *flat* — which is
 the word he has used, in one form or another, about every round.
 
@@ -292,13 +352,206 @@ surface it was applied to was. The glass the owner praises in reference
 8 is the same point again: it is on the **cards**, over a warm blurred
 field, and the tab bar underneath it is plain.
 
-## 10 · What transfers, and what does not
+## 10 · F5 · They modulate. We are the same loudness on every screen
+
+The `event` column is the simplest number in this file: how much of the
+screen is doing anything at all. Sorted by what kind of screen it is:
+
+| | references | ours |
+|---|---|---|
+| the screen that opens the app | 30.3 · 31.2 · 45.0 · 67.0 | 9.7 · 9.9 · 10.7 · 10.9 |
+| a reading or detail screen | 5.5 · 6.7 · 7.1 · 7.4 · 7.7 · 8.9 · 14.4 · 21.7 | 5.1 · 6.5 · 6.8 · 8.0 · 8.1 |
+| loud ÷ quiet, within one product | **4× to 8×** | **1.5×** |
+
+On the quiet screens we are indistinguishable from the references. On
+the screen that opens the app we are at a third of them. And the span
+between our own loudest and quietest screen is 1.5× where theirs is
+four to eight.
+
+This is the finding that explains the *first two seconds*, which is
+where every verdict in this project has been formed. "AI slop", "flat",
+"lifeless" are judgements about an entrance. Our entrance is built to
+the same recipe as our reading page — same plane, same one accent at
+the same 5%, same card, same list — because the design system gave
+every screen one grammar and I applied it at one volume.
+
+Reference 11 is the cleanest demonstration because it is a *light*
+product with a modest palette, not a neon dashboard: its home screen is
+30.3% event with a 16% orange hero, and the hospital screen two taps
+later is 8.9% with 1.0% orange. Same app, same tokens, same components.
+Loud where you arrive, quiet where you read.
+
+Nothing in our non-negotiables prevents this. It is a decision we never
+made.
+
+## 11 · Form: the shape language, measured
+
+The owner asked specifically about the studio's *şekilsel form*. It is
+measurable, and it is the largest single difference in how the
+references feel as objects.
+
+**Corner radius is proportional to the object, and the proportion says
+what kind of object it is.** Radius over the object's own width [S]:
+
+| object | r / width |
+|---|---|
+| 10 · a control tile (Strain, Sync) | **0.171** |
+| 10 · the one yellow action | 0.153 |
+| 11 · a content card | 0.099 |
+| 6 · the Library sheet | 0.055 |
+| **ours** · `--r-3` on a 358px card | **0.056** |
+| **ours** · `--r-4` on the 358px hero | 0.078 |
+
+Two families, not one. **Content** objects — a card holding a
+paragraph, a sheet holding a list — sit at 0.055–0.10. **Control**
+objects — a tile that *is* a switch, a slider, a gauge — sit at
+0.15–0.17, and that ratio is most of what makes reference 10 read as a
+device rather than as a page. We have only the content family, at the
+bottom of its range, and we use it for controls too.
+
+**The corners look like superellipses rather than circular arcs** [≈].
+Marked as an estimate on purpose: the exponent was not fitted, because
+reference 10 is photographed at an angle and a perspective-distorted
+corner cannot be fitted honestly. What is visible at r/w 0.17 is that
+the corner meets the straight edge without the kink a circular arc
+leaves, which is what makes the tile read as one form rather than as a
+rectangle with rounded corners.
+
+Whether we can have that is an open question, not a known limitation.
+CSS gained `corner-shape` for exactly this, and it shipped in Chromium
+and Safari during 2025 — but this app is served to whatever browser a
+student has, it has no build step and no polyfill, and `border-radius`
+is the fallback in any case. **Step 3 verifies support and writes down
+what the fallback looks like; it does not assume either way.** The
+ratio we can have unconditionally.
+
+**Everything is one of four silhouettes.** Across all eleven
+references: the rounded rect (content), the large-radius squircle
+(control), the pill (choice, chip, action), and the circle (icon
+button, avatar, map pin, gauge). There is no fifth. Nothing has a
+square corner; nothing has a mixed radius; nothing is a bare outlined
+box. Our inventory is the same four, which is worth recording as a
+place where UI 2's discipline was right.
+
+**Outlines are nearly absent, and dividers are not.** In eleven
+references almost nothing is a container with a 1px line around it.
+Separation is done by plane lightness plus a soft shadow; a rule appears
+only as a **divider between rows inside one container** — 6c's glossary
+entries, 11's service list, 8c's note stack.
+
+We do the opposite. `css/style.css` puts
+`inset 0 0 0 1px var(--line)` on eight component classes, the card
+among them [S], so every card, tile, option and panel carries a full
+outline in both themes — and our lists mostly separate their rows by
+gap instead. An outline around a container plus no line between its rows
+is precisely the arrangement that reads as a form, and it is the
+mechanical half of what "kutu kutu" named.
+
+## 12 · Elements: how a thing is built, and where the colour sits
+
+**The tile is the control, not a card containing one.** Reference 10 is
+the clearest statement of this. Each tile carries a quiet label in its
+top-left and then *is* the thing: "Assist Limit" is a value and a slider
+filling the tile; "Strain" is a gauge; "Sync" is a toggle. Nothing is a
+card with a widget inside it, and nothing is a row with a control parked
+on the right. The object's whole area is the affordance.
+
+Ours is the opposite almost everywhere: a card, a heading inside it, a
+row inside that, a control at the end of the row. Three frames to reach
+one interaction. `docs/design-system.md` already forbids "nothing framed
+inside a framed thing"; the references show what obeying it produces.
+
+**One filled action per screen — and it does not have to be the
+accent.** In reference 11 the filled action is a **near-black pill**
+("View Premium", "Direction") on a white screen, while the orange is
+spent on the hero and on two small tags. In reference 10 the filled
+action is the yellow. Both screens have exactly one. We currently give a
+gradient and a glow to every primary action on every screen, which
+means none of them is *the* action, and it also means the accent can
+never be used anywhere else without competing with a button.
+
+The near-black pill is worth noticing twice: it is the counter-plane of
+§5 and the one action at the same time. One object, two jobs, no new
+colour.
+
+**Gradient is a light source inside an object, never a ramp across a
+button.** Reference 10's two chromatic tiles are lit from one corner —
+bright magenta at the top-left falling to a deep violet at the
+bottom-right, the violet tile the same in reverse. Reference 11's hero
+is a warm diagonal with one bright lobe. Reference 8's glass cards glow
+from within. In none of them does a gradient run linearly across a
+100%-wide button, which is precisely what `--grad-accent` does in
+v0.62, on every filled control, identically.
+
+This is not a new idea in this project. `docs/design-system.md` already
+says *depth is a lighter plane*. UI 3 implemented the sentence on the
+wrong objects.
+
+**Colour distribution: one hue family, area set by the screen's job.**
+Of nineteen reference screens, **fifteen carry exactly one accent hue
+family** and one (reference 1) carries none at all. Two carry two:
+reference 6a, whose second is a book cover rather than a design
+decision, and reference 10, whose two are 170° apart — a magenta/violet
+gradient for state and a yellow for the one action, the maximum
+separation two hues can buy. Only reference 5, a four-tile data
+dashboard, carries four, and it is the one screen in the set whose
+colour *is* the content.
+
+Our screens also carry one family — but for the wrong reason. v0.62's
+per-topic hue generates ten hues by hashing the topic id, and the
+Eğitim screen measures **H40–H70: ten hues inside 30°** [S]. They do not
+read as ten colours; they read as one smudged orange. That is
+`docs/research/visual-longevity.md` §0's arithmetic — 148 usable
+degrees ÷ 10 topics — measured on the shipped screen rather than
+predicted. The feature costs a hue system and delivers a single
+indistinct tint.
+
+Area, by the screen's job [S]:
+
+| | reference | ours |
+|---|---|---|
+| entrance | 15.7% (11a) · 13.2 + 4.8% (10) · 5.2% (8a) · 5.0% (6a) | 4.6–5.4% |
+| reading / detail | 1.0–1.3% | **0.1–0.2%** |
+
+**Drain the field so the one accent reads.** Reference 11c is a
+full-screen map in grey — no green parks, no blue water — so that a
+single orange dot is the only colour on the screen. The technique
+generalises: when a large area must be present but is not the point,
+take its colour away.
+
+We already do the first half of this without having named it: the cloze
+blank is a 2px rule in `var(--accent)` [S, `css/style.css`], and on the
+question screen it is almost the only saturated thing — the 0.1–0.2%
+in the table. What is missing is not the accent, it is the field: the
+198-character paragraph around the blank is set in full ink at the same
+size, so the accent has nothing quiet to be loud against. Whether a
+reading field *can* be drained without hurting the reading is a real
+question and not a free move; §15 asks it rather than assuming it.
+
+**Texture, at a cost of nothing.** Reference 10 has a dot grid on the
+display ground, a halftone in the yellow action and dot-matrix numerals
+for values; reference 6c has a yellow highlighter mark behind a glossary
+word. These are low-contrast patterns that survive both themes, add no
+palette row, and are the cheapest "this was made by someone" signal in
+the set. We have none, anywhere.
+
+**Organisation.** Ten of eleven references are a single scrolling column
+of sections — head plus one container — with a bottom nav; only
+reference 10 is a bento grid, and it is a watch-sized control surface
+with no scrolling and no prose. Our section grammar is already the
+majority pattern, so the organisation is not what is wrong. What differs
+is inside a section: their containers are **fewer and larger**, and a
+section is usually one object, where ours is often a head plus a list of
+five rows of three elements each.
+
+## 13 · What transfers, and what does not
 
 **Transfers, with a number attached.**
 
-- A counter-plane: **≥ 10%** of a screen on the far side of L 0.5 from
-  its ground, and **≥ 25%** on an index or home screen. Light theme
-  first, where we currently have none.
+- One large area that is not the ground: **≥ 10%** of a screen, **≥ 25%**
+  on the screen the app opens on — either on the far side of L 0.5 (a
+  near-black card on the light theme) or saturated (reference 11's 16%
+  hero). Either route, but not neither, which is what we have now.
 - A split accent: a **fill** accent near L 0.66 / C 0.20, used only
   where nothing small is read on it and verified by APCA at ≥ 18px/600;
   an **ink** accent that keeps the current WCAG 2 guarantee.
@@ -314,6 +567,22 @@ field, and the tab bar underneath it is plain.
 - Ornament that is information: the week, the ten answers of a session,
   a category's accuracy, a contrast drawn as a diagram. We hold all of
   this data and render none of it.
+- **A loudness range across the product**: the entrance at 30% event
+  area, the reading page at 7%, a span of at least 4× within the same
+  tokens and the same components.
+- **Two radius families**: content at r/w ≈ 0.08–0.10, controls at
+  r/w ≈ 0.15–0.17. Our single 0.056 covers neither end well.
+- **One filled action per screen**, and on the light theme let it be the
+  near-black pill — counter-plane and call to action in one object.
+- **The tile is the control.** No card wrapping a row wrapping a
+  control. This is `design-system.md`'s own rule, unenforced.
+- **Gradient as a light source inside an object**, lit from one corner,
+  on content — not a ramp across every button.
+- **Low-contrast texture**: a dot grid, a halftone, a highlighter mark.
+  No palette row, no dependency, both themes.
+- **Drain a large area that is not the point** so the one accent reads.
+- Hairline dividers *inside* one container instead of an outline
+  *around* every container.
 
 **Does not transfer, and saying so now is cheaper than finding out in
 round six.**
@@ -329,12 +598,16 @@ round six.**
 - A full-bleed gradient behind body text. Reference 3 puts display type
   on a gradient, not a 377-character paragraph; every pair in
   `tools/palette.mjs` would fail.
+- The bento grid of reference 10. It is a watch-sized control surface
+  with no scrolling and no prose; our shell is a fixed-height column
+  that must work at 320px with a Turkish paragraph in it. The *tile
+  proportions* and the *radius family* transfer; the grid does not.
 - A streak counter, even though both reference 6 and reference 8 show
   one. `docs/research/visual-longevity.md` §6 refuses it with reasons,
   v0.62 shipped it against that refusal, and a reference set is taste
   input, not a licence to re-open a decision that was made on evidence.
 
-## 11 · Liquid Glass — recorded as a condition, not a refusal
+## 14 · Liquid Glass — recorded as a condition, not a refusal
 
 The owner: *"verdiğimiz örneklerden birisi Apple'ın yerleşik liquid
 glass'ını kullanıyor olabilir, doğrudan bir problem değil, kullanmak
@@ -355,7 +628,7 @@ button that matters, and glass on **content cards** rather than on
 chrome. If an Apple-specific port is ever built, `backdrop-filter`
 already carries most of it and the question reopens then.
 
-## 12 · What step 3 has to answer
+## 15 · What step 3 has to answer
 
 Step 2 is finished; these are its handover questions, and
 `03-research.md` is where they get the `beta1-palette.md` treatment —
@@ -378,8 +651,39 @@ a recommendation, and a list of what could not be verified.
    first and we have still not touched it.
 5. **Ink on the reading page.** What measure, margin and leading take
    the light lesson from 5% to 12–17% at 320px without breaking the
-   fixed-height shell.
+   fixed-height shell — and, separately, whether the question's
+   paragraph can be quieted so the blank reads as the one live thing,
+   without costing the learner the reading. That one is a measurement
+   against `PAIRS`, not a preference.
 6. **The one thing that is not a colour question.** Every reference
    spends its visual budget on rendering data. Ours is available and
    unrendered. `visual-longevity.md` §5 ranked this second, six weeks
    ago, and four rounds walked past it.
+7. **The loudness range.** Which screen is the entrance, what carries
+   its 30%, and what the sweep should assert so that the range cannot
+   quietly flatten again in a later round — an `event`-area floor on
+   the entrance and a ceiling on the reader are both checkable by
+   `measure-screens.py`.
+8. **The per-topic hue, decided rather than inherited.** §12 measures
+   it collapsing into 30°. Either it goes — and the topic mark of
+   `visual-longevity.md` §5.5 carries identity instead — or it becomes
+   the per-**tier** accent that file already solved at 35° separation.
+   It cannot stay as it is.
+9. **The two radius families**, and whether the control family is worth
+   having without a continuous corner — which means first checking
+   whether `corner-shape` is actually available to our audience, and
+   what the `border-radius` fallback costs if it is not.
+10. **The outline-to-divider inversion.** Removing
+    `inset 0 0 0 1px var(--line)` from eight component classes and
+    putting a hairline *between rows* instead is a small diff and a
+    large change of character. It needs the `PAIRS` treatment for the
+    divider and a `verify` pass, not an opinion.
+11. **"The tile is the control."** Which of our objects can absorb its
+    own frame — the answer option, the topic entry, the day's session —
+    and what that does to the touch target, the focus ring and the
+    screen-reader name. This is a component question, so it lands in
+    `docs/components.html` and the sweep.
+12. **Texture.** One low-contrast pattern, defined as a token, legible
+    in both themes, measured so it never approaches the text-contrast
+    floor. Cheapest item on this list and the only one with no
+    dependency at all.
