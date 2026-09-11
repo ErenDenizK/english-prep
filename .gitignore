@@ -5,3 +5,6 @@ node_modules/
 
 # Seeded design-canvas output — regenerated from docs/mockups/, never edited by hand.
 /english-prep-*.html
+
+# Python bytecode from docs/design/measure-screens.py
+__pycache__/
