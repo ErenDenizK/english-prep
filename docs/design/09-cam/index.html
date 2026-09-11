@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="tr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cam çalışması — boş tuval</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cam.css">
+<style>
+@keyframes kay { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(3%,2%) scale(1.06)} }
+.alan--canli::before { animation: kay 9s ease-in-out infinite; }
+@keyframes gel { 0%{opacity:0;transform:translateY(10px) scale(0.985)} 60%,100%{opacity:1;transform:none} }
+.anim-gel { animation: gel 2.6s cubic-bezier(0,0,0,1) infinite; }
+@media (prefers-reduced-motion: reduce){ .alan--canli::before,.anim-gel{animation:none} }
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>Cam çalışması</h1>
+<p class="lede">Boş tuval. Uygulama içeriği yok, bileşen yok, jeton yok — sadece
+malzeme. Sırayla: bir alan, bir pano, bir harf, bir hareket. Renk kökenden
+alınıyor (v0.2): <b>soğuk menekşe zemin H 295</b>, <b>sıcak krem mürekkep
+H 83</b>, <b>yumuşak kehribar H 73 C 0.139</b> — sıcaklık mürekkepte ve
+aksanda, zeminde değil.</p>
+
+<!-- A · TEŞHİS -->
+<h2>A · <b>Neden önceki cam ucuz duruyordu</b></h2>
+<p class="say">Camın arkasında kıracak bir şey yoktu. Alan pürüzsüz bir
+gradyandı; pürüzsüz bir şeyi bulanıklaştırmak aynı pürüzsüz şeyi verir.
+<code>backdrop-filter</code> görünürde hiçbir iş yapmıyordu — geriye düz bir
+yarı saydam kutu kaldı.</p>
+<div class="grid">
+  <figure><div class="alan alan--duz" data-s="a1" style="width:300px;height:230px;display:grid;place-items:center">
+    <div class="pano p1" style="width:210px;height:130px"></div></div>
+    <figcaption>önceki — <em>düz gradyan, blur boşa çalışıyor</em></figcaption></figure>
+  <figure><div class="alan" data-s="a2" style="width:300px;height:230px;display:grid;place-items:center">
+    <div class="pano p1" style="width:210px;height:130px"></div></div>
+    <figcaption>aynı ucuz pano, <em>yapılı alanda</em></figcaption></figure>
+  <figure><div class="alan" data-s="a3" style="width:300px;height:230px;display:grid;place-items:center">
+    <div class="pano" style="width:210px;height:130px"></div></div>
+    <figcaption><em>yapılı alan + yedi katmanlı cam</em></figcaption></figure>
+</div>
+
+<!-- B · ALAN -->
+<h2>B · Alan — arkadan vuran ışık</h2>
+<p class="say">Tek gradyan yapay durur çünkü gerçek ışık tek ölçekli değildir.
+Burada iki sıcak lob (yakın-güçlü, uzak-geniş) ve karşı köşede soğuk bir
+dolgu var; hepsi 6px yumuşatılmış ve üstüne gren binmiş. Gren bantlaşmayı
+öldürür ve blur'a tutunacak yüzey verir.</p>
+<div class="grid">
+  <figure><div class="alan alan--duz" data-s="b1" style="width:250px;height:330px"></div>
+    <figcaption>tek gradyan — yapay</figcaption></figure>
+  <figure><div class="alan alan--sade alan--grensiz" data-s="b2" style="width:250px;height:330px"></div>
+    <figcaption>üç lob, yumuşatma yok</figcaption></figure>
+  <figure><div class="alan alan--grensiz" data-s="b3" style="width:250px;height:330px"></div>
+    <figcaption>+ yumuşatma, gren yok</figcaption></figure>
+  <figure><div class="alan" data-s="b4" style="width:250px;height:330px"></div>
+    <figcaption><em>+ gren — alan bu</em></figcaption></figure>
+</div>
+
+<!-- C · PANONUN ANATOMİSİ -->
+<h2>C · Panonun anatomisi — <b>yedi katman</b></h2>
+<p class="say">Her katman fiziksel bir şeyi taklit ediyor. Soldan sağa
+katman ekleniyor; en sağdaki tam cam.</p>
+<div class="grid">
+  <figure><div class="alan" data-s="c1" style="width:250px;height:200px;display:grid;place-items:center">
+    <div class="pano p1" style="width:180px;height:118px"></div></div>
+    <figcaption>1 · düz tint + blur + hairline</figcaption></figure>
+  <figure><div class="alan" data-s="c2" style="width:250px;height:200px;display:grid;place-items:center">
+    <div class="pano p2" style="width:180px;height:118px"></div></div>
+    <figcaption>2 · gövde gradyanı + kalınlık</figcaption></figure>
+  <figure><div class="alan" data-s="c3" style="width:250px;height:200px;display:grid;place-items:center">
+    <div class="pano p3" style="width:180px;height:118px"></div></div>
+    <figcaption>3 · + gradyanlı pervaz</figcaption></figure>
+  <figure><div class="alan" data-s="c4" style="width:250px;height:200px;display:grid;place-items:center">
+    <div class="pano p4" style="width:180px;height:118px"></div></div>
+    <figcaption>4 · + gren</figcaption></figure>
+  <figure><div class="alan" data-s="c5" style="width:250px;height:200px;display:grid;place-items:center">
+    <div class="pano" style="width:180px;height:118px"></div></div>
+    <figcaption><em>5 · + aynasal süpürme — cam</em></figcaption></figure>
+</div>
+
+<!-- D · BİR HARF -->
+<h2>D · Bir harf — kökenin sesi</h2>
+<p class="say">Camın üstünde yazı. Köken üç ses kullanıyordu: başlıklarda
+<b>Fraunces</b> display serif, gövdede <b>IBM Plex Sans</b>, rakamlarda
+<b>IBM Plex Mono</b>. Karakteri veren şey oydu ve sonraki turlarda kayboldu.</p>
+<div class="grid">
+  <figure><div class="alan" data-s="d1" style="width:330px;height:250px;display:grid;place-items:center;padding:24px">
+    <div class="pano" style="width:100%;padding:26px 24px">
+      <p class="disp" style="font-size:44px;line-height:50px;color:var(--mum)">Aa</p>
+      <p class="gov" style="font-size:17px;line-height:26px;color:var(--mum-2);margin-top:6px">Gövde metni burada.</p>
+      <p class="rak" style="font-size:15px;color:var(--kehribar);margin-top:10px">24 / 60</p>
+    </div></div>
+    <figcaption><em>Fraunces · Plex Sans · Plex Mono</em></figcaption></figure>
+  <figure><div class="alan" data-s="d2" style="width:330px;height:250px;display:grid;place-items:center;padding:24px">
+    <div class="pano" style="width:100%;padding:26px 24px">
+      <p class="disp" style="font-size:30px;line-height:36px;color:var(--mum)">Present Perfect</p>
+      <p class="gov" style="font-size:17px;line-height:26px;color:var(--mum-2);margin-top:8px">
+        Bitmiş ama şimdiye bağlı.</p>
+    </div></div>
+    <figcaption>başlık camın üstünde</figcaption></figure>
+  <figure><div class="alan" data-s="d3" style="width:330px;height:250px;display:grid;place-items:center;padding:24px">
+    <div class="pano" style="width:100%;padding:22px 24px;display:flex;align-items:baseline;gap:12px">
+      <span class="rak" style="font-size:46px;color:var(--mum)">74</span>
+      <span class="gov" style="font-size:15px;color:var(--mum-2)">doğru</span>
+      <span style="margin-left:auto;width:78px;height:5px;border-radius:5px;background:rgb(255 255 255 / .12);overflow:hidden">
+        <i style="display:block;height:100%;width:74%;border-radius:5px;background:var(--kehribar)"></i></span>
+    </div></div>
+    <figcaption>rakam mono, aksan kehribar</figcaption></figure>
+</div>
+
+<!-- E · BİR HAREKET -->
+<h2>E · Bir hareket — ışık kayar, yerleşim durur</h2>
+<p class="say">Alandaki ışık yavaşça kayıyor; pano gelirken 10px yükselip
+opaklaşıyor. Yerleşimde hiçbir şey yeniden akmıyor.</p>
+<div class="grid">
+  <figure><div class="alan alan--canli" data-s="e1" style="width:300px;height:230px;display:grid;place-items:center">
+    <div class="pano" style="width:210px;height:130px"></div></div>
+    <figcaption>ışık kayıyor · 9s</figcaption></figure>
+  <figure><div class="alan" data-s="e2" style="width:300px;height:230px;display:grid;place-items:center">
+    <div class="pano anim-gel" style="width:210px;height:130px"></div></div>
+    <figcaption>geliş · 260ms</figcaption></figure>
+</div>
+
+<!-- F · ÖLÇEK -->
+<h2>F · Telefon oranında — <b>tek pano, tek harf, başka hiçbir şey</b></h2>
+<div class="grid">
+  <figure><div class="alan" data-s="f1" style="width:260px;height:562px;padding:22px;display:flex;flex-direction:column;justify-content:center">
+    <div class="pano" style="padding:26px 24px">
+      <p class="rak" style="font-size:13px;color:var(--kehribar);letter-spacing:.12em">BUGÜN</p>
+      <p class="disp" style="font-size:30px;line-height:36px;color:var(--mum);margin-top:10px">Perfect Aspects</p>
+      <p class="gov" style="font-size:16px;line-height:25px;color:var(--mum-2);margin-top:10px">
+        Dün iki soruda been ile gone karıştı.</p>
+      <p class="rak" style="font-size:15px;color:var(--mum-2);margin-top:16px">6 soru · ~8 dk</p>
+    </div></div>
+    <figcaption><em>390 × 844 oranında</em></figcaption></figure>
+  <figure><div class="alan alan--duz" data-s="f2" style="width:260px;height:562px;padding:22px;display:flex;flex-direction:column;justify-content:center">
+    <div class="pano p1" style="padding:26px 24px">
+      <p class="rak" style="font-size:13px;color:#fe6a00;letter-spacing:.12em">BUGÜN</p>
+      <p style="font-family:'Source Sans 3',system-ui;font-size:28px;line-height:34px;font-weight:600;color:#f4f1ed;margin-top:10px">Perfect Aspects</p>
+      <p style="font-family:'Source Sans 3',system-ui;font-size:16px;line-height:25px;color:#ded9d3;margin-top:10px">
+        Dün iki soruda been ile gone karıştı.</p>
+      <p style="font-family:'Source Sans 3',system-ui;font-size:15px;color:#ded9d3;margin-top:16px">6 soru · ~8 dk</p>
+    </div></div>
+    <figcaption>önceki deneme — karşılaştırma</figcaption></figure>
+</div>
+
+</div></body></html>

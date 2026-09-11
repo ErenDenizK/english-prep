@@ -1,0 +1,153 @@
+/* Cam çalışması — boş tuval. Uygulama içeriği yok, jeton yok, bileşen yok.
+   Sadece malzeme: bir alan, bir pano, bir harf, bir hareket.
+
+   Teşhis: önceki denemede alan pürüzsüz bir gradyandı. Pürüzsüz bir şeyi
+   bulanıklaştırmak aynı pürüzsüz şeyi verir — yani backdrop-filter
+   görünürde hiçbir iş yapmıyordu. Cam, ancak arkasında kıracağı bir yapı
+   varsa cam gibi okunur. */
+
+:root {
+  /* köken (v0.2) ölçüldü: zemin H 292 SOĞUK menekşe, mürekkep H 83 SICAK
+     krem, aksan H 73 yumuşak kehribar C 0.139. Sıcaklık mürekkepte ve
+     aksanda, zeminde değil. Önceki denemede hepsini H 70–75'e toplamıştım:
+     tek ton, çamur. */
+  --zemin:  #1a1920;   /* L 0.221 C 0.014 H 295 */
+  --zemin-2:#141319;
+  --mum:    #efe9de;   /* L 0.936 C 0.016 H  83 — sıcak krem mürekkep */
+  --mum-2:  #b6b0bd;
+  --kehribar:#e6a13c;  /* L 0.759 C 0.139 H  73 — kökenin kehribarı */
+  --kehribar-sicak:#f2b45a;
+}
+
+/* --- GREN. Her gerçek malzemenin mikro dokusu vardır; vektör düzlüğünü
+       kıran şey budur ve dosya maliyeti sıfırdır. --- */
+:root {
+  --gren: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   ALAN — arkadan vuran ışık. Blur'un kıracağı YAPI burada.
+   ============================================================ */
+.alan { position: relative; overflow: hidden; background: var(--zemin); isolation: isolate; }
+
+/* iki farklı ölçekte yumuşak lob: yakın ve güçlü + uzak ve geniş.
+   Tek gradyan yapay durur çünkü gerçek ışık tek ölçekli değildir. */
+.alan::before {
+  content: ""; position: absolute; inset: -20%;
+  background:
+    /* yakın ve güçlü: panonun sol üst omzunun ÜSTÜNE düşer, cam kıracak
+       bir şey bulsun diye */
+    radial-gradient(40% 30% at 24% 22%,
+      rgb(255 201 132 / 0.50) 0%, rgb(233 145 62 / 0.24) 42%, transparent 76%),
+    /* uzak ve geniş: köşeden gelen ana ışık */
+    radial-gradient(86% 62% at -4% -8%,
+      rgb(214 112 38 / 0.40) 0%, rgb(139 68 28 / 0.16) 46%, transparent 82%),
+    /* karşı köşede soğuk dolgu: ışığın olmadığı yeri menekşeye bırakır */
+    radial-gradient(58% 50% at 96% 104%,
+      rgb(126 98 184 / 0.28) 0%, transparent 74%),
+    /* ikinci, çok zayıf sıcak yansıma: tek kaynak yapay durur */
+    radial-gradient(34% 26% at 78% 44%,
+      rgb(255 214 158 / 0.08) 0%, transparent 72%);
+  filter: blur(8px);
+}
+/* alanın kendi greni — bantlaşmayı öldürür, blur'a tutunacak yüzey verir */
+.alan::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: var(--gren); background-size: 160px 160px;
+  opacity: 0.09; mix-blend-mode: overlay;
+}
+.alan > * { position: relative; z-index: 1; }
+
+.alan--duz::before { background: radial-gradient(135% 115% at 6% -8%, #ab4400 0%, #14100b 82%); filter: none; }
+.alan--duz::after { display: none; }
+.alan--sade::before { filter: blur(0); }
+.alan--grensiz::after { display: none; }
+
+/* ============================================================
+   PANO — cam. Yedi katman; her biri fiziksel bir şeyi taklit eder.
+   ============================================================ */
+.pano {
+  position: relative;
+  border-radius: 34px;
+  /* 1 · gövde: düz tint DEĞİL, ışığın geldiği yönde açılan bir gövde
+     6 · aynasal süpürme: gövdenin üstünde ince bir parlaklık bandı */
+  background:
+    linear-gradient(118deg, transparent 10%,
+      rgb(255 250 242 / 0.10) 27%, rgb(255 250 242 / 0.015) 37%, transparent 50%),
+    linear-gradient(152deg,
+      rgb(255 246 234 / 0.20) 0%,
+      rgb(255 240 224 / 0.10) 28%,
+      rgb(214 206 220 / 0.055) 60%,
+      rgb(150 142 168 / 0.075) 100%);
+  /* 2 · arkasını kırar: blur + doygunluk + hafif parlaklık */
+  -webkit-backdrop-filter: blur(26px) saturate(1.45) brightness(1.06);
+  backdrop-filter: blur(26px) saturate(1.45) brightness(1.06);
+  /* 3 · temas gölgesi (dar, koyu) + taşıma gölgesi (geniş, yumuşak)
+     4 · iç alt kenar: camın KALINLIĞI */
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.5),
+    0 24px 48px -20px rgb(0 0 0 / 0.75),
+    inset 0 -1px 1px rgb(0 0 0 / 0.30);
+  overflow: hidden;
+}
+/* 5 · PERVAZ: 1px beyaz çizgi değil — ışık köşesinde parlak, karşı köşede
+       yok olan gradyanlı bir bilezik. Kökenin hairline'ı da burada yaşıyor. */
+.pano::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  padding: 1.4px; pointer-events: none;
+  background: linear-gradient(148deg,
+    rgb(255 240 220 / 0.80) 0%,
+    rgb(255 235 210 / 0.28) 22%,
+    rgb(255 255 255 / 0.05) 48%,
+    rgb(0 0 0 / 0.25) 84%,
+    rgb(0 0 0 / 0.40) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+/* 7 · gren: camın mikro dokusu. Çok az — burada fazlası zımpara olur. */
+.pano::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background-image: var(--gren); background-size: 128px 128px;
+  opacity: 0.032; mix-blend-mode: overlay;
+}
+.pano > * { position: relative; z-index: 2; }
+
+/* — aşama aşama: her katmanı teker teker açan sınıflar — */
+.p1 { background: rgb(50 45 39 / 0.78); backdrop-filter: blur(20px); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.10), 0 2px 6px rgb(0 0 0 / .45); }
+.p1::before, .p1::after { display: none; }
+.p2 { background: linear-gradient(152deg, rgb(255 246 234 / 0.20) 0%, rgb(255 240 224 / 0.10) 28%, rgb(214 206 220 / 0.055) 60%, rgb(150 142 168 / 0.075) 100%); }
+.p2::before, .p2::after { display: none; }
+.p3::after { display: none; }
+.p3 { background: linear-gradient(152deg, rgb(255 246 234 / 0.20) 0%, rgb(255 240 224 / 0.10) 28%, rgb(214 206 220 / 0.055) 60%, rgb(150 142 168 / 0.075) 100%); }
+.p3::after { display: none; }
+.p4 { background: linear-gradient(152deg, rgb(255 246 234 / 0.20) 0%, rgb(255 240 224 / 0.10) 28%, rgb(214 206 220 / 0.055) 60%, rgb(150 142 168 / 0.075) 100%); }
+
+/* ============================================================
+   YAZI — kökenin sesi: display serif, gövde sans, rakam mono
+   ============================================================ */
+.disp { font-family: "Fraunces", "Source Serif 4", Georgia, serif;
+  font-weight: 600; letter-spacing: -0.015em; }
+.gov  { font-family: "IBM Plex Sans", "Source Sans 3", system-ui, sans-serif; }
+.rak  { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+
+/* ============================================================
+   LEVHA KABUĞU — çalışmanın kendisi, dilin parçası değil
+   ============================================================ */
+* { box-sizing: border-box; }
+body { margin: 0; background: #0c0d10; color: #dfe2e8;
+  font-family: "IBM Plex Sans", system-ui, sans-serif; padding: 0 0 90px; }
+p, h1, h2, h3 { margin: 0; }
+.wrap { max-width: 1360px; margin: 0 auto; padding: 0 26px; }
+h1 { font-size: 30px; font-weight: 600; margin: 36px 0 8px; letter-spacing: -0.02em; }
+.lede { color: #969ca7; font-size: 16px; line-height: 26px; max-width: 68ch; }
+h2 { font-size: 20px; font-weight: 600; margin: 52px 0 6px; }
+h2 b { color: var(--kehribar); font-weight: 600; }
+.say { color: #969ca7; font-size: 15px; line-height: 24px; max-width: 74ch; margin-bottom: 16px; }
+.grid { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+figure { margin: 0; }
+figcaption { font-size: 12.5px; color: #7f858f; font-weight: 600; margin-top: 9px;
+  letter-spacing: 0.05em; text-transform: uppercase; }
+figcaption em { color: var(--kehribar); font-style: normal; }
+code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; color: #b9c0cc; }
