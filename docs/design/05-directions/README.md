@@ -1,4 +1,17 @@
-# Üç yön
+# Üç yön — reddedildi, kayıt olarak duruyor
+
+> **2026-09-11 · Bu adım reddedildi ve kasten silinmedi.** Sebebi
+> `06-sozel-yonerge.md` §0'da: yanlış eksende çeşitlendi. Sahibi
+> bağımsız bir *tasarım dili* geliştirmesi istedi; bu klasör üç **ürün
+> yapısı** verdi (girişi ne taşıyor), hepsi de benim tek başıma
+> seçtiğim tek bir görsel dili giyerek. Seçilmesi gereken şey hiç
+> seçime sunulmadı. Ayrıca malzemesi yanlıştı: onun beğendiği beş
+> referansta nesneler cam (ekranın %34–49'u), buradakiler opak levha
+> (%41–43).
+>
+> Ölçüm yöntemi ve kabuk mekaniği (kutucuğun kontrolün kendisi olması,
+> karşı düzlem ile tek eylemin aynı malzeme olması, satır arası ayraç)
+> hâlâ geçerli ve adım 7'ye taşınıyor.
 
 2026-09-11. Adım 5. `index.html`'i bir tarayıcıda aç — `npm run serve`
 çalışırken `http://localhost:8000/docs/design/05-directions/index.html`.

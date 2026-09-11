@@ -221,20 +221,28 @@ turn the remaining freedom into a choice he can make in thirty seconds.
 
 ## 6 · The procedure
 
-Standalone. No application code is touched until step 7.
+Standalone. No application code is touched until step 9.
 
-| # | step | output |
-|---|---|---|
-| 1 | **İnceleme** — what we have, what we did, why it stopped | this file |
-| 2 | **Referanslar** — his examples, plus a reference audit of comparable products with their *measured* properties, not their vibes | `02-references.md` |
-| 3 | **Araştırma** — the design-language question, studied to the standard of `beta1-palette.md`, and our own `visual-longevity.md` re-read and applied | `03-research.md` |
-| 4 | **Brief** — what this app must feel like, in properties that can be measured, and what it must never be | `04-brief.md` |
-| 5 | **Üç yön** — three directions, one screen each, both themes, fully realised | `05-directions/` |
-| 6 | **Seçim ve araç seti** — the chosen direction built as a standalone toolkit: tokens, type, colour, drawing, motion, with a catalogue and its measurements | `06-toolkit/` |
-| 7 | **Uygulama** — and only then, into the app | a release |
+| # | step | output | state |
+|---|---|---|---|
+| 1 | **İnceleme** — what we have, what we did, why it stopped | this file | done |
+| 2 | **Referanslar** — his examples, measured | `02-references.md` | done, and corrected twice |
+| 3 | **Araştırma** — the design-language question, to `beta1-palette.md`'s standard | `03-research.md` | done |
+| 4 | **Brief** — the feel, in measurable properties | `04-brief.md` | done; §2's medians need rebasing on the five he named |
+| 5 | **Üç yön** — three directions | `05-directions/` | **rejected: varied product structure, not visual language** |
+| 6 | **Sözel yönerge** — the language argued in words before it is drawn | `06-sozel-yonerge.md` | done |
+| 7 | **Görsel yönerge** — a specimen sheet of the material, not app screens | `07-gorsel/` | next |
+| 8 | **Araç seti** — tokens, catalogue, measurements | `08-toolkit/` | |
+| 9 | **Uygulama** — and only then, into the app | a release | |
 
-Steps 1 and 3 are mine. Step 2 needs ten minutes from him. Step 5
-produces the choice; step 6 is where the craft goes.
+Rows 5 onward were rewritten on 2026-09-11 after step 5 was rejected.
+`06-sozel-yonerge.md` §0 says why: the round kept skipping the step
+where the *material* is chosen, and went straight to screens built out
+of a material nobody had agreed to.
+
+Steps 1, 3 and 6 are mine. Step 2 needed ten minutes from him and got
+three batches. Step 7 produces the choice; step 8 is where the craft
+goes.
 
 ---
 
