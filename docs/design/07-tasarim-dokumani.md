@@ -11,7 +11,8 @@ untouched.
 **How to read it.** Every value is either solved or open. A solved value
 carries [S] and was produced by `tools/color.mjs` against the app's own
 `PAIRS` table — the same code `npm run color` runs in CI. An open value
-carries **[A]** and is a question for the specimen sheet, listed again in
+carries **[A]** and is a question for the specimen sheet; one answered by
+the owner carries **[K]** and its date. All three are listed again in
 §17. Nothing is an adjective.
 
 **What this supersedes.** Three earlier decisions are replaced, and the
@@ -114,7 +115,7 @@ action.
 
 | | dark | light |
 |---|---|---|
-| tint | `#322D27` (warm) · `#2A2E34` (cool) | `#FFFCF5` |
+| tint | `#322D27` [K] | `#FFFCF5` |
 | alpha, carrying text | **0.78** | **0.78** |
 | alpha, carrying none | 0.55 | 0.70 |
 | blur | 20px | 20px |
@@ -212,9 +213,10 @@ written on, which is what lets it be vivid.
 `surface-2`; dark `#FE6A00` (L 0.700 C 0.200 H 45), 3.74:1. Against
 today's `C 0.125` in both themes: **+37% and +60%**.
 
-The ceiling is H 36 — `#E13F00` / `#FF4B0C`, C 0.207 / 0.224, +66% and
-+79%, which is the reference's own hue and reads redder. **[A]**, and it
-is specimen 6's second axis.
+The H 36 ceiling — `#E13F00` / `#FF4B0C`, C 0.207 / 0.224, +66% and
++79% — was on the table and **was dropped** [K, 2026-09-11]: it is the
+reference's own hue, and it reads as an alert colour in an app whose
+whole job is telling a learner they were wrong.
 
 **The rule.** Never below 2px in a rule or a bar. Never behind text.
 Never more than one hue family on a screen.
@@ -239,19 +241,19 @@ Both themes, every token, with what it answers and how it is checked.
 
 | token | value | oklch | rule |
 |---|---|---|---|
-| `--c-surface-0` (page) | `#14100B` warm ⟲ / `#0D1116` cool | L 0.175 C 0.012 H 70 / 255 | §4 · warm or cool is free, measured |
-| `--c-surface-1` (pane tint) | `#322D27` / `#2A2E34` ⟲ | L 0.300 C 0.012 | ⟲ was 0.228 — the card step goes 0.053 → 0.125 |
-| `--c-surface-2` (worst ground) | `#413C36` / `#393E43` ⟲ | L 0.360 C 0.012 | zero `PAIRS` failures at this ladder [S] |
-| `--c-text-1` | `#F4F1ED` / `#EFF2F5` ⟲ | L 0.971 | Lc 90 + WCAG 7 against `surface-2` |
-| `--c-text-2` | `#DED9D3` / `#D6DAE1` ⟲ | L 0.900 | Lc 75 + 4.5 |
-| `--c-text-3` | `#C6C0B9` / `#BCC2C9` ⟲ | L 0.822 | Lc 60 + 3.0 |
+| `--c-surface-0` (page) | `#14100B` ⟲ | L 0.175 C 0.012 H 70 | warm [K] |
+| `--c-surface-1` (pane tint) | `#322D27` ⟲ | L 0.300 C 0.012 H 70 | ⟲ was 0.228 — the card step goes 0.053 → 0.125 |
+| `--c-surface-2` (worst ground) | `#413C36` ⟲ | L 0.360 C 0.012 H 70 | zero `PAIRS` failures at this ladder [S] |
+| `--c-text-1` | `#F4F1ED` ⟲ | L 0.971 C 0.006 H 70 | Lc 90 + WCAG 7 against `surface-2` |
+| `--c-text-2` | `#DED9D3` ⟲ | L 0.900 C 0.010 H 70 | Lc 75 + 4.5 |
+| `--c-text-3` | `#C6C0B9` ⟲ | L 0.822 C 0.012 H 70 | Lc 60 + 3.0 |
 | `--c-accent-ink` | `#FCD49B` ⟲ | L 0.902 C 0.085 H 76 | coloured text, Lc 75 |
 | `--c-mark` | `#FE6A00` ⟲ | L 0.700 C 0.200 H 45 | never written on, 3.74:1 |
 | `--c-action` | `#FFA401` ⟲ | L 0.790 C 0.171 H 70 | the one painted element, label Lc 65 |
-| `--c-on-action` | `#0D1116` | the page | |
+| `--c-on-action` | `#14100B` | the page | |
 | `--c-field-lit` | `#AB4400` ⟲ | L 0.52 C 0.150 H 45 | stop 1 of the field |
-| `--c-edge` | `#8C867F` / `#82888E` ⟲ | L 0.652 | 3:1, non-text |
-| `--c-divider` | `#514C46` / `#494D54` ⟲ | L 0.42 | decorative, visible |
+| `--c-edge` | `#8C867F` ⟲ | L 0.652 C 0.012 H 70 | 3:1, non-text |
+| `--c-divider` | `#514C46` ⟲ | L 0.42 C 0.012 H 70 | decorative, visible |
 | `--c-ok` / `--c-no` | `#7FD492` / `#FF9D95` | unchanged | 3:1 |
 
 `text-1` at L 0.971 sits **0.028 from white**; that is the headroom the
@@ -308,9 +310,10 @@ The dark ladder was measured at 0.125 / 0.150 / 0.170: all three pass
 cannot reach Lc 90 + WCAG 7 against a ground that light even at pure
 white [S].
 
-**Warm or cool is free** [S]: the identical ladder at H 70 and H 255
+**Warm or cool was free** [S]: the identical ladder at H 70 and H 255
 produces identical pass/fail and identical solved ink lightnesses to
-three decimals. **[A]** — specimen 1's second axis.
+three decimals — so it was a taste decision and nothing else.
+**Warm, H 70** [K, 2026-09-11]. §3.1's cool column is dropped.
 
 ---
 
@@ -356,7 +359,7 @@ and in this language the object is larger than before, because the pane
 
 | role | family | why |
 |---|---|---|
-| **the English being examined** — the sentence under test, an option, an example | Source Serif 4, upright | it is the specimen; it should look like one |
+| **the English being examined** — the sentence under test, every option, every example [K] | Source Serif 4, upright | it is the specimen; it should look like one |
 | **everything the app says** — instruction, explanation, label, action, nav | Source Sans 3 | Turkish, and it is the app talking |
 | **everything measured** — a score, a count, a day, a page | Source Sans 3, `font-variant-numeric: tabular-nums` | figures that line up read as measurements |
 
@@ -598,20 +601,38 @@ Carried forward, each with the reason it was refused.
 
 # PART SIX · WHAT IS STILL OPEN
 
-## 17 · The open values [A]
+## 17 · The open values
 
-Seven. Each is a real fork with both sides measured, and each is settled
-by looking, not by reading.
+Seven were open. **Three were answered on 2026-09-11** and are now part
+of the specification; four remain, and each is settled by looking.
+
+### Answered [K]
+
+| # | question | answer | what it fixes |
+|---|---|---|---|
+| **A1** | how vivid is the mark | **H 45** — light `#CE5500` C 0.171, dark `#FE6A00` C 0.200 | +37% / +60% on today; the H 36 ceiling is dropped |
+| **A2** | warm or cool dark ground | **warm, H 70** | `--c-surface-0` `#14100B`, `-1` `#322D27`, `-2` `#413C36`; inks `#F4F1ED` · `#DED9D3` · `#C6C0B9`; divider `#514C46`. The cool column of §3.1 is dropped |
+| **A7** | where the serif goes | **every English under examination** — the question sentence, the options, example sentences | the type class comes to mean *this is the English being examined* |
+
+A2's reason for the record: the cool ground existed so the accent had a
+second channel to differ on (`beta1-palette.md`). With the mark at
+C 0.200 it differs on chroma and lightness instead, and the measurement
+[S] showed warm and cool to be identical on every contrast requirement —
+so the argument had nothing left holding it up.
+
+### Still open [A]
 
 | # | question | the alternatives | measured |
 |---|---|---|---|
-| A1 | how vivid is the mark | H 45 (+37 / +60%) · H 36 (+66 / +79%) | both clear 3:1 [S] |
-| A2 | warm or cool dark ground | H 70 · H 255 | identical `PAIRS` results [S] |
 | A3 | the action: painted or a plane | `#C35000` / `#FFA401` · `#241E18` / `#ECE7E1` | Lc 77 / 65 vs Lc 97 / 92 [S] |
 | A4 | does the control radius survive as an arc | 0.16 arc · 0.16 superellipse · drop to 0.12 | `corner-shape` ~65%, not Baseline |
 | A5 | the field's extent at *tam* | 15% · 20% · 25% | all three inside the reference band |
 | A6 | the near-white pane on the dark theme at night | α 0.78 · α 0.55 · a darker tint | Lc 95 either way; the complaint would be glare |
-| A7 | serif for the examined English — everywhere, or only in the option | both · option only | no contrast difference; a reading difference |
+
+A3 is the one with a real argument on both sides, and §2.3 states it:
+the plane wins on contrast by twenty Lc, the painted one wins because in
+a screen made of glass the only opaque saturated object *is* the action.
+Neither reading settles it, which is why it goes to specimen 6.
 
 ## 18 · What still needs work, and is not a choice
 
@@ -640,16 +661,16 @@ with its measurement printed beside it and its alternatives shown.
 
 | # | specimen | settles |
 |---|---|---|
-| 1 | the field at *tam · kısık · alansız*, both themes, warm and cool | §2.1, A2, A5 |
+| 1 | the field at *tam · kısık · alansız*, both themes, at 15 / 20 / 25% | §2.1, A5 |
 | 2 | one pane at α 0.55 / 0.70 / 0.78 / 0.90 over the field's brightest and darkest point, ink contrast printed on each | §2.2, A6 |
 | 3 | the same object at r/w 0.056 · 0.09 · 0.16, arc and superellipse, at 358 and 176px | §5, A4 |
-| 4 | the same sentence as serif, as sans, and as both, at 320 and 390 | §6, A7 |
+| 4 | the question screen's type in place: serif English against sans Turkish, at 320 and 390 | §6 |
 | 5 | one pane lit from each of four corners | §7 |
-| 6 | the action painted at H 45 and H 36, and as a plane | §2.3, A1, A3 |
+| 6 | the same action painted (`#C35000` / `#FFA401`) and as a plane (`#241E18` / `#ECE7E1`), on the field, with both labels measured | §2.3, A3 |
 | 7 | the dot field at three opacities, and hatching | §9 |
 | 8 | press · arrive · verdict, as three loops | §8 |
 | 9 | every component from §11 at rest, in both themes | §11 |
 | 10 | every state from §13 on one object | §13 |
 
 **Nothing is applied to the app until the sheet has been looked at and
-A1–A7 answered.**
+A3, A4, A5 and A6 answered.**
