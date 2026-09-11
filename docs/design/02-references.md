@@ -276,7 +276,7 @@ Two more colour facts, both [S]:
   the learner spends most of their time. "Academic but alive" has a
   number, and the number is about one per cent.
 
-## 7 · F3 · Their reading page carries three times our ink
+## 7 · F3 · Their reading page carries three times our ink — and it is not the type
 
 Measured on the reading surfaces at 390px:
 
@@ -294,13 +294,24 @@ The light reading page is the gap: less than a third of their ink. On a
 dark ground the numbers are comparable (5.7 vs 7.1), because a dark
 ground carries less ink by construction.
 
-It is not tighter setting — the opposite. Their body sets a baseline
-step of **1.73×** the ink band height; ours sets **1.31×** [≈,
-row-profile measurement on both]. Their lines are further apart than
-ours. They fit more text on the page by using a longer measure, a
-smaller margin and more lines, not by crowding. Our reader spends its
-page budget on space around a smaller amount of text, which is why it
-reads as a slide rather than as a page.
+It is not tighter setting. Both set a baseline step of about 1.55×
+the type size [≈] — theirs 26px on ~17px type, ours 28px on 18px. The
+first version of this file claimed their leading was looser than ours,
+from a row-profile measurement that turned out to be measuring ink
+bands at two different scales. Withdrawn.
+
+The difference is the **shape of the page**. Their reading view is 21
+rows of continuous prose filling 329 of 330 available pixels of column
+[S]. Ours is a stack of short blocks: a modal step of 28 CSS px inside
+a block, and gaps of 25 to 50 between them, with lines that end early
+because a block is a sentence or two.
+
+So the ink gap is not a typographic setting we can turn up. It is the
+lesson's shape — which is lever **1** in `visual-longevity.md` §5, the
+one ranked highest, the one measured six weeks ago (all sixty lessons
+the same shape, 21 sequences across 60 lessons, the two commonest
+covering 40%), and the one four rounds never touched. The type was
+never the problem.
 
 ## 8 · F4 · In a reading app the type ratio is 3:1, not 5:1, and the contrast is by class
 
@@ -557,9 +568,9 @@ five rows of three elements each.
   an **ink** accent that keeps the current WCAG 2 guarantee.
 - **1–2% saturated colour on a reading surface**, never 0.1% and never
   a wash.
-- Ink coverage near **12–17%** on the light reading page, reached by
-  measure and margin, not by tightening the leading — which should go
-  the other way, toward 1.5–1.7× the ink band.
+- Ink coverage near **12–17%** on the light reading page. Not a type
+  setting: it comes from the page being continuous prose at full column
+  width rather than a stack of short blocks.
 - Type contrast by **class** — serif italic in the accent for the
   thing being taught, sans for everything else — rather than by a wider
   size ratio.
