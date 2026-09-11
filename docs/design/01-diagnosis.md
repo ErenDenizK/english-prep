@@ -221,7 +221,7 @@ turn the remaining freedom into a choice he can make in thirty seconds.
 
 ## 6 · The procedure
 
-Standalone. No application code is touched until step 9.
+Standalone. No application code is touched until step 10.
 
 | # | step | output | state |
 |---|---|---|---|
@@ -231,18 +231,19 @@ Standalone. No application code is touched until step 9.
 | 4 | **Brief** — the feel, in measurable properties | `04-brief.md` | done; §2's medians need rebasing on the five he named |
 | 5 | **Üç yön** — three directions | `05-directions/` | **rejected: varied product structure, not visual language** |
 | 6 | **Sözel yönerge** — the language argued in words before it is drawn | `06-sozel-yonerge.md` | done |
-| 7 | **Görsel yönerge** — a specimen sheet of the material, not app screens | `07-gorsel/` | next |
-| 8 | **Araç seti** — tokens, catalogue, measurements | `08-toolkit/` | |
-| 9 | **Uygulama** — and only then, into the app | a release | |
+| 7 | **Tasarım dokümanı** — the specification: every value, every rule, every need | `07-tasarim-dokumani.md` | done |
+| 8 | **Numune levhası** — ten specimens of the material, not app screens | `08-numune/` | next |
+| 9 | **Araç seti** — tokens and catalogue, built from the answered choices | `09-toolkit/` | |
+| 10 | **Uygulama** — and only then, into the app | a release | |
 
 Rows 5 onward were rewritten on 2026-09-11 after step 5 was rejected.
 `06-sozel-yonerge.md` §0 says why: the round kept skipping the step
 where the *material* is chosen, and went straight to screens built out
 of a material nobody had agreed to.
 
-Steps 1, 3 and 6 are mine. Step 2 needed ten minutes from him and got
-three batches. Step 7 produces the choice; step 8 is where the craft
-goes.
+Steps 1, 3, 6 and 7 are mine. Step 2 needed ten minutes from him and
+got three batches. Step 8 produces the choices — A1 to A7 of
+`07-tasarim-dokumani.md` §17 — and step 9 is where the craft goes.
 
 ---
 
