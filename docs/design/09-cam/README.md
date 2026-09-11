@@ -1,5 +1,14 @@
 # Cam çalışması — boş tuval
 
+> **v2 · iki düzeltme.** (1) Köken **v0.2 değil, v0.57** — UI turlarından
+> hemen önceki, v1'e en yaklaştığımız hâl (`198e1cd`): soğuk arduvaz
+> H 255 (0.175 / 0.228 / 0.286), serin ak mürekkep `#e9ecef`, kehribar
+> `#f1af5d` C 0.125. v0.2'nin menekşesine fazla kaçmıştım.
+> (2) **Cam çok beyazdı, göze gri geliyordu** → karartıldı ve
+> sadeleştirildi: artık beyaz bir tabaka değil, arduvazın kendisi biraz
+> açılmış hâli. Tek beyaz, pervazın ışık gören köşesinde. Tip modern
+> grotesk (Inter), Helvetica ayarında.
+
 2026-09-11. Adım 8'in numune levhası reddedildi. Gerekçeler ve her birine
 verilen cevap aşağıda. Bu klasör **uygulama içeriği taşımıyor**: bileşen
 yok, ekran yok, jeton yok. Sırayla bir alan, bir pano, bir harf, bir
