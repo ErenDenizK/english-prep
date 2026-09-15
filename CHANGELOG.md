@@ -27,6 +27,20 @@ stylesheet, so a copy could drift while CI reported a pass.
   `npm run color` solves and measures, and runs as the second half of
   `npm run color` (or alone as `npm run tokens`). Zero dependencies.
   Copies are unavoidable without a build step; unchecked copies are not.
+- **A radiogroup that owned no radios.** `js/answers.js` set
+  `role="radiogroup"` on the options wrapper and rendered four plain
+  `<button>` children, with a comment promising a screen reader would say
+  "1 of 4". ARIA requires a radiogroup to own radios; the accessibility
+  tree was dumped in Chromium to see what the violation actually bought:
+  `radiogroup` + buttons and `group` + buttons produce **the same tree**,
+  same accessible name, `role=button` children, no `checked` on either.
+  The "1 of 4" comes from the `radio` role, which this pattern
+  deliberately does not use — so it was never delivered. Now
+  `role="group"`, which gives the whole benefit that was real. The
+  options stay one-tap buttons: instant feedback is the product, and
+  radios plus a Continue button would restore the ceremony
+  `app1-final.md` §7 already refused. §8.7 corrected, and the sweep now
+  fails if a `radiogroup` ever owns a non-radio child again.
 - `docs/design-system.md` §9.3 said two token tiers and that most systems
   need no third. Counted, the stylesheet carries three — 19 primitive, 18
   semantic, 10 component — and the third is dimensions only, never a

@@ -1053,8 +1053,15 @@ router that changes the URL.
 
 - **1.4.1 Use of Color (A)** — §1.5.
 - **1.3.1 Info and Relationships (A)** — a question and its options are a
-  group: `role="radiogroup"` with `aria-labelledby` pointing at the stem,
-  so a screen reader announces "3 of 4" and what is being asked.
+  group: `role="group"` with `aria-labelledby` pointing at the stem, so a
+  screen reader announces what is being asked before the options. Not
+  `radiogroup`: ARIA requires one to own `radio` children, these options
+  are buttons that commit and do not come back, and a radiogroup of
+  plain buttons produces exactly the tree `group` produces — measured in
+  Chromium, same name, same `role=button` children, no `checked` on
+  either. The "3 of 4" this line used to promise comes from the `radio`
+  role and was never being delivered. Announce a position only by
+  building the thing that carries one.
 - **2.5.3 Label in Name (A)** — the accessible name must *contain* the
   visible label. Voice-control users say the word they can see.
 - **1.4.12 Text Spacing (AA)** — the sharpest test for a fixed-height

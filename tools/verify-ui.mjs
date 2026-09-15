@@ -3105,7 +3105,7 @@ async function runAccessibility(page) {
   await page.reload({ waitUntil: "networkidle" });
   await page.waitForSelector(".option");
   const groups = await page.evaluate(() =>
-    [...document.querySelectorAll("[role=radiogroup]")].map((group) => {
+    [...document.querySelectorAll("[role=group]")].map((group) => {
       const id = group.getAttribute("aria-labelledby");
       return {
         id,
@@ -3114,6 +3114,16 @@ async function runAccessibility(page) {
       };
     })
   );
+  // A radiogroup has to own radios. The options are buttons that commit
+  // an answer, so the app uses `group` — and this fails if a later
+  // session reaches for `radiogroup` again without adding the radios.
+  const orphanRadiogroups = await page.evaluate(
+    () =>
+      [...document.querySelectorAll("[role=radiogroup]")].filter(
+        (group) => group.querySelector(":scope > :not([role=radio])")
+      ).length
+  );
+  ok(orphanRadiogroups === 0, "radiogroup yalnızca radio çocuk sahibi (radio olmayan: 0)");
   ok(groups.length > 0, `soru ve şıkları bir grup (${groups.length} grup)`);
   ok(groups.every((group) => group.resolves), "her grup var olan bir soru metnine işaret ediyor");
   ok(

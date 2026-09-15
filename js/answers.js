@@ -24,12 +24,26 @@ export function renderOptions(question, { selected = null, answered = false, onS
 
   // §8.7, WCAG 1.3.1: a question and its options are a group. Without
   // this a screen reader reads four unrelated buttons and never says
-  // what is being asked or how many there are; with it, "Present Simple
-  // vs Present Continuous, 1 of 4". `radiogroup` rather than `radio`
-  // children, because these are buttons that commit an answer and do not
-  // come back — arrow keys moving a selection would promise an undo the
-  // app does not have.
-  wrap.setAttribute("role", "radiogroup");
+  // what is being asked.
+  //
+  // `group`, not `radiogroup`. These are buttons that commit an answer
+  // and do not come back, so `role="radio"` children would promise an
+  // undo the app does not have — that part of the old comment was
+  // right. What it got wrong was the next step: a `radiogroup` whose
+  // children stay plain buttons. ARIA requires a radiogroup to own
+  // radios, and the accessibility tree was dumped in Chromium to see
+  // what the violation actually bought:
+  //
+  //   radiogroup + button   → children role=button, no checked state
+  //   group      + button   → children role=button, no checked state
+  //   radiogroup + radio    → children role=radio,  checked=true/false
+  //
+  // The first two are the same tree, name included. The "1 of 4" the
+  // old comment promised comes from the `radio` role, which this
+  // pattern deliberately does not use, so it was never delivered.
+  // `group` gives the whole benefit that was real — the grouping and
+  // the name — and claims nothing that is not there.
+  wrap.setAttribute("role", "group");
   wrap.setAttribute("aria-labelledby", labelledBy);
 
   question.options.forEach((option, index) => {
