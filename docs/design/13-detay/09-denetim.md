@@ -264,4 +264,81 @@ before this check.
 
 ---
 
-*(Arms 1, 3, 4, 6 and 7 still running at the time of writing.)*
+## Arm 1 — surface and depth
+
+### Claim: the app has no hover or pressed surface tokens. **Confirmed.**
+
+```
+grep -c "--c-[a-z-]*hover|--c-[a-z-]*press|--c-[a-z-]*active" css/style.css
+0
+```
+
+Seventeen `:hover` / `:active` rules exist, and they reuse existing
+tokens (`var(--raised)`, `var(--accent-tint)`) rather than declaring
+interaction states of their own. Radix spends three of its twelve steps
+on exactly this, and Carbon and Atlassian both carry the tokens.
+
+The arm's larger point is worth stating in its own words rather than
+mine: **none of `00-v4-olcumu.md`'s three metrics could ever have caught
+this**, because all three are measured from static screenshots and a
+hover state does not appear in one. That is a real limit of the
+measurement programme this round has been leaning on, and it is the
+first time anyone has named one.
+
+Whether it explains the "shallow" complaint better than step count does
+is an argument, not a measurement, and it is recorded as such.
+
+### Claim: `css/style.css` already uses the Atlassian high-contrast strategy. **Confirmed.**
+
+Lines 280–308. Under `prefers-contrast: more` the surfaces are **not
+touched**; what changes is `--c-text-2` (collapsed to `--c-text-1`),
+`--c-text-3`, `--c-hairline`, `--c-edge` and `--line`. Freeze the
+ladder, raise the ink and the borders — which is what `@atlaskit/tokens`
+does in its increased-contrast theme. Worth having: this was a decision
+made without a precedent and now has one.
+
+### Claim: the references' dark ladders top out at L\* 29–30, matching the proposed L\* 30.3 ceiling. **Holds directionally; the precision is overstated.**
+
+This is the arm's headline and I could not reproduce its exact figures.
+I ran an independent, deliberately cruder pass — 1.2 % area floor, a
+simple max-minus-min channel test for neutrality, plateaus merged within
+2 L\*:
+
+| reference | neutral plateaus | dark tier (L\* ≤ 45) tops at |
+|---|---|---:|
+| 8 midnightreads | L\* 0 (2.2 %), 24 (59.9 %), 85 (1.8 %) | **24** |
+| 10 wearable | L\* 10 (77.0 %), 24 (1.5 %), 37 (1.2 %) | **37** |
+| 1 traffic | L\* 6, 16, 21, 24, then 56 (4.2 %), 64 (4.6 %) | **24** |
+| 3 log | L\* 4 (47.1 %), 90 (8.8 %) | **4** |
+| 4 wallet | L\* 4 (35.5 %), 80 (19.5 %), 93 (6.5 %) | **4** |
+
+So my pass finds 2 and 3 dark plateaus where the arm found 5 and 4, and
+tops of 24 and 37 where it reported 29 and 30. My method is the cruder
+one and the disagreement is most likely mine, not the arm's — but the
+claim should be read as **a bracket, not a match**: two independent
+methods put the reference dark ceiling somewhere in L\* 24–37, and the
+proposed surface-4 at L\* 30.3 sits inside that bracket. That is real
+corroboration and it is weaker than "landing almost exactly on".
+
+Recorded because overstating a corroboration is the specific failure
+this round is trying to avoid, and because the arm was otherwise
+careful enough to flag its own unrun checks.
+
+### An unlooked-for result in the same table
+
+Two of the owner's five references carry large **neutral mid-tone**
+plateaus that are not surfaces: traffic at L\* 56 and 64 (4.2 % and
+4.6 %), wallet at L\* 80 (19.5 %). These are the counter-planes
+`02-references.md` named and never located. They are neutral, so the
+hue-family metric never saw them; they are mid-tone, so `midtone.py`
+counts them; and they carry no text at those lightnesses, which is
+consistent with the 0.4-point text/mid-tone overlap measured under arm
+3 above.
+
+Three independent measurements now say the same thing: **the mid-tone
+is non-text area, and in the references it often is not even
+chromatic.**
+
+---
+
+*(Arms 3, 4, 6 and 7 still running at the time of writing.)*
