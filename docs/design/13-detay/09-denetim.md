@@ -503,4 +503,69 @@ measuring rather than by designing.
 
 ---
 
-*(Arms 4 and 6 still running at the time of writing.)*
+## Arm 6 — the drawn layer
+
+### Claim: the §6 icon contract is violated almost everywhere. **Confirmed.**
+
+`docs/design-system.md:718–720` is unambiguous:
+
+> **Stroke width is absolute, not scaled.** Rendering a 24px icon at
+> 20px turns a 2px stroke into 1.67px and the set goes soft. Icons
+> render at their design size, or they get redrawn.
+
+And `js/icons.js` sets the root once:
+
+```js
+const DEFAULT_SIZE = 24;
+viewBox: "0 0 24 24",
+"stroke-width": "2",
+```
+
+`viewBox` is fixed while `width`/`height` are what `size` changes, so
+the stroke scales with the box. Counted every call site outside
+`icons.js`:
+
+| size passed | calls |
+|---:|---:|
+| 20 | 14 |
+| 18 | 5 |
+| 22 | 2 |
+| **24** | **2** |
+| 28 | 1 |
+| 64 | 1 |
+
+**Two of twenty-five calls render an icon at its design size**, and both
+are the bottom nav. Everything else renders a stroke of 1.5px (at 18),
+1.67px (at 20), 1.83px (at 22), 2.33px (at 28) or 5.33px (at 64) — the
+exact failure the rule was written to forbid, including the worked
+example in the rule's own sentence.
+
+This has been true across UI 2, UI 3 and every round since, and the
+sweep never caught it: `verify-ui.mjs` measures text sizes and weights,
+not rendered stroke widths. That is the second blind spot this round has
+found in the verification programme, after arm 1's point that a hover
+state cannot appear in a screenshot.
+
+Worth being precise about what the finding is and is not. It is not
+that the icons look wrong — nobody has complained about them. It is
+that **the specification and the code disagree, and the specification
+lost silently.** Either the rule is wrong (a single master genuinely
+scaling is what Feather and Lucide do, and they ship at multiple sizes)
+or the code is, and that is a decision, not a bug report.
+
+### And a process failure that is mine, not the arm's
+
+The arm reports that its in-progress specimen files were swept into
+commit `b79bd5d` by a concurrent `git add`, although it never ran git
+itself. That is correct, and it was me: the brief told every arm not to
+commit, and I was committing whatever landed under `13-detay/` each
+turn to keep the working tree clean for a repository hook.
+
+Recorded because it matters for reading the history: some specimen
+files in this round's commits were captured mid-write, and one
+(`01-grammar-diagram.html`) had to be deleted a commit later when its
+arm replaced it with a dark/light pair. No arm violated its brief.
+
+---
+
+*(Arm 4, reading typography, still running at the time of writing.)*
