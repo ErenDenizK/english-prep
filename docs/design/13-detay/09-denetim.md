@@ -114,4 +114,76 @@ round one, not to arm 2.
 
 ---
 
-*(Arms 1, 3, 4, 5, 6 and 7 still running at the time of writing.)*
+## Arm 3 — non-text area (still running; specimens checked in flight)
+
+The arm is building specimens in both themes, as asked. Two measured
+defects in the first pair, and one finding that came out of checking
+them which is larger than either.
+
+### The specimen's plate breaks the contrast bar. **Confirmed.**
+
+Sampled `03-ornekler/01-grammar-diagram-dark.png` at the plate:
+`#6F6156`, CIE L\* 42.2. Measured with `tools/color.mjs`:
+
+| ink | Lc | WCAG | Lc ≥ 90 and WCAG ≥ 7 |
+|---|---:|---:|---|
+| `text-1` `#F4F7FB` | 80 | 5.55 | **fails** |
+| pure white | 85 | 5.97 | **fails** |
+
+So the 29.4 % mid-tone that specimen scores is bought by putting text on
+a surface that would fail `npm run color` and the sweep.
+
+### And the window is far narrower than anyone assumed. **New.**
+
+Solving for the overlap between "counts as mid-tone" (CIE L\* ≥ 30) and
+"can carry body text at this project's bar":
+
+| ink | text-bearing ceiling | overlap with the mid-tone band |
+|---|---:|---:|
+| `text-1`, L 0.975 | CIE L\* 30.4 | **0.4 points** |
+| pure white | CIE L\* 36.8 | **6.8 points** |
+
+In the light theme there is no overlap at all — the text floor is L\* 89
+and the band ends at 70 (`08-iki-tema-asimetrisi.md`).
+
+**A mid-tone region can either carry text or be mid-tone, essentially
+not both.** That is the sharpest constraint this round has produced and
+it was found by auditing a specimen rather than by reasoning. It splits
+the taxonomy the arm is building into two kinds that are not
+interchangeable:
+
+- mid-tone that carries text — a 6.8-point sliver, dark theme only,
+  near-white ink only, and unavailable in light;
+- mid-tone that carries none — unbounded, and the only kind that works
+  in both themes.
+
+The second is the one the rejection condition can actually be met with.
+
+### Turkish İ bug reproduced in the specimen. **Confirmed.**
+
+`<div class="eyebrow">Present Perfect vs Past Simple` carries no
+`lang="en"`, and the specimen's CSS uppercases it. The rendered PNG
+reads **PAST SİMPLE** with the dotted İ — the exact trap `CLAUDE.md`
+documents. Relayed to the arm.
+
+### What the specimens do get right
+
+Worth recording, because it is the first evidence in nine rounds that
+the mid-tone problem is solvable at all:
+
+- The diagram is the first time this app's "X vs Y" pedagogy has been
+  **drawn** rather than described. `been` and `gone` as two journeys
+  against a NOW marker is a real teaching object, not ornament.
+- The dark and light pairs measure within one point of each other on
+  mid-tone (29.4 / 30.3 and 6.5 / 6.7). That is the theme-independence
+  the counter-plane requires, demonstrated rather than asserted.
+- Neither specimen clears all three rejection conditions alone: the
+  diagram passes mid-tone (29.4 %) and event area (38.7 %) but carries
+  no measurable colour family in light; the record strip passes the
+  colour family (H60 at 2.6 / 2.8 %) and fails mid-tone (6.5 / 6.7 %
+  against a 10 % floor). The combination result is the finding, not
+  either specimen.
+
+---
+
+*(Arms 1, 4, 5, 6 and 7 still running at the time of writing.)*
