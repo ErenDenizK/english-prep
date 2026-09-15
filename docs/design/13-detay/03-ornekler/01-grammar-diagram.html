@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>specimen — grammar diagram</title>
+<style>
+  :root{
+    --surface-0:#0D1116; --surface-1:#191F26; --surface-2:#272D36;
+    --surface-3:#383E46; --surface-4:#43484E;
+    --text-1:#F4F7FB; --text-2:#DBE0E6; --text-3:#C1C7CE;
+    --accent:#f1af5d; --accent-2:#f69c51; --on-accent:#1a0f03;
+    --edge: rgba(255,255,255,.10);
+    --line: rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--surface-0);}
+  body{
+    width:390px; height:844px; overflow:hidden; position:relative;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    color:var(--text-1);
+  }
+  .bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 20px 8px;
+    font-size:13px; letter-spacing:.04em; color:var(--text-3);
+  }
+  .body{ padding: 4px 20px 0; }
+  .eyebrow{
+    font-size:13px; font-weight:600; letter-spacing:.08em;
+    color:var(--text-3); text-transform:uppercase; margin:6px 0 8px;
+  }
+  h1{
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight:600; font-size:28px; line-height:1.15; margin:0 0 14px;
+  }
+  p.lead{ font-size:16px; line-height:1.5; color:var(--text-2); margin:0 0 22px; }
+  .diagram{
+    background:var(--surface-3);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px 18px 16px;
+    margin: 0 0 22px;
+  }
+  .diagram h2{
+    font-size:13px; font-weight:600; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--text-3); margin:0 0 16px;
+  }
+  .row{ margin-bottom:22px; }
+  .row:last-child{ margin-bottom:0; }
+  .row .label{
+    display:flex; align-items:baseline; gap:8px; margin-bottom:8px;
+  }
+  .row .label b{ font-size:17px; color:var(--text-1); }
+  .row .label span{ font-size:13px; color:var(--text-3); }
+  svg{ display:block; overflow:visible; }
+  .foot-rule{
+    font-size:14px; line-height:1.6; color:var(--text-2); margin: 0 0 28px;
+  }
+  .foot-rule b{ color:var(--text-1); }
+  .footbar{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));
+    background:var(--surface-1);
+    border-top:1px solid var(--line);
+  }
+  .progress{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .progress .bar-track{ flex:1; height:4px; border-radius:2px; background:var(--surface-3); overflow:hidden; }
+  .progress .bar-fill{ height:100%; width:48%; background:linear-gradient(90deg,var(--accent),var(--accent-2)); }
+  .progress .pct{ font-size:12px; color:var(--text-3); }
+  .btn{
+    display:flex; align-items:center; justify-content:center;
+    height:50px; border-radius:25px;
+    background:var(--text-1); color:var(--surface-0);
+    font-size:16px; font-weight:600;
+  }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <span>&larr;</span>
+    <span>DERS 03</span>
+    <span>3 / 6</span>
+  </div>
+  <div class="body">
+    <div class="eyebrow">Present Perfect vs Past Simple</div>
+    <h1>Been vs Gone</h1>
+    <p class="lead" lang="tr">İkisi de <b style="color:var(--text-1)">go</b> fiilinin perfect hâli, ama farklı şey söylüyorlar. Kulağın bu farkı zaten kuruyor; burada sadece adı konuyor.</p>
+
+    <div class="diagram" role="img" aria-label="been vs gone diyagramı">
+      <h2 lang="tr">Şimdiye göre nerede</h2>
+
+      <div class="row">
+        <div class="label"><b lang="en">has been</b><span lang="tr">gitti — ve döndü</span></div>
+        <svg width="342" height="64" viewBox="0 0 342 64">
+          <line x1="10" y1="32" x2="332" y2="32" stroke="var(--edge)" stroke-width="1.5"/>
+          <!-- outbound path -->
+          <path d="M 30 32 Q 130 8 230 32" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round"/>
+          <!-- return path -->
+          <path d="M 230 32 Q 130 56 30 32" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- home node, filled: she's here -->
+          <circle cx="30" cy="32" r="7" fill="var(--accent)"/>
+          <!-- destination node, hollow: she's not there now -->
+          <circle cx="230" cy="32" r="6" fill="none" stroke="var(--text-3)" stroke-width="2"/>
+          <text x="230" y="14" text-anchor="middle" font-size="12" fill="var(--text-3)" font-family="-apple-system,sans-serif">Ankara</text>
+          <!-- NOW marker -->
+          <line x1="30" y1="14" x2="30" y2="50" stroke="var(--text-1)" stroke-width="1.5"/>
+          <text x="30" y="62" text-anchor="middle" font-size="11" fill="var(--text-1)" font-family="-apple-system,sans-serif" letter-spacing="0.04em">NOW</text>
+        </svg>
+      </div>
+
+      <div class="row">
+        <div class="label"><b lang="en">has gone</b><span lang="tr">gitti — hâlâ orada</span></div>
+        <svg width="342" height="64" viewBox="0 0 342 64">
+          <line x1="10" y1="32" x2="332" y2="32" stroke="var(--edge)" stroke-width="1.5"/>
+          <path d="M 30 32 Q 130 8 230 32" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- home node, hollow: she's not here -->
+          <circle cx="30" cy="32" r="6" fill="none" stroke="var(--text-3)" stroke-width="2"/>
+          <!-- destination node, filled: she's there now -->
+          <circle cx="230" cy="32" r="7" fill="var(--accent)"/>
+          <text x="230" y="14" text-anchor="middle" font-size="12" fill="var(--text-1)" font-family="-apple-system,sans-serif">Ankara</text>
+          <!-- NOW marker, at destination -->
+          <line x1="230" y1="14" x2="230" y2="50" stroke="var(--text-1)" stroke-width="1.5"/>
+          <text x="230" y="62" text-anchor="middle" font-size="11" fill="var(--text-1)" font-family="-apple-system,sans-serif" letter-spacing="0.04em">NOW</text>
+        </svg>
+      </div>
+    </div>
+
+    <p class="foot-rule" lang="tr">Sınavda ayırt edici sinyal genellikle cümlenin devamında olur: <b lang="en">and she is back now</b> varsa <b lang="en">been</b>, <b lang="en">she is still there</b> varsa <b lang="en">gone</b>.</p>
+  </div>
+
+  <div class="footbar">
+    <div class="progress">
+      <div class="bar-track"><div class="bar-fill"></div></div>
+      <span class="pct">3 / 6</span>
+    </div>
+    <div class="btn" lang="tr">Sıradaki ders</div>
+  </div>
+</body>
+</html>
