@@ -568,4 +568,72 @@ arm replaced it with a dark/light pair. No arm violated its brief.
 
 ---
 
-*(Arm 4, reading typography, still running at the time of writing.)*
+## Arm 4 — reading typography
+
+### Claim: U+2192 (→) is used 292 times and is in none of the fonts. **Confirmed.**
+
+```
+grep -ro "→" data/ | wc -l     →  292
+
+source-sans-3-400.woff2   2192(→): YOK   ama 2013 – 2014 — 2026 … VAR
+source-sans-3-600.woff2   2192(→): YOK   ama 2013 – 2014 — 2026 … VAR
+source-serif-4-400.woff2  2192(→): YOK   ama 2013 – 2014 — 2026 … VAR
+```
+
+The subsets carry en dash, em dash and ellipsis but not the arrow. So
+292 arrows in shipped content fall back to whatever the device has —
+different weight, different metrics, different vertical alignment,
+beside text that was chosen and measured. This is a live rendering
+defect, it costs essentially nothing to fix (the subset already carries
+its neighbours), and it has been shipping unnoticed.
+
+### Claim: `appendInline` passes embedded English through unmarked. **Confirmed.**
+
+`js/dom.js:47–60` in full:
+
+```js
+export function appendInline(parent, text) {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*\s][^*]*\*)/);
+  for (const part of parts) {
+    if (!part) continue;
+    if (part.startsWith("**") && ...) parent.appendChild(el("strong", ...));
+    else if (part.startsWith("*") && ...) parent.appendChild(el("em", ...));
+    else parent.appendChild(document.createTextNode(part));
+  }
+}
+```
+
+`**bold**` and `*em*` are resolved; everything else becomes a bare text
+node. No `lang`, no class, no font switch. And this is the renderer for
+explanations, tips, glosses and body prose — the majority of the app's
+Turkish text, which is where embedded English words actually live.
+
+`CLAUDE.md`'s own convention says English inside the Turkish page needs
+`lang="en"`, and gives the reason: `text-transform: uppercase` follows
+the element's language, so "SIMPLE" becomes "SİMPLE". That reason does
+not bite here, because explanation prose is not uppercased. But the
+other half of the reason does: **a screen reader pronounces an unmarked
+English word with Turkish phonetics**, and this is an app whose entire
+purpose is teaching English. The convention exists; the majority-case
+renderer never implemented it.
+
+Whether this is worth fixing is a product call — it needs a way to know
+which words are English, which the corpus does not currently mark
+inline. Recorded as a real gap with a real cost, not as a one-line fix.
+
+### Not re-derived
+
+The arm's corpus statistics (54.2 % of 2,530 Turkish strings carrying
+embedded English, 6,067 tokens, 88.6 % mid-string; Turkish words
+averaging 5.85 characters against English's 4.41) were not
+independently reproduced — doing so needs a Turkish/English wordlist
+and the direction is not in doubt. Taken as reported, marked as such.
+
+Its variable-font build (21,764 bytes, corpus-complete, Turkish glyphs
+transplanted) contradicts arm 03's earlier 24,912-byte figure; the arm
+flags the discrepancy itself. Unresolved, and it does not need to be
+resolved until someone actually rebuilds `fonts/`.
+
+---
+
+*(All seven arms returned.)*
