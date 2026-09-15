@@ -430,4 +430,77 @@ would be the ninth rejection.**
 
 ---
 
-*(Arms 4, 6 and 7 still running at the time of writing.)*
+## Arm 7 — space, grid and rhythm
+
+### Claim: the spacing scale is disciplined and is not the neglected axis. **Holds.**
+
+I ran my own audit over the layout layer onward — every `padding`,
+`margin`, `gap` and `border-radius` declaration:
+
+```
+toplam 123, var() kullanan 106, kullanmayan 17
+```
+
+My count differs from the arm's (123 / 17 against its 130 / 2) because
+we scoped and matched differently, but the conclusion survives
+inspection: of my seventeen, **every one is defensible**.
+
+```
+  4  border-radius: 50%        gerçek daire, jeton olamaz
+  3  margin: 0 auto            ortalama
+  2  padding-top: env(safe-area-inset-top, 0px)
+  1  padding-bottom: env(safe-area-inset-bottom, 0px)
+  2  padding-inline: 0     1  padding: 0     1  padding-block: 0
+  1  margin-inline: 0      1  border-radius: inherit
+  1  gap: 0.35em
+```
+
+Explicit zeros, true circles, platform insets and one relative `0.35em`.
+That is the whole list. **No `spacing-check.mjs` exists** — unlike
+colour, which has `npm run color` in CI — and the discipline held
+anyway, across eight rounds that rewrote everything else.
+
+So the axis nobody examined turns out to be the healthy one. That is a
+real negative finding and it is worth as much as a positive: it removes
+a suspect. The arm's suggestion of a cheap enforcement check is
+reasonable insurance, not a repair.
+
+### Claim: the wide frame measures 968px against a documented 1000px. **Does not hold — two different things were compared.**
+
+The CSS is arithmetically correct:
+
+```css
+--w-page: 640px;      --w-aside: 320px;      --s-8: 40px;
+--w-wide: calc(var(--w-page) + var(--s-8) + var(--w-aside)); /* 1000px */
+```
+
+640 + 40 + 320 = 1000. And `design-system.md` §7.3 is consistent with
+it — it says the reading column is `--w-page`, **640px, of which 608px
+is content**, and §0 line 51 gives the gutter as 16.
+
+The arm measured **608** + 40 + 320 = **968**, i.e. it took the column's
+*content* width and added it to the pane's *box* width. The missing
+32px is the column's own two 16px gutters, which the documentation
+names on the same line it gives the 640.
+
+No documentation gap. Recorded because it is the second arm claim this
+round that did not survive checking, and because a "documentation is
+wrong" finding is exactly the kind that gets acted on without being
+re-derived.
+
+### The finding in this arm worth acting on
+
+Not the scale — the **budget**. The arm measured a realistic
+99-word paragraph-completion stem rendering at **784px across 28 lines
+at 320px width**, which puts all four options roughly **620px below the
+fold**. Block B of `app1-final.md` is a screen where the learner cannot
+see the question and its options at the same time on the smallest
+phone, and no amount of spacing discipline fixes that — it is a
+question about how that item type is presented at all.
+
+That belongs in front of whoever builds Block B, and it was found by
+measuring rather than by designing.
+
+---
+
+*(Arms 4 and 6 still running at the time of writing.)*
