@@ -186,4 +186,82 @@ the mid-tone problem is solvable at all:
 
 ---
 
-*(Arms 1, 4, 5, 6 and 7 still running at the time of writing.)*
+## Arm 5 — the record
+
+### Claim: `selected` is stored and never read. **Confirmed.**
+
+`js/quiz.js:115` writes it into every stored attempt:
+
+```js
+selected: question.selectedAnswer ?? null,
+```
+
+and `js/storage.js` contains **zero** occurrences of `.selected`
+(`grep -c` returns 0). So the exact wrong option the learner chose has
+been on disk since v0.34 and no aggregator has ever looked at it.
+
+That matters more than it sounds. This repo's `question-author.md`
+requires every distractor to be defensible, and the corpus carries
+`optionNotes` explaining what each one tempts. With `selected` already
+recorded, the app can say *which* wrong answer was chosen and what that
+choice reveals — with no schema change and no migration. It is the
+cheapest thing in either round.
+
+### Claim: no category can ever earn an unhedged weakness claim. **Confirmed.**
+
+`js/storage.js:43` sets `MIN_ITEMS_FOR_WEAK_CLAIM = 6`, and line 427
+gates the confident flag on `stats.total >= MIN_ITEMS_FOR_WEAK_CLAIM`.
+Reading lines 400–414, `total` increments once per distinct question id
+in `getItemStats()`, so it is bounded by how many questions the grouping
+actually has.
+
+Measured from `data/`:
+
+```
+toplam soru 241, kategori 60
+kategori başına soru dağılımı: {"4": 59, "5": 1}
+en büyük kategori: 5 soru
+```
+
+Five is less than six. **No category in this app can reach the
+threshold at any accuracy, ever, under the current corpus.** Profil's
+"az veriyle sıralandı" hedge is therefore permanent, not interim — and
+nobody knew that. It turns `app1-final.md` §7's content debt from a
+scheduling note into a display-honesty one.
+
+### The arm's open question #4, closed here — and it inverts.
+
+The arm could not check whether the state fills land in the mid-tone
+band and left the exact command to run. Ran it:
+
+| token | dark | | light | |
+|---|---|---|---|---|
+| `ok` | `#7CCD8E` | L\* 0.760 | `#1F8944` | **L\* 0.502 ✓** |
+| `no` | `#E97871` | **L\* 0.633 ✓** | `#D14B48` | **L\* 0.508 ✓** |
+| `accent` | `#F1AF5D` | L\* 0.762 | `#A05801` | **L\* 0.449 ✓** |
+| `accent-2` | `#F69C51` | L\* 0.722 | `#B44200` | **L\* 0.437 ✓** |
+| `focus` | `#F4DAB2` | L\* 0.883 | `#825023` | **L\* 0.389 ✓** |
+
+**In the light theme every state colour is already mid-tone. In the
+dark theme only `no` is.**
+
+So the arm's §6 arithmetic — a 60-cell heat grid filling ~10.5 % and
+clearing the 10 % bar — holds in **light** and fails in **dark**, where
+a grid of `ok` and `accent` fills at L\* 0.76 contributes almost
+nothing to the band.
+
+And that is the exact mirror of `08-iki-tema-asimetrisi.md`. The light
+theme cannot take mid-tone from its surfaces but gets it free from its
+accent pair; the dark theme can take some from its surfaces and gets
+none from its accents. Neither theme has a single mechanism that works
+for both, which is now true from two independent directions.
+
+The practical consequence for the dark theme: if coloured marks are to
+carry mid-tone there, the state colours would have to be re-solved
+darker — and they were solved against a 3:1 requirement on the page,
+so darkening them is not free. That trade was not on anyone's list
+before this check.
+
+---
+
+*(Arms 1, 3, 4, 6 and 7 still running at the time of writing.)*
