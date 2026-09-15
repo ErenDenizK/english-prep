@@ -341,4 +341,93 @@ chromatic.**
 
 ---
 
-*(Arms 3, 4, 6 and 7 still running at the time of writing.)*
+## Arm 3, final — and the single most useful measurement of the round
+
+### Claim: our nine screens contain no connected mid-tone region at all. **Confirmed, exactly.**
+
+I wrote an independent flood-fill over the mid-tone mask (CIE L\* 30–70,
+4-connected, 0.03 % area floor) and ran it on
+`docs/design/11-ui/shots/*.png`. My numbers match the arm's to the
+fragment:
+
+| screen | mid-tone regions | ≥ 0.5 % |
+|---|---:|---:|
+| 1 Bugün · 2 Konular · 3 Konu · 4 Ders · 5 Soru · 7 Sonuç · 9 Deneme | **0** | 0 |
+| 6 Cevap | 4 | 0 |
+| 8 İlk açılış | 4 | 0 |
+
+The eight fragments that exist measure 0.06–0.20 % of frame with aspect
+ratios of 42 : 1, 109 : 1, 162 : 1, 62 : 1, 62 : 1, 50 : 1 — card
+outlines and a focus ring.
+
+**So the 2.2 % mid-tone UI v4 scores is almost entirely anti-aliasing on
+strokes and letter edges.** Not one filled region anywhere in the app.
+
+This reframes nine rounds of rejection in a sentence: the deficit was
+never a missing surface value. The ladder in `07-karar.md` already
+reaches L\* 30.3. **Nothing in this app is drawn as a field.** Every
+screen is type, rules and outlines on a ground — which is exactly what
+"structure dressed as a document" meant in the UI 2 post-mortem, and
+nobody had a number for it until now.
+
+### Claim: specimen B′ clears all three rejection conditions in both themes. **Confirmed.**
+
+Measured with `measure-screens.py` and `midtone.py`:
+
+| specimen | mid-tone | event | hue family |
+|---|---:|---:|---|
+| A grammar diagram, dark | 18.1 % | 27.5 % | H60 0.8 % ✗ |
+| A grammar diagram, light | 19.5 % | 25.5 % | H60 0.5 % ✗ |
+| B record strip v1, dark | 6.5 % ✗ | 15.1 % ✗ | H60 2.6 % |
+| B′ record strip v2, dark | **15.1 %** | **23.7 %** | **H60 8.0 %** |
+| B′ record strip v2, light | **15.3 %** | **22.9 %** | **H60 8.2 %** |
+
+B′ is the first artefact in nine rounds to clear all three gates, and it
+does it in both themes within 0.2 points of itself. The v1 → v2 change
+was arithmetic — cell count and fill ratio — not taste, which is worth
+recording because it means the gates are tunable rather than lucky.
+
+### But B′ is a measurement, not a design. Said plainly, with a number.
+
+Ink distribution down the frame, 12 horizontal bands, share of pixels
+more than L\* 8 from the ground:
+
+```
+  y   0- 70   % 3.4
+  y  70-140   %45.7  ██████████████████
+  y 140-211   %56.4  ██████████████████████
+  y 211-281   %53.8  █████████████████████
+  y 281-351   %45.5  ██████████████████
+  y 351-422   % 7.0
+  y 422-492   %16.1
+  y 492-562   % 6.0
+  y 562-633   % 0.0
+  y 633-703   % 0.0
+  y 703-773   % 0.0
+  y 773-844   %60.5  ████████████████████████
+```
+
+**211 px — a quarter of the screen — is completely empty**, and the
+mosaic takes the top third at 45–56 % density. The composition is
+top-heavy with a dead quarter above the action.
+
+Looking at it rather than measuring it, three more things are wrong and
+should be said before anyone mistakes this for a proposal: the mosaic's
+colours do not legibly encode anything (ten columns above four category
+labels that do not map onto them); the browns read muddy, which is the
+same complaint the owner made about the glass in round eight; and the
+record is the loudest object on the entrance, above the task the learner
+came to do.
+
+None of that invalidates the specimen. Its job was to answer *can the
+three conditions be met simultaneously by non-text area, in both
+themes*, and the answer is yes. Whether this particular object is any
+good is a different question and today the answer is no.
+
+That distinction is the one to hold on to: **this round proved the gates
+are reachable. It has not produced a design, and presenting it as one
+would be the ninth rejection.**
+
+---
+
+*(Arms 4, 6 and 7 still running at the time of writing.)*
