@@ -1142,15 +1142,32 @@ Test on **throttled Slow 4G with 4× CPU**, not on a laptop.
 
 ### 9.3 CSS architecture
 
-Two token tiers, primitive → semantic, one-way. Most systems need no
-third. Tokens live in `:root`; preference overrides (`prefers-contrast`,
-`forced-colors`, `prefers-reduced-motion`) **redefine tokens rather than
-rules**, which keeps them out of specificity fights.
+**Three token tiers**, primitive → semantic → component, one-way. This
+paragraph used to say two and that most systems need no third; counted,
+the stylesheet carries 110 custom properties as 19 primitive, 18
+semantic and 10 component — and the third tier is dimensions only, never
+a colour, which is the form of it that scales. Tokens live in `:root`;
+preference overrides (`prefers-contrast`, `forced-colors`,
+`prefers-reduced-motion`) **redefine tokens rather than rules**, which
+keeps them out of specificity fights.
 
 `@layer reset, tokens, base, components, utilities` — cascade layers are
 Baseline and remove the specificity arms race without a build step. Native
 nesting, `oklch()`, `:has()` and container queries are all Baseline; a hex
 declaration sits above every `oklch()` one as the fallback.
+
+**Every primitive therefore exists in the stylesheet more than once** —
+the hex fallback, the `oklch()` redeclaration inside `@supports`, and the
+light palette written out twice because there is no build step to
+generate it. `npm run color` measures `tools/palette.mjs`, the solved
+spec, and never opened `css/style.css`, so a copy could drift while CI
+reported a pass. One did: `--c-edge` shipped `oklch(0.545 …)`, 2.89:1 on
+`--c-surface-2`, under §1's 3:1 for a control boundary, while the spec
+and the hex fallback both said `oklch(0.564 …)` and 3.12:1. Since
+`oklch()` is Baseline, the `@supports` block is the one browsers take.
+`tools/token-check.mjs` now compares all 62 colour declarations against
+the spec and runs inside `npm run color`. A copy is a liability; the
+check is what makes it an acceptable one.
 
 ---
 
@@ -1161,7 +1178,10 @@ Nothing here is considered done because it looks right.
 - `npm run color` — every token and every declared size pairing
   re-measured against its requirement in both contrast models, in both
   themes. A failing token fails the build of the palette, not the
-  reviewer's eye.
+  reviewer's eye. It then runs `tools/token-check.mjs` (also `npm run
+  tokens`), which checks that `css/style.css` actually carries the
+  values that were just measured — hex fallback and `oklch()` alike, in
+  both themes.
 - `npm run validate` — content schema and cross-file consistency.
 - `npm test` — scoring and storage logic.
 - Playwright sweep at **320 / 390 / 768 / 1280, and 390 again in the

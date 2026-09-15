@@ -81,7 +81,8 @@ becomes later, and the consequences run through the whole corpus:
 ```bash
 npm run format      # canonical formatting for the content JSON
 npm run validate    # content schema + manifest/topic-file consistency
-npm run color       # every colour token re-measured (WCAG 2 + APCA)
+npm run color       # tokens re-measured (WCAG 2 + APCA) + stylesheet checked against them
+npm run tokens      # just that second half: css/style.css vs tools/palette.mjs
 npm test            # unit tests (node:test): quiz engine, storage, backup, content checks
 npm run check       # all four (format as a --check)
 npm run serve       # static server on :8000 (fetch() needs an HTTP origin)
