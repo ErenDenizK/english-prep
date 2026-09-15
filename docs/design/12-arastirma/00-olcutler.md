@@ -38,19 +38,46 @@ yüklenmez — konu dosyaları istendiğinde gelir.
 CSS'in ölçüsü: **110 özel değişken**, 6 katman (`tokens, reset, layout,
 components, screens, utilities`), 296 kural bloğu, 15 medya sorgusu.
 
-### Bu sayının hemen öldürdüğü argüman
+### Bu sayının öldürdüğünü sandığım argüman — ve düzeltmesi
 
-"React ağır, bu yüzden olmaz" **savunulamaz**. React 19 + react-dom
-üretim derlemesi ~57 KB gz; ana ekranımız bugün **87 KB gz** JavaScript
-gönderiyor. Çerçeve, uygulamanın kendi kodundan hafif.
+**Bu bölüm ilk yazıldığında yanlıştı.** Öyle diyordu: *"React ağır, bu
+yüzden olmaz" savunulamaz; React 19 + react-dom ~57 KB gz, ana
+ekranımız zaten 87 KB gönderiyor, çerçeve uygulamanın kendi kodundan
+hafif.* Karşılaştırma adil değildi: **bizim sıkıştırılmamış kaynağımız**
+React'in **minify edilmiş üretim derlemesiyle** karşılaştırılmıştı. Kol
+05 farklı bir sayı bildirdi; kendim ölçtüm (esbuild 0.28.2,
+`--bundle --minify`, `NODE_ENV=production`, `gzip -9`):
 
-Dolayısıyla React'e karşı dürüst argümanlar bunlar değil; şunlar:
+| | ham | gzip |
+|---|---:|---:|
+| `home.js` girişi, bugün gönderildiği gibi (24 ayrı dosya, minify yok) | 269.9 KB | **87.0 KB** |
+| aynı kod, bundle + minify | 77.4 KB | **24.5 KB** |
+| React 19.3.0 + react-dom/client (üretim) | 222.7 KB | **68.8 KB** |
+| Preact 10.29.8 + hooks | 12.8 KB | **5.3 KB** |
+
+Yani doğru cümle şu: **React tek başına, barındıracağı uygulamanın
+tamamının 2.8 katı.** Preact ise uygulamanın beşte biri.
+
+Ve asıl bulgu bu tablodan çıkıyor: **derleme adımı sorusu ile çerçeve
+sorusu ayrı sorular, ve ödeyen taraf derleme adımı.**
+
+- derleme adımı yok, bugünkü hal: 87.0 KB
+- derleme adımı var, çerçeve yok: **24.5 KB** (−%72)
+- derleme adımı var, React var: ~93 KB (bugünkünden kötü)
+- derleme adımı var, Preact var: ~30 KB
+
+Yani "React ağır" argümanı ölmüş değil; ölçüldüğünde doğru çıktı.
+Ama tek başına yeterli de değil, çünkü aynı tablo kendi tembelliğimizi
+de gösteriyor: bugün taşıdığımız 87 KB'ın 62 KB'ı yalnızca minify
+etmediğimiz için orada.
+
+React'e karşı diğer dürüst argümanlar:
 
 - Derleme adımı, CI, kaynak haritası, `node_modules` tedarik zinciri.
-- 87 KB'ın neredeyse tamamı **bu uygulamanın kendi mantığı**
-  (`education.js` 72.9 KB, `storage.js` 38.4 KB, `home.js` 26.6 KB).
-  React bunu silmez; üstüne biner. Kazanç, yazılan satırda aranmalı,
-  gönderilen baytta değil.
+- Bu baytların tamamı **bu uygulamanın kendi mantığı**
+  (`education.js` 72.9 KB, `storage.js` 38.4 KB, `home.js` 26.6 KB ham).
+  React bunu silmez; üstüne biner. Kazanç ancak yazılan satırda
+  aranabilir — bayt tarafında kayıp olduğu artık ölçülü.
 - `innerHTML` yasağını React **ihlal etmez** — JSX varsayılan olarak
   kaçışlar — yani bu da React'e karşı bir argüman değil. Doğru soru:
   yasağın var olma sebebi (içerik JSON'dan gelir, düğüm kurulur) React
