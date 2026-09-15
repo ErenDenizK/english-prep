@@ -5,6 +5,34 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.63 — 2026-09-15
+
+**A control edge that measured 3:1 and shipped 2.89:1.** Every colour
+primitive exists in `css/style.css` more than once — a hex fallback, an
+`oklch()` redeclaration inside `@supports`, and the light palette written
+out twice because there is no build step to generate it. `npm run color`
+measured `tools/palette.mjs`, the solved spec, and never opened the
+stylesheet, so a copy could drift while CI reported a pass.
+
+- **`--c-edge` had.** The `@supports` block — the one every current
+  browser takes, `oklch()` being Baseline — declared `oklch(0.545 0.012
+  255)`, `#6B7177`, **2.89:1** on `--c-surface-2`. The spec, the hex
+  fallback and `npm run color` all said `oklch(0.564 …)`, `#71767D`,
+  3.12:1. A control's boundary is held to 3:1 by WCAG 2.2 SC 1.4.11, so
+  the app shipped a failing one while its own check called it ok.
+  `--c-hairline` had drifted too (`0.31` against `0.32`); it separates
+  rather than bounds, so it is exempt from 1.4.11, but it was wrong.
+- **`tools/token-check.mjs`.** Compares all 62 colour declarations in the
+  stylesheet — hex and `oklch()`, both themes — against the spec that
+  `npm run color` solves and measures, and runs as the second half of
+  `npm run color` (or alone as `npm run tokens`). Zero dependencies.
+  Copies are unavoidable without a build step; unchecked copies are not.
+- `docs/design-system.md` §9.3 said two token tiers and that most systems
+  need no third. Counted, the stylesheet carries three — 19 primitive, 18
+  semantic, 10 component — and the third is dimensions only, never a
+  colour. Corrected, with the copies problem and the check written down
+  beside it.
+
 ## v0.62 — 2026-09-10
 
 **UI 3: light, depth and motion.** The owner's verdict on UI 2 was that
