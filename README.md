@@ -1,157 +1,286 @@
-# English Prep Practice
+# English Prep
 
-A simple, free multiple-choice practice app for university English prep-school
-exams ("hazırlık yeterlik/İYS" style tests). Built as a static site so it can
-be hosted for free on GitHub Pages and used by anyone with the link — no
-accounts, no backend, no build step.
+A study app for the English proficiency exams that Turkish university
+prep schools set — written against two real YTÜ İYS sample papers rather
+than against an idea of what such an exam contains.
 
-## How it works
+It is a static site. No accounts, no backend, no build step, no
+dependencies, no analytics. Everything a learner does stays in their own
+browser. It installs to a phone home screen and works with no
+connection.
 
-- Pick a topic (e.g. Present Simple) or start a mixed test drawing from every
-  topic at once.
-- Answer multiple-choice, fill-in-the-blank questions with instant feedback
-  and a full explanation after every answer.
-- See your score, a breakdown by topic, and — once you've done a few tests —
-  which topics you're weakest in, based on data saved locally in your
-  browser (`localStorage`). Nothing is sent to a server.
+**10 topics · 241 questions · 60 lessons · 723 option notes.**
 
-## Running locally
+---
 
-This is plain HTML/CSS/JS with no build step, but the pages load question
-data with `fetch()`, which requires an HTTP origin (opening `index.html`
-directly as a `file://` URL will not work). Serve the project root with any
-static file server, for example:
+## Who it is for
+
+This is the decision that shapes everything else, so it comes first.
+
+**Someone with a real English base and no academic foundation.** They
+picked the language up from series, films, games, maybe from speaking it
+— so their ear is good and their instinct is usually right — and they
+were never taught the scaffolding underneath. They are not beginners.
+They are the opposite of the usual textbook learner: **competence without
+the labels.**
+
+Three consequences run through the whole app:
+
+- **The notation gets explained; the language usually does not.** Someone
+  who says *"I have gone"* correctly may never have seen `V3` written
+  down. Naming the form is the part they are actually missing. Explaining
+  what a tense *is* would be talking down to them.
+- **Every lesson is a contrast, not a chapter.** *Present Simple vs
+  Present Continuous.* *Must vs Have to.* They do not need to be taught
+  the forms — they need the boundary between two things their ear
+  conflates.
+- **A rule stated too absolutely fails this learner hardest**, because
+  their ear will produce the counterexample and they will be right. That
+  is why an option a competent teacher would accept counts as a defect
+  here, and why every question has been read by someone who never saw the
+  answer key.
+
+---
+
+## The three screens
+
+The interface is Turkish. Practice sentences, example sentences and
+answer options are English — that is the exam. Grammar category names
+stay English, because students have to recognise the terms.
+
+**Eğitim** opens on the ten topics, grouped, each with one Turkish line
+saying what it is. A topic opens on its own overview — what this thing is,
+two or three examples, the three components it turns on, and where it
+appears on the paper — and the six lessons live one level below that,
+because every lesson is a contrast and dropping someone into an argument
+about a word they have not met does not work. A lesson is one scrolling
+page built from typed blocks: the two forms set against each other, the
+patterns, the mistake people actually make, the decision procedure to
+carry into the exam, and check questions inline. Checks are never scored
+and never block anything. Reaching the end finishes the lesson; there is
+no button for it.
+
+**Test** is a mixed test across every topic, a single-topic test, practice
+scoped to one grammar category, or **Yanlış defteri** — only the questions
+you have got wrong and not yet earned your way out of. An item leaves the
+book after two correct answers on two separate days; getting it wrong
+again puts it back and the count restarts. Answering shows a full
+explanation of why the key fits *this* paragraph, a short transferable
+rule, and — the part that took the longest to write — a line saying what
+the option *you* chose would have meant. There is one of those for every
+wrong option in the app.
+
+**Profil** is a local display name, how far through the lessons you are,
+what your recent accuracy is and what is in that average, your weakest
+categories, an export/import of everything stored, and the roadmap.
+
+Nothing is sent anywhere.
+
+It is a phone app first and stays one — but on a tablet or a desktop the
+screens that have something worth putting beside them do: the start card
+next to all ten topics, a topic's overview next to its six lessons, a
+score next to the review of it. Not by widening the page. The reading
+measure is a constant, so the column of text is the same width on a
+2560px monitor as on a 320px phone; what the extra width buys is a second
+column of what would otherwise be below the fold. The lesson reader and
+the question screen have no second column at any width, on purpose —
+reading gains nothing from one, and a question with four options and one
+action is a decision rather than something to scan. Below 1080px, or on a
+short landscape window where two columns would be worse than one, every
+screen is the phone layout, pixel for pixel.
+
+---
+
+## What it does not cover, and why the app says so
+
+Session I of the sample paper is 60 points across four sections; Session
+II is 20 more. This app practises parts of two of those sections. It says
+so, on screen, in Profil:
+
+> Session I'de 40 soru ve 60 puan var. Bu uygulama şu an paragraf içindeki
+> boşluklar (15 puan) ve anlamca en yakın cümle (15 puan) çalıştırıyor.
+> Okuma (21 puan) ve paragraf tamamlama (9 puan) burada yok…
+
+The covered fraction is **counted, not asserted**: the sample cloze's ten
+blanks are mapped to the topics that cover them, and the app derives the
+number from what is actually live rather than stating it. A learner who
+does well here should not conclude anything false about Friday.
+
+That mechanism only works for a blank that names its covering topic in
+advance. Two were written as `null` before any vocabulary topic existed,
+were never repointed when those shipped, and so counted as uncovered for
+ever — the screen said seven of ten when it was nine. Fixed 2026-09-06,
+with a test that no blank may be nameless, which is the form the bug
+could recur in.
+
+---
+
+## How the content is made
+
+This is the unusual part of the repository, and the reason to look at it.
+
+Lessons and questions are written by separate sessions working from
+briefs in `docs/agents/`, against a category taxonomy fixed before either
+starts — that taxonomy is what lets a wrong answer on the results screen
+link to the lesson that teaches it.
+
+Then the part that matters:
+
+1. **A blind pass.** `npm run blind` strips a question set to exactly what
+   a learner sees before answering — by allow-list, so a field nobody has
+   thought about is withheld rather than leaked — and shuffles the
+   options. A reviewer answers all of them before seeing any key.
+2. **A lesson sufficiency pass**, whose highest-yield check is running each
+   lesson's decision procedure as a literal checklist over its own
+   questions. A rule that fires and returns a wrong option is a blocking
+   defect even if a later rule would have reached the key, because the
+   learner stops at the first rule that fires.
+3. **A repair**, then **an independent re-audit** by a session that did not
+   write the repair. This is not ceremony: of the repair rounds run so
+   far, **five introduced a new defect**, every one caught here and none
+   of them visible to `npm run check`.
+
+The blind pass over the three oldest topics agreed with the key on **73 of
+73 items** — so nothing is mis-keyed. What it found instead was
+discrimination: items with a second defensible answer, and items
+answerable with the paragraph deleted. Those were repaired.
+
+Four things the tooling now enforces because a review found them:
+
+- a question may not be built on a sentence from its own lesson (a check
+  block draws from the same category, so the learner would meet the answer
+  two blocks above the question);
+- a lesson that uses `V3` or `V2` must say what it means;
+- an intro may not print any of its own questions' answers;
+- every colour token must still meet its contrast requirement.
+
+---
+
+## Running it
+
+Plain HTML, CSS and ES modules with no build step — but the pages load
+content with `fetch()`, so a `file://` URL will not work.
 
 ```bash
-python3 -m http.server 8000
+npm run serve          # static server on :8000
 ```
 
-Then open `http://localhost:8000/` in a browser.
+`package.json` exists for tooling only. It has **zero dependencies**, and
+nothing in it is needed to serve the app.
 
-## Deploying to GitHub Pages
-
-1. Merge this branch into the repository's default branch (e.g. `main`).
-2. In the repository, go to **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Select the default branch and the `/ (root)` folder, then save.
-5. GitHub Pages will publish the site at
-   `https://<username>.github.io/<repository>/` within a few minutes.
-
-No GitHub Actions workflow is required since there's nothing to build.
-
-## Project structure
-
-```
-index.html          Home: topic selection + mixed test
-quiz.html            Question-answering screen
-results.html          Score, breakdown, and review
-css/style.css          Single stylesheet (mobile-first, responsive)
-js/                     ES modules — see file-level comments for each one's role
-data/manifest.json       Topic index (id, title, tier, file, question count)
-data/tenses/*.json         One question set per tense
+```bash
+npm run check          # format + validate + colour + unit tests — this is CI
+npm run verify         # drives the real app in Chromium; needs `serve`
+npm run audit          # measures each screen against the design spec
 ```
 
-## Adding a new topic
+`check` runs on every push and pull request to `main` and `test`.
+`verify` does not — it needs a browser, and the point of having no
+dependencies is not to acquire one for CI. It walks a whole learner
+journey at 320 / 390 / 768 / 1280, auditing every screen it lands on for
+horizontal overflow, touch targets under 44px and console errors, then
+measures the wide layout against the spec and runs the accessibility
+contract once. **About 1,550 checks** — the exact count moves with the
+draw; the run behind this sentence was 1,544, all green. Run it for anything that touches the interface: WCAG conformance
+is defined per page and per responsive variation, so the sweep *is* the
+requirement.
 
-Adding a topic never requires touching any JavaScript — it's just data:
+There are also 146 unit tests over the scoring, storage, backup and
+content checks.
 
-1. Create a new JSON file (e.g. `data/modals/modals-obligation.json`) using
-   the schema below.
-2. Add an entry for it to `data/manifest.json`, including a `tier` (see
-   **Topic roadmap** below for the available tiers).
-3. That's it — the topic shows up on the home page automatically.
+---
 
-### Question schema
+## Layout
 
-Each topic file looks like this:
-
-```json
-{
-  "tenseId": "present-simple",
-  "title": "Present Simple",
-  "questions": [
-    {
-      "id": "present-simple-001",
-      "prompt": "She ____ to school every day.",
-      "options": ["go", "goes", "is going", "went"],
-      "correctAnswer": "goes",
-      "explanation": "\"Goes\" is correct because ... \"Go\" is wrong because ... \"Is going\" is wrong because ... \"Went\" is wrong because ..."
-    }
-  ]
-}
+```
+index.html            App shell: header + Eğitim / Test / Profil + nav
+quiz.html             Question screen
+results.html          Score, breakdown, review
+sw.js                 Service worker: versioned shell, unversioned content
+js/                   ES modules — read each file's header comment
+css/style.css         One stylesheet, in cascade layers
+data/manifest.json    Topic index
+data/<topic>/         One JSON file per topic: lessons and questions
+tools/                Validator, formatter, colour maths, browser sweep
+tests/                Unit tests
+docs/                 Design system, content schema, research, agent briefs
 ```
 
-Field rules:
+`docs/` is where the reasoning lives. `docs/design-system.md` is the
+binding visual specification; `docs/CONTENT_GUIDE.md` is the content
+schema; `docs/roadmap.md` is what ships next; `docs/research/` holds the
+arms each decision was made from, including the ones that argued against
+what shipped.
 
-- **`prompt`** — a sentence with exactly one blank marked as `____` (four
-  underscores).
-- **`options`** — exactly 4 strings. Order doesn't matter; the app shuffles
-  it per attempt.
-- **`correctAnswer`** — must exactly match one of the strings in `options`.
-- **`explanation`** — always a full teaching explanation, never a one-liner.
-  It must say *why the correct option is right* **and** briefly explain the
-  mistake or misconception behind *each* wrong option. This is what makes
-  the app useful for learning, not just testing.
+---
 
-### Prompt template for AI-authored questions
+## Design
 
-Use a prompt along these lines when generating a new question set (adjust
-the topic and count):
+Two themes, both solved: a slate dark ground by default and a light one
+that follows the phone or a choice in Profil. One amber accent doing one
+job — a pair, one value per theme, because no single amber carries dark
+ink on a light page. Serif for English, sans for Turkish and the
+interface, tabular figures from the same sans. Five type sizes, at most
+four on a screen, nothing below 15px and nothing at 15px lighter than
+600. Depth from surface lightness rather than borders or shadows.
 
-> Write 8 multiple-choice, fill-in-the-blank English grammar questions for
-> the topic "[TOPIC NAME]", targeting a university English prep-school exam.
-> Return them as a JSON array matching this exact shape:
->
-> `{ "id": string, "prompt": string, "options": string[4], "correctAnswer": string, "explanation": string }`
->
-> Rules:
-> - `prompt` must contain exactly one blank written as `____`.
-> - `options` must have exactly 4 plausible choices, only one of which is
->   grammatically correct in context.
-> - `correctAnswer` must exactly match one of the `options` strings.
-> - `explanation` must be a full teaching explanation: confirm why the
->   correct answer is right, and briefly explain the specific mistake each
->   wrong option represents (don't just say "wrong tense" — say which tense
->   it wrongly suggests and why that doesn't fit here).
-> - Vary sentence subjects and contexts across questions; avoid repeating
->   the same sentence structure.
+The palette is not chosen by eye. Every colour is solved against a
+contrast requirement and re-measured by `npm run color`, which runs in CI
+— WCAG 2 ratios and APCA lightness contrast, on every token, against every
+surface it can appear on.
 
-## Topic roadmap
+---
 
-The long-term goal is to cover the full prep-school grammar syllabus. New
-topics are grouped into four learner-facing difficulty tiers (used to group
-topic cards on the home page once more than one tier has content), plus a
-cross-cutting vocabulary track:
+## Adding content
 
-- **Foundations** — Tenses, Articles, Prepositions, Quantifiers,
-  Comparatives & Superlatives.
-- **Core Grammar** — Modals, Passive Voice, Gerunds & Infinitives.
-- **Compound Structures** — Conditionals, Relative Clauses, Question Tags.
-- **Advanced / Discourse-level** — Reported Speech, Connectors & Linking
-  Words.
-- **Vocabulary** (cross-cutting, not tied to a tier) — Word Formation,
-  collocations. This will likely need its own question sub-type eventually
-  and is flagged for a future design pass.
+Adding a topic, a lesson or a question never requires touching JavaScript.
+`docs/CONTENT_GUIDE.md` is the schema, `npm run validate` enforces it, and
+`npm run format` keeps the files from churning between authors. Run
+`format` after editing content: several sessions write into `data/`, and
+one that reads a topic file, changes a lesson and writes it back
+reformats every question in the file at the same time.
 
-This tiering reflects a difficulty grouping for learners, not a required
-authoring order — topics can be added in any order; whichever gets a JSON
-file next simply becomes the next live topic card. See the architecture
-plan in this repository's history for the full reasoning.
+`docs/agents/README.md` describes the authoring loop, and the briefs
+beside it are the ones the sessions actually run on.
+
+---
 
 ## Versioning
 
-Releases use a simple `x.y` scheme (tagged in git), tracked in
-`CHANGELOG.md`:
+`x.y`, tracked in `CHANGELOG.md`. **`x` is fixed at `0` and only the
+project owner bumps it** — not a judgment an assistant or a contributor
+makes, however large a change looks. `1.0` marks the point the owner
+decides this is a real release, not any particular feature being
+finished. Until then `y` increments for every shipped round.
 
-- **`x` (major)** — big feature updates: a new mode, a major UI revision, a
-  structural change to how the app works.
-- **`y` (minor)** — smaller additions: a new topic going live, the profile
-  system landing, small UI/UX tweaks.
+`sw.js`'s cache name carries the same version, and a unit test fails when
+the two disagree.
 
-## Roadmap beyond v1
+---
 
-- A lightweight local profile (name, settings, reset) once more than one
-  person regularly uses the same device/browser.
-- A guided, sequential "learning path" mode through topics, building on the
-  per-topic weak-spot data already collected in v1.
-- A dedicated question format for Vocabulary/Word Formation.
+## Branches
+
+- **`test`** — what GitHub Pages serves. Day-to-day development lands
+  here and is tried on a real phone, so **a push to `test` is a
+  deploy**.
+- **`main`** — one commit, the initial MVP of 2026-09-02. It was meant
+  to be the published branch and never became one.
+
+To publish: **Settings → Pages → Deploy from a branch**, pick the branch
+and the `/ (root)` folder. No Actions workflow builds it; CI only runs
+the checks.
+
+The two-branch arrangement above is the plan the repository was set up
+for; it is not what happens. `main` never received the merge, and Pages
+was pointed at `test` instead. That is worth stating plainly rather than
+leaving the older sentence in place, because it changes what a push
+means: **there is no staging branch.** Work is verified before it lands,
+not after.
+
+---
+
+## Where it is going
+
+`docs/roadmap.md` is the current plan and `docs/business/` is the
+newer question — what this becomes after the exam it was built for.
+Neither is decided here.

@@ -1,0 +1,224 @@
+/* The shared language. Everything below is one of the four silhouettes
+   (04-brief.md F4), carries no container outline (M8), and separates by
+   plane lightness plus a shadow (02-references.md §11). */
+
+*, *::before, *::after { box-sizing: border-box; }
+p, h1, h2, h3, h4, ul, ol, li, figure { margin: 0; padding: 0; list-style: none; }
+
+.phone {
+  width: var(--w, 390px);
+  height: var(--h, 844px);
+  display: flex;
+  flex-direction: column;
+  background: var(--page);
+  color: var(--ink);
+  font-family: "Source Sans 3", "Source Sans 3 Fallback", system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 28px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 28px;
+}
+
+/* --- bar · body · foot ------------------------------------------- */
+.bar {
+  flex: none; height: 56px; display: flex; align-items: center;
+  gap: 12px; padding: 0 16px;
+}
+.bar__title { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+.bar__spacer { flex: 1; }
+.bar__icon {
+  width: 44px; height: 44px; border-radius: 50%;   /* X3 · the 44px floor */
+  display: grid; place-items: center; color: var(--ink-2);
+  background: var(--raised); font-size: 15px; font-weight: 600;
+}
+/* X3 · only this region scrolls, exactly as the app's shell does */
+.body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 16px 12px; }
+.body::-webkit-scrollbar { width: 0; }
+.foot { flex: none; padding: 8px 16px 20px; }
+
+/* --- the tab bar. X5 · two content tabs; Profil is in the header. --- */
+.nav {
+  flex: none; display: flex; gap: 6px; padding: 8px 16px 18px;
+}
+.nav__i {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  min-height: 52px; padding: 7px 0 0; border: 0; background: transparent;
+  color: var(--ink-3); font: inherit; font-size: 15px; font-weight: 600;
+  border-radius: 16px; cursor: pointer;
+}
+.nav__i svg { width: 24px; height: 24px; }
+.nav__i[aria-current] { color: var(--ink); }
+.nav__i[aria-current]::after {
+  content: ""; width: 22px; height: 3px; border-radius: 3px;
+  background: var(--mark); margin-top: 1px;
+}
+
+/* --- the section grammar ----------------------------------------- */
+.sec + .sec { margin-top: 22px; }
+.plane + .sec { margin-top: 22px; }
+.sec__head {
+  font-size: 15px; font-weight: 600; line-height: 20px;
+  color: var(--accent-ink); letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* --- M1 + M2 · the plane: the counter-plane and the one action ----- */
+.plane {
+  display: block; width: 100%; text-align: left; border: 0;
+  font: inherit;
+  background: var(--plane); color: var(--on-plane);
+  border-radius: 30px;                    /* F1 · r/w 0.084 at 358 */
+  padding: 22px 20px;
+  box-shadow: var(--shadow-lift);
+}
+/* F5 · the object is the control: the counter-plane IS the button, so
+   the action is a row inside it rather than a card wrapping a card. */
+.plane__act {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid color-mix(in oklab, var(--on-plane) 22%, transparent);
+  font-size: 18px; font-weight: 600;
+}
+.plane__act svg { width: 24px; height: 24px; }
+.plane__eyebrow {
+  font-size: 15px; font-weight: 600; line-height: 20px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  opacity: 0.72;
+}
+.plane__title {
+  font-size: 28px; line-height: 34px; font-weight: 600;
+  letter-spacing: -0.015em; margin-top: 6px;
+}
+.plane__body { font-size: 18px; line-height: 27px; opacity: 0.86; margin-top: 10px; }
+.plane__rule {
+  height: 3px; border-radius: 3px; background: var(--mark);
+  margin: 18px 0 0;                        /* M3 · the mark, never written on */
+}
+.plane__rule--track { background: color-mix(in oklab, var(--on-plane) 22%, transparent); }
+.plane__rule--track > i { display: block; height: 100%; border-radius: 3px; background: var(--mark); }
+.plane__row { display: flex; align-items: baseline; gap: 10px; margin-top: 12px; }
+.plane__num {
+  font-size: 36px; line-height: 40px; font-weight: 600;
+  letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+}
+.plane__meta { font-size: 15px; font-weight: 600; opacity: 0.7; }
+
+.act {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 52px; border: 0;
+  border-radius: 999px;                    /* F4 · pill */
+  background: var(--plane); color: var(--on-plane);
+  font: inherit; font-size: 18px; font-weight: 600;
+  box-shadow: var(--shadow-lift); cursor: pointer;
+}
+.act--quiet {
+  background: transparent; color: var(--ink-2);
+  box-shadow: inset 0 0 0 1.5px var(--divider);
+}
+
+/* --- the card, and rows inside it (M8 + M9) ----------------------- */
+.card {
+  background: var(--card); border-radius: 28px;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.rows > li + li { border-top: 1px solid var(--divider); }
+.row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; min-height: 60px;
+}
+.row__mark { flex: none; width: 30px; height: 30px; color: var(--mark); }
+.row__t { flex: 1; min-width: 0; }
+.row__title { font-size: 18px; line-height: 24px; font-weight: 600; }
+.row__sub { font-size: 15px; line-height: 20px; font-weight: 600; color: var(--ink-3); }
+.row__trail { font-size: 15px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+/* --- the question, and the options (F5 · the object is the control) - */
+.q { font-size: 18px; line-height: 29px; }
+.q .blank {
+  display: inline-block; min-width: 4.5ch;
+  border-bottom: 3px solid var(--mark); vertical-align: 2px;
+}
+.q .en { font-family: "Source Serif 4", "Source Serif 4 Fallback", Georgia, serif; }
+
+.opts { margin-top: 16px; display: grid; gap: 10px; }
+.opt {
+  position: relative; display: flex; align-items: center; gap: 12px;
+  width: 100%; text-align: left; border: 0;
+  background: var(--card); color: var(--ink);
+  border-radius: 20px;                     /* F2 · r/w 0.15 on a 132 tall tile */
+  padding: 14px 16px 14px 18px; min-height: 56px;
+  font: inherit; box-shadow: var(--shadow); cursor: pointer;
+}
+.opt__key {
+  flex: none; width: 26px; font-size: 15px; font-weight: 600; color: var(--ink-3);
+}
+.opt__t {
+  font-family: "Source Serif 4", "Source Serif 4 Fallback", Georgia, serif;
+  font-size: 18px; line-height: 24px;
+}
+.opt::before {
+  content: ""; position: absolute; left: 0; top: 10px; bottom: 10px;
+  width: 4px; border-radius: 0 4px 4px 0; background: transparent;
+}
+.opt--ok::before { background: var(--ok); }
+.opt--no::before { background: var(--no); }
+.opt--ok { box-shadow: var(--shadow), inset 0 0 0 2px var(--ok); }
+.opt--no { box-shadow: var(--shadow), inset 0 0 0 2px var(--no); }
+.opt__verdict { margin-left: auto; font-size: 15px; font-weight: 600; }
+.opt--ok .opt__verdict { color: var(--ok); }
+.opt--no .opt__verdict { color: var(--no); }
+
+.why { margin-top: 16px; }
+.why__head {
+  font-size: 15px; font-weight: 600; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--accent-ink); margin-bottom: 8px;
+}
+.why__body { font-size: 18px; line-height: 27px; color: var(--ink-2); }
+.why__body b { color: var(--ink); font-weight: 600; }
+
+/* --- D1 · data drawn, not ornament -------------------------------- */
+.week { display: flex; align-items: flex-end; gap: 8px; height: 132px; margin-top: 16px; }
+.week__d { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; }
+.week__bar {
+  width: 100%; border-radius: 5px; background: var(--mark);
+  margin-top: auto;
+}
+.week__bar--empty { background: color-mix(in oklab, var(--on-plane) 18%, transparent); }
+.week__k { font-size: 15px; font-weight: 600; opacity: 0.66; line-height: 16px; }
+
+.bars { display: grid; gap: 12px; margin-top: 4px; }
+.barline { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: baseline; }
+.barline__n { font-size: 15px; font-weight: 600; }
+.barline__v { font-size: 15px; font-weight: 600; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.barline__t {
+  grid-column: 1 / -1; height: 6px; border-radius: 6px;
+  background: var(--raised); overflow: hidden;
+}
+.barline__t > i { display: block; height: 100%; border-radius: 6px; background: var(--mark); }
+
+/* --- the texture (M7 · lightens, never darkens) -------------------- */
+.tex {
+  background-image: radial-gradient(currentColor 0.9px, transparent 0.9px);
+  background-size: 10px 10px;
+  opacity: 0.10;
+  position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+}
+
+/* --- M6 · gradient as a light source inside an object --------------
+      Lit from one corner, on a content object, never as a ramp across a
+      button. The mix is set so the lobe clears OKLab chroma 0.06 over a
+      real area — C7 asks the entrance for 8-20% saturated, and a polite
+      wash does not reach it. */
+.lit { position: relative; overflow: hidden; }
+.lit::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(135% 115% at 6% -8%,
+      color-mix(in oklab, var(--mark) 82%, transparent) 0%,
+      color-mix(in oklab, var(--mark) 46%, transparent) 34%,
+      color-mix(in oklab, var(--mark) 14%, transparent) 62%,
+      transparent 86%);
+}
+.lit > * { position: relative; z-index: 1; }
+.lit > .tex { z-index: 2; }
