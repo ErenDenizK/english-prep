@@ -68,8 +68,6 @@
     --shadow-2: 0 2px 4px rgb(0 0 0 / 0.28), 0 18px 44px -12px rgb(0 0 0 / 0.6);
     --glow: rgb(241 175 93 / 0.38);
     --shadow-glow: 0 8px 26px -6px var(--glow);
-    --wash-1: rgb(241 175 93 / 0.2); /* the ambient washes behind the page */
-    --wash-2: rgb(120 110 235 / 0.22);
     --glass: var(--c-surface-0); /* solid, when there is no blur */
     --glass-blur: rgb(12 17 23 / 0.82); /* ≥ 0.8 always: text behind it is a tint, never a word */
     --glass-raised: rgb(24 29 35 / 0.86);
@@ -87,27 +85,64 @@
     --s-9: 48px;
     --s-10: 64px;
 
-    /* -- Radius. 0 for anything full-bleed. -- */
+    /* -- Radius. 0 for anything full-bleed.
+
+          The pill is not a default. It is reserved for things that are a
+          track or a capsule by nature — the nav capsule and its
+          indicator, the progress bar, the switch, the step dots — plus
+          the one filled action, which earns it by being the only one.
+          Everything else you press is a box at --r-2: buttons, chips,
+          choices, fields, the listbox trigger. A radius every component
+          shares carries no information; GitHub's Primer ships three
+          radii in total (3 / 6 / 12px).
+
+          Nesting does NOT yet follow the concentric rule, and this is
+          the one finding of the tenth round left open. The rule is
+          inner = outer - padding; .surface is --r-3 (20px) with --s-5
+          (16px) of padding, which demands a 4px inner radius, and the
+          smallest radius here is 8. Two resolutions, both one line:
+          card padding to --s-4 (12) so the inner is 8 = --r-1, or card
+          radius to --r-4 (28) so the inner is 12 = --r-2. Both change
+          the density of every card in the app, so neither is being
+          done in the same push as the type scale. A --r-inner token was
+          written and then removed rather than shipped unused: this file
+          already carries one solved, checked, documented token that
+          nothing references (--c-text-3), and one is enough. -- */
     --r-1: 8px;
     --r-2: 12px;
     --r-3: 20px; /* a card */
     --r-4: 28px; /* the hero */
     --r-pill: 999px;
 
-    /* -- Type. 36 · 28 · 22 · 18 · 15. -- */
+    /* -- Type. 36 · 29 · 23 · 18, one ratio.
+
+          The old ladder was 36/28/22/18/15 and its steps drifted
+          (1.286 · 1.273 · 1.222 · 1.200) — crowded at the bottom, loose
+          at the top, which is the wrong way round. 36/18 is exactly 2,
+          so four steps from body to display is the cube root of two,
+          1.2599, and the ratio is the same at every rung.
+
+          15px is gone. APCA's size matrix is indexed to Helvetica's
+          x-height (Liberation Sans x/em 0.5283); Source Sans 3 at 600 is
+          0.4910, so our 15px entered the matrix as 13.9px and missed its
+          threshold by 19.3 Lc in dark and 18.2 in light. 17px is the
+          first size that passes. Meta is now body size at weight 600 —
+          distinguished the way Material separates Label from Body, by
+          weight and ink rather than by a fifth size nobody can tell from
+          the fourth. See docs/design/17-olcum/00-teshis.md D1, D2. -- */
     --f-serif: "Source Serif 4", "Source Serif 4 Fallback", "Times New Roman", Georgia, serif;
     --f-sans: "Source Sans 3", "Source Sans 3 Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
 
     --t-display: 36px;
     --t-display-lh: 40px;
-    --t-title: 28px;
-    --t-title-lh: 32px;
-    --t-lead: 22px;
+    --t-title: 29px;
+    --t-title-lh: 34px;
+    --t-lead: 23px;
     --t-lead-lh: 28px;
     --t-body: 18px;
     --t-body-lh: 28px;
-    --t-meta: 15px;
-    --t-meta-lh: 20px;
+    --t-meta: 18px;
+    --t-meta-lh: 24px;
 
     /* -- Motion. Durations for things that appear; springs for things
           that move. Nothing over 800ms; exits shorter than entrances. -- */
@@ -162,7 +197,14 @@
     --nav-h: 64px; /* the floating capsule */
     --nav-inset: var(--s-4); /* its distance from the bottom edge */
     --btn-h: var(--target);
-    --btn-h-primary: 52px;
+    --btn-h-primary: 60px;
+    /* Spectrum publishes min-width = 2.25 x height in button.json, and its
+       shipped tokens put side padding at 0.37 of height (not the 0.5 its
+       prose claims). Both derived here rather than picked per size. */
+    --btn-pad: 18px;
+    --btn-pad-primary: 22px;
+    --btn-min: 108px;
+    --btn-min-primary: 135px;
     --row-min: 56px;
     --foot-pad: var(--s-3);
     --ring-size: 72px;
@@ -229,8 +271,6 @@
       --shadow-1: 0 1px 2px rgb(60 40 10 / 0.06), 0 10px 28px -10px rgb(60 40 10 / 0.18);
       --shadow-2: 0 2px 4px rgb(60 40 10 / 0.08), 0 18px 44px -12px rgb(60 40 10 / 0.24);
       --glow: rgb(160 88 1 / 0.3);
-      --wash-1: rgb(200 120 20 / 0.16);
-      --wash-2: rgb(210 110 140 / 0.14);
       --glass: #f6f1e7;
       --glass-blur: rgb(246 241 231 / 0.84);
       --glass-raised: rgb(255 252 247 / 0.88);
@@ -266,8 +306,6 @@
     --shadow-1: 0 1px 2px rgb(60 40 10 / 0.06), 0 10px 28px -10px rgb(60 40 10 / 0.18);
     --shadow-2: 0 2px 4px rgb(60 40 10 / 0.08), 0 18px 44px -12px rgb(60 40 10 / 0.24);
     --glow: rgb(160 88 1 / 0.3);
-    --wash-1: rgb(200 120 20 / 0.16);
-    --wash-2: rgb(210 110 140 / 0.14);
     --glass: #f6f1e7;
     --glass-blur: rgb(246 241 231 / 0.84);
     --glass-raised: rgb(255 252 247 / 0.88);
@@ -420,19 +458,6 @@
   body.is-reading:not(:has(.shell__bar:not([hidden]))),
   body:not(:has(.nav)):not(:has(.shell__bar:not([hidden]))) {
     --foot-space: calc(var(--s-9) + env(safe-area-inset-bottom, 0px));
-  }
-
-  /* The ambient ground: two washes on a fixed layer behind everything.
-     They move nothing and cost one paint; the glass above blurs them. */
-  body::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-      radial-gradient(70% 45% at 8% -5%, var(--wash-1), transparent 70%),
-      radial-gradient(60% 40% at 105% 105%, var(--wash-2), transparent 70%);
   }
 
   .shell__scroll {
@@ -714,7 +739,7 @@
     overflow: hidden;
     display: grid;
     gap: var(--s-5);
-    padding: var(--s-6) var(--s-5);
+    padding: var(--s-5);
     border-radius: var(--r-4);
     background: var(--card);
     box-shadow: inset 0 0 0 1px var(--line-strong), inset 0 1px 0 var(--lit), var(--shadow-2), var(--shadow-glow);
@@ -729,14 +754,6 @@
     border-radius: 50%;
     background: var(--orb);
     pointer-events: none;
-  }
-
-  .hero__orb--cool {
-    top: auto;
-    right: auto;
-    bottom: -120px;
-    left: -60px;
-    background: radial-gradient(closest-side, var(--wash-2), transparent);
   }
 
   .hero > :not(.hero__orb) {
@@ -843,7 +860,7 @@
     font-size: var(--t-meta);
     line-height: 1;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
@@ -1057,18 +1074,35 @@
   /* -- Button. Filled, tonal, text, quiet, icon; one filled per screen.
         The filled one is the gradient with the glow; every button is a
         pill and compresses on a spring. -- */
+  /* Two sizes, and they are a step apart: 48 and 60, +25%, inside the
+     25-40% band documented systems use. The old pair was 48 and 52 — 8%,
+     which reads as an accident, not a hierarchy. Height against label is
+     2.67x and 2.61x, both inside the 2.00-2.73x band measured out of
+     Adobe's own shipped tokens. Padding and min-width are derived from
+     height (Spectrum's button.json publishes min-width = 2.25 x height),
+     not picked per size.
+
+     Radius is 12px, not a pill. The pill is now reserved for two things
+     that earn it — the one filled action and the nav capsule — because a
+     radius every component shares says nothing. */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: var(--s-3);
     min-height: var(--btn-h);
-    min-width: 88px;
-    padding: 0 var(--s-6);
-    border-radius: var(--r-pill);
+    min-width: var(--btn-min);
+    padding: 0 var(--btn-pad);
+    border-radius: var(--r-2);
     font-size: var(--t-body);
     font-weight: 600;
-    letter-spacing: -0.005em;
+    /* The label centres on the line box, not on the letters, so an
+       inherited 28px line-height at 18px sits the text visibly low in a
+       48px button. line-height 1 removes the leading; text-box-trim
+       removes the rest where the browser has it. */
+    line-height: 1;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
     text-decoration: none;
     transition:
       background-color var(--d-micro) var(--ease-standard),
@@ -1077,10 +1111,21 @@
   }
 
   .btn--primary {
+    /* The gradient stays: it is one hue family, it is in PAIRS, and it
+       is measured. The two ambient washes went instead, because one of
+       them was an unmeasured indigo at the highest chroma in the theme.
+       Follow the measurement, not the advice.
+
+       The highlight is mixed from the accent rather than pure white,
+       which desaturates the hue it sits on. */
     background: var(--grad-accent);
     color: var(--accent-ink);
     min-height: var(--btn-h-primary);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), var(--shadow-glow);
+    min-width: var(--btn-min-primary);
+    padding-inline: var(--btn-pad-primary);
+    border-radius: var(--r-pill);
+    font-size: var(--t-lead);
+    box-shadow: inset 0 1px 0 color-mix(in oklch, var(--accent) 30%, white), var(--shadow-glow);
   }
 
   .btn--secondary {
@@ -1091,7 +1136,7 @@
 
   .btn--quiet {
     min-width: 0;
-    padding: 0 var(--s-3);
+    padding: 0 var(--s-4);
     color: var(--ink-2);
   }
 
@@ -1132,8 +1177,8 @@
     display: inline-flex;
     align-items: center;
     gap: var(--s-2);
-    padding: var(--s-1) var(--s-4);
-    border-radius: var(--r-pill);
+    padding: var(--s-3) var(--s-5);
+    border-radius: var(--r-2);
     background: var(--raised);
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
@@ -1167,7 +1212,7 @@
     min-height: 44px;
     min-width: 56px;
     padding: 0 var(--s-5);
-    border-radius: var(--r-pill);
+    border-radius: var(--r-2);
     background: var(--raised);
     box-shadow: inset 0 0 0 1px var(--line);
     font-size: var(--t-body);
@@ -1208,7 +1253,7 @@
     min-height: var(--target);
     padding: 0 var(--s-5);
     border: 1px solid var(--edge);
-    border-radius: var(--r-pill);
+    border-radius: var(--r-2);
     background: var(--card);
     font-size: var(--t-body);
     transition: box-shadow var(--d-micro) var(--ease-standard);
@@ -1253,7 +1298,7 @@
     min-height: var(--target);
     min-width: 6rem;
     padding: 0 var(--s-5);
-    border-radius: var(--r-pill);
+    border-radius: var(--r-2);
     background: var(--card);
     box-shadow: inset 0 0 0 1px var(--line-strong);
     font-size: var(--t-body);
@@ -1810,7 +1855,7 @@
     font-size: var(--t-meta);
     line-height: var(--t-meta-lh);
     font-weight: 600;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.02em;
     color: var(--accent-text);
   }
 

@@ -198,9 +198,9 @@ export function requiredLc(px, weight) {
    `on` is the lightest surface the text can sit on. */
 export const PAIRS = [
   { where: ".t-display", px: 36, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".t-title", px: 28, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".stat__value", px: 28, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".t-lead", px: 22, weight: 400, token: "text-1", on: "surface-2" },
+  { where: ".t-title", px: 29, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".stat__value", px: 29, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".t-lead", px: 23, weight: 400, token: "text-1", on: "surface-2" },
   { where: "body prose", px: 18, weight: 400, token: "text-1", on: "surface-2" },
   { where: ".option (serif)", px: 18, weight: 400, token: "text-1", on: "surface-2" },
   { where: ".row__title", px: 18, weight: 400, token: "text-1", on: "surface-2" },
@@ -214,35 +214,35 @@ export const PAIRS = [
   { where: ".t-quiet / quiet sentence", px: 18, weight: 400, token: "text-2", on: "surface-1" },
   { where: "quiet sentence (page)", px: 18, weight: 400, token: "text-2", on: "surface-0" },
   // The primary label sits on the gradient, not on a surface: both stops.
-  { where: ".btn--primary label", px: 18, weight: 600, token: "on-accent", on: "accent" },
-  { where: ".btn--primary label (2nd stop)", px: 18, weight: 600, token: "on-accent", on: "accent-2" },
+  { where: ".btn--primary label", px: 23, weight: 600, token: "on-accent", on: "accent" },
+  { where: ".btn--primary label (2nd stop)", px: 23, weight: 600, token: "on-accent", on: "accent-2" },
   { where: ".choice[aria-pressed] label", px: 18, weight: 600, token: "on-accent", on: "accent-2" },
   { where: ".avatar initial", px: 18, weight: 600, token: "on-accent", on: "accent-2" },
   // UI 3's objects. A tile's title is body at 600; a ring's value is the
   // one-line tier in the first ink; a stat's figure is the title size.
   { where: ".tile__title", px: 18, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".tile__meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".tile__sub", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".ring__value", px: 15, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".tile__meta", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".tile__sub", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".ring__value", px: 18, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".ring--lg .ring__value", px: 36, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".choice", px: 18, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".score__verdict", px: 22, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".score__verdict", px: 23, weight: 600, token: "text-1", on: "surface-2" },
   { where: ".bar__title", px: 18, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".t-meta", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".t-meta", px: 18, weight: 600, token: "text-2", on: "surface-2" },
   // The section label is the accent's text colour — the one place the
   // accent marks structure rather than an action — so a section opens
   // with a mark the eye finds before it reads. Measured like any text.
-  { where: ".t-label", px: 15, weight: 600, token: "accent-text", on: "surface-2" },
-  { where: ".t-ui", px: 15, weight: 600, token: "text-1", on: "surface-2" },
-  { where: ".row__sub", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".row__lead", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".row__trail", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".nav__item", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".stat__label", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".option__key", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".chip", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".btn--quiet", px: 15, weight: 600, token: "text-2", on: "surface-2" },
-  { where: ".feedback__report", px: 15, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".t-label", px: 18, weight: 600, token: "accent-text", on: "surface-2" },
+  { where: ".t-ui", px: 18, weight: 600, token: "text-1", on: "surface-2" },
+  { where: ".row__sub", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".row__lead", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".row__trail", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".nav__item", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".stat__label", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".option__key", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".chip", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".btn--quiet", px: 18, weight: 600, token: "text-2", on: "surface-2" },
+  { where: ".feedback__report", px: 18, weight: 600, token: "text-2", on: "surface-2" },
 ];
 
 function checkPairs(theme, failures, lines) {

@@ -169,10 +169,14 @@ Schloss & Palmer (2011): palet bir küme olarak **yakın tonlar** ister, ama
 şekil kendi zeminine karşı **ton karşıtlığı** ister. Koyu tema bunu yapıyor;
 açık temada aksanı zeminden ayıran tek şey açıklık.
 
-## Yan bulgu · Ölü jeton
+## Yan bulgu · Ölü jeton — ve bu bir bulgu değilmiş
 
-`--c-text-3` çözülüyor, `npm run color` onu denetliyor, tasarım sistemi onu
-belgeliyor — ve `css/style.css` onu **sıfır kez** kullanıyor.
+`--c-text-3` çözülüyor, `npm run color` onu denetliyor, ve `css/style.css`
+onu **sıfır kez** kullanıyor. Bunu bir gözden kaçma sandım; değilmiş.
+`docs/design-system.md` §2 bunu açıkça yazıyor: *"`--c-text-3` hiçbir kural
+tarafından kullanılmıyor… jeton olarak ve `prefers-contrast: more`
+geçersiz kılmasında yaşıyor; metin rengi olarak geri gelmemeli."*
+Kayıtlı bir karar. Ölçüm doğru, teşhis yanlıştı.
 
 ## Doğruladığım ve düzelttiğim iki dış iddia
 

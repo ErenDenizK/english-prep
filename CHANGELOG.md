@@ -5,6 +5,94 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.64 — 2026-09-26
+
+**Half the app's text was at a size the app's own standard rejects.**
+The owner said readability was bad and that no font, button or text size
+fitted with the others. Both are true, and both are numbers.
+
+npm's registry is reachable from here, so rather than read design-system
+documentation this round downloaded the **token files** of seven real
+systems — Radix, Adobe Spectrum, Ant Design, Tailwind v4, Open Color,
+IBM Carbon — **2,161 colours**, and measured all of them with this repo's
+own instrument alongside our own palette. The full diagnosis, with the
+tools that produced it, is `docs/design/17-olcum/`.
+
+**The type scale.** APCA's font-size matrix is indexed to Helvetica's
+x-height. Measured with fontTools, Liberation Sans is x/em 0.5283 and
+Source Sans 3 at weight 600 is 0.4910 — so a 15px label enters the
+matrix as 13.9px, where the requirement is Lc 95.6 rather than the 75 the
+raw table gives. `--c-text-2` measures 76.3 dark and 77.4 light: the tier
+missed by **19.3 and 18.2 Lc**. 16px still misses; **17px is the first
+size that passes**. The tier was `.t-meta`, `.row__sub`, `.row__lead`,
+`.row__trail`, `.nav__item`, `.tile__meta`, `.tile__sub`, `.ring__value`,
+`.t-ui`, `.t-label` and every chip.
+
+So 15px is gone. Meta is now body size at weight 600 — the way Material
+separates Label from Body — and the ladder is four sizes on one ratio:
+**36 · 29 · 23 · 18**. 36/18 is exactly 2, so the ratio is the cube root
+of two, 1.2599, at every rung. The old steps were 1.200 · 1.222 · 1.273 ·
+1.286, drifting monotonically; standard deviation 0.035 before, 0.015
+after.
+
+**The controls.** Measured in Chromium at 390px, the component catalogue
+drew **twelve distinct control heights** and only **two type sizes**, with
+height-against-label running 1.60× to 8.78×. Adobe's own shipped tokens
+put that ratio at 2.00–2.73× and its `button.json` publishes min-width =
+2.25 × height. The two button sizes here were 48 and 52 — an 8% step,
+where documented systems step 25–40%.
+
+The filled action now steps to **60px with a 23px label** (2.61×, +25%
+over the quiet 48px at 2.67×), with padding and min-width derived from
+height rather than picked. After the round: **five control heights, ratio
+band 2.22×–3.11×**.
+
+**The pill is no longer the default.** It was on buttons, chips, fields,
+the listbox trigger, the nav and its indicator, and the progress bar.
+It is now reserved for things that are a track or a capsule by nature,
+plus the one filled action; everything else you press is a 12px box.
+GitHub's Primer ships three radii in total.
+
+**And the colour that made it look generic was the one nobody measured.**
+`--wash-2`, a radial wash behind every page, was `rgb(120 110 235)` —
+OKLCH **C 0.188, the most saturated value in the dark theme** (the accent
+is 0.125), at hue 284, and absent from `tools/palette.mjs`, so no table
+ever checked it. The palette declares four disciplined hue families; the
+page painted five, and the fifth was both the loudest and the only
+unmeasured one. Both ambient washes are gone. The accent gradient stays:
+it is one hue family and it is in `PAIRS`.
+
+**Tracking was pointing the wrong way in two places**, which the larger
+type made visible: `.t-label` carried an all-caps value (0.09em) on
+mixed-case text, and the uppercase monogram carried a mixed-case one
+(0.02em) against a documented +0.05em floor for capitals. Now 0.02em
+and 0.06em.
+
+**Two checks were repaired rather than satisfied.** The sweep's
+"bar label is one line" test compared against a literal `52`, which was
+`--btn-h-primary` when it was written; it now reads the token, so it
+cannot go stale the way the hardcoded copy of `--c-edge` did in v0.63.
+And its catalogue-coverage test scraped class names out of the
+components layer including comments, so writing "Spectrum's button.json"
+in a comment invented a `.json` component and failed the run.
+
+**The landing budget was re-derived, not raised quietly.** Larger type is
+taller type: the Eğitim landing grew 116px at 320. Most came back from
+tightening heading leading into the documented 1.1–1.3 band and
+reclaiming the hero's padding; the worst screen measures 3.51 screens
+against a 3.5 budget, so the budget moves to 3.6 with the measurement
+written beside it.
+
+**Left open, on purpose.** Nesting does not follow the concentric radius
+rule: `.surface` is 20px with 16px of padding, which demands a 4px inner
+radius, and the smallest here is 8. Both one-line fixes change the
+density of every card, so neither ships in the same push as a type
+scale. A `--r-inner` token was written and then removed rather than
+shipped unused.
+
+167 unit tests and 3,487 browser checks pass; `npm run color` measures
+every pair in both themes.
+
 ## v0.63 — 2026-09-15
 
 **A control edge that measured 3:1 and shipped 2.89:1.** Every colour

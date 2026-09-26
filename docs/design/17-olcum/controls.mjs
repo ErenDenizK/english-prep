@@ -86,15 +86,21 @@ for (const [scope, rows] of Object.entries(out)) {
   }
   // The two numbers the systems publish: height/label ratio, and the spread
   // of distinct control heights and radii on one screen.
-  const hs = [...new Set([...groups.values()].map((g) => g.h))].sort((a, b) => a - b);
+  // A control is single-line and pressable; a container's height comes
+  // from its content, so height-against-label says nothing about it.
+  const isControl = (g) => /(^|\.)(btn|chip|choice|field|listbox__trigger|nav__item|switch)/.test(g.cls) && g.h <= 72;
+  const ctl = [...groups.values()].filter(isControl);
+  const box = [...groups.values()].filter((g) => !isControl(g));
+  const hs = [...new Set(ctl.map((g) => g.h))].sort((a, b) => a - b);
   const fss = [...new Set([...groups.values()].map((g) => g.fs))].sort((a, b) => a - b);
   const rads = [...new Set([...groups.values()].map((g) => g.radius))];
-  const ratios = [...groups.values()].filter((g) => g.fs && g.h).map((g) => g.h / g.fs);
+  const ratios = ctl.filter((g) => g.fs && g.h).map((g) => g.h / g.fs);
   console.log("-".repeat(112));
-  console.log(`ayrı yükseklik: ${hs.length} (${hs.join(", ")})`);
+  console.log(`KONTROL (${ctl.length} geometri) · ayrı yükseklik: ${hs.length} (${hs.join(", ")})`);
+  console.log(`KAP     (${box.length} geometri) · yükseklik içerikten gelir, oran ölçülmez`);
   console.log(`ayrı punto:     ${fss.length} (${fss.join(", ")})`);
   console.log(`ayrı yarıçap:   ${rads.length} (${rads.join(", ")})`);
   if (ratios.length) console.log(`yük/punto oranı: ${Math.min(...ratios).toFixed(2)}×–${Math.max(...ratios).toFixed(2)}×  (Spectrum yayınlıyor: 2.00–2.73×)`);
-  const under = [...groups.values()].filter((g) => g.h < 44);
+  const under = ctl.filter((g) => g.h < 44 && !/chip/.test(g.cls));
   if (under.length) console.log(`44px altı: ${under.map((g) => `${g.cls}(${g.h})`).join(", ")}`);
 }

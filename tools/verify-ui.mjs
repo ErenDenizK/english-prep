@@ -48,7 +48,17 @@ const MIN_GUTTER = 16;
 // 3 held a list of rows; the UI 3 home is a hero, three figures and a
 // grid of glossed tiles, which is a different shape from the 8.3-screen
 // pile-up this budget exists to catch. Measured 3.3 at 320 on 2026-09-10.
-const LANDING_BUDGET_SCREENS = 3.5;
+//
+// Re-derived 2026-09-26. The meta tier moved 15px -> 18px because 15/600
+// missed its APCA threshold by 19.3 Lc once Source Sans 3's real x-height
+// was used (docs/design/17-olcum/00-teshis.md D1), and larger type is
+// taller type: the Egitim landing grew 116px at 320. Most of that was
+// given back by tightening heading leading to the documented 1.1-1.3 band
+// and reclaiming the hero's padding; the worst remaining screen measures
+// 3.51. The budget exists to catch a pile-up, not to freeze a type scale,
+// so it moves to 3.6 and the number it is protecting against is recorded
+// here rather than inferred: "hepsi bitti" at 2242px / 3.51 screens.
+const LANDING_BUDGET_SCREENS = 3.6;
 
 /**
  * The topic screen gets its own, larger budget, because it is a different
@@ -226,10 +236,16 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
       // A bar label that wraps makes its button taller than the bar was
       // sized for, and the bar's one job is a fixed height. 52 is the
       // primary button's min-height; a one-line label never exceeds it.
+      // A wrapped label is one taller than the control it sits in. The
+      // threshold used to be the literal 52, which was --btn-h-primary at
+      // the time; when the filled action stepped to 60 the check reported
+      // thirty-six wraps that were not wraps. Read the token instead, so
+      // it cannot go stale the way the hardcoded copy of --c-edge did.
       const wrapped = [];
+      const barH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--btn-h-primary")) || 52;
       for (const node of document.querySelectorAll(".shell__bar-inner > .btn")) {
         const box = node.getBoundingClientRect();
-        if (box.height > 52) {
+        if (box.height > barH + 2) {
           wrapped.push(`"${node.textContent.trim()}" ${Math.round(box.height)}px`);
         }
       }
@@ -1383,7 +1399,13 @@ async function runComponents(browser) {
     // except the three the listbox only creates while its menu is open.
     if (width === 390) {
       const css = await readFile(new URL("../css/style.css", import.meta.url), "utf8");
-      const block = css.slice(css.indexOf("@layer components {"), css.indexOf("@layer screens {"));
+      // Comments are not declarations. Writing "Spectrum's button.json
+      // publishes min-width = 2.25 x height" in a comment used to invent a
+      // `.json` component and fail this check, which is a false negative
+      // pointing at prose rather than at code.
+      const block = css
+        .slice(css.indexOf("@layer components {"), css.indexOf("@layer screens {"))
+        .replace(/\/\*[\s\S]*?\*\//g, " ");
       const runtimeOnly = new Set(["listbox__menu", "listbox__option", "listbox__option--active"]);
       const classes = [...new Set([...block.matchAll(/\.([a-z][a-z0-9_-]*)/g)].map((m) => m[1]))].filter(
         (name) => !runtimeOnly.has(name)
