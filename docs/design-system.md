@@ -397,29 +397,65 @@ weight 400 clears its ground (§1.3); 16/400 needs Lc 90 and only
 `--c-text-1` reaches it, which is why a *quiet* tier could not exist
 below 18.
 
-**The scale bottoms out at 15px, and that is a contrast decision.**
-It used to run to 13 and 11. APCA's font matrix requires **Lc 113 at
-13px/400** and **Lc 117 at 11px/600**, and the ceiling on this ground is
-**Lc 107 with pure white ink**, which §1 forbids — so those two steps
-were unreachable by any grey, in this theme or any other, and a census
-found **54% of the app's rendered characters sitting in them**. They are
-gone rather than dimmed differently. `--t-micro` was removed instead of
-resized so that no call site can drift back below 15.
+**The scale bottoms out at 18px, and that is a contrast decision made
+twice.** It used to run to 13 and 11; those went because APCA's matrix
+requires Lc 113 at 13/400 and Lc 117 at 11/600 and the ceiling on this
+ground is Lc 107 with pure white, so no grey could reach them. 15px went
+for the same reason, one measurement later.
 
-**At 15px there is exactly one legal pairing: weight 600 in
-`--c-text-2`** (needs Lc 75; measures 76 in both themes against the
-worst surface). 15/400 needs Lc 100 and nothing reaches it — an earlier
-edition of this table listed 15/400 in `--c-text-1` as legal at Lc 90,
-and that row was wrong; the tool built with the real matrix caught four
-rules set that way. Two consequences: **the meta tier is one line, and a
-sentence is never meta** — anything longer than a line that is quieter
-than body is `.t-quiet`, 18/400 in the second grey on `surface-0`/`1`,
-or it is body. And **English has a floor of 18px**: the serif ships at
-400 only, and 15/400 clears no ground.
+**APCA's size matrix is indexed to Helvetica's x-height, and ours is
+smaller.** Measured with fontTools: Liberation Sans x/em **0.5283**;
+Source Sans 3 at weight 600 **0.4910**, a ratio of **1.0760**. So a 15px
+label enters the matrix as **13.9px**, where the requirement is not the
+Lc 75 the raw table gives but **Lc 95.6** — and `--c-text-2` measures
+76.3 in dark and 77.4 in light. The tier missed by **19.3 Lc** and
+**18.2 Lc**. 16px still misses by 2.6 and 1.5. **17px is the first size
+that passes**, and 18px passes with 9.9 Lc to spare.
+
+That tier was not a corner: `.t-meta`, `.row__sub`, `.row__lead`,
+`.row__trail`, `.nav__item`, `.tile__meta`, `.tile__sub`, `.ring__value`,
+`.t-ui`, `.t-label` and every chip were set in it. Roughly half the
+app's rendered characters were at a size the app's own standard rejects
+once the shipped font's proportions are used rather than the reference
+font's.
+
+**So meta is no longer a fifth size. It is body at weight 600.** Which
+is how Material separates Label from Body, and it removes the crowded
+bottom of the ladder: 15 and 18 were 1.20 apart, the tightest step in a
+scale whose steps should widen, not narrow, going down.
+
+**Four sizes, one ratio, and the ratio is derived.** 36 / 18 = 2 exactly,
+so a four-step ladder from body to display is the cube root of two —
+**1.2599** — and every rung is the same ratio:
+
+| tier | px | line-height | ratio to the one below |
+|---|---:|---:|---:|
+| `--t-display` | 36 | 40 (1.11) | 1.241 |
+| `--t-title` | 29 | 34 (1.17) | 1.261 |
+| `--t-lead` | 23 | 28 (1.22) | 1.278 |
+| `--t-body` | 18 | 28 (1.56) | — |
+| `--t-meta` | 18 | 24 (1.33) | same size, weight 600 |
+
+The old ladder's steps were 1.200 · 1.222 · 1.273 · 1.286, drifting
+monotonically — crowded where the eye needs the most help and loose
+where it needs the least. Standard deviation across the steps: **0.035
+before, 0.015 after**. Adobe Spectrum, the densest published comparison,
+runs eighteen steps at a single 1.125 with sd 0.018.
+
+Leading falls as size rises, which is the documented direction: large
+type takes up room and wants pulling back together, small type wants
+air. All four are inside the 1.1–1.3 band for headings and the 1.5–1.6
+band for body.
+
+**At 18px there is one legal pairing below weight 400: 600 in
+`--c-text-2`.** 18/400 in the second grey is legal on `surface-0` and
+`surface-1` only, as `.t-quiet`. Two consequences survive from the old
+edition unchanged: **the meta tier is one line, and a sentence is never
+meta.** And **English has a floor of 18px**: the serif ships at 400 only.
 
 **At most four sizes on a screen.** Display appears in the reader and on
-the results; a tab screen has the brand at 22, a title at 28, body and
-meta. The sweep counts the rendered sizes on every screen it lands on
+the results; a tab screen has the brand at 23, a title at 29, body and
+meta — and since meta is body's size, most screens now render three. The sweep counts the rendered sizes on every screen it lands on
 and fails at five; the component page is the one exemption, being the
 catalogue.
 
@@ -431,8 +467,8 @@ primary button's label against the amber in both themes. **Adding a rule
 that sets text means adding its row to `PAIRS`** — a pair that is not
 listed is not checked. And because a utility class can override a
 component's weight where the table cannot see it, the sweep audits the
-*rendered* pairs too: nothing at 15px lighter than 600, nothing heavier
-than 600.
+*rendered* pairs too: nothing below 16px lighter than 600 (and nothing
+below 18px at all now ships), nothing heavier than 600.
 
 **`--c-text-3` is used by no rule.** At Lc 60 it clears only 22px at
 weight 600, and nothing in the app pairs those. It survives as a token
