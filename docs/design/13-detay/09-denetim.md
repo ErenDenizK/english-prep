@@ -637,3 +637,123 @@ resolved until someone actually rebuilds `fonts/`.
 ---
 
 *(All seven arms returned.)*
+
+---
+
+# Round three — the remaining gaps
+
+## Seven screens (gap 4)
+
+### The specimens' numbers. **Reproduced exactly.**
+
+Ran `measure-screens.py` and `midtone.py` myself over
+`13-detay/12-ornekler/`:
+
+| screen | mid dark | mid light | hue family |
+|---|---:|---:|---|
+| quiz question | 1.7 % | 2.0 % | **none** |
+| quiz answered | 3.0 % | 8.7 % | H60 4.7 / H30 5.3 |
+| results | 5.5 % | **10.5 %** | H60 3.5 / H30 3.2 |
+
+Identical to the arm's figures. **Only results-light clears the 10 %
+mid-tone floor, and only in light.**
+
+### The arm's explanation is right, and was already known.
+
+It traces dark's shortfall to the accent pair: light `#a05801` sits at
+L\* 0.449, inside the mid-tone band; dark `#f1af5d` at L\* 0.762, eight
+points outside it. That is correct — and it is already in this file
+under **Arm 5**, where I measured the same thing closing that arm's open
+question. The arm reached it independently without having seen it,
+which is corroboration rather than a new finding. Worth noting so the
+synthesis does not count it twice.
+
+### But the result exposes a defect in my own rejection conditions.
+
+`00-v4-olcumu.md` states them as: *"giriş olay alanı ≥ 20 %, en az bir
+renk ailesi ≥ 1.5 %, ara ton ≥ 10 %."*
+
+I scoped the event-area condition to the entrance and **left the other
+two unscoped**, so they have been applied to every screen since. This
+arm is the first to test them on a screen that is not an entrance, and
+the quiz question scores 1.7 % — essentially unchanged from the v4
+average that started all of this.
+
+Two readings, and I do not think the measurement settles between them:
+
+- The conditions were derived from entrance screens, where the
+  reference band is 30–67 % event area. A question screen should
+  probably be quiet, and applying an entrance-derived floor to it is an
+  untested extrapolation — mine.
+- Or the screen the learner spends most of six weeks inside stays
+  "yavan" by design, which is the thing this whole programme exists to
+  fix.
+
+What is not in doubt is that **the conditions need scoping by screen
+role** and currently have none. That is my error, not the arm's, and it
+should be fixed in `00-v4-olcumu.md` before the numbers are used to
+accept or reject anything else.
+
+### The arm's "no" for the quiz question holds on its own terms
+
+It argues the counter-plane belongs on a closed non-text graphic and
+never behind a sentence to read or a control to activate, and
+re-verified the ceiling: white ink on `#7E7266` reaches WCAG 4.36,
+short of this project's bar. That matches `11-karsi-duzlem.md` §5
+exactly. A "no" here is a real answer, and the exam-fidelity argument
+supports it from the other side — the paper is quiet behind a question
+too.
+
+---
+
+## The record mosaic (gap 3)
+
+### All three gates clear in both themes. **Reproduced exactly.**
+
+| | event | hue | mid-tone |
+|---|---:|---|---:|
+| dark | **22.3 %** | H60 **10.1 %** | **11.9 %** |
+| light | **20.7 %** | H60 **6.3 %** | **13.9 %** |
+
+Second artefact in this programme to clear all three, and the first to
+do it while encoding something a learner can read.
+
+### The encoding is legible, which was the whole problem
+
+The v2 mosaic had ten columns above four labels that did not map onto
+them. This one is ten rows, each labelled with a real topic name, six
+cells per row for that topic's six categories, darkness meaning
+encounter count, empty meaning never seen — and one line of legend
+saying exactly that. Position means something now.
+
+### The honesty resolution is sound
+
+The arm's move is the good one: a **count** claim ("met N times") needs
+no confidence interval at any n; an **accuracy** claim does, and
+category grain can never supply it (`MIN_ITEMS_FOR_WEAK_CLAIM = 6`
+against 4–5 items per category, verified under Arm 5). Splitting the
+claim by grain — coverage in the mosaic, accuracy left where it is
+already gated — dissolves the tension rather than trading it off. That
+is a real answer to something `10-sentez.md` recorded as unresolved.
+
+### Three things are still wrong with it, said plainly
+
+Measured or visible, not taste:
+
+1. **It is one hue and a lot of it.** `neutral` measures 78.9 % dark /
+   79.7 % light — the least neutral thing this programme has produced,
+   against a reference median of 91.6 % and v4's 99.9 %. It is inside
+   the reference range (ref 3-log is 72.8 %) but at the far end, and
+   every cell is the same amber. The v4 complaint was "no colour"; this
+   risks being "one colour, everywhere".
+2. **The row labels wrap and break the grid.** "Connectors & Discourse
+   Markers" takes three lines, "Academic Nouns & Adjectives" two, so the
+   rows are unequal heights and the mosaic stops reading as a grid
+   exactly where the labels get long.
+3. **The bottom two rows are empty or nearly so**, which is honest — the
+   learner has not studied them — but reads as an unfinished grid rather
+   than as information.
+
+None of these invalidate the specimen. They are what the next pass
+works on, and they are worth writing down so that pass does not start
+from "it passed".
