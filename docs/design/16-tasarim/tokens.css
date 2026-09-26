@@ -1,0 +1,84 @@
+/* ── Tasarım sistemi · çözülmüş jetonlar ────────────────────────────
+   Her değer tools/color.mjs ile çözüldü ve iki temada ölçüldü.
+   Koyu en kötü zemin: --s4.  Açık en kötü zemin: --s2.
+   ------------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+
+  /* Yüzeyler — beş kademe, Radix tarzı kroma çanı (uçlarda düşük) */
+  --bg:        #0D1116;   /* L*  4.9 */
+  --s1:        #191F26;   /* L* 11.5 */
+  --s2:        #272D36;   /* L* 18.3 */
+  --s3:        #383E46;   /* L* 25.9 */
+  --s4:        #43484E;   /* L* 30.3  — metin taşıyan tavan */
+
+  /* Mürekkep — --s4 üzerinde Lc 90 / 75 / 60 */
+  --ink:       #F4F7FB;   /* Lc 90  WCAG 8.59 */
+  --ink-2:     #DBE0E6;   /* Lc 75  WCAG 6.95 */
+  --ink-3:     #C1C7CE;   /* Lc 60  WCAG 5.42 */
+
+  /* Çizgiler — dört basamak; yalnız --edge 3:1 taşımak zorunda */
+  --hairline:  #2F3339;   /* ayırıcı, 1.4.11 dışı */
+  --rule:      #43484E;   /* görünür çizgi */
+  --border:    #565B62;   /* güçlü kenar */
+  --edge:      #71767D;   /* denetim sınırı, 3:1 */
+
+  /* Karşı düzlem — TEK değer, iki temada aynı, yalnız grafik taşır.
+     Ölçüldü: koyu zemine 4.10, açık zemine 4.10. Üstüne aksan
+     çizilemez (hiçbir pencerede 3:1 tutmuyor) — monokrom. */
+  --plane:     #7F7366;   /* L* 49.2 */
+  --on-plane:  #F4F7FB;   /* 4.30 */
+  --on-plane-2:#0D1116;   /* 4.10 */
+
+  --acc:       #F1AF5D;
+  --acc-2:     #F69C51;
+  --on-acc:    #1A0F03;
+  --acc-ink:   #F5CE95;
+  --ok:        #7CCD8E;
+  --no:        #E97871;
+  --focus:     #F4DAB2;
+  --ok-tint:   rgb(124 205 142 / .14);
+  --no-tint:   rgb(233 120 113 / .14);
+  --acc-tint:  rgb(241 175 93 / .16);
+
+  /* Tip — beş boy, ekranda en fazla dört.
+     17/24: APCA x-yüksekliği düzeltmesi 15px'i 16.1px'e itiyor. */
+  --t-display: 36px/44px;
+  --t-title:   28px/36px;
+  --t-head:    22px/28px;
+  --t-body:    18px/28px;
+  --t-meta:    17px/24px;
+
+  --sans: "Source Sans 3", system-ui, sans-serif;
+  --serif:"Source Serif 4", Georgia, serif;
+
+  /* Boşluk */
+  --s-1:2px; --s-2:4px; --s-3:8px; --s-4:12px; --s-5:16px;
+  --s-6:24px; --s-7:32px; --s-8:40px; --s-9:48px; --s-10:64px;
+  --r-3:8px; --r-4:12px; --r-5:16px; --r-6:22px;
+
+  /* Hareket — dokuz jeton, yay yok, hiçbiri 220ms üstü */
+  --d-instant:0ms; --d-press:100ms; --d-state:160ms;
+  --d-enter:220ms; --d-exit:140ms;  --d-screen:180ms;
+  --ease-out:      cubic-bezier(0, 0, 0, 1);
+  --ease-standard: cubic-bezier(.2, 0, 0, 1);
+  --ease-in:       cubic-bezier(.3, 0, 1, 1);
+
+  --w-measure: 26rem;   /* aile başına ölçü; 65ch Türkçede 81 karakter veriyordu */
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg:#F6F1E7; --s1:#EEE8DD; --s2:#E5DFD3; --s3:#E5DFD3; --s4:#E5DFD3;
+  --ink:#211B14; --ink-2:#413A31; --ink-3:#685F54;
+  --hairline:#D6D1C8; --rule:#BFBAB1; --border:#A29E95; --edge:#76736B;
+  --acc:#A05801; --acc-2:#B44200; --on-acc:#F6F1E7; --acc-ink:#623200;
+  --ok:#1F8944; --no:#D14B48; --focus:#825023;
+  --ok-tint:rgb(31 137 68 / .12); --no-tint:rgb(209 75 72 / .12);
+  --acc-tint:rgb(160 88 1 / .14);
+  /* --plane ve --on-plane DEĞİŞMEZ: karşı düzlem tek değerdir. */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --d-press:0ms; --d-state:0ms; --d-enter:0ms; --d-exit:0ms; --d-screen:0ms; }
+}
