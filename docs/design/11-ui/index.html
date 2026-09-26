@@ -1,0 +1,332 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UI v4 — sıfırdan</title>
+<link rel="stylesheet" href="../../../css/fonts.css">
+<link rel="stylesheet" href="ui.css">
+</head><body><div class="sheet">
+<h1>UI v4</h1>
+<p class="l">Sıfırdan. Editoryal karanlık: neredeyse tek renk, serif başlık,
+izli büyük harf künye, tek kehribar. Omurga <b>sınavın dört bölümü</b> —
+öğrencinin zihnindeki yapı bu, uygulamanın kendi Eğitim/Test ayrımı değil.
+Her renk <code>tools/color.mjs</code> ile en kötü yüzeye karşı çözüldü;
+15px taban, 44px hedef, tek kayan bölge.</p>
+
+<h2>Giriş ve yapı</h2>
+<div class="rowg">
+
+<!-- 1 · BUGÜN -->
+<figure><div class="app" data-s="1">
+  <div class="bar"><span class="bar__t">Bugün</span><span class="bar__sp"></span>
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.2-3.6 4-5.2 7-5.2s5.8 1.6 7 5.2"/></svg></span></div>
+  <div class="body">
+    <div class="today">
+      <p class="kunye kunye--amber today__k">Bugünün çalışması</p>
+      <h2 class="h1 today__h">Perfect Aspects<br>ve Past Simple</h2>
+      <p class="today__p">Dün iki soruda <b class="en" lang="en">been</b> ile
+        <b class="en" lang="en">gone</b> karıştı. Bugün altı soru: üçü o ikisinden,
+        üçü yeni.</p>
+      <div class="today__m">
+        <span class="today__n">6</span>
+        <span class="meta">soru · yaklaşık 8 dakika</span></div>
+    </div>
+    <div class="sec">
+      <div class="sec__h"><span class="kunye">I. oturum · 60 puan</span>
+        <span class="meta">30 / 60</span></div>
+      <ul class="exam">
+        <li><div class="exam__row"><span class="exam__n">01</span>
+          <span class="exam__t"><span class="exam__name" lang="en">Cloze</span>
+            <span class="exam__sub">10 soru · 9 boşluk türü</span></span>
+          <span class="exam__v"><span class="exam__pt">15<i> p</i></span>
+            <span class="track"><i style="width:90%"></i></span></span></div></li>
+        <li><div class="exam__row"><span class="exam__n">02</span>
+          <span class="exam__t"><span class="exam__name" lang="en">Closest meaning</span>
+            <span class="exam__sub">10 soru · tamam</span></span>
+          <span class="exam__v"><span class="exam__pt">15<i> p</i></span>
+            <span class="track"><i style="width:100%"></i></span></span></div></li>
+        <li><div class="exam__row"><span class="exam__n">03</span>
+          <span class="exam__t"><span class="exam__name" lang="en">Reading</span>
+            <span class="exam__sub">14 soru · iki metin</span></span>
+          <span class="exam__v"><span class="exam__pt">21<i> p</i></span>
+            <span class="track track--bos"><i></i></span></span></div></li>
+        <li><div class="exam__row"><span class="exam__n">04</span>
+          <span class="exam__t"><span class="exam__name" lang="en">Paragraph completion</span>
+            <span class="exam__sub">6 soru · yakında</span></span>
+          <span class="exam__v"><span class="exam__pt">9<i> p</i></span>
+            <span class="track track--bos"><i></i></span></span></div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><button class="btn">Oturumu başlat</button></div>
+  <nav class="nav">
+    <button class="nav__i" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 6h7v12H4zM13 6h7v12h-7z"/></svg><span>Bugün</span></button>
+    <button class="nav__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-7a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h7z"/></svg><span>Konular</span></button>
+    <button class="nav__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 4h14v16H5z"/><path d="M9 10h6M9 14h4"/></svg><span>Deneme</span></button>
+  </nav>
+</div><figcaption><em>1 · Bugün</em> — tek dokunuş (N1) + dört bölüm (N2)</figcaption></figure>
+
+<!-- 2 · KONULAR -->
+<figure><div class="app" data-s="2">
+  <div class="bar"><span class="bar__t">Konular</span><span class="bar__sp"></span>
+    <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg></span></div>
+  <div class="body">
+    <div class="chips" style="margin-bottom:22px">
+      <button class="chip" aria-pressed="true">Tümü</button>
+      <button class="chip">Dilbilgisi</button>
+      <button class="chip">Kelime</button>
+      <button class="chip">Yarım</button></div>
+    <ul class="list">
+      <li><button class="row"><span class="row__t">
+        <span class="row__n" lang="en">Tenses</span>
+        <span class="row__s">Olayın ne zaman değil, nasıl görüldüğü</span></span>
+        <span class="row__v">4 / 6</span></button></li>
+      <li><button class="row"><span class="row__c"></span><span class="row__t">
+        <span class="row__n" lang="en">Perfect Aspects</span>
+        <span class="row__s">Bugünün konusu</span></span>
+        <span class="row__v">2 / 6</span></button></li>
+      <li><button class="row"><span class="row__t">
+        <span class="row__n" lang="en">Modals</span>
+        <span class="row__s">Kesinlik, zorunluluk, ihtimal</span></span>
+        <span class="row__v">6 / 6</span></button></li>
+      <li><button class="row"><span class="row__t">
+        <span class="row__n" lang="en">Passive Voice</span>
+        <span class="row__s">Kimin yaptığı önemsizse</span></span>
+        <span class="row__v">0 / 6</span></button></li>
+      <li><button class="row"><span class="row__t">
+        <span class="row__n" lang="en">Connectors</span>
+        <span class="row__s">Cümleler arasındaki mantık</span></span>
+        <span class="row__v">3 / 6</span></button></li>
+      <li><button class="row"><span class="row__t">
+        <span class="row__n" lang="en">Relative Clauses</span>
+        <span class="row__s">Hangi isimden bahsediliyor</span></span>
+        <span class="row__v">0 / 6</span></button></li>
+    </ul>
+  </div>
+  <nav class="nav">
+    <button class="nav__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 6h7v12H4zM13 6h7v12h-7z"/></svg><span>Bugün</span></button>
+    <button class="nav__i" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-7a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h7z"/></svg><span>Konular</span></button>
+    <button class="nav__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 4h14v16H5z"/><path d="M9 10h6M9 14h4"/></svg><span>Deneme</span></button>
+  </nav>
+</div><figcaption>2 · Konular — çip sırası, izli künye</figcaption></figure>
+
+<!-- 3 · KONU -->
+<figure><div class="app" data-s="3">
+  <div class="bar"><span class="ic" style="margin-left:-10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+    <span class="bar__sp"></span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg></span></div>
+  <div class="body">
+    <p class="kunye">Konu 02 · dilbilgisi</p>
+    <h2 class="h1" style="margin:12px 0 14px" lang="en">Perfect<br>Aspects</h2>
+    <p class="lead">Bitmiş ama şimdiye bağlı olan ile geçmişte kapanmış olanın
+      arasındaki sınır. Kulağın çoğu zaman doğru seçiyor; burada adı konuyor.</p>
+    <div class="sec">
+      <div class="sec__h"><span class="kunye">Altı ders</span><span class="meta">2 / 6</span></div>
+      <ul class="list">
+        <li><button class="row"><span class="row__t">
+          <span class="row__n" lang="en">Present Perfect vs Past Simple</span>
+          <span class="row__s">Bitti mi, hâlâ mı sürüyor</span></span>
+          <span class="row__v">✓</span></button></li>
+        <li><button class="row"><span class="row__t">
+          <span class="row__n" lang="en">Been vs Gone</span>
+          <span class="row__s">Gitti ve döndü / gitti ve orada</span></span>
+          <span class="row__v">✓</span></button></li>
+        <li><button class="row"><span class="row__c"></span><span class="row__t">
+          <span class="row__n" lang="en">Perfect Continuous</span>
+          <span class="row__s">Süre mi sonuç mu</span></span>
+          <span class="row__v">—</span></button></li>
+        <li><button class="row"><span class="row__t">
+          <span class="row__n" lang="en">Past Perfect</span>
+          <span class="row__s">Geçmişten daha geçmiş</span></span>
+          <span class="row__v">—</span></button></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><button class="btn">Kaldığın dersten devam</button></div>
+</div><figcaption>3 · Konu — serif başlık, ders listesi</figcaption></figure>
+</div>
+
+<h2>Çalışma</h2>
+<div class="rowg">
+
+<!-- 4 · DERS -->
+<figure><div class="app" data-s="4">
+  <div class="bar"><span class="ic" style="margin-left:-10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+    <span class="bar__sp"></span><span class="meta">3 / 6</span></div>
+  <div class="body">
+    <p class="kunye">Ders 03</p>
+    <h2 class="h2" style="margin:10px 0 18px" lang="en">Been vs Gone</h2>
+    <div class="read">
+      <p>İkisi de <b class="en" lang="en">go</b> fiilinin perfect hâli, ama
+        farklı şey söylüyorlar. Kulağın bu farkı zaten kuruyor; burada sadece
+        adı konuyor.</p>
+      <div class="pull">
+        <p class="en" lang="en">She has <b>been</b> to Ankara.</p>
+        <p class="meta">Gitti — ve döndü. Şu an burada.</p>
+      </div>
+      <div class="pull">
+        <p class="en" lang="en">She has <b>gone</b> to Ankara.</p>
+        <p class="meta">Gitti — ve hâlâ orada. Şu an burada değil.</p>
+      </div>
+      <p>Sınavda ayırt edici sinyal genellikle cümlenin devamında olur:
+        <b class="en" lang="en">and she is back now</b> varsa
+        <b class="en" lang="en">been</b>, <b class="en" lang="en">she is still
+        there</b> varsa <b class="en" lang="en">gone</b>.</p>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="prog" style="margin-bottom:12px">
+      <span class="meta">%48</span><span class="prog__t"><i style="width:48%"></i></span>
+      <span class="meta">3 / 6</span></div>
+    <button class="btn">Sıradaki ders</button></div>
+</div><figcaption><em>4 · Ders</em> — kesintisiz nesir, tam sütun (N6)</figcaption></figure>
+
+<!-- 5 · SORU -->
+<figure><div class="app" data-s="5">
+  <div class="bar"><span class="ic" style="margin-left:-10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+    <span class="kunye">Cloze</span><span class="bar__sp"></span><span class="meta">4 / 6</span></div>
+  <div class="body">
+    <div class="prog" style="margin-bottom:24px">
+      <span class="prog__t"><i style="width:58%"></i></span></div>
+    <p class="q" lang="en">Every morning, Elif <span class="bl"></span>
+      to the university library before her first class starts. She says the
+      quiet hours right after opening are the only time she can truly
+      concentrate.</p>
+    <div class="opts">
+      <button class="opt"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span></button>
+      <button class="opt"><span class="opt__k">B</span><span class="opt__t" lang="en">is going</span></button>
+      <button class="opt"><span class="opt__k">C</span><span class="opt__t" lang="en">has gone</span></button>
+      <button class="opt"><span class="opt__k">D</span><span class="opt__t" lang="en">went</span></button>
+    </div>
+  </div>
+  <div class="foot"><button class="btn btn--quiet">Bilmiyorum, geç</button></div>
+</div><figcaption><em>5 · Soru</em> — kaydırmasız, düğme sabit (N3)</figcaption></figure>
+
+<!-- 6 · CEVAP -->
+<figure><div class="app" data-s="6">
+  <div class="bar"><span class="ic" style="margin-left:-10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+    <span class="kunye">Cloze</span><span class="bar__sp"></span><span class="meta">4 / 6</span></div>
+  <div class="body">
+    <p class="q" lang="en">Every morning, Elif <span class="bl" style="border-bottom-color:var(--ok)"></span>
+      to the university library before her first class starts.</p>
+    <div class="opts">
+      <button class="opt opt--ok"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v">Doğru</span></button>
+      <button class="opt opt--no"><span class="opt__k">B</span><span class="opt__t" lang="en">is going</span><span class="opt__v">Seçtiğin</span></button>
+      <button class="opt opt--dim"><span class="opt__k">C</span><span class="opt__t" lang="en">has gone</span></button>
+      <button class="opt opt--dim"><span class="opt__k">D</span><span class="opt__t" lang="en">went</span></button>
+    </div>
+    <div class="why">
+      <p class="kunye kunye--amber">Kural</p>
+      <p class="why__b"><b class="en" lang="en">Every morning</b> gibi
+        alışkanlık bildiren zaman zarfları Present Simple'ı tetikler.</p>
+      <div class="note">
+        <p class="note__x"><s lang="en">is going</s>
+          Şu anda sürmekte olan tek bir gidiş olurdu.</p>
+        <p class="note__x"><s lang="en">went</s>
+          Belirli bir günde olup bitmiş tek bir gidiş.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><button class="btn">Devam</button></div>
+</div><figcaption><em>6 · Cevap</em> — kural + şık notları (N4)</figcaption></figure>
+</div>
+
+<h2>Sonuç ve profil</h2>
+<div class="rowg">
+
+<!-- 7 · SONUÇ -->
+<figure><div class="app" data-s="7">
+  <div class="bar"><span class="bar__sp"></span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></div>
+  <div class="body">
+    <div class="score">
+      <p class="kunye" style="margin-bottom:12px">Oturum bitti</p>
+      <p class="score__n">5<i> / 6</i></p>
+      <p class="lead" style="margin-top:10px">Been ve gone artık ayrılıyor.<br>
+        Kalan tek yanlış Present Simple'da.</p>
+    </div>
+    <div class="sec">
+      <div class="sec__h"><span class="kunye">Kategoriye göre</span></div>
+      <div class="bars">
+        <span class="bl2"><span class="bl2__n" lang="en">Perfect Aspects</span>
+          <span class="bl2__v">3 / 3</span><span class="bl2__t"><i style="width:100%"></i></span></span>
+        <span class="bl2"><span class="bl2__n" lang="en">Present Simple vs Continuous</span>
+          <span class="bl2__v">1 / 2</span><span class="bl2__t"><i style="width:50%"></i></span></span>
+        <span class="bl2"><span class="bl2__n" lang="en">Time Expressions</span>
+          <span class="bl2__v">1 / 1</span><span class="bl2__t"><i style="width:100%"></i></span></span>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec__h"><span class="kunye">Bundan sonra</span></div>
+      <ul class="list">
+        <li><button class="row"><span class="row__t">
+          <span class="row__n">Yanlışı gözden geçir</span>
+          <span class="row__s">1 soru</span></span><span class="row__v">›</span></button></li>
+        <li><button class="row"><span class="row__t">
+          <span class="row__n" lang="en">Present Simple</span>
+          <span class="row__s">Kuralı oku · 4 dakika</span></span><span class="row__v">›</span></button></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><button class="btn">Bitir</button></div>
+</div><figcaption>7 · Sonuç — ölçüm, kutlama değil (N5)</figcaption></figure>
+
+<!-- 8 · İLK AÇILIŞ -->
+<figure><div class="app" data-s="8">
+  <div class="bar"><span class="bar__sp"></span>
+    <button class="btn btn--sm btn--quiet" style="font-size:15px;padding:0 18px">Atla</button></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:0">
+    <div style="flex:1;display:grid;place-items:center;padding:20px 0">
+      <svg viewBox="0 0 200 200" style="width:200px;height:200px" fill="none"
+        stroke="var(--ink-3)" stroke-width="1.2" stroke-linecap="round">
+        <rect x="34" y="46" width="132" height="108" rx="6"/>
+        <path d="M100 46v108" stroke="var(--hairline)"/>
+        <path d="M48 70h38M48 84h34M48 98h38M48 112h28" stroke="var(--ink-3)"/>
+        <path d="M114 70h38M114 84h34M114 98h38" stroke="var(--hairline)"/>
+        <path d="M114 112h24" stroke="var(--amber)" stroke-width="2"/>
+        <circle cx="152" cy="126" r="9" stroke="var(--amber)" stroke-width="1.6"/>
+        <path d="M148 126l3 3 5-6" stroke="var(--amber)" stroke-width="1.6"/>
+      </svg>
+    </div>
+    <h2 class="h1" style="margin-bottom:12px">Kulağın zaten<br>biliyor</h2>
+    <p class="kunye" style="letter-spacing:0.1em;line-height:22px">Bu uygulama sıfırdan
+      öğretmez. Doğru kurduğun şeyin adını koyar ve sınavın sorduğu sınırı
+      gösterir.</p>
+  </div>
+  <div class="foot" style="padding-top:22px"><button class="btn">Başla</button></div>
+</div><figcaption><em>8 · İlk açılış</em> — tanıtır, kurulum yaptırmaz (N7)</figcaption></figure>
+
+<!-- 9 · DENEME -->
+<figure><div class="app" data-s="9">
+  <div class="bar"><span class="bar__t">Deneme</span></div>
+  <div class="body">
+    <p class="lead" style="margin-bottom:22px">Sınav ölçeğinde, dört bölüm,
+      40 soru. Bugün üç bölüm hazır.</p>
+    <ul class="list">
+      <li><div class="row"><span class="row__t">
+        <span class="row__n">Tam deneme</span>
+        <span class="row__s">40 soru · 60 puan · 75 dakika</span></span>
+        <span class="row__v">›</span></div></li>
+      <li><div class="row"><span class="row__t">
+        <span class="row__n">Yanlış defteri</span>
+        <span class="row__s">Sadece yanlış yaptıkların</span></span>
+        <span class="row__v">12</span></div></li>
+      <li><div class="row"><span class="row__t">
+        <span class="row__n">Bölüm denemesi</span>
+        <span class="row__s" lang="en">Cloze · Closest meaning</span></span>
+        <span class="row__v">›</span></div></li>
+    </ul>
+    <div class="sec">
+      <div class="sec__h"><span class="kunye">Son denemeler</span></div>
+      <div class="bars">
+        <span class="bl2"><span class="bl2__n">12 Eylül</span>
+          <span class="bl2__v">38 / 60</span><span class="bl2__t"><i style="width:63%"></i></span></span>
+        <span class="bl2"><span class="bl2__n">8 Eylül</span>
+          <span class="bl2__v">31 / 60</span><span class="bl2__t"><i style="width:52%"></i></span></span>
+      </div>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="nav__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 6h7v12H4zM13 6h7v12h-7z"/></svg><span>Bugün</span></button>
+    <button class="nav__i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-7a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h7z"/></svg><span>Konular</span></button>
+    <button class="nav__i" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 4h14v16H5z"/><path d="M9 10h6M9 14h4"/></svg><span>Deneme</span></button>
+  </nav>
+</div><figcaption>9 · Deneme — sınav haftası (N8)</figcaption></figure>
+</div>
+</div></body></html>

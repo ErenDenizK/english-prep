@@ -1,0 +1,200 @@
+/* english-prep · UI v4 — sıfırdan.
+   Editoryal karanlık: neredeyse tek renk, serif başlık, izli büyük harf
+   künye, tek kehribar. Her renk tools/color.mjs ile #17171A (en kötü
+   yüzey) üstünde çözüldü. İhtiyaç numaraları 10-ihtiyaclar.md §5'ten. */
+
+:root {
+  /* zemin — mürekkep siyahı, mavi arduvaz değil */
+  --bg:        #0e0e10;
+  --surface:   #17171a;   /* en kötü metin zemini; PAIRS bunu ölçer */
+  --surface-2: #1e1e22;
+  --hairline:  #302d2b;
+  --rule:      #262421;
+
+  /* mürekkep — sıcak ak, çözülmüş */
+  --ink:       #e8e5e1;   /* Lc 90 */
+  --ink-2:     #d1ccc6;   /* Lc 75 — künye, ikinci satır */
+  --ink-3:     #b8b2ab;   /* Lc 60 — yalnız taşımayan bilgi */
+
+  /* tek renk */
+  --amber:       #f1af5d;  /* işaret · metin değil · 9.40:1 */
+  --amber-text:  #eac897;  /* kehribar METİN, Lc 75 */
+  --ok:          #83d494;
+  --no:          #f07f77;
+
+  --white:     #f7f5f2;   /* dolu eylem */
+  --on-white:  #0e0e10;
+
+  --f-serif: "Source Serif 4", "Source Serif 4 Fallback", Georgia, serif;
+  --f-sans:  "Source Sans 3", "Source Sans 3 Fallback", system-ui, sans-serif;
+
+  --gut: 20px;
+  --r:   18px;
+  --r-lg: 26px;
+}
+
+* { box-sizing: border-box; }
+p,h1,h2,h3,h4,ul,ol,li,figure { margin:0; padding:0; list-style:none; }
+
+/* ============ kabuk: bar · gövde · ayak ============ */
+.app {
+  width: var(--w,390px); height: var(--h,844px);
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-sans); font-size:18px; line-height:28px;
+  display:flex; flex-direction:column; overflow:hidden; position:relative;
+}
+.bar { flex:none; height:60px; display:flex; align-items:center; gap:14px; padding:0 var(--gut); }
+.bar__t { font-family:var(--f-serif); font-size:28px; line-height:32px; letter-spacing:-0.015em; }
+.bar__sp { flex:1; }
+.ic { width:44px; height:44px; display:grid; place-items:center; color:var(--ink-2); margin-right:-10px; }
+.ic svg { width:22px; height:22px; }
+.body { flex:1; overflow-y:auto; padding:0 var(--gut) 14px; }
+.body::-webkit-scrollbar { width:0; }
+.foot { flex:none; padding:10px var(--gut) 18px; }
+
+/* ============ tip ============ */
+.h1 { font-family:var(--f-serif); font-size:36px; line-height:41px; letter-spacing:-0.02em; }
+.h2 { font-family:var(--f-serif); font-size:28px; line-height:33px; letter-spacing:-0.015em; }
+.h3 { font-family:var(--f-serif); font-size:22px; line-height:28px; letter-spacing:-0.01em; }
+.kunye {                       /* izli büyük harf künye — 15px taban */
+  font-size:15px; line-height:20px; font-weight:600;
+  letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-2);
+}
+.kunye--amber { color:var(--amber-text); }
+.meta { font-size:15px; line-height:20px; font-weight:600; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; }
+.lead { font-size:18px; line-height:28px; color:var(--ink-2); }
+.en { font-family:var(--f-serif); }
+
+/* ============ bölüm ============ */
+.sec + .sec { margin-top:30px; }
+.today + .sec { margin-top:34px; }
+.sec__h { display:flex; align-items:baseline; gap:10px; margin-bottom:14px; }
+.sec__h .kunye { flex:1; }
+
+/* ============ sınavın dört bölümü — N2 ============ */
+.exam { border-top:1px solid var(--rule); }
+.exam li { border-bottom:1px solid var(--rule); }
+.exam__row { display:flex; align-items:center; gap:14px; padding:15px 0; min-height:62px; }
+.exam__n { font-family:var(--f-serif); font-size:22px; width:34px; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; }
+.exam__t { flex:1; min-width:0; }
+.exam__name { display:block; font-size:18px; line-height:23px; font-weight:600; }
+.exam__sub { display:block; font-size:15px; line-height:19px; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; margin-top:2px; }
+.exam__v { text-align:right; }
+.exam__pt { display:block; font-size:18px; font-weight:600; font-variant-numeric:tabular-nums; }
+.exam__pt i { color:var(--ink-3); font-style:normal; font-size:15px; }
+.track { display:block; width:54px; height:3px; border-radius:3px; background:var(--hairline); margin-top:6px; margin-left:auto; overflow:hidden; }
+.track > i { display:block; height:100%; border-radius:3px; background:var(--amber); }
+.track--bos > i { background:repeating-linear-gradient(45deg,var(--hairline) 0 2px,transparent 2px 5px); width:100%; }
+
+/* ============ oturum — N1 ============ */
+.today { padding:2px 0 4px; }
+.today__k { margin-bottom:12px; }
+.today__h { margin-bottom:10px; }
+.today__p { color:var(--ink-2); font-size:18px; line-height:27px; }
+.today__m { display:flex; gap:18px; margin-top:18px; align-items:baseline; }
+.today__n { display:block; font-family:var(--f-serif); font-size:36px; line-height:38px; font-variant-numeric:tabular-nums; }
+
+/* ============ eylem ============ */
+.btn {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  width:100%; min-height:54px; border:0; border-radius:999px;
+  background:var(--white); color:var(--on-white);
+  font:inherit; font-size:17px; font-weight:600; letter-spacing:0.01em; cursor:pointer;
+}
+.btn--quiet { background:transparent; color:var(--ink); box-shadow:inset 0 0 0 1px var(--hairline); }
+.btn--sm { min-height:44px; font-size:16px; width:auto; padding:0 20px; }
+
+/* ============ çip sırası ============ */
+.chips { display:flex; gap:8px; overflow-x:auto; padding-bottom:2px; }
+.chips::-webkit-scrollbar { height:0; }
+.chip {
+  flex:none; border:0; background:transparent; color:var(--ink-3);
+  font:inherit; font-size:15px; font-weight:600; letter-spacing:0.09em;
+  text-transform:uppercase; padding:9px 16px; border-radius:999px;
+  box-shadow:inset 0 0 0 1px var(--hairline); cursor:pointer;
+}
+.chip[aria-pressed="true"] { background:var(--white); color:var(--on-white); box-shadow:none; }
+
+/* ============ liste ============ */
+.list { border-top:1px solid var(--rule); }
+.list li { border-bottom:1px solid var(--rule); }
+.row { display:flex; align-items:center; gap:16px; padding:16px 0; min-height:70px; text-align:left;
+  background:none; border:0; color:inherit; font:inherit; width:100%; cursor:pointer; }
+.row__t { flex:1; min-width:0; }
+.row__n { display:block; font-family:var(--f-serif); font-size:22px; line-height:27px; letter-spacing:-0.01em; }
+.row__s { display:block; font-size:15px; line-height:20px; color:var(--ink-3); margin-top:2px; }
+.row__v { color:var(--ink-3); font-size:15px; font-weight:600; font-variant-numeric:tabular-nums; text-align:right; }
+.row__c { width:8px; height:8px; border-radius:50%; background:var(--amber); flex:none; }
+
+/* ============ soru — N3 ============ */
+.q { font-family:var(--f-serif); font-size:20px; line-height:32px; letter-spacing:-0.003em; }
+.q .bl { display:inline-block; min-width:4.6ch; height:1.05em; vertical-align:-0.16em;
+  border-bottom:2px solid var(--amber); }
+.opts { margin-top:22px; display:grid; gap:9px; }
+.opt { position:relative; display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+  border:0; background:var(--surface); color:var(--ink); border-radius:var(--r);
+  padding:14px 16px 14px 17px; min-height:58px; font:inherit; cursor:pointer;
+  box-shadow:inset 0 0 0 1px var(--hairline); }
+.opt__k { font-size:15px; font-weight:600; color:var(--ink-3); width:18px; }
+.opt__t { display:block; font-family:var(--f-serif); font-size:19px; line-height:25px; }
+.opt__v { margin-left:auto; font-size:15px; font-weight:600; }
+.opt--ok { box-shadow:inset 0 0 0 1.5px var(--ok); } .opt--ok .opt__v { color:var(--ok); }
+.opt--no { box-shadow:inset 0 0 0 1.5px var(--no); } .opt--no .opt__v { color:var(--no); }
+.opt--dim { opacity:0.42; }
+
+/* ============ cevap — N4 ============ */
+.why { margin-top:24px; padding-top:20px; border-top:1px solid var(--rule); }
+.why__b { font-size:18px; line-height:28px; color:var(--ink-2); margin-top:8px; }
+.why__b b { color:var(--ink); font-weight:600; }
+.note { margin-top:16px; }
+.note__x { display:flex; gap:10px; font-size:15px; line-height:22px; color:var(--ink-3); margin-top:8px; }
+.note__x s { color:var(--no); text-decoration:none; font-weight:600; flex:none;
+  font-family:var(--f-serif); font-size:16px; }
+
+/* ============ ders okuyucu — N6 ============ */
+.read { font-size:19px; line-height:31px; color:var(--ink-2); }
+.read p + p { margin-top:18px; }
+.read b { color:var(--ink); font-weight:600; }
+.pull { margin:24px 0; padding-left:18px; border-left:2px solid var(--amber); }
+.pull .en { font-size:19px; line-height:28px; color:var(--ink); }
+.pull .meta { margin-top:6px; }
+.prog { display:flex; align-items:center; gap:12px; padding-top:4px; }
+.prog__t { display:block; flex:1; height:2px; background:var(--hairline); border-radius:2px; overflow:hidden; }
+.prog__t > i { display:block; height:100%; background:var(--ink-3); }
+
+/* ============ sonuç — N5 ============ */
+.score { text-align:center; padding:26px 0 8px; }
+.score__n { display:block; font-family:var(--f-serif); font-size:72px; line-height:74px; letter-spacing:-0.03em;
+  font-variant-numeric:tabular-nums; }
+.score__n i { color:var(--ink-3); font-style:normal; font-size:36px; }
+.bars { display:grid; gap:15px; }
+.bl2 { display:grid; grid-template-columns:1fr auto; gap:5px 12px; align-items:baseline; }
+.bl2__n { display:block; font-size:17px; font-weight:600; }
+.bl2__v { display:block; font-size:15px; font-weight:600; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.bl2__t { display:block; grid-column:1/-1; height:4px; border-radius:4px; background:var(--hairline); overflow:hidden; }
+.bl2__t > i { display:block; height:100%; border-radius:4px; background:var(--amber); }
+
+/* ============ alt nav ============ */
+.nav { flex:none; display:flex; padding:6px 10px 16px; border-top:1px solid var(--rule); }
+.nav__i { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px;
+  min-height:52px; padding-top:9px; border:0; background:none; color:var(--ink-3);
+  font:inherit; font-size:15px; font-weight:600; cursor:pointer; }
+.nav__i svg { width:22px; height:22px; }
+.nav__i[aria-current] { color:var(--ink); }
+
+/* ============ levha kabuğu ============ */
+body { margin:0; background:#08080a; color:#c9c6c2; font-family:var(--f-sans); padding:0 0 80px; }
+.sheet { max-width:1400px; margin:0 auto; padding:0 24px; }
+.sheet > h1 { font-family:var(--f-serif); font-size:34px; margin:38px 0 8px; letter-spacing:-0.02em; color:#eeebe7; }
+.sheet > .l { color:#8b8781; font-size:16px; line-height:26px; max-width:70ch; }
+.sheet > h2 { font-size:15px; letter-spacing:0.12em; text-transform:uppercase; color:#8b8781;
+  margin:44px 0 16px; font-weight:600; }
+.rowg { display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start; }
+figure { margin:0; } 
+figcaption { font-size:13px; color:#7a7772; margin-top:10px; letter-spacing:0.05em;
+  text-transform:uppercase; font-weight:600; }
+figcaption em { color:#f1af5d; font-style:normal; }
+.app { box-shadow:0 30px 70px -30px rgb(0 0 0 / .9); border-radius:30px; }
