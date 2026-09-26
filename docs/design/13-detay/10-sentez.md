@@ -156,3 +156,76 @@ the references' 18.4 % median is not the target, because a real share of
 it is photography this app cannot and should not have. The honest
 ceiling for this app's own content is 15–20 %, which the passing
 specimen reached.
+
+---
+
+## 7 · Third round — the remaining steps, worked through
+
+Added 2026-09-26, after going through every gap §5 listed.
+
+### Closed
+
+| gap | closed by | the finding |
+|---|---|---|
+| 2 · counter-plane had one trial value | `11-karsi-duzlem.md` | Window CIE L\* 41–58, balanced at `#7E7266`. Hue is a free parameter — chroma does not move the window. **The accent cannot be drawn on it at any value**, so the plane is structurally monochrome. |
+| 5 · light theme had no depth mechanism | `14-acik-tema-derinlik.md` | Light uses the **40.5 unused points below its surfaces**, not a surface ladder. Four-rung border ladder solved; its `rule` rung landed within one point of Radix's step 8, independently. |
+| 3 · the mosaic encoded nothing | `13-kayit-modeli.md` | Ten labelled topic rows, six cells each, darkness = encounter count, empty = never seen. Clears all three gates in both themes. The honesty tension dissolves once a **count** claim is separated from an **accuracy** claim. |
+| 4 · six screens unexamined | `12-yedi-ekran.md` | The counter-plane belongs on closed non-text graphics only. Results is the one "yes"; the quiz question is a measured "no". |
+| 6 · Block B does not fit | `15-blok-b.md` | 3.13 × overflow at 320, 1.58 × at 390, **fits at 768**. Type is worth 10 % against a 213 % overflow. Splitting does not rescue 320. It is a product decision with five costed options. |
+
+### The one that could not be closed here
+
+**Gap 1 — nobody has seen the exam.** Re-probed the egress policy on a
+fresh container: `*.edu.tr`, `osym.gov.tr`, `web.archive.org`, `w3.org`
+and MDN all still refuse CONNECT. Unchanged. The two addresses to fetch
+from an unblocked machine are named in `02-sinav-artefakti.md`.
+
+### The finding that closed two gaps at once
+
+Solving the light theme turned up something larger than the question.
+Both `--c-edge` tokens sit at CIE L\* 49.4 and 48.5; the counter-plane
+solved independently at 48.8. All three clear 3 : 1 against **both**
+grounds.
+
+That is not coincidence: an edge token is the value that holds 3 : 1
+against the surface it bounds, and the counter-plane is the value that
+holds 3 : 1 against both grounds. Same requirement, asked twice.
+
+**The counter-plane is `--c-edge`, given area.** And that is exactly
+what the flood-fill found — the eight mid-tone fragments in the nine
+rejected screens, aspect ratios 42 : 1 to 162 : 1, *are* the edge token.
+The app has owned the middle band of both themes all along and has only
+ever drawn one pixel of it.
+
+### What this round opened
+
+1. **My rejection conditions are unscoped, and that is my error.**
+   `00-v4-olcumu.md` scopes event area to the entrance and leaves the
+   colour-family and mid-tone floors applying to every screen. The quiz
+   question — the screen the learner spends most of six weeks inside —
+   scores 1.7 % mid-tone under a design that is arguably correct for it.
+   Either the floor does not belong on a task screen, or that screen
+   stays flat by design. Unresolved, and it must be resolved before the
+   numbers are used to accept or reject anything again.
+2. **The two edge tokens should collapse into one.** `#7F7367` serves
+   both themes at a minimum of 4.10. Untested against 516 `var()` uses.
+3. **Three things are still wrong with the mosaic**: it is one hue at
+   78.9 % neutral (the least neutral artefact this programme has made,
+   against a reference median of 91.6 %); its row labels wrap and break
+   the grid; its empty bottom rows read as unfinished rather than as
+   information.
+4. **`rule` and `border` carry no contrast requirement by design**, so
+   `npm run color` will never check them and nothing catches a control
+   placed on one.
+
+### Where this leaves the programme
+
+Six of seven gaps are closed and the seventh is blocked by network
+policy rather than by thinking. The diagnosis is measured, the
+counter-plane is solved and turns out to already be in the palette, two
+artefacts clear all three gates in both themes, and the item type that
+cannot fit a phone has its number.
+
+What is not done is a design. Nothing here has been drawn as a whole
+product, the conditions that would judge it need scoping first, and the
+most-used screen in the app has an open question hanging over it.
