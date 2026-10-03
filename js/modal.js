@@ -11,6 +11,8 @@
 // least destructive action, so the safe option is the one under the cursor
 // when a destructive dialog appears.
 
+import { animateElement, cancelAnimationsWithin } from "./interactions.js";
+
 /**
  * @param {{ dialogId: string, confirmId: string, cancelId: string, onConfirm: () => void }} config
  * @returns {{ open: () => void, close: () => void }}
@@ -30,16 +32,21 @@ export function createConfirmModal({ dialogId, confirmId, cancelId, onConfirm })
   // One place to act on the outcome, so dismissing with Escape and
   // dismissing with the button cannot diverge.
   dialog.addEventListener("close", () => {
+    cancelAnimationsWithin(dialog);
     if (dialog.returnValue === "confirm") {
       onConfirm();
     }
   });
 
-  // Clicking the backdrop is a click on the dialog element itself, since
-  // the box's own children cover everything inside it.
+  // Native backdrop clicks target the dialog, but so does its own padding.
+  // Only an actual point outside the dialog rectangle dismisses it.
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) {
-      dialog.close("cancel");
+      const box = dialog.getBoundingClientRect();
+      if (event.clientX < box.left || event.clientX > box.right
+          || event.clientY < box.top || event.clientY > box.bottom) {
+        dialog.close("cancel");
+      }
     }
   });
 
@@ -48,6 +55,7 @@ export function createConfirmModal({ dialogId, confirmId, cancelId, onConfirm })
       dialog.returnValue = "";
       dialog.showModal();
       cancelBtn.focus();
+      animateElement(dialog, "dialog");
     },
     close() {
       dialog.close("cancel");

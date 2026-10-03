@@ -1,8 +1,8 @@
 // The one answer-feedback block, shared by a full Test session (quiz.js)
 // and an embedded Eğitim check (education.js), so the two can never drift.
 //
-// The verdict travels on four redundant channels — a glyph, a word, a
-// background tint, and the correct answer spelled out — because colour
+// The verdict travels through a glyph, a word, an accent, and the correct
+// answer spelled out — because colour
 // alone says nothing in greyscale, in sunlight, in forced-colors mode, or
 // to the roughly 8% of men with a colour-vision deficiency. That is WCAG
 // 1.4.1, and it is also just how a verdict should read.
@@ -31,7 +31,10 @@ export function renderAnswerFeedback(question, correct, { withTip = true, select
   const block = el("div", `feedback ${correct ? "feedback--ok" : "feedback--no"}`);
 
   const verdict = el("p", "feedback__verdict");
-  verdict.appendChild(icon(correct ? "check" : "close", { size: 20 }));
+  const mark = icon(correct ? "check" : "close", { size: 20 });
+  mark.classList.add("feedback__verdict-mark");
+  mark.dataset.answerState = correct ? "correct" : "incorrect";
+  verdict.appendChild(mark);
   verdict.appendChild(document.createTextNode(correct ? "Doğru" : "Yanlış"));
   block.appendChild(verdict);
   if (!correct) {

@@ -55,7 +55,8 @@ class ReadingSystemTests(unittest.TestCase):
         heading = intro.get_by_role('heading', level=1)
         expect(heading).to_have_text('Bildiğin İngilizceyi netleştir.')
         expect(intro.locator('.onboard__progress')).to_have_text('1 / 3 · Eğitim')
-        expect(intro.locator('.onboard__preview-step')).to_have_count(3)
+        expect(intro.locator('.onboard-flow__choice')).to_have_count(3)
+        expect(intro.locator('.onboard__top [data-motion-control]')).to_have_count(0)
         expect(intro.locator('input')).to_have_count(0)
         expect(intro.get_by_role('button', name='Geri', exact=True)).to_be_hidden()
         expect(intro.get_by_role('button', name='Tanıtımı geç', exact=True)).to_be_visible()
@@ -63,7 +64,7 @@ class ReadingSystemTests(unittest.TestCase):
         expect(heading).to_have_text('Cevabı seç. Nedenini öğren.')
         expect(heading).to_be_focused()
         expect(intro.locator('.onboard__progress')).to_have_text('2 / 3 · Test')
-        expect(intro.locator('.onboard__preview-step')).to_have_count(3)
+        expect(intro.locator('.onboard-flow__choice')).to_have_count(3)
         expect(intro.locator('input')).to_have_count(0)
         intro.get_by_role('button', name='Geri', exact=True).click()
         expect(heading).to_have_text('Bildiğin İngilizceyi netleştir.')
@@ -78,6 +79,49 @@ class ReadingSystemTests(unittest.TestCase):
         self.assertTrue(self.page.url.endswith('#egitim'))
         self.assertEqual(self.page.evaluate('localStorage.getItem("englishPrep.onboarded")'), '1')
         self.assertLessEqual(self.page.evaluate('document.documentElement.scrollWidth'), 320)
+
+    def test_introduction_scenes_are_optional_keyboard_controls_without_learning_side_effects(self):
+        self.page.emulate_media(reduced_motion='no-preference')
+        self.page.goto(BASE + '/index.html#hosgeldin')
+        progress_before = self.page.evaluate('''() => ({
+          history: localStorage.getItem('englishPrep.history'),
+          lessons: localStorage.getItem('englishPrep.lessonProgress'),
+          quiz: sessionStorage.getItem('englishPrep.activeQuiz'),
+          result: sessionStorage.getItem('englishPrep.quizResult')
+        })''')
+        intro = self.page.locator('#onboard-container')
+        heading = intro.get_by_role('heading', level=1)
+        for page, scenes in [
+            (0, [('Ders', 'article'), ('Kontrol', 'check'), ('Konu', 'topics')]),
+            (1, [('Açıklama', 'reason'), ('Tekrar', 'return'), ('Soru', 'question')]),
+        ]:
+            for label, scene in scenes:
+                choice = intro.get_by_role('button', name=label, exact=True)
+                choice.focus()
+                choice.press('Space')
+                expect(choice).to_be_focused()
+                expect(choice).to_have_attribute('aria-pressed', 'true')
+                expect(intro.locator('.onboard-flow__choice[aria-pressed="true"]')).to_have_count(1)
+                expect(intro.locator('.onboard-flow')).to_have_attribute('data-scene', scene)
+                self.assertTrue(intro.locator('.onboard-flow__caption').inner_text().strip())
+            if page == 0:
+                intro.get_by_role('button', name='Kontrol', exact=True).click()
+                intro.get_by_role('button', name='Testi tanı', exact=True).click()
+                expect(heading).to_be_focused()
+        intro.get_by_role('button', name='Geri', exact=True).click()
+        expect(heading).to_be_focused()
+        expect(intro.get_by_role('button', name='Kontrol', exact=True)).to_have_attribute('aria-pressed', 'true')
+        progress_after = self.page.evaluate('''() => ({
+          history: localStorage.getItem('englishPrep.history'),
+          lessons: localStorage.getItem('englishPrep.lessonProgress'),
+          quiz: sessionStorage.getItem('englishPrep.activeQuiz'),
+          result: sessionStorage.getItem('englishPrep.quizResult')
+        })''')
+        self.assertEqual(progress_before, progress_after)
+        # Exploring the diagram neither advances the page nor gates Skip.
+        expect(intro.locator('.onboard__progress')).to_have_text('1 / 3 · Eğitim')
+        intro.get_by_role('button', name='Tanıtımı geç', exact=True).click()
+        expect(self.page.locator('#index-filter')).to_be_visible()
 
     def test_name_is_optional_trimmed_and_reused_in_profile(self):
         self.page.goto(BASE + '/index.html#hosgeldin')
@@ -201,11 +245,21 @@ class ReadingSystemTests(unittest.TestCase):
         expect(self.page.get_by_role('link', name='Çalışmaya başla', exact=True)).to_be_visible()
         # The portfolio's cached content module and controls work offline too;
         # a static hero alone would hide a missing ES-module dependency.
-        expect(self.page.locator('#tour-screen-controls button')).to_have_count(4)
-        self.page.locator('[data-tour-screen="article"]').click()
-        self.page.locator('[data-tour-viewport="wide"]').click()
-        expect(self.page.locator('#tour-caption')).to_have_text('Ders · Geniş ekran görünümü · 1440 × 1000')
-        expect(self.page.locator('#tour-image')).to_have_attribute('src', 'assets/article-wide.webp')
+        expect(self.page.locator('#study-controls [data-study-stage]')).to_have_count(3)
+        expect(self.page.locator('[data-tour-screen], [data-tour-viewport]')).to_have_count(0)
+        apply = self.page.locator('[data-study-stage="apply"]')
+        apply.click()
+        expect(apply).to_have_attribute('aria-pressed', 'true')
+        expect(apply).to_be_focused()
+        expect(self.page.locator('#study-title')).to_have_text('Bir seçeneğin ötesine geç.')
+        expect(self.page.locator('#study-image')).to_have_attribute('src', 'assets/test-phone.webp')
+        expect(self.page.locator('#study-wide-source')).to_have_attribute('srcset', 'assets/test-wide.webp')
+        continuity = self.page.locator('[data-architecture="continuity"]')
+        continuity.click()
+        expect(continuity).to_have_attribute('aria-pressed', 'true')
+        expect(continuity).to_be_focused()
+        expect(self.page.locator('#architecture-title')).to_have_text('Kaldığın yerin de bir mimarisi var.')
+        expect(self.page.locator('#architecture-body')).to_contain_text('localStorage')
         expect(self.page.locator('#engineering-heading')).to_be_visible()
 
     def test_unavailable_cache_storage_does_not_block_online_reading(self):
@@ -305,7 +359,8 @@ class ReadingSystemTests(unittest.TestCase):
             expect(self.page.locator(selector)).to_be_visible()
             self.assertTrue(self.page.evaluate('document.querySelector(".ambient") === window.__ambientOnArrival'))
             self.assert_ambient_running()
-            expect(self.page.locator('#shell-header [data-motion-control]')).to_be_visible()
+            expect(self.page.locator('#shell-header [data-motion-control]')).to_have_count(0)
+            expect(self.page.locator('.motion-footer [data-motion-control]')).to_have_count(1)
         # Foreground answer cards remain opaque even though the canvas has aura.
         self.open_tenant_question()
         self.assert_ambient_running()
@@ -317,15 +372,21 @@ class ReadingSystemTests(unittest.TestCase):
           context.fillRect(0, 0, 1, 1);
           return context.getImageData(0, 0, 1, 1).data[3] === 255;
         })'''))
-        control = self.page.locator('#shell-header [data-motion-control]')
+        expect(self.page.locator('#shell-header [data-motion-control]')).to_have_count(0)
+        control = self.page.locator('.motion-footer [data-motion-control]')
+        control.scroll_into_view_if_needed()
         expect(control).to_have_attribute('aria-pressed', 'true')
         question = self.page.locator('#question-stem').inner_text()
+        route = self.page.url
+        session = self.page.evaluate('sessionStorage.getItem("englishPrep.activeQuiz")')
         scroll = self.page.locator('#shell-scroll').evaluate('node => node.scrollTop')
         control.click()
         expect(control).to_have_attribute('aria-pressed', 'false')
         expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
         self.assertEqual(self.page.evaluate('localStorage.getItem("englishPrep.motion")'), 'off')
         expect(self.page.locator('#question-stem')).to_have_text(question)
+        self.assertEqual(self.page.url, route)
+        self.assertEqual(self.page.evaluate('sessionStorage.getItem("englishPrep.activeQuiz")'), session)
         self.assertEqual(self.page.locator('#shell-scroll').evaluate('node => node.scrollTop'), scroll)
         self.assertFalse(self.page.locator('.ambient__field').evaluate_all('''nodes =>
           nodes.some(node => node.getAnimations().some(animation => animation.playState === 'running'))
@@ -333,6 +394,7 @@ class ReadingSystemTests(unittest.TestCase):
         self.page.reload()
         expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
         self.page.goto(BASE + '/index.html#profil')
+        expect(self.page.locator('#shell-header [data-motion-control]')).to_have_count(0)
         controls = self.page.locator('[data-motion-control]')
         expect(controls).to_have_count(2)
         self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-pressed"))'), ['false', 'false'])

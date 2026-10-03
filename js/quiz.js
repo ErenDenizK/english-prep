@@ -22,6 +22,7 @@ import { el, clear, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
 import { haptic } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
+import { animateElement, cancelAnimationsWithin } from "./interactions.js";
 
 const container = document.getElementById("quiz-container");
 const actionBar = createActionBar("quiz-bar");
@@ -226,7 +227,7 @@ function advance() {
   state.answered = false;
   state.optionsHidden = getSetting(SETTINGS.THINK_FIRST);
   saveProgress();
-  renderQuestion();
+  renderQuestion({ enter: true });
   scrollToTop();
 }
 
@@ -270,13 +271,16 @@ function finishQuiz({ upTo } = {}) {
   window.location.replace("results.html");
 }
 
-function renderQuestion() {
+function renderQuestion({ enter = false, reveal = false } = {}) {
   const question = state.session[state.currentIndex];
   const selected = state.selectedAnswers[state.currentIndex] ?? null;
 
+  cancelAnimationsWithin(container);
   clear(container);
   setQuizBar();
-  const page = el("div", "stack stack--loose animate-in");
+  // Only a different question enters. Committing an answer must not fade
+  // the prompt the learner has just read a second time.
+  const page = el("div", `stack stack--loose${enter ? " animate-in quiz-step--enter" : ""}`);
 
   const block = el("div", "stack");
   // The prompt on a card of its own: the question is the object the
@@ -297,7 +301,7 @@ function renderQuestion() {
       state.optionsHidden = false;
       saveProgress();
       announce("Şıklar göründü.");
-      renderQuestion();
+      renderQuestion({ reveal: true });
       // The learner asked for the options, so put them under the thumb
       // rather than making them look for what just appeared.
       document.querySelector(".option")?.focus({ preventScroll: true });
@@ -319,6 +323,7 @@ function renderQuestion() {
 
   page.appendChild(block);
   container.appendChild(page);
+  if (reveal) animateElement(block.querySelector(".options"), "reveal");
 
   // The bar is fixed, so answering never moves the button — but on a short
   // screen the explanation itself can still land below the fold. "nearest"
@@ -446,7 +451,7 @@ async function init() {
     if (!restored) clearQuizResult();
     document.addEventListener("keydown", handleKeydown);
     window.addEventListener("pagehide", recordPartialOnLeave);
-    renderQuestion();
+    renderQuestion({ enter: true });
     saveProgress();
   } catch (error) {
     console.error(error);

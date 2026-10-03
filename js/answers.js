@@ -11,15 +11,17 @@ import { el } from "./dom.js";
 import { icon } from "./icons.js";
 import { isCorrectAnswer } from "./quiz-engine.js";
 
+let groupCount = 0;
+
 /**
  * @param {{options: string[], correctAnswer: string}} question
  * @param {{selected?: string|null, answered?: boolean, onSelect?: (option: string) => void}} [state]
  * @returns {HTMLDivElement}
  */
 export function renderOptions(question, { selected = null, answered = false, onSelect, labelledBy = "question-stem" } = {}) {
-  // Cards in a column with air between them: each option is an object
-  // with an edge, and the verdict fills it.
+  // The reserved key/text/mark columns keep the answer stable at commit.
   const wrap = el("div", "options");
+  const groupId = ++groupCount;
 
   // §8.7, WCAG 1.3.1: a question and its options are a group. Without
   // this a screen reader reads four unrelated buttons and never says
@@ -67,14 +69,25 @@ export function renderOptions(question, { selected = null, answered = false, onS
         button.classList.add("option--no");
       }
       if (chosen) {
-        // The one the learner pressed: the wrong one shakes, the right
-        // one pops (css/style.css, utilities).
+        // A styling hook, never a request to move or shake the answer.
         button.classList.add("option--picked");
       }
       if (correct || chosen) {
         const mark = el("span", "option__mark");
+        mark.dataset.answerState = correct ? "correct" : "incorrect";
         mark.appendChild(icon(correct ? "check" : "close", { size: 20 }));
         button.appendChild(mark);
+
+        // Keep this outside the button: the answer's accessible name and
+        // its English language remain untouched, while revisiting it also
+        // announces the committed state in Turkish.
+        const description = el("span", "visually-hidden answer-state",
+          correct ? (chosen ? "Doğru cevap. Senin cevabın." : "Doğru cevap.")
+            : "Senin cevabın. Yanlış.");
+        description.id = `answer-state-${groupId}-${index}`;
+        description.lang = "tr";
+        button.setAttribute("aria-describedby", description.id);
+        wrap.appendChild(description);
       }
       button.setAttribute("aria-disabled", "true");
     } else if (onSelect) {

@@ -208,6 +208,43 @@ const ICONS = {
     ["circle", { cx: "12", cy: "12", r: "6" }],
     ["circle", { cx: "12", cy: "12", r: "2" }],
   ],
+
+  // Saved reading position: open bottom makes the bookmark recognisable even
+  // at the small end of the set. x 6…18, y 3…21.
+  bookmark: [["path", { d: "M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16l-6-4z" }]],
+
+  // Three settings rails with offset knobs; the rail gaps leave the knobs
+  // legible without increasing their stroke or adding a filled background.
+  sliders: [
+    ["path", { d: "M4 6h4m4 0h8M4 12h10m4 0h2M4 18h4m4 0h8" }],
+    ["circle", { cx: "10", cy: "6", r: "2" }],
+    ["circle", { cx: "16", cy: "12", r: "2" }],
+    ["circle", { cx: "10", cy: "18", r: "2" }],
+  ],
+
+  // Local backup archive: lid, box and one handle, with no cloud metaphor.
+  archive: [
+    ["path", { d: "M5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M3 3h18v5H3zM10 12h4" }],
+  ],
+
+  // The same application on a desktop and phone. Separate silhouettes retain
+  // meaning in monochrome; neither represents a claim of device certification.
+  devices: [
+    ["path", { d: "M12 17H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2M7 21h5M9 17v4" }],
+    ["rect", { x: "15", y: "9", width: "6", height: "12", rx: "2" }],
+  ],
+
+  // A deliberate path from the article to a check and back to study.
+  route: [
+    ["circle", { cx: "5", cy: "5", r: "2" }],
+    ["circle", { cx: "19", cy: "19", r: "2" }],
+    ["path", { d: "M11 5h5a4 4 0 0 1 0 8H8a4 4 0 0 0 0 8h3" }],
+  ],
+
+  // Parallel structures and their boundary: the app teaches distinctions.
+  compare: [
+    ["path", { d: "M12 3v18M3 7h5M3 12h5M3 17h5M16 7h5M16 12h5M16 17h5" }],
+  ],
 };
 
 /** Every name `icon()` will accept, in drawing order. */
@@ -245,6 +282,8 @@ export function icon(name, options = {}) {
   });
   svg.setAttribute("width", String(size));
   svg.setAttribute("height", String(size));
+  svg.setAttribute("class", "icon");
+  svg.dataset.icon = name;
 
   if (options.title) {
     svg.setAttribute("role", "img");

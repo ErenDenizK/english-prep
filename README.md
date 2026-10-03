@@ -1,6 +1,6 @@
 # English Prep
 
-**v0.68 · Margin / Sakura:** [open the redesigned app](index.html),
+**v0.69 · Margin / Sakura:** [open the redesigned app](index.html),
 [compare the full original](original/index.html), or inspect its
 [unchanged runtime source archive](original/source-39dcd46.zip). This version
 uses the full `test` source at `39dcd46`; the earlier `main` prototype
@@ -19,14 +19,18 @@ The detailed refinement record includes the [element inventory](docs/audit/eleme
 [type and color measurements](docs/audit/type-color.md),
 [interaction audit](docs/audit/interaction-accessibility.md), and
 [verified UI research](docs/research/2026-10-ui-principles.md).
-The current [ADR 007](docs/adr/007-sakura-and-purposeful-motion.md),
-[Sakura palette research](docs/research/2026-10-sakura-palette.md),
-[motion research](docs/research/2026-10-motion-language.md) and
-[interface diagnosis](docs/audit/v0.68-interface-diagnosis.md) connect evidence to decisions.
+The current [ADR 008](docs/adr/008-explorable-interactions.md),
+[answer-status color research](docs/research/2026-10-status-colors-v069.md),
+[interaction-motion research](docs/research/2026-10-interaction-motion-v069.md), and
+[component review](docs/audit/v0.69-component-review.md) connect evidence to decisions.
+[ADR 007](docs/adr/007-sakura-and-purposeful-motion.md) and its
+[Sakura palette research](docs/research/2026-10-sakura-palette.md) retain the
+background and brand foundation; ADR 008 supersedes its answer-status hues,
+header motion control and screenshot gallery.
 The previous [v0.67 review](docs/audit/readability-v0.67.md) and
 [ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md) preserve the earlier
-comparison; its reading typography remains applicable, while ADR 007
-supersedes its palette, atmosphere and introduction.
+comparison; its reading typography remains applicable, while the later ADRs
+supersede its palette, atmosphere and introduction.
 The [component catalogue](docs/components.html) uses the production stylesheet.
 The hosted versions share the browser origin's existing local progress
 and settings; their offline shell/content caches are isolated.
@@ -107,8 +111,9 @@ wrong option in the app.
 what your recent accuracy is and what is in that average, your weakest
 categories, grouped study/appearance preferences, backup/restore, and exam
 coverage limits. Completion and recent accuracy use labeled linear metrics;
-no test data means an explicit empty state. The motion control is also
-available in the header, including during lessons and questions.
+no test data means an explicit empty state. The shared motion preference is
+also available at the bottom of the scrolling content, including during
+lessons and questions; the header has no motion button.
 
 Nothing is sent anywhere.
 
@@ -232,8 +237,10 @@ sw.js                 Service worker: versioned shell, unversioned content
 js/                   ES modules — read each file's header comment
 css/style.css         Inherited layout and components, in cascade layers
 css/editorial.css     Margin presentation and theme extension
+css/interactions.css  Shared control, icon and interaction states
+css/onboarding.css    Interactive three-page introduction
 assets/fonts/         Self-hosted Inter UI font
-about/                Product/engineering portfolio, editable content and gallery
+about/                Editable product and architecture stories with real captures
 data/manifest.json    Topic index
 data/<topic>/         One JSON file per topic: lessons and questions
 tools/                Validator, formatter, colour maths, browser sweep
@@ -255,25 +262,31 @@ what shipped.
 ## Design
 
 Margin opens in dark mode with plum-neutral surfaces, cherry/sakura brand
-accents, iris confirmation markers and apricot retry markers. Answer text
-stays neutral and readable; color is accompanied by marks and verdict words.
+accents, muted jade confirmation and warm coral error markers. Answer text
+and surfaces stay neutral; color accompanies check/cross shapes, literal
+verdicts and accessible descriptions when revisiting answered options.
 Inter's distinct heading, pattern, prose, support and control roles continue
 from ADR 006. Explicit light and System preferences remain available.
 
-[ADR 007](docs/adr/007-sakura-and-purposeful-motion.md) defines the current
-palette and motion system. Three bounded light fields appear behind every
-route, including reading. They move slowly, can be paused in the header or
-Profile, pause in hidden tabs, and respect reduced motion. Foreground cards
-remain opaque. Interaction roles use 100ms press feedback, 180ms reveal,
-220ms route/tutorial cues and a local 420ms completion emphasis. Inputs,
-scoring and navigation commit immediately; no native View Transition blocks
-interaction or adds a second route effect.
+[ADR 008](docs/adr/008-explorable-interactions.md) defines the current
+interaction and answer-status system. Three bounded light fields appear behind
+every route, including reading. Profile and the content footer share a persistent
+motion preference; hidden pages pause decoration and OS reduced motion wins.
+Foreground cards remain opaque. Shared roles use 100ms press feedback, 160ms
+reveals, 220ms route/tutorial cues and 360ms completion emphasis. CSS owns
+ordinary control states; `js/interactions.js` owns cancellable finite effects.
+Inputs, scoring and navigation commit immediately. Answering does not replay
+the question's entrance; no full-page transition overlay blocks interaction.
 
-The optional three-page introduction demonstrates Education, Test, then an
-optional name/start step. It is skippable and never intercepts deep links.
+The shared brand supports compact `ep.` and full `english prep.` signatures.
+The optional three-page introduction lets learners explore Education and Test
+diagrams, then optionally enter a name. It is skippable and never intercepts deep links.
 Resume, profile and result metrics identify what their actual numbers mean.
-The [product/engineering portfolio](about/) has user-controlled phone/wide
-screen examples and expandable content in `about/content.js`; the
+The [product/engineering portfolio](about/) has selectable Read/Apply/Return and
+architecture stories, with real responsive screenshots inside those explanations.
+There is no separate screenshot gallery. A bounded decorative artwork responds
+to fine-pointer movement; text and controls remain stable and touch/keyboard
+access does not depend on hover. Content is expandable in `about/content.js`; the
 [authoring guide](about/README.md) explains safe copy, section and image edits.
 
 `npm run color` checks current production roles, action gradients and bounded

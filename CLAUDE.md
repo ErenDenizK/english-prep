@@ -2,32 +2,46 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.68)
+## Current presentation (v0.69)
 
-For current UI work, [ADR 007](docs/adr/007-sakura-and-purposeful-motion.md)
+For current UI work, [ADR 008](docs/adr/008-explorable-interactions.md)
 and [Margin system](docs/margin-design-system.md) supersede the historical
 visual values below. ADR 006's role-based Inter reading typography remains;
 its cool-neutral palette, finite atmosphere and one-page introduction are
-previous decisions. Current presentation uses measured Sakura/cherry accents,
-iris confirmation and apricot retry markers on plum-neutral surfaces.
+previous decisions. ADR 007's Sakura/cherry brand and plum-neutral surfaces
+remain; muted jade confirmation and warm coral error markers replace its
+iris/apricot answer states. Check/cross shapes, literal verdicts and linked
+Turkish state descriptions carry meaning while English answers stay neutral.
 
-Three bounded aurora fields appear across all routes. Header/Profile controls
-pause them; reduced motion and hidden-page handling are respected. Motion
-roles are 100/180/220/420ms; input and navigation commit immediately. Route
-entry uses one CSS cue, with no native View Transition snapshot overlay.
-The optional three-page introduction explains Education, Test and an optional
-name. Unread pretests start open but remain skippable; their height is excluded
+Three bounded aurora fields appear across all routes. Profile and a quiet
+content-footer control share the persistent motion setting; no top motion
+button remains. Reduced motion and hidden-page handling are respected.
+Motion roles are 100/160/220/360ms; input, focus, scoring and navigation commit
+immediately. `js/interactions.js` owns cancellable finite effects; CSS owns
+control states and one route cue, without a native View Transition snapshot.
+Answering never replays the whole question's entrance. Shared `js/brand.js`
+provides compact `ep.`, full `english prep.` and responsive signatures.
+The optional three-page introduction has explorable Education/Test diagrams
+and an optional name. Unread pretests start open but remain skippable; their height is excluded
 from article progress. Resume/profile/results use labeled linear metrics.
-Settings are grouped; `/about/` has editable feature/engineering data and a
-phone/wide screenshot gallery. See [About authoring](about/README.md).
+Settings are grouped; `/about/` has editable study and architecture stories
+with real responsive captures, rather than a separate screenshot gallery.
+Only its decorative artwork follows a fine pointer; text stays stable and
+touch/keyboard access is complete. See [About authoring](about/README.md).
 
 Exam dates, daily goals, streaks and absence reminders are no longer UI.
 Their stored values remain backward-compatible. Articles and tests, source
 material, fixed-shell behavior, no runtime dependencies and the preserved
 original are unchanged. Current regression coverage includes
-`tests/reading_system.py` and `tests/pretest_progress_browser.py`; installation
+`tests/reading_system.py`, `tests/pretest_progress_browser.py`,
+`tests/component_interactions_browser.py` and `tests/about_interaction_browser.py`; installation
 support is in `js/install.js`. Historical design/UI2/UI3 descriptions below
 remain context for the inherited source, not authority to reinstate old visuals.
+The [status-color research](docs/research/2026-10-status-colors-v069.md),
+[motion research](docs/research/2026-10-interaction-motion-v069.md) and
+[component review](docs/audit/v0.69-component-review.md) distinguish source
+evidence and browser measurements from design choices. No physical-device
+certification or participant usability study is claimed.
 
 ## What this is
 
@@ -165,7 +179,7 @@ js/
                         the one live region — shared by all three
   widgets.js          Ring, monogram, avatar, choice group, count-up,
                         haptic — the UI 3 objects
-  onboarding.js       The first run (#hosgeldin): four steps, skippable
+  onboarding.js       Optional #hosgeldin: three pages, explorable flows and name
   celebrate.js        Confetti on a canvas, for a score that earned it
   answers.js          The answer options, shared by Test and Eğitim checks
   feedback.js         The one answer-feedback block, likewise

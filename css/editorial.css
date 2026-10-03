@@ -24,10 +24,10 @@
   --accent-text: #efb1cb;
   --accent-tint: #30222d;
   --focus: #d4b5f8;
-  --ok: #bbb6f2;
-  --no: #e9bb95;
-  --ok-tint: #262432;
-  --no-tint: #2f2725;
+  --ok: #96cbb8;
+  --no: #e5aaa5;
+  --ok-tint: #202b28;
+  --no-tint: #302326;
   --editorial-mark: #efb1cb;
   --editorial-wash: #211b24;
   --editorial-note: #c6bcc6;
@@ -92,7 +92,9 @@
   --d-press: 100ms;
   --d-feedback: 180ms;
   --d-route: 220ms;
-  --d-complete: 420ms;
+  --d-complete: 360ms;
+  --d-control: 100ms;
+  --d-reveal: 160ms;
   --d-enter: var(--d-route);
 }
 @media (prefers-color-scheme: light) {
@@ -110,10 +112,10 @@
     --accent-text: #922e55;
     --accent-tint: #f6e7ed;
     --focus: #7848af;
-    --ok: #654bb0;
-    --no: #92501f;
-    --ok-tint: #eeebf9;
-    --no-tint: #f7eee5;
+    --ok: #2b6557;
+    --no: #9f3f48;
+    --ok-tint: #eaf3ef;
+    --no-tint: #f8eceb;
     --editorial-mark: #922e55;
     --editorial-wash: #f6eff5;
     --editorial-note: #625864;
@@ -137,10 +139,10 @@
   --accent-text: #922e55;
   --accent-tint: #f6e7ed;
   --focus: #7848af;
-  --ok: #654bb0;
-  --no: #92501f;
-  --ok-tint: #eeebf9;
-  --no-tint: #f7eee5;
+  --ok: #2b6557;
+  --no: #9f3f48;
+  --ok-tint: #eaf3ef;
+  --no-tint: #f8eceb;
   --editorial-mark: #922e55;
   --editorial-wash: #f6eff5;
   --editorial-note: #625864;
