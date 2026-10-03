@@ -11,6 +11,7 @@
 // printable characters type ahead, all as a real <select> does.
 
 import { icon } from "./icons.js";
+import { animateElement, cancelAnimationsWithin } from "./interactions.js";
 
 let instanceCount = 0;
 
@@ -53,7 +54,9 @@ export function createListbox({ container, options, value, onChange, labelledBy 
   // no hint of what it is set to.
   trigger.setAttribute("aria-labelledby", [labelledBy, triggerLabel.id].filter(Boolean).join(" "));
 
-  trigger.append(triggerLabel, icon("chevron-down", { size: 20 }));
+  const chevron = icon("chevron-down", { size: 20 });
+  chevron.classList.add("listbox__chevron");
+  trigger.append(triggerLabel, chevron);
 
   const menu = document.createElement("ul");
   menu.id = `${id}-menu`;
@@ -82,7 +85,14 @@ export function createListbox({ container, options, value, onChange, labelledBy 
       item.id = optionId(index);
       item.className = "listbox__option";
       item.setAttribute("role", "option");
-      item.textContent = option.label;
+      const label = document.createElement("span");
+      label.className = "listbox__option-label";
+      label.textContent = option.label;
+      const mark = document.createElement("span");
+      mark.className = "listbox__option-mark";
+      mark.setAttribute("aria-hidden", "true");
+      if (option.value === currentValue) mark.appendChild(icon("check", { size: 20 }));
+      item.append(label, mark);
       item.setAttribute("aria-selected", String(option.value === currentValue));
       item.classList.toggle("listbox__option--active", isOpen() && index === activeIndex);
       // Pointer, not click: on touch this fires before the document-level
@@ -137,6 +147,7 @@ export function createListbox({ container, options, value, onChange, labelledBy 
     const above = Math.max(0, anchor.top - top - gap);
     const below = Math.max(0, bottom - anchor.bottom - gap);
     const openAbove = below < desiredHeight && above > below;
+    menu.dataset.side = openAbove ? "top" : "bottom";
     const room = openAbove ? above : below;
     menu.style.maxHeight = `${Math.min(desiredHeight, room)}px`;
     const box = menu.getBoundingClientRect();
@@ -227,6 +238,7 @@ export function createListbox({ container, options, value, onChange, labelledBy 
     if (usesPopover) menu.showPopover();
     else document.body.appendChild(menu);
     positionMenu();
+    animateElement(menu, "menu", { direction: menu.dataset.side });
     document.addEventListener("pointerdown", handleOutsidePointer, true);
     watchPosition(true);
   }
@@ -236,6 +248,7 @@ export function createListbox({ container, options, value, onChange, labelledBy 
       return;
     }
     watchPosition(false);
+    cancelAnimationsWithin(menu);
     if (usesPopover) {
       if (menu.matches(":popover-open")) menu.hidePopover();
     } else container.appendChild(menu);

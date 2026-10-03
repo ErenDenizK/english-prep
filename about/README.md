@@ -1,126 +1,148 @@
 # Editing the English Prep product page
 
-`/about/` is a static page. There is no build, package installation or CMS.
-Run the app's normal local HTTP server and open `about/` to preview changes.
-
-## Where to edit
+`/about/` is a static product and engineering story. No build, package install
+or CMS is needed. Serve the repository and open `about/` to preview edits.
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Page title/description, hero, main section placement, final invitation, footer and no-JavaScript fallback. |
-| `content.js` | Product tour copy, study stories, features, engineering explanations, questions and optional new sections. |
-| `about.js` | Shared rendering and accessible screenshot selection. Routine copy changes do not require editing this. |
-| `about.css` | Responsive portfolio layout. App palette and atmosphere come from `../css/editorial.css`. |
-| `assets/` | Real application viewport captures, not mock screen contents. |
+| `index.html` | Metadata, hero, section placement, static fallback, final invitation and footer. |
+| `content.js` | Study stages, architecture, features, engineering details, questions and extra sections. |
+| `about.js` | Safe DOM rendering and accessible story/architecture selection. |
+| `about.css` | Responsive portfolio layout using the app's measured color tokens. |
+| `assets/` | Genuine application viewport captures with demonstration data. |
 
-Use plain text strings in `content.js`. Text is inserted with `textContent`; HTML
-and Markdown markup will intentionally display literally. Turkish copy belongs
-in this page; existing English grammar titles can be named where relevant.
+Use plain strings. `textContent` renders the copy; HTML/Markdown intentionally
+appears literally. Turkish is the portfolio language. Real English grammar
+names may appear where useful.
 
-## Add a feature
+## Edit the study story
 
-Append another object to `everydayFeatures.items`:
+There is no screenshot gallery or screen-size selector. Three learner actions
+explain the product: read, apply and return. Their real screenshots support the
+story. `studyStages` is editable and accepts additional stages:
 
 ```js
 {
-  label: "Kısa kategori",
-  title: "Kullanıcının elde ettiği yarar.",
-  body: "Uygulamanın gerçekten yaptığı şeyi anlatan bir veya iki cümle.",
-  action: { label: "İlgili bölümü aç", href: "../index.html#egitim" },
+  id: "read",                         // Unique, stable selector
+  label: "Oku",                       // Short button label
+  icon: "book",                       // Name in ../js/icons.js
+  capture: "article",                 // Existing actual capture pair
+  title: "Kulağına doğru gelenin nedenini bul.",
+  body: "Bu adımda kullanıcının ne yaptığını anlat.",
+  detail: "İsteğe bağlı kısa bir ayrıntı veya önemli sınır.",
+  alt: "Ekran görüntüsünün sade açıklaması",
+  action: { label: "Bir derse göz at", href: "../index.html#egitim/..." },
 },
 ```
 
-The action is optional. The grid automatically wraps one, two or three columns;
-it has no fixed item count or fixed text height. Longer titles and descriptions
-wrap instead of being truncated. A link may be relative or HTTP(S). Never add
-unimplemented feature claims, guessed usage figures or fabricated testimonials.
+Controls are ordinary buttons with pressed state. Enter/Space and touch work;
+focus stays on the chosen control. The image and copy update immediately, and
+a short status announces the selected stage. No automatic rotation, artificial
+quiz demo, iframe, swiping requirement or application-storage mutation exists.
+Always link to a real action; results cannot be opened without a real session.
 
-## Add a complete section
+The browser chooses `assets/<capture>-phone.webp` below700px and the corresponding
+`assets/<capture>-wide.webp` above that threshold through a native `picture`.
+The phone image is a390×844 web viewport; wide is1440×1000. These dimensions are
+not a claim of physical iPhone/Safari testing. The phone image is deliberately
+cropped as an illustration; all essential claims remain in ordinary page copy.
 
-Append to `extraSections` at the bottom of `content.js`:
-
-```js
-export const extraSections = [
-  {
-    eyebrow: "Yeni bölümün kısa etiketi",
-    title: "Bölüm başlığı.",
-    intro: "Bu bölümün ne anlattığını açıklayan giriş.",
-    items: [
-      { label: "İsteğe bağlı etiket", title: "Alt başlık", body: "Açıklama." },
-      { title: "İkinci alt başlık", body: "Başka bir açıklama." },
-    ],
-  },
-];
-```
-
-The renderer supplies a unique section heading ID. Additional sections appear
-between the feature list and engineering narrative. To write more engineering
-content, simply append to `engineering.items`; to add a secondary question,
-append a `{ title, body }` object to `questions`. Questions use native HTML
-`details` and work with keyboard controls without a custom accordion script.
-
-## Product tour and images
-
-Each `tourScreens` entry has a unique `id`, label, title, body, detail, action and
-image description (`alt`). Its two images are named:
-
-```
-assets/<id>-phone.webp   390 × 844
-assets/<id>-wide.webp    1440 × 1000
-```
-
-Current IDs: `education`, `article`, `test`, `results`. Add both captures before
-adding a new entry. If capture dimensions change, update `viewportSpecs` in
-`about.js` and corresponding static fallback/hero dimensions in `index.html`.
-The phone image shows a phone-size web viewport; do not label it as verified
-physical iPhone/Safari behavior unless that was actually tested.
-
-Use real local application captures with demonstration data. Never capture a
-person's private history. `tools/capture-portfolio.py` controls the fixture and
-asset generation. Run it against a local HTTP server, using its `--base-url`
-option if your server uses a different address. The capture script uses Python
-Playwright and Pillow as developer tools; neither is an application dependency.
-The gallery labels progress/results as demonstration state.
-Do not replace screenshots with HTML imitations of features that do not exist.
+Actual capture pairs: `education`, `article`, `test`, `results`. The hero uses
+Education and Article; story uses Article, Test and Results. Keep both files
+when adding a new capture. If dimensions change, update the `source`/`img`
+attributes and frame ratio in `index.html` and `about.css`.
 
 ```bash
 python3 tools/capture-portfolio.py --base-url http://127.0.0.1:8000
 ```
 
-Images do not auto-rotate. The screen and viewport buttons retain focus and
-announce selection; all product benefits are also visible as ordinary text.
-An iframe is deliberately avoided because it would run a second copy of the
-application against a visitor's real local progress. GIFs are not required. If
-video is added later, include user controls, a poster and equivalent text.
+The capture script uses Python Playwright/Pillow only as developer tools. Use
+its demonstration fixture, never personal history. Do not replace captures with
+invented UI or learning content. Images cache when visited; they are optional
+media, not mandatory service-worker startup assets.
 
-## Palette, motion and future releases
+## Edit architecture
 
-The shared palette and motion decision is
-`docs/adr/007-sakura-and-purposeful-motion.md`. The portfolio reads its tokens
-from the actual app stylesheet. Avoid adding arbitrary hex colors for prose or
-controls in `about.css`; new semantic pairs need measurement with the app's
-contrast tooling.
+`architecture` contains selectable explanatory nodes. Each has `id`, `label`,
+`icon`, `subtitle`, `title`, `body`, `detail` and a real source `action`. Appending
+an entry adds a button and corresponding panel content; no renderer change is
+needed. Keep ids unique and explanations factual. The selected node has a clear
+pressed state and a source link. Core local-data/offline limits remain visible
+in feature copy, even if the visitor never changes architecture selection.
 
-The shared `motion.js` module supplies the header toggle and three ambient
-fields. It respects reduced motion, a saved preference, and hidden-page state.
-Finite entry and gallery effects are canceled when motion is stopped; controls
-and content remain available immediately. Do not add autoplay carousels,
-parallax or hidden-until-scroll content.
+`engineering.items` supplies compact native disclosures below this diagram.
+These are the place for supplementary technical detail. `engineering.links`
+points to source, design decisions and current validation. Avoid hardcoded test
+counts that will become stale after the next release.
 
-When adding a JS or CSS file, add it to the main `sw.js` shell list and bump the
-release version with the release owner. Gallery images are optional media; they
-should not all be precached as mandatory app startup assets. Keep the live
-`data/manifest.json` counts accurate. If the material changes, also update the
-three corpus-count fallbacks in `index.html`.
+## Add a feature or section
 
-## Before publishing edits
+Append to `everydayFeatures.items`:
 
-- Inspect 320px, 390px, tablet and wide views, plus enlarged text.
-- Follow every new link from `/english-prep/about/`, not just from domain root.
-- Try the screenshot choices with Tab, Enter and Space; pressed state and image
-  caption should agree, and focus should stay on the activated control.
-- Turn off motion and enable the OS reduced-motion preference.
-- Add an extra item and a long title temporarily; look for overflow and clipping.
-- Check that asset dimensions, alternate text and screenshot contents match.
-- Keep PWA/offline/local-data limits accurate. Measured accessibility checks do
-  not imply independent certification or physical-device testing.
+```js
+{
+  label: "Kısa kategori", icon: "bookmark",
+  title: "Kullanıcının elde ettiği yarar.",
+  body: "Uygulamanın gerçekten yaptığı şeyin açıklaması.",
+  action: { label: "İlgili bölümü aç", href: "../index.html#egitim" },
+},
+```
+
+The action is optional. The grid grows from one to two/three columns. No fixed
+text height, truncation or item count is assumed. Unknown icon names fall back
+to the shared spark; choose a meaningful existing icon when possible. All links
+must be relative or HTTP(S). Do not add unimplemented claims or invented usage
+figures/testimonials.
+
+`extraSections` extends the page between features and engineering:
+
+```js
+export const extraSections = [{
+  eyebrow: "Yeni bölüm", title: "Bölüm başlığı.", intro: "Kısa giriş.",
+  items: [
+    { label: "Etiket", title: "Alt başlık", body: "Açıklama.", icon: "book" },
+    { title: "İkinci alt başlık", body: "Başka bir açıklama." },
+  ],
+}];
+```
+
+The renderer supplies unique heading IDs. Questions accept `{title, body}`
+objects in `questions` and use native `details`. Long copy wraps; appended items
+reflow without a layout rewrite. If corpus totals change, update static HTML
+fallbacks; live totals are read from `data/manifest.json`.
+
+## Branding and motion
+
+The masthead/footer use the full `english prep.` wordmark; the closing invitation
+uses compact `ep.`. Both use `../js/brand.js`, one type treatment and a cherry dot.
+The system is documented in [ADR008](../docs/adr/008-explorable-interactions.md).
+Shared `interactions.js` handles finite effects and pointer-scene lifecycle;
+`motion.js` owns the preference, background and reduced-motion behavior.
+
+The hero's decorative image plane responds only to a fine hover pointer, with
+at most2degrees tilt and6px displacement. No paragraph, headline or click target
+moves in response to the pointer. The reflection is bounded behind the artwork.
+Touch scroll/zoom stay native. There is no permanent JavaScript animation loop.
+
+Story selection, architecture marks, disclosure reveals and link arrows use
+shared durations. Content and controls never wait for animation. No section is
+hidden until scroll; the visibility observer only adds a finite accent to
+already visible content. The **Hareket** preference is in the footer, not the
+header. It persists, stops local effects and follows OS reduced motion. A hidden
+page pauses decoration. Do not introduce autoplay carousels or moving text.
+
+## Before publishing
+
+- Check320,390,768 and1440px, enlarged text and a long appended item.
+- Tab through story and architecture buttons; confirm focus, selected label,
+  displayed content and source/action links agree.
+- Confirm there is no screenshot gallery/viewport chooser or header pause.
+- Test fine-pointer response, pointer leave and touch scrolling. Turn motion off,
+  reload, and enable OS reduced motion; the content must remain usable.
+- Check current captures, alt text, image loading and the `/english-prep/` prefix.
+- Run `tests/about_interaction_browser.py` and the app's required checks.
+- Keep local-data, caching and install limits honest. Automated Chromium checks
+  are not accessibility certification or proof of physical-device behavior.
+
+New JS/CSS modules must be included in `sw.js` by the release owner. Update the
+release version together with the app; do not change the preserved original.

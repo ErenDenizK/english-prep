@@ -13,9 +13,19 @@
 import { el, clear } from "./dom.js";
 import { icon } from "./icons.js";
 import { createMotionControl } from "./motion.js";
+import { createBrand } from "./brand.js";
 
 const liveRegion = document.getElementById("live-region");
 const scrollRegion = document.getElementById("shell-scroll");
+
+// Continuous decoration remains pausable from every study screen. The owner's
+// requested quiet placement is after the content, never in the top chrome.
+if (scrollRegion && !scrollRegion.querySelector(".motion-footer")) {
+  const preferences = el("div", "motion-footer");
+  preferences.append(el("span", "t-meta", "Animasyonlar"), createMotionControl());
+  scrollRegion.appendChild(preferences);
+}
+
 
 /**
  * Announces a view change or an answer outcome. The node is persistent and
@@ -87,11 +97,9 @@ export function createBar(barId) {
   const trail = bar.querySelector(".bar__trail");
   const track = bar.querySelector(".bar__progress");
   const fill = track?.querySelector(".progress__fill") ?? null;
-  const motionControl = createMotionControl({ compact: true });
 
   /** @param {BarSpec} spec */
   function set(spec) {
-    const restoreMotionFocus = document.activeElement === motionControl;
     clear(lead);
     if (spec.lead) {
       const back = spec.lead.href ? el("a", "btn btn--quiet") : el("button", "btn btn--quiet");
@@ -106,12 +114,7 @@ export function createBar(barId) {
       back.appendChild(el("span", "bar__back-label", spec.lead.label));
       lead.appendChild(back);
     } else {
-      const brand = el("span", "brand-mark");
-      brand.setAttribute("role", "img");
-      brand.setAttribute("aria-label", "English Prep");
-      brand.lang = "en";
-      brand.append(el("span", "brand-mark__letters", "ep"), el("span", "brand-mark__dot", "."));
-      lead.appendChild(brand);
+      lead.appendChild(createBrand({ variant: "responsive" }));
     }
 
     const text = typeof spec.title === "string" ? spec.title : spec.title.text;
@@ -128,8 +131,6 @@ export function createBar(barId) {
     } else if (typeof spec.trail === "string") {
       trail.appendChild(el("p", "t-meta t-num", spec.trail));
     }
-    trail.appendChild(motionControl);
-    if (restoreMotionFocus) motionControl.focus({ preventScroll: true });
 
     setProgress(spec.progress ?? null);
     bar.hidden = false;

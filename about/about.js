@@ -1,6 +1,9 @@
 import { createInstallControl } from "../js/install.js";
-import { initMotion, motionEnabled, createMotionControl } from "../js/motion.js";
-import { tourScreens, learningStory, everydayFeatures, engineering, questions, extraSections } from "./content.js";
+import { initMotion, createMotionControl } from "../js/motion.js";
+import { animateElement, bindPointerScene } from "../js/interactions.js";
+import { createBrand } from "../js/brand.js";
+import { icon } from "../js/icons.js";
+import { studyStages, architecture, everydayFeatures, engineering, questions, extraSections } from "./content.js";
 
 const node = (tag, className, text) => {
   const element = document.createElement(tag);
@@ -10,51 +13,70 @@ const node = (tag, className, text) => {
 };
 const link = ({ label, href }, className = "about-text-link") => {
   const element = node("a", className, label);
-  // Authored data accepts web links and relative app links, never script URLs.
-  const url = new URL(href, location.href);
-  if (["https:", "http:"].includes(url.protocol)) element.href = href;
+  try {
+    const url = new URL(href, location.href);
+    if (["https:", "http:"].includes(url.protocol)) element.href = href;
+  } catch { /* An incomplete authored link remains ordinary text. */ }
   return element;
 };
 const byId = (id) => document.getElementById(id);
-
+const glyph = (name) => {
+  try { return icon(name, { size: 24 }); } catch { return icon("spark", { size: 24 }); }
+};
+function setAction(element, spec) {
+  const authored = link(spec);
+  if (authored.hasAttribute("href")) element.setAttribute("href", authored.getAttribute("href"));
+  else element.removeAttribute("href");
+  const arrow = node("span", "about-link-arrow", "↗");
+  arrow.setAttribute("aria-hidden", "true");
+  element.replaceChildren(document.createTextNode(spec.label), arrow);
+}
 function sectionHeading(parent, content, headingId) {
-  const eyebrow = node("p", "about-eyebrow", content.eyebrow);
   const title = node("h2", null, content.title);
   title.id = headingId;
-  parent.append(eyebrow, title);
+  parent.append(node("p", "about-eyebrow", content.eyebrow), title);
   if (content.intro) parent.appendChild(node("p", null, content.intro));
 }
-
 function renderFeatures(parent, items) {
   for (const item of items) {
-    const article = node("article");
-    if (item.label) article.appendChild(node("p", "about-feature-label", item.label));
-    article.append(node("h3", null, item.title), node("p", null, item.body));
-    if (item.action) article.appendChild(link(item.action));
+    const article = node("article", "about-feature");
+    const sign = node("div", "about-feature-sign");
+    sign.appendChild(glyph(item.icon || "spark"));
+    if (item.label) sign.appendChild(node("p", "about-feature-label", item.label));
+    article.append(sign, node("h3", null, item.title), node("p", null, item.body));
+    if (item.action) {
+      const action = link(item.action);
+      setAction(action, item.action);
+      article.appendChild(action);
+    }
     parent.appendChild(article);
   }
 }
 
-sectionHeading(byId("story-heading-content"), learningStory, "story-heading");
-for (const [index, item] of learningStory.items.entries()) {
-  const row = node("li");
-  row.dataset.tone = ["sakura", "iris", "apricot"].includes(item.tone) ? item.tone : "sakura";
-  const number = node("span", "about-story-number", String(index + 1).padStart(2, "0"));
-  number.setAttribute("aria-hidden", "true");
-  const copy = node("div");
-  copy.append(node("h3", null, item.title), node("p", null, item.body));
-  row.append(number, copy);
-  byId("story-list").appendChild(row);
+initMotion();
+for (const placeholder of document.querySelectorAll("[data-brand]")) {
+  placeholder.replaceChildren(createBrand({ variant: placeholder.dataset.brand }));
 }
+byId("about-motion").appendChild(createMotionControl());
+bindPointerScene(document.querySelector(".about-hero-visual"), {
+  target: document.querySelector(".about-hero-scene"), maxTilt: 2, maxShift: 6,
+});
+animateElement(document.querySelector(".about-hero-visual"), "scene", { channel: "about-entry" });
+
 sectionHeading(byId("features-heading-content"), everydayFeatures, "features-heading");
 renderFeatures(byId("feature-list"), everydayFeatures.items);
 sectionHeading(byId("engineering-heading-content"), engineering, "engineering-heading");
-renderFeatures(byId("engineering-list"), engineering.items);
+for (const item of engineering.items) {
+  const details = node("details", "about-engineering-detail");
+  const summary = node("summary", null, item.title);
+  details.append(summary, node("p", null, item.body));
+  byId("engineering-list").appendChild(details);
+}
 for (const item of engineering.links) byId("engineering-links").appendChild(link(item));
 for (const item of questions) {
-  const detail = node("details");
-  detail.append(node("summary", null, item.title), node("p", null, item.body));
-  byId("question-list").appendChild(detail);
+  const details = node("details");
+  details.append(node("summary", null, item.title), node("p", null, item.body));
+  byId("question-list").appendChild(details);
 }
 for (const [index, content] of extraSections.entries()) {
   const section = node("section", "about-frame about-section");
@@ -68,98 +90,92 @@ for (const [index, content] of extraSections.entries()) {
   byId("extra-sections").appendChild(section);
 }
 
-// Finite effects never delay a state change. Shared preference and visibility
-// events cancel local effects as well as pausing the shared background field.
-initMotion();
-byId("about-motion").appendChild(createMotionControl({ compact: true }));
-const effects = new Set();
-function reveal(element, duration = 180) {
-  if (!motionEnabled() || document.hidden || !element.animate) return;
-  const effect = element.animate([
-    { opacity: 0.65, transform: "translateY(5px)" },
-    { opacity: 1, transform: "translateY(0)" },
-  ], { duration, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
-  effects.add(effect);
-  effect.finished.then(() => effects.delete(effect), () => effects.delete(effect));
-}
-document.addEventListener("motion:change", (event) => {
-  if (event.detail.enabled && event.detail.visible) return;
-  for (const effect of effects) effect.cancel();
-});
-reveal(document.querySelector(".about-hero-copy"), 220);
-
-const viewportSpecs = {
-  phone: { label: "Telefon", caption: "Telefon görünümü", width: 390, height: 844 },
-  wide: { label: "Geniş ekran", caption: "Geniş ekran görünümü", width: 1440, height: 1000 },
-};
-let selectedScreen = tourScreens[0];
-let selectedViewport = "phone";
-const screenControls = byId("tour-screen-controls");
-const viewportControls = byId("tour-viewport-controls");
-const figure = document.querySelector(".about-tour-figure");
-const image = byId("tour-image");
-
-function showScreen(announce = true) {
-  if (!selectedScreen) return;
-  const spec = viewportSpecs[selectedViewport];
-  const source = `assets/${selectedScreen.id}-${selectedViewport}.webp`;
-  for (const button of screenControls.children) {
-    button.setAttribute("aria-pressed", String(button.dataset.tourScreen === selectedScreen.id));
+let currentStage = null;
+function showStage(stage, announce = true) {
+  if (!stage || stage === currentStage) return;
+  currentStage = stage;
+  for (const button of byId("study-controls").children) {
+    button.setAttribute("aria-pressed", String(button.dataset.studyStage === stage.id));
   }
-  for (const button of viewportControls.children) {
-    button.setAttribute("aria-pressed", String(button.dataset.tourViewport === selectedViewport));
-  }
-  byId("tour-title").textContent = selectedScreen.title;
-  byId("tour-description").textContent = selectedScreen.body;
-  byId("tour-detail").textContent = selectedScreen.detail;
-  const action = byId("tour-action");
-  const actionData = link(selectedScreen.action);
-  action.textContent = `${selectedScreen.action.label} ↗`;
-  action.href = actionData.href;
-  figure.dataset.viewport = selectedViewport;
-  image.src = source;
-  image.width = spec.width;
-  image.height = spec.height;
-  image.alt = `${selectedScreen.alt}. ${spec.caption}.`;
-  byId("tour-full-image").href = source;
-  byId("tour-open-image").href = source;
-  byId("tour-caption").textContent = `${selectedScreen.label} · ${spec.caption} · ${spec.width} × ${spec.height}`;
+  byId("study-step-label").textContent = `${String(studyStages.indexOf(stage) + 1).padStart(2, "0")} / ${stage.label}`;
+  byId("study-title").textContent = stage.title;
+  byId("study-description").textContent = stage.body;
+  byId("study-detail").textContent = stage.detail;
+  setAction(byId("study-action"), stage.action);
+  // Real screenshots accompany the learner's action. The browser selects the
+  // appropriate viewport capture; no gallery or screen-size selection exists.
+  byId("study-wide-source").srcset = `assets/${stage.capture}-wide.webp`;
+  byId("study-image").src = `assets/${stage.capture}-phone.webp`;
+  byId("study-image").alt = stage.alt;
+  byId("study-scene").dataset.stage = stage.id;
   if (announce) {
-    byId("tour-status").textContent = `${selectedScreen.label}, ${spec.caption.toLocaleLowerCase("tr")}. ${selectedScreen.title}`;
-    reveal(image);
+    byId("study-status").textContent = `${stage.label}. ${stage.title}`;
+    animateElement(document.querySelector(".about-study-art"), "scene", { channel: "about-story" });
   }
 }
-
-for (const screen of tourScreens) {
-  const button = node("button", null, screen.label);
+for (const [index, stage] of studyStages.entries()) {
+  const button = node("button", "about-study-step");
   button.type = "button";
-  button.dataset.tourScreen = screen.id;
-  button.setAttribute("aria-controls", "tour-image tour-title tour-description");
-  button.addEventListener("click", () => {
-    if (selectedScreen === screen) return;
-    selectedScreen = screen;
-    showScreen();
-  });
-  screenControls.appendChild(button);
+  button.dataset.studyStage = stage.id;
+  button.setAttribute("aria-controls", "study-scene");
+  const number = node("span", "about-step-number", String(index + 1).padStart(2, "0"));
+  number.setAttribute("aria-hidden", "true");
+  button.append(number, glyph(stage.icon || "book"), node("span", null, stage.label));
+  button.addEventListener("click", () => showStage(stage));
+  byId("study-controls").appendChild(button);
 }
-for (const [id, spec] of Object.entries(viewportSpecs)) {
-  const button = node("button", null, spec.label);
-  button.type = "button";
-  button.dataset.tourViewport = id;
-  button.setAttribute("aria-controls", "tour-image");
-  button.addEventListener("click", () => {
-    if (selectedViewport === id) return;
-    selectedViewport = id;
-    showScreen();
-  });
-  viewportControls.appendChild(button);
-}
-screenControls.hidden = false;
-viewportControls.hidden = false;
-showScreen(false);
+byId("study-controls").hidden = studyStages.length === 0;
+showStage(studyStages[0], false);
 
-// The displayed material count follows the actual content index. The HTML
-// remains an accurate release fallback if offline data was not cached yet.
+let currentArchitecture = null;
+function showArchitecture(item, announce = true) {
+  if (!item || item === currentArchitecture) return;
+  currentArchitecture = item;
+  for (const button of byId("architecture-controls").children) {
+    button.setAttribute("aria-pressed", String(button.dataset.architecture === item.id));
+  }
+  byId("architecture-label").textContent = item.subtitle;
+  byId("architecture-title").textContent = item.title;
+  byId("architecture-body").textContent = item.body;
+  byId("architecture-detail").textContent = item.detail;
+  setAction(byId("architecture-action"), item.action);
+  if (announce) {
+    byId("architecture-status").textContent = `${item.label}. ${item.title}`;
+    animateElement(byId("architecture-controls").querySelector('[aria-pressed="true"] svg'), "mark", { channel: "about-architecture" });
+  }
+}
+for (const item of architecture) {
+  const button = node("button", "about-architecture-node");
+  button.type = "button";
+  button.dataset.architecture = item.id;
+  button.setAttribute("aria-controls", "architecture-panel");
+  const copy = node("span");
+  copy.append(node("span", "about-architecture-name", item.label), node("span", "about-architecture-subtitle", item.subtitle));
+  button.append(glyph(item.icon || "book"), copy);
+  button.addEventListener("click", () => showArchitecture(item));
+  byId("architecture-controls").appendChild(button);
+}
+showArchitecture(architecture[0], false);
+
+// One finite accent per visible section. Content is already rendered and is
+// never hidden until a scroll event or animation completion.
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      const eyebrow = entry.target.querySelector(".about-eyebrow");
+      if (eyebrow) animateElement(eyebrow, "reveal", { channel: "about-section" });
+      observer.unobserve(entry.target);
+    }
+  }, { threshold: 0, rootMargin: "0px 0px -12% 0px" });
+  for (const section of document.querySelectorAll(".about-section")) observer.observe(section);
+}
+for (const details of document.querySelectorAll("details")) {
+  details.addEventListener("toggle", () => {
+    if (details.open) animateElement(details.querySelector("p"), "reveal", { channel: "about-disclosure" });
+  });
+}
+
 fetch("../data/manifest.json")
   .then((response) => response.ok ? response.json() : Promise.reject())
   .then((manifest) => {
@@ -169,8 +185,5 @@ fetch("../data/manifest.json")
     byId("corpus-lessons").textContent = String(topics.reduce((sum, topic) => sum + (topic.lessonCount || 0), 0));
     byId("corpus-questions").textContent = String(topics.reduce((sum, topic) => sum + (topic.questionCount || 0), 0));
   }).catch(() => {});
-
 byId("install-control").appendChild(createInstallControl());
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("../sw.js").catch(() => {});
-}
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("../sw.js").catch(() => {});

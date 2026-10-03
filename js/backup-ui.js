@@ -19,6 +19,7 @@
 import { el } from "./dom.js";
 import { exportState, importState } from "./storage.js";
 import { buildBackup, parseBackup } from "./backup.js";
+import { animateElement, cancelAnimationsWithin } from "./interactions.js";
 
 const FILE_NAME = "english-prep-yedek.json";
 
@@ -183,10 +184,17 @@ export function createRestoreDialog({ onRestored }) {
   cancel.addEventListener("click", () => dialog.close());
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) {
-      dialog.close();
+      const box = dialog.getBoundingClientRect();
+      if (event.clientX < box.left || event.clientX > box.right
+          || event.clientY < box.top || event.clientY > box.bottom) {
+        dialog.close();
+      }
     }
   });
-  dialog.addEventListener("close", reset);
+  dialog.addEventListener("close", () => {
+    cancelAnimationsWithin(dialog);
+    reset();
+  });
 
   return {
     open() {
@@ -197,6 +205,7 @@ export function createRestoreDialog({ onRestored }) {
       dialog.showModal();
       heading.focus({ preventScroll: true });
       dialog.scrollTop = 0;
+      animateElement(dialog, "dialog");
     },
   };
 }

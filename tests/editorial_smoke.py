@@ -163,7 +163,9 @@ class EditorialBrowserTests(unittest.TestCase):
         self.assertTrue(measurement['focus'], measurement)
 
     def test_count_popup_keyboard_visibility_in_short_viewports(self):
-        self.page.emulate_media(color_scheme='dark')
+        # Exercise the animated interaction path: menu entry may animate, but
+        # opening, committing and keyboard focus must remain immediate.
+        self.page.emulate_media(color_scheme='dark', reduced_motion='no-preference')
         for width, height in [(320, 640), (844, 390), (768, 360)]:
             with self.subTest(width=width, height=height):
                 self.page.set_viewport_size({'width': width, 'height': height})
@@ -224,6 +226,8 @@ class EditorialBrowserTests(unittest.TestCase):
         self.assertTrue(menu.evaluate('(el) => el.parentElement.classList.contains("listbox")'))
 
     def test_lesson_keyboard_answers_keep_focus_and_restore_file_reflows(self):
+        # Motion must not defer answers or trap focus during dialog entry.
+        self.page.emulate_media(reduced_motion='no-preference')
         self.page.set_viewport_size({'width': 320, 'height': 640})
         self.open_lesson()
         pretest = self.page.locator('.lesson-pretest')
@@ -512,7 +516,9 @@ class EditorialBrowserTests(unittest.TestCase):
         }""", root_namespace)
         self.assertIn(BASE+'/css/editorial.css',cached_assets)
         self.assertIn(BASE+'/assets/fonts/InterVariable.woff2',cached_assets)
-        for module in ['js/motion.js', 'js/progress.js', 'about/content.js']:
+        for module in ['js/motion.js', 'js/progress.js', 'js/interactions.js',
+                       'js/brand.js', 'css/interactions.css', 'css/onboarding.css',
+                       'about/content.js']:
             self.assertIn(BASE+'/'+module, cached_assets)
         self.context.set_offline(True)
         for prefix in ['', 'original/']:

@@ -5,6 +5,14 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.69 — 2026-10-04
+
+- Ortak ve kesilebilir etkileşim sistemi: menü/diyalog girişleri, seçili öğe işaretleri, yerel cevap geri bildirimi ve iki marka yazımı (`ep.` / `english prep.`). Üst çubuktaki hareket düğmesi kaldırıldı; tercih Profil'de ve içerik sonunda.
+- Doğru/yanlış için ölçülmüş jade/mercan renkleri; nötr seçenek metni, görünür işaret ve erişilebilir cevap açıklaması. Tüm sorunun cevap sonrası yeniden solması kaldırıldı.
+- Keşfedilebilir üç sayfalı onboarding: küçük özgün çizimler üzerinden konu/ders/kontrol ve soru/açıklama/tekrar akışı; öğretim verisine dokunmaz.
+- About'ta ayrı ekran görüntüsü galerisi kaldırıldı. Gerçek görüntüler kullanıma göre değişen ürün anlatısına taşındı; sınırlı fare tepkisi ve etkileşimli mimari açıklamaları eklendi.
+- Onay/geri yükleme pencerelerinin iç boşluğuna tıklamanın yanlışlıkla kapatması düzeltildi. Materyal ve korunmuş sürümler değişmedi. [ADR 008](docs/adr/008-explorable-interactions.md).
+
 ## v0.68 — 2026-10-04
 
 - Sakura renk sistemi: erik tonlu zemin, cherry marka vurgusu, iris/kayısı cevap durumları. Tipografi rolleri ve özgün ders materyalleri korunur; renk/aurora birleşimleri ve eylem gradyanı ölçülür.

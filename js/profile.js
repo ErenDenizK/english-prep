@@ -39,6 +39,7 @@ import { icon } from "./icons.js";
 import { avatar } from "./widgets.js";
 import { progressMetric } from "./progress.js";
 import { createMotionControl } from "./motion.js";
+import { animateElement } from "./interactions.js";
 import { announce } from "./shell.js";
 import { createInstallControl } from "./install.js";
 
@@ -270,6 +271,7 @@ function renderData() {
   status.setAttribute("role", "status");
 
   const backup = el("button", "btn btn--secondary", "Yedek al");
+  backup.prepend(icon("archive", { size: 20 }));
   backup.type = "button";
   backup.addEventListener("click", () => {
     downloadBackup()
@@ -277,6 +279,7 @@ function renderData() {
         status.textContent =
           how === "canceled" ? "Paylaşım iptal edildi." :
             how === "shared" ? "Yedek paylaşıldı." : "Yedek dosyan indirildi.";
+          animateElement(status, "reveal");
       })
       .catch((error) => {
         console.error(error);
@@ -412,8 +415,9 @@ function renderSettings() {
   appearance.appendChild(motion);
 
   const application = group("Uygulama");
-  const navigation = (tag, label) => {
+  const navigation = (tag, label, glyph) => {
     const row = el(tag, "row settings-link");
+    if (glyph) row.appendChild(el("span", "settings-link__icon")).appendChild(icon(glyph, { size: 20 }));
     const main = el("span", "row__main");
     main.appendChild(el("span", "row__title", label));
     row.appendChild(main);
@@ -422,14 +426,14 @@ function renderSettings() {
   };
 
   // The short product introduction is always available again.
-  const replay = navigation("button", "Uygulamayı tanı");
+  const replay = navigation("button", "Uygulamayı tanı", "route");
   replay.type = "button";
   replay.addEventListener("click", () => {
     setOnboarded(false);
     window.location.hash = "hosgeldin";
   });
   application.appendChild(replay);
-  const about = navigation("a", "English Prep hakkında");
+  const about = navigation("a", "English Prep hakkında", "compare");
   about.href = "about/";
   application.appendChild(about);
   application.appendChild(createInstallControl());

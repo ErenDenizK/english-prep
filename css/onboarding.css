@@ -1,0 +1,140 @@
+/* Optional tour: one user-paced miniature, scoped away from study material. */
+.onboard .onboard__tour { gap: 20px; }
+.onboard .onboard__top .brand-mark { font-size: 2.75rem; }
+.onboard .onboard__progress { margin-top: 0; }
+.onboard .onboard__panel { gap: 14px; }
+.onboard .onboard__panel h1 { max-width: 17ch; }
+.onboard .onboard__description { line-height: 1.6; }
+.onboard .onboard__skip { min-height: 44px; }
+.onboard .onboard__dot {
+  transition: width var(--d-route) var(--ease-standard), background-color var(--d-feedback) var(--ease-standard);
+}
+.onboard .onboard__note { margin-top: 0; }
+.onboard .onboard__wordmark {
+  font-size: clamp(1.5rem, 7vw, 3rem);
+  max-width: 100%;
+  justify-self: start;
+  margin-block: 18px 8px;
+}
+.onboard .onboard__name { padding-block: 0 12px; }
+.onboard .onboard__actions { flex-wrap: wrap; min-width: 0; }
+.onboard .onboard__actions .btn { line-height: 1.5; }
+.onboard .onboard__actions .btn--primary { gap: 12px; flex-basis: 10rem; }
+.onboard .onboard__wordmark .brand-mark__dot { transform-origin: center bottom; animation: onboard-dot-settle var(--d-complete) var(--ease-standard) both; }
+.onboard .onboard-flow { display: grid; gap: 12px; margin-top: 8px; min-width: 0; }
+.onboard .onboard-flow__head { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+.onboard .onboard-flow__head .t-meta { font-size: .875rem; line-height: 1.5; }
+.onboard .onboard-flow__hint { color: var(--ink-2); }
+.onboard .onboard-flow__choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 5rem), 1fr));
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--card);
+}
+.onboard .onboard-flow__choice {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  padding: 6px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--d-feedback) var(--ease-standard),
+    background-color var(--d-feedback) var(--ease-standard),
+    transform var(--d-press) var(--ease-standard);
+}
+.onboard .onboard-flow__choice[aria-pressed="true"] { background: var(--accent-tint); color: var(--accent-text); }
+.onboard .onboard-flow__choice::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: calc(50% - 8px);
+  width: 16px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform var(--d-feedback) var(--ease-standard);
+}
+.onboard .onboard-flow__choice[aria-pressed="true"]::after { transform: scaleX(1); }
+.onboard .onboard-flow__choice:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.onboard .onboard-flow__choice:active { transform: translateY(1px); }
+.onboard .onboard-flow__scene { display: grid; place-items: center; height: 104px; margin-top: 0; }
+.onboard .onboard-flow__drawing { width: min(100%, 280px); height: 104px; overflow: visible; }
+.onboard .onboard-flow__sheet { fill: var(--card); stroke: var(--edge); }
+.onboard .onboard-flow__back-sheet { fill: var(--raised); stroke: var(--hairline); }
+.onboard .onboard-flow__line { stroke: var(--ink-2); }
+.onboard .onboard-flow__accent { stroke: var(--accent-text); }
+.onboard .onboard-flow__dot { fill: var(--accent-text); stroke: none; }
+.onboard .onboard-flow__highlight { fill: var(--accent-tint); stroke: none; }
+.onboard .onboard-flow__paper { transform-origin: center; animation: onboard-paper-in var(--d-route) var(--ease-standard) both; }
+.onboard .onboard-flow__stroke { stroke-dasharray: 160; animation: onboard-line-in var(--d-complete) var(--ease-standard) both; }
+.onboard .onboard-flow__selection { transform-origin: 68px 48px; animation: onboard-selection-in var(--d-route) var(--ease-standard) both; }
+.onboard .onboard-flow__caption {
+  min-height: 3em;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.onboard .onboard-flow__navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  padding-top: 8px;
+  border-top: 1px solid var(--hairline);
+}
+.onboard .onboard-flow__mode { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: .875rem; line-height: 1.5; }
+.onboard .onboard-flow__mode[data-selected="true"] { color: var(--accent-text); font-weight: 600; }
+@keyframes onboard-paper-in { from { transform: translateY(4px); } to { transform: translateY(0); } }
+@keyframes onboard-line-in { from { stroke-dashoffset: 160; } to { stroke-dashoffset: 0; } }
+@keyframes onboard-selection-in { from { transform: scale(.75); } to { transform: scale(1); } }
+@keyframes onboard-dot-settle { from { transform: translateY(-3px); } to { transform: translateY(0); } }
+@media (hover: hover) and (pointer: fine) {
+  .onboard .onboard-flow__choice:hover { background: var(--raised); color: var(--ink); }
+  .onboard .onboard-flow__choice[aria-pressed="true"]:hover { background: var(--accent-tint); color: var(--accent-text); }
+}
+@media (min-width: 480px) {
+  .onboard .onboard-flow__scene, .onboard .onboard-flow__drawing { height: 120px; }
+}
+@media (min-width: 700px) {
+  .onboard .onboard-flow__caption { min-height: 1.5em; }
+}
+@media (max-height: 650px) {
+  .onboard .onboard__tour { gap: 16px; }
+  .onboard .onboard__panel { gap: 12px; }
+  .onboard .onboard-flow { gap: 8px; margin-top: 4px; }
+  .onboard .onboard-flow__scene, .onboard .onboard-flow__drawing { height: 80px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .onboard .onboard-flow__paper, .onboard .onboard-flow__stroke, .onboard .onboard-flow__selection, .onboard .onboard__wordmark .brand-mark__dot { animation: none; }
+  .onboard .onboard-flow__choice, .onboard .onboard-flow__choice::after, .onboard .onboard__dot { transition: none; }
+}
+html[data-motion="off"] .onboard .onboard-flow__paper,
+html[data-motion="off"] .onboard .onboard-flow__stroke,
+html[data-motion="off"] .onboard .onboard-flow__selection,
+html[data-motion="off"] .onboard .onboard__wordmark .brand-mark__dot { animation: none; }
+html[data-motion="off"] .onboard .onboard-flow__choice,
+html[data-motion="off"] .onboard .onboard-flow__choice::after,
+html[data-motion="off"] .onboard .onboard__dot { transition: none; }
+html[data-page-visible="false"] .onboard .onboard-flow__paper,
+html[data-page-visible="false"] .onboard .onboard-flow__stroke,
+html[data-page-visible="false"] .onboard .onboard-flow__selection,
+html[data-page-visible="false"] .onboard .onboard__wordmark .brand-mark__dot { animation-play-state: paused; }
+@media (forced-colors: active) {
+  .onboard .onboard-flow__choice[aria-pressed="true"] { outline: 2px solid Highlight; outline-offset: -4px; }
+  .onboard .onboard-flow__sheet, .onboard .onboard-flow__back-sheet { fill: Canvas; stroke: CanvasText; }
+  .onboard .onboard-flow__line, .onboard .onboard-flow__accent { stroke: CanvasText; }
+  .onboard .onboard-flow__dot { fill: CanvasText; }
+}
