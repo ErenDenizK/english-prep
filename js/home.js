@@ -26,9 +26,6 @@ import {
   getHistory,
   getChoice,
   setChoice,
-  isOnboarded,
-  setOnboarded,
-  getAllLessonProgress,
 } from "./storage.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { createListbox } from "./listbox.js";
@@ -698,16 +695,9 @@ function init() {
 
   registerServiceWorker();
 
-  // The first run, once. Anyone with history predates the flow and is
-  // not asked; anyone arriving on a deep link is not interrupted — the
-  // link is what they came for, and the flow waits for a plain open.
-  if (!isOnboarded()) {
-    if (getHistory().length > 0 || Object.keys(getAllLessonProgress()).length > 0) {
-      setOnboarded(true);
-    } else if (parseRoute().param === null && parseRoute().view === DEFAULT_VIEW && !window.location.hash.replace(/^#/, "")) {
-      window.location.replace("#hosgeldin");
-    }
-  }
+  // Open the learning material directly. Profile settings and the optional
+  // #hosgeldin setup remain available, but visiting the app does not change
+  // preferences or claim that the learner completed a setup they never saw.
   return applyRoute();
 }
 

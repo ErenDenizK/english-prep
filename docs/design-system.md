@@ -1,5 +1,13 @@
 # Design system
 
+> Historical specification preserved from the full `test` source at
+> `39dcd46`. The current Margin presentation extension is documented in
+> [margin-design-system.md](margin-design-system.md) and implemented in
+> [css/editorial.css](../css/editorial.css). Its current experience and
+> research are in [EXPERIENCE.md](EXPERIENCE.md) and
+> [RESEARCH.md](RESEARCH.md). The text below records the inherited system;
+> its visual values do not override the current extension.
+
 The binding specification for the interface. Written after a research pass
 across colour, typography, layout, iconography, motion, components,
 accessibility and mobile-web constraints; every rule below states *why* it

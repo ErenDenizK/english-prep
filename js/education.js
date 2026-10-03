@@ -43,12 +43,6 @@ import {
   shouldOfferBackup,
   dismissBackupNudge,
   RE_ENTRY_DAYS,
-  getProfileName,
-  getOverallStats,
-  getStreak,
-  getTodayCount,
-  getDailyGoal,
-  daysToExam,
 } from "./storage.js";
 import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
@@ -59,7 +53,7 @@ import { TOPIC_INTRO_PREFIX } from "./config.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard, textButton } from "./dom.js";
 import { icon } from "./icons.js";
-import { ring, monogram, hueOf } from "./widgets.js";
+import { monogram, hueOf } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
 
 const bottomNav = document.getElementById("bottom-nav");
@@ -151,80 +145,27 @@ function statusOf(lesson, progress) {
 }
 
 /**
- * The home hero: who this is, how today is going, and the one thing to do
- * next. Every state the index knows — never opened, half a lesson,
- * tested but nothing read, away for a fortnight, everything done — fills
- * the same shape (docs/ui3-plan.md §5), so the screen is one object with
- * a changing offer rather than five different cards.
- *
- * `surface` as well as `hero`: a hero IS the screen's card, and the
- * sweep's checks on "the card" keep pointing at it.
+ * An editorial introduction with one useful next action. The existing
+ * recommendation paths supply the context; no score, streak, or daily goal
+ * competes with opening the lesson itself.
  *
  * @param {{eyebrow: string, line?: string, lineLang?: string, primary: {label: string, onClick: () => void},
  *          secondary?: {label: string, onClick: () => void}, facts?: string[], quiet?: string}} spec
  */
 function renderHero(spec) {
-  const card = el("section", "surface hero");
-  card.appendChild(el("span", "hero__orb"));
-
-  const head = el("div", "hero__head");
-  const titles = el("div", "stack stack--snug");
-  titles.appendChild(el("p", "t-label", spec.eyebrow));
-  const name = getProfileName().trim();
-  titles.appendChild(el("h2", "t-title", name ? `Merhaba, ${name}` : "Merhaba"));
-  head.appendChild(titles);
-
-  // Today against the goal. The ring is the day's one number; the goal
-  // is what the learner said they would do (Profil, or the first run).
-  const goal = getDailyGoal();
-  const today = getTodayCount();
-  const done = today >= goal;
-  head.appendChild(
-    ring({
-      ratio: goal === 0 ? 0 : today / goal,
-      label: `${today}/${goal}`,
-      tone: done ? "ok" : "accent",
-      describedAs: `Bugün ${today} soru, hedef ${goal}`,
-    })
-  );
-  card.appendChild(head);
-
-  // The exam and the streak, as chips — only when there is something to
-  // say. A countdown nobody set and a streak of nought are both silence.
-  const chips = el("div", "cluster");
-  const days = daysToExam();
-  if (days !== null && days >= 0) {
-    const chip = el("span", "chip chip--accent");
-    chip.appendChild(icon("calendar", { size: 18 }));
-    chip.appendChild(document.createTextNode(days === 0 ? "Sınav bugün" : `Sınava ${days} gün`));
-    chips.appendChild(chip);
-  }
-  const streak = getStreak();
-  if (streak.days >= 1) {
-    const chip = el("span", "chip chip--ok");
-    chip.appendChild(icon("flame", { size: 18 }));
-    chip.appendChild(document.createTextNode(`${streak.days} gün seri`));
-    chips.appendChild(chip);
-  }
-  if (done) {
-    const chip = el("span", "chip chip--ok");
-    chip.appendChild(icon("spark-fill", { size: 18 }));
-    chip.appendChild(document.createTextNode("Günlük hedef tamam"));
-    chips.appendChild(chip);
-  }
-  if (chips.childElementCount > 0) {
-    card.appendChild(chips);
-  }
+  const intro = el("section", "study-intro stack");
+  intro.appendChild(el("p", "study-intro__eyebrow t-label", spec.eyebrow));
+  intro.appendChild(el("h1", "study-intro__title t-title", "Bildiğin İngilizceyi netleştir."));
 
   if (spec.line) {
-    const line = el("p", "t-body", spec.line);
+    const summary = el("p", "study-intro__summary t-body", spec.line);
     if (spec.lineLang) {
-      line.lang = spec.lineLang;
+      summary.lang = spec.lineLang;
     }
-    card.appendChild(line);
+    intro.appendChild(summary);
   }
 
-  const actions = el("div", "stack stack--tight");
+  const actions = el("div", "study-intro__action stack stack--tight");
   const primary = el("button", "btn btn--primary", spec.primary.label);
   primary.type = "button";
   primary.addEventListener("click", spec.primary.onClick);
@@ -232,58 +173,39 @@ function renderHero(spec) {
   if (spec.secondary) {
     actions.appendChild(textButton(spec.secondary.label, spec.secondary.onClick, icon));
   }
-  card.appendChild(actions);
+  intro.appendChild(actions);
 
   for (const fact of spec.facts ?? []) {
-    card.appendChild(el("p", "t-meta t-num", fact));
+    intro.appendChild(el("p", "study-intro__meta t-meta", fact));
   }
   if (spec.quiet) {
-    card.appendChild(el("p", "t-quiet", spec.quiet));
+    intro.appendChild(el("p", "study-intro__meta t-quiet", spec.quiet));
   }
-  return card;
+  return intro;
 }
 
-/**
- * Three figures under the hero: the streak, the lessons, the accuracy.
- * Tiles, so each is an object; the labels say which question each
- * number answers, as Profil's do.
- */
-function renderStatStrip(lessons, completed) {
-  const stats = getOverallStats();
-  const streak = getStreak();
-  const grid = el("div", "stats");
-  grid.id = "home-stats";
-
-  const tile = (value, label, iconName) => {
-    const cell = el("div", "stat");
-    const value_ = el("div", "stat__value t-num");
-    if (iconName) {
-      const mark = el("span", "cluster");
-      mark.appendChild(icon(iconName, { size: 22 }));
-      mark.appendChild(document.createTextNode(value));
-      value_.appendChild(mark);
-    } else {
-      value_.textContent = value;
-    }
-    cell.appendChild(value_);
-    cell.appendChild(el("div", "stat__label", label));
-    return cell;
-  };
-
-  grid.appendChild(tile(String(streak.days), "gün seri", "flame"));
-  grid.appendChild(tile(`${completed} / ${lessons.length}`, "ders bitti"));
-  grid.appendChild(
-    tile(
-      stats.accuracy === null ? "—" : `%${Math.round(stats.accuracy * 100)}`,
-      stats.accuracyWindow > 0 ? `son ${stats.accuracyWindow} soruda` : "doğruluk"
-    )
-  );
-  return grid;
+/** The size of the available corpus, not a target or a learner score. */
+function renderStatStrip(lessons) {
+  const facts = el("dl", "study-facts");
+  facts.id = "home-stats";
+  facts.setAttribute("aria-label", "Çalışma içeriği");
+  const topicCount = new Set(lessons.map((lesson) => lesson.topicId)).size;
+  for (const [label, count] of [
+    ["konu", topicCount],
+    ["ders", lessons.length],
+    ["soru", state.questionCount],
+  ]) {
+    const item = el("div", "study-facts__item");
+    item.appendChild(el("dt", "study-facts__label t-meta", label));
+    item.appendChild(el("dd", "study-facts__value t-num", String(count)));
+    facts.appendChild(item);
+  }
+  return facts;
 }
 
 function renderProgressSummary(lessons, completed) {
   const block = el("section", "stack stack--tight");
-  block.appendChild(el("h2", "t-label", "İlerlemen"));
+  block.appendChild(el("h1", "t-label", "İlerlemen"));
   block.appendChild(progressBar(lessons.length === 0 ? 0 : completed / lessons.length));
   block.appendChild(el("p", "t-meta", `${lessons.length} dersten ${completed} tanesi tamamlandı`));
   return block;
@@ -338,22 +260,22 @@ function renderWelcome(firstLesson) {
   // topic screen says what a tense IS and then hands them on.
   const primary = firstLesson
     ? {
-        label: `${firstLesson.topicTitle} ile başla`,
+        label: `${firstLesson.topicTitle} konusunu aç`,
         onClick: () =>
           firstLesson.hasIntro ? openIntroByHash(firstLesson.topicId) : openLessonByHash(firstLesson.id),
       }
     : { label: "Kısa bir testle başla", onClick: () => startMixedTest(5).catch(console.error) };
   return renderHero({
-    eyebrow: "Başlamak için",
+    eyebrow: "Konu anlatımları",
     // What the app is, in one line, and the privacy fact otherwise buried
     // in Profil. Not the brand: the manifest and the first-run flow say
     // it, and this card's job is to say what to do.
-    line: "Üniversite yeterlik sınavı için dersler ve paragraf soruları. Hesap yok; her şey bu telefonda kalıyor.",
+    line: "İngilizceyi kullanırken sezdiğin ayrımları, Türkçe açıklamalar ve İngilizce örneklerle incele. İhtiyacın olan konuyu seç; ardından testle uygula.",
     primary,
     secondary: firstLesson
-      ? { label: "Ya da kısa bir testle başla", onClick: () => startMixedTest(5).catch(console.error) }
+      ? { label: "Kısa test çöz", onClick: () => startMixedTest(5).catch(console.error) }
       : undefined,
-    facts: firstLesson ? ["Önce bu konunun ne olduğu, sonra altı ders."] : undefined,
+    facts: ["Tüm dersler açık. Kendi çalışma sıranı seçebilirsin."],
   });
 }
 
@@ -400,7 +322,7 @@ function renderReEntryCard(lesson, entry, news, nextUnread, totals) {
   // away, no "welcome back" — a returner is not apologised to.
   return renderHero({
     eyebrow: "Kısa bir hatırlatma",
-    line: "Beş soru, doksan saniye. Neyin durduğunu okumaktan daha hızlı gösterir.",
+    line: "Kısa bir testle hangi ayrımları yeniden çalışmak istediğini belirleyebilirsin.",
     primary: { label: "5 soruyla başla", onClick: recall },
     secondary: nextUnread
       ? { label: "Sıradaki derse geç", onClick: () => openLessonByHash(nextUnread.id) }
@@ -448,9 +370,9 @@ function renderNextStepCard(lessons, progress, completed) {
   return renderHero({
     eyebrow: "Sıradaki adım",
     line: rereading
-      ? `Bu dersi okudun ama son testlerde en çok ${target.category} sorularında zorlandın. Sırada okumak değil, soru çözmek var.`
+      ? `${target.category} dersini okudun. Son test sonuçlarına göre bu kategorideki soruları yeniden çalışabilirsin.`
       : weakLesson
-        ? `${target.category}: son testlerde en çok burada zorlandın. Ders, aynı soruları tekrar çözmekten daha çok işe yarar.`
+        ? `${target.category}: son test sonuçlarına göre bu dersteki ayrımları yeniden inceleyebilirsin.`
         : `${target.category} — buradan devam edebilirsin.`,
     primary: {
       label: rereading ? "Bu kategoriden pratik yap" : "Bu dersi aç",
@@ -637,7 +559,7 @@ function renderIndex() {
   // A screen this app can reach only by running out of both suggestions
   // and lessons. The summary is what it always was.
   aside.appendChild(card ?? renderProgressSummary(lessons, completed));
-  aside.appendChild(renderStatStrip(lessons, completed));
+  aside.appendChild(renderStatStrip(lessons));
 
   const nudge = renderBackupNudge();
   if (nudge) {
@@ -649,6 +571,13 @@ function renderIndex() {
   list.id = "index-list";
   list.appendChild(renderTopicIndex(lessons, progress));
   main.appendChild(list);
+
+  const versions = el("footer", "study-version");
+  const original = el("a", "btn btn--quiet btn--text", "Orijinal uygulamayı aç");
+  original.href = "original/index.html";
+  original.appendChild(icon("arrow-right", { size: 20 }));
+  versions.appendChild(original);
+  main.appendChild(versions);
 
   indexContainer.classList.add("split");
   indexContainer.append(aside, main);
@@ -731,7 +660,7 @@ function renderIndexFilter(lessons, progress) {
   // groups below are sections of their own, so the field is neither a
   // stray control above a list nor a sentence between two headings.
   const wrap = el("section", "stack stack--tight");
-  wrap.appendChild(sectionHeading("Konular", "Her konu, önce ne olduğunu anlatır; dersler içinde."));
+  wrap.appendChild(sectionHeading("Ders içeriği", "Bir konu seç veya doğrudan çalışmak istediğin dersi ara."));
 
   const field = el("input", "field");
   field.type = "search";
@@ -1305,7 +1234,7 @@ function renderPitfallBlock(block) {
  */
 function renderPitfallRun(blocks) {
   const wrap = el("section", "stack stack--tight block block--pitfall block--labelled");
-  wrap.appendChild(el("h3", "t-label", blocks.length > 1 ? "Sık yapılan hatalar" : "Sık yapılan hata"));
+  wrap.appendChild(el("h2", "t-label", blocks.length > 1 ? "Sık yapılan hatalar" : "Sık yapılan hata"));
   const list = el("ul", "items");
   for (const block of blocks) {
     const item = el("li");
@@ -1385,7 +1314,7 @@ function renderCheckBlock(question, blockIndex, { label = "Kontrol" } = {}) {
   // The pretest supplies its own heading and passes null, so the block
   // does not read "Önce bir dene" and then "Kontrol" two lines later.
   if (label) {
-    wrap.appendChild(el("p", "t-label", label));
+    wrap.appendChild(el("h2", "t-label", label));
   }
 
   // A lesson can hold a pretest and two checks at once, so the stem's id
@@ -1448,8 +1377,21 @@ function renderCheckBlock(question, blockIndex, { label = "Kontrol" } = {}) {
  * answering is a supported way to read a lesson.
  */
 function renderPretestBlock(question) {
-  const wrap = el("section", "stack stack--tight");
-  wrap.appendChild(el("h3", "t-label", "Önce bir dene"));
+  const reader = state.reader;
+  const disclosure = el("details", "lesson-pretest");
+  disclosure.open = reader.pretestOpen === true;
+  disclosure.appendChild(
+    el("summary", "lesson-pretest__summary", "Okumadan önce kendini yokla")
+  );
+  disclosure.addEventListener("toggle", () => {
+    // A queued event from an old lesson must not change the current one.
+    if (state.reader === reader) {
+      reader.pretestOpen = disclosure.open;
+    }
+  });
+
+  const wrap = el("section", "lesson-pretest__body stack stack--tight");
+  wrap.appendChild(el("h2", "t-label", "Önce bir dene"));
   wrap.appendChild(renderCheckBlock(question, PRETEST_INDEX, { label: null }));
 
   // The reason goes UNDER the question, not over it.
@@ -1469,7 +1411,8 @@ function renderPretestBlock(question) {
         "aklında tutmanı sağlıyor."
     )
   );
-  return wrap;
+  disclosure.appendChild(wrap);
+  return disclosure;
 }
 
 const BLOCK_RENDERERS = {
@@ -1515,7 +1458,7 @@ function renderBlock(block, index, nextCheck, checkNumber = 0) {
 
   if (block.heading) {
     wrap.classList.add("block--labelled");
-    wrap.appendChild(el("h3", "t-label", block.heading));
+    wrap.appendChild(el("h2", "t-label", block.heading));
   }
   wrap.appendChild(render(block));
   return wrap;
@@ -1673,7 +1616,7 @@ function renderLessonEnd(lesson) {
   const card = el("section", "surface hero block--end");
   card.appendChild(el("span", "hero__orb"));
   const head = el("div", "stack stack--tight");
-  const eyebrow = el("p", "t-label cluster");
+  const eyebrow = el("h2", "t-label cluster");
   eyebrow.appendChild(icon("spark-fill", { size: 18 }));
   eyebrow.appendChild(document.createTextNode(crossesTopic ? "Konu bitti" : "Ders bitti"));
   head.appendChild(eyebrow);
@@ -1863,6 +1806,7 @@ export async function openLesson(lessonId) {
     answers: new Map(),
     nextCheck,
     pretest: unread ? nextCheck() : null,
+    pretestOpen: false,
   };
   setReaderChrome(true);
   // The intro sets the title and the reader did not, so the tab read

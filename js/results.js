@@ -23,7 +23,6 @@ import { startMistakeBook } from "./quiz-launch.js";
 import { el, clear, pane, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
 import { ring, countUp, monogram } from "./widgets.js";
-import { confetti } from "./celebrate.js";
 import { announce, createActionBar, createBar } from "./shell.js";
 import { renderPrompt } from "./prompt.js";
 
@@ -63,8 +62,8 @@ function verdictFor(ratio, total) {
   return "Bu test bir yer gösterdi";
 }
 
-/** ≥ 80 % on at least five questions earns the confetti. */
-export const CELEBRATE_AT = 0.8;
+// A visual score threshold only; results never trigger decorative effects.
+const STRONG_SCORE_AT = 0.8;
 
 function renderScore(result) {
   const block = el("section", "score");
@@ -82,7 +81,7 @@ function renderScore(result) {
     ratio,
     label: `${result.correctCount} / ${result.totalCount}`,
     size: "lg",
-    tone: ratio >= CELEBRATE_AT ? "ok" : "accent",
+    tone: ratio >= STRONG_SCORE_AT ? "ok" : "accent",
     describedAs: `${result.totalCount} sorudan ${result.correctCount} doğru, yüzde ${percent}`,
   });
   block.appendChild(arc);
@@ -149,7 +148,7 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
     // A small ring in the lead says the fraction before the number does.
     const lead = el("span", "row__lead");
     const share = stats.total === 0 ? 0 : stats.correct / stats.total;
-    lead.appendChild(ring({ ratio: share, size: "sm", tone: share >= CELEBRATE_AT ? "ok" : share < 0.5 ? "no" : "accent" }));
+    lead.appendChild(ring({ ratio: share, size: "sm", tone: share >= STRONG_SCORE_AT ? "ok" : share < 0.5 ? "no" : "accent" }));
     row.appendChild(lead);
 
     // No "Dersi aç" line under every row: seven identical secondary lines
@@ -402,11 +401,6 @@ async function init() {
   announce(
     `Test bitti. ${result.totalCount} sorudan ${result.correctCount} doğru.`
   );
-  // Earned, or not shown: four of five is a real result, three of three
-  // is a draw.
-  if (result.totalCount >= 5 && result.correctCount / result.totalCount >= CELEBRATE_AT) {
-    confetti();
-  }
 
   const breakdowns = [
     renderBreakdown(

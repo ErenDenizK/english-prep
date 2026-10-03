@@ -1,5 +1,22 @@
 # English Prep
 
+**Margin redesign preview:** [open the redesigned app](index.html),
+[compare the full original](original/index.html), or inspect its
+[unchanged source snapshot](original/source-39dcd46.zip). This version
+uses the full `test` source at `39dcd46`; the earlier `main` prototype
+is preserved separately in [legacy/](legacy/index.html). The original's
+hosted service worker has only been adapted to isolate its offline caches.
+
+Run `npm run serve` and open `http://localhost:8000/`; run `npm run check`
+for the repository checks. See the current [experience](docs/EXPERIENCE.md),
+[interface system](docs/margin-design-system.md), and [research](docs/RESEARCH.md).
+Visual references: [mobile](docs/previews/mobile.png),
+[desktop](docs/previews/desktop.png), [article](docs/previews/article.png),
+and [dark theme](docs/previews/dark.png).
+See [validation evidence and commands](docs/VALIDATION.md).
+The hosted versions share the browser origin's existing local progress
+and settings; their offline shell/content caches are isolated.
+
 A study app for the English proficiency exams that Turkish university
 prep schools set — written against two real YTÜ İYS sample papers rather
 than against an idea of what such an exam contains.
@@ -175,18 +192,14 @@ npm run audit          # measures each screen against the design spec
 ```
 
 `check` runs on every push and pull request to `main` and `test`.
-`verify` does not — it needs a browser, and the point of having no
-dependencies is not to acquire one for CI. It walks a whole learner
-journey at 320 / 390 / 768 / 1280, auditing every screen it lands on for
-horizontal overflow, touch targets under 44px and console errors, then
-measures the wide layout against the spec and runs the accessibility
-contract once. **About 1,550 checks** — the exact count moves with the
-draw; the run behind this sentence was 1,544, all green. Run it for anything that touches the interface: WCAG conformance
-is defined per page and per responsive variation, so the sweep *is* the
-requirement.
+`verify` needs a browser and a running server. It walks learner journeys
+at 320 / 390 / 768 / 1280px, checks overflow, targets, console errors,
+wide layouts, and accessibility behavior. Use the command's output for
+the current check count. Automated checks do not establish complete
+accessibility conformance or substitute for learner testing.
 
-There are also 146 unit tests over the scoring, storage, backup and
-content checks.
+Unit tests cover scoring, storage, backup, content validation, and both
+hosted service workers' behavior against shared caches.
 
 ---
 
@@ -198,16 +211,21 @@ quiz.html             Question screen
 results.html          Score, breakdown, review
 sw.js                 Service worker: versioned shell, unversioned content
 js/                   ES modules — read each file's header comment
-css/style.css         One stylesheet, in cascade layers
+css/style.css         Inherited layout and components, in cascade layers
+css/editorial.css     Margin presentation and theme extension
+assets/fonts/         Self-hosted Inter UI font
 data/manifest.json    Topic index
 data/<topic>/         One JSON file per topic: lessons and questions
 tools/                Validator, formatter, colour maths, browser sweep
 tests/                Unit tests
 docs/                 Design system, content schema, research, agent briefs
+original/             Full original interface and unchanged source archive
+legacy/               Earlier main-branch prototype
 ```
 
-`docs/` is where the reasoning lives. `docs/design-system.md` is the
-binding visual specification; `docs/CONTENT_GUIDE.md` is the content
+`docs/` is where the reasoning lives. `docs/margin-design-system.md` documents
+the current extension; `docs/design-system.md` preserves the historical
+source specification. `docs/CONTENT_GUIDE.md` is the content
 schema; `docs/roadmap.md` is what ships next; `docs/research/` holds the
 arms each decision was made from, including the ones that argued against
 what shipped.
@@ -216,18 +234,19 @@ what shipped.
 
 ## Design
 
-Two themes, both solved: a slate dark ground by default and a light one
-that follows the phone or a choice in Profil. One amber accent doing one
-job — a pair, one value per theme, because no single amber carries dark
-ink on a light page. Serif for English, sans for Turkish and the
-interface, tabular figures from the same sans. Five type sizes, at most
-four on a screen, nothing below 15px and nothing at 15px lighter than
-600. Depth from surface lightness rather than borders or shadows.
+Margin uses warm paper and ink in light mode and a restrained dark
+companion, following the system theme or a choice in Profil. Inter
+handles Turkish prose and the interface; Source Serif 4 distinguishes
+English examples and questions. The home page emphasizes reading and
+the curriculum, with optional settings in Profil. Lessons remain
+scrolling articles, and inline checks never gate access.
 
-The palette is not chosen by eye. Every colour is solved against a
-contrast requirement and re-measured by `npm run color`, which runs in CI
-— WCAG 2 ratios and APCA lightness contrast, on every token, against every
-surface it can appear on.
+The fixed mobile shell gains useful adjacent columns on wide displays,
+while articles and quizzes stay single-column. The supplied Home,
+Ventriloc, Monopo, and Raycast references inform the visual system.
+`npm run color` verifies the inherited palette; the extension's token
+measurements and responsive checks are documented separately in
+`docs/margin-design-system.md` and `docs/RESEARCH.md`.
 
 ---
 

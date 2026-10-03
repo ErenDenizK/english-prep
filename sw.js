@@ -1,69 +1,17 @@
-// A service worker, and the smallest one that solves the actual problem.
-//
-// The app is static, has no build step and no runtime dependencies, and
-// this file keeps all three: it is plain ES, registered directly, and
-// nothing bundles it. What it buys is the case the owner will actually
-// meet — opening the app on a bus with no signal, where until now the
-// reload was a blank page and a month of revision was unreachable behind
-// a network error.
-//
-// Cache-first for the shell, network-first for content. The shell is
-// three HTML files, one stylesheet and the modules: they change only
-// when the app is deployed, so serving them from the cache is both
-// faster and correct. The content is different — a topic file gains
-// questions between deploys, and a learner who is online should get the
-// new ones — so those go to the network first and fall back to whatever
-// was cached the last time there was a connection.
-//
-// The version string is the whole cache-busting mechanism, and it had
-// been "v1" across every deploy since it was written — so a change to a
-// module reached a returning learner only through the background refresh
-// below, on their *second* open. That is a fair trade for a topic file;
-// it is not one for a bug fix shipped four days before an exam.
-//
-// It is the app's own version now, and `tests/service-worker.test.js`
-// fails when it does not match the top of CHANGELOG.md. A rule that says
-// "remember to bump this" is a rule that gets forgotten once and then
-// silently stays forgotten, which is exactly what happened here.
+// Scope-specific caches let the redesigned and preserved original apps share
+// an origin without either worker deleting or serving the other app's shell.
+// Content stays unversioned so a release cannot erase downloaded lessons.
+const VERSION = "english-prep-v0.65";
+const SCOPE = new URL(self.registration.scope);
+const NAMESPACE = `english-prep:${encodeURIComponent(SCOPE.pathname)}:`;
+const SHELL_PREFIX = `${NAMESPACE}shell:`;
+const SHELL_CACHE = `${SHELL_PREFIX}${VERSION}`;
+const CONTENT = `${NAMESPACE}content`;
+const LEGACY_CONTENT = "english-prep-content";
+const DATA = new URL("./data/", SCOPE);
 
-const VERSION = "english-prep-v0.64";
-
-/**
- * Content lives in its own cache, and that cache is deliberately NOT
- * versioned.
- *
- * When the version string started moving with the app (v0.30), `activate`
- * began deleting every cache that was not the current one — and topic
- * files were in it. So every release wiped every topic file the learner
- * had offline, and the next time they were underground the shell painted
- * and both tabs said "yüklenemedi": the exact failure the worker was
- * written to end. Six releases in thirty hours made that the normal case
- * rather than an edge one.
- *
- * Unversioning it costs nothing the design was not already accepting.
- * Content is network-first, so it refreshes on every request that has
- * signal, and `contentVersion` in the manifest is what actually tells a
- * learner their topic changed. The corpus bounds the size.
- */
-const CONTENT = "english-prep-content";
-
-/**
- * The shell. Everything needed to paint a screen with no network at all.
- *
- * The modules are listed, and they were not before. They used to be
- * cached on demand, which was fine while VERSION never changed — but a
- * bumped VERSION deletes the old cache on activate, so a learner who
- * went offline in the window between the new worker taking over and the
- * next page load would have had the three HTML files and none of the
- * code. `tests/service-worker.test.js` checks this list against `js/`,
- * because a module added later and not listed here is exactly the kind
- * of omission nobody notices until they are on a bus.
- *
- * Content is deliberately absent: it is cached on demand, because
- * pre-caching every topic file would download the whole corpus to a
- * learner who opened the app once. Fonts too — they fall back to the
- * metric-matched system stack, which is what they are chosen for.
- */
+// Precache every runtime module and the assets needed to render the shell.
+// Lessons/questions remain network-first and are cached when visited.
 const SHELL = [
   "./",
   "./index.html",
@@ -71,6 +19,8 @@ const SHELL = [
   "./results.html",
   "./css/style.css",
   "./css/fonts.css",
+  "./css/editorial.css",
+  "./assets/fonts/InterVariable.woff2",
   "./manifest.webmanifest",
   "./js/answers.js",
   "./js/backup-ui.js",
@@ -101,67 +51,94 @@ const SHELL = [
   "./js/celebrate.js",
 ];
 
+function isScopedContent(request) {
+  const url = new URL(request.url);
+  return url.origin === DATA.origin && url.pathname.startsWith(DATA.pathname);
+}
+
+async function migrateContent() {
+  // The previous cache was shared by every copy on this origin. Copy only
+  // this scope's data, keep newer scoped responses, and leave the shared
+  // cache intact because another installed copy may still rely on it.
+  if (!(await caches.keys()).includes(LEGACY_CONTENT)) return;
+  const previous = await caches.open(LEGACY_CONTENT);
+  const current = await caches.open(CONTENT);
+  for (const request of await previous.keys()) {
+    if (!isScopedContent(request) || await current.match(request)) continue;
+    const response = await previous.match(request);
+    if (response) {
+      try {
+        await current.put(request, response);
+      } catch {
+        // A full cache must not prevent the worker from taking control.
+        // The original response remains available in the legacy cache.
+      }
+    }
+  }
+}
+
+async function fetchFresh(request, cacheName) {
+  const response = await fetch(request);
+  if (response.ok) {
+    try {
+      const cache = await caches.open(cacheName);
+      await cache.put(request, response.clone());
+    } catch {
+      // Storage failures must not discard a usable network response.
+    }
+  }
+  return response;
+}
+
 self.addEventListener("install", (event) => {
-  // `addAll` rejects the whole install if any one file 404s, which is
-  // what should happen: a half-cached shell is worse than none, because
-  // it fails at a moment the learner cannot diagnose.
+  // Any missing shell asset rejects installation; never activate half a UI.
   event.waitUntil(
-    caches.open(VERSION).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting())
+    caches.open(SHELL_CACHE)
+      .then((cache) => cache.addAll(SHELL.map((path) => new URL(path, SCOPE).href)))
+      .then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((names) =>
-        Promise.all(
-          names
-            .filter((name) => name !== VERSION && name !== CONTENT)
-            .map((name) => caches.delete(name))
-        )
-      )
+    migrateContent()
+      .then(() => caches.keys())
+      .then((names) => Promise.all(
+        names
+          .filter((name) => name.startsWith(SHELL_PREFIX) && name !== SHELL_CACHE)
+          .map((name) => caches.delete(name))
+      ))
       .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener("fetch", (event) => {
   const request = event.request;
-  // Only GET, and only this origin. A service worker that answers for
-  // anything else is a service worker that will one day answer wrongly.
-  if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) {
-    return;
-  }
+  const url = new URL(request.url);
+  if (request.method !== "GET" || url.origin !== SCOPE.origin
+    || !url.pathname.startsWith(SCOPE.pathname)) return;
 
-  const isContent = new URL(request.url).pathname.includes("/data/");
-
-  if (isContent) {
-    // Network first: a topic file gains questions between deploys and a
-    // learner who has a connection should get them.
+  if (isScopedContent(request)) {
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CONTENT).then((cache) => cache.put(request, copy));
-          return response;
+      fetchFresh(request, CONTENT)
+        .catch(async () => {
+          const own = await (await caches.open(CONTENT)).match(request);
+          if (own) return own;
+          // Also preserve offline access if migration could not write due
+          // to quota. This lookup is for the exact request in our data path.
+          if ((await caches.keys()).includes(LEGACY_CONTENT)) {
+            return (await caches.open(LEGACY_CONTENT)).match(request);
+          }
+          return undefined;
         })
-        .catch(() => caches.match(request))
     );
     return;
   }
 
-  // Cache first for the shell, but still refresh it in the background so
-  // a deploy reaches a daily user on their second open rather than never.
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      const live = fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(VERSION).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => cached);
-      return cached ?? live;
-    })
-  );
+  // Shell lookups are deliberately local to this cache. CacheStorage.match
+  // would search other releases/copies and could resurrect their stale UI.
+  const cached = caches.open(SHELL_CACHE).then((cache) => cache.match(request));
+  const live = fetchFresh(request, SHELL_CACHE).catch(() => cached);
+  event.waitUntil(live.then(() => undefined));
+  event.respondWith(cached.then((response) => response ?? live));
 });

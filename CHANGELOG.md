@@ -5,6 +5,37 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.65 — 2026-10-03
+
+**A redesigned study interface, with the full original preserved.** Margin
+uses the supplied editorial references for warm paper and ink, with a
+restrained dark companion, while retaining the Turkish learning flow,
+ten topics, 60 scrolling article lessons, 241 questions, explanations,
+local progress, and offline operation. The unchanged source at `39dcd46`
+is archived in `original/source-39dcd46.zip`; the hosted original remains
+available at `original/`.
+
+The learning index now emphasizes the curriculum, real corpus totals,
+search, and a contextual reading action. Arrival opens the material
+directly; setup remains optional. The existing unscored pre-reading
+question is an initially collapsed disclosure, and inline checks remain
+optional throughout the article. Inter handles the interface while
+Source Serif 4 continues to distinguish English learning material.
+
+**The two versions no longer share a destructive cache lifecycle.** Each
+service worker namespaces its shell and content caches by registration
+scope. Activation deletes only that scope's previous shell caches and
+preserves downloaded content, the other version, and unrelated apps on
+the same origin. Existing content is migrated from the old shared cache
+by its exact data path without deleting the source or replacing a newer
+scoped response. The hosted original stays at v0.64 and receives only the
+service-worker isolation adjustment; its UI and content are unchanged.
+
+The redesigned stylesheet and self-hosted Inter font are included in the
+v0.65 offline shell. Behavioral tests execute both workers against shared
+CacheStorage, including activation, content migration, offline reads,
+quota failures, failed installs, and stale-shell isolation.
+
 ## v0.64 — 2026-09-26
 
 **Half the app's text was at a size the app's own standard rejects.**
