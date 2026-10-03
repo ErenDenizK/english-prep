@@ -51,6 +51,46 @@ const container = document.getElementById("profile-container");
 let resetModal;
 let restoreDialog;
 let initialized = false;
+let renderVersion = 0;
+
+// Saving a field refreshes the profile's derived figures. Capture focus
+// after the browser has finished a native change/Tab event so the next
+// field, rather than the one just left, keeps the keyboard position.
+function captureFocus() {
+  const active = document.activeElement;
+  if (!container.contains(active)) return null;
+  const key = active.id
+    ? { id: active.id }
+    : active.dataset.value
+      ? { value: active.dataset.value, group: active.closest("[aria-labelledby]")?.getAttribute("aria-labelledby") }
+      : { label: active.getAttribute("aria-labelledby")?.split(" ")[0], text: active.textContent, role: active.getAttribute("role"), tag: active.tagName };
+  return {
+    key,
+    value: active instanceof HTMLInputElement ? active.value : null,
+    start: active instanceof HTMLInputElement ? active.selectionStart : null,
+    end: active instanceof HTMLInputElement ? active.selectionEnd : null,
+    direction: active instanceof HTMLInputElement ? active.selectionDirection : null,
+    scrollTop: document.getElementById("shell-scroll").scrollTop,
+  };
+}
+
+function restoreFocus(saved) {
+  if (!saved) return;
+  const { key } = saved;
+  const control = [...container.querySelectorAll("input, button, a, [tabindex]")].find((node) => {
+    if (key.id) return node.id === key.id;
+    if (key.value) return node.dataset.value === key.value && node.closest("[aria-labelledby]")?.getAttribute("aria-labelledby") === key.group;
+    return node.tagName === key.tag && node.getAttribute("role") === key.role &&
+      (key.label ? node.getAttribute("aria-labelledby")?.split(" ")[0] === key.label : node.textContent === key.text);
+  });
+  if (!control) return;
+  if (saved.value !== null && control instanceof HTMLInputElement) {
+    control.value = saved.value;
+    if (saved.start !== null) control.setSelectionRange(saved.start, saved.end, saved.direction);
+  }
+  control.focus({ preventScroll: true });
+  document.getElementById("shell-scroll").scrollTop = saved.scrollTop;
+}
 
 function formatPercent(value) {
   return value === null ? "—" : `%${Math.round(value * 100)}`;
@@ -322,7 +362,8 @@ function renderData() {
     downloadBackup()
       .then((how) => {
         status.textContent =
-          how === "shared" ? "Yedek paylaşıma hazırlandı." : "Yedek dosyan indirildi.";
+          how === "canceled" ? "Paylaşım iptal edildi." :
+            how === "shared" ? "Yedek paylaşıldı." : "Yedek dosyan indirildi.";
       })
       .catch((error) => {
         console.error(error);
@@ -568,6 +609,7 @@ function renderAbout() {
 }
 
 async function render() {
+  const version = ++renderVersion;
   let titleById = new Map();
   let lessons = [];
   let topics = [];
@@ -586,6 +628,9 @@ async function render() {
   }
 
 
+  await new Promise((resolve) => requestAnimationFrame(resolve));
+  if (version !== renderVersion) return;
+  const focused = captureFocus();
   const lessonIds = lessons.map((lesson) => lesson.id);
   const lessonIdByCategory = new Map(lessons.map((lesson) => [lesson.category, lesson.id]));
 
@@ -657,6 +702,7 @@ async function render() {
   aside.appendChild(renderAbout());
 
   container.append(main, aside);
+  restoreFocus(focused);
 }
 
 export async function initProfileTab() {

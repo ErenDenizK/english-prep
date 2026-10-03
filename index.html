@@ -6,25 +6,24 @@
   <title>Eğitim — English Prep</title>
   <meta name="description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
   <meta name="color-scheme" content="dark light" />
-  <meta name="theme-color" content="#141513" />
+  <meta name="theme-color" content="#111316" />
   <!-- Applied before the stylesheet, because the alternative is a flash of
        the wrong theme on every cold start. Duplicated in all three pages:
        there is no build step, and an external file would be a second
        round trip in front of first paint. Keep the three copies
        identical. -->
   <script>
-    try {
-      var t = localStorage.getItem("englishPrep.theme");
-      if (t === "light" || t === "dark") {
-        document.documentElement.setAttribute("data-theme", t);
-        document.querySelector('meta[name="theme-color"]').content =
-          t === "light" ? "#f5f3ed" : "#141513";
-        document.querySelector('meta[name="color-scheme"]').content = t;
-      }
-    } catch (e) {
-      /* Storage unavailable — the system preference decides, which is the
-         same thing that happens with no stored choice. */
-    }
+    var t = "dark";
+    try { t = localStorage.getItem("englishPrep.theme"); } catch (e) {}
+    if (t !== "light" && t !== "system") t = "dark";
+    if (t === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", t);
+    var resolved = t === "system"
+      ? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")
+      : t;
+    document.querySelector('meta[name="theme-color"]').content =
+      resolved === "light" ? "#f5f3ed" : "#111316";
+    document.querySelector('meta[name="color-scheme"]').content = resolved;
   </script>
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
   <!-- iOS ignores the manifest's icons for Add to Home Screen and wants
@@ -167,6 +166,10 @@
     </div>
   </dialog>
 
+  <script type="module">
+    import { initTheme } from "./js/theme.js";
+    initTheme();
+  </script>
   <script type="module" src="js/home.js"></script>
 </body>
 </html>

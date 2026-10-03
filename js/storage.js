@@ -14,6 +14,8 @@ import {
   mergeLessonProgress,
   mergeSeenVersions,
   summariseRestore,
+  extendsAttempt,
+  mergeAttempt,
 } from "./backup.js";
 
 const HISTORY_KEY = "englishPrep.history";
@@ -72,9 +74,11 @@ function readJson(key, fallback, isValid) {
 function writeJson(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
+    return true;
   } catch {
     // Storage may be unavailable or over quota. The app keeps working;
     // this session's progress just isn't remembered.
+    return false;
   }
 }
 
@@ -93,17 +97,30 @@ function loadHistory() {
 }
 
 function saveHistory(history) {
-  writeJson(HISTORY_KEY, history);
+  return writeJson(HISTORY_KEY, history);
 }
 
 /**
- * Appends a completed attempt to local history.
+ * Saves an attempt. Resumable sessions keep one stable identity, so leaving,
+ * refreshing and finishing update one record rather than counting answers twice.
+ * Older attempts without an identity retain their append-only behavior.
  * @param {{date: string, mode: "mixed"|"topic", topicBreakdown: Record<string, {correct: number, total: number}>, categoryBreakdown: Record<string, {correct: number, total: number}>, questions: Array<{id: string, topicId: string, correct: boolean}>}} attempt
  */
 export function recordAttempt(attempt) {
   const history = loadHistory();
-  history.attempts.push(attempt);
-  saveHistory(history);
+  const existing = typeof attempt.id === "string" && attempt.id
+    ? history.attempts.findIndex((entry) => entry?.id === attempt.id)
+    : -1;
+  if (existing < 0) {
+    history.attempts.push(attempt);
+  } else {
+    // A page restored from the back/forward cache can hold an older prefix.
+    // Its pagehide must never erase answers already saved by a later state.
+    const previous = history.attempts[existing];
+    if (!extendsAttempt(previous, attempt)) return true;
+    history.attempts[existing] = mergeAttempt(previous, attempt);
+  }
+  return saveHistory(history);
 }
 
 /**
@@ -134,6 +151,28 @@ export function getHistory() {
     }));
 }
 
+// A resumable test can span calendar days. Each answer owns its time;
+// older records still use the only timestamp that was available then.
+function answerTime(question, attempt) {
+  const answeredAt = typeof question.answeredAt === "string" ? Date.parse(question.answeredAt) : NaN;
+  if (Number.isFinite(answeredAt)) return answeredAt;
+  const legacy = Date.parse(attempt.date ?? "");
+  return Number.isFinite(legacy) ? legacy : null;
+}
+
+function attemptActivity(attempt) {
+  let latest = null;
+  for (const question of attempt.questions) {
+    const at = answerTime(question, attempt);
+    if (at !== null && (latest === null || at > latest)) latest = at;
+  }
+  return latest ?? answerTime({}, attempt);
+}
+
+function chronologicalHistory() {
+  return getHistory().sort((a, b) => (attemptActivity(a) ?? 0) - (attemptActivity(b) ?? 0));
+}
+
 function sumBreakdowns(attempts, breakdownKey) {
   const totals = {};
   for (const attempt of attempts) {
@@ -150,8 +189,8 @@ function sumBreakdowns(attempts, breakdownKey) {
 
 /**
  * Per-question history, derived rather than stored: every attempt already
- * carries its own `date` and the ids it covered, so "when did this learner
- * last see this question" needs no new field and no migration.
+ * carries answer timestamps (or an attempt date in older records), so
+ * "when did this learner last see this question" needs no migration.
  *
  * `lastCorrect` is the outcome of the most recent answer, not a running
  * average — what the session builder needs to know is whether the learner
@@ -168,12 +207,11 @@ function sumBreakdowns(attempts, breakdownKey) {
 export function getItemStats() {
   const stats = {};
   for (const attempt of getHistory()) {
-    const at = Date.parse(attempt?.date ?? "");
-    const when = Number.isNaN(at) ? 0 : at;
     for (const question of attempt?.questions ?? []) {
       if (typeof question?.id !== "string") {
         continue;
       }
+      const when = answerTime(question, attempt) ?? 0;
       const entry = (stats[question.id] ??= { seen: 0, wrong: 0, lastCorrect: false, last: 0 });
       entry.seen += 1;
       if (typeof question.topicId === "string") {
@@ -233,11 +271,9 @@ export function getMistakeBook() {
   // trusting the append order.
   const answers = [];
   for (const attempt of getHistory()) {
-    const at = Date.parse(attempt?.date ?? "");
-    const when = Number.isNaN(at) ? 0 : at;
     for (const question of attempt?.questions ?? []) {
       if (typeof question?.id === "string") {
-        answers.push({ ...question, when });
+        answers.push({ ...question, when: answerTime(question, attempt) ?? 0 });
       }
     }
   }
@@ -329,7 +365,7 @@ const TOPIC_ACCURACY_WINDOW = 20;
  *   number to mean anything.
  */
 export function getTopicAccuracy(topicId) {
-  const attempts = getHistory();
+  const attempts = chronologicalHistory();
   let correct = 0;
   let answered = 0;
   // Newest first, and over the attempt's own breakdown rather than its
@@ -475,7 +511,7 @@ const ACCURACY_WINDOW = 40;
  *            accuracy: number|null, accuracyWindow: number}}
  */
 export function getOverallStats() {
-  const attempts = getHistory();
+  const attempts = chronologicalHistory();
   let totalQuestions = 0;
   let totalCorrect = 0;
   for (const attempt of attempts) {
@@ -483,7 +519,7 @@ export function getOverallStats() {
     totalCorrect += attempt.questions.filter((q) => q.correct).length;
   }
 
-  // Walk backwards through the history, newest attempt first, until the
+  // Walk backwards by latest answer time, newest active attempt first, until the
   // window is full. Attempts are whole; the window is a floor, not a cap,
   // so a single long test is never chopped in half.
   const recent = [];
@@ -528,24 +564,17 @@ function loadSeenVersions() {
  * @returns {number} the content version the learner last saw (0 if never)
  */
 /**
- * When the learner was last here, from the only timestamp the app stores:
- * `attempt.date`, written on every attempt in results.js and until now
- * read by nothing.
- *
- * Lesson progress carries no timestamp, so a learner who has only ever
- * read lessons has no last-activity date at all. That is why this returns
- * null rather than a fallback: a screen that changes on "it has been a
- * while" must only do so when the app actually knows, and guessing from
- * the absence of attempts would tell a brand-new learner they had been
- * away.
+ * When the learner last answered or read. Legacy attempts without answer
+ * times retain their attempt date; absent evidence stays unknown rather
+ * than implying that a brand-new learner has been away.
  *
  * @returns {number|null} epoch milliseconds, or null when unknown.
  */
 export function getLastActivity() {
   let latest = null;
   for (const attempt of getHistory()) {
-    const time = Date.parse(attempt.date);
-    if (!Number.isNaN(time) && (latest === null || time > latest)) {
+    const time = attemptActivity(attempt);
+    if (time !== null && (latest === null || time > latest)) {
       latest = time;
     }
   }
@@ -865,17 +894,17 @@ export function setDailyGoal(goal) {
 
 /**
  * Questions answered today, in the learner's own calendar day — the
- * number the home ring fills against the goal. Whole attempts count,
- * partial ones too: an answer is an answer.
+ * number shown against the optional daily goal. Partial attempts count
+ * too, on the date each answer was given rather than when its test began.
  * @param {number} [now]
  */
 export function getTodayCount(now = Date.now()) {
   const today = dayKey(now);
   let count = 0;
   for (const attempt of getHistory()) {
-    const at = Date.parse(attempt?.date ?? "");
-    if (!Number.isNaN(at) && dayKey(at) === today) {
-      count += attempt.questions?.length ?? 0;
+    for (const question of attempt.questions) {
+      const at = answerTime(question, attempt);
+      if (at !== null && dayKey(at) === today) count += 1;
     }
   }
   return count;
@@ -893,9 +922,9 @@ export function getTodayCount(now = Date.now()) {
 export function getStreak(now = Date.now()) {
   const active = new Set();
   for (const attempt of getHistory()) {
-    const at = Date.parse(attempt?.date ?? "");
-    if (!Number.isNaN(at)) {
-      active.add(dayKey(at));
+    for (const question of attempt.questions.length ? attempt.questions : [{}]) {
+      const at = answerTime(question, attempt);
+      if (at !== null) active.add(dayKey(at));
     }
   }
   for (const entry of Object.values(getAllLessonProgress())) {
@@ -965,43 +994,122 @@ export function exportState() {
 }
 
 /**
- * Merges a backup into what is already here and writes the result. Never
- * destructive: an attempt already recorded is kept as it stands, lesson
- * progress takes the further of the two, and a name already set is not
- * overwritten by an older one.
+ * Stages a merge before writing. If a write fails, roll back this restore's
+ * changes to their exact previous values. localStorage has no transaction,
+ * so a failed rollback is reported explicitly instead of claiming success.
+ * Existing progress and explicitly chosen preferences win on conflicts.
  *
  * @param {{data: object}} backup - already validated by parseBackup
- * @returns {{newAttempts: number, newQuestions: number, advancedLessons: number}}
+ * @returns {{ok: true, newAttempts: number, newQuestions: number, advancedLessons: number, preferencesChanged: boolean} | {ok: false, reason: "invalid"|"storage", rollbackFailed: boolean}}
  */
 export function importState(backup) {
-  const theirs = backup?.data ?? {};
-  const mineHistory = loadHistory();
-  const mineLessons = loadLessonProgress();
+  const theirs = backup?.data;
+  const invalid = () => ({ ok: false, reason: "invalid", rollbackFailed: false });
+  if (!isPlainObject(theirs)
+    || (theirs.history !== undefined
+      && (!isPlainObject(theirs.history) || !Array.isArray(theirs.history.attempts)))
+    || ["lessonProgress", "seenVersions", "settings"].some((key) =>
+      theirs[key] !== undefined && !isPlainObject(theirs[key]))) return invalid();
 
-  const summary = summariseRestore(mineHistory, theirs.history, mineLessons, theirs.lessonProgress);
-
-  saveHistory(mergeHistory(mineHistory, theirs.history));
-  writeJson(LESSON_PROGRESS_KEY, mergeLessonProgress(mineLessons, theirs.lessonProgress));
-  writeJson(
-    SEEN_VERSIONS_KEY,
-    mergeSeenVersions(readJson(SEEN_VERSIONS_KEY, {}, isPlainObject), theirs.seenVersions)
-  );
-
-  // A name is the one field with no sensible merge, so the device the
-  // learner is holding wins and a restore only fills a blank.
-  if (!getProfileName() && typeof theirs.profileName === "string") {
-    setProfileName(theirs.profileName);
-  }
-  // The device being held wins on a preference, the same way the name
-  // does; a restore only fills in what has never been chosen here.
-  if (isPlainObject(theirs.settings)) {
-    writeJson(SETTINGS_KEY, { ...theirs.settings, ...getSettings() });
-  }
-  if (!getExamDate() && typeof theirs.examDate === "string") {
-    setExamDate(theirs.examDate);
+  const keys = [HISTORY_KEY, LESSON_PROGRESS_KEY, SEEN_VERSIONS_KEY,
+    PROFILE_NAME_KEY, SETTINGS_KEY, EXAM_DATE_KEY, DAILY_GOAL_KEY];
+  let before;
+  try {
+    // Read every key before touching any of them. Guarded read helpers would
+    // turn denied access into an empty store and could hide a failed restore.
+    before = new Map(keys.map((key) => [key, localStorage.getItem(key)]));
+  } catch {
+    return { ok: false, reason: "storage", rollbackFailed: false };
   }
 
-  return summary;
+  const read = (key, fallback, valid = isPlainObject) => {
+    try {
+      const value = JSON.parse(before.get(key));
+      return valid(value) ? value : fallback;
+    } catch {
+      return fallback;
+    }
+  };
+  const staged = new Map();
+  let summary;
+  try {
+    const mineHistory = read(HISTORY_KEY, { attempts: [] }, (value) =>
+      isPlainObject(value) && Array.isArray(value.attempts));
+    const mineLessons = read(LESSON_PROGRESS_KEY, {});
+    const history = mergeHistory(mineHistory, theirs.history);
+    const lessons = mergeLessonProgress(mineLessons, theirs.lessonProgress);
+    summary = summariseRestore(mineHistory, history, mineLessons, lessons);
+    const questionCount = (value) => value.attempts.reduce((count, attempt) =>
+      count + (Array.isArray(attempt?.questions) ? attempt.questions.length : 0), 0);
+    // Count the actual merge, including a longer saved answer prefix with
+    // the same session ID, rather than counting records in the input file.
+    summary.newAttempts = Math.max(0, history.attempts.length - mineHistory.attempts.length);
+    summary.newQuestions = Math.max(0, questionCount(history) - questionCount(mineHistory));
+
+    // Omitted fields in older backups do not create empty storage records.
+    if (theirs.history !== undefined) staged.set(HISTORY_KEY, JSON.stringify(history));
+    if (theirs.lessonProgress !== undefined) staged.set(LESSON_PROGRESS_KEY, JSON.stringify(lessons));
+    if (theirs.seenVersions !== undefined) {
+      staged.set(SEEN_VERSIONS_KEY, JSON.stringify(
+        mergeSeenVersions(read(SEEN_VERSIONS_KEY, {}), theirs.seenVersions)
+      ));
+    }
+    if (!before.get(PROFILE_NAME_KEY) && typeof theirs.profileName === "string" && theirs.profileName) {
+      staged.set(PROFILE_NAME_KEY, theirs.profileName);
+    }
+    if (theirs.settings !== undefined) {
+      staged.set(SETTINGS_KEY, JSON.stringify({ ...theirs.settings, ...read(SETTINGS_KEY, {}) }));
+    }
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    if (!datePattern.test(before.get(EXAM_DATE_KEY) ?? "")
+      && typeof theirs.examDate === "string" && datePattern.test(theirs.examDate)) {
+      staged.set(EXAM_DATE_KEY, theirs.examDate);
+    }
+    // getDailyGoal() returns a default even when no choice was ever saved.
+    // Inspect the explicit value so a fresh device can restore a valid goal.
+    if (!DAILY_GOAL_OPTIONS.includes(Number(before.get(DAILY_GOAL_KEY)))
+      && DAILY_GOAL_OPTIONS.includes(theirs.dailyGoal)) {
+      staged.set(DAILY_GOAL_KEY, String(theirs.dailyGoal));
+    }
+  } catch {
+    // A malformed or unserializable backup must fail before the first write.
+    return invalid();
+  }
+
+  const changes = [...staged].filter(([key, value]) => value !== before.get(key));
+  const written = [];
+  try {
+    for (const [key, value] of changes) {
+      // A different tab may have saved progress since the snapshot. Retry
+      // against that newer state rather than writing over it.
+      if (localStorage.getItem(key) !== before.get(key)) throw new Error("Storage changed");
+      localStorage.setItem(key, value);
+      written.push(key);
+      if (localStorage.getItem(key) !== value) throw new Error("Storage write failed");
+    }
+  } catch {
+    let rollbackFailed = false;
+    for (const key of written.reverse()) {
+      try {
+        // Never roll back a subsequent change made by another tab.
+        if (localStorage.getItem(key) !== staged.get(key)) {
+          rollbackFailed = true;
+          continue;
+        }
+        const value = before.get(key);
+        if (value === null) localStorage.removeItem(key);
+        else localStorage.setItem(key, value);
+        if (localStorage.getItem(key) !== value) rollbackFailed = true;
+      } catch {
+        rollbackFailed = true;
+      }
+    }
+    return { ok: false, reason: "storage", rollbackFailed };
+  }
+
+  const preferenceKeys = [PROFILE_NAME_KEY, SETTINGS_KEY, EXAM_DATE_KEY, DAILY_GOAL_KEY];
+  return { ...summary, ok: true,
+    preferencesChanged: changes.some(([key]) => preferenceKeys.includes(key)) };
 }
 
 /**

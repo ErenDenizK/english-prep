@@ -12,12 +12,21 @@
 
 import { loadManifest } from "./topics.js";
 import { getMistakeBook } from "./storage.js";
-import { setQuizRequest } from "./session-state.js";
+import { setQuizRequest, clearActiveQuiz, clearQuizResult } from "./session-state.js";
+import { announce } from "./shell.js";
 import { TOPIC_TEST_DEFAULT_COUNT } from "./config.js";
 
 function go(request) {
-  setQuizRequest(request);
+  if (!setQuizRequest(request)) {
+    announce("Test başlatılamadı. Tarayıcı bu sekmede veri saklamaya izin vermiyor.");
+    return false;
+  }
+  // Only an explicit launch replaces an unfinished session. Reloading
+  // quiz.html itself keeps the saved order, answers and current question.
+  clearActiveQuiz();
+  clearQuizResult();
   window.location.href = "quiz.html";
+  return true;
 }
 
 /**
@@ -31,8 +40,7 @@ export async function startTopicTest(topicId, count = TOPIC_TEST_DEFAULT_COUNT) 
   if (!topic) {
     return false;
   }
-  go({ mode: "topic", topicIds: [topic.id], count: Math.min(count, topic.questionCount) });
-  return true;
+  return go({ mode: "topic", topicIds: [topic.id], count: Math.min(count, topic.questionCount) });
 }
 
 /**
@@ -45,7 +53,7 @@ export async function startTopicTest(topicId, count = TOPIC_TEST_DEFAULT_COUNT) 
 export async function startCategoryPractice(category, count = TOPIC_TEST_DEFAULT_COUNT) {
   const manifest = await loadManifest();
   const topics = manifest.topics.filter((topic) => !topic.comingSoon);
-  go({ mode: "category", topicIds: topics.map((topic) => topic.id), category, count });
+  return go({ mode: "category", topicIds: topics.map((topic) => topic.id), category, count });
 }
 
 /**
@@ -54,7 +62,7 @@ export async function startCategoryPractice(category, count = TOPIC_TEST_DEFAULT
 export async function startMixedTest(count) {
   const manifest = await loadManifest();
   const topics = manifest.topics.filter((topic) => !topic.comingSoon);
-  go({ mode: "mixed", topicIds: topics.map((topic) => topic.id), count });
+  return go({ mode: "mixed", topicIds: topics.map((topic) => topic.id), count });
 }
 
 /**
@@ -73,6 +81,5 @@ export async function startMistakeBook(count = "all") {
   }
   const manifest = await loadManifest();
   const topics = manifest.topics.filter((topic) => !topic.comingSoon);
-  go({ mode: "mistakes", topicIds: topics.map((topic) => topic.id), ids, count });
-  return true;
+  return go({ mode: "mistakes", topicIds: topics.map((topic) => topic.id), ids, count });
 }

@@ -49,7 +49,7 @@ import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
 import { startTopicTest, startCategoryPractice, startMixedTest } from "./quiz-launch.js";
-import { TOPIC_INTRO_PREFIX } from "./config.js";
+import { TOPIC_INTRO_PREFIX, TOPIC_TEST_DEFAULT_COUNT } from "./config.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard, textButton } from "./dom.js";
 import { icon } from "./icons.js";
@@ -61,6 +61,8 @@ const bar = createBar("shell-header");
 const indexContainer = document.getElementById("lesson-index");
 const readerContainer = document.getElementById("lesson-reader");
 const actionBar = createActionBar("lesson-bar");
+// A delayed fetch must never reopen a lesson after navigation elsewhere.
+let navigationVersion = 0;
 
 const state = {
   /** @type {Array<object>|null} */
@@ -270,12 +272,12 @@ function renderWelcome(firstLesson) {
     // What the app is, in one line, and the privacy fact otherwise buried
     // in Profil. Not the brand: the manifest and the first-run flow say
     // it, and this card's job is to say what to do.
-    line: "İngilizceyi kullanırken sezdiğin ayrımları, Türkçe açıklamalar ve İngilizce örneklerle incele. İhtiyacın olan konuyu seç; ardından testle uygula.",
+    line: "İngilizceyi bildiğin yerden ilerlet. Konuyu oku, ayrımları gör, testle uygula.",
     primary,
     secondary: firstLesson
       ? { label: "Kısa test çöz", onClick: () => startMixedTest(5).catch(console.error) }
       : undefined,
-    facts: ["Tüm dersler açık. Kendi çalışma sıranı seçebilirsin."],
+    facts: ["Türkçe anlatım · İngilizce örnekler"],
   });
 }
 
@@ -660,7 +662,7 @@ function renderIndexFilter(lessons, progress) {
   // groups below are sections of their own, so the field is neither a
   // stray control above a list nor a sentence between two headings.
   const wrap = el("section", "stack stack--tight");
-  wrap.appendChild(sectionHeading("Ders içeriği", "Bir konu seç veya doğrudan çalışmak istediğin dersi ara."));
+  wrap.appendChild(sectionHeading("Ders içeriği", "Konuyu seç veya çalışmak istediğin ayrımı ara."));
 
   const field = el("input", "field");
   field.type = "search";
@@ -982,7 +984,7 @@ function renderTopicTestRow(topicId, questionCount) {
 
   const main = el("span", "row__main");
   main.appendChild(el("span", "row__title", "Bu konudan test çöz"));
-  main.appendChild(el("span", "row__sub t-num", `${questionCount} soru`));
+  main.appendChild(el("span", "row__sub t-num", `Test: ${Math.min(TOPIC_TEST_DEFAULT_COUNT, questionCount)} soru · Havuz: ${questionCount}`));
   row.appendChild(main);
 
   row.addEventListener("click", () => {
@@ -1006,20 +1008,24 @@ function renderTopicTestRow(topicId, questionCount) {
  *   a dead entry in the history.
  */
 export async function openTopicIntro(topicId) {
+  closeReader();
+  const navigation = navigationVersion;
   let lessons;
   let manifest;
   try {
     lessons = await ensureLessons();
+    if (navigation !== navigationVersion) return;
     manifest = await loadManifest();
+    if (navigation !== navigationVersion) return;
   } catch (error) {
+    if (navigation !== navigationVersion) return;
     // A topic file that will not load used to fall through to the index
     // with the hash still on #egitim/konu/<id> — nothing visible happened
     // and the URL lied about where the learner was. Say so, and put the
     // hash back where the screen actually is.
     console.error(error);
     history.replaceState(null, "", "#egitim");
-    await showLessonIndex();
-    indexContainer.prepend(failureCard("Konu", () => openTopicIntro(topicId)));
+    await showLessonIndex({ failure: failureCard("Konu", () => openTopicIntro(topicId)) });
     return;
   }
 
@@ -1033,9 +1039,12 @@ export async function openTopicIntro(topicId) {
   let topic;
   try {
     topic = await loadTopicFile(entry);
+    if (navigation !== navigationVersion) return;
   } catch (error) {
+    if (navigation !== navigationVersion) return;
     console.error(error);
-    await showLessonIndex();
+    history.replaceState(null, "", "#egitim");
+    await showLessonIndex({ failure: failureCard("Konu", () => openTopicIntro(topicId)) });
     return;
   }
 
@@ -1341,7 +1350,14 @@ function renderCheckBlock(question, blockIndex, { label = "Kontrol" } = {}) {
         // new content. Measured at 162px on a 320px screen, which is the
         // whole verdict line sliding out from under the reader's eyes.
         const top = scrollRegion.scrollTop;
-        wrap.replaceWith(renderCheckBlock(question, blockIndex, { label }));
+        const hadFocus = wrap.contains(document.activeElement);
+        const replacement = renderCheckBlock(question, blockIndex, { label });
+        wrap.replaceWith(replacement);
+        if (hadFocus) {
+          [...replacement.querySelectorAll(".option")]
+            .find((button) => button.dataset.option === option)
+            ?.focus({ preventScroll: true });
+        }
         scrollRegion.scrollTop = top;
       },
     })
@@ -1498,9 +1514,11 @@ function handleReaderScroll() {
     return;
   }
   scrollTicking = true;
+  const reader = state.reader;
+  const navigation = navigationVersion;
   requestAnimationFrame(() => {
     scrollTicking = false;
-    if (!state.reader) {
+    if (state.reader !== reader || navigation !== navigationVersion) {
       return;
     }
     const read = readFraction();
@@ -1712,17 +1730,22 @@ function setReaderChrome(active) {
 
 /** Leaves reader mode and restores the app header and bottom nav. */
 export function closeReader() {
+  navigationVersion += 1;
   state.reader = null;
   setReaderChrome(false);
   actionBar.hide();
 }
 
-export async function showLessonIndex() {
+export async function showLessonIndex({ failure = null } = {}) {
   closeReader();
+  const navigation = navigationVersion;
   try {
     await ensureLessons();
+    if (navigation !== navigationVersion) return;
     renderIndex();
+    if (failure) indexContainer.prepend(failure);
   } catch (error) {
+    if (navigation !== navigationVersion) return;
     console.error(error);
     clear(indexContainer);
     indexContainer.classList.remove("split");
@@ -1736,10 +1759,14 @@ export async function showLessonIndex() {
  *   dead entry in the history.
  */
 export async function openLesson(lessonId) {
+  closeReader();
+  const navigation = navigationVersion;
   let lessons;
   try {
     lessons = await ensureLessons();
+    if (navigation !== navigationVersion) return;
   } catch (error) {
+    if (navigation !== navigationVersion) return;
     console.error(error);
     await showLessonIndex();
     return;
@@ -1755,8 +1782,10 @@ export async function openLesson(lessonId) {
   // Only now is the topic file worth fetching — and only this lesson's.
   try {
     const manifest = await loadManifest();
+    if (navigation !== navigationVersion) return;
     const topic = manifest.topics.find((entry) => entry.id === lessons[lessonPosition].topicId);
     const full = await loadLessonsForTopics([topic]);
+    if (navigation !== navigationVersion) return;
     const loaded = full.find((lesson) => lesson.id === lessonId);
     if (!loaded) {
       throw new Error(`lesson ${lessonId} is in the manifest index but not in ${topic?.file}`);
@@ -1765,6 +1794,7 @@ export async function openLesson(lessonId) {
     // whole syllabus rather than one topic.
     state.lessons = lessons.map((lesson) => (lesson.id === lessonId ? { ...lesson, ...loaded } : lesson));
   } catch (error) {
+    if (navigation !== navigationVersion) return;
     // Two things this used to get wrong, and both mattered more than the
     // failure itself.
     //
@@ -1822,7 +1852,7 @@ export async function openLesson(lessonId) {
   const entry = getLessonProgress(lessonId);
   const resumeAt = entry && !entry.done ? entry.read : 0;
   requestAnimationFrame(() => {
-    if (!state.reader) {
+    if (!state.reader || navigation !== navigationVersion) {
       return;
     }
     const scrollable = scrollRegion.scrollHeight - scrollRegion.clientHeight;

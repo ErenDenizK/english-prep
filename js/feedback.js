@@ -111,9 +111,18 @@ function renderReportButton(question, selected) {
       return;
     }
     button.setAttribute("aria-disabled", "true");
-    const outcome = await sendReport(buildReport(question, selected));
+    button.setAttribute("aria-busy", "true");
+    let outcome;
+    try {
+      outcome = await sendReport(buildReport(question, selected));
+    } catch {
+      outcome = "failed";
+    }
+    button.removeAttribute("aria-busy");
     const message = outcome === "failed" ? REPORT_RESULT.failed + question.id : REPORT_RESULT[outcome];
-    button.textContent = message;
+    const retryable = outcome === "failed" || outcome === "cancelled";
+    button.textContent = retryable ? `${message} Yeniden dene.` : message;
+    if (retryable) button.removeAttribute("aria-disabled");
     announce(message);
   });
   return button;

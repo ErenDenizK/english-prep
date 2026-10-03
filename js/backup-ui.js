@@ -35,7 +35,7 @@ const REASONS = {
  * opens WhatsApp, AirDrop, Files, mail. Falls back to a download, which is
  * what a desktop wants anyway.
  *
- * @returns {Promise<"shared"|"downloaded">}
+ * @returns {Promise<"shared"|"downloaded"|"canceled">}
  */
 export async function downloadBackup() {
   const json = JSON.stringify(buildBackup(exportState()), null, 2);
@@ -49,7 +49,7 @@ export async function downloadBackup() {
       // A cancelled share sheet is a decision, not a failure, and must not
       // fall through to a download the learner did not ask for.
       if (error?.name === "AbortError") {
-        return "shared";
+        return "canceled";
       }
     }
   }
@@ -74,6 +74,7 @@ export async function downloadBackup() {
  */
 export function createRestoreDialog({ onRestored }) {
   const dialog = document.getElementById("restore-dialog");
+  const heading = document.getElementById("restore-dialog-title");
   const description = document.getElementById("restore-dialog-text");
   const inputs = document.getElementById("restore-input");
   const fileInput = document.getElementById("restore-file");
@@ -84,13 +85,16 @@ export function createRestoreDialog({ onRestored }) {
 
   /** @type {object|null} the parsed backup, once step one has passed */
   let pending = null;
+  let fileRead = 0;
 
   function reset() {
+    fileRead += 1;
     pending = null;
     textInput.value = "";
     fileInput.value = "";
     message.textContent = "";
     inputs.hidden = false;
+    confirm.disabled = false;
     confirm.textContent = "Devam";
     description.textContent =
       "Yedek dosyanı seç, ya da içeriğini aşağıya yapıştır. Mevcut ilerlemen silinmez — iki taraf birleştirilir.";
@@ -131,6 +135,20 @@ export function createRestoreDialog({ onRestored }) {
   /** Step two: actually write it, and say what changed. */
   function apply() {
     const summary = importState(pending);
+    if (!summary.ok) {
+      if (summary.reason === "invalid") {
+        pending = null;
+        inputs.hidden = false;
+        confirm.textContent = "Devam";
+        message.textContent = "Yedeğin içeriği geçerli değil. Başka bir yedek dosyası seç ya da metnin tamamını yapıştır.";
+      } else {
+        confirm.textContent = "Tekrar dene";
+        message.textContent = summary.rollbackFailed
+          ? "Geri yükleme tamamlanamadı. Verilerin bir kısmı birleşmiş olabilir. Yedek dosyanı sakla; tarayıcı depolama iznini ve boş alanı kontrol edip tekrar dene."
+          : "Geri yükleme kaydedilemedi; mevcut verilerin korundu. Tarayıcı depolama iznini ve boş alanı kontrol edip tekrar dene. Seçtiğin yedek hazır bekliyor.";
+      }
+      return;
+    }
     dialog.close();
     onRestored(summary);
   }
@@ -140,12 +158,25 @@ export function createRestoreDialog({ onRestored }) {
     if (!file) {
       return;
     }
+    const reading = ++fileRead;
+    confirm.disabled = true;
     try {
-      textInput.value = await file.text();
+      const text = await file.text();
+      if (reading !== fileRead) return;
+      textInput.value = text;
       message.textContent = `${file.name} okundu.`;
     } catch {
-      message.textContent = "Dosya okunamadı. İçeriğini kopyalayıp aşağıya yapıştırabilirsin.";
+      if (reading === fileRead) {
+        message.textContent = "Dosya okunamadı. İçeriğini kopyalayıp aşağıya yapıştırabilirsin.";
+      }
+    } finally {
+      if (reading === fileRead) confirm.disabled = false;
     }
+  });
+  textInput.addEventListener("input", () => {
+    // A paste or edit wins over an older file read still in flight.
+    fileRead += 1;
+    confirm.disabled = false;
   });
 
   confirm.addEventListener("click", () => (pending ? apply() : review()));
@@ -160,8 +191,12 @@ export function createRestoreDialog({ onRestored }) {
   return {
     open() {
       reset();
+      // A long dialog should start at its visible introduction. Focusing
+      // its bottom action leaves focus off-screen in short windows.
+      heading.tabIndex = -1;
       dialog.showModal();
-      cancel.focus();
+      heading.focus({ preventScroll: true });
+      dialog.scrollTop = 0;
     },
   };
 }
@@ -169,18 +204,22 @@ export function createRestoreDialog({ onRestored }) {
 /**
  * The sentence the learner sees after a restore. Written to be true when
  * nothing happened, which is the case a "Başarılı!" toast gets wrong.
- * @param {{newAttempts: number, newQuestions: number, advancedLessons: number}} summary
+ * @param {{newAttempts: number, newQuestions: number, advancedLessons: number, preferencesChanged?: boolean}} summary
  */
 export function describeRestore(summary) {
   const parts = [];
   if (summary.newAttempts > 0) {
     parts.push(`${summary.newAttempts} test`);
+  } else if (summary.newQuestions > 0) {
+    parts.push(`${summary.newQuestions} soru yanıtı`);
   }
   if (summary.advancedLessons > 0) {
     parts.push(`${summary.advancedLessons} ders`);
   }
   if (parts.length === 0) {
-    return "Yedekte bu cihazda olmayan bir şey yoktu — hiçbir şey değişmedi.";
+    return summary.preferencesChanged
+      ? "Profil tercihlerin geri yüklendi."
+      : "Yedekte eklenecek yeni test ya da ders ilerlemesi yoktu.";
   }
-  return `${parts.join(" ve ")} eklendi.`;
+  return `${parts.join(" ve ")} eklendi.${summary.preferencesChanged ? " Profil tercihlerin geri yüklendi." : ""}`;
 }
