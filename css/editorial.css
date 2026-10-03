@@ -11,26 +11,26 @@
   font-display: swap;
 }
 :root {
-  --page: #121416;
-  --card: #1b1e21;
-  --raised: #262a2e;
-  --ink: #e4e6e7;
-  --ink-2: #b4bcc3;
-  --hairline: #343a40;
-  --edge: #737e86;
-  --accent: #c4d7e7;
-  --accent-2: #c4d7e7;
-  --accent-ink: #18232c;
-  --accent-text: #b8cee1;
-  --accent-tint: #242c33;
-  --focus: #b8cee1;
-  --ok: #a4c3af;
-  --no: #d9a8ae;
-  --ok-tint: #202b28;
-  --no-tint: #2b2528;
-  --editorial-mark: #b8cee1;
-  --editorial-wash: #1b1e21;
-  --editorial-note: #b4bcc3;
+  --page: #141216;
+  --card: #1d1a20;
+  --raised: #28242c;
+  --ink: #eee9ed;
+  --ink-2: #c6bcc6;
+  --hairline: #39313d;
+  --edge: #847988;
+  --accent: #ed96b4;
+  --accent-2: #dca2d8;
+  --accent-ink: #301b27;
+  --accent-text: #efb1cb;
+  --accent-tint: #30222d;
+  --focus: #d4b5f8;
+  --ok: #bbb6f2;
+  --no: #e9bb95;
+  --ok-tint: #262432;
+  --no-tint: #2f2725;
+  --editorial-mark: #efb1cb;
+  --editorial-wash: #211b24;
+  --editorial-note: #c6bcc6;
   --line: var(--hairline);
   --line-strong: var(--edge);
   --lit: transparent;
@@ -42,7 +42,7 @@
   --shadow-glow: none;
   --glow: transparent;
   --orb: none;
-  --grad-accent: linear-gradient(var(--accent), var(--accent));
+  --grad-accent: linear-gradient(120deg in srgb, var(--accent), var(--accent-2));
   --f-serif: var(--f-sans);
   --f-sans:
     Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -83,57 +83,71 @@
   --reading-leading: 1.6667;
   --section-size: 1.25rem;
   --support-size: 1rem;
-  --aurora-blue: #81a9ca;
-  --aurora-teal: #769e92;
-  --aurora-alpha: 0.06;
+  --secondary: #c8b4e9;
+  --tertiary: #e9bb95;
+  --aurora-cherry: #c65b88;
+  --aurora-iris: #785ca8;
+  --aurora-apricot: #c68571;
+  --aurora-opacity: .10;
+  --d-press: 100ms;
+  --d-feedback: 180ms;
+  --d-route: 220ms;
+  --d-complete: 420ms;
+  --d-enter: var(--d-route);
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
-    --page: #f5f6f7;
+    --page: #fbf7fa;
     --card: #ffffff;
-    --raised: #e9ecef;
-    --ink: #24292e;
-    --ink-2: #505962;
-    --hairline: #d9dee3;
-    --edge: #707a83;
-    --accent: #293945;
-    --accent-2: #293945;
+    --raised: #f0eaf0;
+    --ink: #302831;
+    --ink-2: #625864;
+    --hairline: #e2d8e2;
+    --edge: #887b88;
+    --accent: #a13462;
+    --accent-2: #854987;
     --accent-ink: #ffffff;
-    --accent-text: #3c617d;
-    --accent-tint: #e8eef3;
-    --focus: #3c617d;
-    --ok: #356349;
-    --no: #88434d;
-    --ok-tint: #eef3ef;
-    --no-tint: #f6eff0;
-    --editorial-mark: #3c617d;
-    --editorial-wash: #eef0f2;
-    --editorial-note: #505962;
+    --accent-text: #922e55;
+    --accent-tint: #f6e7ed;
+    --focus: #7848af;
+    --ok: #654bb0;
+    --no: #92501f;
+    --ok-tint: #eeebf9;
+    --no-tint: #f7eee5;
+    --editorial-mark: #922e55;
+    --editorial-wash: #f6eff5;
+    --editorial-note: #625864;
+    --secondary: #7652a0;
+    --tertiary: #92501f;
+    --aurora-opacity: .05;
     color-scheme: light;
   }
 }
 :root[data-theme="light"] {
-  --page: #f5f6f7;
+  --page: #fbf7fa;
   --card: #ffffff;
-  --raised: #e9ecef;
-  --ink: #24292e;
-  --ink-2: #505962;
-  --hairline: #d9dee3;
-  --edge: #707a83;
-  --accent: #293945;
-  --accent-2: #293945;
+  --raised: #f0eaf0;
+  --ink: #302831;
+  --ink-2: #625864;
+  --hairline: #e2d8e2;
+  --edge: #887b88;
+  --accent: #a13462;
+  --accent-2: #854987;
   --accent-ink: #ffffff;
-  --accent-text: #3c617d;
-  --accent-tint: #e8eef3;
-  --focus: #3c617d;
-  --ok: #356349;
-  --no: #88434d;
-  --ok-tint: #eef3ef;
-  --no-tint: #f6eff0;
-  --editorial-mark: #3c617d;
-  --editorial-wash: #eef0f2;
-  --editorial-note: #505962;
-  color-scheme: light;
+  --accent-text: #922e55;
+  --accent-tint: #f6e7ed;
+  --focus: #7848af;
+  --ok: #654bb0;
+  --no: #92501f;
+  --ok-tint: #eeebf9;
+  --no-tint: #f7eee5;
+  --editorial-mark: #922e55;
+  --editorial-wash: #f6eff5;
+  --editorial-note: #625864;
+  --secondary: #7652a0;
+    --tertiary: #92501f;
+    --aurora-opacity: .05;
+    color-scheme: light;
 }
 /* The app frame stays fixed: only the content region scrolls. */
 body {
@@ -323,11 +337,11 @@ body::after {
     background 160ms var(--ease-standard),
     border-color 160ms var(--ease-standard),
     box-shadow 160ms var(--ease-standard),
-    transform 120ms var(--ease-standard);
+    transform var(--d-press) var(--ease-standard);
 }
 .btn--primary {
   min-height: 52px;
-  background: var(--accent);
+  background: var(--grad-accent);
   color: var(--accent-ink);
   border: 1px solid var(--accent);
   border-radius: 8px;
@@ -535,10 +549,10 @@ body::after {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 2px 12px;
-  padding: 14px 0;
+  padding: 14px 12px;
   width: 100%;
   min-height: 100px;
-  border-radius: 0;
+  border-radius: 12px;
   border-bottom: 0;
   background: transparent;
   box-shadow: none;
@@ -588,11 +602,11 @@ body::after {
 }
 #index-list .tile:active {
   transform: none;
-  background: var(--raised);
+  background: var(--card);
 }
 @media (hover: hover) {
   #index-list .tile:hover {
-    background: var(--raised);
+    background: var(--card);
     box-shadow: none;
   }
 }
@@ -849,7 +863,7 @@ body.is-reading:has(.lesson) .page {
 .example {
   border-left: 2px solid var(--editorial-mark);
 }
-/* The optional retrieval prompt never displaces the article on first open. */
+/* Optional retrieval is open for unread lessons; a direct skip reaches prose. */
 .lesson-pretest {
   border-block: 1px solid var(--hairline);
   border: 1px solid var(--hairline);
@@ -946,12 +960,12 @@ body.is-reading:has(.lesson) .page {
   height: 18px;
 }
 .option--ok {
-  background: var(--ok-tint);
+  background: var(--card);
   border-color: var(--ok);
   animation: none !important;
 }
 .option--no {
-  background: var(--no-tint);
+  background: var(--card);
   border-color: var(--no);
   animation: none !important;
 }
@@ -1157,7 +1171,7 @@ body.is-reading:has(.lesson) .page {
 }
 /* Settings remain readable when browser text preferences enlarge rem units.
    The label and its control reflow as a pair, without reducing type size. */
-#profile-container .row:has(.field, .choices, .listbox) {
+#profile-container .row:has(.field, .choices, .listbox, .motion-control) {
   flex-wrap: wrap;
   min-width: 0;
   max-width: 100%;
@@ -1165,10 +1179,10 @@ body.is-reading:has(.lesson) .page {
 #profile-container .stack {
   grid-template-columns: minmax(0, 1fr);
 }
-#profile-container .row:has(.field, .choices, .listbox) > .row__main {
+#profile-container .row:has(.field, .choices, .listbox, .motion-control) > .row__main {
   flex: 1 1 12rem;
 }
-#profile-container .row:has(.field, .choices, .listbox) > .row__trail {
+#profile-container .row:has(.field, .choices, .listbox, .motion-control) > .row__trail {
   flex: 0 1 auto;
   min-width: 0;
   max-width: 100%;
@@ -1259,7 +1273,7 @@ body.is-reading:has(.lesson) .page {
 }
 /* State changes respond immediately; only the entering surface fades. */
 .animate-in {
-  animation: editorial-enter 180ms var(--ease-standard) both;
+  animation: editorial-enter var(--d-route) var(--ease-standard) both;
 }
 .animate-in > * {
   animation: none;
@@ -1394,29 +1408,6 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .onboard__modes { display: grid; gap: 24px; }
 .onboard__modes p { margin-top: 8px; }
 .onboard__actions .btn { flex: 1; }
-/* One finite atmospheric settle, then a still canvas. Text colors never animate.
-   Max overlap is included in tools/editorial-palette.mjs. No route restart. */
-body::before {
-  content: ""; display: block; position: fixed; inset: -8px;
-  z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(ellipse at 8% 12%, rgb(from var(--aurora-blue) r g b / var(--aurora-alpha)), transparent 58%),
-    radial-gradient(ellipse at 94% 76%, rgb(from var(--aurora-teal) r g b / var(--aurora-alpha)), transparent 58%);
-}
-/* The reading canvas stays opaque through all decorative states. */
-body.is-reading .shell__scroll, body:has(#quiz-container) .shell__scroll { background: var(--page); }
-@media (prefers-reduced-motion: no-preference) {
-  body::before { animation: ambient-settle 3.6s ease-out both; }
-}
-@keyframes ambient-settle { from { transform: translateY(8px); } to { transform: translateY(0); } }
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) body::before { visibility: hidden; }
-}
-:root[data-theme="light"] body::before { visibility: hidden; }
-@media (prefers-reduced-motion: reduce), (forced-colors: active) {
-  body::before { animation: none; }
-}
-@media (forced-colors: active) { body::before { display: none; } }
 @media (min-width: 1080px) and (min-height: 600px) {
   .study-intro__title, .lesson .lesson__head h1 { font-size: 2.25rem; }
   .lesson { gap: 48px; }
@@ -1427,4 +1418,181 @@ body.is-reading .shell__scroll, body:has(#quiz-container) .shell__scroll { backg
   .option { gap: 8px; }
 }
 
-@media print { body::before { display: none; } }
+
+
+/* v0.68 · Sakura. Decisions and measured bounds: ADR 007. */
+.brand-mark {
+  display: inline-flex; align-items: baseline;
+  color: var(--ink); font: 600 2rem/1 var(--f-sans);
+  letter-spacing: -.065em; white-space: nowrap;
+}
+.brand-mark__dot { color: var(--accent-text); }
+.bar__inner { grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; }
+.bar__trail { gap: 8px; }
+.bar__trail .avatar { width: 40px; height: 40px; }
+.bar__lead .brand-mark { padding-bottom: .12em; }
+.motion-control { flex-shrink: 0; gap: 8px; }
+.motion-control__icon { display: flex; align-items: center; }
+.motion-control--compact { width: 44px; min-width: 44px; min-height: 44px; padding: 0; border-radius: 50%; }
+.motion-control[aria-pressed="true"] { color: var(--secondary); }
+.motion-control[aria-disabled="true"] { background: transparent; border-color: transparent; }
+.nav__item[aria-current] { color: var(--accent-text); }
+.nav__indicator { background: var(--accent-tint); box-shadow: none; }
+.study-intro { border-bottom: 0; padding-bottom: 12px; }
+.study-intro__eyebrow { color: var(--accent-text); }
+.study-intro__line { color: var(--ink); line-height: 1.6; }
+.study-intro__meta { color: var(--secondary); }
+#index-list .tile:hover .tile__title { color: var(--accent-text); }
+#index-list .tiles { margin-inline: -12px; width: calc(100% + 24px); }
+#index-list .tile__meta { color: var(--secondary); }
+/* Small color roles connect the modes without painting whole paragraphs. */
+.practice-card { gap: 20px; border-radius: 16px; }
+.practice-card--mixed .hero__head .t-label { color: var(--accent-text); }
+.practice-card--mixed .monogram { color: var(--secondary); background: var(--raised); border: 0; }
+.practice-card--mistakes .monogram { color: var(--tertiary); background: var(--raised); border: 0; }
+.practice-card--mistakes .hero__figure { gap: 12px; }
+.practice-card--mistakes .stat__value { color: var(--tertiary); }
+.practice-card .t-title { font-weight: 600; font-size: 1.5rem; }
+.practice-card .t-body { line-height: 1.7; }
+/* Reading is open prose. Forms and terms use typography, not highlighted boxes. */
+.lesson .lesson-form-label { color: var(--secondary); }
+.lesson .lesson-term { color: var(--accent-text); }
+.lesson .formula, .lesson .chip { background: transparent; padding: 0; border: 0; border-radius: 0; color: var(--ink); }
+.lesson-pretest { border-radius: 14px; }
+.lesson-pretest__summary { color: var(--accent-text); padding: 16px 20px; }
+.lesson-pretest__body { padding: 0 20px 4px; }
+.lesson-pretest__intro { display: grid; gap: 8px; margin-bottom: 20px; }
+.lesson-pretest__intro .t-quiet { font-size: 1rem; line-height: 1.6; }
+.lesson-pretest__skip { justify-self: start; padding: 0; color: var(--accent-text); }
+[data-reading-start]:focus { outline: none; }
+.option { border-radius: 10px; }
+.option--ok, .option--no { background: var(--card); border-color: var(--edge); }
+.option--ok .option__mark, .option--ok .option__key { color: var(--ok); }
+.option--no .option__mark, .option--no .option__key { color: var(--no); }
+.option--ok .option__key, .option--no .option__key { border-radius: 50%; }
+.option--ok .option__key { background: var(--ok-tint); }
+.option--no .option__key { background: var(--no-tint); }
+.feedback--ok .feedback__verdict { color: var(--ok); }
+.feedback--no .feedback__verdict { color: var(--no); }
+/* A metric always pairs its value with its meaning. No animated counting. */
+.metric { display: grid; gap: 10px; min-width: 0; }
+.metric__head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px 16px; }
+.metric__label { font-size: .875rem; line-height: 1.6; color: var(--ink-2); }
+.metric__value { font-size: 1rem; line-height: 1.5; font-weight: 600; color: var(--accent-text); }
+.metric__track { height: 6px; overflow: hidden; border-radius: 99px; background: var(--hairline); }
+.metric__fill { display: block; width: 100%; height: 100%; background: var(--grad-accent); transform-origin: left center; border-radius: inherit; }
+.metric--confirmed .metric__fill { background: var(--ok); }
+.metric--confirmed .metric__value { color: var(--ok); }
+.metric__description { font-size: .875rem; line-height: 1.6; }
+.study-intro__progress { margin-top: 16px; max-width: 430px; }
+.profile-metrics { display: grid; gap: 24px; padding: 24px; border-radius: 14px; background: var(--card); }
+.stats--counts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding-top: 8px; }
+.stats--counts .stat { border: 0; padding: 0; background: transparent; }
+.stats--counts .stat__value { font-size: 1.5rem; line-height: 1.4; font-weight: 500; }
+.score { align-items: stretch; justify-items: stretch; text-align: left; padding: 12px 0 28px; gap: 16px; }
+.score > .t-label { color: var(--secondary); }
+.score__metric { gap: 16px; }
+.score__metric .metric__head { align-items: baseline; }
+.score__metric .metric__value { font-size: 2.5rem; line-height: 1.2; letter-spacing: -.04em; }
+.score__metric .metric__label { font-size: 1rem; }
+.score__metric .metric__track { height: 8px; }
+.score__verdict { font-size: 1.125rem; line-height: 1.6; font-weight: 500; color: var(--ink); }
+/* Settings: explicit groups, clear destinations and a separated data action. */
+.settings-group { display: grid; gap: 8px; }
+.settings-group + .settings-group { margin-top: 8px; }
+.settings-group__title { color: var(--secondary); font-size: .875rem; font-weight: 600; line-height: 1.6; }
+.settings-list { display: grid; padding: 4px 16px; border-radius: 14px; background: var(--card); }
+.settings-list .row { padding: 14px 0; }
+.settings-list .row__title { font-size: 1rem; }
+.settings-list .row__sub { font-size: .875rem; line-height: 1.6; margin-top: 4px; }
+.settings-link { width: 100%; text-align: left; color: var(--ink); }
+.settings-link .row__trail { color: var(--secondary); }
+.settings-reset { padding-top: 16px; display: grid; gap: 8px; }
+.settings-reset > .btn { justify-self: start; padding-inline: 0; color: var(--tertiary); }
+.settings-reset > .t-quiet { font-size: .875rem; line-height: 1.6; }
+/* The optional introduction has three user-paced panels, never a carousel. */
+.onboard { max-width: 560px; padding-block: 0; }
+.onboard__tour { display: grid; gap: 24px; }
+.onboard__top, .onboard__utilities, .onboard__progress { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.onboard__top .brand-mark { font-size: 3.5rem; }
+.onboard__utilities { gap: 0; }
+.onboard__skip { font-size: .875rem; padding-inline: 10px; }
+.onboard__progress { margin-top: 4px; }
+.onboard__progress .t-meta { color: var(--ink-2); }
+.onboard__dots { display: flex; gap: 6px; flex-shrink: 0; }
+.onboard__dot { width: 6px; height: 6px; border-radius: 99px; background: var(--edge); }
+.onboard__dot[data-current="true"] { width: 24px; background: var(--accent-text); }
+.onboard__panel { display: grid; gap: 16px; min-width: 0; }
+.onboard__eyebrow { color: var(--accent-text); }
+.onboard__panel h1 { font-size: clamp(1.875rem, 5vw, 2.5rem); line-height: 1.18; font-weight: 600; letter-spacing: -.04em; max-width: 15ch; outline: none; }
+.onboard__description { font-size: 1.125rem; line-height: 1.65; }
+.onboard__preview { display: grid; gap: 0; margin: 4px 0; padding: 8px 20px; list-style: none; background: var(--card); border-radius: 16px; }
+.onboard__preview-step { display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: start; gap: 16px; padding: 16px 0; }
+.onboard__preview-icon { display: flex; color: var(--accent-text); padding-top: 2px; }
+.onboard__preview-step:nth-child(2) .onboard__preview-icon { color: var(--secondary); }
+.onboard__preview-step:nth-child(3) .onboard__preview-icon { color: var(--tertiary); }
+.onboard__preview-copy { display: grid; gap: 4px; }
+.onboard__preview-copy .t-ui { font-weight: 600; line-height: 1.5; }
+.onboard__preview-copy .t-body { color: var(--ink-2); font-size: .875rem; line-height: 1.6; }
+.onboard__note { font-size: .875rem; line-height: 1.6; }
+.onboard__actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.onboard__actions > .btn--primary { width: auto; flex: 1; }
+.onboard__actions > .btn--quiet { flex: 0 0 auto; }
+.onboard__name { padding-block: 12px 24px; }
+/* Three independently moving, bounded light fields behind every route.
+   Hex stops + alpha caps are measured by editorial-palette.mjs. No filter. */
+.ambient { position: fixed; inset: -24px; z-index: -1; pointer-events: none; overflow: hidden; contain: strict; }
+.ambient__field { position: absolute; inset: 0; animation: var(--ambient-name) var(--ambient-duration) ease-in-out infinite alternate; animation-play-state: paused; }
+.ambient__field--cherry {
+  --ambient-name: aura-cherry; --ambient-duration: 28s;
+  background: radial-gradient(ellipse at 8% 16%, color-mix(in srgb, var(--aurora-cherry) calc(var(--aurora-opacity) * 100%), transparent), transparent 64%);
+}
+.ambient__field--iris {
+  --ambient-name: aura-iris; --ambient-duration: 34s;
+  background: radial-gradient(ellipse at 96% 52%, color-mix(in srgb, var(--aurora-iris) calc(var(--aurora-opacity) * 100%), transparent), transparent 62%);
+}
+.ambient__field--apricot {
+  --ambient-name: aura-apricot; --ambient-duration: 42s;
+  background: radial-gradient(ellipse at 24% 100%, color-mix(in srgb, var(--aurora-apricot) calc(var(--aurora-opacity) * 100%), transparent), transparent 60%);
+}
+:root[data-motion="on"][data-page-visible="true"] .ambient__field { animation-play-state: running; }
+@keyframes aura-cherry { from { transform: translate(-12px, -8px); opacity: .72; } to { transform: translate(16px, 12px); opacity: 1; } }
+@keyframes aura-iris { from { transform: translate(16px, 8px); opacity: 1; } to { transform: translate(-12px, -16px); opacity: .72; } }
+@keyframes aura-apricot { from { transform: translate(-8px, 12px); opacity: .72; } to { transform: translate(12px, -12px); opacity: 1; } }
+/* Instant input and scoring; only the newly exposed panel gets a short cue. */
+.onboard__panel--enter { animation: tutorial-forward var(--d-route) var(--ease-standard) both; }
+.onboard__panel--enter[data-direction="back"] { animation-name: tutorial-back; }
+@keyframes tutorial-forward { from { transform: translateX(8px); } to { transform: translateX(0); } }
+@keyframes tutorial-back { from { transform: translateX(-8px); } to { transform: translateX(0); } }
+:root[data-motion="on"] .score__metric .metric__track { animation: metric-settle var(--d-complete) var(--ease-standard) both; transform-origin: left; }
+@keyframes metric-settle { from { transform: scaleX(.97); } to { transform: scaleX(1); } }
+:root[data-motion="off"] :not(.ambient__field),
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+:root[data-motion="off"] :is(.btn, .tile, .listbox__trigger):active { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ambient__field { animation: none !important; }
+  .onboard__panel--enter, .score__metric .metric__track { animation: none !important; }
+}
+@media (forced-colors: active) {
+  .ambient { display: none; }
+  .metric__track { border: 1px solid CanvasText; background: Canvas; }
+  .metric__fill, .metric--confirmed .metric__fill { background: Highlight; }
+  .nav__item[aria-current] { color: LinkText; }
+}
+@media (max-width: 359px) {
+  .bar__back-label { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .bar__lead > .btn { min-width: 44px; padding: 0; margin: 0; }
+  .bar__inner { gap: 8px; }
+  .bar__trail { gap: 4px; }
+  .profile-metrics { padding: 20px; }
+  .lesson-pretest__summary { padding-inline: 16px; }
+  .lesson-pretest__body { padding-inline: 16px; }
+  .onboard__top .brand-mark { font-size: 3rem; }
+  .onboard__preview { padding-inline: 16px; }
+}
+@media print { .ambient, .motion-control { display: none; } }
+
+/* Enabled switch state uses the same measured on-primary ink as its action. */
+[aria-checked="true"] .switch__thumb { background: var(--accent-ink); }
+.metric--empty .metric__value { color: var(--ink-2); }

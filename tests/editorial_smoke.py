@@ -228,9 +228,14 @@ class EditorialBrowserTests(unittest.TestCase):
         self.open_lesson()
         pretest = self.page.locator('.lesson-pretest')
         summary = pretest.locator('summary')
+        expect(pretest).to_have_attribute('open', '')
         summary.focus()
         self.page.keyboard.press('Enter')
+        expect(pretest).not_to_have_attribute('open', '')
+        self.page.keyboard.press('Enter')
         expect(pretest).to_have_attribute('open', '')
+        self.page.keyboard.press('Tab')
+        expect(pretest.get_by_role('button', name='Derse geç', exact=True)).to_be_focused()
         self.page.keyboard.press('Tab')
         expect(pretest.locator('.option').first).to_be_focused()
         self.page.keyboard.press('Enter')
@@ -281,6 +286,7 @@ class EditorialBrowserTests(unittest.TestCase):
             for mode in ['resize', 'root', 'spacing']:
                 for route, selector in [('index.html#egitim', '#index-list .tile'),
                         ('index.html#profil', '#profile-name'),
+                        ('index.html#hosgeldin', '#onboard-step-title'),
                         ('index.html#egitim/'+LESSONS[0]['id'], '.lesson')]:
                     with self.subTest(width=width, mode=mode, route=route):
                         self.page.set_viewport_size({'width': width, 'height': 720})
@@ -352,8 +358,7 @@ class EditorialBrowserTests(unittest.TestCase):
         expect(self.page.locator('#bottom-nav')).to_be_hidden()
         expect(self.page.locator('#lesson-bar')).to_be_hidden()
         pretest = self.page.locator('.lesson-pretest')
-        expect(pretest).not_to_have_attribute('open', '')
-        pretest.locator('summary').click()
+        expect(pretest).to_have_attribute('open', '')
         pretest.locator('.option').first.click()
         expect(pretest).to_have_attribute('open', '')
         expect(pretest.locator('.feedback')).to_be_visible()
@@ -507,6 +512,8 @@ class EditorialBrowserTests(unittest.TestCase):
         }""", root_namespace)
         self.assertIn(BASE+'/css/editorial.css',cached_assets)
         self.assertIn(BASE+'/assets/fonts/InterVariable.woff2',cached_assets)
+        for module in ['js/motion.js', 'js/progress.js', 'about/content.js']:
+            self.assertIn(BASE+'/'+module, cached_assets)
         self.context.set_offline(True)
         for prefix in ['', 'original/']:
             self.visit(prefix+'index.html#egitim/'+LESSONS[0]['id'])

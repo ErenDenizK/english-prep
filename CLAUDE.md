@@ -2,18 +2,32 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.67)
+## Current presentation (v0.68)
 
-For current UI work, [ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md)
+For current UI work, [ADR 007](docs/adr/007-sakura-and-purposeful-motion.md)
 and [Margin system](docs/margin-design-system.md) supersede the historical
-visual values below. The working interface uses role-based Inter typography,
-a measured cool-neutral dark palette, a finite decorative atmosphere outside
-reading, and one optional introduction (Education/Test + optional name).
+visual values below. ADR 006's role-based Inter reading typography remains;
+its cool-neutral palette, finite atmosphere and one-page introduction are
+previous decisions. Current presentation uses measured Sakura/cherry accents,
+iris confirmation and apricot retry markers on plum-neutral surfaces.
+
+Three bounded aurora fields appear across all routes. Header/Profile controls
+pause them; reduced motion and hidden-page handling are respected. Motion
+roles are 100/180/220/420ms; input and navigation commit immediately. Route
+entry uses one CSS cue, with no native View Transition snapshot overlay.
+The optional three-page introduction explains Education, Test and an optional
+name. Unread pretests start open but remain skippable; their height is excluded
+from article progress. Resume/profile/results use labeled linear metrics.
+Settings are grouped; `/about/` has editable feature/engineering data and a
+phone/wide screenshot gallery. See [About authoring](about/README.md).
+
 Exam dates, daily goals, streaks and absence reminders are no longer UI.
-Their stored values remain backward-compatible. Articles and tests, the
-source material, fixed-shell behavior, no runtime dependencies, and the
-preserved original are unchanged. New PWA/content-cache tests are in
-`tests/reading_system.py`; installation support is in `js/install.js`.
+Their stored values remain backward-compatible. Articles and tests, source
+material, fixed-shell behavior, no runtime dependencies and the preserved
+original are unchanged. Current regression coverage includes
+`tests/reading_system.py` and `tests/pretest_progress_browser.py`; installation
+support is in `js/install.js`. Historical design/UI2/UI3 descriptions below
+remain context for the inherited source, not authority to reinstate old visuals.
 
 ## What this is
 

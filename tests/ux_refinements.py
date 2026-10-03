@@ -37,7 +37,7 @@ class UXRefinementTests(unittest.TestCase):
 
     def open_check(self):
         self.page.goto(BASE + '/index.html#egitim/' + LESSON)
-        self.page.locator('.lesson-pretest summary').click()
+        expect(self.page.locator('.lesson-pretest')).to_have_attribute('open', '')
         option = self.page.locator('[data-check="-1"] .option').first
         option.focus()
         option.press('Enter')

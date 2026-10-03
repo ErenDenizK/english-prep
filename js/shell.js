@@ -12,6 +12,7 @@
 
 import { el, clear } from "./dom.js";
 import { icon } from "./icons.js";
+import { createMotionControl } from "./motion.js";
 
 const liveRegion = document.getElementById("live-region");
 const scrollRegion = document.getElementById("shell-scroll");
@@ -86,9 +87,11 @@ export function createBar(barId) {
   const trail = bar.querySelector(".bar__trail");
   const track = bar.querySelector(".bar__progress");
   const fill = track?.querySelector(".progress__fill") ?? null;
+  const motionControl = createMotionControl({ compact: true });
 
   /** @param {BarSpec} spec */
   function set(spec) {
+    const restoreMotionFocus = document.activeElement === motionControl;
     clear(lead);
     if (spec.lead) {
       const back = spec.lead.href ? el("a", "btn btn--quiet") : el("button", "btn btn--quiet");
@@ -99,8 +102,16 @@ export function createBar(barId) {
         back.addEventListener("click", spec.lead.onClick);
       }
       back.appendChild(icon(spec.lead.icon ?? "arrow-left", { size: 20 }));
-      back.appendChild(document.createTextNode(spec.lead.label));
+      back.setAttribute("aria-label", spec.lead.label);
+      back.appendChild(el("span", "bar__back-label", spec.lead.label));
       lead.appendChild(back);
+    } else {
+      const brand = el("span", "brand-mark");
+      brand.setAttribute("role", "img");
+      brand.setAttribute("aria-label", "English Prep");
+      brand.lang = "en";
+      brand.append(el("span", "brand-mark__letters", "ep"), el("span", "brand-mark__dot", "."));
+      lead.appendChild(brand);
     }
 
     const text = typeof spec.title === "string" ? spec.title : spec.title.text;
@@ -117,6 +128,8 @@ export function createBar(barId) {
     } else if (typeof spec.trail === "string") {
       trail.appendChild(el("p", "t-meta t-num", spec.trail));
     }
+    trail.appendChild(motionControl);
+    if (restoreMotionFocus) motionControl.focus({ preventScroll: true });
 
     setProgress(spec.progress ?? null);
     bar.hidden = false;

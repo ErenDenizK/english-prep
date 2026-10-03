@@ -1,6 +1,6 @@
 # English Prep
 
-**v0.67 · Margin:** [open the redesigned app](index.html),
+**v0.68 · Margin / Sakura:** [open the redesigned app](index.html),
 [compare the full original](original/index.html), or inspect its
 [unchanged runtime source archive](original/source-39dcd46.zip). This version
 uses the full `test` source at `39dcd46`; the earlier `main` prototype
@@ -10,18 +10,23 @@ hosted service worker has only been adapted to isolate its offline caches.
 Run `npm run serve` and open `http://localhost:8000/`; run `npm run check`
 for the repository checks. See the current [experience](docs/EXPERIENCE.md),
 [interface system](docs/margin-design-system.md), and [research](docs/RESEARCH.md).
-Visual references: [mobile](docs/previews/mobile.png),
-[desktop](docs/previews/desktop.png), [article](docs/previews/article.png),
-[profile](docs/previews/profile.png), and [light alternative](docs/previews/light.png).
+Current product captures: [phone](about/assets/education-phone.webp),
+[wide screen](about/assets/education-wide.webp), [article](about/assets/article-phone.webp),
+and [results](about/assets/results-phone.webp). These are browser viewport
+captures with demonstration state, not physical-device certification.
 See [validation evidence and commands](docs/VALIDATION.md).
 The detailed refinement record includes the [element inventory](docs/audit/element-inventory.md),
 [type and color measurements](docs/audit/type-color.md),
 [interaction audit](docs/audit/interaction-accessibility.md), and
 [verified UI research](docs/research/2026-10-ui-principles.md).
-The current [four-pass record](docs/audit/readability-v0.67.md),
-[typography research](docs/research/2026-10-04-typography-evidence.md),
-[color/motion research](docs/research/2026-10-04-color-motion-evidence.md) and
-[ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md) connect evidence to decisions.
+The current [ADR 007](docs/adr/007-sakura-and-purposeful-motion.md),
+[Sakura palette research](docs/research/2026-10-sakura-palette.md),
+[motion research](docs/research/2026-10-motion-language.md) and
+[interface diagnosis](docs/audit/v0.68-interface-diagnosis.md) connect evidence to decisions.
+The previous [v0.67 review](docs/audit/readability-v0.67.md) and
+[ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md) preserve the earlier
+comparison; its reading typography remains applicable, while ADR 007
+supersedes its palette, atmosphere and introduction.
 The [component catalogue](docs/components.html) uses the production stylesheet.
 The hosted versions share the browser origin's existing local progress
 and settings; their offline shell/content caches are isolated.
@@ -82,9 +87,11 @@ because every lesson is a contrast and dropping someone into an argument
 about a word they have not met does not work. A lesson is one scrolling
 page built from typed blocks: the two forms set against each other, the
 patterns, the mistake people actually make, the decision procedure to
-carry into the exam, and check questions inline. Checks are never scored
-and never block anything. Reaching the end finishes the lesson; there is
-no button for it.
+carry into the exam, and check questions inline. An unread lesson opens with an optional
+pretest and a direct “Derse geç” action. Its question and explanation do not
+count toward article reading progress. Checks are never scored and never
+block anything. Reaching the article end finishes the lesson; there is
+no confirmation button for it.
 
 **Test** is a mixed test across every topic, a single-topic test, practice
 scoped to one grammar category, or **Yanlış defteri** — only the questions
@@ -98,7 +105,10 @@ wrong option in the app.
 
 **Profil** is a local display name, how far through the lessons you are,
 what your recent accuracy is and what is in that average, your weakest
-categories, an export/import of everything stored, and the roadmap.
+categories, grouped study/appearance preferences, backup/restore, and exam
+coverage limits. Completion and recent accuracy use labeled linear metrics;
+no test data means an explicit empty state. The motion control is also
+available in the header, including during lessons and questions.
 
 Nothing is sent anywhere.
 
@@ -106,9 +116,9 @@ It is a phone app first and stays one — but on a tablet or a desktop the
 screens that have something worth putting beside them do: the start card
 next to all ten topics, a topic's overview next to its six lessons, a
 score next to the review of it. Not by widening the page. The reading
-measure is a constant, so the column of text is the same width on a
-2560px monitor as on a 320px phone; what the extra width buys is a second
-column of what would otherwise be below the fold. The lesson reader and
+measure is bounded: narrow screens use their available width, while prose
+stops growing on wider screens. Extra width buys a second column of what
+would otherwise be below the fold. The lesson reader and
 the question screen have no second column at any width, on purpose —
 reading gains nothing from one, and a question with four options and one
 action is a decision rather than something to scan. Below 1080px, or on a
@@ -223,6 +233,7 @@ js/                   ES modules — read each file's header comment
 css/style.css         Inherited layout and components, in cascade layers
 css/editorial.css     Margin presentation and theme extension
 assets/fonts/         Self-hosted Inter UI font
+about/                Product/engineering portfolio, editable content and gallery
 data/manifest.json    Topic index
 data/<topic>/         One JSON file per topic: lessons and questions
 tools/                Validator, formatter, colour maths, browser sweep
@@ -243,20 +254,32 @@ what shipped.
 
 ## Design
 
-Margin opens in dark mode with neutral charcoal surfaces and a restrained
-blue-gray accent. Inter follows semantic roles: section headings, patterns,
-examples, explanations, supporting text and counters have distinct sizes,
-weights and spacing. Profil retains a neutral light mode and explicit System
-choice. Lessons remain continuous articles; inline checks never gate access.
-The optional introduction explains Eğitim/Test and asks only for a name.
+Margin opens in dark mode with plum-neutral surfaces, cherry/sakura brand
+accents, iris confirmation markers and apricot retry markers. Answer text
+stays neutral and readable; color is accompanied by marks and verdict words.
+Inter's distinct heading, pattern, prose, support and control roles continue
+from ADR 006. Explicit light and System preferences remain available.
 
-[ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md) records the
-measured alternatives and decisions. The fixed mobile shell gains useful
-adjacent columns on wide displays; articles and quizzes stay single-column.
-A faint canvas atmosphere settles once, then stays still; reading surfaces
-remain opaque. `npm run color` checks 148 production contrast pairs, including
-the maximum atmosphere overlap. See the [product/project page](about/),
-[interface system](docs/margin-design-system.md), and [research](docs/RESEARCH.md).
+[ADR 007](docs/adr/007-sakura-and-purposeful-motion.md) defines the current
+palette and motion system. Three bounded light fields appear behind every
+route, including reading. They move slowly, can be paused in the header or
+Profile, pause in hidden tabs, and respect reduced motion. Foreground cards
+remain opaque. Interaction roles use 100ms press feedback, 180ms reveal,
+220ms route/tutorial cues and a local 420ms completion emphasis. Inputs,
+scoring and navigation commit immediately; no native View Transition blocks
+interaction or adds a second route effect.
+
+The optional three-page introduction demonstrates Education, Test, then an
+optional name/start step. It is skippable and never intercepts deep links.
+Resume, profile and result metrics identify what their actual numbers mean.
+The [product/engineering portfolio](about/) has user-controlled phone/wide
+screen examples and expandable content in `about/content.js`; the
+[authoring guide](about/README.md) explains safe copy, section and image edits.
+
+`npm run color` checks current production roles, action gradients and bounded
+aurora overlaps in both themes. See the [interface system](docs/margin-design-system.md)
+for exact tokens and [validation](docs/VALIDATION.md) for completed checks and
+limits; passing contrast calculations alone does not establish reading comfort.
 
 ---
 

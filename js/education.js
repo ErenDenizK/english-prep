@@ -45,6 +45,7 @@ import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderPrompt } from "./prompt.js";
 import { renderOptions } from "./answers.js";
+import { progressMetric } from "./progress.js";
 import { startTopicTest, startCategoryPractice, startMixedTest } from "./quiz-launch.js";
 import { TOPIC_INTRO_PREFIX, TOPIC_TEST_DEFAULT_COUNT } from "./config.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
@@ -114,14 +115,6 @@ function ensureLessons() {
 
 /* ---- Shared pieces ---- */
 
-function progressBar(ratio) {
-  const track = el("div", "progress");
-  const fill = el("div", "progress__fill");
-  fill.style.width = `${Math.round(Math.min(Math.max(ratio, 0), 1) * 100)}%`;
-  track.appendChild(fill);
-  return track;
-}
-
 function englishTitle(tag, className, text) {
   const node = el(tag, className, text);
   // A grammar term inside an otherwise-Turkish page. Without this the CSS
@@ -149,7 +142,7 @@ function statusOf(lesson, progress) {
  * competes with opening the lesson itself.
  *
  * @param {{eyebrow: string, line?: string, lineLang?: string, primary: {label: string, onClick: () => void},
- *          secondary?: {label: string, onClick: () => void}, facts?: string[], quiet?: string}} spec
+ *          secondary?: {label: string, onClick: () => void}, facts?: string[], quiet?: string, read?: number}} spec
  */
 function renderHero(spec) {
   const intro = el("section", "study-intro stack");
@@ -162,6 +155,15 @@ function renderHero(spec) {
       summary.lang = spec.lineLang;
     }
     intro.appendChild(summary);
+  }
+
+  if (typeof spec.read === "number") {
+    intro.appendChild(progressMetric({
+      label: "Okuma konumu",
+      value: `%${Math.round(spec.read * 100)}`,
+      ratio: spec.read,
+      className: "study-intro__progress",
+    }));
   }
 
   const actions = el("div", "study-intro__action stack stack--tight");
@@ -205,8 +207,11 @@ function renderStatStrip(lessons) {
 function renderProgressSummary(lessons, completed) {
   const block = el("section", "stack stack--tight");
   block.appendChild(el("h1", "t-label", "İlerlemen"));
-  block.appendChild(progressBar(lessons.length === 0 ? 0 : completed / lessons.length));
-  block.appendChild(el("p", "t-meta", `${lessons.length} dersten ${completed} tanesi tamamlandı`));
+  block.appendChild(progressMetric({
+    label: "Tamamlanan ders",
+    value: `${completed} / ${lessons.length}`,
+    ratio: lessons.length === 0 ? null : completed / lessons.length,
+  }));
   return block;
 }
 
@@ -219,8 +224,9 @@ function renderProgressSummary(lessons, completed) {
 function renderResumeCard(lesson, entry) {
   return renderHero({
     eyebrow: "Kaldığın yer",
-    line: `${lesson.category} · %${Math.round(entry.read * 100)}`,
+    line: lesson.category,
     lineLang: "en",
+    read: entry.read,
     primary: { label: "Devam et", onClick: () => openLessonByHash(lesson.id) },
     facts: [lesson.topicTitle],
   });
@@ -1268,17 +1274,31 @@ function renderPretestBlock(question) {
   const disclosure = el("details", "lesson-pretest");
   disclosure.open = reader.pretestOpen === true;
   disclosure.appendChild(
-    el("summary", "lesson-pretest__summary", "Okumadan önce kendini yokla")
+    el("summary", "lesson-pretest__summary", "Önce bir dene")
   );
   disclosure.addEventListener("toggle", () => {
     // A queued event from an old lesson must not change the current one.
     if (state.reader === reader) {
       reader.pretestOpen = disclosure.open;
+      handleReaderScroll();
     }
   });
 
   const wrap = el("section", "lesson-pretest__body stack stack--tight");
-  wrap.appendChild(el("h2", "t-label", "Önce bir dene"));
+  const intro = el("div", "lesson-pretest__intro");
+  const skip = el("button", "btn btn--quiet btn--text lesson-pretest__skip", "Derse geç");
+  skip.type = "button";
+  skip.addEventListener("click", () => {
+    if (state.reader !== reader) return;
+    reader.pretestOpen = false;
+    disclosure.open = false;
+    const { start } = readerRange();
+    scrollRegion.scrollTo({ top: start });
+    readerContainer.querySelector("[data-reading-start]")?.focus({ preventScroll: true });
+    handleReaderScroll();
+  });
+  intro.appendChild(skip);
+  wrap.appendChild(intro);
   wrap.appendChild(renderCheckBlock(question, PRETEST_INDEX, { label: null }));
 
   // The reason goes UNDER the question, not over it.
@@ -1356,12 +1376,26 @@ const currentLesson = () => state.lessons[state.reader.lessonIndex];
 
 const scrollRegion = document.getElementById("shell-scroll");
 
-/** 0…1: how far down the lesson the bottom of the viewport has reached. */
+/**
+ * The instructional body owns reading position. Its heading and optional
+ * pretest are preliminary material whose variable height must not count
+ * toward completion or change the meaning of a saved reading fraction.
+ */
+function readerRange() {
+  const end = Math.max(0, scrollRegion.scrollHeight - scrollRegion.clientHeight);
+  const first = readerContainer.querySelector("[data-reading-start]");
+  if (!first) return { start: 0, end };
+  const inset = parseFloat(getComputedStyle(scrollRegion).scrollPaddingTop) || 0;
+  const contentTop = first.getBoundingClientRect().top - scrollRegion.getBoundingClientRect().top + scrollRegion.scrollTop;
+  return { start: Math.min(end, Math.max(0, contentTop - inset)), end };
+}
+
 function readFraction() {
-  const scrollable = scrollRegion.scrollHeight - scrollRegion.clientHeight;
-  // A lesson shorter than the viewport has nothing to scroll, so opening
-  // it *is* reading all of it.
-  return scrollable <= 0 ? 1 : Math.min(scrollRegion.scrollTop / scrollable, 1);
+  const { start, end } = readerRange();
+  // A short body below a tall pretest is complete only once the real end
+  // is visible, not merely because the body itself fits one viewport.
+  if (end - start <= 1) return scrollRegion.scrollTop >= end - 1 ? 1 : 0;
+  return Math.min(1, Math.max(0, (scrollRegion.scrollTop - start) / (end - start)));
 }
 
 let scrollTicking = false;
@@ -1455,6 +1489,13 @@ function renderLesson() {
   }
 
   let checkNumber = 0;
+  const appendTeachingBlock = (node) => {
+    if (!page.querySelector("[data-reading-start]")) {
+      node.dataset.readingStart = "";
+      node.tabIndex = -1;
+    }
+    page.appendChild(node);
+  };
   for (let index = 0; index < lesson.blocks.length; ) {
     const block = lesson.blocks[index];
     if (block.type === "pitfall") {
@@ -1463,7 +1504,7 @@ function renderLesson() {
         run.push(lesson.blocks[index]);
         index += 1;
       }
-      page.appendChild(renderPitfallRun(run));
+      appendTeachingBlock(renderPitfallRun(run));
       continue;
     }
     if (block.type === "check") {
@@ -1471,7 +1512,7 @@ function renderLesson() {
     }
     const node = renderBlock(block, index, nextCheck, checkNumber);
     if (node) {
-      page.appendChild(node);
+      appendTeachingBlock(node);
     }
     index += 1;
   }
@@ -1707,7 +1748,7 @@ export async function openLesson(lessonId) {
     answers: new Map(),
     nextCheck,
     pretest: unread ? nextCheck() : null,
-    pretestOpen: false,
+    pretestOpen: unread,
   };
   setReaderChrome(true);
   // The intro sets the title and the reader did not, so the tab read
@@ -1726,8 +1767,8 @@ export async function openLesson(lessonId) {
     if (!state.reader || navigation !== navigationVersion) {
       return;
     }
-    const scrollable = scrollRegion.scrollHeight - scrollRegion.clientHeight;
-    scrollRegion.scrollTo({ top: scrollable * resumeAt });
+    const { start, end } = readerRange();
+    scrollRegion.scrollTo({ top: resumeAt > 0 ? start + (end - start) * resumeAt : 0 });
     handleReaderScroll();
   });
 }
