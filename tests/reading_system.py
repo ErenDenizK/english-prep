@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-page introduction and PWA regressions against a real static server.
+"""Guided introduction, motion and PWA checks against a real static server.
 
 Installation outcomes use synthetic browser events; this does not assert that
 Chromium installed an OS application. Offline checks clear the ordinary HTTP
@@ -40,13 +40,39 @@ class ReadingSystemTests(unittest.TestCase):
         self.context.close()
         self.assertEqual(self.errors, [])
 
-    def test_introduction_has_two_modes_and_only_an_optional_name(self):
+    def tour_name_step(self):
+        self.page.get_by_role('button', name='Testi tanı', exact=True).click()
+        self.page.get_by_role('button', name='Devam et', exact=True).click()
+        expect(self.page.locator('#onboard-name')).to_be_visible()
+
+    def test_introduction_explains_two_modes_without_blocking_direct_entry(self):
+        self.page.goto(BASE + '/index.html#egitim')
+        expect(self.page.locator('#index-filter')).to_be_visible()
+        expect(self.page.locator('#onboard-container')).to_be_hidden()
+        self.assertIsNone(self.page.evaluate('localStorage.getItem("englishPrep.onboarded")'))
         self.page.goto(BASE + '/index.html#hosgeldin')
         intro = self.page.locator('#onboard-container')
-        expect(intro.locator('h2')).to_have_text(['Eğitim', 'Test'])
+        heading = intro.get_by_role('heading', level=1)
+        expect(heading).to_have_text('Bildiğin İngilizceyi netleştir.')
+        expect(intro.locator('.onboard__progress')).to_have_text('1 / 3 · Eğitim')
+        expect(intro.locator('.onboard__preview-step')).to_have_count(3)
+        expect(intro.locator('input')).to_have_count(0)
+        expect(intro.get_by_role('button', name='Geri', exact=True)).to_be_hidden()
+        expect(intro.get_by_role('button', name='Tanıtımı geç', exact=True)).to_be_visible()
+        intro.get_by_role('button', name='Testi tanı', exact=True).press('Enter')
+        expect(heading).to_have_text('Cevabı seç. Nedenini öğren.')
+        expect(heading).to_be_focused()
+        expect(intro.locator('.onboard__progress')).to_have_text('2 / 3 · Test')
+        expect(intro.locator('.onboard__preview-step')).to_have_count(3)
+        expect(intro.locator('input')).to_have_count(0)
+        intro.get_by_role('button', name='Geri', exact=True).click()
+        expect(heading).to_have_text('Bildiğin İngilizceyi netleştir.')
+        expect(heading).to_be_focused()
+        self.tour_name_step()
+        expect(heading).to_have_text('Hazırsan başlayalım.')
+        expect(heading).to_be_focused()
         expect(intro.locator('input')).to_have_count(1)
         expect(intro.locator('input')).not_to_have_attribute('required', '')
-        expect(intro.locator('button')).to_have_count(1)
         intro.get_by_role('button', name='Uygulamayı aç', exact=True).click()
         expect(self.page.locator('#index-filter')).to_be_visible()
         self.assertTrue(self.page.url.endswith('#egitim'))
@@ -55,8 +81,12 @@ class ReadingSystemTests(unittest.TestCase):
 
     def test_name_is_optional_trimmed_and_reused_in_profile(self):
         self.page.goto(BASE + '/index.html#hosgeldin')
+        self.tour_name_step()
         name = self.page.locator('#onboard-name')
         name.fill('  Ada  ')
+        self.page.get_by_role('button', name='Geri', exact=True).click()
+        self.page.get_by_role('button', name='Devam et', exact=True).click()
+        expect(name).to_have_value('  Ada  ')
         name.press('Enter')
         expect(self.page.locator('#index-filter')).to_be_visible()
         self.page.locator('#profile-trigger').click()
@@ -64,6 +94,31 @@ class ReadingSystemTests(unittest.TestCase):
         expect(self.page.locator('#profile-container h1')).to_have_text('Ada')
         expect(self.page.locator('#profile-exam-date, #profile-goal-label')).to_have_count(0)
         expect(self.page.locator('#profile-container')).not_to_contain_text('Gün seri')
+
+    def test_tour_can_be_skipped_from_every_page(self):
+        for step in range(3):
+            with self.subTest(step=step):
+                self.page.goto(BASE + '/index.html#hosgeldin')
+                if step >= 1:
+                    self.page.get_by_role('button', name='Testi tanı', exact=True).click()
+                if step == 2:
+                    self.page.get_by_role('button', name='Devam et', exact=True).click()
+                self.page.get_by_role('button', name='Tanıtımı geç', exact=True).click()
+                expect(self.page.locator('#index-filter')).to_be_visible()
+                self.assertTrue(self.page.url.endswith('#egitim'))
+
+    def test_unread_pretest_starts_open_and_can_be_skipped_without_an_answer(self):
+        self.page.goto(BASE + '/index.html#egitim/' + LESSON)
+        pretest = self.page.locator('.lesson-pretest')
+        expect(pretest).to_have_attribute('open', '')
+        expect(pretest.locator('.feedback')).to_have_count(0)
+        pretest.get_by_role('button', name='Derse geç', exact=True).click()
+        expect(pretest).not_to_have_attribute('open', '')
+        expect(self.page.locator('[data-reading-start]')).to_be_focused()
+        expect(pretest.locator('.option--picked')).to_have_count(0)
+        self.assertFalse(self.page.evaluate('''lesson =>
+          JSON.parse(localStorage.getItem('englishPrep.lessonProgress') || '{}')[lesson]?.done === true
+        ''', LESSON))
 
     def test_manifest_keeps_the_preexisting_installed_identity(self):
         self.page.goto(BASE + '/index.html')
@@ -143,7 +198,15 @@ class ReadingSystemTests(unittest.TestCase):
         expect(self.page.locator('.lesson')).to_contain_text('Unless vs If Not vs Otherwise')
         self.page.goto(BASE + '/about/')
         expect(self.page.get_by_role('heading', level=1)).to_be_visible()
-        expect(self.page.get_by_role('link', name='Dersleri keşfet')).to_be_visible()
+        expect(self.page.get_by_role('link', name='Çalışmaya başla', exact=True)).to_be_visible()
+        # The portfolio's cached content module and controls work offline too;
+        # a static hero alone would hide a missing ES-module dependency.
+        expect(self.page.locator('#tour-screen-controls button')).to_have_count(4)
+        self.page.locator('[data-tour-screen="article"]').click()
+        self.page.locator('[data-tour-viewport="wide"]').click()
+        expect(self.page.locator('#tour-caption')).to_have_text('Ders · Geniş ekran görünümü · 1440 × 1000')
+        expect(self.page.locator('#tour-image')).to_have_attribute('src', 'assets/article-wide.webp')
+        expect(self.page.locator('#engineering-heading')).to_be_visible()
 
     def test_unavailable_cache_storage_does_not_block_online_reading(self):
         self.page.add_init_script('''CacheStorage.prototype.open = async () => {
@@ -222,43 +285,96 @@ class ReadingSystemTests(unittest.TestCase):
         })''')
         self.assertEqual(overflow, {'page': False, 'reader': False})
 
-    def test_ambient_motion_settles_once_and_never_changes_the_reading_surface(self):
+    def assert_ambient_running(self):
+        expect(self.page.locator('.ambient')).to_have_attribute('aria-hidden', 'true')
+        expect(self.page.locator('.ambient__field')).to_have_count(3)
+        self.assertTrue(self.page.locator('.ambient__field').evaluate_all('''nodes =>
+          nodes.every(node => node.getAnimations().some(animation =>
+            animation.effect.getTiming().iterations === Infinity &&
+            animation.effect.getTiming().duration >= 28000 && animation.playState === 'running'))
+        '''))
+
+    def test_ambient_motion_is_available_across_routes_and_pauses_persistently(self):
         self.page.emulate_media(reduced_motion='no-preference')
         self.page.goto(BASE + '/index.html#egitim')
         expect(self.page.locator('#index-filter')).to_be_visible()
-        motion = self.page.evaluate('''() => {
-          const animation = document.getAnimations().find(item => item.animationName === 'ambient-settle');
-          window.__ambientOnArrival = animation;
-          return animation ? animation.effect.getTiming() : null;
-        }''')
-        self.assertIsNotNone(motion)
-        self.assertEqual(motion['iterations'], 1)
-        self.assertEqual(motion['duration'], 3600)
-        self.page.wait_for_timeout(4000)
-        self.assertEqual(self.page.evaluate('window.__ambientOnArrival.playState'), 'finished')
-        self.page.evaluate('location.hash = "test"')
-        expect(self.page.locator('#test-panel')).to_be_visible()
-        self.assertTrue(self.page.evaluate('''() => {
-          const current = document.getAnimations().find(item => item.animationName === 'ambient-settle');
-          return current === window.__ambientOnArrival && current.playState === 'finished';
-        }'''))
-        self.page.evaluate('(lesson) => { location.hash = "egitim/" + lesson; }', LESSON)
-        expect(self.page.locator('.lesson')).to_be_visible()
-        opaque = '''() => {
+        self.assert_ambient_running()
+        self.page.evaluate('window.__ambientOnArrival = document.querySelector(".ambient")')
+        for route, selector in [('test', '#test-panel'), ('egitim/' + LESSON, '.lesson')]:
+            self.page.evaluate('(route) => { location.hash = route; }', route)
+            expect(self.page.locator(selector)).to_be_visible()
+            self.assertTrue(self.page.evaluate('document.querySelector(".ambient") === window.__ambientOnArrival'))
+            self.assert_ambient_running()
+            expect(self.page.locator('#shell-header [data-motion-control]')).to_be_visible()
+        # Foreground answer cards remain opaque even though the canvas has aura.
+        self.open_tenant_question()
+        self.assert_ambient_running()
+        self.assertTrue(self.page.locator('.option').evaluate_all('''nodes => nodes.every(node => {
           const canvas = document.createElement('canvas');
           canvas.width = canvas.height = 1;
           const context = canvas.getContext('2d');
-          context.fillStyle = getComputedStyle(document.querySelector('#shell-scroll')).backgroundColor;
+          context.fillStyle = getComputedStyle(node).backgroundColor;
           context.fillRect(0, 0, 1, 1);
-          return context.getImageData(0, 0, 1, 1).data[3];
-        }'''
-        self.assertEqual(self.page.evaluate(opaque), 255)
-        self.open_tenant_question()
-        self.assertEqual(self.page.evaluate(opaque), 255)
+          return context.getImageData(0, 0, 1, 1).data[3] === 255;
+        })'''))
+        control = self.page.locator('#shell-header [data-motion-control]')
+        expect(control).to_have_attribute('aria-pressed', 'true')
+        question = self.page.locator('#question-stem').inner_text()
+        scroll = self.page.locator('#shell-scroll').evaluate('node => node.scrollTop')
+        control.click()
+        expect(control).to_have_attribute('aria-pressed', 'false')
+        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
+        self.assertEqual(self.page.evaluate('localStorage.getItem("englishPrep.motion")'), 'off')
+        expect(self.page.locator('#question-stem')).to_have_text(question)
+        self.assertEqual(self.page.locator('#shell-scroll').evaluate('node => node.scrollTop'), scroll)
+        self.assertFalse(self.page.locator('.ambient__field').evaluate_all('''nodes =>
+          nodes.some(node => node.getAnimations().some(animation => animation.playState === 'running'))
+        '''))
+        self.page.reload()
+        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
+        self.page.goto(BASE + '/index.html#profil')
+        controls = self.page.locator('[data-motion-control]')
+        expect(controls).to_have_count(2)
+        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-pressed"))'), ['false', 'false'])
+        self.page.locator('#profile-container [data-motion-control]').click()
+        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-pressed"))'), ['true', 'true'])
+        self.assert_ambient_running()
+        # The OS setting wins without erasing the learner's own preference.
         self.page.emulate_media(reduced_motion='reduce')
-        self.assertEqual(self.page.evaluate('getComputedStyle(document.body, "::before").animationName'), 'none')
-        self.assertFalse(self.page.evaluate('''document.getAnimations().some(animation =>
-          animation.animationName === 'ambient-settle' && animation.playState === 'running')'''))
+        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
+        self.assertEqual(self.page.evaluate('localStorage.getItem("englishPrep.motion")'), 'on')
+        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-disabled"))'), ['true', 'true'])
+        self.assertFalse(self.page.locator('.ambient__field').evaluate_all('''nodes =>
+          nodes.some(node => node.getAnimations().some(animation => animation.playState === 'running'))
+        '''))
+        self.page.emulate_media(reduced_motion='no-preference')
+        expect(self.page.locator('html')).to_have_attribute('data-motion', 'on')
+        self.assert_ambient_running()
+
+    def test_hidden_document_pauses_without_changing_the_saved_preference(self):
+        self.page.emulate_media(reduced_motion='no-preference')
+        self.page.goto(BASE + '/index.html#egitim')
+        expect(self.page.locator('#index-filter')).to_be_visible()
+        self.assert_ambient_running()
+        saved = self.page.evaluate('localStorage.getItem("englishPrep.motion")')
+        # Exercise the browser visibility event boundary deterministically.
+        # This is a synthetic hidden-tab transition, not an OS lifecycle claim.
+        self.page.evaluate('''() => {
+          Object.defineProperty(document, 'hidden', {configurable: true, get: () => true});
+          document.dispatchEvent(new Event('visibilitychange'));
+        }''')
+        expect(self.page.locator('html')).to_have_attribute('data-page-visible', 'false')
+        expect(self.page.locator('html')).to_have_attribute('data-motion', 'on')
+        self.assertEqual(self.page.evaluate('localStorage.getItem("englishPrep.motion")'), saved)
+        self.assertFalse(self.page.locator('.ambient__field').evaluate_all('''nodes =>
+          nodes.some(node => node.getAnimations().some(animation => animation.playState === 'running'))
+        '''))
+        self.page.evaluate('''() => {
+          delete document.hidden;
+          document.dispatchEvent(new Event('visibilitychange'));
+        }''')
+        expect(self.page.locator('html')).to_have_attribute('data-page-visible', 'true')
+        self.assert_ambient_running()
 
 
 if __name__ == '__main__':

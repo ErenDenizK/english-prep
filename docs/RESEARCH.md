@@ -1,8 +1,14 @@
-# Research and rationale · v0.67
+# Research and rationale · v0.68
 
 Research access date: **4 October 2026**. The app retains the full source corpus: **10 topics, 60 scrolling articles, 241 questions and 723 option notes**. No learner interviews, comparative participant usability study or educational-outcome experiment was conducted.
 
-The current decision is [ADR 006](adr/006-reading-hierarchy-and-atmosphere.md). Its evidence is separated into:
+The current color, motion and product-presentation decision is [ADR 007](adr/007-sakura-and-purposeful-motion.md):
+
+- [Sakura palette research](research/2026-10-sakura-palette.md): Radix, Primer and Material source roles, three candidate palettes, gradient and aura composition measurements.
+- [Purposeful motion research](research/2026-10-motion-language.md): Fluent, Material, Carbon and WCAG evidence; immediate input, bounded decoration and accessible pause.
+- [Interface diagnosis](audit/v0.68-interface-diagnosis.md), [portfolio plan](design/about-v0.68-plan.md), and [final motion engineering review](audit/v0.68-motion-engineering.md).
+
+[ADR 006](adr/006-reading-hierarchy-and-atmosphere.md) still governs the retained reading typography. Its palette, finite atmosphere and one-page introduction describe the previous version. Earlier evidence is separated into:
 
 - [Typography evidence and alternatives](research/2026-10-04-typography-evidence.md): OpenStax, Wikipedia, Hypothesis, GOV.UK and USWDS official frontend sources; actual bundled-font specimens; integrated A/B/C browser comparisons on the owner's Unless lesson and incorrect-answer feedback.
 - [Color and motion evidence](research/2026-10-04-color-motion-evidence.md): VS Code, Primer and JupyterLab source palettes; semantic color contracts; two measured candidate systems; finite atmosphere and motion constraints.
@@ -38,6 +44,6 @@ Primary sources and unsuccessful access attempts are recorded in the detailed re
 
 ## Verification and unanswered questions
 
-Implementation verification belongs in [VALIDATION.md](VALIDATION.md), not in the research conclusions. The required checks include actual role styles, palette pairs and aura overlap, full teaching blocks, option stability, 320px reflow, enlarged text, keyboard access, finite animation, install outcomes and offline nested routes. The preserved source material and original interface must remain unchanged.
+Implementation verification belongs in [VALIDATION.md](VALIDATION.md), not in the research conclusions. The required checks include actual role styles, palette pairs and aura overlap, full teaching blocks, option stability, 320px reflow, enlarged text, keyboard access, bounded and pausable motion, install outcomes and offline nested routes. The preserved source material and original interface must remain unchanged.
 
 A future learner study should observe concept finding, reading and explanation use, ask learners to express the distinction in their own words, and test whether the hierarchy helps them resume after interruption. Compare alternatives with representative users before claiming comfort, speed or learning gains. A successful automated check cannot invalidate the owner's report that a screen remains hard to read.

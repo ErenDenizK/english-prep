@@ -21,7 +21,7 @@ import {
 import { startMistakeBook } from "./quiz-launch.js";
 import { el, clear, pane, appendInline } from "./dom.js";
 import { icon } from "./icons.js";
-import { ring, countUp, monogram } from "./widgets.js";
+import { progressMetric } from "./progress.js";
 import { announce, createActionBar, createBar } from "./shell.js";
 import { renderPrompt } from "./prompt.js";
 
@@ -54,43 +54,32 @@ function describeMode(result) {
 /** What the score means, in one line — a reading, not a grade. */
 function verdictFor(ratio, total) {
   if (total === 0) return "";
-  if (ratio >= 0.9) return "Çok iyi";
-  if (ratio >= 0.8) return "İyi gidiyor";
-  if (ratio >= 0.6) return "Yolun yarısından fazlası";
-  if (ratio >= 0.4) return "Hangi dersleri açacağın belli";
-  return "Bu test bir yer gösterdi";
+  if (total === 1) return ratio === 1 ? "Bu soruyu doğru yanıtladın." : "Bu sorunun açıklamasına göz at.";
+  if (ratio === 1) return "Bu testte bütün cevaplar doğru.";
+  return "Açıklamaları incele, kaçırdığın ayrımlara geri dön.";
 }
-
-// A visual score threshold only; results never trigger decorative effects.
-const STRONG_SCORE_AT = 0.8;
 
 function renderScore(result) {
   const block = el("section", "score");
   // The bar says "Sonuç"; the section says which test.
   const mode = el("p", "t-label", describeMode(result));
-  if (result.mode === "topic" || result.mode === "category") {
-    mode.lang = "en";
-  }
+  const hasEnglishTitle = (result.mode === "topic" && Object.keys(result.topicTitles ?? {}).length === 1)
+    || (result.mode === "category" && Object.keys(result.categoryBreakdown ?? {}).length === 1);
+  if (hasEnglishTitle) mode.lang = "en";
   block.appendChild(mode);
 
   const ratio = result.totalCount === 0 ? 0 : result.correctCount / result.totalCount;
   const percent = Math.round(ratio * 100);
-  // The ring draws to the score while the number counts up to it.
-  const arc = ring({
+  block.appendChild(progressMetric({
+    label: "Bu testte doğru",
+    value: `${result.correctCount} / ${result.totalCount}`,
     ratio,
-    label: `${result.correctCount} / ${result.totalCount}`,
-    size: "lg",
-    tone: ratio >= STRONG_SCORE_AT ? "ok" : "accent",
-    describedAs: `${result.totalCount} sorudan ${result.correctCount} doğru, yüzde ${percent}`,
-  });
-  block.appendChild(arc);
-  const value = arc.querySelector(".ring__value");
-  if (value) {
-    countUp(value, result.correctCount, (n) => `${n} / ${result.totalCount}`);
-  }
+    tone: "confirmed",
+    description: `${result.totalCount} soruda %${percent} doğru.`,
+    className: "score__metric",
+  }));
 
   block.appendChild(el("p", "score__verdict", verdictFor(ratio, result.totalCount)));
-  block.appendChild(el("p", "t-meta t-num", `%${percent} doğru`));
   return block;
 }
 
@@ -144,12 +133,8 @@ function renderBreakdown(heading, breakdown, resolveName, resolveLessonId) {
       row.href = `index.html#egitim/${lessonId}`;
     }
 
-    // A small ring in the lead says the fraction before the number does.
-    const lead = el("span", "row__lead");
-    const share = stats.total === 0 ? 0 : stats.correct / stats.total;
-    lead.appendChild(ring({ ratio: share, size: "sm", tone: share >= STRONG_SCORE_AT ? "ok" : share < 0.5 ? "no" : "accent" }));
-    row.appendChild(lead);
-
+    // The trailing fraction already communicates the result; repeating a
+    // ring beside every category adds a chart without new information.
     // No "Dersi aç" line under every row: seven identical secondary lines
     // say nothing the chevron does not already say.
     const main = el("span", "row__main");

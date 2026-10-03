@@ -262,7 +262,7 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
       while ((text = walker.nextNode())) {
         if (!text.textContent.trim()) continue;
         const parent = text.parentElement;
-        if (!parent || parent.closest("[hidden], .visually-hidden, script, style, noscript")) continue;
+        if (!parent || parent.closest("[hidden], .visually-hidden, .brand-mark, script, style, noscript")) continue;
         const box = parent.getBoundingClientRect();
         if (box.width === 0 && box.height === 0) continue;
         const style = getComputedStyle(parent);
@@ -496,7 +496,7 @@ async function runFlow(page, viewport) {
   }
 
   await page.waitForURL(/results\.html/, { timeout: 5000 });
-  await page.waitForSelector(".t-display");
+  await page.waitForSelector(".score__metric .metric__value");
   ok(true, "sonuç ekranına ulaşıldı");
   await auditLayout(page, "sonuç", viewport.width);
 
@@ -842,7 +842,7 @@ async function answerThroughToResults(page) {
     await page.waitForTimeout(100);
   }
   await page.waitForURL(/results\.html/, { timeout: 8000 });
-  await page.waitForSelector(".t-display");
+  await page.waitForSelector(".score__metric .metric__value");
 }
 
 /** Fourteen questions answered wrong yesterday — a book worth bounding. */
@@ -973,7 +973,7 @@ async function runMistakeRuns(browser) {
   ok(request.ids.length === 14, "defterin tamamı gönderiliyor, sınırı motor koyuyor");
 
   await answerThroughToResults(page);
-  const score = await page.locator(".t-display").innerText();
+  const score = await page.locator(".score__metric .metric__value").innerText();
   ok(score.trim().endsWith("/ 10"), `on soruluk tur on soru sürdü (${score.trim()})`);
 
   // A mistakes run must not offer to replay itself.
@@ -1085,7 +1085,7 @@ async function runEmptiedBook(browser) {
   await page.waitForSelector(".feedback--ok");
   await page.locator("#quiz-bar button").click();
   await page.waitForURL(/results\.html/);
-  await page.waitForSelector(".t-display");
+  await page.waitForSelector(".score__metric .metric__value");
 
   ok(
     (await page.evaluate(async () => {
@@ -1336,7 +1336,7 @@ async function runOptionNotes(browser) {
     await page.waitForTimeout(60);
   }
   await page.waitForURL(/results\.html/, { timeout: 8000 });
-  await page.waitForSelector("#results-container .t-display");
+  await page.waitForSelector("#results-container .score__metric .metric__value");
   const wrong = await page.locator("#results-container .ink-no").count();
   const reviewNotes = await page.locator('#results-container article strong[lang="en"]').count();
   ok(
@@ -1566,8 +1566,7 @@ async function runPretest(browser) {
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
   await openFirstLesson(page);
   await page.waitForSelector(".lesson-pretest__summary");
-  ok(await page.locator(".lesson-pretest").getAttribute("open") === null, "ön test isteğe bağlı ve başlangıçta kapalı");
-  await page.locator(".lesson-pretest__summary").click();
+  ok(await page.locator(".lesson-pretest").getAttribute("open") !== null, "ön test isteğe bağlı ve okunmamış derste açık");
   await page.waitForSelector(".shell__scroll .option:visible");
 
   const body = await page.locator(".shell__scroll").textContent();
@@ -1592,7 +1591,7 @@ async function runPretest(browser) {
   await page.waitForSelector(".feedback");
   // Let the verdict's pop settle: it is a transform, not layout, and the
   // rule here is that the layout under the thumb never moves.
-  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {}))));
+  await page.evaluate(() => Promise.all(document.getAnimations().filter((a) => Number.isFinite(a.effect.getComputedTiming().endTime)).map((a) => a.finished.catch(() => {}))));
   const after = await page.evaluate(() => document.querySelector(".shell__scroll").scrollTop);
   const boxAfter = await page.locator(".option:visible").first().boundingBox();
   ok(before === after, `ön test cevaplanınca sayfa kaymıyor (${before} → ${after})`);
@@ -2051,8 +2050,8 @@ async function runQuizExit(browser) {
 
   await exitButton().click();
   await page.waitForURL(/results\.html/);
-  await page.waitForSelector(".t-display");
-  const score = (await page.locator(".t-display").first().innerText()).trim();
+  await page.waitForSelector(".score__metric .metric__value");
+  const score = (await page.locator(".score__metric .metric__value").first().innerText()).trim();
   ok(
     score.endsWith("/ 2") || score.endsWith("/2"),
     `görülmeyen sorular yanlış sayılmıyor (${score})`
@@ -2119,7 +2118,7 @@ async function runHonestNumbers(browser) {
     await page.locator(".shell__bar .btn").first().click();
   }
   await page.waitForURL(/results\.html/);
-  await page.waitForSelector(".t-display");
+  await page.waitForSelector(".score__metric .metric__value");
   const results = await page.locator("#results-container").innerText();
   // Ten questions over eight topics is *usually* one or two each, but a
   // shuffle can put three in one topic and then the hedge is correctly
@@ -2522,7 +2521,7 @@ async function runFailurePaths(browser) {
     await page.locator(".shell__bar .btn").first().click();
     if (/results\.html/.test(page.url())) break;
   }
-  await page.waitForSelector(".t-display");
+  await page.waitForSelector(".score__metric .metric__value");
   await page.waitForTimeout(300);
   const attempts = await page.evaluate(
     () => (JSON.parse(localStorage.getItem("englishPrep.history") ?? "{}").attempts ?? []).length
@@ -2664,7 +2663,7 @@ async function runThemes(browser) {
     const state = await paint(page);
     ok(state.theme === "light", `${path}: kayıtlı tercih ilk boyadan önce uygulanıyor (${state.theme})`);
     ok(luminance(state.background) > 200, `${path}: açık temada zemin açık (${state.background})`);
-    ok(state.themeColor === "#f5f6f7", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
+    ok(state.themeColor === "#fbf7fa", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
     ok(state.colorScheme === "light", `${path}: color-scheme açık (${state.colorScheme})`);
     await context.close();
   }
@@ -2679,7 +2678,7 @@ async function runThemes(browser) {
       const state = await paint(page);
       ok(state.theme === "dark", `${path}: yeni ziyaret ${scheme} sistemde de koyu`);
       ok(luminance(state.background) < 60, `${path}: varsayılan zemin koyu (${state.background})`);
-      ok(state.themeColor === "#121416" && state.colorScheme === "dark", `${path}: varsayılan tarayıcı rengi koyu`);
+      ok(state.themeColor === "#141216" && state.colorScheme === "dark", `${path}: varsayılan tarayıcı rengi koyu`);
       await context.close();
     }
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: "light" });
@@ -2688,9 +2687,9 @@ async function runThemes(browser) {
     await page.goto(`${BASE}/${path}`, { waitUntil: "networkidle" });
     let state = await paint(page);
     ok(state.theme === null && luminance(state.background) > 200, `${path}: kayıtlı sistem tercihi açık telefonu izliyor`);
-    ok(state.themeColor === "#f5f6f7" && state.colorScheme === "light", `${path}: sistem tarayıcı rengi açık`);
+    ok(state.themeColor === "#fbf7fa" && state.colorScheme === "light", `${path}: sistem tarayıcı rengi açık`);
     await page.emulateMedia({ colorScheme: "dark" });
-    await page.waitForFunction(() => document.querySelector('meta[name="theme-color"]').content === "#121416");
+    await page.waitForFunction(() => document.querySelector('meta[name="theme-color"]').content === "#141216");
     state = await paint(page);
     ok(state.theme === null && luminance(state.background) < 60, `${path}: sistem değişimi anında koyu boyanıyor`);
     ok(state.colorScheme === "dark", `${path}: sistem değişimi tarayıcı kontrollerini güncelliyor`);
@@ -2708,7 +2707,7 @@ async function runThemes(browser) {
   await themeBox.locator(".listbox__option").filter({ hasText: "Koyu" }).click();
   let state = await paint(page);
   ok(state.theme === "dark" && luminance(state.background) < 60, `Koyu seçince hemen koyu (${state.background})`);
-  ok(state.themeColor === "#121416", `Koyu seçince theme-color koyu (${state.themeColor})`);
+  ok(state.themeColor === "#141216", `Koyu seçince theme-color koyu (${state.themeColor})`);
   await page.reload({ waitUntil: "networkidle" });
   state = await paint(page);
   ok(state.theme === "dark", "seçim yenilemeden sonra duruyor");
@@ -2864,9 +2863,14 @@ async function runOnboarding(browser) {
     await page.evaluate(() => document.getElementById("bottom-nav").getBoundingClientRect().height === 0),
     "hoş geldin ekranında sekme çubuğu yok"
   );
-  await auditLayout(page, "tek ekran tanıtım", 320);
-  ok(await page.locator("#onboard-container input").count() === 1, "tanıtım yalnızca isteğe bağlı isim soruyor");
-  ok(await page.locator("#onboard-container h2").allTextContents().then(labels => labels.join(",") === "Eğitim,Test"), "tanıtım iki çalışma modunu açıklıyor");
+  await auditLayout(page, "tanıtım Eğitim sayfası", 320);
+  ok(await page.locator(".onboard__progress").textContent().then(text => text.includes("1 / 3 · Eğitim")), "ilk sayfa Eğitim akışını açıklıyor");
+  ok(await page.locator("#onboard-container input").count() === 0, "akış tanıtımı isim alanıyla bölünmüyor");
+  await page.locator("#onboard-container .btn--primary").click();
+  ok(await page.locator(".onboard__progress").textContent().then(text => text.includes("2 / 3 · Test")), "ikinci sayfa Test akışını açıklıyor");
+  await auditLayout(page, "tanıtım Test sayfası", 320);
+  await page.locator("#onboard-container .btn--primary").click();
+  ok(await page.locator("#onboard-container input").count() === 1, "son sayfa yalnızca isteğe bağlı isim soruyor");
   ok(await page.locator("#onboard-exam-date, #onboard-container .choice").count() === 0, "tanıtımda tarih, hedef veya tema adımı yok");
   await page.fill("#onboard-name", "Eren");
   await page.locator("#onboard-name").press("Enter");
@@ -2886,8 +2890,8 @@ async function runOnboarding(browser) {
   const skipping = await browser.newContext({ viewport: { width: 320, height: 640 }, fresh: true });
   const quick = await skipping.newPage();
   await quick.goto(`${BASE}/index.html#hosgeldin`, { waitUntil: "networkidle" });
-  await quick.waitForSelector("#onboard-name");
-  await quick.locator("#onboard-container .btn--primary").click();
+  await quick.waitForSelector(".onboard__skip");
+  await quick.locator(".onboard__skip").click();
   await quick.waitForSelector("#lesson-index .tile");
   ok(await quick.evaluate(() => localStorage.getItem("englishPrep.onboarded") === "1"), "atlayınca da bir daha sorulmuyor");
   await skipping.close();
@@ -2943,18 +2947,16 @@ async function runResultsFeel(browser) {
       if (!stored) throw new Error("The score presentation fixture must be a valid 9/10 result");
     });
     await page.goto(`${BASE}/results.html`, { waitUntil: "networkidle" });
-    await page.waitForSelector(".ring--lg");
+    await page.waitForSelector(".score__metric");
     const seen = await page.evaluate(() => Boolean(document.querySelector("canvas.confetti")));
     ok(seen === expectCanvas, `akademik sonuç ekranı konfeti göstermiyor (${motion})`);
     await page.waitForTimeout(1900);
     ok(!(await page.evaluate(() => document.querySelector("canvas.confetti"))), `konfeti kalkıyor (${motion})`);
-    const ringState = await page.evaluate(() => {
-      const fill = document.querySelector(".ring--lg .ring__fill");
-      const dash = Number(fill.getAttribute("stroke-dasharray"));
-      const offset = Number(fill.getAttribute("stroke-dashoffset"));
-      return { ratio: 1 - offset / dash, value: document.querySelector(".ring--lg .ring__value").textContent };
-    });
-    ok(Math.abs(ringState.ratio - 0.9) < 0.01 && ringState.value === "9 / 10", `halka skora çiziliyor ve sayı yerine oturuyor (${ringState.value})`);
+    const score = await page.evaluate(() => ({
+      percent: document.querySelector(".score__metric [role='progressbar']").getAttribute("aria-valuenow"),
+      value: document.querySelector(".score__metric .metric__value").textContent,
+    }));
+    ok(score.percent === "90" && score.value === "9 / 10", `etiketli sonuç doğru oranı gösteriyor (${score.value})`);
     await context.close();
   }
 }

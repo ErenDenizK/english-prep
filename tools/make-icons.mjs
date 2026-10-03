@@ -62,9 +62,9 @@ const ICON_PAGE = (size) => `
 <style>
   @font-face { font-family: Inter; src:url('../assets/fonts/InterVariable.woff2'); font-weight:100 900; }
   html, body { margin:0; width:${size}px; height:${size}px; }
-  body { background:#121416; display:grid; place-items:center; }
-  .mark { color:#e4e6e7; font:600 ${Math.round(size * .42)}px/1 Inter,sans-serif; letter-spacing:-.06em; transform:translateY(-.035em); }
-  .mark span { color:#c4d7e7; }
+  body { background:#141216; display:grid; place-items:center; }
+  .mark { color:#eee9ed; font:600 ${Math.round(size * .42)}px/1 Inter,sans-serif; letter-spacing:-.06em; transform:translateY(-.035em); }
+  .mark span { color:#ed96b4; }
 </style>
 <div class="mark" id="brand-mark">ep<span>.</span></div>`;
 
@@ -79,11 +79,11 @@ const CARD_PAGE = `
   @font-face { font-family:Inter; src:url('../assets/fonts/InterVariable.woff2'); font-weight:100 900; }
   * { box-sizing:border-box; }
   html,body { margin:0; width:1200px; height:630px; }
-  body { background:#121416; color:#e4e6e7; font-family:Inter,sans-serif; padding:64px 80px; display:grid; align-content:space-between; }
+  body { background:#141216; color:#eee9ed; font-family:Inter,sans-serif; padding:64px 80px; display:grid; align-content:space-between; }
   .brand { font-size:32px; font-weight:600; letter-spacing:-1px; }
   h1 { font-size:76px; line-height:1.12; font-weight:600; letter-spacing:-3px; margin:0; }
-  span { color:#c4d7e7; }
-  p { font-size:28px; color:#b4bcc3; margin:0; }
+  span { color:#ed96b4; }
+  p { font-size:28px; color:#c6bcc6; margin:0; }
 </style>
 <div class="brand" id="brand-mark">english prep<span>.</span></div>
 <h1>Bildiğin İngilizce.<br><span>Daha net ayrımlar.</span></h1>

@@ -134,6 +134,10 @@ const ICONS = {
     ["path", { d: "m13 5 7 7-7 7" }],
   ],
 
+  // A single shared motion toggle: pause when moving, play when still.
+  pause: [["path", { d: "M8 5v14M16 5v14" }]],
+  play: [["path", { d: "m8 4 12 8-12 8z" }]],
+
   // Standalone correct-answer tick, larger than the one inside check-square.
   // x 4…20, y 6…18.
   check: [["path", { d: "m4 12 6 6L20 6" }]],

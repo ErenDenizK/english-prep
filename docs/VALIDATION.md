@@ -1,100 +1,107 @@
-# Validation — v0.67
+# Validation — v0.68
 
-4 October 2026 (Türkiye time; 3 October UTC). Baseline: shipped `b1d49cc`.
-The original material from `test` commit `39dcd46` remains unchanged: **10 topics,
-60 continuous lessons, 241 questions and 723 option notes**. `data/`, `original/`
-and `legacy/` have no changes in this round. [v0.66 results](VALIDATION-v0.66.md)
-remain separately preserved.
+4 October 2026 (Türkiye time; 3 October UTC). Baseline: shipped `c92be0c`.
+The original material from `test` commit `39dcd46` remains unchanged:
+**10 topics, 60 continuous lessons, 241 questions and 723 option notes**.
+No changes to `data/`, `original/` or `legacy/` in this round.
+Previous results remain in the Git history; [v0.66](VALIDATION-v0.66.md) and
+[v0.67 review](audit/readability-v0.67.md) are historical evidence.
 
 ## Executed checks
 
-| Check | Final result |
+| Check | Result |
 | --- | --- |
-| `npm run check` | **218 unit tests passed**, zero failures/skips; content format/schema and original/current palette checks passed. |
-| Production palette | **148 pairs passed**: 112 opaque pairs +36 conservative atmosphere bounds. Dark primary ≥11.31:1, supporting ≥7.36:1, essential edges ≥3.41:1. |
-| Comprehensive source browser verifier | **3,376 checks passed in one uninterrupted final run**, including all articles, both themes, mobile/tablet/wide flows, keyboard, backup, errors and offline. Served under `/english-prep/`, matching the production path. |
-| `tests/editorial_smoke.py` | **12 scenarios passed** under `/english-prep/`; authored material, source preservation, full study/practice flows, text enlargement and worker coexistence. |
-| `tests/quiz_resume_browser.py` | **10 scenarios passed** under `/english-prep/`; validated resume, answer timing, history and failure behavior retained. |
-| `tests/ux_refinements.py` | **7 scenarios passed**; current focus/caret flow, deferred navigation, report/backup outcomes and accurate launch counts. |
-| `tests/reading_system.py` | **10 scenarios passed** under `/english-prep/`; optional-name intro, installation outcomes, first-visit durable offline, storage failure, role hierarchy, answer geometry and finite/reduced motion. |
-| Axe-core 4.10.3 | **37 scans, zero definite violations**:32 main app scans (8 states ×2 widths ×2 themes),5 About scans (320/390/768/1440 plus enlarged text at320). WCAG2 A/AA,2.1/2.2AA and best-practice tags. |
-| About integration | Correct real lesson link; no overflow or page errors at320/390/768/1440, including combined enlarged root text/spacing at320; nested-path offline entry passed. |
-| Material/original diff | No changed files in `data/`, `original/`, `legacy/` relative to v0.66; all authored strings retained by browser suite. |
+| `npm run check` | **224 unit tests passed**, zero failures/skips; content format/schema and original/current palette checks passed. Includes six motion preference/lifecycle tests. |
+| Current palette | **4,524 numeric comparisons passed**:154 opaque pairs,330 aura compositions,4,040 sRGB action-gradient samples. These are color calculations, not separate browser/usability tests. |
+| `tools/verify-ui.mjs` | **3,600 checks passed in one uninterrupted final run** under `/english-prep/`, including all articles, themes, responsive flows, keyboard, history, backup and error paths. |
+| `tests/editorial_smoke.py` | **12 scenarios passed**; source material, study/practice journeys, enlarged text, worker coexistence and preserved original. |
+| `tests/quiz_resume_browser.py` | **10 scenarios passed**; refresh/resume, question identity/order, answer timing, history and failure paths. |
+| `tests/ux_refinements.py` | **7 scenarios passed**; focus/caret, report/restore outcomes, deferred navigation and accurate launch counts. |
+| `tests/reading_system.py` | **13 scenarios passed**; three-page optional tour, pretest skip, continuous/paused/reduced motion, install outcomes, first-visit offline and dynamic About modules. |
+| `tests/pretest_progress_browser.py` | **3 scenarios passed**, covering320/390/1440px, correct/wrong pretest answers, expanded explanations, article-only position/resume and short-body completion. |
+| Axe-core4.10.3 | **50 scans, zero definite violations**:32 main-app states (8×2widths×2themes) and18 tour/About/open-menu states (6×3width/theme combinations). WCAG2A/AA,2.1AA and best-practice tags. |
+| Portfolio |32 screen/viewport selections at320/390/768/1440px; keyboard focus,24px root text/spacing overrides, long text and extra content items tested without overflow. |
+| Assets | Eight real app captures generated at390×844 and1440×1000; all loaded. Icons/social image generated from the local Inter face. |
 
-Axe left manual-review items for text inside SVG progress rings and a closed
-combobox's deferred popup. Actual ring ink is the audited main text color on
-the audited canvas; the SVG stroke does not cover its text. Opening the menu
-creates exactly one referenced listbox, its active-descendant ID exists,
-keyboard selection works, and Escape closes it. These are not presented as an
-automated full-conformance verdict.
+Tests ran in Chromium on the prepared cloud machine, against the production
+`/english-prep/` path. No runtime packages, build or account services were added.
 
-## Measured reading and motion outcomes
+## Color and geometry
 
-The real Unless forms at390px render section20/28/600, form label16/24/600,
-pattern18/30/500, short use annotation16/25.6/400 in supporting ink, and example
-18/30/400 in main ink. Article titles are30/36 mobile and36/43 wide. Question
-stems are20/32; answer sentences and explanations18/30. Topic introductions
-and result review now receive the reading role too.
+CandidateA's dark primary/supporting text remains at least **11.03:1/7.18:1**
+under conservative complete overlap of all three aura fields; essential edges
+remain **3.19:1** or higher. Every single/double/triple composition order is
+checked, as are101 positions along the explicitly sRGB primary-action gradient.
+Light/system-light declarations agree. The palette checker rejects eight tested
+classes of deliberately broken fixture, including unreadable colors, excessive
+opacity and unaudited overrides. See [research](research/2026-10-sakura-palette.md).
 
-The supplied long tenant question uses actual bank content. **Every answer
-retains identical height and text width before/after a wrong answer at320,
-390 and1440px.** Reserving the status column removes the previous30–61px
-height jumps. Role/grouping decisions and baseline/alternative comparisons
-are in [ADR006](adr/006-reading-hierarchy-and-atmosphere.md) and the
-[screen audit](research/2026-10-04-screen-hierarchy.md).
+Browser inspection confirms ordinary blending, bounded0.10/0.05 dark/light
+alpha, three fields, opaque card/option surfaces and no leaked legacy topic
+hues. Correct/retry labels and glyphs preserve meaning without color. The
+inherited white enabled-switch thumb failed; using on-primary ink corrected it.
 
-At320px, root text enlarged to24px and WCAG spacing overrides were also
-inspected on topic/article/quiz-feedback/results without horizontal text or
-control overflow. The longest topic introduction now measures3503px (5.47
-640px screens) because its teaching paragraphs use18px instead of16px. Its
-bounded regression budget is5.6; prose was not shrunk or omitted to preserve
-the old5.25 budget.
+Axe flags gradient contrast as incomplete, so its zero-violation result is not
+an all-clear contrast measurement. The separate conservative palette math and
+computed-style review cover those compositions. Collapsed listbox `aria-controls`
+was also marked incomplete; its referenced popup exists when opened, with
+keyboard focus/active-descendant behavior covered separately.
 
-The atmospheric layer has fixed colors and one3.6-second,8px transform.
-Browser animation inspection confirms it finishes after4seconds, stays finished
-across SPA navigation, and is absent under reduced motion. Article and quiz
-scroll surfaces are opaque. The worst conservative gradient overlap is
-approximately `#1e2528`: main text12.44:1, supporting8.10:1, edge3.75:1.
+Reading roles remain Inter18px/30px, question20px/32px, with separate headings,
+form labels, short annotations and metadata. Final tests cover enlarged text,
+spacing overrides, answer row stability,320px layouts and keyboard focus.
 
-## Offline and installation boundaries
+## Motion and progress
 
-A fresh-context test reads one lesson before the first worker takes control,
-confirms that only visited JSON material was persisted, **clears the ordinary
-HTTP cache**, disconnects the browser, then successfully reloads that lesson
-and About. An unvisited topic is not silently promised offline. CacheStorage
-failure does not prevent online reading. Native install outcomes are synthetic
-browser-event tests; no physical iOS/Android installation is claimed. The
-manifest's explicit identity preserves its former `start_url` identity.
+The optional three-page tour changes content/focus immediately. The native
+View Transition was removed after it blocked hit testing while duplicating the
+CSS entry cue. Three28/34/42-second aura loops run across app/About screens;
+the persistent pause control, OS reduced motion and visibility handling work.
+No result number counts up and no answer waits for an animation.
+
+A four-second settled reader trace with motion on/off recorded no recurring
+layout, style recalculation, paint or JavaScript animation frames in that sample.
+It does **not** establish battery consumption or frame-rate guarantees on real
+phones. See the [motion engineering review](audit/v0.68-motion-engineering.md)
+for method, layers, task time and limitations.
+
+Unread lessons show the optional pretest open. Answering it, reading its long
+feedback or collapsing it does not advance the article's progress. Skip focuses
+the instructional body; saved body-relative fractions restore across viewport
+sizes without the pretest. Existing stored fractions remain compatible; because
+v0.67 included preliminary height, an older fraction may resume at a slightly
+different paragraph, without deleting progress.
+
+## PWA, presentation and limits
+
+The new motion/progress/About-content modules are explicitly precached. A real
+first-visit offline failure exposed the missing entries during development and
+was fixed. Offline tests clear ordinary HTTP cache and test scoped worker
+coexistence. Portfolio screenshots cache when visited; installation does not
+claim every lesson or image has downloaded. Manifest identity remains stable.
+
+About content is editable in `about/content.js`, with additional sections and
+long-text reflow; [authoring instructions](../about/README.md) explain the model.
+The screenshots use real source questions and explicitly disclosed demo
+progress/results. A390px viewport is not a claim of physical iPhone testing.
+
+No physical iPhone/Safari install, Android hardware/battery, full assistive-
+technology audit or participant learning study was performed. Native install
+outcomes were exercised with browser events; their test scope is not proof that
+every platform supports installation. Code/browser checks do not prove learning
+effectiveness or invalidate future readability feedback.
 
 ## Reproduce
 
-No runtime dependencies or build step were added. Start a static server from
-the checkout (`npm run serve`) and substitute that URL below. This cloud run
-used ports8010 (checkout) and8012 with `/workspace` as the server root to test
-the realistic `/english-prep/` prefix.
+Start `python3 -m http.server 8012 --bind 127.0.0.1 --directory /workspace`.
+From `/workspace/english-prep` run `npm run check`, the five Python suites above
+with `--base-url http://127.0.0.1:8012/english-prep`, and the browser verifier:
 
 ```sh
-npm run check
-python3 tests/editorial_smoke.py --base-url http://127.0.0.1:8012/english-prep
-python3 tests/quiz_resume_browser.py --base-url http://127.0.0.1:8012/english-prep
-python3 tests/ux_refinements.py --base-url http://127.0.0.1:8012/english-prep
-python3 tests/reading_system.py --base-url http://127.0.0.1:8012/english-prep
-PLAYWRIGHT_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright CHROMIUM_PATH=/usr/bin/chromium npm run verify -- http://127.0.0.1:8012/english-prep
+PLAYWRIGHT_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright CHROMIUM_PATH=/usr/bin/chromium node tools/verify-ui.mjs http://127.0.0.1:8012/english-prep
 ```
 
-The earlier sweep attempts exposed outdated test expectations for the removed
-onboarding/reminders and instruction class, plus three root-absolute imports
-inside the harness. They were updated to assert current behavior and relative
-URLs; meaningful geometry and content assertions remain. The final complete
-run above passed after those corrections.
-
-## Evidence limits
-
-Official-source competitor comparisons are not measurements of their live
-sites: the proxy blocked those sites. Actual font and English Prep layout
-measurements used Chromium and the bundled fonts. No claim of improved reading
-speed, universal font superiority, full accessibility certification, or real
-assistive-technology/device testing is made. Final visual preference remains
-subject to the owner's use. [Current screenshots](previews/mobile.png),
-[desktop](previews/desktop.png), [forms](previews/article.png), and
-[About](../about/) make the result reviewable.
+Generate the screenshots with `python3 tools/capture-portfolio.py --base-url
+http://127.0.0.1:8012/english-prep`. Tool locations are environment-specific;
+recheck them in a restored workspace. The [four-pass record](audit/sakura-v0.68.md)
+explains what changed between diagnosis and final validation.

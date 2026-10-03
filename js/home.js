@@ -98,7 +98,7 @@ function renderMistakeBook() {
     return null;
   }
 
-  const surface = el("section", "surface stack");
+  const surface = el("section", "surface stack practice-card practice-card--mistakes");
   const intro = el("div", "stack stack--tight");
   // A label over a figure, where the mixed-test card is a title over a
   // paragraph: this card is about a number. (Not the display size — the
@@ -194,7 +194,7 @@ function renderMistakeBook() {
  *   Yanlış defteri card is above this one and offering the better mode.
  */
 function renderMixedTest({ primary = true } = {}) {
-  const surface = el("section", "surface hero");
+  const surface = el("section", "surface hero practice-card practice-card--mixed");
   surface.appendChild(el("span", "hero__orb"));
 
   const head = el("div", "hero__head");
@@ -574,19 +574,10 @@ function parseRoute() {
 let routed = false;
 let routeGeneration = 0;
 
-/**
- * The screen switch as one crossfade, when the browser can and the person
- * has not asked for less motion. Only the synchronous part is inside the
- * transition — showing the view — never a fetch: a transition that waits
- * on the network freezes the old screen under the finger.
- */
+/** Commit navigation synchronously. The entering view has one finite CSS
+ * cue; a second native snapshot transition blocks hit testing during taps. */
 function withTransition(update) {
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (routed && !reduced && typeof document.startViewTransition === "function") {
-    document.startViewTransition(update);
-  } else {
-    update();
-  }
+  update();
 }
 
 async function applyRoute() {

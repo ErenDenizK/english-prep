@@ -36,7 +36,9 @@ import { getTheme, setTheme, THEME_LABELS } from "./theme.js";
 import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
 import { el, clear, pane } from "./dom.js";
 import { icon } from "./icons.js";
-import { avatar, ring } from "./widgets.js";
+import { avatar } from "./widgets.js";
+import { progressMetric } from "./progress.js";
+import { createMotionControl } from "./motion.js";
 import { announce } from "./shell.js";
 import { createInstallControl } from "./install.js";
 
@@ -125,13 +127,8 @@ function renderIdentity() {
   return surface;
 }
 
-function stat(value, label, { ratio = null, tone = "accent" } = {}) {
-  const cell = el("div", ratio === null ? "stat" : "stat stat--row");
-  if (ratio !== null) {
-    cell.appendChild(ring({ ratio, label: value, tone }));
-    cell.appendChild(el("div", "stat__label", label));
-    return cell;
-  }
+function stat(value, label) {
+  const cell = el("div", "stat");
   cell.appendChild(el("div", "stat__value t-num", value));
   cell.appendChild(el("div", "stat__label", label));
   return cell;
@@ -141,27 +138,23 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
   const section = el("section", "stack stack--tight");
   section.appendChild(el("h2", "t-label", "Genel durum"));
 
-  const rings = el("div", "stats stats--rings");
-  const grid = el("div", "stats");
-  // The two fractions as rings, the two counts as figures. The label
-  // says which question the number answers: two lifetime counters
-  // beside one recent average would otherwise read as four of the same
-  // kind of thing, and the learner would take the average for a lifetime
-  // one.
-  rings.appendChild(
-    stat(lessonsTotal ? `${lessonsDone}/${lessonsTotal}` : "—", "Tamamlanan ders", {
-      ratio: lessonsTotal ? lessonsDone / lessonsTotal : 0,
-    })
-  );
-  rings.appendChild(
-    stat(formatPercent(stats.accuracy), stats.accuracyWindow > 0 ? `Son ${stats.accuracyWindow} soruda` : "Doğruluk", {
-      ratio: stats.accuracy ?? 0,
-      tone: stats.accuracy === null ? "accent" : stats.accuracy >= 0.7 ? "ok" : "accent",
-    })
-  );
+  const metrics = el("div", "profile-metrics");
+  const grid = el("div", "stats stats--counts");
+  metrics.appendChild(progressMetric({
+    label: "Tamamlanan ders",
+    value: lessonsTotal ? `${lessonsDone} / ${lessonsTotal}` : "İçerik yüklenemedi",
+    ratio: lessonsTotal ? lessonsDone / lessonsTotal : null,
+  }));
+  metrics.appendChild(progressMetric({
+    label: "Son cevaplarında doğruluk",
+    value: stats.accuracy === null ? "Henüz test yok" : formatPercent(stats.accuracy),
+    ratio: stats.accuracy,
+    tone: "confirmed",
+    description: stats.accuracyWindow > 0 ? `Son ${stats.accuracyWindow} soru üzerinden.` : "Bir test çözdüğünde burada görünür.",
+  }));
   grid.appendChild(stat(String(stats.testsCompleted), "Çözülen test"));
   grid.appendChild(stat(String(stats.totalQuestions), "Çözülen soru"));
-  section.appendChild(rings);
+  section.appendChild(metrics);
   section.appendChild(grid);
 
   // What is in the window, when part of it is the mistake book. The
@@ -249,7 +242,7 @@ function renderWeakList(heading, hint, rows) {
  * gives them the file.
  */
 function renderData() {
-  const section = el("section", "stack stack--tight");
+  const section = el("section", "stack stack--tight profile-data");
   section.appendChild(el("h2", "t-label", "Verilerin"));
   section.appendChild(
     el(
@@ -298,6 +291,14 @@ function renderData() {
   section.appendChild(restore);
 
   section.appendChild(status);
+
+  const resetArea = el("div", "settings-reset stack stack--tight");
+  const reset = el("button", "btn btn--quiet btn--text", "Geçmişi sıfırla");
+  reset.type = "button";
+  reset.addEventListener("click", () => resetModal.open());
+  resetArea.appendChild(reset);
+  resetArea.appendChild(el("p", "t-quiet", "Test geçmişini ve ders ilerlemeni bu cihazdan siler. Önce yedek alabilirsin."));
+  section.appendChild(resetArea);
   return section;
 }
 
@@ -353,9 +354,13 @@ function renderThemeRow() {
   const title = el("span", "row__title", "Görünüm");
   title.id = "profile-theme-label";
   main.appendChild(title);
-  main.appendChild(
-    el("span", "row__sub", "Sistem, telefonun ayarını izler.")
-  );
+  const descriptions = {
+    dark: "Koyu renk paleti.",
+    light: "Açık renk paleti.",
+    system: "Cihazının görünümünü izler.",
+  };
+  const description = el("span", "row__sub", descriptions[getTheme()]);
+  main.appendChild(description);
   row.appendChild(main);
 
   const trail = el("span", "row__trail");
@@ -367,50 +372,67 @@ function renderThemeRow() {
     labelledBy: "profile-theme-label",
     value: getTheme(),
     options: Object.entries(THEME_LABELS).map(([value, label]) => ({ value, label })),
-    onChange: (value) => setTheme(value),
+    onChange: (value) => {
+      setTheme(value);
+      description.textContent = descriptions[value];
+    },
   });
 
   return row;
 }
 
 function renderSettings() {
-  const section = el("section", "stack stack--tight");
+  const section = el("section", "stack stack--tight profile-settings");
   section.appendChild(el("h2", "t-label", "Ayarlar"));
 
-  const rows = el("div");
-  rows.appendChild(
+  const group = (title) => {
+    const wrap = el("div", "settings-group");
+    wrap.appendChild(el("h3", "settings-group__title", title));
+    const list = el("div", "settings-list");
+    wrap.appendChild(list);
+    section.appendChild(wrap);
+    return list;
+  };
+  const study = group("Çalışma");
+  study.appendChild(
     toggleRow({
       name: SETTINGS.THINK_FIRST,
       title: "Önce kendin düşün",
       description: "Testte şıklar, sen hazır olduğunu söyleyene kadar gizli kalır.",
     })
   );
-  rows.appendChild(renderThemeRow());
-  section.appendChild(rows);
+  const appearance = group("Görünüm ve hareket");
+  appearance.appendChild(renderThemeRow());
+  const motion = el("div", "row");
+  const motionMain = el("span", "row__main");
+  motionMain.appendChild(el("span", "row__title", "Arayüz hareketi"));
+  motionMain.appendChild(el("span", "row__sub", "Arka plan ışıklarını ve geçiş animasyonlarını aç veya durdur."));
+  motion.appendChild(motionMain);
+  motion.appendChild(el("span", "row__trail")).appendChild(createMotionControl());
+  appearance.appendChild(motion);
+
+  const application = group("Uygulama");
+  const navigation = (tag, label) => {
+    const row = el(tag, "row settings-link");
+    const main = el("span", "row__main");
+    main.appendChild(el("span", "row__title", label));
+    row.appendChild(main);
+    row.appendChild(el("span", "row__trail")).appendChild(icon("chevron-right", { size: 20 }));
+    return row;
+  };
 
   // The short product introduction is always available again.
-  const replay = el("button", "btn btn--quiet btn--text", "Uygulamayı tanı");
+  const replay = navigation("button", "Uygulamayı tanı");
   replay.type = "button";
-  replay.appendChild(icon("chevron-right", { size: 20 }));
   replay.addEventListener("click", () => {
     setOnboarded(false);
     window.location.hash = "hosgeldin";
   });
-  section.appendChild(replay);
-  const about = el("a", "btn btn--quiet btn--text", "English Prep hakkında");
+  application.appendChild(replay);
+  const about = navigation("a", "English Prep hakkında");
   about.href = "about/";
-  section.appendChild(about);
-  section.appendChild(createInstallControl());
-
-  // Quiet and last. It was dressed as the backup buttons, which made the
-  // one destructive action on the screen look like their sibling.
-  const reset = el("button", "btn btn--quiet btn--text", "Geçmişi sıfırla");
-  reset.type = "button";
-  reset.addEventListener("click", () => resetModal.open());
-  section.appendChild(reset);
-  section.appendChild(
-    el("p", "t-quiet", "Sıfırlama, test geçmişini ve ders ilerlemeni bu cihazdan siler.")
-  );
+  application.appendChild(about);
+  application.appendChild(createInstallControl());
 
   return section;
 }

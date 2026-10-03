@@ -5,6 +5,14 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.68 — 2026-10-04
+
+- Sakura renk sistemi: erik tonlu zemin, cherry marka vurgusu, iris/kayısı cevap durumları. Tipografi rolleri ve özgün ders materyalleri korunur; renk/aurora birleşimleri ve eylem gradyanı ölçülür.
+- Açıklamalı doğrusal ilerleme göstergeleri; daha sakin seçenekler, konu satırları ve gruplanmış ayarlar. Okunmamış derste ön test açık gelir; isteğe bağlıdır ve makalenin okuma yüzdesine katılmaz.
+- Eğitim → Test → isteğe bağlı ad akışını anlatan üç sayfalı tanıtım; kalıcı hareket kontrolü, sistem tercihi ve sekme görünürlüğüne uyan üç hafif aurora alanı.
+- `/about/` ürün ve mühendislik portfolyosu: düzenlenebilir içerik modeli, gerçek telefon/geniş ekran galerisi ve açık çevrimdışı erişim sınırları. Marka ikonları ve paylaşım görseli yeni paletle üretilir.
+- Araştırma ve kararlar: [ADR 007](docs/adr/007-sakura-and-purposeful-motion.md). Son doğrulama: [VALIDATION](docs/VALIDATION.md).
+
 ## v0.67 — 2026-10-04
 
 **A reading hierarchy based on the job of each text.** Inter is the working

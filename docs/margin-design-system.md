@@ -1,33 +1,37 @@
-# Margin: interface system · v0.67
+# Margin / Sakura: interface system · v0.68
 
-Margin is English Prep's current interface. [ADR 006](adr/006-reading-hierarchy-and-atmosphere.md) records the accepted typography, color and atmosphere decisions and their alternatives. This summary describes that implementation; [css/editorial.css](../css/editorial.css) supplies the actual values over the inherited [css/style.css](../css/style.css). The older [design-system.md](design-system.md) remains historical source documentation. [EXPERIENCE.md](EXPERIENCE.md) describes the learning journeys.
+Margin is English Prep's current interface. [ADR 007](adr/007-sakura-and-purposeful-motion.md) records the current palette, motion, progress and introduction decisions. [ADR 006](adr/006-reading-hierarchy-and-atmosphere.md) remains the typography decision and previous visual comparison; its atmosphere/palette/onboarding choices are superseded. This summary describes that implementation; [css/editorial.css](../css/editorial.css) supplies the actual values over the inherited [css/style.css](../css/style.css). The older [design-system.md](design-system.md) remains historical source documentation. [EXPERIENCE.md](EXPERIENCE.md) describes the learning journeys.
 
 ## Direction and themes
 
-The working interface is a dark academic reading space with neutral charcoal surfaces, a blue-gray interactive accent, distinct text roles and quiet answer-state colors. The supplied visual references inform character and spacing; they do not prove readability or educational effectiveness.
+The working interface is a dark academic reading space with plum-neutral surfaces, cherry/sakura brand accents, iris confirmation and apricot retry markers, and distinct reading roles. The supplied visual references inform character and spacing; they do not prove readability or educational effectiveness.
 
-New visits start dark. Profil retains **Koyu, Açık and Sistem**, including existing explicit preferences. System follows operating-system changes; storage failure still allows a document-local choice. The neutral light counterpart retains the same role hierarchy, while dark is the primary design and review target. Neither theme is claimed to be universally more comfortable.
+New visits start dark. Profil retains **Koyu, Açık and Sistem**, including existing explicit preferences. System follows operating-system changes; storage failure still allows a document-local choice. The pale Sakura light counterpart retains the same role hierarchy, while dark is the primary design and review target. Neither theme is claimed to be universally more comfortable.
 
 ## Semantic palette
 
 | Role / token | Dark, default | Light |
 | --- | --- | --- |
-| Canvas `--page` | `#121416` | `#f5f6f7` |
-| Surface `--card` | `#1b1e21` | `#ffffff` |
-| Raised surface `--raised` | `#262a2e` | `#e9ecef` |
-| Main text `--ink` | `#e4e6e7` | `#24292e` |
-| Supporting text `--ink-2` | `#b4bcc3` | `#505962` |
-| Decorative separator `--hairline` | `#343a40` | `#d9dee3` |
-| Essential boundary `--edge` | `#737e86` | `#707a83` |
-| Primary action / label | `#c4d7e7` / `#18232c` | `#293945` / `#ffffff` |
-| Accent text / focus | `#b8cee1` | `#3c617d` |
-| Selected tint `--accent-tint` | `#242c33` | `#e8eef3` |
-| Correct marker / tint | `#a4c3af` / `#202b28` | `#356349` / `#eef3ef` |
-| Incorrect marker / tint | `#d9a8ae` / `#2b2528` | `#88434d` / `#f6eff0` |
+| Canvas `--page` | `#141216` | `#fbf7fa` |
+| Surface `--card` | `#1d1a20` | `#ffffff` |
+| Raised surface `--raised` | `#28242c` | `#f0eaf0` |
+| Main text `--ink` | `#eee9ed` | `#302831` |
+| Supporting text `--ink-2` | `#c6bcc6` | `#625864` |
+| Decorative separator `--hairline` | `#39313d` | `#e2d8e2` |
+| Essential boundary `--edge` | `#847988` | `#887b88` |
+| Primary gradient `--accent` / `--accent-2` | `#ed96b4` / `#dca2d8` | `#a13462` / `#854987` |
+| Primary label `--accent-ink` | `#301b27` | `#ffffff` |
+| Sakura text / selected tint | `#efb1cb` / `#30222d` | `#922e55` / `#f6e7ed` |
+| Focus `--focus` | `#d4b5f8` | `#7848af` |
+| Secondary accent `--secondary` | `#c8b4e9` | `#7652a0` |
+| Confirmed marker / small tint | `#bbb6f2` / `#262432` | `#654bb0` / `#eeebf9` |
+| Retry marker / small tint | `#e9bb95` / `#2f2725` | `#92501f` / `#f7eee5` |
 
-Main ink carries lesson prose, examples, answers and rationales. Supporting ink is for short annotations, context and metadata; the second paragraph of a teaching pair does not automatically become secondary text. Answer sentences keep main ink in every state. A subdued fill, check/cross and literal verdict express correctness without large saturated red or green paragraphs. Essential input/control edges remain distinct from optional decorative rules.
+Cherry identifies the brand and primary action; Sakura supports selected destinations and concise structural emphasis. Iris marks a confirmed answer and apricot an attempt to reconsider. These custom hues do not intrinsically mean correct/incorrect: the check/close glyphs and literal verdict stay visible. Answer sentences retain primary ink and neutral surfaces; color is concentrated in their reserved key/mark spaces rather than whole red/green rectangles. Essential boundaries remain distinct from decorative separators.
 
-The selected dark palette's source calculations give minimum primary/supporting text ratios of **11.31:1 / 7.36:1** across its intended opaque surfaces. These are scoped calculations from the [color and motion report](research/2026-10-04-color-motion-evidence.md), not a whole-app accessibility result. The production [palette checker](../tools/editorial-palette.mjs) must also measure actual stylesheet roles and the atmosphere's conservative overlap bound. APCA supplements WCAG 2 contrast; it does not replace it or establish reading comfort. Final integrated results belong in [VALIDATION.md](VALIDATION.md).
+Main ink carries lesson prose, examples, answers and rationales. Supporting ink belongs to short context/help, not automatically every second teaching paragraph. Form labels may use the secondary accent; key terms may use Sakura. Neither adds filled highlight boxes to continuous reading.
+
+The [Sakura palette research](research/2026-10-sakura-palette.md) compares alternatives and calculates the conservative aurora overlap. [The production checker](../tools/editorial-palette.mjs) measures stylesheet roles, both action-gradient stops/intermediate colors, and single/double/triple field overlaps in both themes. Field opacity is bounded at 10% dark and 5% light; foreground cards are opaque because the same overlap applied to raised cards would violate the selected edge requirement. WCAG 2 contrast is enforced; APCA remains supplementary evidence, not a claim of reading comfort. Final integrated results belong in [VALIDATION.md](VALIDATION.md).
 
 ## Typography and reading
 
@@ -42,7 +46,7 @@ Role values assume a 16px browser default; relative sizes honor user enlargement
 | Page title | 30/36 mobile; 36/43 wide; 600 | Study introduction and article H1. |
 | Major panel title | 24/31–34; 600 | Topic/panel hierarchy below the main page title. |
 | Instructional section | 20/28; 600 | Lesson H2, check heading, principal UI sections. |
-| Form/group label | 16/24; 600 | `.lesson-form-label`, sentence case, primary ink. |
+| Form/group label | 16/24; 600 | `.lesson-form-label`, sentence case, secondary accent. |
 | Pattern | 18/30; 500 | `.lesson-pattern`, distinct from the actual example. |
 | Reading text | 18/30; 400 | Prose, examples, options, feedback and review explanations. |
 | Question stem | 20/32; 400 | The source text the learner must evaluate. |
@@ -58,32 +62,44 @@ Within a teaching pair, use 8px; separate independent example units by 28px and 
 
 The fixed shell contains one scrolling region, with a header and bottom navigation or contextual action bar. Mobile gutters are 24px, reducing to 16px below 360px. At **1080px width and 600px height**, suitable screens gain a 300px companion pane within the 988px maximum frame. The inner reading column stays approximately 592px; articles and quizzes remain single-column. A `ch` cap, where present, is a CSS glyph measure rather than a literal character count.
 
-Buttons generally use 8px corners, fields 7px, selections 6px and surfaces 10–14px. Minimum heights allow content to grow: 44px icon/choice targets, 48px standard controls and 52px primary actions. Answer rows reserve a final verdict column **before** answering so adding the mark cannot reduce text width and trigger new wrapping. Their text and fixed action bar must remain stable through feedback.
+Buttons and fields generally use 8px corners, answer rows 10px, and larger component surfaces 12–16px. Minimum heights allow content to grow: 44px icon/choice targets, 48px standard controls and 52px primary actions. Answer rows reserve a final verdict column **before** answering so adding the mark cannot reduce text width and trigger new wrapping. Their text and fixed action bar must remain stable through feedback.
 
-An inline check has one surface. Feedback does not add another nested bordered/padded card. In the measured 390px comparison this recovered 42px of feedback width; typography is not the only contributor to reading layout. Recheck the final geometry with long content, enlarged text and short viewports.
+An inline check has one containing surface; feedback adds no nested frame. Topic hover has rounded local treatment and text emphasis, not a square edge-to-edge slab. Resume uses a labeled reading-position bar separate from its English lesson name. Profile and results use comparable linear metrics, stable numbers and honest empty states. Recheck geometry with long content, enlarged text and short viewports.
 
 ## Component and state contracts
 
 | Component | Required behavior |
 | --- | --- |
 | Navigation | Eğitim/Test remain peers; Profil belongs in the header. Preserve route context, browser Back, active state and visible focus. |
-| Introduction | One short explanation of the two modes and an optional name; no exam date, goal, streak or absence-reminder setup. |
+| Introduction | Three optional pages: Education flow, Test/feedback flow, then optional name/start. Skip remains available, with Back after the first page; no dates, goals or streaks, and no deep-link interruption. |
 | Curriculum | Actual corpus totals, useful reading/resume action, search and empty-result feedback. No invented progress. |
 | Fields and menus | Visible labels, keyboard operation and reachable menus above fixed chrome; active options scroll into view. |
-| Article / pretest | Continuous source article; initially collapsed, optional pretest; unscored inline checks do not gate reading. |
+| Article / pretest | Continuous source article; unread pretest starts open and has a direct `Derse geç` action. Its height and explanation are excluded from article progress. Manual collapse persists during the reader session; checks never gate reading. |
 | Answer / feedback | One press commits; keep rationale and selected-option explanation available until continuation. Valid same-tab refresh preserves order and feedback. |
-| Results | Actual answered-question score and review; stable attempt IDs advance partial history without duplication. |
-| Profile | Real progress, optional name, appearance, practice preference, local-data controls and install/about access. Removed date/goal/streak/reminder controls do not return here. |
+| Results | Stable correct/answered fraction and linear bar, never a count-up or score ring. One answer describes that answer, not overall proficiency. Review and stable attempt IDs remain. |
+| Profile | Linear completion/recent-accuracy metrics with sample context and an explicit empty state. Group study, appearance/motion, application links and local-data actions. Preserve name, focus, backup/restore/reset and install behavior. |
 | Restore | Native dialog, visible initial focus, review before merging, actionable failure/retry and honest rollback limits. |
 | Legacy data | Preserve old backup/storage fields, including dates and goals, without exposing removed features in the new UI. |
-| Branding / install | Restrained `ep.` identity, editable `/about/`, install guidance and a native install action only when supported. No automatic install interruption. |
+| Branding / install | Shared `ep.`/Sakura-dot identity; expandable `/about/` product/engineering stories and a user-controlled real viewport gallery. Supported native install action or honest guidance; no automatic interruption. |
 
 Quiz snapshots are tab-local and validated against current content, not a cross-device resume service. Restore stages writes and attempts rollback because localStorage has no multi-key transaction. These boundaries and the unchanged backup format are described in [EXPERIENCE.md](EXPERIENCE.md).
 
 ## Atmosphere, motion and verification
 
-A decorative blue/teal radial atmosphere sits behind the non-reading canvas. Each stop is capped at 6% alpha. It performs **one 3.6-second settle of at most 8px**, then remains static; there is no loop, route-triggered restart, pulsation or scroll parallax. Article and quiz scrolling surfaces remain opaque. The effect is hidden in light mode; reduced motion removes its animation, and forced colors removes the decoration.
+Three radial light fields sit behind every route, including lessons, questions and About: cherry `#c65b88`, iris `#785ca8`, and apricot `#c68571`. The application uses 28/34/42-second alternating transform/opacity paths, with small displacements and the alpha bounds above. Reading ink is stable; cards remain opaque. No blur animation, hue rotation, particles, scroll parallax, autoplay gallery or animated teaching-text color is used.
 
-State changes use short fades/transitions without delaying interaction. Answer shake/pop effects stay suppressed. Reduced motion also disables nonessential transitions, smooth scrolling and press translation. Use the visible focus outline and keep the actual focused object clear of fixed chrome; a contrast-compliant outline alone cannot ensure this.
+`js/motion.js` owns the persistent preference. A header control is reachable during reading and quizzes, and Profile presents the same control with an explanatory label. Pausing leaves a still atmospheric background. Hidden tabs pause the fields; system reduced motion takes precedence over the saved choice. Forced colors removes the decoration. The bounded background must remain contrast-safe at every field position, not only in a screenshot.
 
-[ADR 006](adr/006-reading-hierarchy-and-atmosphere.md) defines the acceptance checks. The [screen hierarchy audit](research/2026-10-04-screen-hierarchy.md) records baseline/prototype defects; it is not a final pass claim. Verify the integrated implementation with `npm run check`, the repository browser sweep, 320px reflow, enlarged text/spacing, short dialogs, keyboard routes, option stability, final animation count, and offline/install/about paths. Record outcomes separately in [VALIDATION.md](VALIDATION.md); passing calculations cannot override the learner's reported reading experience.
+| Interaction role | Token / behavior |
+| --- | --- |
+| Press | `--d-press: 100ms`; small local feedback, no layout shift. |
+| Reveal | `--d-feedback: 180ms`; short visual cue while state/focus updates immediately. |
+| Route / introduction page | `--d-route: 220ms`; one entering CSS cue, no native View Transition snapshot or second crossfade. |
+| Completion | `--d-complete: 420ms`; local meter emphasis with final numbers available immediately. |
+| Answer / input / selection | Commit immediately; no scoring delay, punitive shake or celebratory count-up. |
+
+Disabling motion preserves every state and control. Focus remains visible and clear of fixed chrome. Reading progress uses the real instructional-body start for both calculation and restoration, so changing preliminary practice height cannot manufacture completion. Existing stored fractions remain compatible; this is a proportional bookmark, not an exact sentence anchor.
+
+The portfolio reads shared tokens and motion preferences. Edit its tour, feature stories, engineering details and additional sections in `about/content.js`; use [the authoring guide](../about/README.md) for structure and screenshot updates. Gallery images are real browser viewport captures with demonstration state, not claims of physical iPhone testing. Screen and viewport selection is user-controlled.
+
+[ADR 007](adr/007-sakura-and-purposeful-motion.md) defines current acceptance, and the [v0.68 diagnosis](audit/v0.68-interface-diagnosis.md) records the source problems. Earlier v0.67 reports remain historical evidence. Verify `npm run check`, the repository browser sweep, 320px reflow, enlarged text/spacing, keyboard/focus, invariant option geometry, pretest progress/resume, pause/reduced/hidden-page behavior, editable About layouts, and offline/install paths. Record actual outcomes in [VALIDATION.md](VALIDATION.md); calculation or automation does not replace learner observation.

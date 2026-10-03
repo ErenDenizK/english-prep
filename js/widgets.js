@@ -5,12 +5,13 @@
 
 import { el } from "./dom.js";
 import { icon } from "./icons.js";
+import { motionEnabled } from "./motion.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 /** Reduced motion, read once per call so a change mid-session is honoured. */
 export function motionWelcome() {
-  return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return motionEnabled() && !document.hidden;
 }
 
 /**
@@ -62,7 +63,9 @@ export function ring({ ratio, label = "", size = "md", tone = "accent", describe
   const clamped = ratio === null ? 0 : Math.min(Math.max(ratio, 0), 1);
   const target = String(C * (1 - clamped));
   if (motionWelcome()) {
-    requestAnimationFrame(() => requestAnimationFrame(() => fill.setAttribute("stroke-dashoffset", target)));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (fill.isConnected) fill.setAttribute("stroke-dashoffset", target);
+    }));
   } else {
     fill.setAttribute("stroke-dashoffset", target);
   }
@@ -217,16 +220,32 @@ export function countUp(node, to, format = String) {
   }
   const duration = 700;
   const start = performance.now();
+  let frame = null;
+  const finish = () => {
+    if (frame !== null) cancelAnimationFrame(frame);
+    node.textContent = format(to);
+    document.removeEventListener("motion:change", onMotionChange);
+  };
+  const onMotionChange = () => {
+    if (!motionWelcome()) finish();
+  };
+  document.addEventListener("motion:change", onMotionChange);
   const tick = (now) => {
+    if (!node.isConnected || !motionWelcome()) {
+      finish();
+      return;
+    }
     const t = Math.min((now - start) / duration, 1);
     const eased = 1 - Math.pow(1 - t, 3);
     node.textContent = format(Math.round(to * eased));
     if (t < 1) {
-      requestAnimationFrame(tick);
+      frame = requestAnimationFrame(tick);
+    } else {
+      document.removeEventListener("motion:change", onMotionChange);
     }
   };
   node.textContent = format(0);
-  requestAnimationFrame(tick);
+  frame = requestAnimationFrame(tick);
 }
 
 /**

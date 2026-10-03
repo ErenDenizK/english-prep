@@ -1,145 +1,205 @@
 #!/usr/bin/env node
-// Measure the colours the redesigned app actually uses, directly from its
-// stylesheet. The original palette/token checks still cover the preserved UI.
-// WCAG 2 ratios are enforced; APCA is reported as a second reading, not as a
-// claim about font-size/weight pairings or whole-page accessibility.
+// Measure the redesigned app's actual CSS palette, including every permitted
+// aura overlap and sRGB action-gradient sample. WCAG ratios are enforced;
+// APCA is diagnostic, not a claim about whole-page or font-size accessibility.
+// An optional CSS file argument allows negative fixtures without editing the app.
 
 import { readFileSync } from "node:fs";
 import { wcagContrast, apca, hexToRgb } from "./color.mjs";
 
-const stylesheet = new URL("../css/editorial.css", import.meta.url);
+const stylesheet = process.argv[2] ?? new URL("../css/editorial.css", import.meta.url);
 const css = readFileSync(stylesheet, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
 const colourTokens = [
   "page", "card", "raised", "ink", "ink-2", "hairline", "edge", "accent",
   "accent-2", "accent-ink", "accent-text", "accent-tint", "focus", "ok", "no",
   "ok-tint", "no-tint", "editorial-mark", "editorial-wash", "editorial-note",
+  "secondary", "tertiary",
 ];
+const auroraTokens = ["aurora-cherry", "aurora-iris", "aurora-apricot"];
+const monitoredTokens = [...colourTokens, ...auroraTokens, "aurora-opacity", "grad-accent"];
+const auditedDeclarations = new Map();
 
-function palette(name, selector, additionalColours = []) {
-  // Later layout-only :root rules are fine. Another palette override must be
-  // added to this audit explicitly, so it cannot silently bypass the checks.
+function palette(name, selector, inherited = {}) {
+  // Layout-only :root rules are fine. Splitting a palette across later overrides
+  // would otherwise evade this source audit, so require one declaration block.
   const blocks = [...css.matchAll(selector)]
     .map((match) => match[1])
-    .filter((block) => colourTokens.some((token) =>
+    .filter((block) => monitoredTokens.some((token) =>
       new RegExp(`--${token}\\s*:`).test(block)));
   if (blocks.length !== 1) {
     throw new Error(`${name}: expected one palette declaration, found ${blocks.length}`);
   }
   const declarations = [...blocks[0].matchAll(/--([\w-]+)\s*:\s*([^;{}]+)\s*;/g)];
-  const values = {};
-  for (const token of [...colourTokens, ...additionalColours]) {
-    const matches = declarations.filter((match) => match[1] === token);
-    if (matches.length !== 1 || !/^#[0-9a-f]{6}$/i.test(matches[0][2].trim())) {
-      throw new Error(`${name}: --${token} must have one explicit six-digit hex value`);
+  for (const [, token] of declarations) {
+    if (monitoredTokens.includes(token)) {
+      auditedDeclarations.set(token, (auditedDeclarations.get(token) ?? 0) + 1);
     }
-    values[token] = matches[0][2].trim().toLowerCase();
   }
+  function declaration(token, optional = false) {
+    const matches = declarations.filter((match) => match[1] === token);
+    if (matches.length === 0 && optional) return inherited[token];
+    if (matches.length !== 1) {
+      throw new Error(`${name}: --${token} must have one explicit declaration`);
+    }
+    return matches[0][2].trim();
+  }
+  const values = {};
+  for (const token of [...colourTokens, ...auroraTokens]) {
+    const value = declaration(token, auroraTokens.includes(token));
+    if (!/^#[0-9a-f]{6}$/i.test(value ?? "")) {
+      throw new Error(`${name}: --${token} must be an explicit six-digit hex color`);
+    }
+    values[token] = value.toLowerCase();
+  }
+  const opacity = declaration("aurora-opacity");
+  if (!/^(?:0?\.\d+|0|1(?:\.0+)?)$/.test(opacity)) {
+    throw new Error(`${name}: --aurora-opacity must be an explicit number from 0 to 1`);
+  }
+  values["aurora-opacity"] = Number(opacity);
+  const maximum = name === "dark" ? 0.10 : 0.05;
+  if (values["aurora-opacity"] > maximum) {
+    throw new Error(`${name}: --aurora-opacity exceeds ADR007's ${maximum} cap; re-evaluate the effect before raising it`);
+  }
+  const gradient = declaration("grad-accent", true);
+  // Explicit interpolation makes the calculation independent of color-space
+  // defaults. Only the two audited opaque endpoints belong in this token.
+  if (!/^linear-gradient\(\s*(?:(?:-?\d+(?:\.\d+)?(?:deg|turn|rad|grad)|to\s+(?:left|right|top|bottom)(?:\s+(?:left|right|top|bottom))?)\s+)?in\s+srgb\s*,\s*var\(--accent\)\s*,\s*var\(--accent-2\)\s*\)$/i.test(gradient ?? "")) {
+    throw new Error(`${name}: --grad-accent must explicitly interpolate the two audited --accent/--accent-2 stops in srgb`);
+  }
+  values["grad-accent"] = gradient.replace(/\s+/g, " ").toLowerCase();
   return values;
 }
 
-const dark = palette("dark", /:root\s*\{([^{}]*)\}/g, ["aurora-blue", "aurora-teal"]);
-const light = palette("light", /:root\[data-theme=["']?light["']?\]\s*\{([^{}]*)\}/g);
-const systemLight = palette("system light", /:root:not\(\[data-theme=["']?dark["']?\]\)\s*\{([^{}]*)\}/g);
-for (const token of colourTokens) {
+const dark = palette("dark", /:root\s*\{([^{}]*)\}/g);
+const light = palette("light", /:root\[data-theme=["']?light["']?\]\s*\{([^{}]*)\}/g, dark);
+const systemLight = palette("system light", /:root:not\(\[data-theme=["']?dark["']?\]\)\s*\{([^{}]*)\}/g, dark);
+for (const token of monitoredTokens) {
+  const total = [...css.matchAll(new RegExp(`[{;]\\s*--${token}\\s*:`, "g"))].length;
+  if (total !== auditedDeclarations.get(token)) {
+    throw new Error(`--${token} is redeclared outside the three audited palette blocks`);
+  }
+}
+for (const token of monitoredTokens) {
   if (light[token] !== systemLight[token]) {
     throw new Error(`System light and explicit light disagree on --${token}`);
   }
 }
 
-// Read the effect's actual maximum stop opacity. The bound assumes two normal
-// source-over gradient layers on --page; no blend mode or translucent text
-// surface. Reading/quiz surfaces remain opaque. Both stacking orders are
-// checked so changing the gradient order cannot evade this audit.
-const alphaDeclarations = [...css.matchAll(/--aurora-alpha\s*:\s*([^;{}]+)\s*;/g)];
-if (alphaDeclarations.length !== 1 || !/^(?:0?\.\d+|0)$/.test(alphaDeclarations[0][1].trim())) {
-  throw new Error("--aurora-alpha must have one explicit unitless value");
-}
-const auroraAlpha = Number(alphaDeclarations[0][1].trim());
-if (auroraAlpha < 0 || auroraAlpha > 0.06) {
-  throw new Error("--aurora-alpha exceeds the researched 0.06 maximum; re-evaluate the effect before raising it");
-}
-const composite = (foreground, background) => foreground.map((channel, index) =>
-  auroraAlpha * channel + (1 - auroraAlpha) * background[index]);
-const pageRgb = hexToRgb(dark.page);
-const blueRgb = hexToRgb(dark["aurora-blue"]);
-const tealRgb = hexToRgb(dark["aurora-teal"]);
-const auroraSurfaces = [
-  { name: "blue", rgb: composite(blueRgb, pageRgb) },
-  { name: "teal", rgb: composite(tealRgb, pageRgb) },
-  { name: "blue over teal", rgb: composite(blueRgb, composite(tealRgb, pageRgb)) },
-  { name: "teal over blue", rgb: composite(tealRgb, composite(blueRgb, pageRgb)) },
-];
-const displayHex = (rgb) => "#" + rgb.map((channel) =>
-  Math.round(channel).toString(16).padStart(2, "0")).join("");
-
 const surfaces = ["page", "card", "raised", "editorial-wash"];
 const readingSurfaces = [...surfaces, "accent-tint", "ok-tint", "no-tint"];
 const requirements = [
-  { name: "Prose", text: "ink", on: readingSurfaces, minimum: 7 },
-  { name: "Secondary text", text: "ink-2", on: readingSurfaces, minimum: 4.5, darkMinimum: 7 },
-  { name: "Accent labels", text: "accent-text", on: [...surfaces, "accent-tint"], minimum: 4.5 },
-  { name: "Reading notes", text: "editorial-note", on: readingSurfaces, minimum: 4.5, darkMinimum: 7 },
-  { name: "Correct feedback", text: "ok", on: [...surfaces, "ok-tint"], minimum: 4.5 },
-  { name: "Incorrect feedback", text: "no", on: [...surfaces, "no-tint"], minimum: 4.5 },
-  { name: "Filled action labels", text: "accent-ink", on: ["accent", "accent-2"], minimum: 4.5 },
-  { name: "Control boundaries", text: "edge", on: readingSurfaces, minimum: 3 },
-  { name: "Focus indicators", text: "focus", on: readingSurfaces, minimum: 3 },
-  { name: "Filled controls", text: "accent", on: surfaces, minimum: 3 },
+  { name: "Prose", text: "ink", minimum: 7 },
+  { name: "Supporting text", text: "ink-2", minimum: 4.5, darkMinimum: 7 },
+  { name: "Sakura labels", text: "accent-text", minimum: 4.5 },
+  { name: "Reading emphasis", text: "editorial-mark", minimum: 4.5 },
+  { name: "Reading notes", text: "editorial-note", minimum: 4.5, darkMinimum: 7 },
+  { name: "Correct feedback", text: "ok", minimum: 4.5 },
+  { name: "Retry feedback", text: "no", minimum: 4.5 },
+  { name: "Secondary accent", text: "secondary", minimum: 4.5 },
+  { name: "Attention accent", text: "tertiary", minimum: 4.5 },
+  { name: "Control boundaries", text: "edge", minimum: 3 },
+  { name: "Focus indicators", text: "focus", minimum: 3 },
 ];
 
-let failed = 0;
-let measured = 0;
-console.log("Editorial palette — actual CSS; system and explicit light agree.");
-for (const [theme, tokens] of [["dark", dark], ["light", light]]) {
-  console.log(`\n${theme}: minimum contrast across each component's surfaces`);
-  for (const requirement of requirements) {
-    // The dark reading system deliberately keeps a 7:1 margin for supporting
-    // text. This is the product's stronger target, not the AA minimum.
-    const minimum = theme === "dark" ? (requirement.darkMinimum ?? requirement.minimum) : requirement.minimum;
-    const results = requirement.on.map((background) => {
-      const foreground = requirement.text;
-      const ratio = wcagContrast(tokens[foreground], tokens[background]);
-      const lc = Math.abs(apca(tokens[foreground], tokens[background]));
-      measured += 1;
-      if (!Number.isFinite(ratio) || ratio < minimum) {
-        failed += 1;
-        console.error(`FAIL ${theme} --${foreground} on --${background}: ${ratio.toFixed(2)}:1; needs ${minimum}:1`);
-      }
-      return { ratio, lc, background };
-    });
-    const worst = results.reduce((a, b) => a.ratio < b.ratio ? a : b);
-    const lowestLc = Math.min(...results.map((result) => result.lc));
-    console.log(`  ${requirement.name.padEnd(23)} ${worst.ratio.toFixed(2)}:1 ≥ ${minimum.toFixed(1)}:1; |Lc| ≥ ${lowestLc.toFixed(1)} (WCAG limiting surface: --${worst.background})`);
+// 3 single, 6 double, and 6 triple overlaps. Each distinct lobe occurs at most
+// once; these are three fields total, not three per nested reader/container.
+function auraSurfaces(tokens) {
+  const output = [];
+  function addOrders(order, remaining) {
+    for (const token of remaining) {
+      const next = [...order, token];
+      const rgb = next.reduce((background, foreground) =>
+        hexToRgb(tokens[foreground]).map((channel, index) =>
+          tokens["aurora-opacity"] * channel +
+          (1 - tokens["aurora-opacity"]) * background[index]), hexToRgb(tokens.page));
+      output.push({ name: next.map((item) => item.replace("aurora-", "")).join(" → "), rgb });
+      addOrders(next, remaining.filter((item) => item !== token));
+    }
   }
+  addOrders([], auroraTokens);
+  return output;
 }
 
-const opaqueMeasured = measured;
-console.log(`\nDark aurora: two stops at maximum alpha ${auroraAlpha}; unrounded sRGB source-over composites`);
-for (const surface of auroraSurfaces) {
-  console.log(`  ${surface.name.padEnd(23)} ${displayHex(surface.rgb)} (rounded only for display)`);
+function actionGradient(tokens) {
+  const from = hexToRgb(tokens.accent);
+  const to = hexToRgb(tokens["accent-2"]);
+  return Array.from({ length: 101 }, (_, index) => ({
+    name: `action ${index}%`,
+    rgb: from.map((channel, position) => channel + (to[position] - channel) * index / 100),
+  }));
 }
-// Any role permitted directly on the page must also remain legible at every
-// maximum glow composite. Primary action labels stay on their opaque fill.
-for (const requirement of requirements.filter((item) => item.on.includes("page"))) {
-  const minimum = requirement.darkMinimum ?? requirement.minimum;
-  const results = auroraSurfaces.map((background) => {
-    const ratio = wcagContrast(dark[requirement.text], background.rgb);
-    const lc = Math.abs(apca(dark[requirement.text], background.rgb));
-    measured += 1;
-    if (!Number.isFinite(ratio) || ratio < minimum) {
-      failed += 1;
-      console.error(`FAIL dark --${requirement.text} on aurora ${background.name}: ${ratio.toFixed(2)}:1; needs ${minimum}:1`);
+
+const displayHex = (rgb) => "#" + rgb.map((channel) =>
+  Math.round(channel).toString(16).padStart(2, "0")).join("");
+let failed = 0;
+let measured = 0;
+let reportedFailures = 0;
+function measure(theme, role, foreground, background, minimum) {
+  const ratio = wcagContrast(foreground, background.rgb);
+  const lc = Math.abs(apca(foreground, background.rgb));
+  measured += 1;
+  if (!Number.isFinite(ratio) || ratio < minimum) {
+    failed += 1;
+    if (reportedFailures++ < 20) {
+      console.error(`FAIL ${theme} ${role} on ${background.name}: ${ratio.toFixed(2)}:1; needs ${minimum}:1`);
     }
-    return { ratio, lc, background: background.name };
-  });
+  }
+  return { ratio, lc, background: background.name };
+}
+function report(name, results, minimum) {
   const worst = results.reduce((a, b) => a.ratio < b.ratio ? a : b);
   const lowestLc = Math.min(...results.map((result) => result.lc));
-  console.log(`  ${requirement.name.padEnd(23)} ${worst.ratio.toFixed(2)}:1 ≥ ${minimum.toFixed(1)}:1; |Lc| ≥ ${lowestLc.toFixed(1)} (limiting composite: ${worst.background})`);
+  console.log(`  ${name.padEnd(23)} ${worst.ratio.toFixed(2)}:1 ≥ ${minimum.toFixed(1)}:1; |Lc| ≥ ${lowestLc.toFixed(1)} (limiting: ${worst.background})`);
+}
+
+console.log("Editorial palette — actual CSS; explicit and system light agree.");
+let opaqueMeasured = 0;
+let auraMeasured = 0;
+let gradientMeasured = 0;
+for (const [theme, tokens] of [["dark", dark], ["light", light]]) {
+  const opaque = readingSurfaces.map((token) => ({ name: `--${token}`, rgb: hexToRgb(tokens[token]) }));
+  const aura = auraSurfaces(tokens);
+  const gradient = actionGradient(tokens);
+  console.log(`\n${theme}: opaque reading and control surfaces`);
+  const opaqueStart = measured;
+  for (const requirement of requirements) {
+    const minimum = theme === "dark" ? (requirement.darkMinimum ?? requirement.minimum) : requirement.minimum;
+    report(requirement.name, opaque.map((background) =>
+      measure(theme, `--${requirement.text}`, tokens[requirement.text], background, minimum)), minimum);
+  }
+  opaqueMeasured += measured - opaqueStart;
+
+  console.log(`\n${theme}: ${aura.length} aura bounds at per-field opacity ${tokens["aurora-opacity"]}; unrounded sRGB source-over`);
+  const triple = aura.filter((surface) => surface.name.split(" → ").length === 3);
+  console.log(`  Maximum three-field composites: ${[...new Set(triple.map((surface) => displayHex(surface.rgb)))].join(", ")} (rounded for display only)`);
+  const auraStart = measured;
+  for (const requirement of requirements) {
+    const minimum = theme === "dark" ? (requirement.darkMinimum ?? requirement.minimum) : requirement.minimum;
+    report(requirement.name, aura.map((background) =>
+      measure(theme, `--${requirement.text}`, tokens[requirement.text], background, minimum)), minimum);
+  }
+  auraMeasured += measured - auraStart;
+
+  console.log(`\n${theme}: action gradient, 101 sRGB samples including both endpoints`);
+  const gradientStart = measured;
+  report("Filled action labels", gradient.map((background) =>
+    measure(theme, "--accent-ink", tokens["accent-ink"], background, 4.5)), 4.5);
+  // A filled action must be identifiable against the surrounding opaque plane
+  // and against any permitted atmosphere on the page canvas.
+  const actionSurfaces = [
+    ...surfaces.map((token) => ({ name: `--${token}`, rgb: hexToRgb(tokens[token]) })),
+    ...aura,
+  ];
+  report("Filled control boundary", gradient.flatMap((sample) => actionSurfaces.map((background) =>
+    measure(theme, sample.name, sample.rgb, { ...background, name: `${sample.name} / ${background.name}` }, 3))), 3);
+  gradientMeasured += measured - gradientStart;
 }
 
 if (failed) {
+  if (reportedFailures > 20) console.error(`... ${reportedFailures - 20} additional failed pairs omitted.`);
   console.error(`\n${failed} of ${measured} editorial contrast pairs failed.`);
   process.exitCode = 1;
 } else {
-  console.log(`\n${measured} editorial contrast pairs passed (${opaqueMeasured} opaque + ${measured - opaqueMeasured} aurora bounds). Decorative hairlines and marks are not control boundaries.`);
+  console.log(`\n${measured} editorial contrast pairs passed (${opaqueMeasured} opaque + ${auraMeasured} aura + ${gradientMeasured} gradient samples).`);
+  console.log("Decorative hairlines are not control boundaries. Aura is behind opaque cards; no additional field, blend mode, or animated brightness is covered by these bounds.");
 }
