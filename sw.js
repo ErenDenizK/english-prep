@@ -1,7 +1,7 @@
 // Scope-specific caches let the redesigned and preserved original apps share
 // an origin without either worker deleting or serving the other app's shell.
 // Content stays unversioned so a release cannot erase downloaded lessons.
-const VERSION = "english-prep-v0.66";
+const VERSION = "english-prep-v0.67";
 const SCOPE = new URL(self.registration.scope);
 const NAMESPACE = `english-prep:${encodeURIComponent(SCOPE.pathname)}:`;
 const SHELL_PREFIX = `${NAMESPACE}shell:`;
@@ -30,6 +30,14 @@ const SHELL = [
   "./js/education.js",
   "./js/feedback.js",
   "./js/home.js",
+  "./js/install.js",
+  "./about/",
+  "./about/index.html",
+  "./about/about.css",
+  "./about/about.js",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png",
+  "./icons/icon-180.png",
   "./js/icons.js",
   "./js/listbox.js",
   "./js/modal.js",

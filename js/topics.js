@@ -28,14 +28,37 @@ const ROADMAP_URL = "data/roadmap.json";
 // retries instead of replaying the rejection forever.
 const fileCache = new Map();
 
+// A first visit can finish loading a lesson before the service worker takes
+// control. Persist that successful response here as well, so offline access
+// does not depend on the browser's disposable HTTP cache. Use the worker's
+// scope-specific cache and only this app's data directory; sibling copies
+// keep their own material. Cache/quota failures must not hide online content.
+const APP_SCOPE = new URL("../", import.meta.url);
+const DATA_SCOPE = new URL("data/", APP_SCOPE);
+const CONTENT_CACHE = `english-prep:${encodeURIComponent(APP_SCOPE.pathname)}:content`;
+
+async function persistReadContent(url, response) {
+  if (!("caches" in globalThis)) return;
+  const target = new URL(url, APP_SCOPE);
+  if (target.origin !== DATA_SCOPE.origin || !target.pathname.startsWith(DATA_SCOPE.pathname)) return;
+  try {
+    const cache = await caches.open(CONTENT_CACHE);
+    await cache.put(target.href, response);
+  } catch {
+    // Reading online still works when storage is unavailable or full.
+  }
+}
+
 function loadJson(url) {
   if (!fileCache.has(url)) {
     const pending = fetch(url)
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
           throw new Error(`Failed to load ${url} (HTTP ${response.status}).`);
         }
-        return response.json();
+        const data = await response.clone().json();
+        await persistReadContent(url, response);
+        return data;
       })
       .catch((error) => {
         fileCache.delete(url);

@@ -7,7 +7,7 @@ export const THEME_KEY = "englishPrep.theme";
 
 /** @typedef {"system"|"light"|"dark"} Theme */
 
-const THEME_COLOR = { light: "#f5f3ed", dark: "#111316" };
+const THEME_COLOR = { light: "#f5f6f7", dark: "#121416" };
 const validTheme = (theme) => theme === "light" || theme === "system" ? theme : "dark";
 
 export const THEME_LABELS = {

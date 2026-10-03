@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#111316">
+<meta name="theme-color" content="#121416">
 <title>Bileşenler — English Prep</title>
 <!-- Declared so the browser stops asking for /favicon.ico and 404ing on
      every load: the harness audits this page for console errors. -->
@@ -28,14 +28,13 @@
       ? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")
       : t;
     document.querySelector('meta[name="theme-color"]').content =
-      resolved === "light" ? "#f5f3ed" : "#111316";
+      resolved === "light" ? "#f5f6f7" : "#121416";
     document.querySelector('meta[name="color-scheme"]').content = resolved;
 </script>
 <link rel="stylesheet" href="../css/fonts.css">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/editorial.css">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/InterVariable.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../fonts/source-serif-4-400.woff2">
 </head>
 <body>
 <header class="bar glass" id="shell-header">
@@ -65,7 +64,7 @@
 
   <section class="stack stack--tight">
     <h2 class="t-label">Tipografi</h2>
-    <p class="t-quiet">Arayüz ve Türkçe açıklama Inter; İngilizce örnekler Source Serif 4. Makale ve geri bildirim 17–18px, destek metni 15px, kısa etiketler 13px; alan metni en az 16px. Başlık, gövde ve etiket aynı görsel ağırlığı taşımaz.</p>
+    <p class="t-quiet">Yazı dili değil görevi belirleyici: Inter ile sayfa başlığı 30–36px, bölüm başlığı 20px/600, kalıp 18px/500, okuma ve geri bildirim 18px/400, kısa açıklama 16px, sayaç 14px. Ana ve yardımcı yazı renkleri farklıdır; öğretim paragrafı metadata değildir. Kararlar ADR 006’da belgelenir.</p>
     <p class="t-display" lang="en">Present Perfect vs Past Simple</p>
     <p class="t-title">Modal nedir?</p>
     <p class="t-lead t-en" lang="en">She has taught here since 2018.</p>

@@ -1,4 +1,4 @@
-# English Prep · Margin: experience · v0.66
+# English Prep · Margin: experience · v0.67
 
 ## Product and audience
 
@@ -10,13 +10,13 @@ The intended learner already uses English but needs the academic concepts and di
 
 **Eğitim** and **Test** are the bottom-navigation peers. **Profil** opens from the header for progress, preferences, and data management. Topic overviews connect the curriculum to six articles per topic. Hash routes retain browser Back and the source navigation structure.
 
-Eğitim opens with “Bildiğin İngilizceyi netleştir.”, actual corpus totals, an appropriate reading action, curriculum search, and the topic index. Returning readers can continue their material. Optional identity, goals, and setup are available without delaying access to a lesson. Streaks and countdowns do not dominate the home screen.
+Eğitim opens with “Bildiğin İngilizceyi netleştir.”, actual corpus totals, an appropriate reading action, curriculum search, and the topic index. Returning readers can continue their material. An optional introduction explains only Eğitim and Test and may collect a name. Exam-date, daily-goal, streak and absence-reminder controls are removed from the current interface; they are not prerequisites for reading or practice.
 
 ## Journeys
 
 | Situation | Route and behavior |
 | --- | --- |
-| First visit | Open Eğitim directly; browse a topic or follow the reading action. Dark is the initial theme; setup is optional. |
+| First visit | Open Eğitim directly; browse a topic or follow the reading action. Dark is the initial theme. An optional single-page introduction explains Eğitim/Test and accepts an optional name. |
 | Find a concept | Search titles, categories, and summaries; open a matching lesson with its topic context. |
 | Explore a topic | Read its overview, examples, and exam context, then choose an article. |
 | Read and return | Read a continuous article with contrasts, patterns, examples, pitfalls, and decision steps. Existing saved progress supports reading continuation. |
@@ -32,6 +32,7 @@ Eğitim opens with “Bildiğin İngilizceyi netleştir.”, actual corpus total
 | Understand progress | Profil shows real lesson completion, recent accuracy and its basis, weak categories, and coverage limits. Sparse evidence does not establish mastery. |
 | Choose appearance | Select Koyu, Açık, or Sistem in Profil. System follows OS changes live and remains an explicit saved preference. |
 | Protect local work | Export a backup or review and merge an existing file/pasted backup. Storage errors remain visible with a retry path. |
+| Install or learn about the product | Use Profil for supported install controls or browser-specific guidance. `/about/` introduces the product and its construction and links directly to reading and tests. |
 | Compare versions | Open the full original from the curriculum footer; the exact source archive and earlier prototype remain available. |
 
 Reading flow: **Eğitim → topic overview → article → optional checks → relevant practice**.
@@ -46,7 +47,7 @@ A stable attempt ID lets a matching longer answer prefix advance the existing pa
 
 The restore dialog opens at its visible heading, including in short landscape windows. Keyboard focus then follows its controls; native Escape closes it and returns focus to the opener. Choosing a file or pasting content leads to a review step before applying the merge. An old asynchronous file read cannot replace newer pasted text or populate a reopened dialog.
 
-Restore keeps existing local progress and explicit preferences on conflicts. It merges history, advances lesson progress and seen-content versions, fills absent profile/practice preferences and exam date, and restores a valid daily goal only when no valid local choice exists. The existing backup format is unchanged; the active quiz snapshot and the separate theme preference are not included in it.
+Restore keeps existing local progress and explicit preferences on conflicts. It merges history, advances lesson progress and seen-content versions, and fills absent profile/practice preferences. Legacy exam-date and daily-goal fields remain compatible: valid missing values may still be restored, but the new UI no longer exposes those controls. Existing valid local values win. The backup format is unchanged; the active quiz snapshot and separate theme preference are not included in it.
 
 Writes are staged from a readable storage snapshot. If a write fails, the restore attempts to return its changed keys to their exact prior values. localStorage cannot guarantee a multi-key transaction, so failed rollback is disclosed as a potentially partial merge. The dialog stays open with the reviewed backup ready for retry; it does not announce completion. A canceled native share also receives neutral cancellation feedback, with no unsolicited download.
 
@@ -54,11 +55,13 @@ The app remains local to the browser. Original and redesigned copies hosted on t
 
 ## Presentation and responsiveness
 
-Margin prioritizes a dark academic reading space with neutral charcoal surfaces, warm text, a readable supporting hierarchy, and restrained accents. Light mode remains fully usable. Inter distinguishes interface/Turkish teaching text from the existing Source Serif 4 English material. Relative type roles support enlarged text; bounded columns keep long articles readable on desktop. Theme choice is a preference, not a claim that dark mode improves learning.
+Margin prioritizes dark neutral surfaces, distinct primary/supporting text roles, and a restrained blue-gray accent. Inter serves both languages through separate roles for headings, form labels, patterns, prose, annotations and controls. Language changes preserve semantic attributes without automatically changing typography. Quiet answer fills, glyphs and verdicts express correctness while answer sentences retain the reading ink. Explicit light/System preferences remain available; dark is the primary refinement target. Theme or family choice is not a claim of improved learning.
+
+Examples and explanations form clear groups through spacing instead of a separator after every item. Answer rows reserve their verdict space before feedback, and feedback avoids nested frames that unnecessarily narrow the text. A faint non-reading atmosphere settles once over 3.6 seconds and then stops; article and quiz canvases remain opaque. Reduced motion disables the movement.
 
 A fixed header and navigation or action bar surround the scrolling content. The app works as a single column at 320px. A useful split starts at **1080×600**: introduction beside curriculum, overview beside lesson list, or results beside review. Articles and quizzes remain single-column. Enlarged text, spacing overrides, browser zoom, and short windows must retain reachable content, controls, and focus.
 
-The component specification is [margin-design-system.md](margin-design-system.md). Evidence and limitations are in [RESEARCH.md](RESEARCH.md), with the detailed October research in [2026-10-ui-principles.md](research/2026-10-ui-principles.md).
+The accepted decision is [ADR 006](adr/006-reading-hierarchy-and-atmosphere.md); component contracts are in [margin-design-system.md](margin-design-system.md). [RESEARCH.md](RESEARCH.md) links the typography evidence, palette/motion evidence and screen hierarchy audit. Browser comparisons support concrete layout decisions; they are not participant usability testing.
 
 ## Preservation and verification
 
@@ -67,6 +70,6 @@ The component specification is [margin-design-system.md](margin-design-system.md
 - `original/source-39dcd46.zip` is the unmodified source archive.
 - `legacy/` preserves the earlier `main` prototype.
 
-The app remains static HTML, CSS, and ES modules, with no backend, account requirement, analytics, or runtime package dependency. Scoped caches preserve both interfaces and offline lessons.
+The app remains static HTML, CSS and ES modules, with no backend, account requirement, analytics or runtime package dependency. The `ep.` identity is shared by app icons and a concise product/project page at `/about/`; its text is directly editable in `about/index.html`. The manifest retains the app identity and adds Eğitim/Test shortcuts. Installation is voluntary and depends on browser support; successful offline use depends on available cached resources, not installation alone. Scoped caches preserve both interfaces. About/install behavior is part of the final integration checks, not assumed from the manifest.
 
 Verify navigation/search, article resume, optional checks, all practice modes, quiz refresh and interrupted-session handling, results deduplication, profile preferences, backup success/failure/retry, original navigation, and unchanged learning data. Include keyboard focus, small and short viewports, themes, reduced motion, reflow, and offline assets. Automated and browser checks establish implementation behavior within their tested scope; they do not replace representative learner observation or complete assistive-technology testing.

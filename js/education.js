@@ -31,18 +31,15 @@ import {
 } from "./topics.js";
 import {
   getAllLessonProgress,
-  getLastActivity,
   getLessonProgress,
   recordLessonRead,
   markLessonDone,
   countCompletedLessons,
   getHistory,
   getItemStats,
-  getSeenVersion,
   getWeakCategories,
   shouldOfferBackup,
   dismissBackupNudge,
-  RE_ENTRY_DAYS,
 } from "./storage.js";
 import { shuffle, isCorrectAnswer } from "./quiz-engine.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
@@ -53,7 +50,7 @@ import { TOPIC_INTRO_PREFIX, TOPIC_TEST_DEFAULT_COUNT } from "./config.js";
 import { TIER_ORDER, TIER_LABELS } from "./tiers.js";
 import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard, textButton } from "./dom.js";
 import { icon } from "./icons.js";
-import { monogram, hueOf } from "./widgets.js";
+import { hueOf } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
 
 const bottomNav = document.getElementById("bottom-nav");
@@ -282,62 +279,6 @@ function renderWelcome(firstLesson) {
 }
 
 /**
- * The resume card, for someone who has been away.
- *
- * A fortnight off is not a lapse to apologise for: for an exam a couple of
- * months out it is roughly the spacing the literature would have chosen.
- * So this changes WHAT IS OFFERED and says nothing about the absence — it
- * never names a number of days and never uses a word that implies fault.
- * It reads as a menu, not as a greeting from someone who was waiting.
- *
- * The second button is the one that matters. Coming back to a lesson you
- * left at 73% means re-reading something you no longer remember choosing;
- * five questions takes ninety seconds and tells you what you still have.
- *
- * And there is one genuinely good thing to tell a returner that is not a
- * verdict on them: new content. It is news about the app, and it is the
- * only message that gets better the longer they were gone.
- */
-function renderReEntryCard(lesson, entry, news, nextUnread, totals) {
-  // The weakest category when there is one, the abandoned lesson's own
-  // category otherwise, and a short mixed test when the app knows neither.
-  const weakest = getWeakCategories(1)[0] ?? null;
-  const category = lesson ? lesson.category : weakest?.category ?? null;
-  const recall = () => {
-    const start = category ? startCategoryPractice(category, 5) : startMixedTest(5);
-    start.catch(console.error);
-  };
-
-  if (lesson) {
-    return renderHero({
-      eyebrow: "Kaldığın yer",
-      line: `${lesson.category} · %${Math.round(entry.read * 100)}`,
-      lineLang: "en",
-      primary: { label: "Önce 5 soruyla hatırla", onClick: recall },
-      secondary: { label: "Kaldığın yerden devam et", onClick: () => openLessonByHash(lesson.id) },
-      facts: [lesson.topicTitle],
-      quiet: news ?? undefined,
-    });
-  }
-  // Someone who finishes what they start, and came back: no place they
-  // left off, so the next unread lesson is the way on. No count of days
-  // away, no "welcome back" — a returner is not apologised to.
-  return renderHero({
-    eyebrow: "Kısa bir hatırlatma",
-    line: "Kısa bir testle hangi ayrımları yeniden çalışmak istediğini belirleyebilirsin.",
-    primary: { label: "5 soruyla başla", onClick: recall },
-    secondary: nextUnread
-      ? { label: "Sıradaki derse geç", onClick: () => openLessonByHash(nextUnread.id) }
-      : undefined,
-    facts: [
-      ...(nextUnread ? [`${nextUnread.topicTitle} · ${nextUnread.category}`] : []),
-      `${totals.lessons} dersten ${totals.completed} tanesi tamamlandı`,
-    ],
-    quiet: news ?? undefined,
-  });
-}
-
-/**
  * The next-step card: the state the Eğitim index spends most of its life
  * in, and the one it used to have nothing for.
  *
@@ -411,48 +352,7 @@ function renderAllDoneCard(lessons, missingSections) {
   });
 }
 
-/**
- * "Passive Voice'a yeni sorular eklendi" — read BEFORE the card renders
- * its buttons, because every launcher in quiz-launch.js marks every live
- * topic as seen on its way out. Reading it later would delete the news at
- * the moment of showing it.
- */
-function newContentNote(lessons) {
-  const fresh = [];
-  const seen = new Set();
-  for (const lesson of lessons) {
-    if (seen.has(lesson.topicId)) continue;
-    seen.add(lesson.topicId);
-    if (
-      typeof lesson.contentVersion === "number" &&
-      getSeenVersion(lesson.topicId) > 0 &&
-      getSeenVersion(lesson.topicId) < lesson.contentVersion
-    ) {
-      fresh.push(lesson.topicTitle);
-    }
-  }
-  if (fresh.length === 0) {
-    return null;
-  }
-  if (fresh.length === 1) {
-    return `${fresh[0]} konusuna yeni sorular eklendi.`;
-  }
-  if (fresh.length === 2) {
-    return `${fresh.join(" ve ")} konularına yeni sorular eklendi.`;
-  }
-  // Naming two of four and stopping reads as "those two", which is less
-  // true than the count and no shorter.
-  return `${fresh.length} konuya yeni sorular eklendi.`;
-}
-
-/**
- * @param {{sub?: boolean}} [options] - `sub: false` drops the summary
- *   line. The topic screen does: its prose has just described the six
- *   lessons, each lesson opens on the same summary as its lead, and six
- *   two-line subs were 240px of a five-screen page saying it a third
- *   time. In search results the summary is what a hit is matched on, so
- *   there it stays.
- */
+// A real lesson, its position in the topic and its saved reading status.
 function renderLessonRow(lesson, status, { sub = true } = {}) {
   const row = el("button", "row");
   row.type = "button";
@@ -510,16 +410,6 @@ function renderIndex() {
     const entry = progress[lesson.id];
     return entry && !entry.done && entry.read > 0.02;
   });
-  // Only when the app actually knows. A learner who has only ever read
-  // lessons had no timestamp anywhere until `recordLessonRead` started
-  // writing one, and guessing from an absent timestamp would tell someone
-  // who has never left that they had been away.
-  //
-  // Computed OUT here, not inside the resumable branch: coming back after
-  // three weeks is a fact about the learner, not about whether they
-  // happened to abandon a lesson on the way out.
-  const last = getLastActivity();
-  const away = last !== null && Date.now() - last > RE_ENTRY_DAYS * 86_400_000;
   const seenEverything =
     state.questionCount > 0 &&
     completed === lessons.length &&
@@ -532,23 +422,15 @@ function renderIndex() {
   // land on a bar reading zero.
   //
   // Order matters: the more specific a state is, the earlier it is tested.
-  // Finishing everything outranks having been away, because a returner who
-  // has nothing left to read should not be sent to look for it.
+  // Completion outranks resume: a finished learner needs a next action,
+  // not an invented unfinished lesson.
   const card = untouched
     ? renderWelcome(lessons[0] ?? null)
     : seenEverything
       ? renderAllDoneCard(lessons, state.uncovered)
-      : away
-        ? renderReEntryCard(
-            resumable ?? null,
-            resumable ? progress[resumable.id] : null,
-            newContentNote(lessons),
-            lessons.find((lesson) => !progress[lesson.id]?.done) ?? null,
-            { lessons: lessons.length, completed }
-          )
-        : resumable
-          ? renderResumeCard(resumable, progress[resumable.id])
-          : renderNextStepCard(lessons, progress, completed);
+      : resumable
+        ? renderResumeCard(resumable, progress[resumable.id])
+        : renderNextStepCard(lessons, progress, completed);
 
   // Two columns on a wide window, one everywhere else, and the same nodes
   // in the same order either way: what to do next in the pane, and the
@@ -782,10 +664,8 @@ function renderTopicGroup(heading, lessons, progress) {
 
     const tile = el("button", "tile");
     tile.type = "button";
-    // Monogram and count on one line, the name under them, the bar last:
-    // three rows, so two tiles abreast fit a 320px phone's budget.
+    // The topic title and actual completion count share one row.
     const head = el("span", "tile__head");
-    head.appendChild(monogram(topicId, title));
     const meta = el("span", "tile__meta");
     if (done === inTopic.length) {
       const finished = el("span", "ink-ok cluster");
@@ -806,7 +686,6 @@ function renderTopicGroup(heading, lessons, progress) {
     if (inTopic[0].topicGloss) {
       tile.appendChild(el("span", "tile__sub", inTopic[0].topicGloss));
     }
-    tile.appendChild(progressBar(inTopic.length === 0 ? 0 : done / inTopic.length));
 
     tile.addEventListener("click", () => openIntroByHash(topicId));
     grid.appendChild(tile);
@@ -859,6 +738,7 @@ function renderIntro(topic, lessons, progress) {
   // sit a screen and a half below the fold — move up beside it.
   const screen = el("div", "stack stack--loose split split--main-first animate-in");
   const page = pane();
+  page.classList.add("topic-intro");
   const intro = topic.intro;
 
   // The bar names the topic and carries the way back and the count;
@@ -884,7 +764,7 @@ function renderIntro(topic, lessons, progress) {
     const list = el("ul", "stack stack--tight");
     for (const item of intro.examples) {
       const entry = el("li", "stack stack--tight");
-      entry.appendChild(englishTitle("p", "t-lead t-en", item.en));
+      entry.appendChild(englishTitle("p", "t-lead t-en lesson-example", item.en));
       if (item.note) {
         const note = el("p", "t-quiet");
         appendInline(note, item.note);
@@ -911,9 +791,9 @@ function renderIntro(topic, lessons, progress) {
       }
       entry.appendChild(name);
       if (part.en) {
-        // Body, not meta: an example is a sentence, and English serif has
-        // no weight that clears the ground at 15px.
-        entry.appendChild(englishTitle("p", "t-body t-en", part.en));
+        // An example is teaching content, with the same reading role as
+        // the examples in a lesson.
+        entry.appendChild(englishTitle("p", "t-body t-en lesson-example", part.en));
       }
       list.appendChild(entry);
     }
@@ -1125,19 +1005,19 @@ function renderTextBlock(block) {
 /**
  * Two or three forms set against each other. Stacked rather than columned:
  * at 320px two columns give each side about 140px, which is not a measure
- * anyone can read a grammar gloss in. The label carries the distinction,
- * and a hairline carries the boundary.
+ * anyone can read a grammar gloss in. The term and its associated prose
+ * form one group; spacing distinguishes the next term.
  */
 function renderContrastBlock(block) {
   const list = el("ul", "items");
   for (const side of block.sides) {
     const item = el("li", "stack stack--snug");
-    item.appendChild(englishTitle("p", "t-lead t-en", side.label));
+    item.appendChild(englishTitle("p", "t-lead t-en lesson-term", side.label));
     const gloss = el("p", "t-body");
     appendInline(gloss, side.gloss);
     item.appendChild(gloss);
     if (side.example) {
-      item.appendChild(englishTitle("p", "t-body t-en", side.example));
+      item.appendChild(englishTitle("p", "t-body t-en lesson-example", side.example));
     }
     list.appendChild(item);
   }
@@ -1145,15 +1025,9 @@ function renderContrastBlock(block) {
 }
 
 /**
- * The structural patterns — a reference the learner scrolls back to
- * rather than a paragraph they read once. It used to be the reader's one
- * card, on the argument that a reference should be findable; but
- * findability is a heading's job, not a fill's, and the fill made the
- * least important block in the teaching half the first thing with any
- * mass on the page (docs/research/beta1-hierarchy.md §3.3). Homogeneous
- * content is rows (§7.1): a labelled group per form, a hairline between
- * groups. Grouped by form here rather than in the data: the schema keeps
- * rows flat so a content file never nests three deep.
+ * Structural patterns are a reference with distinct roles: form label,
+ * pattern, short use annotation, and example. Group by form here rather
+ * than changing the flat content schema to suit the presentation.
  */
 function renderFormsBlock(block) {
   const card = el("div", "items");
@@ -1166,22 +1040,19 @@ function renderFormsBlock(block) {
   }
 
   for (const [form, rows] of byForm) {
-    const group = el("div", "stack stack--tight");
-    group.appendChild(englishTitle("p", "t-label", form));
+    const group = el("div", "stack stack--tight lesson-form");
+    group.appendChild(englishTitle("p", "t-label lesson-form-label", form));
     for (const row of rows) {
-      const line = el("div", "stack stack--snug");
-      const pattern = el("p", "t-body t-en");
+      const line = el("div", "stack stack--snug lesson-form-row");
+      const pattern = el("p", "t-body t-en lesson-pattern");
       pattern.lang = "en";
       pattern.appendChild(document.createTextNode(row.pattern));
       line.appendChild(pattern);
-      const meta = el("p", "t-meta");
-      meta.appendChild(document.createTextNode(row.use));
-      line.appendChild(meta);
+      const use = el("p", "t-body lesson-use");
+      use.appendChild(document.createTextNode(row.use));
+      line.appendChild(use);
       if (row.example) {
-        // Its own line at body: it was a serif span inside the meta
-        // line, which set an English sentence at 15/400 — the one pair
-        // no ink clears on either ground.
-        line.appendChild(englishTitle("p", "t-body t-en", row.example));
+        line.appendChild(englishTitle("p", "t-body t-en lesson-example", row.example));
       }
       group.appendChild(line);
     }
@@ -1198,7 +1069,7 @@ function renderExamplesBlock(block) {
   const list = el("ul", "items");
   for (const item of block.items) {
     const entry = el("li", "stack stack--snug");
-    entry.appendChild(englishTitle("p", "t-lead t-en", item.sentence));
+    entry.appendChild(englishTitle("p", "t-lead t-en lesson-example", item.sentence));
     const note = el("p", "t-body");
     appendInline(note, item.note);
     entry.appendChild(note);
@@ -1208,9 +1079,8 @@ function renderExamplesBlock(block) {
 }
 
 /**
- * Wrong above right, with the verdict on a glyph as well as a colour —
- * neither red nor green clears the contrast bar as text on this ground,
- * and colour alone would say nothing in greyscale.
+ * Wrong above right. A glyph identifies each verdict visually; a text
+ * equivalent preserves that distinction when the hidden SVG is not read.
  */
 function renderPitfallBlock(block) {
   const wrap = el("div", "stack stack--snug");
@@ -1219,8 +1089,9 @@ function renderPitfallBlock(block) {
     const row = el("p", "cluster");
     const mark = el("span", kind === "ok" ? "ink-ok" : "ink-no");
     mark.appendChild(icon(kind === "ok" ? "check" : "close", { size: 20 }));
+    mark.appendChild(el("span", "visually-hidden", kind === "ok" ? "Doğru örnek: " : "Yanlış örnek: "));
     row.appendChild(mark);
-    row.appendChild(englishTitle("span", "t-body t-en", sentence));
+    row.appendChild(englishTitle("span", "t-body t-en lesson-example", sentence));
     return row;
   };
 

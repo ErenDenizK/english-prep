@@ -4,8 +4,8 @@ import { readFile } from "node:fs/promises";
 import { runInNewContext } from "node:vm";
 
 const KEY = "englishPrep.theme";
-const DARK = "#111316";
-const LIGHT = "#f5f3ed";
+const DARK = "#121416";
+const LIGHT = "#f5f6f7";
 let instance = 0;
 
 function environment({ stored = null, light = true, blocked = false, full = false } = {}) {

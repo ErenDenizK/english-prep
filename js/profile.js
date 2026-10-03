@@ -27,14 +27,6 @@ import {
   clearLessonProgress,
   getSetting,
   setSetting,
-  getExamDate,
-  setExamDate,
-  daysToExam,
-  getDailyGoal,
-  getTodayCount,
-  setDailyGoal,
-  DAILY_GOAL_OPTIONS,
-  getStreak,
   setOnboarded,
 } from "./storage.js";
 import { SETTINGS } from "./config.js";
@@ -44,8 +36,9 @@ import { getTheme, setTheme, THEME_LABELS } from "./theme.js";
 import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
 import { el, clear, pane } from "./dom.js";
 import { icon } from "./icons.js";
-import { avatar, ring, choices } from "./widgets.js";
+import { avatar, ring } from "./widgets.js";
 import { announce } from "./shell.js";
+import { createInstallControl } from "./install.js";
 
 const container = document.getElementById("profile-container");
 let resetModal;
@@ -105,19 +98,6 @@ function renderIdentity() {
   head.appendChild(avatar(name, { size: "lg" }));
   const titles = el("div", "stack stack--snug");
   titles.appendChild(el("h1", "t-title", name || "Profilin"));
-  const days = daysToExam();
-  const goal = getDailyGoal();
-  titles.appendChild(
-    el(
-      "p",
-      "t-meta t-num",
-      days === null
-        ? `Günde ${goal} soru`
-        : days < 0
-          ? `Sınav geçti · günde ${goal} soru`
-          : `Sınava ${days} gün · günde ${goal} soru`
-    )
-  );
   head.appendChild(titles);
   surface.appendChild(head);
 
@@ -145,64 +125,6 @@ function renderIdentity() {
   return surface;
 }
 
-/**
- * The two facts the home screen is built from, editable: when the exam
- * is, and how many questions a day. The first run asks the same two.
- */
-function renderGoals() {
-  const section = el("section", "stack stack--tight");
-  section.appendChild(el("h2", "t-label", "Hedefin"));
-
-  const rows = el("div");
-
-  const dateRow = el("div", "row");
-  const dateMain = el("span", "row__main");
-  const dateTitle = el("label", "row__title", "Sınav tarihi");
-  dateTitle.htmlFor = "profile-exam-date";
-  dateMain.appendChild(dateTitle);
-  dateMain.appendChild(el("span", "row__sub", "Çalışma planın için isteğe bağlı bir hatırlatma."));
-  dateRow.appendChild(dateMain);
-  const dateTrail = el("span", "row__trail");
-  const date = document.createElement("input");
-  date.type = "date";
-  date.id = "profile-exam-date";
-  date.className = "field";
-  date.style.width = "11rem";
-  date.value = getExamDate() ?? "";
-  date.addEventListener("change", () => {
-    setExamDate(date.value || null);
-    render();
-  });
-  dateTrail.appendChild(date);
-  dateRow.appendChild(dateTrail);
-  rows.appendChild(dateRow);
-
-  const goalRow = el("div", "row");
-  const goalMain = el("span", "row__main");
-  const goalTitle = el("span", "row__title", "Günlük hedef");
-  goalTitle.id = "profile-goal-label";
-  goalMain.appendChild(goalTitle);
-  goalMain.appendChild(el("span", "row__sub", `${getTodayCount()} / ${getDailyGoal()} soru bugün yanıtlandı.`));
-  goalRow.appendChild(goalMain);
-  const goalTrail = el("span", "row__trail");
-  goalTrail.appendChild(
-    choices({
-      options: DAILY_GOAL_OPTIONS.map((n) => ({ value: String(n), label: String(n) })),
-      value: String(getDailyGoal()),
-      onChange: (value) => {
-        setDailyGoal(Number(value));
-        render();
-      },
-      labelledBy: "profile-goal-label",
-    }).element
-  );
-  goalRow.appendChild(goalTrail);
-  rows.appendChild(goalRow);
-
-  section.appendChild(rows);
-  return section;
-}
-
 function stat(value, label, { ratio = null, tone = "accent" } = {}) {
   const cell = el("div", ratio === null ? "stat" : "stat stat--row");
   if (ratio !== null) {
@@ -221,8 +143,8 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
 
   const rings = el("div", "stats stats--rings");
   const grid = el("div", "stats");
-  // The two fractions as rings, the three counts as figures. The label
-  // says which question the number answers: three lifetime counters
+  // The two fractions as rings, the two counts as figures. The label
+  // says which question the number answers: two lifetime counters
   // beside one recent average would otherwise read as four of the same
   // kind of thing, and the learner would take the average for a lifetime
   // one.
@@ -237,8 +159,6 @@ function renderStats(stats, lessonsDone, lessonsTotal) {
       tone: stats.accuracy === null ? "accent" : stats.accuracy >= 0.7 ? "ok" : "accent",
     })
   );
-  const streak = getStreak();
-  grid.appendChild(stat(String(streak.days), "Gün seri"));
   grid.appendChild(stat(String(stats.testsCompleted), "Çözülen test"));
   grid.appendChild(stat(String(stats.totalQuestions), "Çözülen soru"));
   section.appendChild(rings);
@@ -468,9 +388,8 @@ function renderSettings() {
   rows.appendChild(renderThemeRow());
   section.appendChild(rows);
 
-  // The first-run flow, again, for whoever wants to change the three
-  // facts it asked in one place.
-  const replay = el("button", "btn btn--quiet btn--text", "İlk açılışı tekrar gör");
+  // The short product introduction is always available again.
+  const replay = el("button", "btn btn--quiet btn--text", "Uygulamayı tanı");
   replay.type = "button";
   replay.appendChild(icon("chevron-right", { size: 20 }));
   replay.addEventListener("click", () => {
@@ -478,6 +397,10 @@ function renderSettings() {
     window.location.hash = "hosgeldin";
   });
   section.appendChild(replay);
+  const about = el("a", "btn btn--quiet btn--text", "English Prep hakkında");
+  about.href = "about/";
+  section.appendChild(about);
+  section.appendChild(createInstallControl());
 
   // Quiet and last. It was dressed as the backup buttons, which made the
   // one destructive action on the screen look like their sibling.
@@ -661,7 +584,6 @@ async function render() {
   main.appendChild(
     renderStats(getOverallStats(), countCompletedLessons(lessonIds), lessonIds.length)
   );
-  main.appendChild(renderGoals());
 
   const weakCategories = getWeakCategories();
   const weakCategoryList = renderWeakList(

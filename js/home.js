@@ -1,3 +1,4 @@
+import "./install.js";
 // The app's router, and the Test tab.
 //
 // Eğitim and Test are the two content modes and live in the bottom nav.
@@ -34,7 +35,7 @@ import { initProfileTab } from "./profile.js";
 import { startTopicTest, startMixedTest, startCategoryPractice, startMistakeBook } from "./quiz-launch.js";
 import { el, clear, pane, sectionHeading, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
-import { avatar, monogram } from "./widgets.js";
+import { avatar } from "./widgets.js";
 import { renderOnboarding } from "./onboarding.js";
 import { announce, scrollToTop, createBar } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
@@ -343,9 +344,6 @@ function renderTopicRow(topic) {
     row.type = "button";
   }
 
-  const lead = el("span", "row__lead");
-  lead.appendChild(monogram(topic.id, topic.title));
-  row.appendChild(lead);
 
   const main = el("span", "row__main");
   const title = el("span", "row__title t-en", topic.title);

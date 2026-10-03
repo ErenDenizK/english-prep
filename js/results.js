@@ -7,9 +7,8 @@
 // questions share one category taxonomy.
 //
 // The review at the bottom is every question again with its explanation.
-// It is long by nature, so it comes last and is separated by rules rather
-// than boxed: eight cards in a column is the box-in-box failure with extra
-// steps.
+// It is sustained reading, with grouped entries in the same reading lane
+// as the lessons rather than a stack of nested cards.
 
 import { loadManifest, lessonIndex } from "./topics.js";
 import { getQuizRequest, getQuizResult, setQuizResult } from "./session-state.js";
@@ -243,28 +242,26 @@ function newTestAction(result) {
 }
 
 function renderReview(result) {
-  const section = el("section", "stack stack--tight");
+  const section = el("section", "stack stack--tight review");
   section.appendChild(el("h2", "t-label", "İnceleme"));
 
-  // One list of homogeneous items: 24 between them and a hairline where
-  // one ends, the same rhythm the reader's lists have.
+  // Each answer and its explanation remain one reading unit.
   const list = el("div", "items");
   result.questionResults.forEach((question, index) => {
-    const item = el("article", "stack stack--tight");
+    const item = el("article", "stack stack--tight review-entry");
 
     const verdict = el("p", "cluster");
     const mark = el("span", question.correct ? "ink-ok" : "ink-no");
     mark.appendChild(icon(question.correct ? "check" : "close", { size: 20 }));
+    mark.appendChild(el("span", "visually-hidden", question.correct ? "Doğru. " : "Yanlış. "));
     verdict.appendChild(mark);
     verdict.appendChild(el("span", "t-meta t-num", `Soru ${index + 1}`));
     item.appendChild(verdict);
 
     item.appendChild(renderPrompt(question, { lead: false, idSuffix: `review-${index}` }));
 
-    // Body from here down, not meta. The review is the longest reading
-    // surface in the app and it was set in the one-line tier — seven-line
-    // explanations at 15/600 — and the English in it cannot be 15px at
-    // all: the serif ships at 400 only, and 15/400 clears no ground.
+    // Answers and explanations are teaching prose in both languages;
+    // their role does not shrink to metadata on the review screen.
     const answers = el("p", "t-body");
     answers.appendChild(document.createTextNode("Cevabın: "));
     const given = el("span", "t-en", question.selectedAnswer ?? "—");
@@ -289,7 +286,7 @@ function renderReview(result) {
       const word = el("strong", "t-en", question.selectedAnswer);
       word.lang = "en";
       line.appendChild(word);
-      line.appendChild(document.createTextNode(": "));
+      line.appendChild(document.createTextNode(/[.!?]["'’”)]?$/.test(question.selectedAnswer.trim()) ? " " : ": "));
       appendInline(line, note);
       item.appendChild(line);
     }

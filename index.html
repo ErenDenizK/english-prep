@@ -6,7 +6,7 @@
   <title>Eğitim — English Prep</title>
   <meta name="description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
   <meta name="color-scheme" content="dark light" />
-  <meta name="theme-color" content="#111316" />
+  <meta name="theme-color" content="#121416" />
   <!-- Applied before the stylesheet, because the alternative is a flash of
        the wrong theme on every cold start. Duplicated in all three pages:
        there is no build step, and an external file would be a second
@@ -22,7 +22,7 @@
       ? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")
       : t;
     document.querySelector('meta[name="theme-color"]').content =
-      resolved === "light" ? "#f5f3ed" : "#111316";
+      resolved === "light" ? "#f5f6f7" : "#121416";
     document.querySelector('meta[name="color-scheme"]').content = resolved;
   </script>
   <link rel="icon" href="icons/icon-192.png" type="image/png" />
@@ -46,7 +46,6 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="English Prep — üniversite İngilizce yeterlik sınavı için ders ve test." />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="fonts/source-serif-4-400.woff2" />
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/editorial.css" />

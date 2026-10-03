@@ -1,6 +1,6 @@
 # English Prep
 
-**v0.66 · Margin:** [open the redesigned app](index.html),
+**v0.67 · Margin:** [open the redesigned app](index.html),
 [compare the full original](original/index.html), or inspect its
 [unchanged runtime source archive](original/source-39dcd46.zip). This version
 uses the full `test` source at `39dcd46`; the earlier `main` prototype
@@ -18,7 +18,10 @@ The detailed refinement record includes the [element inventory](docs/audit/eleme
 [type and color measurements](docs/audit/type-color.md),
 [interaction audit](docs/audit/interaction-accessibility.md), and
 [verified UI research](docs/research/2026-10-ui-principles.md).
-The [four-pass record](docs/audit/refinement-log.md) connects findings to changes.
+The current [four-pass record](docs/audit/readability-v0.67.md),
+[typography research](docs/research/2026-10-04-typography-evidence.md),
+[color/motion research](docs/research/2026-10-04-color-motion-evidence.md) and
+[ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md) connect evidence to decisions.
 The [component catalogue](docs/components.html) uses the production stylesheet.
 The hosted versions share the browser origin's existing local progress
 and settings; their offline shell/content caches are isolated.
@@ -29,8 +32,8 @@ than against an idea of what such an exam contains.
 
 It is a static site. No accounts, no backend, no build step, no
 dependencies, no analytics. Everything a learner does stays in their own
-browser. It installs to a phone home screen and works with no
-connection.
+browser. It installs to a phone home screen; previously opened material
+remains available offline while browser storage is retained.
 
 **10 topics · 241 questions · 60 lessons · 723 option notes.**
 
@@ -240,20 +243,20 @@ what shipped.
 
 ## Design
 
-Margin opens in dark mode, with layered charcoal surfaces, warm ink,
-and a restrained accent. Profil also offers paper light mode and an explicit
-System choice; existing explicit preferences are preserved. Inter
-handles Turkish prose and the interface; Source Serif 4 distinguishes
-English examples and questions. The home page emphasizes reading and
-the curriculum, with optional settings in Profil. Lessons remain
-scrolling articles, and inline checks never gate access.
+Margin opens in dark mode with neutral charcoal surfaces and a restrained
+blue-gray accent. Inter follows semantic roles: section headings, patterns,
+examples, explanations, supporting text and counters have distinct sizes,
+weights and spacing. Profil retains a neutral light mode and explicit System
+choice. Lessons remain continuous articles; inline checks never gate access.
+The optional introduction explains Eğitim/Test and asks only for a name.
 
-The fixed mobile shell gains useful adjacent columns on wide displays,
-while articles and quizzes stay single-column. The supplied Home,
-Ventriloc, Monopo, and Raycast references inform the visual system.
-`npm run color` verifies both the inherited palette and 112 pairs from the
-current stylesheet. Token measurements and responsive checks are documented in
-`docs/margin-design-system.md` and `docs/RESEARCH.md`.
+[ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md) records the
+measured alternatives and decisions. The fixed mobile shell gains useful
+adjacent columns on wide displays; articles and quizzes stay single-column.
+A faint canvas atmosphere settles once, then stays still; reading surfaces
+remain opaque. `npm run color` checks 148 production contrast pairs, including
+the maximum atmosphere overlap. See the [product/project page](about/),
+[interface system](docs/margin-design-system.md), and [research](docs/RESEARCH.md).
 
 ---
 
