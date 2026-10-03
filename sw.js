@@ -1,7 +1,7 @@
 // Scope-specific caches let the redesigned and preserved original apps share
 // an origin without either worker deleting or serving the other app's shell.
 // Content stays unversioned so a release cannot erase downloaded lessons.
-const VERSION = "english-prep-v0.65";
+const VERSION = "english-prep-v0.66";
 const SCOPE = new URL(self.registration.scope);
 const NAMESPACE = `english-prep:${encodeURIComponent(SCOPE.pathname)}:`;
 const SHELL_PREFIX = `${NAMESPACE}shell:`;
@@ -94,7 +94,7 @@ self.addEventListener("install", (event) => {
   // Any missing shell asset rejects installation; never activate half a UI.
   event.waitUntil(
     caches.open(SHELL_CACHE)
-      .then((cache) => cache.addAll(SHELL.map((path) => new URL(path, SCOPE).href)))
+      .then((cache) => cache.addAll(SHELL.map((path) => new Request(new URL(path, SCOPE), { cache: "reload" }))))
       .then(() => self.skipWaiting())
   );
 });

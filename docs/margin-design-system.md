@@ -1,81 +1,83 @@
-# Margin: current interface system
+# Margin: interface system · v0.66
 
-Margin is the presentation system for the full English Prep redesign. Production values live in [css/editorial.css](../css/editorial.css), loaded after the inherited [css/style.css](../css/style.css). The source layout, component semantics, and application modules remain the foundation; the extension changes their hierarchy, typography, surfaces, and visual behavior. The historical specification is preserved in [design-system.md](design-system.md).
+Margin is the current English Prep interface. [css/editorial.css](../css/editorial.css) is the production extension over the inherited [css/style.css](../css/style.css); actual values and rendered behavior take precedence over this summary. [design-system.md](design-system.md) preserves the source specification. [EXPERIENCE.md](EXPERIENCE.md) describes the learner's journeys, and [RESEARCH.md](RESEARCH.md) separates evidence from design decisions.
 
-## Direction and reference roles
+## Direction and themes
 
-Use a study publication's clarity: a restrained introduction, a real table of contents, readable articles, and an obvious next action. The supplied [Home](reference/design_home/DESIGN.md) and [Ventriloc](reference/design_ventriloc/DESIGN.md) references inform warm paper, quiet structure, and small orange accents. [Monopo](reference/design_monopo/DESIGN.md) informs the confidence of simple type and generous space. [Raycast](reference/refero-design.md) informs the restrained dark companion. Their marketing effects and original branding are not product requirements.
+The primary experience is a quiet, dark academic reading space: neutral charcoal planes, warm text, readable supporting information, restrained orange emphasis, and distinct English examples. [Raycast](reference/refero-design.md) informs dark surfaces; [Home](reference/design_home/DESIGN.md) and [Ventriloc](reference/design_ventriloc/DESIGN.md) inform grouping and the light palette; [Monopo](reference/design_monopo/DESIGN.md) informs typographic confidence and space. These references are aesthetic inputs, not evidence of learning effectiveness.
 
-Interface text uses self-hosted Inter. English examples, questions, and options retain Source Serif 4. Color is a small part of the hierarchy; position, grouping, spacing, and type carry most of it. Decorative gradients, glass blur, floating orbs, and celebratory answer effects do not define the learning experience.
+A fresh visit starts **dark**, including when the operating system is light. Profil offers **Koyu, Açık, and Sistem**. Existing explicit choices survive upgrades; System is itself stored and follows operating-system changes live. The blocking head scripts and shared theme module agree across index, quiz, and results, including browser chrome. If storage fails, the current document can still apply a chosen theme. Warm-paper light mode remains a complete supported choice.
 
 ## Semantic palette
 
-These are the extension's actual tokens, not the older source palette or unmodified reference exports.
-
-| Role / token | Light | Dark |
+| Role / token | Dark, default | Light |
 | --- | --- | --- |
-| Canvas `--page` | `#f5f3ed` | `#141513` |
-| Surface `--card` | `#fffefa` | `#1d1f1b` |
-| Recessed/selected surface `--raised` | `#eae8df` | `#272a24` |
-| Main text `--ink` | `#242720` | `#f0eee7` |
-| Secondary text `--ink-2` | `#5d6255` | `#bdbeb4` |
-| Decorative divider `--hairline` | `#d9dacf` | `#373b32` |
-| Control boundary `--edge` | `#7b8270` | `#7b8172` |
-| Primary action `--accent` | `#2a3026` | `#e9e7df` |
-| Primary label `--accent-ink` | `#fffdf6` | `#232620` |
-| Accent text `--accent-text` | `#8c4328` | `#edab85` |
-| Focus `--focus` | `#9b4722` | `#f1bb93` |
-| Correct `--ok` / tint | `#286240` / `#e4eee5` | `#9bd0af` / `#1c3024` |
-| Incorrect `--no` / tint | `#a13b39` / `#f6e7e3` | `#f1a1a1` / `#352024` |
-| Decorative mark `--editorial-mark` | `#c85a31` | `#e9895b` |
+| Canvas `--page` | `#111316` | `#f5f3ed` |
+| Surface `--card` | `#191c20` | `#fffefa` |
+| Selected/recessed surface `--raised` | `#24282d` | `#eae8df` |
+| Main text `--ink` | `#f0eee7` | `#242720` |
+| Supporting text `--ink-2` | `#d0d2cc` | `#5d6255` |
+| Decorative separator `--hairline` | `#363c44` | `#d9dacf` |
+| Essential boundary `--edge` | `#838993` | `#7b8270` |
+| Primary action `--accent` | `#e9e7df` | `#2a3026` |
+| Primary label `--accent-ink` | `#232620` | `#fffdf6` |
+| Accent text `--accent-text` | `#efbc99` | `#8c4328` |
+| Focus `--focus` | `#f1bb93` | `#9b4722` |
+| Correct / tint | `#9bd0af` / `#1c3024` | `#286240` / `#e4eee5` |
+| Incorrect / tint | `#f1a1a1` / `#352024` | `#a13b39` / `#f6e7e3` |
+| Reading contrast block `--editorial-wash` | `#20262c` | `#e6e9dc` |
+| Decorative mark `--editorial-mark` | `#e9895b` | `#c85a31` |
 
-Measured WCAG relative-luminance ratios from these token pairs: secondary text on canvas **5.66:1 light / 9.76:1 dark**; primary action labels **13.32:1 / 12.38:1**; control edges against raised surfaces **3.25:1 / 3.62:1**. These are checks of specific pairs, not proof that every rendered state conforms. Hairlines are decorative separators and must not stand in for essential control boundaries.
+Do not substitute a decorative hairline for an essential field boundary. Correctness also uses words and marks; no meaning depends only on hue. Surfaces have restrained depth without glass blur, glow, or decorative looping movement.
 
-The interface follows the system theme unless Profil stores an explicit choice. The CSS provides both themes and supports forced-color presentation. Semantic answer states also have words/icons; success and correction never depend on hue alone.
+The production palette checker measures **112 foreground/background pairs**. Minimum ratios across its applicable surfaces are 12.08:1 dark / 11.88:1 light for prose, 9.20:1 / 4.92:1 for supporting text, and 3.98:1 / 3.12:1 for essential boundaries. Filled-action labels measure 12.38:1 / 13.32:1. These are scoped token measurements, not whole-page accessibility certification. APCA values are additional diagnostics; they do not replace WCAG criteria.
 
-## Typography
+## Typography and reading
 
-| Use | Production treatment |
+Inter is self-hosted for Turkish prose, navigation, controls, and headings. English examples, prompts, options, and review material use the existing self-hosted Source Serif 4. Both retain fallback fonts and `font-display: swap`. Font roles use relative sizes so a root-font preference can enlarge them; pixel equivalents below assume a 16px browser default.
+
+| Role | Size and treatment |
 | --- | --- |
-| UI and Turkish prose | Inter, locally loaded with `font-display: swap` and system fallbacks. |
-| English examples and options | Source Serif 4 at regular weight, using the existing local files and serif fallback stack. |
-| Introduction | 34px mobile / 38px wide; 30px below 360px. Restrained 450 weight and approximately 1.18 line-height. |
-| Article title | 32px mobile / 40px wide, with a 28px adjustment below 360px. |
-| Article body | 17px mobile / 18px wide, 1.9 line-height; 16px at the narrowest viewport. |
-| English lesson examples | 19px mobile / 21px wide, approximately 1.75 line-height. |
-| Question prose | 21px mobile / 23px wide, 1.75 line-height; 20px below 360px. |
-| Feedback explanation | 16px at 1.9 line-height. |
-| Buttons and supporting labels | Typically 13–15px; smaller 10–12px metadata is supplementary, not the reading surface. |
+| UI body / metadata tokens | `1rem` / `0.875rem`; token leading `1.75rem` / `1.375rem`. |
+| Introduction | `2.125rem` mobile, `2.375rem` wide; `1.875rem` below 360px. Approximately 1.18 leading. |
+| Article title | `2rem` mobile, `2.5rem` wide, `1.75rem` below 360px; medium weight. |
+| Turkish article summary | Inter `1.125rem`, 1.6 leading. |
+| Turkish article body | `1.0625rem` (17px), including 320px; `1.125rem` wide. Leading 1.77–1.78. |
+| Article section labels | `1rem`, semibold, sentence case; distinguish instructional headings from compact metadata. |
+| English lesson examples | `1.1875rem` mobile / `1.3125rem` wide; 1.75 leading. |
+| Question prose | `1.3125rem` mobile / `1.4375rem` wide; `1.25rem` below 360px; 1.75 leading. |
+| Answer options | `1.1875rem`, reducing to `1.125rem` below 360px; 1.65 leading. |
+| Answer rationale | Inter `1.0625rem`, 1.77 leading. |
+| Controls and supporting prose | Generally `0.875–1rem`; native input text `1rem`. Small supplementary labels have their own roles. |
 
-Article prose is capped at 64 characters' width. Type stays legible because questions and teaching text get their own reading scale rather than inheriting compact navigation typography. Tabular figures stabilize counters. Uppercase tracking is confined to short labels and metadata.
+Prose stays within a bounded reading column, with a `64ch` cap where applicable. `ch` is a CSS measure, not an exact character count in proportional text. Keep paragraphs left aligned, emphasis purposeful, and counters tabular. Do not shrink the teaching text to fit a narrow screen or hide an explanation with truncation.
 
-## Layout, spacing, and geometry
+## Layout and geometry
 
-Keep the inherited fixed application frame: header, one scrolling content region, and bottom navigation or contextual action bar. Mobile uses 24px gutters, reducing to 16px below 360px. Standard section gaps are around 24–32px. The wide layout begins only at 1080×600 or larger; it uses a 300px companion column and a maximum frame of 988px and a 592px inner reading column. Articles and quizzes remain single-column.
+The inherited fixed frame surrounds one scrolling content region, with a header and bottom navigation or contextual action bar. Mobile gutters are 24px, reducing to 16px below 360px. At **1080px width and 600px height**, suitable screens gain a 300px companion pane within the 988px maximum frame; the inner reading column remains 592px. Articles and quizzes remain single-column. Screen size, browser zoom, text growth, and short landscape windows must be considered together.
 
-Buttons use 8px corners; fields use 7px; selections use 6px; surfaces generally use 10–14px. Pills are reserved for navigation-like containment rather than applied to every object. Essential borders use `--edge`; quiet separators use `--hairline`. Shadows are mostly removed. A modal retains enough elevation and a backdrop to communicate its relationship to the page.
+Buttons generally use 8px corners, fields 7px, selections 6px, and surfaces 10–14px. Essential controls use `--edge`; visual grouping can use quieter separators. Standard spacing clusters related controls more closely than separate sections. Minimum control heights allow content to grow: 44px icon/choice targets, 48px standard controls, 52px primary actions, and 58px answer rows.
 
-## Components and interaction contracts
+## Component and state contracts
 
-| Component | Behavior and states |
+| Component | Required behavior |
 | --- | --- |
-| Header and navigation | Eğitim/Test remain content modes; Profil is in the header. Preserve active-route semantics, focus, and Back behavior. |
-| Introduction and corpus facts | One contextual reading action, optional secondary action, and actual topic/lesson/question counts. No invented progress or compulsory setup. |
-| Curriculum row | Topic identity, explanation, real counts/progress, and a clear destination; search surfaces matching lessons. |
-| Primary / secondary / quiet button | 52px primary and 48px standard minimum heights; readable neutral fills, visible focus, restrained hover, and subtle press feedback. Icon controls are at least 44px. |
-| Field and listbox | 48px trigger/input height, clear boundary, accessible name, and preserved keyboard behavior. Choices are at least 44px. |
-| Article blocks | Existing contrasts, patterns, examples, pitfalls, and decision steps, differentiated without turning every paragraph into a card. |
-| Optional pretest | Native `details`/`summary`, collapsed on initial reading, with the source question interaction inside. It never gates the article. |
-| Inline check | Optional practice within the article; unscored and independent of reading completion. |
-| Answer option | At least 58px high. A button commits an answer immediately. Named group semantics; checked answers remain inspectable. Correct/incorrect states use text/marks and color. |
-| Feedback | Original rationale, chosen-option note, and transferable rule. Keep the explanation visible until the learner advances. |
-| Result and review | Real score, breakdowns, answer explanations, and routes into relevant learning/practice. |
-| Profile and backup | Existing local progress, settings, import/export, and confirmation/recovery behavior receive the same visual vocabulary. |
+| Navigation | Eğitim/Test remain peers; Profil belongs in the header. Preserve route context, active state, browser Back, and visible focus. |
+| Curriculum | Real corpus totals, useful reading/resume action, searchable topic/lesson context, and empty-search feedback. No invented progress. |
+| Fields and choice menus | Visible labels/boundaries and keyboard operation. Menus stay reachable above fixed chrome; active options scroll into view. |
+| Article and pretest | Continuous source article. Native pretest disclosure starts collapsed. Inline checks are optional and unscored; neither gates reading. |
+| Answer and feedback | One press commits an answer. Show the rationale, chosen-option note, and transferable rule until explicit continuation. Preserve feedback and option order after a valid same-tab refresh. |
+| Results | Actual answered-question score and review. Stable attempt IDs update a matching partial attempt rather than counting the same session again. |
+| Profile | Actual progress, optional goals, settings, clear empty states, and explicit confirmation for reset. No claim of universal exam readiness. |
+| Restore dialog | Focus the visible heading with `tabindex="-1"` on opening, then follow normal keyboard order. Keep native Escape and opener restoration. File/paste review precedes merging; failures remain actionable in the open dialog. |
+| Backup and recovery | Honor share cancellation, preserve local explicit preferences, restore a missing daily goal, and report storage failures. Keep the reviewed backup available for retry. |
 
-## Motion and accessibility
+The active quiz snapshot is scoped to its browser tab and validated against current content. It is not a cross-device resume service. Restore uses staged writes and attempted rollback because localStorage has no multi-key transaction; incomplete rollback is reported honestly. See [EXPERIENCE.md](EXPERIENCE.md) for these boundaries.
 
-Control transitions are approximately 180ms; the inherited motion curves are replaced with a restrained standard ease. Correct and incorrect answer animations are suppressed. Reduced-motion preference disables nonessential animations, transitions, smooth scrolling, and press translation. Never add looping decorative movement around a question or article.
+## Motion, focus, and verification
 
-Use the 2px visible focus outline with a 4px offset. Preserve native button, disclosure, form, dialog, and routing semantics. Keep targets generous, allow actions to wrap, and respect forced colors. A reduced-motion override and measured token pairs support accessibility, but page/state checks and assistive-technology testing remain necessary.
+A short entering-surface fade and approximately 180–220ms control transitions establish changes without delaying interaction. Correct/incorrect shake and pop effects are suppressed. Reduced motion disables nonessential animation, transitions, smooth scrolling, and press translation. Forced-color presentation retains control and state visibility.
 
-`npm run color` checks the inherited palette and runs `tools/editorial-palette.mjs` against this extension's actual CSS. The editorial audit verifies 112 text, control, and focus contrast pairs across both themes and checks that explicit and system light palettes agree. These token checks do not replace computed-color and interactive-state checks in the browser. Browser checks must cover 320px, both themes, wide splits, article measure, options, feedback, disclosures, and keyboard navigation.
+Use the visible 2px focus outline with a 4px offset where specified, and keep the focused object within the visible scrolling region. An outline token alone does not prevent focus from being hidden behind fixed chrome. Native buttons, disclosures, forms, and dialogs remain the semantic foundation.
+
+`npm run color` includes [editorial-palette.mjs](../tools/editorial-palette.mjs). Browser checks must also exercise dark/light/System, 320px reflow, enlarged text and spacing overrides, short dialogs, keyboard routes, choice-menu positioning, article/quiz feedback, reduced motion, and offline assets. Current observations live in [type-color.md](audit/type-color.md) and [interaction-accessibility.md](audit/interaction-accessibility.md); their stated test limits matter.

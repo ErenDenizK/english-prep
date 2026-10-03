@@ -259,7 +259,7 @@ function renderReview(result) {
     verdict.appendChild(el("span", "t-meta t-num", `Soru ${index + 1}`));
     item.appendChild(verdict);
 
-    item.appendChild(renderPrompt(question, { lead: false }));
+    item.appendChild(renderPrompt(question, { lead: false, idSuffix: `review-${index}` }));
 
     // Body from here down, not meta. The review is the longest reading
     // surface in the app and it was set in the one-line tier — seven-line
@@ -356,9 +356,11 @@ async function init() {
       }
     });
 
-    recordAttempt({
+    const saved = recordAttempt({
+      ...(result.id ? { id: result.id } : {}),
       date: result.date,
       mode: result.mode,
+      partial: result.partial === true,
       topicBreakdown: result.topicBreakdown,
       categoryBreakdown: result.categoryBreakdown,
       // The category travels with the answer. Without it, working out
@@ -380,10 +382,16 @@ async function init() {
         // carries it off the device (js/report.js), so keeping it here
         // is strictly less exposure than the app already accepts.
         selected: question.selectedAnswer ?? null,
+        ...(question.answeredAt ? { answeredAt: question.answeredAt } : {}),
       })),
     });
-    result.recorded = true;
-    setQuizResult(result);
+    // A full storage quota may recover before this page loads, or on a
+    // later reload. Keep the handoff pending until an actual write succeeds;
+    // the stable ID replaces any earlier partial record on that retry.
+    if (saved) {
+      result.recorded = true;
+      setQuizResult(result);
+    }
   }
 
   clear(container);
@@ -398,8 +406,14 @@ async function init() {
   container.classList.add("split");
 
   aside.appendChild(renderScore(result));
+  const storageMessage = result.recorded ? "" :
+    "Sonucun bu sekmede açık, ancak ilerlemene kaydedilemedi. Tarayıcı depolama alanını kontrol edip sayfayı yenileyerek tekrar deneyebilirsin.";
+  if (storageMessage) {
+    aside.appendChild(el("p", "t-quiet results-save-warning", storageMessage));
+  }
   announce(
-    `Test bitti. ${result.totalCount} sorudan ${result.correctCount} doğru.`
+    `Test bitti. ${result.totalCount} sorudan ${result.correctCount} doğru.`,
+    storageMessage ? ` ${storageMessage}` : ""
   );
 
   const breakdowns = [

@@ -64,7 +64,7 @@ export function buildReport(question, selected, now = new Date()) {
  * through to a silent clipboard write the learner did not ask for — the
  * same rule js/backup-ui.js follows for the backup file.
  *
- * @returns {Promise<"shared"|"copied"|"failed">}
+ * @returns {Promise<"shared"|"copied"|"failed"|"cancelled">}
  */
 export async function sendReport(text) {
   if (navigator.share) {
@@ -73,7 +73,7 @@ export async function sendReport(text) {
       return "shared";
     } catch (error) {
       if (error?.name === "AbortError") {
-        return "shared";
+        return "cancelled";
       }
     }
   }
@@ -88,7 +88,8 @@ export async function sendReport(text) {
 
 /** What the button says once it has done something. */
 export const REPORT_RESULT = {
-  shared: "Bildirim hazır — paylaştığın yere yapıştır.",
+  shared: "Bildirim paylaşıldı.",
   copied: "Kopyalandı — sohbete yapıştırabilirsin.",
+  cancelled: "Paylaşım iptal edildi.",
   failed: "Kopyalanamadı. Soru numarası: ",
 };

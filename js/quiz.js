@@ -9,8 +9,11 @@
 
 import { loadManifest, loadQuestionsForTopics } from "./topics.js";
 import { buildQuizSession, isCorrectAnswer, scoreSession } from "./quiz-engine.js";
-import { getQuizRequest, setQuizResult } from "./session-state.js";
-import { getItemStats, getSetting, recordAttempt } from "./storage.js";
+import {
+  getQuizRequest, setQuizResult, clearQuizResult, getActiveQuiz, setActiveQuiz,
+  clearActiveQuiz, createAttemptId, createQuizSnapshot, restoreQuizSession,
+} from "./session-state.js";
+import { getItemStats, getSetting, recordAttempt, markTopicSeen } from "./storage.js";
 import { SETTINGS } from "./config.js";
 import { renderAnswerFeedback, answerAnnouncement } from "./feedback.js";
 import { renderPrompt } from "./prompt.js";
@@ -25,8 +28,14 @@ const actionBar = createActionBar("quiz-bar");
 const bar = createBar("shell-header");
 
 const state = {
+  request: null,
+  bank: [],
+  manifest: null,
+  attemptId: "",
+  date: "",
   session: [],
   selectedAnswers: [],
+  answeredAt: [],
   currentIndex: 0,
   answered: false,
   /** What kind of test this is, in words — see `modeLabel`. */
@@ -40,12 +49,43 @@ const state = {
    */
   optionsHidden: false,
   /**
-   * Whether this session's answers have already been written down, so a
-   * `pagehide` on the way to the results screen cannot record the same
-   * attempt a second time.
+   * A completed/abandoned session must not recreate its active snapshot
+   * during the pagehide fired by navigation to results or home.
    */
-  recorded: false,
+  finished: false,
+  warnedAboutStorage: false,
 };
+
+function saveProgress() {
+  if (state.finished || !state.session.length) return;
+  const saved = setActiveQuiz(createQuizSnapshot(state, state.bank));
+  if (!saved && !state.warnedAboutStorage) {
+    state.warnedAboutStorage = true;
+    announce("Test ilerlemesi saklanamadı. Bu sekmeyi yenilemeden testi bitirebilirsin.");
+  }
+}
+
+function recordProgress(count) {
+  const scored = scoreSession(state.session.slice(0, count), state.selectedAnswers.slice(0, count));
+  scored.questionResults = scored.questionResults.map((question, index) => ({
+    ...question,
+    ...(state.answeredAt[index] ? { answeredAt: state.answeredAt[index] } : {}),
+  }));
+  const saved = recordAttempt({
+    id: state.attemptId,
+    date: state.date,
+    mode: state.request.mode,
+    partial: count < state.session.length,
+    topicBreakdown: scored.topicBreakdown,
+    categoryBreakdown: scored.categoryBreakdown,
+    questions: scored.questionResults.map((question) => ({
+      id: question.id, topicId: question.topicId, category: question.category,
+      correct: question.correct, selected: question.selectedAnswer ?? null,
+      ...(question.answeredAt ? { answeredAt: question.answeredAt } : {}),
+    })),
+  });
+  return { scored, saved };
+}
 
 function showMessage(text, { withHomeLink = true } = {}) {
   bar.set({ title: "Test", lead: null, trail: null });
@@ -92,29 +132,12 @@ function answeredCount() {
  * than going through the results screen.
  */
 function recordPartialOnLeave() {
+  saveProgress();
   const count = answeredCount();
-  if (count === 0 || state.recorded) {
+  if (count === 0 || state.finished) {
     return;
   }
-  state.recorded = true;
-  const scored = scoreSession(state.session.slice(0, count), state.selectedAnswers.slice(0, count));
-  const request = getQuizRequest();
-  recordAttempt({
-    date: new Date().toISOString(),
-    mode: request?.mode ?? "mixed",
-    topicBreakdown: scored.topicBreakdown,
-    categoryBreakdown: scored.categoryBreakdown,
-    questions: scored.questionResults.map((question) => ({
-      id: question.id,
-      topicId: question.topicId,
-      category: question.category,
-      correct: question.correct,
-      // Same shape as the normal path in js/results.js, and it has to
-      // stay the same shape: two writers of one record is how a field
-      // ends up present on some attempts and absent on others.
-      selected: question.selectedAnswer ?? null,
-    })),
-  });
+  recordProgress(count);
 }
 
 /**
@@ -127,6 +150,8 @@ function recordPartialOnLeave() {
  */
 function exitQuiz() {
   if (answeredCount() === 0) {
+    clearActiveQuiz();
+    state.finished = true;
     window.location.href = "index.html";
     return;
   }
@@ -180,6 +205,8 @@ function handleOptionSelected(question, selectedOption) {
   }
   state.answered = true;
   state.selectedAnswers[state.currentIndex] = selectedOption;
+  state.answeredAt[state.currentIndex] = new Date().toISOString();
+  saveProgress();
 
   const correct = isCorrectAnswer(question, selectedOption);
   haptic();
@@ -198,6 +225,7 @@ function advance() {
   state.currentIndex += 1;
   state.answered = false;
   state.optionsHidden = getSetting(SETTINGS.THINK_FIRST);
+  saveProgress();
   renderQuestion();
   scrollToTop();
 }
@@ -207,28 +235,35 @@ function advance() {
  *   questions, which is what an early finish means: the ones that were
  *   never shown are not wrong answers and must not be scored as any.
  */
-async function finishQuiz({ upTo } = {}) {
+function finishQuiz({ upTo } = {}) {
+  if (state.finished) return;
   const count = upTo ?? state.session.length;
-  const manifest = await loadManifest();
-  const titleById = new Map(manifest.topics.map((topic) => [topic.id, topic.title]));
-  const scored = scoreSession(
-    state.session.slice(0, count),
-    state.selectedAnswers.slice(0, count)
-  );
-
-  const request = getQuizRequest();
-  // Claimed before navigating: results.js records the attempt, and the
-  // `pagehide` this navigation fires must not record it as well.
-  state.recorded = true;
-  setQuizResult({
-    date: new Date().toISOString(),
-    mode: request?.mode ?? "mixed",
+  const titleById = new Map(state.manifest.topics.map((topic) => [topic.id, topic.title]));
+  const { scored, saved } = recordProgress(count);
+  const handedOff = setQuizResult({
+    id: state.attemptId,
+    date: state.date,
+    mode: state.request.mode,
     partial: count < state.session.length,
+    recorded: saved,
     ...scored,
     topicTitles: Object.fromEntries(
       Object.keys(scored.topicBreakdown).map((topicId) => [topicId, titleById.get(topicId) ?? topicId])
     ),
   });
+  if (!handedOff) {
+    announce("Sonuçlar açılamadı. Tarayıcı depolamasını kontrol edip Sonuçları gör düğmesini tekrar dene.");
+    return;
+  }
+  // This screen owns recording now, including the seen-content baseline
+  // formerly written by results.js. Only topics actually answered are seen.
+  for (const topic of state.manifest.topics) {
+    if (scored.topicBreakdown[topic.id] && typeof topic.contentVersion === "number") {
+      markTopicSeen(topic.id, topic.contentVersion);
+    }
+  }
+  state.finished = true;
+  clearActiveQuiz();
 
   // replace(), not href: going back from the results screen should return
   // to where the test was started, not silently re-roll a brand new test.
@@ -260,6 +295,7 @@ function renderQuestion() {
     reveal.type = "button";
     reveal.addEventListener("click", () => {
       state.optionsHidden = false;
+      saveProgress();
       announce("Şıklar göründü.");
       renderQuestion();
       // The learner asked for the options, so put them under the thumb
@@ -366,6 +402,8 @@ async function init() {
 
   try {
     const manifest = await loadManifest();
+    state.manifest = manifest;
+    state.request = request;
     state.modeLabel = modeLabel(
       request,
       new Map(manifest.topics.map((topic) => [topic.id, topic.title]))
@@ -387,7 +425,9 @@ async function init() {
     // wrong last time, then the least recently seen. Without this the app
     // re-asks what the learner already knows and the score stops meaning
     // anything after the first pass through a category.
-    const session = buildQuizSession(questions, request.count, getItemStats());
+    state.bank = questions;
+    const restored = restoreQuizSession(getActiveQuiz(), questions, request);
+    const session = restored?.session ?? buildQuizSession(questions, request.count, getItemStats());
 
     if (session.length === 0) {
       showMessage("Bu seçim için soru bulunamadı.");
@@ -395,11 +435,19 @@ async function init() {
     }
 
     state.session = session;
-    state.selectedAnswers = new Array(session.length).fill(null);
-    state.optionsHidden = getSetting(SETTINGS.THINK_FIRST);
+    state.attemptId = restored?.attemptId ?? createAttemptId();
+    state.date = restored?.date ?? new Date().toISOString();
+    state.currentIndex = restored?.currentIndex ?? 0;
+    state.selectedAnswers = restored?.selectedAnswers ?? new Array(session.length).fill(null);
+    state.answeredAt = restored?.answeredAt ?? new Array(session.length).fill(null);
+    state.answered = state.selectedAnswers[state.currentIndex] !== null;
+    state.optionsHidden = restored?.optionsHidden ?? getSetting(SETTINGS.THINK_FIRST);
+    state.finished = false;
+    if (!restored) clearQuizResult();
     document.addEventListener("keydown", handleKeydown);
     window.addEventListener("pagehide", recordPartialOnLeave);
     renderQuestion();
+    saveProgress();
   } catch (error) {
     console.error(error);
     clear(container);

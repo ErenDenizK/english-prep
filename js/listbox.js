@@ -61,6 +61,14 @@ export function createListbox({ container, options, value, onChange, labelledBy 
   menu.setAttribute("role", "listbox");
   menu.hidden = true;
 
+  // A menu inside a clipped card must still paint above that card. Keeping
+  // a popover in the same DOM preserves its label, inherited theme and ARIA
+  // relationships; older browsers temporarily mount it under the body.
+  const usesPopover = typeof menu.showPopover === "function";
+  if (usesPopover) menu.setAttribute("popover", "manual");
+  Object.assign(menu.style, { position: "fixed", right: "auto", bottom: "auto", minWidth: "0" });
+  let anchorPosition = null;
+
   const isOpen = () => !menu.hidden;
 
   function labelFor(val) {
@@ -84,6 +92,77 @@ export function createListbox({ container, options, value, onChange, labelledBy 
       menu.appendChild(item);
     });
     trigger.setAttribute("aria-activedescendant", isOpen() ? optionId(activeIndex) : "");
+    if (isOpen()) revealActiveOption();
+  }
+
+  function revealActiveOption() {
+    const active = menu.children[activeIndex];
+    if (!active) return;
+    const box = menu.getBoundingClientRect();
+    const item = active.getBoundingClientRect();
+    const top = box.top + menu.clientTop;
+    const bottom = top + menu.clientHeight;
+    // scrollIntoView would also move the fixed app shell beneath the menu.
+    if (item.top < top) menu.scrollTop -= top - item.top;
+    else if (item.bottom > bottom) menu.scrollTop += item.bottom - bottom;
+  }
+
+  function positionMenu() {
+    const anchor = trigger.getBoundingClientRect();
+    anchorPosition = { top: anchor.top, left: anchor.left };
+    const viewport = window.visualViewport;
+    const gap = 4;
+    const inset = 8;
+    const left = (viewport?.offsetLeft ?? 0) + inset;
+    const right = (viewport?.offsetLeft ?? 0) + (viewport?.width ?? innerWidth) - inset;
+    let top = (viewport?.offsetTop ?? 0) + inset;
+    let bottom = (viewport?.offsetTop ?? 0) + (viewport?.height ?? innerHeight) - inset;
+
+    for (const chrome of document.querySelectorAll("#shell-header, #bottom-nav, .shell__bar")) {
+      const box = chrome.getBoundingClientRect();
+      if (!box.width || !box.height || box.right <= anchor.left || box.left >= anchor.right) continue;
+      if (chrome.id === "shell-header") top = Math.max(top, box.bottom + inset);
+      else bottom = Math.min(bottom, box.top - inset);
+    }
+
+    menu.style.width = "max-content";
+    menu.style.minWidth = `${Math.min(anchor.width, right - left)}px`;
+    menu.style.maxWidth = `${right - left}px`;
+    menu.style.maxHeight = "";
+    menu.style.left = `${left}px`;
+    menu.style.top = `${top}px`;
+    const authoredMax = parseFloat(getComputedStyle(menu).maxHeight) || Infinity;
+    const fullHeight = menu.scrollHeight + menu.offsetHeight - menu.clientHeight;
+    const desiredHeight = Math.min(fullHeight, authoredMax);
+    const above = Math.max(0, anchor.top - top - gap);
+    const below = Math.max(0, bottom - anchor.bottom - gap);
+    const openAbove = below < desiredHeight && above > below;
+    const room = openAbove ? above : below;
+    menu.style.maxHeight = `${Math.min(desiredHeight, room)}px`;
+    const box = menu.getBoundingClientRect();
+    menu.style.width = `${box.width}px`;
+    menu.style.left = `${Math.max(left, Math.min(anchor.right - box.width, right - box.width))}px`;
+    menu.style.top = `${openAbove ? anchor.top - gap - box.height : anchor.bottom + gap}px`;
+    revealActiveOption();
+  }
+
+  function handleScroll(event) {
+    // Scrolling a long popup is local; moving its anchor closes it.
+    if (event.target === menu || menu.contains(event.target)) return;
+    const anchor = trigger.getBoundingClientRect();
+    // Focus can queue a scroll event before the click opens the popup.
+    // Its geometry already reflects that scroll, so only later movement
+    // should dismiss the menu the learner has just opened.
+    if (!anchorPosition || Math.abs(anchor.top - anchorPosition.top) > 0.5 || Math.abs(anchor.left - anchorPosition.left) > 0.5) close();
+  }
+
+  function watchPosition(add) {
+    const method = add ? "addEventListener" : "removeEventListener";
+    document[method]("scroll", handleScroll, true);
+    window[method]("resize", close);
+    window[method]("hashchange", close);
+    window.visualViewport?.[method]("resize", close);
+    window.visualViewport?.[method]("scroll", close);
   }
 
   function select(index) {
@@ -145,13 +224,21 @@ export function createListbox({ container, options, value, onChange, labelledBy 
     menu.hidden = false;
     trigger.setAttribute("aria-expanded", "true");
     renderOptions();
+    if (usesPopover) menu.showPopover();
+    else document.body.appendChild(menu);
+    positionMenu();
     document.addEventListener("pointerdown", handleOutsidePointer, true);
+    watchPosition(true);
   }
 
   function close() {
     if (!isOpen()) {
       return;
     }
+    watchPosition(false);
+    if (usesPopover) {
+      if (menu.matches(":popover-open")) menu.hidePopover();
+    } else container.appendChild(menu);
     menu.hidden = true;
     trigger.setAttribute("aria-expanded", "false");
     renderOptions();
@@ -159,7 +246,7 @@ export function createListbox({ container, options, value, onChange, labelledBy 
   }
 
   function handleOutsidePointer(event) {
-    if (!container.contains(event.target)) {
+    if (!container.contains(event.target) && !menu.contains(event.target)) {
       close();
     }
   }

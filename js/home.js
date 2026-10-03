@@ -37,7 +37,7 @@ import { icon } from "./icons.js";
 import { avatar, monogram } from "./widgets.js";
 import { renderOnboarding } from "./onboarding.js";
 import { announce, scrollToTop, createBar } from "./shell.js";
-import { MIXED_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
+import { MIXED_TEST_DEFAULT_COUNT, TOPIC_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
 
 const VIEW_IDS = ["egitim", "test", "profil", "hosgeldin"];
 const DEFAULT_VIEW = "egitim";
@@ -333,7 +333,7 @@ function renderWeakSpots(entries) {
 function topicMeta(topic) {
   // Questions only. "6 ders" on the Test tab was the other tab's number,
   // and a row here is the way into a test, not into a lesson.
-  return `${topic.questionCount} soru`;
+  return `Test: ${Math.min(TOPIC_TEST_DEFAULT_COUNT, topic.questionCount)} soru · Havuz: ${topic.questionCount}`;
 }
 
 function renderTopicRow(topic) {
@@ -574,6 +574,7 @@ function parseRoute() {
 }
 
 let routed = false;
+let routeGeneration = 0;
 
 /**
  * The screen switch as one crossfade, when the browser can and the person
@@ -591,6 +592,7 @@ function withTransition(update) {
 }
 
 async function applyRoute() {
+  const generation = ++routeGeneration;
   const { view, param } = parseRoute();
 
   // The bar names the screen. A root carries the profile control; Profil
@@ -615,6 +617,7 @@ async function applyRoute() {
   document.body.classList.toggle("is-onboarding", view === "hosgeldin");
 
   withTransition(() => {
+    if (generation !== routeGeneration) return;
     selectTab(view);
     for (const id of VIEW_IDS) {
       views[id].hidden = id !== view;

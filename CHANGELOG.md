@@ -5,6 +5,42 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.66 — 2026-10-03
+
+**A dark-first reading interface, reviewed across its full learning flow.**
+Fresh installs now open in dark mode; explicit light and dark preferences
+remain intact, and System is a saved choice that follows OS changes live.
+Browser chrome matches the active palette on all three entry pages.
+
+Supporting text, navigation, inputs, and lesson-section headings have larger,
+consistent roles. Turkish summaries use Inter; English examples retain Source
+Serif. Dark surfaces use neutral charcoal, warm ink, and measured semantic
+colors. Relative type sizes, bounded reading columns, enlarged-text reflow,
+visible keyboard focus, and restrained motion keep the design usable beyond
+one screenshot.
+
+**Interactions retain their context.** Choice menus avoid clipping and fixed
+chrome, lesson answers and profile edits retain keyboard focus, and stale
+lesson requests cannot replace the header after navigating away. Question
+review labels have unique IDs, question counts describe the session being
+started, and cancelled or failed reports can be retried.
+
+Tests can resume the same randomized questions, answers, feedback, and
+position after refresh. A stable attempt ID updates a partial attempt instead
+of counting it twice. Each answer retains its actual day when a test spans
+midnight, and failed result saves remain visible and retryable. Backups
+preserve the longer matching attempt; existing
+legacy history stays compatible. Restore failures stay visible rather than
+announcing success, and optional goals are restored without overwriting an
+explicit local choice.
+
+The original v0.64 runtime and its exact archive remain in `original/`.
+All learning data is unchanged. The v0.66 service worker fetches fresh shell
+assets when installing while retaining scoped offline content.
+
+Research, full element inventory, measurements, and the four review passes
+are recorded under `docs/research/2026-10-ui-principles.md` and `docs/audit/`.
+
 ## v0.65 — 2026-10-03
 
 **A redesigned study interface, with the full original preserved.** Margin

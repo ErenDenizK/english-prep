@@ -21,10 +21,10 @@ export const BACKUP_VERSION = 1;
 const MARKER = "english-prep";
 
 /**
- * Merges two histories. Attempts are append-only and stamped with the
- * moment they were recorded, so the date is a usable identity: the same
- * attempt restored twice is one attempt, and two attempts from two devices
- * are two attempts. Ordered by date afterwards so everything downstream —
+ * Merges histories. Resumable attempts use stable IDs; an older prefix can
+ * advance to the longer copy without combining conflicting answers. Legacy
+ * attempts still use their date and keep the first copy. Ordered by date so
+ * everything downstream —
  * `getItemStats`, the accuracy window, "last score" — reads a coherent
  * timeline rather than one device's history followed by the other's.
  *
@@ -32,18 +32,45 @@ const MARKER = "english-prep";
  * @param {{attempts: Array<object>}} theirs
  */
 export function mergeHistory(mine, theirs) {
-  const byDate = new Map();
+  const attempts = new Map();
   for (const attempt of [...(mine?.attempts ?? []), ...(theirs?.attempts ?? [])]) {
     if (attempt && typeof attempt.date === "string") {
-      // First writer wins: a local attempt is never replaced by a restored
-      // copy of itself, which keeps any field a newer build has added.
-      if (!byDate.has(attempt.date)) {
-        byDate.set(attempt.date, attempt);
+      const key = typeof attempt.id === "string" && attempt.id ? `id:${attempt.id}` : `date:${attempt.date}`;
+      const previous = attempts.get(key);
+      if (!previous) {
+        attempts.set(key, attempt);
+      } else if (extendsAttempt(previous, attempt)
+        && attempt.questions.length > previous.questions.length) {
+        attempts.set(key, mergeAttempt(previous, attempt));
       }
     }
   }
   return {
-    attempts: [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date)),
+    attempts: [...attempts.values()].sort((a, b) => a.date.localeCompare(b.date)),
+  };
+}
+
+/** The same session, with an identical answered prefix and no lost answers. */
+export function extendsAttempt(previous, next) {
+  return typeof previous?.id === "string" && previous.id.length > 0 && previous.id === next?.id
+    && Array.isArray(previous.questions) && Array.isArray(next.questions)
+    && next.questions.length >= previous.questions.length
+    && previous.questions.every((answer, index) => {
+      const newer = next.questions[index];
+      return answer && newer && ["id", "topicId", "category", "correct", "selected"]
+        .every((field) => (answer[field] ?? null) === (newer[field] ?? null))
+        && (!answer.answeredAt || !newer.answeredAt || answer.answeredAt === newer.answeredAt);
+    });
+}
+
+/** Keep known answer times when extending a snapshot from an older build. */
+export function mergeAttempt(previous, next) {
+  return { ...previous, ...next, date: previous.date,
+    questions: next.questions.map((answer, index) => ({
+      ...answer,
+      ...(!answer.answeredAt && previous.questions[index]?.answeredAt
+        ? { answeredAt: previous.questions[index].answeredAt } : {}),
+    })),
   };
 }
 

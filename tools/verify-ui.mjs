@@ -1490,8 +1490,13 @@ async function runBackupRoundTrip(browser) {
   await second.locator("#profile-container button", { hasText: "Yedekten geri yükle" }).click();
   await second.waitForSelector("dialog#restore-dialog[open]");
   ok(
-    await second.evaluate(() => document.activeElement.id) === "restore-cancel",
-    "geri yükleme penceresinde odak güvenli eyleme düşüyor"
+    await second.evaluate(() => {
+      const focus = document.activeElement;
+      const box = focus.getBoundingClientRect();
+      const dialog = document.getElementById("restore-dialog").getBoundingClientRect();
+      return focus.id === "restore-dialog-title" && box.top >= dialog.top && box.bottom <= dialog.bottom;
+    }),
+    "geri yükleme penceresinde odak görünür bağlam başlığına düşüyor"
   );
 
   // Every way this can go wrong has to say which way it went wrong.
@@ -1537,7 +1542,7 @@ async function runBackupRoundTrip(browser) {
   );
   ok(twice === 1, "aynı yedeği iki kez yüklemek hiçbir şeyi çoğaltmıyor");
   ok(
-    (await second.locator("#profile-container").textContent()).includes("hiçbir şey değişmedi"),
+    (await second.locator("#profile-container").textContent()).includes("Yedekte eklenecek yeni test ya da ders ilerlemesi yoktu."),
     "ve uygulama bunu dürüstçe söylüyor"
   );
 
@@ -1658,7 +1663,7 @@ async function runIndexStates(browser) {
 
   // 1 — never opened. No tour, and no progress bar reading zero.
   let view = await open(null);
-  ok(view.text.includes("Türkçe açıklamalar ve İngilizce örneklerle"), "ilk açılışta uygulamanın ne olduğu yazıyor");
+  ok(view.text.includes("Türkçe anlatım · İngilizce örnekler"), "ilk açılışta uygulamanın ne olduğu yazıyor");
   ok(
     !(await view.page.locator("#view-egitim .study-intro").first().textContent()).includes("English Prep"),
     "ilk açılış kartı markayı başlığın altında tekrarlamıyor"
@@ -1702,7 +1707,7 @@ async function runIndexStates(browser) {
     "grup adları tek başlık düzeyi — üstlerinde ikinci bir etiket yok"
   );
   ok(
-    (await view.page.locator("#view-egitim").textContent()).includes("İhtiyacın olan konuyu seç; ardından testle uygula."),
+    (await view.page.locator("#view-egitim").textContent()).includes("Konuyu oku, ayrımları gör, testle uygula."),
     "ekranın ne işe yaradığını söyleyen satır duruyor"
   );
 
@@ -2658,20 +2663,31 @@ async function runThemes(browser) {
     await context.close();
   }
 
-  // 2 — no stored preference: the phone decides. (There is no third
-  // case to test — a browser with no opinion reports `light`, which is
-  // why the stylesheet's "default is dark" only ever means the dark
-  // branch of the media query.)
-  for (const [scheme, expectLight] of [["light", true], ["dark", false]]) {
-    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: scheme });
+  // 2 — fresh visits start dark on every entry page. System is an explicit,
+  // persisted choice and follows live OS changes, including browser chrome.
+  for (const path of ["index.html", "quiz.html", "results.html"]) {
+    for (const scheme of ["light", "dark"]) {
+      const context = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: scheme });
+      const page = await context.newPage();
+      await page.goto(`${BASE}/${path}`, { waitUntil: "networkidle" });
+      const state = await paint(page);
+      ok(state.theme === "dark", `${path}: yeni ziyaret ${scheme} sistemde de koyu`);
+      ok(luminance(state.background) < 60, `${path}: varsayılan zemin koyu (${state.background})`);
+      ok(state.themeColor === "#111316" && state.colorScheme === "dark", `${path}: varsayılan tarayıcı rengi koyu`);
+      await context.close();
+    }
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: "light" });
+    await context.addInitScript(() => localStorage.setItem("englishPrep.theme", "system"));
     const page = await context.newPage();
-    await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
-    const state = await paint(page);
-    ok(state.theme === null, `sistem: ${scheme} — kök öznitelik boş`);
-    ok(
-      (luminance(state.background) > 200) === expectLight,
-      `sistem: ${scheme} — zemin ${expectLight ? "açık" : "koyu"} (${state.background})`
-    );
+    await page.goto(`${BASE}/${path}`, { waitUntil: "networkidle" });
+    let state = await paint(page);
+    ok(state.theme === null && luminance(state.background) > 200, `${path}: kayıtlı sistem tercihi açık telefonu izliyor`);
+    ok(state.themeColor === "#f5f3ed" && state.colorScheme === "light", `${path}: sistem tarayıcı rengi açık`);
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.waitForFunction(() => document.querySelector('meta[name="theme-color"]').content === "#111316");
+    state = await paint(page);
+    ok(state.theme === null && luminance(state.background) < 60, `${path}: sistem değişimi anında koyu boyanıyor`);
+    ok(state.colorScheme === "dark", `${path}: sistem değişimi tarayıcı kontrollerini güncelliyor`);
     await context.close();
   }
 
@@ -2686,7 +2702,7 @@ async function runThemes(browser) {
   await themeBox.locator(".listbox__option").filter({ hasText: "Koyu" }).click();
   let state = await paint(page);
   ok(state.theme === "dark" && luminance(state.background) < 60, `Koyu seçince hemen koyu (${state.background})`);
-  ok(state.themeColor === "#141513", `Koyu seçince theme-color koyu (${state.themeColor})`);
+  ok(state.themeColor === "#111316", `Koyu seçince theme-color koyu (${state.themeColor})`);
   await page.reload({ waitUntil: "networkidle" });
   state = await paint(page);
   ok(state.theme === "dark", "seçim yenilemeden sonra duruyor");
@@ -2696,7 +2712,8 @@ async function runThemes(browser) {
   await again.locator(".listbox__option").filter({ hasText: "Sistem" }).click();
   state = await paint(page);
   ok(state.theme === null && luminance(state.background) > 200, `Sistem seçince telefon karar veriyor (${state.background})`);
-  ok(state.colorScheme === "dark light", `Sistem seçince color-scheme ikisini de sayıyor (${state.colorScheme})`);
+  ok(state.colorScheme === "light", `Sistem seçince color-scheme telefonun rengini söylüyor (${state.colorScheme})`);
+  ok(await page.evaluate(() => localStorage.getItem("englishPrep.theme")) === "system", "Sistem seçimi açıkça kaydediliyor");
   await context.close();
 }
 
@@ -2918,20 +2935,23 @@ async function runResultsFeel(browser) {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: motion });
     const page = await context.newPage();
     await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
-    await page.evaluate(() => {
-      sessionStorage.setItem(
-        "englishPrep.quizResult",
-        JSON.stringify({
-          date: new Date().toISOString(),
-          mode: "mixed",
-          correctCount: 9,
-          totalCount: 10,
-          topicBreakdown: { tenses: { correct: 5, total: 5 }, modals: { correct: 4, total: 5 } },
-          categoryBreakdown: null,
-          questionResults: [],
-          recorded: true,
-        })
-      );
+    await page.evaluate(async () => {
+      const { loadManifest, loadQuestionsForTopics } = await import("./js/topics.js");
+      const { scoreSession } = await import("./js/quiz-engine.js");
+      const { setQuizResult } = await import("./js/session-state.js");
+      const topics = (await loadManifest()).topics.filter((topic) => !topic.comingSoon);
+      const session = (await loadQuestionsForTopics(topics)).slice(0, 10);
+      const answers = session.map((question, index) => index < 9 ? question.correctAnswer
+        : question.options.find((option) => option !== question.correctAnswer));
+      // This is a visual-state fixture, but it must still represent a real,
+      // internally consistent result accepted by the session boundary.
+      const stored = setQuizResult({
+        ...scoreSession(session, answers),
+        date: new Date().toISOString(),
+        mode: "mixed",
+        recorded: true,
+      });
+      if (!stored) throw new Error("The score presentation fixture must be a valid 9/10 result");
     });
     await page.goto(`${BASE}/results.html`, { waitUntil: "networkidle" });
     await page.waitForSelector(".ring--lg");

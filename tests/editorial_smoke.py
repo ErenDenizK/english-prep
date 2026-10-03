@@ -83,14 +83,15 @@ class EditorialBrowserTests(unittest.TestCase):
         expect(self.page.locator('#lesson-reader h1')).to_have_text(lesson['category'])
         expect(self.page.locator('#lesson-reader .lesson')).to_be_visible()
 
-    def choose_count(self, label, count):
-        combo = self.page.get_by_role('combobox', name=re.compile('^'+re.escape(label)))
+    def choose_count(self, label, count, field_id=None):
+        combo = (self.page.locator('[aria-labelledby~="'+field_id+'"]') if field_id
+            else self.page.get_by_role('combobox', name=re.compile('^'+re.escape(label))))
         combo.click()
         self.page.get_by_role('option', name=str(count), exact=True).click()
 
     def start_mixed(self, count=5):
         self.visit('index.html#test')
-        self.choose_count('Soru sayısı', count)
+        self.choose_count('Soru sayısı', count, field_id='mixed-count-label')
         self.page.get_by_role('button', name='Teste başla', exact=True).click()
         expect(self.page.locator('#question-stem')).to_be_visible()
 
@@ -142,6 +143,177 @@ class EditorialBrowserTests(unittest.TestCase):
         self.assertLessEqual(max(box['doc'], box['body']), box['width']+1, box)
         self.assertLessEqual(box['shell'], box['shellWidth']+1, box)
         self.assertEqual(self.page.evaluate('window.scrollY'), 0)
+
+    def assert_active_popup_visible(self, combo):
+        measurement = combo.evaluate('''trigger => {
+            const active = document.getElementById(trigger.getAttribute('aria-activedescendant'));
+            const menu = document.getElementById(trigger.getAttribute('aria-controls'));
+            const row = active.getBoundingClientRect(), box = menu.getBoundingClientRect();
+            const hit = document.elementFromPoint(row.x + row.width / 2, row.y + row.height / 2);
+            return {top: row.top, bottom: row.bottom, menuTop: box.top + menu.clientTop,
+                menuBottom: box.top + menu.clientTop + menu.clientHeight,
+                viewport: innerHeight, hit: hit === active || active.contains(hit),
+                focus: document.activeElement === trigger};
+        }''')
+        self.assertGreaterEqual(measurement['top'], measurement['menuTop'] - 1, measurement)
+        self.assertLessEqual(measurement['bottom'], measurement['menuBottom'] + 1, measurement)
+        self.assertGreaterEqual(measurement['menuTop'], 0, measurement)
+        self.assertLessEqual(measurement['menuBottom'], measurement['viewport'], measurement)
+        self.assertTrue(measurement['hit'], measurement)
+        self.assertTrue(measurement['focus'], measurement)
+
+    def test_count_popup_keyboard_visibility_in_short_viewports(self):
+        self.page.emulate_media(color_scheme='dark')
+        for width, height in [(320, 640), (844, 390), (768, 360)]:
+            with self.subTest(width=width, height=height):
+                self.page.set_viewport_size({'width': width, 'height': height})
+                self.visit('index.html#test')
+                self.page.reload()
+                combo = self.page.locator('[aria-labelledby~="mixed-count-label"]')
+                combo.focus()
+                previous = combo.inner_text()
+                scroll = self.page.locator('#shell-scroll').evaluate('(el) => el.scrollTop')
+                self.page.keyboard.press('ArrowDown')
+                self.page.keyboard.press('End')
+                self.assert_active_popup_visible(combo)
+                self.assertAlmostEqual(scroll, self.page.locator('#shell-scroll').evaluate('(el) => el.scrollTop'), delta=1)
+                self.page.keyboard.press('Home')
+                self.assert_active_popup_visible(combo)
+                self.page.keyboard.press('2')
+                self.assert_active_popup_visible(combo)
+                self.page.keyboard.press('Escape')
+                expect(combo).to_have_attribute('aria-expanded', 'false')
+                expect(combo).to_have_text(previous)
+                self.page.keyboard.press('ArrowDown')
+                self.page.keyboard.press('Home')
+                self.page.keyboard.press('ArrowDown')
+                self.page.keyboard.press('ArrowDown')
+                self.page.keyboard.press('Enter')
+                expect(combo).to_have_text('20')
+                expect(combo).to_be_focused()
+                self.page.keyboard.press('ArrowDown')
+                self.page.keyboard.press('Tab')
+                expect(combo).to_have_attribute('aria-expanded', 'false')
+                expect(combo).not_to_be_focused()
+                combo.focus()
+                self.page.keyboard.press('ArrowDown')
+                self.page.locator('#shell-scroll').evaluate('(el) => el.scrollTop += 20')
+                expect(combo).to_have_attribute('aria-expanded', 'false')
+                self.assert_geometry()
+        self.page.set_viewport_size({'width': 390, 'height': 844})
+        self.visit('index.html#profil')
+        theme = self.page.locator('[aria-labelledby~="profile-theme-label"]')
+        # The trigger starts below the fold. A queued focus-scroll event
+        # must not dismiss the popup immediately after the pointer opens it.
+        theme.click()
+        self.page.get_by_role('option', name='Açık', exact=True).click()
+        expect(self.page.locator('html')).to_have_attribute('data-theme', 'light')
+        expect(theme).to_be_focused()
+        self.context.add_init_script("Object.defineProperty(HTMLElement.prototype, 'showPopover', {value: undefined})")
+        self.page.set_viewport_size({'width': 768, 'height': 360})
+        self.visit('index.html#test')
+        self.page.reload()
+        combo = self.page.locator('[aria-labelledby~="mixed-count-label"]')
+        combo.focus()
+        self.page.keyboard.press('ArrowDown')
+        self.page.keyboard.press('End')
+        self.assert_active_popup_visible(combo)
+        menu = self.page.locator('#'+combo.get_attribute('aria-controls'))
+        self.assertEqual(menu.evaluate('(el) => el.parentElement.tagName'), 'BODY')
+        self.page.keyboard.press('Escape')
+        self.assertTrue(menu.evaluate('(el) => el.parentElement.classList.contains("listbox")'))
+
+    def test_lesson_keyboard_answers_keep_focus_and_restore_file_reflows(self):
+        self.page.set_viewport_size({'width': 320, 'height': 640})
+        self.open_lesson()
+        pretest = self.page.locator('.lesson-pretest')
+        summary = pretest.locator('summary')
+        summary.focus()
+        self.page.keyboard.press('Enter')
+        expect(pretest).to_have_attribute('open', '')
+        self.page.keyboard.press('Tab')
+        expect(pretest.locator('.option').first).to_be_focused()
+        self.page.keyboard.press('Enter')
+        expect(pretest.locator('.feedback')).to_be_visible()
+        expect(pretest.locator('.option--picked')).to_be_focused()
+        summary.focus()
+        self.page.keyboard.press('Space')
+        expect(pretest).not_to_have_attribute('open', '')
+        check = self.page.locator('.block--check').first
+        check.locator('.option').first.focus()
+        scroll = self.page.locator('#shell-scroll').evaluate('(el) => el.scrollTop')
+        self.page.keyboard.press('Enter')
+        expect(check.locator('.feedback')).to_be_visible()
+        expect(check.locator('.option--picked')).to_be_focused()
+        self.assertAlmostEqual(scroll, self.page.locator('#shell-scroll').evaluate('(el) => el.scrollTop'), delta=3)
+        self.visit('index.html#profil')
+        opener = self.page.get_by_role('button', name='Yedekten geri yükle', exact=True)
+        opener.click()
+        dialog = self.page.locator('#restore-dialog')
+        expect(dialog).to_be_visible()
+        self.page.locator('#restore-file').focus()
+        expect(self.page.locator('#restore-file')).to_be_focused()
+        size = dialog.evaluate('(el) => ({width: el.clientWidth, content: el.scrollWidth})')
+        self.assertLessEqual(size['content'], size['width'] + 1, size)
+        self.page.keyboard.press('Escape')
+        expect(dialog).not_to_be_visible()
+        expect(opener).to_be_focused()
+        for width, height in [(844, 390), (768, 360)]:
+            self.page.set_viewport_size({'width': width, 'height': height})
+            opener.click()
+            initial = dialog.evaluate('''el => {
+                const box = el.getBoundingClientRect();
+                const focus = document.activeElement.getBoundingClientRect();
+                const title = document.getElementById('restore-dialog-title').getBoundingClientRect();
+                return {top: box.top, bottom: box.bottom, focusTop: focus.top,
+                    focusBottom: focus.bottom, titleTop: title.top, titleBottom: title.bottom};
+            }''')
+            self.assertGreaterEqual(initial['focusTop'], initial['top'], initial)
+            self.assertLessEqual(initial['focusBottom'], initial['bottom'], initial)
+            self.assertGreaterEqual(initial['titleTop'], initial['top'], initial)
+            self.assertLessEqual(initial['titleBottom'], initial['bottom'], initial)
+            self.page.keyboard.press('Escape')
+            expect(dialog).not_to_be_visible()
+            expect(opener).to_be_focused()
+
+    def test_text_resize_and_spacing_preserve_narrow_reading_width(self):
+        for width in [320, 390]:
+            for mode in ['resize', 'root', 'spacing']:
+                for route, selector in [('index.html#egitim', '#index-list .tile'),
+                        ('index.html#profil', '#profile-name'),
+                        ('index.html#egitim/'+LESSONS[0]['id'], '.lesson')]:
+                    with self.subTest(width=width, mode=mode, route=route):
+                        self.page.set_viewport_size({'width': width, 'height': 720})
+                        self.visit(route)
+                        self.page.reload()  # Never compound text enlargement across hash routes.
+                        expect(self.page.locator(selector).first).to_be_visible()
+                        self.page.evaluate('document.fonts.ready')
+                        if mode == 'resize':
+                            self.page.evaluate('''() => {
+                                const metrics = [...document.querySelectorAll('body *')]
+                                    .filter(el => !el.closest('svg'))
+                                    .map(el => [el, getComputedStyle(el).fontSize, getComputedStyle(el).lineHeight]);
+                                for (const [el, font, line] of metrics) {
+                                    el.style.setProperty('font-size', `${parseFloat(font)*2}px`, 'important');
+                                    if (line !== 'normal') el.style.setProperty('line-height', `${parseFloat(line)*2}px`, 'important');
+                                }
+                            }''')
+                        elif mode == 'root':
+                            self.page.add_style_tag(content='html{font-size:32px!important}')
+                        else:
+                            self.page.add_style_tag(content='*:not(svg):not(path){line-height:1.5!important;letter-spacing:.12em!important;word-spacing:.16em!important}p{margin-bottom:2em!important}')
+                        self.assert_geometry()
+                        self.page.locator('#shell-scroll').evaluate('(el) => el.scrollTo(0, el.scrollHeight)')
+                        self.assert_geometry()
+            self.page.reload()
+            self.start_mixed()
+            self.page.add_style_tag(content='html{font-size:32px!important}')
+            self.check_geometry = True
+            self.assert_geometry()
+            self.answer(False)
+            self.assert_geometry()
+            self.page.get_by_role('button', name='Bitir', exact=True).click()
+            self.page.wait_for_url('**/results.html')
 
     def test_library_all_topic_intros_and_every_article_preserves_content(self):
         self.page.set_viewport_size({'width': 320, 'height': 720})

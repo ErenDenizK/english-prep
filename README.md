@@ -1,8 +1,8 @@
 # English Prep
 
-**Margin redesign preview:** [open the redesigned app](index.html),
+**v0.66 · Margin:** [open the redesigned app](index.html),
 [compare the full original](original/index.html), or inspect its
-[unchanged source snapshot](original/source-39dcd46.zip). This version
+[unchanged runtime source archive](original/source-39dcd46.zip). This version
 uses the full `test` source at `39dcd46`; the earlier `main` prototype
 is preserved separately in [legacy/](legacy/index.html). The original's
 hosted service worker has only been adapted to isolate its offline caches.
@@ -12,8 +12,14 @@ for the repository checks. See the current [experience](docs/EXPERIENCE.md),
 [interface system](docs/margin-design-system.md), and [research](docs/RESEARCH.md).
 Visual references: [mobile](docs/previews/mobile.png),
 [desktop](docs/previews/desktop.png), [article](docs/previews/article.png),
-and [dark theme](docs/previews/dark.png).
+[profile](docs/previews/profile.png), and [light alternative](docs/previews/light.png).
 See [validation evidence and commands](docs/VALIDATION.md).
+The detailed refinement record includes the [element inventory](docs/audit/element-inventory.md),
+[type and color measurements](docs/audit/type-color.md),
+[interaction audit](docs/audit/interaction-accessibility.md), and
+[verified UI research](docs/research/2026-10-ui-principles.md).
+The [four-pass record](docs/audit/refinement-log.md) connects findings to changes.
+The [component catalogue](docs/components.html) uses the production stylesheet.
 The hosted versions share the browser origin's existing local progress
 and settings; their offline shell/content caches are isolated.
 
@@ -234,8 +240,9 @@ what shipped.
 
 ## Design
 
-Margin uses warm paper and ink in light mode and a restrained dark
-companion, following the system theme or a choice in Profil. Inter
+Margin opens in dark mode, with layered charcoal surfaces, warm ink,
+and a restrained accent. Profil also offers paper light mode and an explicit
+System choice; existing explicit preferences are preserved. Inter
 handles Turkish prose and the interface; Source Serif 4 distinguishes
 English examples and questions. The home page emphasizes reading and
 the curriculum, with optional settings in Profil. Lessons remain
@@ -244,8 +251,8 @@ scrolling articles, and inline checks never gate access.
 The fixed mobile shell gains useful adjacent columns on wide displays,
 while articles and quizzes stay single-column. The supplied Home,
 Ventriloc, Monopo, and Raycast references inform the visual system.
-`npm run color` verifies the inherited palette; the extension's token
-measurements and responsive checks are documented separately in
+`npm run color` verifies both the inherited palette and 112 pairs from the
+current stylesheet. Token measurements and responsive checks are documented in
 `docs/margin-design-system.md` and `docs/RESEARCH.md`.
 
 ---

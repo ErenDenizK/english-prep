@@ -1,75 +1,72 @@
-# English Prep · Margin: experience
+# English Prep · Margin: experience · v0.66
 
 ## Product and audience
 
-The redesign starts from the full `test` branch source at `39dcd46`, not the earlier `main` prototype. The preserved corpus contains **10 topics, 60 scrolling article lessons, and 241 questions**, with the original explanations, option notes, category mappings, and exam-coverage boundaries. No learning data was rewritten for this makeover.
+The redesign starts from the full `test` branch source at `39dcd46`. Its **10 topics, 60 scrolling article lessons, and 241 questions** retain their original explanations, option notes, category mappings, and exam-coverage boundaries. No learning data was rewritten for the makeover.
 
-The intended learner already understands English through everyday use but lacks the academic concepts needed to explain an answer reliably. The interface and teaching prose are Turkish; English examples, question stems, answer choices, and grammar terms remain English. A lesson clarifies a distinction the learner partly knows rather than treating them as a complete beginner.
-
-The central promise is modest: understand the distinction, apply it to a question, and learn from the explanation. Practice results describe performance on this material, not proficiency or readiness for every section of a university examination.
+The intended learner already uses English but needs the academic concepts and distinctions that explain why an answer fits. The interface and teaching prose are Turkish; examples, question stems, choices, and grammar terms remain English. The product promise is to clarify a distinction, apply it, and understand the feedback. Practice performance is not a proficiency certificate or a prediction for every examination section.
 
 ## Information architecture
 
-**Eğitim** and **Test** remain the two content modes in the bottom navigation. **Profil** opens from the header because identity, settings, and data management are supporting activities. Topic overviews sit between the curriculum index and the six articles within each topic. Hash routes retain the source app's navigation model and browser Back behavior.
+**Eğitim** and **Test** are the bottom-navigation peers. **Profil** opens from the header for progress, preferences, and data management. Topic overviews connect the curriculum to six articles per topic. Hash routes retain browser Back and the source navigation structure.
 
-The home introduction is calm and immediately useful: “Bildiğin İngilizceyi netleştir.” It shows actual corpus totals and an appropriate reading action, followed by curriculum search and the topic index. Returning readers can continue their material. A streak, daily-goal ring, countdown, and mandatory setup do not compete with the reading action. Existing optional profile settings remain available.
+Eğitim opens with “Bildiğin İngilizceyi netleştir.”, actual corpus totals, an appropriate reading action, curriculum search, and the topic index. Returning readers can continue their material. Optional identity, goals, and setup are available without delaying access to a lesson. Streaks and countdowns do not dominate the home screen.
 
-## Journeys and use cases
+## Journeys
 
-| Learner situation | Route and behavior |
+| Situation | Route and behavior |
 | --- | --- |
-| First visit | Open Eğitim directly, understand the scope, browse a topic or follow the suggested reading action. No setup completion is required. |
-| Looking for a grammar concept | Search the curriculum using titles, categories, or summaries; open the matching lesson with its topic context. |
-| Exploring a topic | Read the overview, examples, and exam context, then choose one of its six articles. |
-| Reading a lesson | Read one continuous article containing contrasts, forms, examples, pitfalls, and a decision procedure. The content scrolls within the fixed app shell. |
-| Trying a question before reading | Optionally expand “Okumadan önce kendini yokla.” It is collapsed initially and never blocks access to the article. |
-| Checking understanding | Answer an inline check or scroll past it. Checks are unscored and never gate reading or completion. |
-| Returning after interruption | Use saved lesson progress to resume reading. Completion and position use the existing local progress model. |
-| Practising a particular distinction | Launch category practice from the relevant learning context or result recommendation. |
-| General practice | Open Test and choose a mixed or single-topic session, retaining the source app's scope/count controls. |
-| Giving an answer | An answer button commits the choice and reveals immediate feedback. Read why the key fits, the transferable rule, and the chosen distractor's meaning before advancing. |
-| Reviewing a session | Inspect the score, topic/category breakdowns, and answer review; follow the existing routes back to relevant lessons or practice. |
-| Revisiting persistent mistakes | Open Yanlış defteri. Its existing rule remains: an item graduates after correct answers on two separate days; a new mistake resets that progress. |
-| Understanding progress | Open Profil for actual lesson completion, recent accuracy and its basis, weak categories, and the scope the app does and does not cover. |
-| Moving or protecting local work | Use the existing export/import flow. History, profile preferences, lesson progress, and settings remain local. |
-| Comparing versions | Open the full original from the curriculum footer, or use the source snapshot and earlier prototype links in the README. |
+| First visit | Open Eğitim directly; browse a topic or follow the reading action. Dark is the initial theme; setup is optional. |
+| Find a concept | Search titles, categories, and summaries; open a matching lesson with its topic context. |
+| Explore a topic | Read its overview, examples, and exam context, then choose an article. |
+| Read and return | Read a continuous article with contrasts, patterns, examples, pitfalls, and decision steps. Existing saved progress supports reading continuation. |
+| Try a pretest | Expand the initially collapsed “Okumadan önce kendini yokla.” disclosure if useful. Reading never depends on answering. |
+| Check understanding | Attempt or skip unscored inline checks. Completion remains independent of correctness. |
+| Practise a distinction | Start category practice from a relevant lesson, result, or recommendation. |
+| General practice | Choose a mixed or topic session in Test; counts describe the session being started. |
+| Answer and learn | One press commits an answer and reveals the explanation, transferable rule, and relevant distractor note. Advance deliberately after reading. |
+| Refresh during a test | In the same tab, restore a valid saved question/option order, answers, position, feedback, and hidden-options state. |
+| Finish early | With answers recorded, finish with a score for those answers; unseen questions do not become mistakes. With no answers, exit without creating a result. |
+| Review | Inspect score, topic/category breakdowns, and explanations; move directly to relevant reading or practice. Reloading results does not duplicate a stable attempt. |
+| Revisit mistakes | Use Yanlış defteri. Its source rule remains: two correct answers on separate days graduate an item; a new mistake resets that progress. |
+| Understand progress | Profil shows real lesson completion, recent accuracy and its basis, weak categories, and coverage limits. Sparse evidence does not establish mastery. |
+| Choose appearance | Select Koyu, Açık, or Sistem in Profil. System follows OS changes live and remains an explicit saved preference. |
+| Protect local work | Export a backup or review and merge an existing file/pasted backup. Storage errors remain visible with a retry path. |
+| Compare versions | Open the full original from the curriculum footer; the exact source archive and earlier prototype remain available. |
 
 Reading flow: **Eğitim → topic overview → article → optional checks → relevant practice**.
 
 Practice flow: **Test → scope → answer → explanation → next → results → review or lesson**.
 
-Return flow: **Eğitim → resume reading**, or **Test → Yanlış defteri**.
+## State and recovery contracts
 
-## Interaction and state rules
+A new quiz launch deliberately starts a new session. Refreshing an active quiz in the same tab restores its validated snapshot instead of rerolling questions. The snapshot references current trusted question content; stale or altered content cannot supply its own scoring key. Snapshot storage can fail, and the app reports that failure rather than promising resume. Browser tab closure, eviction, a crash, and transfer to another device are not guaranteed resume paths.
 
-- Keep the learning material accessible before asking for optional identity or goals. The source setup route remains available without automatically opening on arrival.
-- Preserve instant answer feedback. Answer options are action buttons in a named group, not radios requiring a second submission step.
-- Keep feedback readable until the learner chooses to continue. Correctness uses words and marks as well as color.
-- Keep lesson checks and the optional pretest separate from scored test history. Reaching the article's end follows the source completion behavior.
-- Preserve existing loading, empty, unavailable-content, backup, and recovery flows. Do not make an empty profile resemble a populated dashboard.
-- Retain the original local-storage model. Hosted copies on the same origin share browser storage; separate URLs and cache namespaces do not create separate profiles.
-- Retain the source's session handoff; this redesign does not introduce a new claim that unfinished test answers survive every refresh or tab closure.
-- Use recorded evidence for recommendations. Sparse practice history does not establish mastery, examination readiness, or a diagnosed weakness.
+A stable attempt ID lets a matching longer answer prefix advance the existing partial attempt. Legacy history keeps its existing compatibility rules. Session handoff and local history are separate: showing a result and durably saving it are not the same operation. Storage failures must not produce a success claim. Reading checks remain separate from scored test history.
 
-## Presentation and responsive structure
+The restore dialog opens at its visible heading, including in short landscape windows. Keyboard focus then follows its controls; native Escape closes it and returns focus to the opener. Choosing a file or pasting content leads to a review step before applying the merge. An old asynchronous file read cannot replace newer pasted text or populate a reopened dialog.
 
-“Margin” treats the app as an academic reading space: paper and ink in light mode, a quiet dark companion, restrained editorial headings, and distinct English examples. Home and Ventriloc inform the warm structure, Monopo informs typographic restraint and space, and Raycast informs the dark counterpart. These are visual references, not evidence of educational effectiveness.
+Restore keeps existing local progress and explicit preferences on conflicts. It merges history, advances lesson progress and seen-content versions, fills absent profile/practice preferences and exam date, and restores a valid daily goal only when no valid local choice exists. The existing backup format is unchanged; the active quiz snapshot and the separate theme preference are not included in it.
 
-A fixed header and navigation frame surround the scrolling content. At 320px the app remains a single-column reading flow. A useful two-column layout starts at **1080px width and 600px height**: introduction beside curriculum, overview beside lesson list, or results beside review. The article and question screens remain single-column. Extra screen width creates adjacency, not excessively long reading lines.
+Writes are staged from a readable storage snapshot. If a write fails, the restore attempts to return its changed keys to their exact prior values. localStorage cannot guarantee a multi-key transaction, so failed rollback is disclosed as a potentially partial merge. The dialog stays open with the reviewed backup ready for retry; it does not announce completion. A canceled native share also receives neutral cancellation feedback, with no unsolicited download.
 
-The current component system and exact production tokens are documented in [margin-design-system.md](margin-design-system.md). Research and its limitations are in [RESEARCH.md](RESEARCH.md).
+The app remains local to the browser. Original and redesigned copies hosted on the same origin share learner storage; separate URL paths and service-worker cache namespaces do not create separate profiles. Keep backups when moving between devices or browser containers.
 
-## Preservation and delivery boundaries
+## Presentation and responsiveness
+
+Margin prioritizes a dark academic reading space with neutral charcoal surfaces, warm text, a readable supporting hierarchy, and restrained accents. Light mode remains fully usable. Inter distinguishes interface/Turkish teaching text from the existing Source Serif 4 English material. Relative type roles support enlarged text; bounded columns keep long articles readable on desktop. Theme choice is a preference, not a claim that dark mode improves learning.
+
+A fixed header and navigation or action bar surround the scrolling content. The app works as a single column at 320px. A useful split starts at **1080×600**: introduction beside curriculum, overview beside lesson list, or results beside review. Articles and quizzes remain single-column. Enlarged text, spacing overrides, browser zoom, and short windows must retain reachable content, controls, and focus.
+
+The component specification is [margin-design-system.md](margin-design-system.md). Evidence and limitations are in [RESEARCH.md](RESEARCH.md), with the detailed October research in [2026-10-ui-principles.md](research/2026-10-ui-principles.md).
+
+## Preservation and verification
 
 - `/` contains the redesigned full app.
-- `original/` hosts the full v0.64 interface from `test` at `39dcd46`. Only its service worker is adjusted at runtime to isolate offline caches; its UI, modules, and learning data are retained. Its README identifies that adjustment.
-- `original/source-39dcd46.zip` preserves the unmodified source snapshot.
-- `legacy/` preserves the earlier `main` prototype; it is not the full original used for this redesign.
+- `original/` hosts the full v0.64 interface from `test` at `39dcd46`. Its only runtime adjustment isolates service-worker caches; source UI, modules, and learning data remain preserved.
+- `original/source-39dcd46.zip` is the unmodified source archive.
+- `legacy/` preserves the earlier `main` prototype.
 
-The app remains static HTML, CSS, and ES modules with no backend, account requirement, analytics, or runtime package dependency. The redesign does not add paid features, AI-generated lessons, a fictional curriculum, or a separate scoring system. Scope-specific service-worker caches preserve both hosted interfaces and existing offline lessons.
+The app remains static HTML, CSS, and ES modules, with no backend, account requirement, analytics, or runtime package dependency. Scoped caches preserve both interfaces and offline lessons.
 
-## Validation scope
-
-Exercise first arrival, topic navigation, curriculum search, article scrolling/resume, collapsed pretests, optional checks, mixed/topic/category/mistake tests, immediate explanations, results, profile settings, export/import, and original-version navigation. Check keyboard focus, narrow-screen overflow, dark/light themes, reduced motion, local assets, offline content, and byte equivalence of learning data.
-
-Functional and visual checks validate implementation behavior. They do not replace observing representative students use the app or establish complete accessibility conformance.
+Verify navigation/search, article resume, optional checks, all practice modes, quiz refresh and interrupted-session handling, results deduplication, profile preferences, backup success/failure/retry, original navigation, and unchanged learning data. Include keyboard focus, small and short viewports, themes, reduced motion, reflow, and offline assets. Automated and browser checks establish implementation behavior within their tested scope; they do not replace representative learner observation or complete assistive-technology testing.

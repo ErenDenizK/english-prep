@@ -17,6 +17,7 @@ function memoryCaches() {
   return {
     failWrites: false,
     failInstall: false,
+    installRequests: [],
     async keys() { return [...stores.keys()]; },
     async delete(name) { return stores.delete(name); },
     async open(name) {
@@ -31,7 +32,8 @@ function memoryCaches() {
         },
         addAll: async (urls) => {
           if (this.failInstall) throw new Error("Missing shell asset");
-          for (const url of urls) await cache.put(url, new Response(`shell:${url}`));
+          this.installRequests.push(...urls);
+          for (const url of urls) await cache.put(url, new Response(`shell:${key(url)}`));
         },
       };
       return cache;
@@ -221,6 +223,13 @@ test("installation precaches scope-relative assets before calling skipWaiting", 
   const root = worker();
   assert.ok(root.config.SHELL.includes("./css/editorial.css"));
   assert.ok(root.config.SHELL.includes("./assets/fonts/InterVariable.woff2"));
+});
+
+test("a new release bypasses stale HTTP-cache assets while building its offline shell", async () => {
+  const app = worker();
+  await app.dispatch("install");
+  assert.equal(app.caches.installRequests.length, app.config.SHELL.length);
+  assert.ok(app.caches.installRequests.every((request) => request instanceof Request && request.cache === "reload"));
 });
 
 test("an incomplete shell installation never activates the new worker", async () => {
