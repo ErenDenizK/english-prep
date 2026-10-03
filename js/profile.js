@@ -31,6 +31,7 @@ import {
   setExamDate,
   daysToExam,
   getDailyGoal,
+  getTodayCount,
   setDailyGoal,
   DAILY_GOAL_OPTIONS,
   getStreak,
@@ -63,7 +64,7 @@ function renderIdentity() {
   const name = getProfileName().trim();
   head.appendChild(avatar(name, { size: "lg" }));
   const titles = el("div", "stack stack--snug");
-  titles.appendChild(el("h2", "t-title", name || "Adını yaz"));
+  titles.appendChild(el("h1", "t-title", name || "Profilin"));
   const days = daysToExam();
   const goal = getDailyGoal();
   titles.appendChild(
@@ -119,7 +120,7 @@ function renderGoals() {
   const dateTitle = el("label", "row__title", "Sınav tarihi");
   dateTitle.htmlFor = "profile-exam-date";
   dateMain.appendChild(dateTitle);
-  dateMain.appendChild(el("span", "row__sub", "Ana ekranda geri sayım olarak görünür."));
+  dateMain.appendChild(el("span", "row__sub", "Çalışma planın için isteğe bağlı bir hatırlatma."));
   dateRow.appendChild(dateMain);
   const dateTrail = el("span", "row__trail");
   const date = document.createElement("input");
@@ -141,7 +142,7 @@ function renderGoals() {
   const goalTitle = el("span", "row__title", "Günlük hedef");
   goalTitle.id = "profile-goal-label";
   goalMain.appendChild(goalTitle);
-  goalMain.appendChild(el("span", "row__sub", "Ana ekrandaki halka buna göre dolar."));
+  goalMain.appendChild(el("span", "row__sub", `${getTodayCount()} / ${getDailyGoal()} soru bugün yanıtlandı.`));
   goalRow.appendChild(goalMain);
   const goalTrail = el("span", "row__trail");
   goalTrail.appendChild(

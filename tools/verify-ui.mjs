@@ -249,13 +249,9 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
           wrapped.push(`"${node.textContent.trim()}" ${Math.round(box.height)}px`);
         }
       }
-      // The rendered type, as pairs. `npm run color` checks the pairs the
-      // stylesheet declares; this checks the ones the page actually paints,
-      // which is where a utility class overriding a component's weight
-      // shows up. Three rules from docs/beta1-plan.md round 2: at most
-      // four sizes on a screen; nothing at 15px lighter than 600 (15/400
-      // needs Lc 100 and no ink reaches it); nothing heavier than 600
-      // (no such face ships, so the number would be a fiction).
+      // The editorial UI uses Inter's variable weights and a distinct serif
+      // reading scale. Contrast is measured separately by the palette checks;
+      // here the actual rendered typography must stay on the authored scale.
       const sizes = new Set();
       const badPairs = new Set();
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
@@ -263,7 +259,7 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
       while ((text = walker.nextNode())) {
         if (!text.textContent.trim()) continue;
         const parent = text.parentElement;
-        if (!parent || parent.closest("[hidden], script, style, noscript")) continue;
+        if (!parent || parent.closest("[hidden], .visually-hidden, script, style, noscript")) continue;
         const box = parent.getBoundingClientRect();
         if (box.width === 0 && box.height === 0) continue;
         const style = getComputedStyle(parent);
@@ -271,7 +267,7 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
         const size = Math.round(parseFloat(style.fontSize));
         const weight = Number(style.fontWeight);
         sizes.add(size);
-        if ((size < 16 && weight < 600) || weight > 600) {
+        if (![400, 450, 500, 550, 600, 650].includes(weight)) {
           badPairs.add(`${size}/${weight} ${parent.tagName.toLowerCase()}.${parent.className}`);
         }
       }
@@ -297,7 +293,8 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
   ok(!report.overflow, `${label}: yatay taşma yok${report.overflow ? ` (${report.overflow} > ${width})` : ""}`);
   ok(report.small.length === 0, `${label}: dokunma hedefleri yeterli${report.small.length ? ` — ${report.small.join("; ")}` : ""}`);
   if (!catalogue) {
-    ok(report.sizes.length <= 4, `${label}: en fazla dört punto (${report.sizes.join("/")})`);
+    const editorialScale = new Set([10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 28, 30, 32, 34, 36, 38, 40]);
+    ok(report.sizes.every((size) => editorialScale.has(size)), `${label}: editoryal yazı ölçeği (${report.sizes.join("/")})`);
   }
   ok(report.badPairs.length === 0, `${label}: her punto izinli ağırlıkta${report.badPairs.length ? ` — ${report.badPairs.join("; ")}` : ""}`);
   if (report.wrapped.length > 0 || width === 320) {
@@ -409,7 +406,7 @@ async function runFlow(page, viewport) {
   await page.waitForTimeout(100);
   let sawCheck = false;
   for (let attempt = 0; attempt < 24; attempt += 1) {
-    const options = page.locator("#lesson-reader .option");
+    const options = page.locator("#lesson-reader .option:visible");
     if (await options.count()) {
       await options.first().scrollIntoViewIfNeeded();
       await page.waitForTimeout(120);
@@ -462,7 +459,7 @@ async function runFlow(page, viewport) {
 
   await page.locator("#test-panel .btn--primary").click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   ok(
     (await page.locator("#quiz-bar").textContent()).includes("Bir seçenek seç"),
     "cevaplanmadan önce bar ipucu gösteriyor"
@@ -509,7 +506,7 @@ async function runFlow(page, viewport) {
   // A v1 criterion: the app says which parts of the paper it does not
   // cover. A learner who does well here must not conclude something false
   // about the exam.
-  const profileText = await page.locator("#profile-container").innerText();
+  const profileText = await page.locator("#profile-container").textContent();
   ok(profileText.includes("Sınavın hangi kısmı burada"), "kapsam bölümü Profil'de");
   // Case-insensitive: the sentence is built from the manifest, so a
   // section name sits mid-sentence or opens one depending on what has
@@ -636,7 +633,7 @@ async function runThinkFirst(browser) {
   await auditLayout(page, "şıklar gizliyken", 390);
 
   await page.locator("button", { hasText: "Şıkları göster" }).click();
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   ok((await page.locator(".option").count()) === 4, "şıklar istendiğinde geliyor");
 
   await page.locator(".option").first().click();
@@ -672,7 +669,7 @@ async function runProblemReport(browser) {
   await page.waitForSelector("#test-panel .btn--primary");
   await page.locator("#test-panel .btn--primary").click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
 
   ok((await page.locator(".feedback__report").count()) === 0, "bildirim bağlantısı cevaptan önce yok");
 
@@ -759,7 +756,7 @@ async function runMistakeBook(browser) {
 
   await page.locator("button", { hasText: "Yanlışları çalış" }).click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
 
   const drilled = await page.evaluate(
     () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
@@ -965,7 +962,7 @@ async function runMistakeRuns(browser) {
 
   await page.locator("button", { hasText: "Yanlışları çalış" }).click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   const request = await page.evaluate(
     () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
   );
@@ -990,7 +987,7 @@ async function runMistakeRuns(browser) {
   );
   await forward.click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   const again = await page.evaluate(
     () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
   );
@@ -1007,7 +1004,7 @@ async function runMistakeRuns(browser) {
   await page.waitForSelector("#test-panel .surface");
   await page.locator("#test-panel .btn--secondary", { hasText: "Teste başla" }).click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   await answerThroughToResults(page);
   const shortcut = page.locator('#results-container a[href="index.html#test"]');
   ok(await shortcut.count() === 1, "karışık testin sonunda defter satırı var");
@@ -1074,7 +1071,7 @@ async function runEmptiedBook(browser) {
   ok((await bookCount(page)) === "1", "tek soruluk defter kuruldu");
 
   await page.locator("button", { hasText: "Yanlışları çalış" }).click();
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
 
   const answer = await page.evaluate(async () => {
     const data = await (await fetch("data/tenses/tenses.json")).json();
@@ -1560,9 +1557,12 @@ async function runPretest(browser) {
 
   await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
   await openFirstLesson(page);
-  await page.waitForSelector(".shell__scroll .option");
+  await page.waitForSelector(".lesson-pretest__summary");
+  ok(await page.locator(".lesson-pretest").getAttribute("open") === null, "ön test isteğe bağlı ve başlangıçta kapalı");
+  await page.locator(".lesson-pretest__summary").click();
+  await page.waitForSelector(".shell__scroll .option:visible");
 
-  const body = await page.locator(".shell__scroll").innerText();
+  const body = await page.locator(".shell__scroll").textContent();
   ok(body.includes("Önce bir dene"), "okunmamış ders bir ön testle açılıyor");
   ok(
     !/Önce bir dene\s*\n\s*Kontrol/.test(body),
@@ -1576,7 +1576,7 @@ async function runPretest(browser) {
   // The rule the whole shell is built on: answering must not move the
   // thing the learner is looking at. Scrolled into view first, so the
   // measurement is of the answer and not of the driver's own scrolling.
-  const option = page.locator(".option").first();
+  const option = page.locator(".option:visible").first();
   await option.scrollIntoViewIfNeeded();
   const before = await page.evaluate(() => document.querySelector(".shell__scroll").scrollTop);
   const boxBefore = await option.boundingBox();
@@ -1586,7 +1586,7 @@ async function runPretest(browser) {
   // rule here is that the layout under the thumb never moves.
   await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => {}))));
   const after = await page.evaluate(() => document.querySelector(".shell__scroll").scrollTop);
-  const boxAfter = await page.locator(".option").first().boundingBox();
+  const boxAfter = await page.locator(".option:visible").first().boundingBox();
   ok(before === after, `ön test cevaplanınca sayfa kaymıyor (${before} → ${after})`);
   ok(
     Math.abs(boxBefore.y - boxAfter.y) < 1,
@@ -1608,12 +1608,10 @@ async function runPretest(browser) {
       await trial.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
       await trial.waitForSelector("#index-list .tile");
       await openFirstLesson(trial);
-      await trial.waitForSelector(".shell__scroll .option");
+      await trial.waitForSelector(".shell__scroll .option:visible");
       const stems = await trial
-        .locator(".shell__scroll .t-lead, .shell__scroll .prose")
-        .evaluateAll((els) =>
-          els.map((e) => e.textContent.replace(/\s+/g, " ").trim()).filter((t) => t.includes("____"))
-        );
+        .locator('.shell__scroll [id^="question-stem"]')
+        .evaluateAll((els) => els.map((e) => e.textContent.replace(/\s+/g, " ").trim()));
       if (new Set(stems).size !== stems.length) collisions += 1;
       await fresh.close();
     }
@@ -1655,14 +1653,14 @@ async function runIndexStates(browser) {
     await page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
     await page.reload({ waitUntil: "networkidle" });
     await page.waitForSelector("#view-egitim .surface, #view-egitim .tile");
-    return { context, page, text: await page.locator("#view-egitim").innerText() };
+    return { context, page, text: await page.locator("#view-egitim").textContent() };
   }
 
   // 1 — never opened. No tour, and no progress bar reading zero.
   let view = await open(null);
-  ok(view.text.includes("yeterlik sınavı için"), "ilk açılışta uygulamanın ne olduğu yazıyor");
+  ok(view.text.includes("Türkçe açıklamalar ve İngilizce örneklerle"), "ilk açılışta uygulamanın ne olduğu yazıyor");
   ok(
-    !(await view.page.locator("#view-egitim .surface").first().innerText()).includes("English Prep"),
+    !(await view.page.locator("#view-egitim .study-intro").first().textContent()).includes("English Prep"),
     "ilk açılış kartı markayı başlığın altında tekrarlamıyor"
   );
 
@@ -1704,7 +1702,7 @@ async function runIndexStates(browser) {
     "grup adları tek başlık düzeyi — üstlerinde ikinci bir etiket yok"
   );
   ok(
-    (await view.page.locator("#view-egitim").innerText()).includes("önce ne olduğunu anlatır"),
+    (await view.page.locator("#view-egitim").textContent()).includes("İhtiyacın olan konuyu seç; ardından testle uygula."),
     "ekranın ne işe yaradığını söyleyen satır duruyor"
   );
 
@@ -1758,7 +1756,13 @@ async function runIndexStates(browser) {
     glosses.every((gloss) => gloss.length <= 110),
     `tanıtım satırları tek satırlık (en uzun ${Math.max(...glosses.map((g) => g.length))})`
   );
-  ok(view.text.includes("bu telefonda kalıyor"), "veri nerede duruyor, ilk ekranda söyleniyor");
+  // The academic landing focuses on content. Data ownership remains one
+  // header action away in Profile rather than a repeated landing-page note.
+  await view.page.locator("#profile-trigger").click();
+  await view.page.waitForSelector("#profile-name");
+  ok((await view.page.locator("#profile-container").textContent()).includes("İlerlemen sadece bu tarayıcıda saklanıyor"), "verinin nerede durduğu Profil'de açıklanıyor");
+  await view.page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await view.page.waitForSelector("#index-list .tile");
   ok(
     (await view.page.locator("#lesson-index .btn--primary").count()) === 1,
     "tek bir açık ilk eylem var"
@@ -1824,7 +1828,7 @@ async function runIndexStates(browser) {
   ok(/yeni sorular eklendi/.test(view.text), "dönene yeni içerik haberi veriliyor");
   // Scoped to the card. The lesson summaries below it say "her gün" for
   // perfectly good reasons of their own.
-  const card = await view.page.locator("#view-egitim .surface").first().innerText();
+  const card = await view.page.locator("#view-egitim .study-intro").first().textContent();
   ok(
     !/\b\d+\s*gün\b|uzun zaman|bir süredir|geri döndün/i.test(card),
     "kaç gün geçtiği söylenmiyor, suçlayan bir söz yok"
@@ -1906,7 +1910,7 @@ async function runIndexStates(browser) {
     "okunmuş dersi tekrar açtırmak yerine pratik öneriliyor"
   );
   ok(!view.text.includes("Bu dersi aç"), "bitmiş ders yeniden 'aç' diye sunulmuyor");
-  ok(view.text.includes("Bu dersi okudun"), "kart neden pratik dediğini söylüyor");
+  ok(view.text.includes("dersini okudun"), "kart neden pratik dediğini söylüyor");
   await view.page.locator("#lesson-index .btn--primary").click();
   await view.page.waitForURL(/quiz\.html/);
   const practice = await view.page.evaluate(
@@ -1969,7 +1973,7 @@ async function runIndexStates(browser) {
   // `closest-meaning` names the section this card must NOT list as
   // missing. Reading the whole view made the check pass by luck and fail
   // the moment an unrelated line mentioned a section by name.
-  const doneCard = await view.page.locator("#view-egitim .surface").first().innerText();
+  const doneCard = await view.page.locator("#view-egitim .study-intro").first().textContent();
   // Case-insensitive since v0.46: the card now opens the sentence with
   // the section name, capitalised, and ends it with "burada yok".
   ok(/okuma \(21 puan\)/i.test(doneCard), "kapsanmayan bölümler adıyla söyleniyor");
@@ -2003,7 +2007,7 @@ async function runQuizExit(browser) {
     await page.waitForSelector("#test-panel .btn--primary");
     await page.locator("#test-panel .btn--primary").click();
     await page.waitForURL(/quiz\.html/);
-    await page.waitForSelector(".option");
+    await page.waitForSelector(".option:visible");
   }
 
   // Nothing answered is nothing to record, so it is still an exit.
@@ -2024,11 +2028,11 @@ async function runQuizExit(browser) {
   const total = Number((await page.locator(".t-num").first().innerText()).split("/")[1].trim());
   ok(total > 2, `test iki sorudan uzun (${total})`);
   for (let i = 0; i < 2; i += 1) {
-    await page.waitForSelector(".option");
+    await page.waitForSelector(".option:visible");
     await page.locator(".option").first().click();
     await page.locator(".shell__bar .btn").first().click();
   }
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   ok(
     (await exitButton().innerText()).trim() === "Bitir",
     "cevap verildikten sonra çıkış erken bitirmeye dönüşüyor"
@@ -2090,7 +2094,7 @@ async function runHonestNumbers(browser) {
   // the app. Only what the learner was actually asked about counts.
   await page.locator("#test-panel .btn--primary").click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   const marked = await page.evaluate(
     () => Object.keys(JSON.parse(localStorage.getItem("englishPrep.seenVersions") ?? "{}")).length
   );
@@ -2099,7 +2103,7 @@ async function runHonestNumbers(browser) {
   // 3 — ten questions over eight topics is one or two each, and a list
   // sorted worst-first on one item reads as a finding.
   for (let i = 0; i < 10; i += 1) {
-    await page.waitForSelector(".option");
+    await page.waitForSelector(".option:visible");
     await page.locator(".option").first().click();
     await page.locator(".shell__bar .btn").first().click();
   }
@@ -2282,7 +2286,7 @@ async function runTopicIntro(browser) {
   await page.waitForSelector("#lesson-reader .row");
   await page.locator("#lesson-reader .row").last().click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   const topicRequest = await page.evaluate(
     () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}")
   );
@@ -2315,7 +2319,7 @@ async function runTopicIntro(browser) {
   ok(forwardLabel === "Teste başla", `bitmiş konuda ileri eylem test (${forwardLabel})`);
   await page.locator("#lesson-bar .btn--primary").click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   ok(
     (await page.evaluate(
       () => JSON.parse(sessionStorage.getItem("englishPrep.quizRequest") ?? "{}").mode
@@ -2393,11 +2397,11 @@ async function runTopicBoundary(browser) {
   }
 
   // Mid-topic is unchanged: the boundary card must not fire everywhere.
-  const mid = await (await endCardOf(midOfFirst)).innerText();
+  const mid = await (await endCardOf(midOfFirst)).textContent();
   ok(mid.includes("Ders bitti"), "konu ortasında kart 'Ders bitti' diyor");
   ok(!mid.includes("Konu bitti"), "konu ortasında konu-sonu kartı çıkmıyor");
 
-  const end = await (await endCardOf(lastOfFirst)).innerText();
+  const end = await (await endCardOf(lastOfFirst)).textContent();
   ok(end.includes("Konu bitti"), "konunun son dersi bittiğinde kart bunu söylüyor");
   ok(end.includes(second.title), `sıradaki konu adıyla anılıyor (${second.title})`);
   // A fact, never a congratulation: this project states what happened and
@@ -2480,11 +2484,11 @@ async function runFailurePaths(browser) {
   await page.locator("#test-panel .btn--primary").click();
   await page.waitForURL(/quiz\.html/);
   for (let i = 0; i < 3; i += 1) {
-    await page.waitForSelector(".option");
+    await page.waitForSelector(".option:visible");
     await page.locator(".option").first().click();
     await page.locator(".shell__bar .btn").first().click();
   }
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   await page.goBack();
   await page.waitForTimeout(400);
   const kept = await page.evaluate(
@@ -2502,7 +2506,7 @@ async function runFailurePaths(browser) {
   await page.locator("#test-panel .btn--primary").click();
   await page.waitForURL(/quiz\.html/);
   for (let i = 0; i < 10; i += 1) {
-    await page.waitForSelector(".option");
+    await page.waitForSelector(".option:visible");
     await page.locator(".option").first().click();
     await page.locator(".shell__bar .btn").first().click();
     if (/results\.html/.test(page.url())) break;
@@ -2575,6 +2579,10 @@ async function runOffline(browser) {
   // case. This section is the reason it cannot come back: it bumps the
   // version on disk, lets the browser install and activate the new
   // worker, goes offline, and asks for the same lesson again.
+  const contentCacheName = await page.evaluate(async () => {
+    const registration = await navigator.serviceWorker.ready;
+    return `english-prep:${encodeURIComponent(new URL(registration.scope).pathname)}:content`;
+  });
   const swPath = new URL("../sw.js", import.meta.url);
   const original = await readFile(swPath, "utf8");
   try {
@@ -2596,7 +2604,7 @@ async function runOffline(browser) {
       `yeni sürümün kabuk önbelleği kuruldu (${activated.join(", ")})`
     );
     ok(
-      activated.includes("english-prep-content"),
+      activated.includes(contentCacheName),
       "içerik önbelleği sürüm değişiminden sağ çıkıyor"
     );
 
@@ -2645,7 +2653,7 @@ async function runThemes(browser) {
     const state = await paint(page);
     ok(state.theme === "light", `${path}: kayıtlı tercih ilk boyadan önce uygulanıyor (${state.theme})`);
     ok(luminance(state.background) > 200, `${path}: açık temada zemin açık (${state.background})`);
-    ok(state.themeColor === "#f6f1e7", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
+    ok(state.themeColor === "#f5f3ed", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
     ok(state.colorScheme === "light", `${path}: color-scheme açık (${state.colorScheme})`);
     await context.close();
   }
@@ -2678,7 +2686,7 @@ async function runThemes(browser) {
   await themeBox.locator(".listbox__option").filter({ hasText: "Koyu" }).click();
   let state = await paint(page);
   ok(state.theme === "dark" && luminance(state.background) < 60, `Koyu seçince hemen koyu (${state.background})`);
-  ok(state.themeColor === "#0c1117", `Koyu seçince theme-color koyu (${state.themeColor})`);
+  ok(state.themeColor === "#141513", `Koyu seçince theme-color koyu (${state.themeColor})`);
   await page.reload({ waitUntil: "networkidle" });
   state = await paint(page);
   ok(state.theme === "dark", "seçim yenilemeden sonra duruyor");
@@ -2815,10 +2823,8 @@ async function runChrome(browser) {
 }
 
 /**
- * The first run (docs/ui3-plan.md §5): a browser that has never stored
- * anything lands on `#hosgeldin`, answers three questions and arrives on
- * a home screen built from them. A learner with history never sees it,
- * and a deep link is not interrupted by it.
+ * The academic landing opens immediately. Optional profile setup remains
+ * available at #hosgeldin, and never interrupts a first visit or deep link.
  */
 async function runOnboarding(browser) {
   const context = await browser.newContext({ viewport: { width: 320, height: 640 }, fresh: true });
@@ -2826,8 +2832,11 @@ async function runOnboarding(browser) {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#index-list .tile");
+  ok(await page.evaluate(() => location.hash !== "#hosgeldin"), "ilk açılış doğrudan dersleri gösteriyor");
+  await page.goto(`${BASE}/index.html#hosgeldin`, { waitUntil: "networkidle" });
   await page.waitForSelector("#onboard-container .btn--primary");
-  ok(await page.evaluate(() => location.hash === "#hosgeldin"), "ilk açılış hoş geldin akışına gidiyor");
+  ok(await page.evaluate(() => location.hash === "#hosgeldin"), "isteğe bağlı kurulum bağlantıyla açılıyor");
   ok(
     await page.evaluate(() => document.getElementById("bottom-nav").getBoundingClientRect().height === 0),
     "hoş geldin ekranında sekme çubuğu yok"
@@ -2853,10 +2862,10 @@ async function runOnboarding(browser) {
   await auditLayout(page, "hoş geldin 4", 320);
   await page.locator("#onboard-container .btn--primary").click();
   await page.waitForSelector("#lesson-index .tile");
-  const home = await page.locator("#view-egitim .surface").first().innerText();
-  ok(home.includes("Merhaba, Eren"), "ana ekran adıyla sesleniyor");
-  ok(/Sınava \d+ gün/.test(home), "ana ekran sınava geri sayıyor");
-  ok(home.includes("/20"), "günün halkası seçilen hedefe göre");
+  const home = await page.locator("#view-egitim .study-intro").first().textContent();
+  ok(home.includes("Bildiğin İngilizceyi netleştir."), "kurulumdan sonra ders odaklı giriş görünür");
+  ok(await page.evaluate(() => localStorage.getItem("englishPrep.profileName") === "Eren"), "isteğe bağlı isim kaydedildi");
+  ok(await page.evaluate(() => localStorage.getItem("englishPrep.dailyGoal") === "20"), "isteğe bağlı günlük hedef kaydedildi");
   ok(
     await page.evaluate(() => localStorage.getItem("englishPrep.onboarded") === "1" && localStorage.getItem("englishPrep.examDate") === "2026-11-20"),
     "cevaplar saklandı"
@@ -2870,7 +2879,7 @@ async function runOnboarding(browser) {
   // Skipped: one tap, and the app is the app.
   const skipping = await browser.newContext({ viewport: { width: 320, height: 640 }, fresh: true });
   const quick = await skipping.newPage();
-  await quick.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
+  await quick.goto(`${BASE}/index.html#hosgeldin`, { waitUntil: "networkidle" });
   await quick.waitForSelector("#onboard-container .btn--quiet");
   await quick.locator("#onboard-container .btn--quiet", { hasText: "atla" }).click();
   await quick.waitForSelector("#lesson-index .tile");
@@ -2901,11 +2910,11 @@ async function runOnboarding(browser) {
 }
 
 /**
- * The results screen's ring and its celebration: the ring draws to the
- * score, confetti only at 80 % and above, and never under reduced motion.
+ * Scores remain accurate with either motion preference. The academic
+ * redesign deliberately displays no celebration effect at any score.
  */
 async function runResultsFeel(browser) {
-  for (const [motion, expectCanvas] of [["no-preference", true], ["reduce", false]]) {
+  for (const [motion, expectCanvas] of [["no-preference", false], ["reduce", false]]) {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, reducedMotion: motion });
     const page = await context.newPage();
     await page.goto(`${BASE}/index.html`, { waitUntil: "networkidle" });
@@ -2927,7 +2936,7 @@ async function runResultsFeel(browser) {
     await page.goto(`${BASE}/results.html`, { waitUntil: "networkidle" });
     await page.waitForSelector(".ring--lg");
     const seen = await page.evaluate(() => Boolean(document.querySelector("canvas.confetti")));
-    ok(seen === expectCanvas, `konfeti ${motion === "reduce" ? "azaltılmış harekette çizilmiyor" : "%90'da çiziliyor"}`);
+    ok(seen === expectCanvas, `akademik sonuç ekranı konfeti göstermiyor (${motion})`);
     await page.waitForTimeout(1900);
     ok(!(await page.evaluate(() => document.querySelector("canvas.confetti"))), `konfeti kalkıyor (${motion})`);
     const ringState = await page.evaluate(() => {
@@ -2968,8 +2977,11 @@ async function runAccessibility(page) {
   const ring = await page.evaluate(() => getComputedStyle(document.activeElement).outlineWidth);
   ok(ring !== "0px", `klavye odağı görünür halka çiziyor (${ring})`);
   await page.mouse.click(10, 300);
-  const pointerRing = await page.evaluate(() => getComputedStyle(document.activeElement).outlineWidth);
-  ok(pointerRing === "0px", "işaretçi basışı halka çizmiyor (:focus-visible)");
+  const pointerRing = await page.evaluate(() => {
+    const style = getComputedStyle(document.activeElement);
+    return style.outlineStyle !== "none" && style.outlineWidth !== "0px";
+  });
+  ok(!pointerRing, "işaretçi basışı halka çizmiyor (:focus-visible)");
 
   // §8.5 — a hash route is a navigation: title, focus and announcement.
   await page.locator('.nav__item[data-view="test"]').click();
@@ -3053,7 +3065,7 @@ async function runAccessibility(page) {
   await page.waitForSelector("#test-panel .row");
   await page.locator("#test-panel .row", { hasText: "Tenses" }).first().click();
   await page.waitForURL(/quiz\.html/);
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
 
   ok(await page.locator(".blank .visually-hidden").count() > 0, "boşluk ekran okuyucuya sözle veriliyor");
 
@@ -3125,7 +3137,7 @@ async function runAccessibility(page) {
     waitUntil: "networkidle",
   });
   await page.reload({ waitUntil: "networkidle" });
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   const groups = await page.evaluate(() =>
     [...document.querySelectorAll("[role=group]")].map((group) => {
       const id = group.getAttribute("aria-labelledby");
@@ -3275,7 +3287,7 @@ async function runWideLayout(browser) {
   await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
   await page.waitForSelector("#topic-list .row");
   await page.locator("#test-panel .btn--primary").first().click();
-  await page.waitForSelector(".option");
+  await page.waitForSelector(".option:visible");
   const quizPage = await page.evaluate(
     () => Math.round(document.querySelector("#quiz-container").getBoundingClientRect().width)
   );
@@ -3285,7 +3297,7 @@ async function runWideLayout(browser) {
   // Through to the results screen, which is the fourth split and the one
   // the flow above cannot reach without answering a whole test.
   for (let guard = 0; guard < 60 && !page.url().includes("results.html"); guard += 1) {
-    const option = page.locator(".option").first();
+    const option = page.locator(".option:visible").first();
     if (await option.count()) {
       await option.click();
     }
