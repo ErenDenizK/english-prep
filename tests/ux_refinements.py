@@ -49,18 +49,15 @@ class UXRefinementTests(unittest.TestCase):
         name = self.page.locator('#profile-name')
         name.fill('Ada')
         name.press('Tab')
-        expect(self.page.locator('#profile-exam-date')).to_be_focused()
+        backup = self.page.get_by_role('button', name='Yedek al', exact=True)
+        expect(backup).to_be_focused()
         expect(self.page.locator('#profile-container h1')).to_have_text('Ada')
-        expect(self.page.locator('#profile-exam-date')).to_be_focused()
+        expect(backup).to_be_focused()
         name.fill('Ada Lovelace')
         name.evaluate('node => { node.focus(); node.setSelectionRange(4, 8, "backward"); node.dispatchEvent(new Event("change", {bubbles:true})); }')
         expect(self.page.locator('#profile-container h1')).to_have_text('Ada Lovelace')
         self.assertEqual(name.evaluate('node => [document.activeElement === node, node.selectionStart, node.selectionEnd, node.selectionDirection]'), [True, 4, 8, 'backward'])
-        goal = self.page.locator('[aria-labelledby="profile-goal-label"] [data-value="20"]')
-        goal.click()
-        expect(self.page.locator('.hero__figure')).to_contain_text('Günde 20 soru')
-        expect(goal).to_be_focused()
-        expect(goal).to_have_attribute('aria-pressed', 'true')
+        expect(self.page.locator('#profile-exam-date, #profile-goal-label')).to_have_count(0)
         # A user can move to a generated listbox before the async repaint.
         # Its internal value ID changes, but the persistent field label does not.
         name.evaluate('node => { node.value = "Ada L."; node.dispatchEvent(new Event("change", {bubbles:true})); document.querySelector("#profile-container [role=combobox]").focus(); }')
@@ -130,8 +127,9 @@ class UXRefinementTests(unittest.TestCase):
         self.page.add_init_script('''Object.defineProperty(navigator, 'canShare', {configurable:true, value:() => true});
           Object.defineProperty(navigator, 'share', {configurable:true, value:async () => {throw new DOMException('cancel', 'AbortError');}});''')
         self.page.goto(BASE + '/index.html#profil')
-        self.page.get_by_role('button', name='Yedek al', exact=True).click()
-        expect(self.page.locator('#profile-container [role="status"]')).to_have_text('Paylaşım iptal edildi.')
+        backup = self.page.get_by_role('button', name='Yedek al', exact=True)
+        backup.click()
+        expect(backup.locator('..').get_by_role('status')).to_have_text('Paylaşım iptal edildi.')
 
     def test_topic_labels_match_launched_test_instead_of_entire_pool(self):
         self.page.goto(BASE + '/index.html#test')

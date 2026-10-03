@@ -66,7 +66,7 @@ export function renderAnswerFeedback(question, correct, { withTip = true, select
     const word = el("strong", "t-en", selected);
     word.lang = "en";
     line.appendChild(word);
-    line.appendChild(document.createTextNode(": "));
+    line.appendChild(document.createTextNode(/[.!?]["'’”)]?$/.test(selected.trim()) ? " " : ": "));
     appendInline(line, note);
     block.appendChild(line);
   }
@@ -147,7 +147,7 @@ export function answerAnnouncement(question, correct, selected = null) {
   const parts = ["Yanlış. Doğru cevap: ", { en: question.correctAnswer }, ". ", question.explanation];
   const note = selected ? question.optionNotes?.[selected] : null;
   if (note) {
-    parts.push(" ", { en: selected }, ": ", note);
+    parts.push(" ", { en: selected }, /[.!?]["'’”)]?$/.test(selected.trim()) ? " " : ": ", note);
   }
   return parts;
 }

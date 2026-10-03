@@ -28,7 +28,7 @@ export function renderPrompt(question, { lead = true, idSuffix = null } = {}) {
 
   const instruction = INSTRUCTION[question.type];
   if (instruction) {
-    fragment.appendChild(el("p", "t-meta", instruction));
+    fragment.appendChild(el("p", "t-quiet question-instruction", instruction));
   }
 
   // appendBlanked is right for both: a restatement's sentence has no

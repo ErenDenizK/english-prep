@@ -2,8 +2,7 @@
 // and in an Eğitim check, because a learner should not have to relearn
 // what an option looks like when they cross between the two.
 //
-// The whole row is the target, at reading size, in the serif: options are
-// English, and English is the serif everywhere in this app. Once answered
+// The whole row is the target, using the shared reading role. Once answered
 // the rows stay focusable with aria-disabled rather than going `disabled`,
 // which would drop them out of the tab order and out of the contrast
 // requirements at exactly the moment the learner wants to read them.

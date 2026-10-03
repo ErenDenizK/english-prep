@@ -4,7 +4,7 @@
 // palette is measured rather than picked: an icon that exists only as a
 // binary blob is an icon nobody can change without redoing it from
 // nothing. Everything here comes from the design system's own tokens and
-// from js/icons.js, so the icon is the app's icon by construction.
+// self-hosted typeface, so the mark remains reproducible.
 //
 // The outputs are committed. Run this only when the design changes:
 //
@@ -50,7 +50,7 @@ if (!chromium) {
 }
 
 /**
- * The icon: the app's own book glyph, amber on the app's near-black.
+ * The icon: the ep. wordmark, primary ink and blue on the app's charcoal.
  *
  * Not a rounded square with a margin — iOS and Android both apply their
  * own mask, and a shape that has already rounded itself ends up with two
@@ -60,15 +60,13 @@ if (!chromium) {
 const ICON_PAGE = (size) => `
 <!doctype html><meta charset="utf-8">
 <style>
-  html, body { margin: 0; width: ${size}px; height: ${size}px; }
-  body { background: #0c1117; display: grid; place-items: center; }
-  svg { width: ${Math.round(size * 0.62)}px; height: ${Math.round(size * 0.62)}px; color: #f1af5d; }
+  @font-face { font-family: Inter; src:url('../assets/fonts/InterVariable.woff2'); font-weight:100 900; }
+  html, body { margin:0; width:${size}px; height:${size}px; }
+  body { background:#121416; display:grid; place-items:center; }
+  .mark { color:#e4e6e7; font:600 ${Math.round(size * .42)}px/1 Inter,sans-serif; letter-spacing:-.06em; transform:translateY(-.035em); }
+  .mark span { color:#c4d7e7; }
 </style>
-<div id="host"></div>
-<script type="module">
-  import { icon } from "../js/icons.js";
-  document.getElementById("host").appendChild(icon("book-fill", { size: ${Math.round(size * 0.62)} }));
-</script>`;
+<div class="mark" id="brand-mark">ep<span>.</span></div>`;
 
 /**
  * The link-preview card. This app is distributed by pasting a URL into a
@@ -77,47 +75,34 @@ const ICON_PAGE = (size) => `
  */
 const CARD_PAGE = `
 <!doctype html><meta charset="utf-8">
-<link rel="stylesheet" href="../css/fonts.css">
 <style>
-  html, body { margin: 0; width: 1200px; height: 630px; }
-  body {
-    background: #0c1117; color: #e9ecef;
-    font-family: "Source Sans 3", system-ui, sans-serif;
-    display: grid; align-content: center; gap: 28px;
-    padding: 0 96px; box-sizing: border-box;
-  }
-  h1 {
-    margin: 0; font-family: "Source Serif 4", Georgia, serif; font-weight: 400;
-    font-size: 96px; line-height: 1; letter-spacing: -0.015em;
-  }
-  .rule { width: 96px; height: 4px; background: #f1af5d; border-radius: 999px; }
-  p { margin: 0; font-size: 34px; line-height: 1.4; color: #d0d4da; max-width: 22ch; }
-  .glyph { position: absolute; right: 96px; bottom: 84px; color: #f1af5d; }
+  @font-face { font-family:Inter; src:url('../assets/fonts/InterVariable.woff2'); font-weight:100 900; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; width:1200px; height:630px; }
+  body { background:#121416; color:#e4e6e7; font-family:Inter,sans-serif; padding:64px 80px; display:grid; align-content:space-between; }
+  .brand { font-size:32px; font-weight:600; letter-spacing:-1px; }
+  h1 { font-size:76px; line-height:1.12; font-weight:600; letter-spacing:-3px; margin:0; }
+  span { color:#c4d7e7; }
+  p { font-size:28px; color:#b4bcc3; margin:0; }
 </style>
-<h1>English Prep</h1>
-<div class="rule"></div>
-<p>Üniversite İngilizce yeterlik sınavı için ders ve test.</p>
-<div class="glyph" id="glyph"></div>
-<script type="module">
-  import { icon } from "../js/icons.js";
-  document.getElementById("glyph").appendChild(icon("book-fill", { size: 160 }));
-</script>`;
+<div class="brand" id="brand-mark">english prep<span>.</span></div>
+<h1>Bildiğin İngilizce.<br><span>Daha net ayrımlar.</span></h1>
+<p>Oku. Ayırt et. Uygula.</p>`;
 
-const browser = await chromium.launch();
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH });
 const written = [];
 
 // The generator pages are written into the repo and served, rather than
 // injected with setContent: a page created that way has no origin, so its
-// module import of js/icons.js — the whole point of generating rather than
-// hand-drawing — is refused. They are deleted again below.
+// local font URLs must resolve against the app origin. They are deleted again below.
 const SCRATCH = "icons/_render.html";
 const CARD_SCRATCH = "icons/_card.html";
 
 async function shoot(url, width, height, file) {
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
   await page.goto(url, { waitUntil: "networkidle" });
-  await page.waitForFunction(() => document.querySelector("svg") !== null);
-  // The webfont lands after the module does.
+  await page.waitForSelector("#brand-mark");
+  // Wait for the self-hosted face, not a fallback rendering.
   await page.evaluate(() => document.fonts?.ready);
   await page.waitForTimeout(200);
   await writeFile(join(ROOT, file), await page.screenshot());

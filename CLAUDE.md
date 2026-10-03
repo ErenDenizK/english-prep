@@ -2,6 +2,19 @@
 
 Context for Claude sessions working in this repository.
 
+## Current presentation (v0.67)
+
+For current UI work, [ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md)
+and [Margin system](docs/margin-design-system.md) supersede the historical
+visual values below. The working interface uses role-based Inter typography,
+a measured cool-neutral dark palette, a finite decorative atmosphere outside
+reading, and one optional introduction (Education/Test + optional name).
+Exam dates, daily goals, streaks and absence reminders are no longer UI.
+Their stored values remain backward-compatible. Articles and tests, the
+source material, fixed-shell behavior, no runtime dependencies, and the
+preserved original are unchanged. New PWA/content-cache tests are in
+`tests/reading_system.py`; installation support is in `js/install.js`.
+
 ## What this is
 
 A static, mobile-first web app for Turkish university English prep-school

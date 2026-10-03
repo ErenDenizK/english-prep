@@ -1,83 +1,89 @@
-# Margin: interface system · v0.66
+# Margin: interface system · v0.67
 
-Margin is the current English Prep interface. [css/editorial.css](../css/editorial.css) is the production extension over the inherited [css/style.css](../css/style.css); actual values and rendered behavior take precedence over this summary. [design-system.md](design-system.md) preserves the source specification. [EXPERIENCE.md](EXPERIENCE.md) describes the learner's journeys, and [RESEARCH.md](RESEARCH.md) separates evidence from design decisions.
+Margin is English Prep's current interface. [ADR 006](adr/006-reading-hierarchy-and-atmosphere.md) records the accepted typography, color and atmosphere decisions and their alternatives. This summary describes that implementation; [css/editorial.css](../css/editorial.css) supplies the actual values over the inherited [css/style.css](../css/style.css). The older [design-system.md](design-system.md) remains historical source documentation. [EXPERIENCE.md](EXPERIENCE.md) describes the learning journeys.
 
 ## Direction and themes
 
-The primary experience is a quiet, dark academic reading space: neutral charcoal planes, warm text, readable supporting information, restrained orange emphasis, and distinct English examples. [Raycast](reference/refero-design.md) informs dark surfaces; [Home](reference/design_home/DESIGN.md) and [Ventriloc](reference/design_ventriloc/DESIGN.md) inform grouping and the light palette; [Monopo](reference/design_monopo/DESIGN.md) informs typographic confidence and space. These references are aesthetic inputs, not evidence of learning effectiveness.
+The working interface is a dark academic reading space with neutral charcoal surfaces, a blue-gray interactive accent, distinct text roles and quiet answer-state colors. The supplied visual references inform character and spacing; they do not prove readability or educational effectiveness.
 
-A fresh visit starts **dark**, including when the operating system is light. Profil offers **Koyu, Açık, and Sistem**. Existing explicit choices survive upgrades; System is itself stored and follows operating-system changes live. The blocking head scripts and shared theme module agree across index, quiz, and results, including browser chrome. If storage fails, the current document can still apply a chosen theme. Warm-paper light mode remains a complete supported choice.
+New visits start dark. Profil retains **Koyu, Açık and Sistem**, including existing explicit preferences. System follows operating-system changes; storage failure still allows a document-local choice. The neutral light counterpart retains the same role hierarchy, while dark is the primary design and review target. Neither theme is claimed to be universally more comfortable.
 
 ## Semantic palette
 
 | Role / token | Dark, default | Light |
 | --- | --- | --- |
-| Canvas `--page` | `#111316` | `#f5f3ed` |
-| Surface `--card` | `#191c20` | `#fffefa` |
-| Selected/recessed surface `--raised` | `#24282d` | `#eae8df` |
-| Main text `--ink` | `#f0eee7` | `#242720` |
-| Supporting text `--ink-2` | `#d0d2cc` | `#5d6255` |
-| Decorative separator `--hairline` | `#363c44` | `#d9dacf` |
-| Essential boundary `--edge` | `#838993` | `#7b8270` |
-| Primary action `--accent` | `#e9e7df` | `#2a3026` |
-| Primary label `--accent-ink` | `#232620` | `#fffdf6` |
-| Accent text `--accent-text` | `#efbc99` | `#8c4328` |
-| Focus `--focus` | `#f1bb93` | `#9b4722` |
-| Correct / tint | `#9bd0af` / `#1c3024` | `#286240` / `#e4eee5` |
-| Incorrect / tint | `#f1a1a1` / `#352024` | `#a13b39` / `#f6e7e3` |
-| Reading contrast block `--editorial-wash` | `#20262c` | `#e6e9dc` |
-| Decorative mark `--editorial-mark` | `#e9895b` | `#c85a31` |
+| Canvas `--page` | `#121416` | `#f5f6f7` |
+| Surface `--card` | `#1b1e21` | `#ffffff` |
+| Raised surface `--raised` | `#262a2e` | `#e9ecef` |
+| Main text `--ink` | `#e4e6e7` | `#24292e` |
+| Supporting text `--ink-2` | `#b4bcc3` | `#505962` |
+| Decorative separator `--hairline` | `#343a40` | `#d9dee3` |
+| Essential boundary `--edge` | `#737e86` | `#707a83` |
+| Primary action / label | `#c4d7e7` / `#18232c` | `#293945` / `#ffffff` |
+| Accent text / focus | `#b8cee1` | `#3c617d` |
+| Selected tint `--accent-tint` | `#242c33` | `#e8eef3` |
+| Correct marker / tint | `#a4c3af` / `#202b28` | `#356349` / `#eef3ef` |
+| Incorrect marker / tint | `#d9a8ae` / `#2b2528` | `#88434d` / `#f6eff0` |
 
-Do not substitute a decorative hairline for an essential field boundary. Correctness also uses words and marks; no meaning depends only on hue. Surfaces have restrained depth without glass blur, glow, or decorative looping movement.
+Main ink carries lesson prose, examples, answers and rationales. Supporting ink is for short annotations, context and metadata; the second paragraph of a teaching pair does not automatically become secondary text. Answer sentences keep main ink in every state. A subdued fill, check/cross and literal verdict express correctness without large saturated red or green paragraphs. Essential input/control edges remain distinct from optional decorative rules.
 
-The production palette checker measures **112 foreground/background pairs**. Minimum ratios across its applicable surfaces are 12.08:1 dark / 11.88:1 light for prose, 9.20:1 / 4.92:1 for supporting text, and 3.98:1 / 3.12:1 for essential boundaries. Filled-action labels measure 12.38:1 / 13.32:1. These are scoped token measurements, not whole-page accessibility certification. APCA values are additional diagnostics; they do not replace WCAG criteria.
+The selected dark palette's source calculations give minimum primary/supporting text ratios of **11.31:1 / 7.36:1** across its intended opaque surfaces. These are scoped calculations from the [color and motion report](research/2026-10-04-color-motion-evidence.md), not a whole-app accessibility result. The production [palette checker](../tools/editorial-palette.mjs) must also measure actual stylesheet roles and the atmosphere's conservative overlap bound. APCA supplements WCAG 2 contrast; it does not replace it or establish reading comfort. Final integrated results belong in [VALIDATION.md](VALIDATION.md).
 
 ## Typography and reading
 
-Inter is self-hosted for Turkish prose, navigation, controls, and headings. English examples, prompts, options, and review material use the existing self-hosted Source Serif 4. Both retain fallback fonts and `font-display: swap`. Font roles use relative sizes so a root-font preference can enlarge them; pixel equivalents below assume a 16px browser default.
+**Inter is the working family for both languages.** English retains `lang="en"`; language is not a font role. The bundled variable font supplies real weights, with local fallbacks and `font-display: swap`. The serif assets remain available to the preserved original; the new working interface does not require them to distinguish every English sentence.
 
-| Role | Size and treatment |
-| --- | --- |
-| UI body / metadata tokens | `1rem` / `0.875rem`; token leading `1.75rem` / `1.375rem`. |
-| Introduction | `2.125rem` mobile, `2.375rem` wide; `1.875rem` below 360px. Approximately 1.18 leading. |
-| Article title | `2rem` mobile, `2.5rem` wide, `1.75rem` below 360px; medium weight. |
-| Turkish article summary | Inter `1.125rem`, 1.6 leading. |
-| Turkish article body | `1.0625rem` (17px), including 320px; `1.125rem` wide. Leading 1.77–1.78. |
-| Article section labels | `1rem`, semibold, sentence case; distinguish instructional headings from compact metadata. |
-| English lesson examples | `1.1875rem` mobile / `1.3125rem` wide; 1.75 leading. |
-| Question prose | `1.3125rem` mobile / `1.4375rem` wide; `1.25rem` below 360px; 1.75 leading. |
-| Answer options | `1.1875rem`, reducing to `1.125rem` below 360px; 1.65 leading. |
-| Answer rationale | Inter `1.0625rem`, 1.77 leading. |
-| Controls and supporting prose | Generally `0.875–1rem`; native input text `1rem`. Small supplementary labels have their own roles. |
+This decision follows official-source comparisons and actual-font/browser alternatives, not a rule that every application needs one family. [Typography evidence](research/2026-10-04-typography-evidence.md) includes a viable serif-title alternative and the wrap costs of a serif reading lane. Equal CSS font sizes do not have equal optical size.
 
-Prose stays within a bounded reading column, with a `64ch` cap where applicable. `ch` is a CSS measure, not an exact character count in proportional text. Keep paragraphs left aligned, emphasis purposeful, and counters tabular. Do not shrink the teaching text to fit a narrow screen or hide an explanation with truncation.
+Role values assume a 16px browser default; relative sizes honor user enlargement.
+
+| Role | Size / leading / weight | Application |
+| --- | --- | --- |
+| Page title | 30/36 mobile; 36/43 wide; 600 | Study introduction and article H1. |
+| Major panel title | 24/31–34; 600 | Topic/panel hierarchy below the main page title. |
+| Instructional section | 20/28; 600 | Lesson H2, check heading, principal UI sections. |
+| Form/group label | 16/24; 600 | `.lesson-form-label`, sentence case, primary ink. |
+| Pattern | 18/30; 500 | `.lesson-pattern`, distinct from the actual example. |
+| Reading text | 18/30; 400 | Prose, examples, options, feedback and review explanations. |
+| Question stem | 20/32; 400 | The source text the learner must evaluate. |
+| Short annotation / help | 16/25–26; 400 | `.lesson-use`, `.question-instruction`, settings help. |
+| Control / field | 16/22–24; 600 control, 400 field | Actions and editable inputs. |
+| Counter / short metadata | 14/20–22; 400–600 | Counts, compact category context; not teaching paragraphs. |
+
+Semantic classes distinguish form name, pattern, use and example. A broad selector must not collapse headings, annotations and body paragraphs into one size. Mixed-language inline text inherits its paragraph's role. Emphasis is purposeful, and counters are tabular.
+
+Within a teaching pair, use 8px; separate independent example units by 28px and repeated form rows by 16px. A form label sits closer to its first pattern than to the previous group. Sections use 40px mobile / 48px wide separation and approximately 12px between their heading and content. These relationships replace repetitive article rules. Topic initials and ornamental miniature progress bars are removed; real progress information stays available.
 
 ## Layout and geometry
 
-The inherited fixed frame surrounds one scrolling content region, with a header and bottom navigation or contextual action bar. Mobile gutters are 24px, reducing to 16px below 360px. At **1080px width and 600px height**, suitable screens gain a 300px companion pane within the 988px maximum frame; the inner reading column remains 592px. Articles and quizzes remain single-column. Screen size, browser zoom, text growth, and short landscape windows must be considered together.
+The fixed shell contains one scrolling region, with a header and bottom navigation or contextual action bar. Mobile gutters are 24px, reducing to 16px below 360px. At **1080px width and 600px height**, suitable screens gain a 300px companion pane within the 988px maximum frame. The inner reading column stays approximately 592px; articles and quizzes remain single-column. A `ch` cap, where present, is a CSS glyph measure rather than a literal character count.
 
-Buttons generally use 8px corners, fields 7px, selections 6px, and surfaces 10–14px. Essential controls use `--edge`; visual grouping can use quieter separators. Standard spacing clusters related controls more closely than separate sections. Minimum control heights allow content to grow: 44px icon/choice targets, 48px standard controls, 52px primary actions, and 58px answer rows.
+Buttons generally use 8px corners, fields 7px, selections 6px and surfaces 10–14px. Minimum heights allow content to grow: 44px icon/choice targets, 48px standard controls and 52px primary actions. Answer rows reserve a final verdict column **before** answering so adding the mark cannot reduce text width and trigger new wrapping. Their text and fixed action bar must remain stable through feedback.
+
+An inline check has one surface. Feedback does not add another nested bordered/padded card. In the measured 390px comparison this recovered 42px of feedback width; typography is not the only contributor to reading layout. Recheck the final geometry with long content, enlarged text and short viewports.
 
 ## Component and state contracts
 
 | Component | Required behavior |
 | --- | --- |
-| Navigation | Eğitim/Test remain peers; Profil belongs in the header. Preserve route context, active state, browser Back, and visible focus. |
-| Curriculum | Real corpus totals, useful reading/resume action, searchable topic/lesson context, and empty-search feedback. No invented progress. |
-| Fields and choice menus | Visible labels/boundaries and keyboard operation. Menus stay reachable above fixed chrome; active options scroll into view. |
-| Article and pretest | Continuous source article. Native pretest disclosure starts collapsed. Inline checks are optional and unscored; neither gates reading. |
-| Answer and feedback | One press commits an answer. Show the rationale, chosen-option note, and transferable rule until explicit continuation. Preserve feedback and option order after a valid same-tab refresh. |
-| Results | Actual answered-question score and review. Stable attempt IDs update a matching partial attempt rather than counting the same session again. |
-| Profile | Actual progress, optional goals, settings, clear empty states, and explicit confirmation for reset. No claim of universal exam readiness. |
-| Restore dialog | Focus the visible heading with `tabindex="-1"` on opening, then follow normal keyboard order. Keep native Escape and opener restoration. File/paste review precedes merging; failures remain actionable in the open dialog. |
-| Backup and recovery | Honor share cancellation, preserve local explicit preferences, restore a missing daily goal, and report storage failures. Keep the reviewed backup available for retry. |
+| Navigation | Eğitim/Test remain peers; Profil belongs in the header. Preserve route context, browser Back, active state and visible focus. |
+| Introduction | One short explanation of the two modes and an optional name; no exam date, goal, streak or absence-reminder setup. |
+| Curriculum | Actual corpus totals, useful reading/resume action, search and empty-result feedback. No invented progress. |
+| Fields and menus | Visible labels, keyboard operation and reachable menus above fixed chrome; active options scroll into view. |
+| Article / pretest | Continuous source article; initially collapsed, optional pretest; unscored inline checks do not gate reading. |
+| Answer / feedback | One press commits; keep rationale and selected-option explanation available until continuation. Valid same-tab refresh preserves order and feedback. |
+| Results | Actual answered-question score and review; stable attempt IDs advance partial history without duplication. |
+| Profile | Real progress, optional name, appearance, practice preference, local-data controls and install/about access. Removed date/goal/streak/reminder controls do not return here. |
+| Restore | Native dialog, visible initial focus, review before merging, actionable failure/retry and honest rollback limits. |
+| Legacy data | Preserve old backup/storage fields, including dates and goals, without exposing removed features in the new UI. |
+| Branding / install | Restrained `ep.` identity, editable `/about/`, install guidance and a native install action only when supported. No automatic install interruption. |
 
-The active quiz snapshot is scoped to its browser tab and validated against current content. It is not a cross-device resume service. Restore uses staged writes and attempted rollback because localStorage has no multi-key transaction; incomplete rollback is reported honestly. See [EXPERIENCE.md](EXPERIENCE.md) for these boundaries.
+Quiz snapshots are tab-local and validated against current content, not a cross-device resume service. Restore stages writes and attempts rollback because localStorage has no multi-key transaction. These boundaries and the unchanged backup format are described in [EXPERIENCE.md](EXPERIENCE.md).
 
-## Motion, focus, and verification
+## Atmosphere, motion and verification
 
-A short entering-surface fade and approximately 180–220ms control transitions establish changes without delaying interaction. Correct/incorrect shake and pop effects are suppressed. Reduced motion disables nonessential animation, transitions, smooth scrolling, and press translation. Forced-color presentation retains control and state visibility.
+A decorative blue/teal radial atmosphere sits behind the non-reading canvas. Each stop is capped at 6% alpha. It performs **one 3.6-second settle of at most 8px**, then remains static; there is no loop, route-triggered restart, pulsation or scroll parallax. Article and quiz scrolling surfaces remain opaque. The effect is hidden in light mode; reduced motion removes its animation, and forced colors removes the decoration.
 
-Use the visible 2px focus outline with a 4px offset where specified, and keep the focused object within the visible scrolling region. An outline token alone does not prevent focus from being hidden behind fixed chrome. Native buttons, disclosures, forms, and dialogs remain the semantic foundation.
+State changes use short fades/transitions without delaying interaction. Answer shake/pop effects stay suppressed. Reduced motion also disables nonessential transitions, smooth scrolling and press translation. Use the visible focus outline and keep the actual focused object clear of fixed chrome; a contrast-compliant outline alone cannot ensure this.
 
-`npm run color` includes [editorial-palette.mjs](../tools/editorial-palette.mjs). Browser checks must also exercise dark/light/System, 320px reflow, enlarged text and spacing overrides, short dialogs, keyboard routes, choice-menu positioning, article/quiz feedback, reduced motion, and offline assets. Current observations live in [type-color.md](audit/type-color.md) and [interaction-accessibility.md](audit/interaction-accessibility.md); their stated test limits matter.
+[ADR 006](adr/006-reading-hierarchy-and-atmosphere.md) defines the acceptance checks. The [screen hierarchy audit](research/2026-10-04-screen-hierarchy.md) records baseline/prototype defects; it is not a final pass claim. Verify the integrated implementation with `npm run check`, the repository browser sweep, 320px reflow, enlarged text/spacing, short dialogs, keyboard routes, option stability, final animation count, and offline/install/about paths. Record outcomes separately in [VALIDATION.md](VALIDATION.md); passing calculations cannot override the learner's reported reading experience.

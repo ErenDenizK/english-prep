@@ -82,7 +82,11 @@ const LANDING_BUDGET_SCREENS = 3.6;
  * same longest topic. The quarter is those two changes and nothing else;
  * the next thing that lands here pays for itself.
  */
-const TOPIC_BUDGET_SCREENS = 5.25;
+// v0.67: topic introductions now share the readable 18/30 teaching role.
+// Same longest source topic measured 3503px / 5.47 screens at320, after
+// removing decorative topic marks. Keep the text and a bounded 5.6 budget;
+// do not shrink instructional prose to satisfy the old 16px-era budget.
+const TOPIC_BUDGET_SCREENS = 5.6;
 
 const VIEWPORTS = [
   { name: "320 (dar telefon)", width: 320, height: 640 },
@@ -249,8 +253,7 @@ async function auditLayout(page, label, width, { maxScreens, catalogue = false }
           wrapped.push(`"${node.textContent.trim()}" ${Math.round(box.height)}px`);
         }
       }
-      // The editorial UI uses Inter's variable weights and a distinct serif
-      // reading scale. Contrast is measured separately by the palette checks;
+      // ADR 006 uses named roles in Inter with variable weights. Contrast is measured separately by the palette checks;
       // here the actual rendered typography must stay on the authored scale.
       const sizes = new Set();
       const badPairs = new Set();
@@ -1086,7 +1089,7 @@ async function runEmptiedBook(browser) {
 
   ok(
     (await page.evaluate(async () => {
-      const storage = await import("/js/storage.js");
+      const storage = await import("./js/storage.js");
       return storage.getMistakeBook().length;
     })) === 0,
     "ikinci ayrı gün soruyu defterden düşürdü"
@@ -1375,7 +1378,7 @@ async function runComponents(browser) {
       `${width}px: restatement seçenekleri çiziliyor`
     );
     ok(
-      (await page.locator("#restatement .t-meta").textContent()).includes("anlamca en yakın"),
+      (await page.locator("#restatement .question-instruction").textContent()).includes("anlamca en yakın"),
       `${width}px: restatement yönergesi görünüyor`
     );
 
@@ -1475,8 +1478,8 @@ async function runBackupRoundTrip(browser) {
   await first.waitForURL(/results\.html/);
 
   const backup = await first.evaluate(async () => {
-    const storage = await import("/js/storage.js");
-    const backupModule = await import("/js/backup.js");
+    const storage = await import("./js/storage.js");
+    const backupModule = await import("./js/backup.js");
     return JSON.stringify(backupModule.buildBackup(storage.exportState()));
   });
   ok(JSON.parse(backup).data.history.attempts.length === 1, "yedek gerçek ilerlemeyi taşıyor");
@@ -1817,8 +1820,7 @@ async function runIndexStates(browser) {
   ok(!view.text.includes("hatırla"), "aynı gün dönüşte hatırlatma teklifi çıkmıyor");
   await view.context.close();
 
-  // 3 — back after a gap. What is OFFERED changes; nothing is said about
-  // the absence.
+  // 3 — a gap does not introduce a reminder; saved reading remains available.
   view = await open(
     new Function(
       `(${partway.toString()})();` +
@@ -1828,9 +1830,13 @@ async function runIndexStates(browser) {
         `localStorage.setItem("englishPrep.seenVersions", JSON.stringify({ tenses: 1 }));`
     )
   );
-  ok(view.text.includes("Önce 5 soruyla hatırla"), "aradan zaman geçince önce hatırlatma teklif ediliyor");
-  ok(view.text.includes("Kaldığın yerden devam et"), "devam etme yolu duruyor");
-  ok(/yeni sorular eklendi/.test(view.text), "dönene yeni içerik haberi veriliyor");
+  ok(!view.text.includes("hatırla"), "aradan zaman geçince hatırlatma eklenmiyor");
+  ok(view.text.includes("Devam et"), "aradan sonra da kaydedilmiş derse devam edilebiliyor");
+  await view.page.locator("#view-egitim .study-intro .btn--primary").click();
+  await view.page.waitForSelector(".lesson");
+  ok(view.page.url().includes("tenses-present-simple-vs-present-continuous"), "devam eylemi kaydedilmiş gerçek dersi açıyor");
+  await view.page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
+  await view.page.waitForSelector(".study-intro");
   // Scoped to the card. The lesson summaries below it say "her gün" for
   // perfectly good reasons of their own.
   const card = await view.page.locator("#view-egitim .study-intro").first().textContent();
@@ -1854,8 +1860,8 @@ async function runIndexStates(browser) {
         ).replace('"PLACEHOLDER"', "new Date(Date.now() - 21 * 86400000).toISOString()")}] }));`
     )
   );
-  ok(view.text.includes("Kısa bir hatırlatma"), "yarım ders yokken de dönüş kartı çıkıyor");
-  ok(view.text.includes("Sıradaki derse geç"), "yarım ders yokken ileri giden bir yol var");
+  ok(!view.text.includes("hatırlatma"), "yarım ders yokken zaman aralığı hatırlatma üretmiyor");
+  ok(view.text.includes("Sıradaki") || view.text.includes("Devam et"), "yarım ders yokken sıradaki ders için bir yol var");
   ok(!view.text.includes("Kaldığın yer"), "olmayan bir kaldığın yer iddia edilmiyor");
   ok(/dersten \d+ tanesi tamamlandı/.test(view.text), "ilerleme kartın içinde, bir gerçek olarak duruyor");
   await auditLayout(view.page, "dönüş, yarım ders yok", 320, { maxScreens: LANDING_BUDGET_SCREENS });
@@ -2658,7 +2664,7 @@ async function runThemes(browser) {
     const state = await paint(page);
     ok(state.theme === "light", `${path}: kayıtlı tercih ilk boyadan önce uygulanıyor (${state.theme})`);
     ok(luminance(state.background) > 200, `${path}: açık temada zemin açık (${state.background})`);
-    ok(state.themeColor === "#f5f3ed", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
+    ok(state.themeColor === "#f5f6f7", `${path}: theme-color açık zemini söylüyor (${state.themeColor})`);
     ok(state.colorScheme === "light", `${path}: color-scheme açık (${state.colorScheme})`);
     await context.close();
   }
@@ -2673,7 +2679,7 @@ async function runThemes(browser) {
       const state = await paint(page);
       ok(state.theme === "dark", `${path}: yeni ziyaret ${scheme} sistemde de koyu`);
       ok(luminance(state.background) < 60, `${path}: varsayılan zemin koyu (${state.background})`);
-      ok(state.themeColor === "#111316" && state.colorScheme === "dark", `${path}: varsayılan tarayıcı rengi koyu`);
+      ok(state.themeColor === "#121416" && state.colorScheme === "dark", `${path}: varsayılan tarayıcı rengi koyu`);
       await context.close();
     }
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: "light" });
@@ -2682,9 +2688,9 @@ async function runThemes(browser) {
     await page.goto(`${BASE}/${path}`, { waitUntil: "networkidle" });
     let state = await paint(page);
     ok(state.theme === null && luminance(state.background) > 200, `${path}: kayıtlı sistem tercihi açık telefonu izliyor`);
-    ok(state.themeColor === "#f5f3ed" && state.colorScheme === "light", `${path}: sistem tarayıcı rengi açık`);
+    ok(state.themeColor === "#f5f6f7" && state.colorScheme === "light", `${path}: sistem tarayıcı rengi açık`);
     await page.emulateMedia({ colorScheme: "dark" });
-    await page.waitForFunction(() => document.querySelector('meta[name="theme-color"]').content === "#111316");
+    await page.waitForFunction(() => document.querySelector('meta[name="theme-color"]').content === "#121416");
     state = await paint(page);
     ok(state.theme === null && luminance(state.background) < 60, `${path}: sistem değişimi anında koyu boyanıyor`);
     ok(state.colorScheme === "dark", `${path}: sistem değişimi tarayıcı kontrollerini güncelliyor`);
@@ -2702,7 +2708,7 @@ async function runThemes(browser) {
   await themeBox.locator(".listbox__option").filter({ hasText: "Koyu" }).click();
   let state = await paint(page);
   ok(state.theme === "dark" && luminance(state.background) < 60, `Koyu seçince hemen koyu (${state.background})`);
-  ok(state.themeColor === "#111316", `Koyu seçince theme-color koyu (${state.themeColor})`);
+  ok(state.themeColor === "#121416", `Koyu seçince theme-color koyu (${state.themeColor})`);
   await page.reload({ waitUntil: "networkidle" });
   state = await paint(page);
   ok(state.theme === "dark", "seçim yenilemeden sonra duruyor");
@@ -2858,35 +2864,18 @@ async function runOnboarding(browser) {
     await page.evaluate(() => document.getElementById("bottom-nav").getBoundingClientRect().height === 0),
     "hoş geldin ekranında sekme çubuğu yok"
   );
-  await auditLayout(page, "hoş geldin 1", 320);
-  await page.locator("#onboard-container .btn--primary").click();
-  await page.waitForSelector("#onboard-exam-date");
-  await auditLayout(page, "hoş geldin 2", 320);
-  await page.fill("#onboard-exam-date", "2026-11-20");
-  await page.locator("#onboard-container .btn--primary").click();
-  await page.waitForSelector("#onboard-container .choice--card");
-  await auditLayout(page, "hoş geldin 3", 320);
-  await page.locator("#onboard-container .choice--card").nth(2).click();
-  ok(
-    (await page.locator('#onboard-container .choice--card[aria-pressed="true"]').innerText()).includes("20"),
-    "günlük hedef seçilebiliyor"
-  );
-  await page.locator("#onboard-container .btn--primary").click();
-  await page.waitForSelector("#onboard-name");
+  await auditLayout(page, "tek ekran tanıtım", 320);
+  ok(await page.locator("#onboard-container input").count() === 1, "tanıtım yalnızca isteğe bağlı isim soruyor");
+  ok(await page.locator("#onboard-container h2").allTextContents().then(labels => labels.join(",") === "Eğitim,Test"), "tanıtım iki çalışma modunu açıklıyor");
+  ok(await page.locator("#onboard-exam-date, #onboard-container .choice").count() === 0, "tanıtımda tarih, hedef veya tema adımı yok");
   await page.fill("#onboard-name", "Eren");
-  await page.locator("#onboard-container .choice", { hasText: "Koyu" }).click();
-  ok(await page.evaluate(() => document.documentElement.getAttribute("data-theme") === "dark"), "tema seçimi anında boyanıyor");
-  await auditLayout(page, "hoş geldin 4", 320);
-  await page.locator("#onboard-container .btn--primary").click();
+  await page.locator("#onboard-name").press("Enter");
   await page.waitForSelector("#lesson-index .tile");
   const home = await page.locator("#view-egitim .study-intro").first().textContent();
   ok(home.includes("Bildiğin İngilizceyi netleştir."), "kurulumdan sonra ders odaklı giriş görünür");
   ok(await page.evaluate(() => localStorage.getItem("englishPrep.profileName") === "Eren"), "isteğe bağlı isim kaydedildi");
-  ok(await page.evaluate(() => localStorage.getItem("englishPrep.dailyGoal") === "20"), "isteğe bağlı günlük hedef kaydedildi");
-  ok(
-    await page.evaluate(() => localStorage.getItem("englishPrep.onboarded") === "1" && localStorage.getItem("englishPrep.examDate") === "2026-11-20"),
-    "cevaplar saklandı"
-  );
+  ok(await page.evaluate(() => localStorage.getItem("englishPrep.dailyGoal") === null && localStorage.getItem("englishPrep.examDate") === null), "tanıtım eski hedef ve tarih ayarlarını üretmiyor");
+  ok(await page.evaluate(() => localStorage.getItem("englishPrep.onboarded") === "1"), "tanıtım tamamlandı");
   await page.reload({ waitUntil: "networkidle" });
   await page.waitForSelector("#lesson-index .tile");
   ok(await page.evaluate(() => location.hash !== "#hosgeldin"), "ikinci açılışta akış bir daha çıkmıyor");
@@ -2897,8 +2886,8 @@ async function runOnboarding(browser) {
   const skipping = await browser.newContext({ viewport: { width: 320, height: 640 }, fresh: true });
   const quick = await skipping.newPage();
   await quick.goto(`${BASE}/index.html#hosgeldin`, { waitUntil: "networkidle" });
-  await quick.waitForSelector("#onboard-container .btn--quiet");
-  await quick.locator("#onboard-container .btn--quiet", { hasText: "atla" }).click();
+  await quick.waitForSelector("#onboard-name");
+  await quick.locator("#onboard-container .btn--primary").click();
   await quick.waitForSelector("#lesson-index .tile");
   ok(await quick.evaluate(() => localStorage.getItem("englishPrep.onboarded") === "1"), "atlayınca da bir daha sorulmuyor");
   await skipping.close();

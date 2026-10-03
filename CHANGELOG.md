@@ -5,6 +5,38 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.67 — 2026-10-04
+
+**A reading hierarchy based on the job of each text.** Inter is the working
+family for both languages, with distinct page/section headings, form names,
+patterns, 18px reading text, 16px annotations and controls, and 14px metadata.
+The decision follows official product-source research and measured browser
+alternatives; it does not flatten all teaching elements to one size. Clear
+group spacing replaces repeated article rules and ornamental topic initials.
+
+**Quiet, distinct color roles.** Neutral dark surfaces and a blue-gray action
+accent separate main and supporting text. Correct/incorrect answers retain
+neutral reading text, subdued fills, glyphs and literal verdicts. Answer rows
+reserve verdict space before selection, and feedback avoids nested frames
+that unnecessarily narrow the explanation. Dark remains the refinement focus;
+explicit light/System preferences remain available.
+
+A faint non-reading atmosphere settles once over 3.6 seconds, then stays still.
+Article and quiz backgrounds stay opaque; reduced motion suppresses movement.
+
+Optional onboarding explains Eğitim and Test and accepts a name. Exam dates,
+daily goals, streak counters and absence reminders leave the UI; old stored
+values and backups remain compatible. The restrained `ep.` identity extends
+to app icons, voluntary browser-supported installation, Eğitim/Test shortcuts,
+and an editable product/project page at `/about/`.
+
+[ADR 006](docs/adr/006-reading-hierarchy-and-atmosphere.md) records alternatives
+and decisions. The typography and palette/motion reports, plus the screen
+hierarchy audit, distinguish source evidence from browser measurements and
+user research. Final check results are recorded separately in
+[VALIDATION.md](docs/VALIDATION.md). The original v0.64 interface and all learning
+data remain unchanged.
+
 ## v0.66 — 2026-10-03
 
 **A dark-first reading interface, reviewed across its full learning flow.**

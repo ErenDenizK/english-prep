@@ -1,14 +1,14 @@
 {
   "name": "English Prep",
   "short_name": "English Prep",
-  "description": "Üniversite İngilizce yeterlik sınavı için ders ve test.",
+  "description": "Oku. Ayırt et. Uygula. İngilizcedeki ayrımları makale dersleri ve açıklamalı testlerle netleştir.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#111316",
-  "theme_color": "#111316",
+  "background_color": "#121416",
+  "theme_color": "#121416",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -25,6 +25,22 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "id": "./index.html",
+  "categories": [
+    "education"
+  ],
+  "shortcuts": [
+    {
+      "name": "Dersleri aç",
+      "short_name": "Eğitim",
+      "url": "./index.html#egitim"
+    },
+    {
+      "name": "Test çöz",
+      "short_name": "Test",
+      "url": "./index.html#test"
     }
   ]
 }
