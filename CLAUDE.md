@@ -2,9 +2,10 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.70)
+## Current presentation (v0.71)
 
-For current UI work, [ADR 009](docs/adr/009-expressive-study-motion.md)
+For current UI work, [ADR 010](docs/adr/010-living-scenes-and-navigation.md),
+[ADR 009](docs/adr/009-expressive-study-motion.md)
 and [Margin system](docs/margin-design-system.md) supersede historical visual
 values below. ADR 006's role-based Inter typography and ADR 007's Sakura/cherry
 brand and plum-neutral surfaces remain. Correct answers now have full opaque
@@ -13,16 +14,22 @@ and `no-edge` tokens define measured boundaries. English sentences stay neutral;
 check/cross shapes, literal verdicts and Turkish state descriptions carry meaning.
 Pink is a product-specific confirmation, not a universal semantic claim.
 
-Three bounded aurora fields appear across all routes. Profile and a quiet
-content-footer control share the persistent motion setting; no top motion
-button remains. Motion roles are 100/220/360/560/720/900ms for control, reveal,
-route, scene, completion and story. `js/interactions.js` owns cancellable finite
-effects and sequences with bounded offsets. CSS owns ordinary control states.
+Three bounded aurora fields appear across all routes. Only Profile settings expose the persistent motion toggle; About links to
+those settings. No header, onboarding or content-footer toggle remains. Motion roles are 100/220/360/560/720/900/1100ms for control, reveal,
+route, scene, completion, story and flowing illustration. `js/interactions.js` owns cancellable finite
+effects and sequences with bounded offsets. `whenVisible` waits for font/image
+readiness, intersection and two paint frames without delaying actual state or
+input. Pending arrivals cancel with their active scene. CSS owns ordinary control states.
 New scenes cancel old and delayed effects; pointer/focus input settles moving
 ancestors. Menus translate without scaling. Input, focus, scoring, navigation
 and final values never wait for animation. Reduced motion, saved motion-off
 and hidden-page handling preserve complete static states. No route snapshots,
 idle JavaScript animation loops or repeated answer-passage fade are introduced.
+
+A progressive adaptive scroll rail decorates the real scrolling region. Fine
+pointers with a measured 52px gutter get a 44px interactive rail and meaningful
+lesson/About stops; narrow/touch screens keep native gestures and a passive
+indicator. Forced colors restores native scrollbars. No quiz-state changes.
 
 Shared `js/brand.js` provides `ep.`, `english prep.` and responsive signatures.
 The optional three-page introduction has six illustrated Education/Test states
@@ -45,7 +52,10 @@ keyboard expose every feature. See [About authoring](about/README.md).
 Exam dates, daily goals, streaks and absence reminders remain outside the UI;
 their stored values stay compatible. Articles, tests, source material, fixed
 shell, no runtime dependencies and the preserved original are unchanged.
-Current browser coverage includes `tests/v070_motion_browser.py`,
+Portfolio captures are real 3× phone/2× wide WebPs. Onboarding and About group
+choices, artwork and explanatory copy into coherent scenes.
+Current browser coverage includes `tests/v071_motion_browser.py`,
+`tests/scroll_rail_browser.py` and `tests/v070_motion_browser.py`,
 `tests/onboarding_interaction_browser.py`, `tests/reading_system.py`,
 `tests/pretest_progress_browser.py`, `tests/component_interactions_browser.py`
 and `tests/about_interaction_browser.py`. Installation support is in `js/install.js`.

@@ -22,7 +22,7 @@ import { el, clear, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
 import { haptic } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
-import { animateElement, cancelAnimationsWithin } from "./interactions.js";
+import { animateElement, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 
 const container = document.getElementById("quiz-container");
 const actionBar = createActionBar("quiz-bar");
@@ -323,7 +323,8 @@ function renderQuestion({ enter = false, reveal = false } = {}) {
 
   page.appendChild(block);
   container.appendChild(page);
-  if (enter) animateElement(page, "route", { channel: "question-entry" });
+  if (enter) whenVisible(page, () => animateElement(page, "route", { channel: "question-entry" }),
+    { channel: "question-entry", threshold: 0 });
   if (reveal) animateElement(block.querySelector(".options"), "reveal");
 
   // The bar is fixed, so answering never moves the button — but on a short

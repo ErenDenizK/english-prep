@@ -21,8 +21,8 @@ lesson = 'tenses-present-perfect-vs-past-simple'
 
 with sync_playwright() as pw:
     browser = pw.chromium.launch(executable_path=args.browser_path)
-    for size, width, height in [('phone', 390, 844), ('wide', 1440, 1000)]:
-        context = browser.new_context(viewport={'width': width, 'height': height}, device_scale_factor=1,
+    for size, width, height, density in [('phone', 390, 844, 3), ('wide', 1440, 1000, 2)]:
+        context = browser.new_context(viewport={'width': width, 'height': height}, device_scale_factor=density,
                                       color_scheme='dark', reduced_motion='reduce', service_workers='block')
         page = context.new_page()
         errors = []
@@ -41,8 +41,9 @@ with sync_playwright() as pw:
             page.evaluate('document.fonts.ready')
             page.wait_for_timeout(150)
             image = Image.open(BytesIO(page.screenshot()))
-            image.save(output / f'{name}-{size}.webp', format='WEBP', quality=90, method=6)
-            print(f'{name}-{size}.webp: {width}×{height}', flush=True)
+            image.save(output / f'{name}-{size}.webp', format='WEBP', quality=94, method=6)
+            assert image.size == (width * density, height * density)
+            print(f'{name}-{size}.webp: {image.width}×{image.height} ({density}×)', flush=True)
 
         page.wait_for_selector('.study-intro__progress')
         capture('education')

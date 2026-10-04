@@ -34,24 +34,57 @@
 .onboard .onboard__actions .btn { line-height: 1.5; }
 .onboard .onboard__actions .btn--primary { gap: 12px; flex-basis: 10rem; }
 .onboard .onboard__wordmark .brand-mark__dot { transform-origin: center bottom; }
-.onboard .onboard-flow { display: grid; gap: 12px; margin-top: 8px; min-width: 0; }
+/* A single study window groups controls, artwork and explanation. The
+   selector is a continuous path inside the window, not a row of cards. */
+.onboard .onboard-flow {
+  display: grid;
+  gap: 0;
+  margin-top: 4px;
+  min-width: 0;
+  padding: 16px 18px 18px;
+  border-radius: 20px;
+  background: var(--card);
+}
 .onboard .onboard-flow__head { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
 .onboard .onboard-flow__head .t-meta { font-size: .875rem; line-height: 1.5; }
 .onboard .onboard-flow__hint { color: var(--ink-2); }
+.onboard .onboard-flow__mode { display: inline-flex; align-items: center; gap: 8px; color: var(--accent-text); font-size: .875rem; line-height: 1.5; font-weight: 600; }
 .onboard .onboard-flow__choices {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 5rem), 1fr));
-  gap: 6px;
-  padding: 4px;
-  border-radius: 12px;
-  background: var(--card);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block: 8px 4px;
+  isolation: isolate;
+}
+.onboard .onboard-flow__choices::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--hairline);
+}
+.onboard .onboard-flow__marker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(100% / 3);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent-text);
+  transform: translateX(calc(var(--flow-step, 0) * 100%));
+  transition: transform var(--d-scene) cubic-bezier(.22, 1, .36, 1);
+  pointer-events: none;
 }
 .onboard .onboard-flow__choice {
   position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 44px;
-  padding: 6px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  min-width: 0;
+  padding: 8px 3px 12px;
   border: 0;
   border-radius: 8px;
   background: transparent;
@@ -60,30 +93,28 @@
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
+  overflow-wrap: anywhere;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: color var(--d-feedback) var(--ease-standard),
     background-color var(--d-feedback) var(--ease-standard),
     transform var(--d-press) var(--ease-standard);
 }
-.onboard .onboard-flow__choice[aria-pressed="true"] { background: var(--accent-tint); color: var(--accent-text); }
-.onboard .onboard-flow__choice::after {
-  content: "";
-  position: absolute;
-  bottom: 4px;
-  left: calc(50% - 8px);
-  width: 16px;
-  height: 2px;
-  border-radius: 1px;
+.onboard .onboard-flow__stop {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 5px;
+  border-radius: 50%;
   background: currentColor;
-  transform: scaleX(0);
-  transition: transform var(--d-feedback) var(--ease-standard);
+  transform: scale(.8);
+  transition: transform var(--d-scene) var(--ease-standard);
 }
-.onboard .onboard-flow__choice[aria-pressed="true"]::after { transform: scaleX(1); }
+.onboard .onboard-flow__choice[aria-pressed="true"] { color: var(--accent-text); }
+.onboard .onboard-flow__choice[aria-pressed="true"] .onboard-flow__stop { transform: scale(1.2); }
 .onboard .onboard-flow__choice:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .onboard .onboard-flow__choice:active { transform: translateY(1px); }
-.onboard .onboard-flow__scene { display: grid; place-items: center; height: 104px; margin-top: 0; }
-.onboard .onboard-flow__drawing { width: min(100%, 280px); height: 104px; overflow: visible; }
+.onboard .onboard-flow__scene { display: grid; place-items: center; height: 136px; margin-block: 12px 4px; }
+.onboard .onboard-flow__drawing { width: min(100%, 320px); height: 128px; overflow: visible; }
 .onboard .onboard-flow__sheet { fill: var(--card); stroke: var(--edge); }
 .onboard .onboard-flow__back-sheet { fill: var(--raised); stroke: var(--hairline); }
 .onboard .onboard-flow__line { stroke: var(--ink-2); }
@@ -100,22 +131,13 @@
   line-height: 1.5;
   text-wrap: pretty;
 }
-.onboard .onboard-flow__navigation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 32px;
-  padding-top: 8px;
-  border-top: 1px solid var(--hairline);
-}
-.onboard .onboard-flow__mode { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: .875rem; line-height: 1.5; }
-.onboard .onboard-flow__mode[data-selected="true"] { color: var(--accent-text); font-weight: 600; }
 @media (hover: hover) and (pointer: fine) {
   .onboard .onboard-flow__choice:hover { background: var(--raised); color: var(--ink); }
-  .onboard .onboard-flow__choice[aria-pressed="true"]:hover { background: var(--accent-tint); color: var(--accent-text); }
+  .onboard .onboard-flow__choice[aria-pressed="true"]:hover { background: var(--raised); color: var(--accent-text); }
 }
 @media (min-width: 480px) {
-  .onboard .onboard-flow__scene, .onboard .onboard-flow__drawing { height: 120px; }
+  .onboard .onboard-flow__scene { height: 148px; }
+  .onboard .onboard-flow__drawing { width: min(100%, 340px); height: 136px; }
 }
 @media (min-width: 700px) {
   .onboard .onboard-flow__caption { min-height: 1.5em; }
@@ -123,18 +145,22 @@
 @media (max-height: 650px) {
   .onboard .onboard__tour { gap: 16px; }
   .onboard .onboard__panel { gap: 12px; }
-  .onboard .onboard-flow { gap: 8px; margin-top: 4px; }
-  .onboard .onboard-flow__scene, .onboard .onboard-flow__drawing { height: 80px; }
+  .onboard .onboard-flow { padding: 12px 14px 14px; }
+  .onboard .onboard-flow__scene, .onboard .onboard-flow__drawing { height: 96px; }
+  .onboard .onboard-flow__scene { margin-block: 8px 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .onboard .onboard-flow__choice, .onboard .onboard-flow__choice::after, .onboard .onboard__dot { transition: none; }
+  .onboard .onboard-flow__choice, .onboard .onboard-flow__marker, .onboard .onboard-flow__stop, .onboard .onboard__dot { transition: none; }
 }
 html[data-motion="off"] .onboard .onboard-flow__choice,
-html[data-motion="off"] .onboard .onboard-flow__choice::after,
+html[data-motion="off"] .onboard .onboard-flow__marker,
+html[data-motion="off"] .onboard .onboard-flow__stop,
 html[data-motion="off"] .onboard .onboard__dot { transition: none; }
 @media (forced-colors: active) {
   .onboard .onboard-flow__choice[aria-pressed="true"] { outline: 2px solid Highlight; outline-offset: -4px; }
   .onboard .onboard-flow__sheet, .onboard .onboard-flow__back-sheet { fill: Canvas; stroke: CanvasText; }
   .onboard .onboard-flow__line, .onboard .onboard-flow__accent { stroke: CanvasText; }
   .onboard .onboard-flow__dot { fill: CanvasText; }
+  .onboard .onboard-flow { outline: 1px solid CanvasText; }
+  .onboard .onboard-flow__marker { background: Highlight; }
 }

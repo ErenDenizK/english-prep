@@ -12,20 +12,12 @@
 
 import { el, clear } from "./dom.js";
 import { icon } from "./icons.js";
-import { createMotionControl } from "./motion.js";
 import { createBrand } from "./brand.js";
+import { initScrollRail } from "./scroll-rail.js";
 
 const liveRegion = document.getElementById("live-region");
 const scrollRegion = document.getElementById("shell-scroll");
-
-// Continuous decoration remains pausable from every study screen. The owner's
-// requested quiet placement is after the content, never in the top chrome.
-if (scrollRegion && !scrollRegion.querySelector(".motion-footer")) {
-  const preferences = el("div", "motion-footer");
-  preferences.append(el("span", "t-meta", "Animasyonlar"), createMotionControl());
-  scrollRegion.appendChild(preferences);
-}
-
+initScrollRail();
 
 /**
  * Announces a view change or an answer outcome. The node is persistent and

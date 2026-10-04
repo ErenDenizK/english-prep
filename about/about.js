@@ -1,6 +1,7 @@
 import { createInstallControl } from "../js/install.js";
-import { initMotion, createMotionControl } from "../js/motion.js";
-import { animateElement, animateSequence, cancelAnimationsWithin, bindPointerScene } from "../js/interactions.js";
+import { initMotion } from "../js/motion.js";
+import { animateElement, animateSequence, cancelAnimationsWithin, bindPointerScene, whenVisible } from "../js/interactions.js";
+import { initScrollRail } from "../js/scroll-rail.js";
 import { createBrand } from "../js/brand.js";
 import { icon } from "../js/icons.js";
 import { studyStages, architecture, everydayFeatures, engineering, questions, extraSections } from "./content.js";
@@ -67,17 +68,51 @@ initMotion();
 for (const placeholder of document.querySelectorAll("[data-brand]")) {
   placeholder.replaceChildren(createBrand({ variant: placeholder.dataset.brand }));
 }
-byId("about-motion").appendChild(createMotionControl());
 bindPointerScene(document.querySelector(".about-hero-visual"), {
   target: document.querySelector(".about-hero-scene"), maxTilt: 2, maxShift: 6,
 });
-// The three planes have one shared, cancellable entrance. Their final geometry
-// is already in CSS: skipping or cancelling motion never leaves artwork hidden.
-animateSequence([
-  { element: document.querySelector(".about-hero-wide"), kind: "story", at: 0 },
-  { element: document.querySelector(".about-hero-phone"), kind: "scene", at: 90 },
-  { element: document.querySelector(".about-hero-trace .about-trace"), kind: "draw", at: 160 },
-], { channel: "about-opening" });
+// Image-heavy scenes start after their actual pixels can be painted. Cold or
+// high-density captures must not spend their entrance while still downloading.
+const decodeImages = (element) => Promise.all([...element.querySelectorAll("img")]
+  .map((image) => image.decode().catch(() => {})));
+whenVisible(document.querySelector(".about-hero-visual"), () => {
+  animateSequence([
+    { element: document.querySelector(".about-hero-wide"), kind: "flow", at: 0 },
+    { element: document.querySelector(".about-hero-phone"), kind: "story", at: 100 },
+    { element: document.querySelector(".about-hero-trace .about-trace"), kind: "trace", at: 160 },
+  ], { channel: "about-opening" });
+}, { channel: "about-opening-ready", ready: decodeImages(document.querySelector(".about-hero-visual")) });
+
+// One continuous selection line belongs to the entire composition, not three
+// disconnected button cards. Geometry follows text wrapping and author additions.
+function selectionInk(controls) {
+  let ink = controls.querySelector(".about-selection-ink");
+  if (!ink) {
+    ink = node("span", "about-selection-ink");
+    ink.setAttribute("aria-hidden", "true");
+    controls.appendChild(ink);
+  }
+  const selected = controls.querySelector('[aria-pressed="true"]');
+  if (!selected) return;
+  ink.style.width = `${selected.offsetWidth}px`;
+  ink.style.transform = `translate(${selected.offsetLeft}px, ${selected.offsetTop + selected.offsetHeight - 3}px)`;
+}
+function observeSelection(controls) {
+  selectionInk(controls);
+  if (!("ResizeObserver" in window)) return;
+  const observer = new ResizeObserver(() => selectionInk(controls));
+  observer.observe(controls);
+  for (const button of controls.querySelectorAll("button")) observer.observe(button);
+  window.addEventListener("pagehide", () => observer.disconnect(), { once: true });
+}
+function playGlyph(button, channel) {
+  animateElement(button?.querySelector("svg"), "complete", { channel });
+  const path = button?.querySelector("svg path");
+  if (path) {
+    path.setAttribute("pathLength", "1");
+    animateElement(path, "trace", { channel: `${channel}-trace` });
+  }
+}
 
 sectionHeading(byId("features-heading-content"), everydayFeatures, "features-heading");
 renderFeatures(byId("feature-list"), everydayFeatures.items);
@@ -108,9 +143,16 @@ for (const [index, content] of extraSections.entries()) {
 
 let currentStage = null;
 function showStage(stage, announce = true) {
-  if (!stage || stage === currentStage) return;
+  if (!stage) return;
+  if (stage === currentStage) {
+    if (announce) playGlyph(byId("study-controls").querySelector('[aria-pressed="true"]'), "about-study-repeat");
+    return;
+  }
+  const direction = currentStage && studyStages.indexOf(stage) < studyStages.indexOf(currentStage) ? "back" : "forward";
+  cancelAnimationsWithin(byId("study-scene"));
+  cancelAnimationsWithin(byId("study-controls"));
   currentStage = stage;
-  for (const button of byId("study-controls").children) {
+  for (const button of byId("study-controls").querySelectorAll("button")) {
     button.setAttribute("aria-pressed", String(button.dataset.studyStage === stage.id));
   }
   byId("study-step-label").textContent = `${String(studyStages.indexOf(stage) + 1).padStart(2, "0")} / ${stage.label}`;
@@ -126,13 +168,16 @@ function showStage(stage, announce = true) {
   byId("study-scene").dataset.stage = stage.id;
   if (announce) {
     byId("study-status").textContent = `${stage.label}. ${stage.title}`;
-    cancelAnimationsWithin(document.querySelector(".about-study-art"));
-    cancelAnimationsWithin(byId("study-controls"));
-    animateSequence([
-      { element: document.querySelector(".about-study-image-frame"), kind: "scene", at: 0 },
-      { element: byId("study-step-label"), kind: "reveal", at: 80 },
-      { element: byId("study-controls").querySelector('[aria-pressed="true"] svg'), kind: "mark", at: 0 },
-    ], { channel: "about-story" });
+    playGlyph(byId("study-controls").querySelector('[aria-pressed="true"]'), "about-study-mark");
+    const copy = document.querySelector(".about-study-copy");
+    whenVisible(copy, () => {
+      if (currentStage === stage) animateElement(copy, "reveal", { channel: "about-story-copy" });
+    }, { channel: "about-story-copy-ready" });
+    whenVisible(document.querySelector(".about-study-image-frame"), () => {
+      if (currentStage !== stage) return;
+      animateElement(document.querySelector(".about-study-image-frame"), "flow", { channel: "about-story", direction });
+    }, { channel: "about-story-ready", ready: byId("study-image").decode().catch(() => {}) });
+    selectionInk(byId("study-controls"));
   }
 }
 for (const [index, stage] of studyStages.entries()) {
@@ -148,12 +193,19 @@ for (const [index, stage] of studyStages.entries()) {
 }
 byId("study-controls").hidden = studyStages.length === 0;
 showStage(studyStages[0], false);
+observeSelection(byId("study-controls"));
 
 let currentArchitecture = null;
 function showArchitecture(item, announce = true) {
-  if (!item || item === currentArchitecture) return;
+  if (!item) return;
+  if (item === currentArchitecture) {
+    if (announce) playGlyph(byId("architecture-controls").querySelector('[aria-pressed="true"]'), "about-architecture-repeat");
+    return;
+  }
+  cancelAnimationsWithin(byId("architecture-panel"));
+  cancelAnimationsWithin(byId("architecture-controls"));
   currentArchitecture = item;
-  for (const button of byId("architecture-controls").children) {
+  for (const button of byId("architecture-controls").querySelectorAll("button")) {
     button.setAttribute("aria-pressed", String(button.dataset.architecture === item.id));
   }
   byId("architecture-label").textContent = item.subtitle;
@@ -166,13 +218,19 @@ function showArchitecture(item, announce = true) {
   }
   if (announce) {
     byId("architecture-status").textContent = `${item.label}. ${item.title}`;
-    cancelAnimationsWithin(document.querySelector(".about-architecture-art"));
-    cancelAnimationsWithin(byId("architecture-controls"));
-    animateSequence([
-      { element: document.querySelector(`[data-layer="${CSS.escape(item.id)}"]`), kind: "scene", at: 0 },
-      { element: document.querySelector(".about-architecture-thread"), kind: "draw", at: 80 },
-      { element: byId("architecture-controls").querySelector('[aria-pressed="true"] svg'), kind: "mark", at: 0 },
-    ], { channel: "about-architecture" });
+    const copy = document.querySelector(".about-architecture-copy");
+    whenVisible(copy, () => {
+      if (currentArchitecture === item) animateElement(copy, "reveal", { channel: "about-architecture-copy" });
+    }, { channel: "about-architecture-copy-ready" });
+    playGlyph(byId("architecture-controls").querySelector('[aria-pressed="true"]'), "about-architecture-mark");
+    whenVisible(document.querySelector(".about-architecture-art"), () => {
+      if (currentArchitecture !== item) return;
+      animateSequence([
+        { element: document.querySelector(`[data-layer="${CSS.escape(item.id)}"]`), kind: "flow", at: 0 },
+        { element: document.querySelector(".about-architecture-thread"), kind: "trace", at: 80 },
+      ], { channel: "about-architecture" });
+    }, { channel: "about-architecture-ready" });
+    selectionInk(byId("architecture-controls"));
   }
 }
 for (const item of architecture) {
@@ -187,41 +245,28 @@ for (const item of architecture) {
   byId("architecture-controls").appendChild(button);
 }
 showArchitecture(architecture[0], false);
+observeSelection(byId("architecture-controls"));
 
-// A one-shot observer sequences already-visible editorial elements. It does
-// not control content visibility, scroll position, focus or semantic state.
-function revealSection(section) {
-  const heading = section.querySelector("h2");
-  const steps = [{ element: heading, kind: "reveal", at: 0 }];
-  animateSequence(steps, { channel: "about-section" });
+// Each component owns its visible entrance. A tall phone section does not
+// start the illustration while only the heading is on screen. The shared gate
+// also waits for fonts, document visibility and two painted frames.
+for (const heading of document.querySelectorAll(".about-section h2")) {
+  whenVisible(heading, () => animateElement(heading, "reveal", { channel: "about-heading" }), { channel: "about-heading-ready" });
 }
-if ("IntersectionObserver" in window) {
-  const observer = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      if (entry.target.matches(".about-feature")) {
-        animateSequence([
-          { element: entry.target.querySelector(".about-feature-sign svg"), kind: "scene", at: 0 },
-          { element: entry.target.querySelector("h3"), kind: "reveal", at: 70 },
-        ], { channel: "about-feature" });
-      } else if (entry.target.matches(".about-study-image-frame, .about-architecture-art, .about-closing-brand")) {
-        // A tall phone section can start long before its illustration enters.
-        // Observe the artwork itself, and let an in-flight user scene win.
-        if (!entry.target.getAnimations({ subtree: true }).length) {
-          animateElement(entry.target, "story", { channel: "about-art-entry" });
-        }
-      } else revealSection(entry.target);
-      observer.unobserve(entry.target);
-    }
-  }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
-  for (const section of document.querySelectorAll(".about-section, .about-feature, .about-study-image-frame, .about-architecture-art, .about-closing-brand")) observer.observe(section);
-  window.addEventListener("pagehide", () => observer.disconnect(), { once: true });
+for (const feature of document.querySelectorAll(".about-feature")) {
+  whenVisible(feature, () => playGlyph(feature.querySelector("summary"), "about-feature-entry"), { channel: "about-feature-ready" });
 }
+for (const artwork of document.querySelectorAll(".about-study-image-frame, .about-architecture-art, .about-closing-brand")) {
+  whenVisible(artwork, () => {
+    if (!artwork.getAnimations({ subtree: true }).length) animateElement(artwork, "flow", { channel: "about-art-entry" });
+  }, { channel: "about-art-entry-ready", ready: decodeImages(artwork) });
+}
+
 for (const details of document.querySelectorAll("details")) {
   details.addEventListener("toggle", () => {
     if (details.open) {
       animateElement(details.querySelector(".about-feature-body") ?? details.querySelector(":scope > p"), "reveal", { channel: "about-disclosure" });
-      animateElement(details.querySelector(".about-feature-sign svg"), "mark", { channel: "about-disclosure-icon" });
+      playGlyph(details.querySelector("summary"), "about-disclosure-icon");
     } else cancelAnimationsWithin(details);
   });
 }
@@ -236,4 +281,5 @@ fetch("../data/manifest.json")
     byId("corpus-questions").textContent = String(topics.reduce((sum, topic) => sum + (topic.questionCount || 0), 0));
   }).catch(() => {});
 byId("install-control").appendChild(createInstallControl());
+initScrollRail({ scroller: document.scrollingElement, content: document.querySelector("main") });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("../sw.js").catch(() => {});

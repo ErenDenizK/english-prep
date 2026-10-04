@@ -24,7 +24,7 @@ import { icon } from "./icons.js";
 import { progressMetric } from "./progress.js";
 import { announce, createActionBar, createBar } from "./shell.js";
 import { renderPrompt } from "./prompt.js";
-import { animateSequence } from "./interactions.js";
+import { animateSequence, whenVisible } from "./interactions.js";
 
 const container = document.getElementById("results-container");
 const actionBar = createActionBar("results-bar");
@@ -60,19 +60,21 @@ function verdictFor(ratio, total) {
   return "Açıklamaları incele, kaçırdığın ayrımlara geri dön.";
 }
 
-/** A completed page leading to its next reading step. This is decorative,
- * not a score chart: its check means the run ended, regardless of accuracy.
- * A deliberately stopped run instead has a return arrow. */
-function completionSignature(partial) {
+/** A compact result folio, composed as one drawing rather than three loose
+ * symbols. A check accompanies all-correct work; other complete runs point
+ * toward the review, and a deliberately stopped run has a return arrow.
+ * The actual score and words always carry the meaning. */
+function completionSignature(partial, confirmed) {
   const namespace = "http://www.w3.org/2000/svg";
   const signature = document.createElementNS(namespace, "svg");
-  signature.setAttribute("viewBox", "0 0 112 42");
-  signature.setAttribute("width", "112");
-  signature.setAttribute("height", "42");
+  signature.setAttribute("viewBox", "0 0 64 64");
+  signature.setAttribute("width", "56");
+  signature.setAttribute("height", "56");
   signature.setAttribute("aria-hidden", "true");
   signature.setAttribute("focusable", "false");
   signature.classList.add("score__signature");
   signature.dataset.state = partial ? "partial" : "complete";
+  signature.dataset.symbol = partial ? "return" : confirmed ? "confirmed" : "review";
   const path = (drawing, name) => {
     const stroke = document.createElementNS(namespace, "path");
     stroke.setAttribute("d", drawing);
@@ -86,13 +88,15 @@ function completionSignature(partial) {
     stroke.dataset.completionStroke = name;
     signature.appendChild(stroke);
   };
-  path("M7 35V7h17l8 8v20H7M24 7v8h8M13 22h12M13 28h8", "page");
-  path("M42 22h23", "connection");
-  path(partial ? "M89 12l-8 8 8 8M82 20h12a9 9 0 0 1 0 18" : "M80 22l8 8 17-18", "finish");
+  path("M31 53H14a4 4 0 0 1-4-4V11a4 4 0 0 1 4-4h23l11 11v16M37 7v11h11", "page");
+  path("M19 27h18M19 34h14M19 41h7", "connection");
+  path(partial
+    ? "M43 37l-7 7 7 7M37 44h11a8 8 0 0 1 0 16"
+    : confirmed ? "M34 48l8 8 15-19" : "M34 48h22M48 40l8 8-8 8", "finish");
   const node = document.createElementNS(namespace, "circle");
-  node.setAttribute("cx", "66");
-  node.setAttribute("cy", "22");
-  node.setAttribute("r", "3");
+  node.setAttribute("cx", "19");
+  node.setAttribute("cy", "49");
+  node.setAttribute("r", "2");
   node.setAttribute("fill", "currentColor");
   node.classList.add("score__signature-node");
   signature.appendChild(node);
@@ -125,22 +129,27 @@ function claimCompletionPresentation(result) {
 function renderScore(result) {
   const block = el("section", "score");
   block.dataset.choreographed = "true";
+  const ratio = result.totalCount === 0 ? 0 : result.correctCount / result.totalCount;
+  const confirmed = result.totalCount > 0 && ratio === 1;
+  block.dataset.outcome = confirmed ? "confirmed" : "review";
   // The bar says "Sonuç"; the section says which test.
   const eyebrow = el("div", "score__eyebrow");
+  const identity = el("div", "score__identity");
+  identity.appendChild(el("p", "score__status", result.partial === true ? "Test erken bitirildi" : "Test tamamlandı"));
   const mode = el("p", "t-label score__mode", describeMode(result));
   const hasEnglishTitle = (result.mode === "topic" && Object.keys(result.topicTitles ?? {}).length === 1)
     || (result.mode === "category" && Object.keys(result.categoryBreakdown ?? {}).length === 1);
   if (hasEnglishTitle) mode.lang = "en";
-  eyebrow.append(mode, completionSignature(result.partial === true));
+  identity.appendChild(mode);
+  eyebrow.append(completionSignature(result.partial === true, confirmed), identity);
   block.appendChild(eyebrow);
 
-  const ratio = result.totalCount === 0 ? 0 : result.correctCount / result.totalCount;
   const percent = Math.round(ratio * 100);
   block.appendChild(progressMetric({
     label: "Bu testte doğru",
     value: `${result.correctCount} / ${result.totalCount}`,
     ratio,
-    tone: "confirmed",
+    tone: confirmed ? "confirmed" : "accent",
     description: `${result.totalCount} soruda %${percent} doğru.`,
     className: "score__metric",
   }));
@@ -536,7 +545,10 @@ async function init() {
   ]);
   // Claim presentation only once the complete final DOM is available, even
   // when motion is off. Turning motion on later must not replay old activity.
-  presentResults(claimCompletionPresentation(result), score, breakdowns);
+  const fresh = claimCompletionPresentation(result);
+  whenVisible(score, () => presentResults(fresh, score, breakdowns), {
+    channel: "results-arrival", threshold: 0,
+  });
 }
 
 init();

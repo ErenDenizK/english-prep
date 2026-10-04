@@ -1,4 +1,4 @@
-# Margin / Sakura: interface system · v0.70
+# Margin / Sakura: interface system · v0.71
 
 Margin is English Prep's current interface. [ADR 009](adr/009-expressive-study-motion.md) records the current filled answer states, composed motion, introduction and mobile portfolio. ADR 008 retains the earlier native input/focus contracts; its neutral answer surfaces and short timing scale are superseded. [ADR 007](adr/007-sakura-and-purposeful-motion.md) retains the measured background/brand and progress foundation; [ADR 006](adr/006-reading-hierarchy-and-atmosphere.md) retains the typography decision. Superseded choices remain historical evidence. [css/editorial.css](../css/editorial.css) supplies the presentation tokens over inherited [css/style.css](../css/style.css); [css/interactions.css](../css/interactions.css) owns shared control states and [css/onboarding.css](../css/onboarding.css) the introduction. The older [design-system.md](design-system.md) remains historical source documentation. [EXPERIENCE.md](EXPERIENCE.md) describes the learning journeys.
 
@@ -88,9 +88,9 @@ Quiz snapshots are tab-local and validated against current content, not a cross-
 
 ## Atmosphere, motion and verification
 
-Three radial light fields sit behind every route, including lessons, questions and About: cherry `#c65b88`, iris `#785ca8`, and apricot `#c68571`. The application uses 28/34/42-second alternating transform/opacity paths, with small displacements and the alpha bounds above. Reading ink is stable; cards remain opaque. No blur animation, hue rotation, particles, scroll parallax, automatic story rotation or animated teaching-text color is used.
+Three radial light fields sit behind every route, including lessons, questions and About: cherry `#c65b88`, iris `#785ca8`, and apricot `#c68571`. The application uses 16/21/27-second alternating transform/opacity paths, with viewport-relative travel and contained gradient falloffs and the alpha bounds above. Reading ink is stable; cards remain opaque. No blur animation, hue rotation, particles, scroll parallax, automatic story rotation or animated teaching-text color is used.
 
-`js/motion.js` owns the persistent preference. Profile, the quiet footer of app scrolling content and About's footer expose the same labeled setting; there is no top motion button. The content-footer control remains reachable during reading and quizzes without leaving the route. Pausing leaves a still atmospheric background. Hidden tabs pause the fields; system reduced motion takes precedence over the saved choice. Forced colors removes the decoration. The bounded background must remain contrast-safe at every field position, not only in a screenshot.
+`js/motion.js` owns the persistent preference. Only Profile settings expose the labeled motion toggle; About links to these settings. There are no top, onboarding or content-footer toggles. Pausing leaves a still atmospheric background. Hidden tabs pause the fields; system reduced motion takes precedence over the saved choice. Forced colors removes the decoration. The bounded background must remain contrast-safe at every field position, not only in a screenshot.
 
 | Interaction role | Token / behavior |
 | --- | --- |
@@ -100,6 +100,7 @@ Three radial light fields sit behind every route, including lessons, questions a
 | Scene | `--d-scene: 560ms`; grouped Profile/product artwork composition. |
 | Completion | `--d-complete: 720ms`; genuine completion signature and decorative path drawing; final values exist immediately. |
 | Story | `--d-story: 900ms`; articulated onboarding/product artwork, never an input delay. |
+| Flow | `--d-flow: 1100ms`; soft illustrated movement and connected path tracing in cohesive story scenes. |
 | Answer / input / selection | Commit immediately; no scoring delay, punitive shake or celebratory count-up. |
 
 Disabling motion preserves every state and control. Focus remains visible and clear of fixed chrome. Reading progress uses the real instructional-body start for both calculation and restoration, so changing preliminary practice height cannot manufacture completion. Existing stored fractions remain compatible; this is a proportional bookmark, not an exact sentence anchor.
@@ -111,3 +112,10 @@ The portfolio reads shared tokens and motion preferences. Edit `studyStages`, `a
 Only About's decorative artwork responds to a fine hover pointer, at most 2° tilt and 6px displacement. Text and hit targets stay fixed; touch/keyboard controls expose every feature. Pointer effects reset on leave/blur/preference-off/hidden and request frames only in response to input. Reflection is confined to artwork; it is not an extra unmeasured light behind teaching text.
 
 [ADR 009](adr/009-expressive-study-motion.md) defines current acceptance; the [answer research](research/2026-10-answer-surfaces-v070.md), [motion research](research/2026-10-motion-v070.md), [onboarding design](design/onboarding-v070.md), [Profile/results design](design/profile-results-v070.md) and [About authoring](../about/README.md) record the evidence and implementation choices. Earlier reports remain historical evidence. Verify `npm run check`, the repository browser sweep, 320px reflow, enlarged text/spacing, keyboard/focus, invariant option geometry, pretest progress/resume, rapid interaction/cancellation, dialog outcomes, pause/reduced/hidden-page behavior, editable About layouts, and offline/install paths. Record actual outcomes in [VALIDATION.md](VALIDATION.md); calculation or automation does not replace learner observation.
+
+Readiness-gated `whenVisible` waits for actual fonts/images and intersection before
+finite artwork starts. Pending arrivals share cancellation with active scenes.
+The [adaptive rail](design/scroll-rail-v071.md) enhances actual scrolling with
+bounded navigation in a measured wide gutter, and a passive narrow-screen
+indicator. It neither snaps articles nor advances quiz questions. Equal header
+outer tracks keep the screen title centered when controls change.

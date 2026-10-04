@@ -249,7 +249,11 @@ class EventMotionTests(unittest.TestCase):
         self.assertEqual(len(measured['history']), 1)
         self.assertEqual(len(measured['history'][0]['questions']), 1)
         self.assertIsNone(measured['active'])
-        self.assertTrue(any(c['state'] == 'running' for c in measured['expressive']), measured)
+        # v0.71 commits the score/history immediately, then waits for real
+        # font readiness and two visible paint frames before presentation.
+        self.page.wait_for_function("window.__motionCalls.some(c => c.duration >= 500 && c.animation.playState === 'running')")
+        expect(self.page.locator('.score__metric .metric__value')).to_have_text('1 / 1')
+        self.assertEqual(self.page.evaluate("JSON.parse(localStorage.getItem('englishPrep.history')).attempts"), measured['history'])
         self.page.reload()
         expect(self.page.locator('.score__metric .metric__value')).to_have_text('1 / 1')
         history = self.page.evaluate("JSON.parse(localStorage.getItem('englishPrep.history')).attempts")

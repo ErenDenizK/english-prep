@@ -39,7 +39,7 @@ import { avatar } from "./widgets.js";
 import { renderOnboarding } from "./onboarding.js";
 import { announce, scrollToTop, createBar } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
-import { animateSequence, cancelAnimationsWithin } from "./interactions.js";
+import { animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 
 const VIEW_IDS = ["egitim", "test", "profil", "hosgeldin"];
 const DEFAULT_VIEW = "egitim";
@@ -583,9 +583,11 @@ function enterLibrary(container, direction) {
     const box = node.getBoundingClientRect();
     return box.height > 0 && box.top < viewport.bottom && box.bottom > viewport.top;
   }).filter((node, index, nodes) => !nodes.some((parent, i) => i !== index && parent.contains(node))).slice(0, 3);
-  animateSequence((visible.length ? visible : [container]).map((element, index) => ({
+  const entries = (visible.length ? visible : [container]).map((element, index) => ({
     element, kind: "route", at: index * 55,
-  })), { channel: "library-entry", direction });
+  }));
+  whenVisible(entries[0].element, () => animateSequence(entries, { channel: "library-entry", direction }),
+    { channel: "library-entry", threshold: 0 });
 }
 
 /** Commit navigation synchronously. Each incoming view owns its finite

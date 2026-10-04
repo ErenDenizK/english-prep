@@ -1,6 +1,6 @@
 # English Prep
 
-**v0.70 · Margin / Sakura:** [open the redesigned app](index.html),
+**v0.71 · Margin / Sakura:** [open the redesigned app](index.html),
 [compare the full original](original/index.html), or inspect its
 [unchanged runtime source archive](original/source-39dcd46.zip). This version
 uses the full `test` source at `39dcd46`; the earlier `main` prototype
@@ -19,7 +19,9 @@ The detailed refinement record includes the [element inventory](docs/audit/eleme
 [type and color measurements](docs/audit/type-color.md),
 [interaction audit](docs/audit/interaction-accessibility.md), and
 [verified UI research](docs/research/2026-10-ui-principles.md).
-The current [ADR 009](docs/adr/009-expressive-study-motion.md),
+The current [ADR 010](docs/adr/010-living-scenes-and-navigation.md) adds readiness-gated motion,
+cohesive scenes, high-density captures and an adaptive scroll rail.
+[ADR 009](docs/adr/009-expressive-study-motion.md),
 [filled-answer research](docs/research/2026-10-answer-surfaces-v070.md),
 [motion research](docs/research/2026-10-motion-v070.md),
 [onboarding composition](docs/design/onboarding-v070.md), and
