@@ -5,6 +5,13 @@ the [development guide's Versioning section](docs/development.md#versioning) for
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.73 — 2026-10-04
+
+- Aura'nın hareket ve renk değişim hızı %20 azaltıldı; renkleri, yayılımı ve canlılığı korundu.
+- Mobil ve masaüstü kaydırma çubuğu ince, yerel olarak esneyen bir çizgiye dönüştürüldü; tutma/çekme/bırakma tek akıcı hareket içinde birleşir.
+- Butonlara belirgin basma/bırakma tepkileri, yeni ekranlara daha görünür ve sıralı açılış animasyonları eklendi. İçerik ve eylemler animasyon beklemez.
+- Öğrenme materyali ve kayıt biçimleri değişmedi. [ADR 012](docs/adr/012-elastic-edge-and-expressive-arrivals.md).
+
 ## v0.72 — 2026-10-04
 
 - Gerçekte görünür, üç noktada Sakura/iris/lagün arasında dönen aura; serin vurgu rolleri, nötr okuma metni ve ölçülmüş güçlü renk/kontrast sistemi.

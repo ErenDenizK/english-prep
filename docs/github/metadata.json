@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T11:03:11.034706+00:00",
+  "generatedAt": "2026-10-04T11:39:07.243449+00:00",
   "source": "App previews use actual UI and isolated demonstration state; brand artwork is authored.",
   "baseUrl": "Local static server serving this repository",
   "assets": [
@@ -29,7 +29,7 @@
           "height": 2532
         }
       ],
-      "bytes": 325622
+      "bytes": 325902
     },
     {
       "file": "workspace-wide.webp",
@@ -41,7 +41,7 @@
       ],
       "density": 2,
       "sourceCapture": "education-wide.webp",
-      "bytes": 171496
+      "bytes": 171412
     },
     {
       "file": "social-preview.png",
@@ -66,7 +66,7 @@
         "explanation",
         "review"
       ],
-      "bytes": 3864867
+      "bytes": 3819885
     },
     {
       "file": "introduction.webp",
@@ -75,7 +75,7 @@
       "density": 2,
       "sourceRoute": "/index.html#hosgeldin",
       "role": "Static motion-demo alternative",
-      "bytes": 65174
+      "bytes": 65518
     },
     {
       "file": "folio.gif",
@@ -93,7 +93,7 @@
         "Face front",
         "Close folio"
       ],
-      "bytes": 4107040
+      "bytes": 4123534
     },
     {
       "file": "folio.webp",
@@ -102,7 +102,7 @@
       "density": 2,
       "sourceRoute": "/about/",
       "role": "Static folio-demo alternative",
-      "bytes": 67866
+      "bytes": 68078
     }
   ]
 }

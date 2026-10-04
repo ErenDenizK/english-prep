@@ -22,7 +22,7 @@ import { el, clear, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
 import { haptic } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
-import { animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateArrival, animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 
 const container = document.getElementById("quiz-container");
 const actionBar = createActionBar("quiz-bar");
@@ -327,11 +327,10 @@ function renderQuestion({ enter = false, reveal = false } = {}) {
   const choiceMarks = [...block.querySelectorAll(".option__key")].map((element, index) => ({
     element, kind: "signal", at: index * 35,
   }));
-  if (enter) whenVisible(page, () => animateSequence([
-    { element: prompt, kind: "panel" },
-    { element: prompt.querySelector(".t-label"), kind: "item", at: 0 },
-    ...choiceMarks,
-  ], { channel: "question-entry" }), { channel: "question-entry", threshold: 0 });
+  if (enter) whenVisible(page, () => {
+    animateArrival(prompt, { channel: "question-entry" });
+    animateSequence(choiceMarks, { channel: "question-choices" });
+  }, { channel: "question-entry", threshold: 0 });
   // A late visibility callback must never move an answer target under a finger.
   // Only the small shortcut glyphs assemble; option boxes and English prose
   // retain their final geometry even before the first frame and during input.

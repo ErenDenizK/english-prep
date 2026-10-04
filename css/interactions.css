@@ -1,6 +1,6 @@
 /* Interaction presentation · ADR 009. Input, focus and state always commit now.
    Finite event effects live in js/interactions.js; CSS owns ordinary controls. */
-:root { --d-flow: 1100ms; }
+:root { --d-flow: 1100ms; --d-arrival: 620ms; --d-release: 380ms; }
 .brand-mark--responsive .brand-mark__letters--full { display: none; }
 .brand-mark--full { font-size: 1.75rem; letter-spacing: -.055em; }
 .brand-mark__dot { transition: color var(--d-control) var(--ease-standard); }
@@ -15,7 +15,7 @@
   transition: transform var(--d-reveal) var(--ease-standard), color var(--d-reveal) var(--ease-standard);
 }
 .nav__indicator { transition: transform var(--d-route) var(--ease-standard); }
-:root[data-motion="on"] .nav__item[aria-current] > [data-icon] { animation: selected-symbol var(--d-scene) var(--ease-standard) both; }
+:root[data-motion="on"] .nav__item[aria-current] [data-icon] { animation: selected-symbol var(--d-scene) var(--ease-standard) both; }
 @keyframes selected-symbol {
   0% { transform: translateY(3px) scale(.82); }
   65% { transform: translateY(-1px) scale(1.06); }
@@ -76,7 +76,34 @@
 }
 /* A deliberate release response on touch as well as mouse. Reading and answer
    hitboxes do not scale; only independent controls and their supporting glyphs. */
-:root[data-motion="on"] .btn:not([aria-disabled="true"]):active { transform: scale(.975); }
+/* Press follows a stationary outer target. The inner face visibly compresses
+   and the shared release continues for 380 ms after a quick tap. */
+.control-face {
+  display: inline-flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  align-items: inherit;
+  justify-content: inherit;
+  flex-direction: inherit;
+  gap: inherit;
+  pointer-events: none;
+  transform-origin: center;
+  transition: transform 120ms cubic-bezier(.2,.65,.25,1);
+}
+.nav__item > .control-face { align-items: center; }
+summary > .control-face { align-items: center; }
+:root[data-motion="on"] :is(.btn, .about-button, .nav__item, .choice, .tile, .row, .listbox__trigger):active { transform: none; }
+:root[data-motion="on"] [data-pressing="true"] > :is(.control-face, .control-press-part, .row__main, .row__trail, .tile__head, .tile__sub, .tile__meta, .option__key, .icon) {
+  transform: scale(var(--press-depth, .945)) translateY(1px);
+  transition: transform 120ms cubic-bezier(.2,.65,.25,1);
+}
+:root[data-motion="on"] :is(.btn, .about-button, .tile, .row, .listbox__trigger)[data-pressing="true"] {
+  box-shadow: inset 0 0 0 1px var(--accent-text), inset 0 2px 8px #00000015;
+}
+:root[data-motion="on"] :is(.btn--primary, .about-button--primary)[data-pressing="true"] {
+  box-shadow: inset 0 2px 8px #00000025;
+}
+:root[data-motion="off"] .control-face { transform: none; }
 /* A popup anchor must keep its rectangle during release, too. */
 :root[data-motion="on"] .listbox__trigger:active { transform: none; background: var(--accent-tint); }
 :root[data-motion="on"] #index-list .tile:active .tile__title { transform: translateX(3px); }

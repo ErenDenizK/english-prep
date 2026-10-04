@@ -160,9 +160,9 @@ function mountFolio(chapters) {
       buttons[index].setAttribute("aria-pressed", String(index === current));
     }
     inspect.setAttribute("aria-pressed", String(expanded));
-    inspect.lastElementChild.textContent = expanded ? "Katmanları birleştir" : "Katmanları aç";
+    inspect.querySelector("[data-folio-label]").textContent = expanded ? "Katmanları birleştir" : "Katmanları aç";
     rotate.setAttribute("aria-pressed", String(turned));
-    rotate.lastElementChild.textContent = turned ? "Öne dön" : "Döndür";
+    rotate.querySelector("[data-folio-label]").textContent = turned ? "Öne dön" : "Döndür";
     byId("folio-count").textContent = `${String(current + 1).padStart(2, "0")}—${String(chapters.length).padStart(2, "0")}`;
   }
   function announce(text) { byId("folio-status").textContent = text; }

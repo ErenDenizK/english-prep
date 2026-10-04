@@ -24,7 +24,7 @@ import { icon } from "./icons.js";
 import { progressMetric } from "./progress.js";
 import { announce, createActionBar, createBar } from "./shell.js";
 import { renderPrompt } from "./prompt.js";
-import { animateSequence, whenVisible } from "./interactions.js";
+import { animateArrival, animateSequence, whenVisible } from "./interactions.js";
 
 const container = document.getElementById("results-container");
 const actionBar = createActionBar("results-bar");
@@ -162,6 +162,7 @@ function renderScore(result) {
  * only a quiet arrival. The score, its accessible value and actions never wait
  * for this effect, and the long review is never revealed paragraph by paragraph. */
 function presentResults(fresh, score, breakdowns) {
+  animateArrival(score, { channel: "result-summary" });
   const entries = [];
   if (fresh) {
     score.querySelectorAll("[data-completion-stroke]").forEach((element, index) => {
@@ -177,7 +178,7 @@ function presentResults(fresh, score, breakdowns) {
     const box = section.getBoundingClientRect();
     return box.top < viewport.bottom && box.bottom > viewport.top;
   }).slice(0, 2).forEach((element, index) => {
-    entries.push({ element, kind: "reveal", at: 100 + index * 40 });
+    animateArrival(element, { channel: "result-breakdown", delay: 100 + index * 40 });
   });
   animateSequence(entries, { channel: "results-arrival" });
 }

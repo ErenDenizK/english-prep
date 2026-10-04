@@ -3,7 +3,7 @@
 import { initMotion, motionEnabled } from "./motion.js";
 
 export const MOTION_DURATIONS = Object.freeze({
-  control: 100, reveal: 220, route: 360, scene: 560, complete: 720, story: 900, flow: 1100,
+  control: 100, reveal: 220, route: 360, arrival: 620, release: 380, scene: 560, complete: 720, story: 900, flow: 1100,
 });
 const EASING = "cubic-bezier(0.2, 0, 0, 1)";
 const SETTLE = "cubic-bezier(0.22, 1, 0.36, 1)";
@@ -13,6 +13,90 @@ const channels = new WeakMap();
 const pointerScenes = new Set();
 const arrivals = new Set();
 let listening = false;
+let pressing = null;
+const releasedAt = new WeakMap();
+const PRESSABLE = 'button, a.btn, a.about-button, .nav__item, summary';
+const STATIONARY = 'button, a, input, textarea, select, summary, [role="button"], [tabindex]';
+
+// Move a control's presentation, never the pointer target. Wrapping keeps the
+// original nodes (and their listeners/ARIA IDs); it does not clone a control.
+function controlFace(control, prepare = false) {
+  if (control.matches('.option, .switch, .folio-leaf-face, .scroll-rail *, [role="slider"]')) return null;
+  if (!control.matches('.btn, .about-button, .choice:not(.choice--card), .nav__item, .listbox__trigger, summary') && !control.className.startsWith('folio-')) return null;
+  let face = control.querySelector(':scope > .control-face');
+  if (!face && prepare) {
+    face = document.createElement('span');
+    face.className = 'control-face';
+    while (control.firstChild) face.appendChild(control.firstChild);
+    control.appendChild(face);
+    control.dataset.tactile = '';
+  }
+  return face;
+}
+
+function pressTargets(control, prepare = false) {
+  const face = controlFace(control, prepare);
+  if (face) return [face];
+  const targets = [...control.querySelectorAll(':scope > .row__main, :scope > .row__trail, :scope > .tile__head, :scope > .tile__sub, :scope > .tile__meta, :scope > .option__key, :scope > .icon, .onboard-flow__choice > span:not(.onboard-flow__stop), .about-study-step > span:not(.about-step-number), .about-architecture-node > span')];
+  targets.forEach((node) => node.classList.add('control-press-part'));
+  return targets;
+}
+
+function stopPress() {
+  if (!pressing) return;
+  delete pressing.control.dataset.pressing;
+  for (const node of pressing.targets) node.style.removeProperty('--press-depth');
+  pressing = null;
+}
+
+function beginPress(event) {
+  if (event.button > 0 || !canMove()) return;
+  const control = event.target?.closest?.(PRESSABLE);
+  if (!control || control.matches(':disabled, [aria-disabled="true"]') || control.closest('.scroll-rail')) return;
+  stopPress();
+  const targets = pressTargets(control);
+  if (!targets.length) return;
+  cancelAnimationsWithin(control);
+  pressing = { control, targets, pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+  control.dataset.pressing = 'true';
+  targets.forEach((node) => node.style.setProperty('--press-depth', '.945'));
+}
+
+function endPress(event, cancelled = false) {
+  if (!pressing || (event.pointerId != null && pressing.pointerId != null && event.pointerId !== pressing.pointerId)) return;
+  const { control, targets } = pressing;
+  // Capture the interpolated position so even a very short tap has one fluid
+  // release rather than a hard jump to the held-down keyframe.
+  const starts = targets.map((node) => window.getComputedStyle(node).transform);
+  stopPress();
+  if (cancelled || !control.isConnected || !canMove()) return;
+  releasedAt.set(control, Date.now());
+  targets.forEach((node, index) => animateElement(node, 'release', {
+    channel: 'control-release', startTransform: starts[index],
+  }));
+}
+
+function movePress(event) {
+  if (!pressing || event.pointerId !== pressing.pointerId) return;
+  if (Math.hypot(event.clientX - pressing.x, event.clientY - pressing.y) > 12) endPress(event, true);
+}
+
+function keyboardPress(event) {
+  if (event.repeat || !['Enter', ' '].includes(event.key) || event.target?.matches?.('input, textarea, select')) return;
+  beginPress(event);
+}
+
+// Native click still fires at its normal time, including keyboard/AT clicks.
+// A programmatic activation receives the release accent without manufacturing
+// a pointer event or holding navigation until animation finishes.
+function clickPress(event) {
+  if (event.detail !== 0 || !canMove()) return;
+  const control = event.target?.closest?.(PRESSABLE);
+  if (!control || control.matches(':disabled, [aria-disabled="true"]') || control.closest('.scroll-rail')) return;
+  if (pressing?.control === control) { endPress(event); return; }
+  if (Date.now() - (releasedAt.get(control) ?? 0) < 80) return;
+  for (const node of pressTargets(control)) animateElement(node, 'release', { channel: 'control-release' });
+}
 
 function canMove() {
   return motionEnabled() && !document.hidden;
@@ -30,6 +114,7 @@ function cancel(record) {
 }
 
 function stopAll() {
+  stopPress();
   for (const arrival of [...arrivals]) arrival.dispose();
   for (const record of [...active]) cancel(record);
   for (const scene of pointerScenes) scene.reset();
@@ -53,12 +138,35 @@ function initialize() {
   initMotion();
   if (listening) return;
   listening = true;
+  // Prepare newly rendered controls before painting or a user's pointerdown.
+  // Reparenting a hit descendant during pointerdown can suppress native click.
+  const prepare = (root) => {
+    if (root.matches?.(PRESSABLE)) controlFace(root, true);
+    root.querySelectorAll?.(PRESSABLE).forEach((node) => controlFace(node, true));
+  };
+  prepare(document);
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.target.matches?.(PRESSABLE)) controlFace(record.target, true);
+        for (const node of record.addedNodes) if (node.nodeType === 1) prepare(node);
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+  }
   document.addEventListener("motion:change", (event) => {
     if (!event.detail.enabled || !event.detail.visible) stopAll();
   });
   window.addEventListener("pagehide", stopAll);
   document.addEventListener("pointerdown", settleInputAncestors, true);
   document.addEventListener("focusin", settleInputAncestors, true);
+  document.addEventListener('pointerdown', beginPress, true);
+  document.addEventListener('pointerup', endPress, true);
+  document.addEventListener('pointercancel', (event) => endPress(event, true), true);
+  document.addEventListener('pointermove', movePress, { passive: true });
+  document.addEventListener('keydown', keyboardPress, true);
+  document.addEventListener('keyup', (event) => { if (['Enter', ' '].includes(event.key)) endPress(event); }, true);
+  document.addEventListener('click', clickPress, true);
+  window.addEventListener('blur', stopPress);
 }
 
 function timing(role) {
@@ -74,6 +182,27 @@ function preset(kind, direction) {
   const sign = direction === "back" ? -1 : 1;
   switch (kind) {
     // Productive motion: no overshoot or scaling of a reading surface.
+    case "action-arrival": return { role: "arrival", easing: "cubic-bezier(.18,.65,.24,1)", frames: [
+      { transform: "translateY(6px) scale(.96)" },
+      { transform: "translateY(0) scale(1)" },
+    ] };
+    case "detail-arrival": return { role: "arrival", easing: "cubic-bezier(.18,.65,.24,1)", frames: [
+      { transform: "translateY(12px)" },
+      { transform: "translateY(0)" },
+    ] };
+    case "heading-arrival": return { role: "arrival", easing: "cubic-bezier(.18,.65,.24,1)", frames: [
+      { transform: "translateY(6px)" },
+      { transform: "translateY(0)" },
+    ] };
+    case "arrival": return { role: "arrival", easing: "cubic-bezier(.18,.65,.24,1)", frames: [
+      { transform: `translateY(${direction === 'back' ? 24 : 32}px)` },
+      { transform: "translateY(0)" },
+    ] };
+    case "release": return { role: "release", easing: "linear", frames: [
+      { transform: "scale(.945) translateY(1px)", offset: 0, easing: "cubic-bezier(.15,.7,.25,1)" },
+      { transform: "scale(1.035) translateY(-1px)", offset: .48, easing: EASING },
+      { transform: "scale(1) translateY(0)", offset: 1 },
+    ] };
     case "control": return { role: "control", frames: [{ transform: "scale(.975)" }, { transform: "scale(1)" }] };
     case "menu": return { role: "reveal", frames: [{ transform: `translateY(${direction === "top" ? 8 : -8}px)` }, { transform: "translateY(0)" }] };
     case "dialog": return { role: "route", frames: [{ transform: "translateY(12px)" }, { transform: "translateY(0)" }] };
@@ -164,7 +293,7 @@ function preset(kind, direction) {
  * Delays are presentation-only and bounded: no timer or application callback.
  * @returns {Animation|null}
  */
-export function animateElement(element, kind = "reveal", { channel = "default", direction = "forward", delay = 0 } = {}) {
+export function animateElement(element, kind = "reveal", { channel = "default", direction = "forward", delay = 0, startTransform } = {}) {
   if (!element) return null;
   const current = channels.get(element)?.get(channel);
   if (current) cancel(current);
@@ -172,6 +301,7 @@ export function animateElement(element, kind = "reveal", { channel = "default", 
   initialize();
   if (!canMove()) return null;
   const { role, frames, easing = EASING } = preset(kind, direction);
+  if (kind === "release" && startTransform && startTransform !== "none") frames[0].transform = startTransform;
   const wait = Math.min(MAX_SEQUENCE_DELAY, Math.max(0, Number(delay) || 0));
   const animation = element.animate(frames, {
     duration: timing(role), delay: wait, easing,
@@ -206,6 +336,41 @@ export function animateSequence(entries, { channel = "sequence", direction = "fo
     if (animation) animations.push(animation);
   }
   return animations;
+}
+
+
+/** Visibly compose a page while actual controls keep their final rectangles.
+ * Text groups may travel; interactive ancestors are decomposed into their
+ * presentation children. No opacity gate, snapshot or delayed state commit.
+ * Call after route data is ready, and only on newly opened visible sections. */
+export function animateArrival(container, { channel = 'page-arrival', direction = 'forward', delay = 0 } = {}) {
+  if (!container?.isConnected) return [];
+  const parts = [];
+  const viewport = document.querySelector('#shell-scroll')?.getBoundingClientRect() ?? { top: 0, bottom: window.innerHeight };
+  function collect(node, depth = 0) {
+    if (parts.length >= 12 || depth > 6 || node.hidden || node.matches('input, textarea, select, label, .visually-hidden, svg')) return;
+    const box = node.getBoundingClientRect();
+    if (!box.height || box.bottom <= viewport.top || box.top >= viewport.bottom) return;
+    if (node.matches(PRESSABLE)) {
+      parts.push(...pressTargets(node, true));
+    } else if (node.matches(STATIONARY) || node.querySelector(STATIONARY)) {
+      [...node.children].forEach((child) => collect(child, depth + 1));
+    } else {
+      parts.push(node);
+    }
+  }
+  // A section's rhythm is visible as heading -> detail -> action rather than
+  // one large card wobbling. Descendant groups only split for target stability.
+  if (container.matches(PRESSABLE) || !container.children.length) collect(container);
+  else [...container.children].forEach((node) => collect(node));
+  return animateSequence(parts.slice(0, 12).map((element, index) => ({
+    element,
+    kind: element.closest(PRESSABLE) ? 'action-arrival'
+      : element.matches('h1') || element.querySelector('h1') ? 'arrival'
+      : element.matches('h2, h3, .section-head') || element.querySelector('h2, h3') ? 'heading-arrival'
+      : 'detail-arrival',
+    at: delay + index * 32,
+  })), { channel, direction });
 }
 
 /** Release outgoing finite effects immediately before closing or replacing UI. */

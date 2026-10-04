@@ -58,11 +58,13 @@ class AtmosphereTests(unittest.TestCase):
         expect(self.page.locator('.ambient__pigment')).to_have_count(9)
         self.page.wait_for_function('document.fonts.status === "loaded"')
 
-    def test_three_exposed_regions_visit_all_three_pigments_and_change_visibly_in_two_seconds(self):
+    def test_three_exposed_regions_visit_all_three_pigments_and_change_visibly(self):
         self.visit()
         self.page.wait_for_timeout(1300)
         frames = []
-        for time in range(0, 12001, 2000):
+        # The owner requested 20% less speed in v0.73. The same scene travels
+        # through its previous phases over 1.25× the time, without dimming it.
+        for time in range(0, 15001, 2500):
             self.page.evaluate('''time => {
               for (const animation of document.getAnimations()) {
                 if (animation.effect.target.closest('.ambient')) {
@@ -74,14 +76,16 @@ class AtmosphereTests(unittest.TestCase):
             frames.append(Image.open(BytesIO(self.page.screenshot())).convert('RGB'))
         # Blank margins on the actual application, not a isolated demo canvas.
         # Multiple corners must genuinely change hue, not merely alpha/position.
-        for position in [(100,80),(378,300),(300,650)]:
+        # Stay beyond the rail's outer edge; x=378 now samples the visible
+        # scrollbar rather than the atmosphere on a 390px screen.
+        for position in [(100,80),(387,300),(300,650)]:
             samples = [frame.getpixel(position) for frame in frames]
             seen = {pigment(pixel) for pixel in samples}
             self.assertTrue({'cherry','iris','lagoon'} <= seen, (position,samples,seen))
         difference = ImageChops.difference(frames[0], frames[1])
         changed = sum(1 for pixel in difference.get_flattened_data() if max(pixel) >= 12)
         self.assertGreater(changed/(390*844), .20,
-                           'A two-second motion must affect a substantial visible area, not tiny meanRGB noise')
+                           'Motion must remain visible over 2.5 seconds, not tiny meanRGB noise')
 
     def test_all_twelve_timelines_pause_for_settings_hidden_and_reduced_motion(self):
         self.visit('#profil')
@@ -89,8 +93,11 @@ class AtmosphereTests(unittest.TestCase):
           a.effect.target.closest('.ambient')&&a.playState==='running').length===12''')
         self.page.locator('[data-motion-control]').click()
         expect(self.page.locator('html')).to_have_attribute('data-motion','off')
-        paused = self.page.evaluate('''() => document.getAnimations().filter(a=>
-          a.effect.target.closest('.ambient')).map(a=>({state:a.playState,time:a.currentTime}))''')
+        paused = self.page.evaluate('''async () => {
+          const animations=document.getAnimations().filter(a=>a.effect.target.closest('.ambient'));
+          await Promise.all(animations.map(a=>a.ready));
+          return animations.map(a=>({state:a.playState,time:a.currentTime}));
+        }''')
         self.assertEqual(len(paused),12)
         self.assertTrue(all(a['state']=='paused' for a in paused),paused)
         self.page.wait_for_timeout(140)

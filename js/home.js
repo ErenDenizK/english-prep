@@ -39,7 +39,7 @@ import { avatar } from "./widgets.js";
 import { renderOnboarding } from "./onboarding.js";
 import { announce, scrollToTop, createBar } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
-import { animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateArrival, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 
 const VIEW_IDS = ["egitim", "test", "profil", "hosgeldin"];
 const DEFAULT_VIEW = "egitim";
@@ -586,7 +586,8 @@ function enterLibrary(container, direction) {
   const entries = (visible.length ? visible : [container]).map((element, index) => ({
     element, kind: "route", at: index * 55,
   }));
-  whenVisible(entries[0].element, () => animateSequence(entries, { channel: "library-entry", direction }),
+  whenVisible(entries[0].element, () => entries.forEach(({ element, at }) =>
+    animateArrival(element, { channel: "library-entry", direction, delay: at })),
     { channel: "library-entry", threshold: 0 });
 }
 
