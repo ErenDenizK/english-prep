@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="460" viewBox="0 0 1440 460" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">English Prep — Make your English make sense.</title>
+  <desc id="desc">A dark editorial wordmark with Sakura, iris and warm paper accents. Three connected illustrations represent reading, practice and returning to a lesson.</desc>
+  <defs>
+    <radialGradient id="iris"><stop stop-color="#655b93" stop-opacity=".35"/><stop offset="1" stop-color="#655b93" stop-opacity="0"/></radialGradient>
+    <radialGradient id="cherry"><stop stop-color="#a75577" stop-opacity=".29"/><stop offset="1" stop-color="#a75577" stop-opacity="0"/></radialGradient>
+    <radialGradient id="warm"><stop stop-color="#9b7864" stop-opacity=".17"/><stop offset="1" stop-color="#9b7864" stop-opacity="0"/></radialGradient>
+    <linearGradient id="line" x1="837" y1="159" x2="1280" y2="345" gradientUnits="userSpaceOnUse"><stop stop-color="#e9bb95"/><stop offset=".52" stop-color="#ed96b4"/><stop offset="1" stop-color="#c8b4e9"/></linearGradient>
+    <clipPath id="edge"><rect width="1440" height="460" rx="24"/></clipPath>
+  </defs>
+  <g clip-path="url(#edge)">
+    <rect width="1440" height="460" rx="24" fill="#141216"/>
+    <ellipse cx="1345" cy="118" rx="490" ry="370" fill="url(#iris)"/>
+    <ellipse cx="828" cy="461" rx="385" ry="338" fill="url(#cherry)"/>
+    <ellipse cx="65" cy="30" rx="440" ry="345" fill="url(#warm)"/>
+    <path d="M0 459.5H1440" stroke="#39313d"/>
+    <g font-family="Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+      <text x="64" y="116" font-size="64" font-weight="740" letter-spacing="-4" fill="#eee9ed">english prep<tspan fill="#ed96b4">.</tspan></text>
+      <text x="66" y="221" font-size="40" font-weight="620" letter-spacing="-1.4" fill="#eee9ed">Make your English</text>
+      <text x="66" y="273" font-size="40" font-weight="620" letter-spacing="-1.4" fill="#eee9ed">make sense.</text>
+      <text x="68" y="331" font-size="20" fill="#c6bcc6">Article-led study. Practice with a reason.</text>
+      <text x="68" y="395" font-size="14" font-weight="580" letter-spacing="2" fill="#c8b4e9">READ</text>
+      <circle cx="126" cy="390" r="2" fill="#847988"/>
+      <text x="143" y="395" font-size="14" font-weight="580" letter-spacing="2" fill="#efb1cb">APPLY</text>
+      <circle cx="213" cy="390" r="2" fill="#847988"/>
+      <text x="230" y="395" font-size="14" font-weight="580" letter-spacing="2" fill="#a4d3db">RETURN</text>
+    </g>
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <path d="M857 182C945 182 915 296 989 296H1043C1138 296 1095 150 1190 150H1271" stroke="url(#line)" stroke-width="2" opacity=".65"/>
+      <path d="M1266 144l6 6-6 6" stroke="#c8b4e9" stroke-width="2"/>
+      <g transform="translate(794 99) rotate(-7 71 98)">
+        <rect x="9" y="8" width="142" height="188" rx="13" fill="#1d1a20" stroke="#39313d"/>
+        <rect width="142" height="188" rx="13" fill="#211c23" stroke="#847988"/>
+        <path d="M24 33h59" stroke="#e9bb95" stroke-width="4"/>
+        <path d="M24 61h93M24 78h74M24 95h85" stroke="#c6bcc6" stroke-width="2"/>
+        <rect x="19" y="111" width="104" height="33" rx="5" fill="#30222d"/>
+        <path d="M27 127h87" stroke="#efb1cb" stroke-width="2"/>
+        <path d="M24 160h72" stroke="#c6bcc6" stroke-width="2"/>
+        <circle cx="117" cy="33" r="4" fill="#e9bb95"/>
+      </g>
+      <g transform="translate(987 204) rotate(5 79 59)">
+        <rect width="158" height="117" rx="14" fill="#1d1a20" stroke="#847988"/>
+        <rect x="12" y="13" width="134" height="39" rx="7" fill="#392532" stroke="#bb8ca4"/>
+        <path d="m24 31 5 5 10-11" stroke="#eeb4d1" stroke-width="2.3"/>
+        <path d="M51 32h77" stroke="#eee9ed" stroke-width="2"/>
+        <circle cx="30" cy="77" r="5" stroke="#847988" stroke-width="1.5"/>
+        <path d="M51 77h57M51 92h77" stroke="#c6bcc6" stroke-width="2"/>
+      </g>
+      <g transform="translate(1212 96)">
+        <rect width="92" height="100" rx="20" fill="#1e3038" stroke="#847988"/>
+        <path d="M62 44a23 23 0 1 0 3 21M62 29v16H46" stroke="#a4d3db" stroke-width="2.7"/>
+      </g>
+      <circle cx="974" cy="295" r="4" fill="#efb1cb"/>
+      <circle cx="1158" cy="170" r="3" fill="#c8b4e9"/>
+      <circle cx="1304" cy="333" r="3" fill="#e9bb95" opacity=".65"/>
+      <path d="M1205 369h63" stroke="#39313d"/>
+      <path d="M1227 356v26" stroke="#39313d"/>
+    </g>
+  </g>
+</svg>
