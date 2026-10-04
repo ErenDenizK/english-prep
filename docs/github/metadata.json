@@ -1,0 +1,108 @@
+{
+  "generatedAt": "2026-10-04T11:03:11.034706+00:00",
+  "source": "App previews use actual UI and isolated demonstration state; brand artwork is authored.",
+  "baseUrl": "Local static server serving this repository",
+  "assets": [
+    {
+      "file": "study-flow.webp",
+      "width": 2400,
+      "height": 2200,
+      "viewport": [
+        1200,
+        1100
+      ],
+      "density": 2,
+      "sourceCaptures": [
+        {
+          "source": "article-phone.webp",
+          "width": 1170,
+          "height": 2532
+        },
+        {
+          "source": "test-phone.webp",
+          "width": 1170,
+          "height": 2532
+        },
+        {
+          "source": "results-phone.webp",
+          "width": 1170,
+          "height": 2532
+        }
+      ],
+      "bytes": 325622
+    },
+    {
+      "file": "workspace-wide.webp",
+      "width": 2880,
+      "height": 2000,
+      "viewport": [
+        1440,
+        1000
+      ],
+      "density": 2,
+      "sourceCapture": "education-wide.webp",
+      "bytes": 171496
+    },
+    {
+      "file": "social-preview.png",
+      "width": 1280,
+      "height": 640,
+      "role": "Optional GitHub repository social preview",
+      "bytes": 239945
+    },
+    {
+      "file": "interaction.gif",
+      "width": 390,
+      "height": 844,
+      "frames": 95,
+      "durationMs": 9500,
+      "sourceRoute": "/index.html#hosgeldin",
+      "sequence": [
+        "Education: topic",
+        "article",
+        "check",
+        "topic",
+        "Test: question",
+        "explanation",
+        "review"
+      ],
+      "bytes": 3864867
+    },
+    {
+      "file": "introduction.webp",
+      "width": 780,
+      "height": 1688,
+      "density": 2,
+      "sourceRoute": "/index.html#hosgeldin",
+      "role": "Static motion-demo alternative",
+      "bytes": 65174
+    },
+    {
+      "file": "folio.gif",
+      "width": 524,
+      "height": 726,
+      "frames": 86,
+      "durationMs": 8600,
+      "sourceRoute": "/about/",
+      "sequence": [
+        "Rest",
+        "Open folio",
+        "Apply",
+        "Rotate",
+        "Return",
+        "Face front",
+        "Close folio"
+      ],
+      "bytes": 4107040
+    },
+    {
+      "file": "folio.webp",
+      "width": 1048,
+      "height": 1452,
+      "density": 2,
+      "sourceRoute": "/about/",
+      "role": "Static folio-demo alternative",
+      "bytes": 67866
+    }
+  ]
+}

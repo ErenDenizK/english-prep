@@ -1,157 +1,175 @@
-# English Prep Practice
+<p align="center">
+  <a href="https://erendenizk.github.io/english-prep/">
+    <picture>
+      <source media="(max-width: 600px)" srcset="docs/github/brand-compact.svg">
+      <img src="docs/github/brand.svg" alt="english prep. — Make your English make sense. Article-led study. Practice with a reason." width="1200">
+    </picture>
+  </a>
+</p>
 
-A simple, free multiple-choice practice app for university English prep-school
-exams ("hazırlık yeterlik/İYS" style tests). Built as a static site so it can
-be hosted for free on GitHub Pages and used by anyone with the link — no
-accounts, no backend, no build step.
+<p align="center">
+  <strong>A focused study space for the English you understand — and the distinctions you still miss.</strong><br>
+  Turkish explanations. English examples. An article first, a test when you are ready.
+</p>
 
-## How it works
+<p align="center">
+  <a href="https://erendenizk.github.io/english-prep/"><strong>Open the app ↗</strong></a>&nbsp; · &nbsp;
+  <a href="https://erendenizk.github.io/english-prep/about/">Explore the product</a>&nbsp; · &nbsp;
+  <a href="https://github.com/ErenDenizK/english-prep/blob/test/docs/VALIDATION.md">See the evidence</a>
+</p>
 
-- Pick a topic (e.g. Present Simple) or start a mixed test drawing from every
-  topic at once.
-- Answer multiple-choice, fill-in-the-blank questions with instant feedback
-  and a full explanation after every answer.
-- See your score, a breakdown by topic, and — once you've done a few tests —
-  which topics you're weakest in, based on data saved locally in your
-  browser (`localStorage`). Nothing is sent to a server.
+<p align="center">
+  <strong>10</strong> topics &nbsp; / &nbsp; <strong>60</strong> lessons &nbsp; / &nbsp;
+  <strong>241</strong> questions &nbsp; / &nbsp; <strong>723</strong> option notes
+</p>
 
-## Running locally
+## From “that sounds right” to “I know why”
 
-This is plain HTML/CSS/JS with no build step, but the pages load question
-data with `fetch()`, which requires an HTTP origin (opening `index.html`
-directly as a `file://` URL will not work). Serve the project root with any
-static file server, for example:
+English Prep is for learners with an existing English foundation preparing for
+Turkish university proficiency exams. Each lesson explores a useful distinction:
+*Present Perfect vs Past Simple*, *Must vs Have to*, or the difference one connector
+makes to a sentence. It gives a name and a reason to knowledge you already use.
+
+| Read the distinction | Apply it in context | Return with a reason |
+| --- | --- | --- |
+| Scroll through a complete article. Compare forms, examples and common mistakes at your own pace. | Choose a topic, a mixed test or your mistake notebook. See why an answer fits the actual sentence. | Follow an explanation back to the relevant lesson. Continue from your saved reading position. |
+
+<a href="https://erendenizk.github.io/english-prep/">
+  <img src="docs/github/study-flow.webp" alt="Actual English Prep screens: a scrolling comparison lesson, a question with explained feedback, and a result that leads back to study." width="1200">
+</a>
+
+<sub>Real browser captures with demonstration progress. Open the app to interact; these are not physical-device certification images.</sub>
+
+<details>
+<summary><strong>Watch the introduction in motion</strong> — a short, optional demo</summary>
+
+<img src="docs/github/interaction.gif" alt="A real browser recording of the optional introduction: topic, article and check illustrations respond to selections before the test flow opens." width="390">
+
+The recording runs in an isolated demo browser. The app honors reduced motion
+and has a persistent animation preference in Profile settings. GitHub GIF playback
+has no equivalent per-viewer motion control, so this preview is kept inside a
+closed disclosure. A [static introduction frame](docs/github/introduction.webp) is also available.
+
+</details>
+
+<details>
+<summary><strong>Turn the product over</strong> — explore the interactive folio</summary>
+
+<img src="docs/github/folio.gif" alt="The About page's interactive folio opens into layered study pages, switches between reading and practice, rotates, and returns to its resting composition." width="524">
+
+Real interactions from the [product portfolio](https://erendenizk.github.io/english-prep/about/).
+The folio can be explored with touch, pointer and keyboard. This recording uses
+actual app captures inside the live illustration; it is not a prerecorded UI
+inside the product. [Static view](docs/github/folio.webp).
+
+</details>
+
+## Two tabs. Room to think.
+
+**Eğitim** holds the articles. **Test** holds the practice. Profile and settings
+stay within reach from the header. No exam-date setup, streak pressure or daily
+quota stands between you and the material.
+
+- **Questions that explain the difference.** Feedback includes the correct answer,
+  a transferable rule, and what your chosen alternative would mean.
+- **A mistake notebook with a purpose.** A question leaves after correct answers
+  on two separate days. Getting it wrong restarts that review history.
+- **Continuity on your terms.** Reading position, completed lessons and test
+  history stay in your browser. Preview a backup before you download it, copy
+  its JSON text or share its file through a supported native share sheet. Restore
+  through the existing import flow; there is no background upload.
+- **A considered reading surface.** Bounded line lengths, measured type roles and
+  neutral sentence text sit within a dark-first Sakura, iris, lagoon and plum palette.
+  Meaning also comes from labels and shapes, never color alone.
+- **An app that fits its screen.** Focused articles on a phone; useful supporting
+  columns on a wider display. Install it from a supported browser. Previously
+  opened material remains available offline while its browser cache is retained.
+
+<details>
+<summary><strong>At your desk</strong> — the same app, with space for context</summary>
+
+<img src="docs/github/workspace-wide.webp" alt="The actual wide-screen study library, with the saved reading card beside the topic list and centered navigation." width="1200">
+
+A real 1440 × 1000 CSS-pixel viewport captured at 2× density. Wider layouts add
+useful context beside a bounded reading area; they do not stretch paragraphs
+across the screen. Demonstration reading progress is shown.
+
+</details>
+
+There is no account, application backend, analytics or automatic device sync.
+The material targets parts of the YTÜ İYS-style exam; this is not complete exam
+coverage or a prediction of a learner's result.
+
+## Simple delivery. Deliberate engineering.
+
+Plain HTML, CSS and ES modules, served directly from GitHub Pages. No build step
+or runtime dependencies. Content and interface are separate, so a lesson can
+change without redesigning a screen.
+
+```mermaid
+flowchart LR
+  Content["Typed JSON: lessons + questions"] --> UI["Native interface: read · practice · review"]
+  UI --> Local["Local progress, history and backups"]
+  UI --> Session["Validated tab-local test session"]
+  UI --> Offline["Service worker: shell + opened content"]
+```
+
+| Decision | What it protects |
+| --- | --- |
+| JSON rendered through DOM nodes and `textContent` | Teaching material stays separate from presentation; no `innerHTML` rendering. |
+| Validated local state and a recoverable test session | A refresh can recover an in-progress attempt without inventing an answer. |
+| Cancellable, state-driven motion | Input and scoring commit immediately. Replaced or hidden scenes stop their effects. |
+| Contrast checks, browser journeys and content validation | Design intent has executable checks, with limitations recorded alongside results. |
+| Preserved earlier interfaces and source archive | The redesign can be compared with the original rather than replacing its history. |
+
+The corpus also has an editorial process: blind question solving, lesson
+sufficiency review and independent re-audits. Automated validation complements
+those reviews; it cannot decide whether a distractor has a second defensible meaning.
+
+[Architecture and design decisions](https://github.com/ErenDenizK/english-prep/tree/test/docs/adr) ·
+[Interface system](https://github.com/ErenDenizK/english-prep/blob/test/docs/margin-design-system.md) ·
+[Research](https://github.com/ErenDenizK/english-prep/tree/test/docs/research) ·
+[Content authoring](https://github.com/ErenDenizK/english-prep/blob/test/docs/CONTENT_GUIDE.md)
+
+## Run it locally
 
 ```bash
-python3 -m http.server 8000
+git clone --branch test https://github.com/ErenDenizK/english-prep.git
+cd english-prep
+npm run serve
+# Open http://localhost:8000/
 ```
 
-Then open `http://localhost:8000/` in a browser.
+Python 3 serves the files; Node.js runs the repository tooling. There is no
+`npm install` step. A `file://` URL will not work because lessons load with `fetch()`.
 
-## Deploying to GitHub Pages
-
-1. Merge this branch into the repository's default branch (e.g. `main`).
-2. In the repository, go to **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Select the default branch and the `/ (root)` folder, then save.
-5. GitHub Pages will publish the site at
-   `https://<username>.github.io/<repository>/` within a few minutes.
-
-No GitHub Actions workflow is required since there's nothing to build.
-
-## Project structure
-
-```
-index.html          Home: topic selection + mixed test
-quiz.html            Question-answering screen
-results.html          Score, breakdown, and review
-css/style.css          Single stylesheet (mobile-first, responsive)
-js/                     ES modules — see file-level comments for each one's role
-data/manifest.json       Topic index (id, title, tier, file, question count)
-data/tenses/*.json         One question set per tense
+```bash
+npm run check    # Content, formatting, palette and Node tests
+npm run verify   # Browser journeys; requires the server and Chromium tooling
 ```
 
-## Adding a new topic
+[Development and content guide](https://github.com/ErenDenizK/english-prep/blob/test/docs/development.md) ·
+[Validation commands and limits](https://github.com/ErenDenizK/english-prep/blob/test/docs/VALIDATION.md) ·
+[Changelog](https://github.com/ErenDenizK/english-prep/blob/test/CHANGELOG.md) ·
+[Roadmap](https://github.com/ErenDenizK/english-prep/blob/test/docs/roadmap.md)
 
-Adding a topic never requires touching any JavaScript — it's just data:
+## A visible design history
 
-1. Create a new JSON file (e.g. `data/modals/modals-obligation.json`) using
-   the schema below.
-2. Add an entry for it to `data/manifest.json`, including a `tier` (see
-   **Topic roadmap** below for the available tiers).
-3. That's it — the topic shows up on the home page automatically.
+The live app is published from **`test`**. The repository's default-branch
+presentation links to that source explicitly; **`main` retains the original MVP
+runtime**. A push to `test` is a deployment, so checks happen before publication.
 
-### Question schema
+[Current app](https://erendenizk.github.io/english-prep/) ·
+[Full original interface](https://erendenizk.github.io/english-prep/original/) ·
+[Earlier prototype](https://erendenizk.github.io/english-prep/legacy/) ·
+[Unchanged original source ZIP](https://erendenizk.github.io/english-prep/original/source-39dcd46.zip)
 
-Each topic file looks like this:
+The historical hosted versions share the origin's local progress and settings;
+their offline caches are isolated. Current browser evidence, real-device gaps
+and content limits are documented openly. No learner study, physical iPhone
+certification or universal reading-comfort claim is implied by an automated pass.
 
-```json
-{
-  "tenseId": "present-simple",
-  "title": "Present Simple",
-  "questions": [
-    {
-      "id": "present-simple-001",
-      "prompt": "She ____ to school every day.",
-      "options": ["go", "goes", "is going", "went"],
-      "correctAnswer": "goes",
-      "explanation": "\"Goes\" is correct because ... \"Go\" is wrong because ... \"Is going\" is wrong because ... \"Went\" is wrong because ..."
-    }
-  ]
-}
-```
+---
 
-Field rules:
-
-- **`prompt`** — a sentence with exactly one blank marked as `____` (four
-  underscores).
-- **`options`** — exactly 4 strings. Order doesn't matter; the app shuffles
-  it per attempt.
-- **`correctAnswer`** — must exactly match one of the strings in `options`.
-- **`explanation`** — always a full teaching explanation, never a one-liner.
-  It must say *why the correct option is right* **and** briefly explain the
-  mistake or misconception behind *each* wrong option. This is what makes
-  the app useful for learning, not just testing.
-
-### Prompt template for AI-authored questions
-
-Use a prompt along these lines when generating a new question set (adjust
-the topic and count):
-
-> Write 8 multiple-choice, fill-in-the-blank English grammar questions for
-> the topic "[TOPIC NAME]", targeting a university English prep-school exam.
-> Return them as a JSON array matching this exact shape:
->
-> `{ "id": string, "prompt": string, "options": string[4], "correctAnswer": string, "explanation": string }`
->
-> Rules:
-> - `prompt` must contain exactly one blank written as `____`.
-> - `options` must have exactly 4 plausible choices, only one of which is
->   grammatically correct in context.
-> - `correctAnswer` must exactly match one of the `options` strings.
-> - `explanation` must be a full teaching explanation: confirm why the
->   correct answer is right, and briefly explain the specific mistake each
->   wrong option represents (don't just say "wrong tense" — say which tense
->   it wrongly suggests and why that doesn't fit here).
-> - Vary sentence subjects and contexts across questions; avoid repeating
->   the same sentence structure.
-
-## Topic roadmap
-
-The long-term goal is to cover the full prep-school grammar syllabus. New
-topics are grouped into four learner-facing difficulty tiers (used to group
-topic cards on the home page once more than one tier has content), plus a
-cross-cutting vocabulary track:
-
-- **Foundations** — Tenses, Articles, Prepositions, Quantifiers,
-  Comparatives & Superlatives.
-- **Core Grammar** — Modals, Passive Voice, Gerunds & Infinitives.
-- **Compound Structures** — Conditionals, Relative Clauses, Question Tags.
-- **Advanced / Discourse-level** — Reported Speech, Connectors & Linking
-  Words.
-- **Vocabulary** (cross-cutting, not tied to a tier) — Word Formation,
-  collocations. This will likely need its own question sub-type eventually
-  and is flagged for a future design pass.
-
-This tiering reflects a difficulty grouping for learners, not a required
-authoring order — topics can be added in any order; whichever gets a JSON
-file next simply becomes the next live topic card. See the architecture
-plan in this repository's history for the full reasoning.
-
-## Versioning
-
-Releases use a simple `x.y` scheme (tagged in git), tracked in
-`CHANGELOG.md`:
-
-- **`x` (major)** — big feature updates: a new mode, a major UI revision, a
-  structural change to how the app works.
-- **`y` (minor)** — smaller additions: a new topic going live, the profile
-  system landing, small UI/UX tweaks.
-
-## Roadmap beyond v1
-
-- A lightweight local profile (name, settings, reset) once more than one
-  person regularly uses the same device/browser.
-- A guided, sequential "learning path" mode through topics, building on the
-  per-topic weak-spot data already collected in v1.
-- A dedicated question format for Vocabulary/Word Formation.
+Built by **[ErenDenizK](https://github.com/ErenDenizK)**. Product, interface and
+engineering notes live alongside the code. [How these presentation assets are made](docs/github/README.md).
