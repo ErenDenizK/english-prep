@@ -53,7 +53,7 @@ import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard
 import { icon } from "./icons.js";
 import { hueOf } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
-import { animateElement, animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateElement, animateArrival, animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 
 const bottomNav = document.getElementById("bottom-nav");
 const bar = createBar("shell-header");
@@ -959,10 +959,10 @@ export async function openTopicIntro(topicId) {
 
   document.title = `${entry.title} — English Prep`;
   const overview = readerContainer.firstElementChild;
-  whenVisible(overview.querySelector(".topic-intro > .stack") ?? overview, () => animateSequence([
-    { element: overview.querySelector(".topic-intro > .stack"), kind: "route" },
-    { element: overview.lastElementChild, kind: "route", at: 65 },
-  ], { channel: "topic-entry" }), { channel: "topic-entry", threshold: 0 });
+  whenVisible(overview.querySelector(".topic-intro > .stack") ?? overview, () => {
+    animateArrival(overview.querySelector(".topic-intro > .stack") ?? overview, { channel: "topic-entry" });
+    animateArrival(overview.lastElementChild, { channel: "topic-entry", delay: 65 });
+  }, { channel: "topic-entry", threshold: 0 });
   announce(`${entry.title} genel bakış.`);
 
   // A primary, because a screen that ends in lesson rows and offers only a
@@ -1527,10 +1527,14 @@ function renderLesson() {
 
   page.appendChild(renderLessonEnd(lesson));
   readerContainer.appendChild(page);
-  // Orient a fresh open without moving instructional paragraphs. A resumed
-  // article restores its position with no arrival choreography.
-  if (!state.reader.resumeAt) whenVisible(heading,
-    () => animateElement(heading, "route", { channel: "lesson-entry" }), { channel: "lesson-entry" });
+  // A fresh article opens as a title, summary and optional first-check face.
+  // Resumed reading retains its exact position; instructional blocks do not
+  // repeatedly animate while the learner scrolls or answers a check.
+  if (!state.reader.resumeAt) whenVisible(heading, () => {
+    animateArrival(heading, { channel: "lesson-entry" });
+    const preview = page.querySelector('.lesson-pretest');
+    if (preview) animateArrival(preview, { channel: "lesson-preview", delay: 100 });
+  }, { channel: "lesson-entry" });
 
   // No action bar. A lesson is something to read, and a filled amber slab
   // pinned under every screen of it is the loudest thing on a surface

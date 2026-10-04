@@ -1,5 +1,5 @@
-/* Native scrolling remains the source of truth. The compact control catches
-   input only in a local 44px square around the slim visible edge grip. */
+/* One continuous thread, a small local grab target, and native scroll state.
+   The 44px interaction area never becomes a visible panel or thick control. */
 [data-scroll-rail-enhanced] { scrollbar-width: none; }
 [data-scroll-rail-enhanced]::-webkit-scrollbar { display: none; }
 .scroll-rail {
@@ -18,7 +18,6 @@
   position: relative;
   width: 44px;
   height: 100%;
-  border-radius: 22px;
   outline: none;
 }
 .scroll-rail[data-interactive="true"] .scroll-rail__control {
@@ -26,148 +25,96 @@
   touch-action: none;
   cursor: grab;
 }
-.scroll-rail__track {
+.scroll-rail__thread {
   position: absolute;
-  inset: 0 auto 0 21px;
-  width: 2px;
-  border-radius: 8px;
-  background: var(--ink-2);
+  inset: 0;
+  width: 44px;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.scroll-rail__track {
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  opacity: .65;
+  transition: stroke 380ms var(--ease-standard), opacity 380ms var(--ease-standard);
 }
 .scroll-rail__thumb {
   position: absolute;
   top: 0;
-  left: 19px;
-  width: 6px;
-  min-height: 28px;
-  border-radius: 20px;
-  /* Translation follows the finger immediately. Only the inner grip deforms. */
+  left: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  pointer-events: auto;
+  touch-action: none;
+  /* The outer target follows native scroll immediately. Only its art bends. */
 }
 .scroll-rail__grip {
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--accent-text);
+  top: 3px;
+  left: calc(var(--rail-axis, 22px) - 2.5px);
+  width: 5px;
+  height: 38px;
+  border-radius: 8px;
   background: linear-gradient(180deg in srgb, var(--accent-text), var(--secondary));
   transform-origin: center;
-  transition: scale 220ms var(--ease-standard), box-shadow 240ms var(--ease-standard);
+  pointer-events: none;
+  transition: width 340ms var(--ease-standard), margin-left 340ms var(--ease-standard),
+    height 340ms var(--ease-standard), top 340ms var(--ease-standard), box-shadow 420ms var(--ease-standard);
 }
 .scroll-rail__marks { position: absolute; inset: 0; pointer-events: none; }
 .scroll-rail__mark {
   position: absolute;
-  left: 19px;
-  width: 6px;
-  height: 6px;
-  border: 2px solid var(--ink-2);
+  left: calc(var(--rail-axis, 22px) - 2px);
+  width: 4px;
+  height: 4px;
+  border: 1px solid var(--ink-2);
   border-radius: 50%;
   background: var(--page);
   transform: translateY(-50%);
-  transition: background-color 240ms var(--ease-standard), border-color 240ms var(--ease-standard), scale 320ms var(--ease-standard);
+  transition: background-color 380ms var(--ease-standard), border-color 380ms var(--ease-standard), opacity 380ms var(--ease-standard);
 }
-.scroll-rail__mark[data-current="true"] { background: var(--secondary); border-color: var(--secondary); scale: 1.35; }
-.scroll-rail__pulse {
-  position: absolute;
-  inset: var(--rail-pulse-y, 0px) 0 auto;
-  height: 44px;
-  border-radius: 50%;
-  opacity: 0;
-  border: 1px solid var(--accent-text);
-  pointer-events: none;
-}
-.scroll-rail[data-phase="jump"] .scroll-rail__pulse { animation: rail-position-pulse 480ms var(--ease-standard) both; }
-.scroll-rail[data-phase="jump"][data-action="stage"] .scroll-rail__pulse {
-  border-color: var(--secondary);
-  border-radius: 12px;
-  animation-name: rail-stage-pulse;
-}
+.scroll-rail__mark[data-current="true"] { background: var(--secondary); border-color: var(--secondary); }
 .scroll-rail[data-scrolling="true"] .scroll-rail__grip,
-.scroll-rail[data-interactive="true"]:is(:hover, :focus-within) .scroll-rail__grip { scale: 1.35 1; }
-.scroll-rail[data-pressed="true"] .scroll-rail__grip { scale: 1.6 .92; }
-.scroll-rail[data-dragging="true"] .scroll-rail__control { cursor: grabbing; }
-.scroll-rail[data-dragging="true"] .scroll-rail__grip { scale: 1.8 .92; }
-.scroll-rail[data-phase="release"] .scroll-rail__grip { animation: rail-release 460ms var(--ease-standard); }
-.scroll-rail[data-phase="cancel"] .scroll-rail__grip { animation: rail-cancel 220ms var(--ease-standard); }
-.scroll-rail:not([data-input="pointer"]) .scroll-rail__control:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; background: var(--page); }
-
-/* Resting artwork stays in the outer 16px gutter. A local transparent
-   44px-square target surrounds the 8px handle; no tall hit strip covers text.
-   Only explicit activation expands the opaque grip and well inward. */
-.scroll-rail[data-compact="true"] .scroll-rail__control { pointer-events: none; }
-.scroll-rail[data-compact="true"] .scroll-rail__control::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1px solid var(--edge);
-  border-radius: inherit;
-  background: var(--card);
-  opacity: 0;
-  transform: scaleX(.72);
-  transform-origin: right center;
-  transition: opacity 220ms var(--ease-standard), transform 420ms var(--ease-standard);
-  pointer-events: none;
+.scroll-rail[data-interactive="true"]:is(:hover, :focus-within) .scroll-rail__grip {
+  width: 6px;
+  margin-left: -.5px;
 }
-.scroll-rail[data-compact="true"] .scroll-rail__track { opacity: .72; transform: translateX(18px); transition: transform 320ms var(--ease-standard); }
-.scroll-rail[data-compact="true"] .scroll-rail__marks { opacity: 0; transition: opacity 220ms var(--ease-standard); }
-.scroll-rail[data-compact="true"] .scroll-rail__thumb {
-  left: 0;
-  width: 44px;
-  height: 44px;
-  pointer-events: auto;
-  touch-action: none;
-  border-radius: 17px;
-}
-.scroll-rail[data-compact="true"] .scroll-rail__grip {
-  left: auto;
-  right: 0;
+.scroll-rail[data-interactive="true"][data-pressed="true"] .scroll-rail__grip,
+.scroll-rail[data-interactive="true"][data-dragging="true"] .scroll-rail__grip {
   width: 8px;
-  border: 0;
-  border-radius: 6px;
-  background: linear-gradient(180deg in srgb, var(--accent-text), var(--secondary));
-  scale: 1;
-  box-shadow: none;
-  transition: width 320ms var(--ease-standard), border-radius 320ms var(--ease-standard), scale 220ms var(--ease-standard), box-shadow 240ms var(--ease-standard);
+  margin-left: -1.5px;
+  top: 5px;
+  height: 34px;
+  box-shadow: 0 0 9px color-mix(in srgb, var(--accent-text) 18%, transparent);
 }
-.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__grip {
-  width: 44px;
-  border: 1px solid var(--ink-2);
-  border-radius: 17px;
-  background: var(--card);
-  box-shadow: 0 3px 12px rgb(0 0 0 / .14);
-}
-.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__track { transform: none; }
-.scroll-rail[data-compact="true"]:not([data-expanded="true"]) .scroll-rail__control:focus-visible { outline: none; background: transparent; }
-.scroll-rail[data-compact="true"]:not([data-expanded="true"]) .scroll-rail__control:focus-visible .scroll-rail__grip { outline: 2px solid var(--focus); outline-offset: -2px; }
-.scroll-rail[data-compact="true"]:not([data-expanded="true"]) .scroll-rail__grip::before { opacity: 0; }
-.scroll-rail[data-compact="true"]:not([data-expanded="true"]) .scroll-rail__grip { animation: none; }
+.scroll-rail[data-dragging="true"] .scroll-rail__control { cursor: grabbing; }
+.scroll-rail[data-pressed="true"] .scroll-rail__track { stroke: var(--accent-text); opacity: .95; }
+.scroll-rail[data-phase="jump"] .scroll-rail__grip { box-shadow: 0 0 10px color-mix(in srgb, var(--accent-text) 26%, transparent); }
+.scroll-rail[data-phase="jump"][data-action="stage"] .scroll-rail__track { stroke: var(--secondary); opacity: .95; }
+.scroll-rail:not([data-input="pointer"]) .scroll-rail__control:focus-visible .scroll-rail__track { stroke: var(--focus); opacity: 1; stroke-width: 2.5; }
+.scroll-rail:not([data-input="pointer"]) .scroll-rail__control:focus-visible .scroll-rail__grip { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-.scroll-rail[data-compact="true"] .scroll-rail__grip::before {
+/* At narrow widths only the thumb catches input at rest. Once tapped, a slim
+   16px edge strip accepts destinations. No filled well or wide invisible layer
+   sits over the reading column, even while the thread is pulled inward. */
+.scroll-rail[data-compact="true"] .scroll-rail__control { pointer-events: none; }
+.scroll-rail[data-compact="true"] .scroll-rail__control::after {
   content: "";
   position: absolute;
-  top: 14px;
-  left: 17px;
-  width: 2px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent-text);
-  box-shadow: 6px 0 0 var(--secondary), 0 6px 0 var(--accent-text), 6px 6px 0 var(--secondary), 0 12px 0 var(--accent-text), 6px 12px 0 var(--secondary);
-  transition: scale 260ms var(--ease-standard), background-color 260ms var(--ease-standard);
+  inset: 0 -4px 0 auto;
+  width: 16px;
+  pointer-events: none;
+  touch-action: none;
 }
-.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__control { pointer-events: auto; }
-.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__control::before { opacity: 1; transform: scaleX(1); }
+.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__control::after { pointer-events: auto; }
+.scroll-rail[data-compact="true"] .scroll-rail__marks { opacity: 0; transition: opacity 380ms var(--ease-standard); }
 .scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__marks { opacity: 1; }
-.scroll-rail[data-compact="true"][data-pressed="true"] .scroll-rail__grip,
-.scroll-rail[data-compact="true"][data-dragging="true"] .scroll-rail__grip {
-  scale: calc(.88 - var(--rail-pinch, 0) * .08) 1.08;
-  box-shadow: -4px 0 16px rgb(0 0 0 / .18);
-}
-.scroll-rail[data-compact="true"][data-pressed="true"] .scroll-rail__grip::before { scale: .7 1; }
-.scroll-rail[data-compact="true"][data-dragging="true"] .scroll-rail__grip::before { scale: .7 1.08; }
-.scroll-rail[data-compact="true"][data-phase="release"] .scroll-rail__grip { animation-name: rail-compact-release; }
 .scroll-rail[data-interactive="false"] { display: none; }
-@keyframes rail-release { 0% { scale: 1.8 .92; } 48% { scale: .9 1.04; } 100% { scale: 1 1; } }
-@keyframes rail-compact-release { 0% { scale: .88 1.08; } 48% { scale: 1.035 .97; } 100% { scale: 1 1; } }
-@keyframes rail-cancel { from { scale: .94; } to { scale: 1; } }
-@keyframes rail-position-pulse { from { opacity: .7; scale: .28; } to { opacity: 0; scale: 1; } }
-@keyframes rail-stage-pulse { from { opacity: .7; scale: .55 .25; } 55% { opacity: .4; scale: 1 .84; } to { opacity: 0; scale: 1; } }
 :root[data-motion="off"] .scroll-rail *,
 :root[data-motion="off"] .scroll-rail *::before,
 :root[data-motion="off"] .scroll-rail *::after,

@@ -1,6 +1,6 @@
-# Margin / Sakura: interface system · v0.72
+# Margin / Sakura: interface system · v0.73
 
-Margin is English Prep's current interface. [ADR 011](adr/011-articulated-interface-and-data-portability.md) records the living atmosphere, articulated controls, inspectable portfolio, mobile scroll grip and explicit data transfer. Earlier ADRs remain historical evidence: ADR 006 retains the typography decision and the Sakura answer semantics remain, while earlier per-field aura caps, passive mobile rail and whole-popup motion are superseded. [css/editorial.css](../css/editorial.css) supplies presentation tokens over inherited [css/style.css](../css/style.css); [css/interactions.css](../css/interactions.css) owns shared control states, [css/onboarding.css](../css/onboarding.css) the introduction, and [css/scroll-rail.css](../css/scroll-rail.css) the grip and rail. The older [design-system.md](design-system.md) remains historical source documentation. [EXPERIENCE.md](EXPERIENCE.md) describes the learning journeys.
+Margin is English Prep's current interface. [ADR 012](adr/012-elastic-edge-and-expressive-arrivals.md) records the living atmosphere, articulated controls, inspectable portfolio, mobile scroll grip and explicit data transfer. Earlier ADRs remain historical evidence: ADR 006 retains the typography decision and the Sakura answer semantics remain, while earlier per-field aura caps, passive mobile rail and whole-popup motion are superseded. [css/editorial.css](../css/editorial.css) supplies presentation tokens over inherited [css/style.css](../css/style.css); [css/interactions.css](../css/interactions.css) owns shared control states, [css/onboarding.css](../css/onboarding.css) the introduction, and [css/scroll-rail.css](../css/scroll-rail.css) the grip and rail. The older [design-system.md](design-system.md) remains historical source documentation. [EXPERIENCE.md](EXPERIENCE.md) describes the learning journeys.
 
 ## Direction and themes
 
@@ -91,15 +91,16 @@ Quiz snapshots are tab-local and validated against current content, not a cross-
 
 ## Atmosphere, motion and verification
 
-Three bounded clusters sit behind every route, including lessons, questions and About. Each contains cherry `#a04278`, iris `#6350a5` and lagoon `#28798a` radial pigments. Cluster drift takes 7.8/9.4/11 seconds; complete color cycles take 10.8/12.6/14.4 seconds, with independent phases. The **parent** `.ambient` flattens all nine child layers before applying opacity 0.42 dark / 0.09 light. Do not move that cap onto individual fields: it would invalidate the contrast proof. Every permitted mixture and overlap stays in the measured continuous color envelope. Reading ink is stable; cards remain opaque. A static halo is confined to selected neutral titles. No animated blur, hue rotation, particles, scroll parallax, automatic story rotation or animated teaching-text color is used.
+Three bounded clusters sit behind every route, including lessons, questions and About. Each contains cherry `#a04278`, iris `#6350a5` and lagoon `#28798a` radial pigments. Cluster drift takes 9.75/11.75/13.75 seconds; complete color cycles take 13.5/15.75/18 seconds, with independent phases. The **parent** `.ambient` flattens all nine child layers before applying opacity 0.42 dark / 0.09 light. Do not move that cap onto individual fields: it would invalidate the contrast proof. Every permitted mixture and overlap stays in the measured continuous color envelope. Reading ink is stable; cards remain opaque. A static halo is confined to selected neutral titles. No animated blur, hue rotation, particles, scroll parallax, automatic story rotation or animated teaching-text color is used.
 
 `js/motion.js` owns the persistent preference. Only Profile settings expose the labeled motion toggle; About links to these settings. There are no top, onboarding or content-footer toggles. Pausing leaves a still atmospheric background. Hidden tabs pause all three drift and nine pigment timelines; system reduced motion takes precedence and uses a distinct stationary tone at each anchor. Forced colors removes the decoration. The bounded background must remain contrast-safe at every field position, not only in a screenshot.
 
 | Interaction role | Token / behavior |
 | --- | --- |
-| Press | `--d-control: 100ms`; small local feedback, no layout shift. |
+| Press / release | 120ms inner compression, then `--d-release: 380ms` rebound from the current transform; outer target stays usable. |
 | Reveal | `--d-reveal: 220ms`; local/menu/disclosure cue while state/focus updates immediately. |
-| Navigation | `--d-route: 360ms`; one composed entrance, no native View Transition snapshot or blocking overlay. |
+| Page arrival | `--d-arrival: 620ms`; 24–32px display titles, 12px support, 6px compact headings/control faces and bounded 32ms stagger. |
+| Short transition | `--d-route: 360ms`; retained panel/artwork cue, no blocking overlay. |
 | Scene | `--d-scene: 560ms`; grouped Profile/product artwork composition. |
 | Completion | `--d-complete: 720ms`; genuine completion signature and decorative path drawing; final values exist immediately. |
 | Story | `--d-story: 900ms`; articulated onboarding/product artwork, never an input delay. |
@@ -108,27 +109,24 @@ Three bounded clusters sit behind every route, including lessons, questions and 
 
 Disabling motion preserves every state and control. Focus remains visible and clear of fixed chrome. Reading progress uses the real instructional-body start for both calculation and restoration, so changing preliminary practice height cannot manufacture completion. Existing stored fractions remain compatible; this is a proportional bookmark, not an exact sentence anchor.
 
-`js/interactions.js` owns named finite WAAPI effects, `animateSequence` with bounded offsets, and their cancellation registry. A replacement cancels the older effect on the same target/channel; outgoing views and scenes cancel their delayed work. Pointerdown/focus settles animated ancestors so input takes priority. Motion-off, OS reduction and hidden-page changes release effects. Neither completion nor cancellation schedules application state. CSS owns ordinary control/chevron/indicator states and local answer/question cues. Stable menu/dialog shells receive only an outside shadow/outline response; item labels, selected checks and button contents animate separately. Onboarding uses `item`, `unfold`, `fan`, `signal`, `rule` and `trace` roles instead of repeating a whole-diagram wobble. Explanatory copy stays stationary. Longer motion belongs to grouped artwork and genuine completion, not article paragraph cascades. Do not animate article height, input text or restored reading position; closing dialogs/menus never waits for an exit animation.
+`js/interactions.js` owns named finite WAAPI effects, `animateSequence` with bounded offsets, and their cancellation registry. A replacement cancels the older effect on the same target/channel; outgoing views and scenes cancel their delayed work. Pointerdown/focus settles animated ancestors so input takes priority. Motion-off, OS reduction and hidden-page changes release effects. Neither completion nor cancellation schedules application state. CSS owns ordinary control/chevron/indicator states and local answer/question cues. Ordinary control faces receive tactile press/release and fresh pages receive `animateArrival`; menu/dialog shells retain their outside shadow/outline response; item labels, selected checks and button contents animate separately. Onboarding uses `item`, `unfold`, `fan`, `signal`, `rule` and `trace` roles instead of repeating a whole-diagram wobble. Explanatory copy stays stationary. Longer motion belongs to grouped artwork and genuine completion, not article paragraph cascades. Do not animate article height, input text or restored reading position; closing dialogs/menus never waits for an exit animation.
 
 The portfolio reads shared tokens and motion preferences. Edit `folioChapters`, `studyStages`, `architecture`, feature stories, engineering details and extra sections in `about/content.js`; use [the authoring guide](../about/README.md) for structure and screenshot updates. Actual browser viewport captures with demonstration state illustrate selected Read/Apply/Return stages. A native responsive picture chooses the appropriate asset; mobile controls sit near their image and copy. Feature and technical bodies use native details disclosures, while meaningful headings remain available. Large artwork begins its one-shot entrance when the artwork itself becomes visible. There is no separate gallery or viewport chooser. Captures are not physical-device test evidence.
 
 About's main object is an inspectable folio with three real screenshot leaves. Its index, stack, handling controls and caption share one frame. Native chapter controls select a leaf; “Katmanları aç” separates the stack, and “Döndür”/“Öne dön” explicitly choose the angle. Stack/angle composition takes 860/680ms, while capture fold, sheet fan, corner and icon use shared finite roles. Each active capture waits for decoding, fonts and visibility; rapid choices cancel older arrivals. Optional horizontal dragging selects an adjacent leaf after 46px release travel, with at most ±16° horizontal / ±5° vertical decoration. Vertical swipes and pinch zoom remain native; buttons and Left/Right/Home/End expose the same chapter actions. Cancel/blur/hidden/preference changes release handling without selecting a chapter. Explanatory text stays outside moving geometry, and no idle JavaScript frame loop runs.
 
-[ADR 011](adr/011-articulated-interface-and-data-portability.md) defines current acceptance; [living atmosphere](research/2026-10-living-aura-v072.md), [articulated controls](research/2026-10-articulated-controls-v072.md), [folio design](design/about-v072.md), [rail design](design/scroll-rail-v072.md), [data transfer](research/2026-10-data-transfer-v072.md) and [About authoring](../about/README.md) record evidence and choices. Earlier reports remain historical. Verify `npm run check`, browser sweeps, 320px reflow, enlarged text/spacing, keyboard/focus, invariant option and popup hit geometry, pretest progress/resume, rapid cancellation, export/restore outcomes, pause/reduced/hidden behavior, editable About layouts, mobile rail gestures and offline/install paths. Record actual outcomes in [VALIDATION.md](VALIDATION.md); automation does not replace learner observation.
+[ADR 012](adr/012-elastic-edge-and-expressive-arrivals.md) defines current acceptance; [living atmosphere](research/2026-10-living-aura-v072.md), [articulated controls](research/2026-10-articulated-controls-v072.md), [folio design](design/about-v072.md), [rail design](design/scroll-rail-v073.md), [data transfer](research/2026-10-data-transfer-v072.md) and [About authoring](../about/README.md) record evidence and choices. Earlier reports remain historical. Verify `npm run check`, browser sweeps, 320px reflow, enlarged text/spacing, keyboard/focus, invariant option and popup hit geometry, pretest progress/resume, rapid cancellation, export/restore outcomes, pause/reduced/hidden behavior, editable About layouts, mobile rail gestures and offline/install paths. Record actual outcomes in [VALIDATION.md](VALIDATION.md); automation does not replace learner observation.
 
 Readiness-gated `whenVisible` waits for actual fonts/images and intersection before
 finite artwork starts. Pending arrivals share cancellation with active scenes.
-The [adaptive rail](design/scroll-rail-v072.md) controls actual scroll position.
-A measured 52px wide gutter has a 44px always-open rail; compact layouts expose
-an 8px edge handle inside the outer 16px gutter, a transparent local 44×44px
-touch target and an intentionally opened opaque well. Native swipe/wheel and
-drag are continuous; open-track taps choose continuous positions, while real
-section dots and Shift+Arrow travel smoothly to existing article/About blocks.
-The grip compresses and rebounds inside an outer thumb whose position never
-eases away from the true scroll offset. Position/section pulses differ; desktop
-captions are removed and section names remain in accessible value text. Escape
-or cancellation restores an unfinished drag. Motion-off/reduction makes travel
-instant; forced colors and insufficient height restore native scrollbars. The
-mobile well is an explicit temporary overlay, not an invisible edge strip. No
-article snapping or quiz-state change is introduced. Equal header outer tracks
-keep the screen title centered when controls change.
+The [elastic rail](design/scroll-rail-v073.md) follows actual scroll position.
+Its 1.5px thread and 5px thumb remain slim on both mobile and desktop; a held
+thumb grows to 8px and pulls a local curve inward by at most 14px. Horizontal
+deformation uses a finite frame-time response, while vertical position is exact.
+Section markers follow the curve. Release continues smoothly from the current
+bend without a separate keyframe or pulse ring. A measured desktop gutter
+protects content; compact layouts use a local 44px target and an optional 16px
+edge strip for destination taps. No opaque well opens. Continuous scrolling,
+intentional section travel, keyboard and cancellation remain distinct, complete
+operations. Forced colors/insufficient space use native fallbacks. Equal header
+outer tracks keep titles centered as controls change.

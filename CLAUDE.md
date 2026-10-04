@@ -2,9 +2,9 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.72)
+## Current presentation (v0.73)
 
-For current UI work, [ADR 011](docs/adr/011-articulated-interface-and-data-portability.md)
+For current UI work, [ADR 012](docs/adr/012-elastic-edge-and-expressive-arrivals.md)
 and [Margin system](docs/margin-design-system.md) supersede historical visual
 values below. ADR 006's role-based Inter typography and the Sakura/cherry brand
 remain. Correct answers have opaque Sakura surfaces; selected incorrect answers
@@ -16,7 +16,7 @@ iris and apricot retain structural/attention roles. Supporting ink and essential
 boundaries are brighter to remain readable over the stronger atmosphere.
 
 Three bounded aurora clusters appear across all routes. Each cycles cherry,
-iris and lagoon pigments; 7.8/9.4/11-second drift and 10.8/12.6/14.4-second full
+iris and lagoon pigments; 9.75/11.75/13.75-second drift and 13.5/15.75/18-second full
 color cycles have independent phases. One parent opacity cap flattens all nine
 pigment layers at 0.42 dark / 0.09 light; it is NOT a per-layer cap. The palette
 checker proves the continuous convex color envelope and tests intermediate
@@ -25,31 +25,37 @@ paragraphs neither glow nor animate their color. Only Profile settings expose
 the persistent motion toggle; About links there. Hidden pages pause all twelve
 atmosphere timelines; reduced motion supplies three stationary color pools.
 
-Motion roles remain 100/220/360/560/720/900/1100ms for control, reveal, route,
-scene, completion, story and flowing illustration. `js/interactions.js` owns
-cancellable finite effects and bounded sequences. `whenVisible` waits for
-font/image readiness, intersection and two paint frames without delaying state
-or input. Menus and native dialogs keep their control shells and hitboxes
-stationary: shadow/outline respond while visible labels, checks and action
-contents assemble independently. Onboarding uses separate row, unfolding sheet,
-fan, signal and path roles; its explanatory copy stays still. New scenes cancel
-old and delayed effects; pointer/focus input settles moving ancestors. Input,
-focus, scoring, navigation and final values never wait for animation. No route
-snapshots, idle JavaScript animation loops or repeated answer-passage fade are
-introduced. CSS owns ordinary control states.
+Page arrivals now have a visible 620ms composition: large titles travel 24–32px, supporting groups 12px, and compact headings
+and control faces use a contained 6px entrance. Sections
+stagger by 32ms, bounded at 180ms. Pressing compresses a control's inner face
+in 120ms; release continues from its current transform through a 380ms rebound.
+Outer click targets remain usable. Controls are prepared before pointer input;
+never reparent a clicked descendant during pointerdown. One physical keyboard
+activation gets one release. Existing 100/220/360/560/720/900/1100ms artwork and
+short-control roles remain available. These are current choices, not maximum
+motion limits for later user requests.
 
-The adaptive rail controls the real scroll region on both desktop and mobile.
-A measured wide gutter has the full 44px rail; compact layouts expose an
-8px edge handle with a transparent local 44×44px touch target, then an
-explicitly opened opaque well for drag/tap destinations. The resting handle
-stays inside the outer 16px gutter, clear of prose and verdict marks. Grip
-compression and rebound do not move the outer hitbox. Native swipes/wheel and
-dragging are continuous; taps on real article/About landmarks and Shift+Arrow
-travel smoothly to sections without imposing snapping. Desktop captions are
-removed; accessible value text retains the section name. Escape/cancellation
-restores an unfinished drag. Reduced/off motion makes programmatic travel
-instant; forced colors and insufficient usable height restore native scrollbars.
-The rail does not change quiz state or learning rules.
+`js/interactions.js` owns finite effects, bounded sequences and readiness.
+`whenVisible` waits for actual fonts/images and intersection plus two frames.
+State, focus and controls do not wait. Replacement, direct input, hidden pages
+and motion preferences clean up presentation. Fresh Home/Test/Profile/article,
+question and result views receive their own visible composition; typing,
+restored article position and answering the current question do not replay it.
+Onboarding's existing illustrated parts and About's folio remain expressive.
+
+The rail is one 1.5px thread with a 5px thumb, growing to just 8px when held.
+A local SVG curve follows an inward pull up to 14px and settles continuously on
+release. Only horizontal deformation is damped; actual vertical position follows
+native scrolling immediately. No opaque well, pulse ring or separate release
+keyframe remains. Mobile uses a transparent local 44×44px touch target and an
+optional 16px edge destination strip; it never covers the reading column with a
+full-height invisible overlay. The desktop rail has measured content clearance.
+Drag/wheel are continuous; track taps choose positions and real section dots or
+Shift+Arrow choose destinations without forced snapping. Dots follow the curve.
+Keyboard, cancellation, forced-color/native fallback and motion preference remain.
+The rail never changes a quiz answer or score. Read
+[the rail design](docs/design/scroll-rail-v073.md) and
+[the motion language](docs/design/motion-v073.md) for current implementation.
 
 Shared `js/brand.js` provides `ep.`, `english prep.` and responsive signatures.
 The optional three-page introduction has six illustrated Education/Test states,
@@ -89,7 +95,7 @@ includes `tests/aura_browser.py`, `tests/scroll_rail_browser.py`,
 `tests/reading_system.py` and earlier regression suites. Installation support
 is in `js/install.js`. [Living atmosphere research](docs/research/2026-10-living-aura-v072.md),
 [articulated controls](docs/research/2026-10-articulated-controls-v072.md),
-[folio design](docs/design/about-v072.md), [rail design](docs/design/scroll-rail-v072.md)
+[folio design](docs/design/about-v072.md), [rail design](docs/design/scroll-rail-v073.md)
 and [data transfer](docs/research/2026-10-data-transfer-v072.md) distinguish source
 evidence, measurements and design choices. Historical descriptions below do
 not authorize reinstating old visuals. No physical-device certification or

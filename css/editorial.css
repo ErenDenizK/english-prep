@@ -1557,6 +1557,7 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .onboard__actions > .btn--quiet { flex: 0 0 auto; }
 .onboard__name { padding-block: 12px 24px; }
 /* Living atmosphere. Three moving clusters each crossfade three pigments.
+   v0.73: duration and phase ×1.25 keep the same composition at 80% speed.
    A SINGLE opacity on the parent flattens all nine layers before compositing
    over --page. The palette audit covers its entire convex color envelope,
    including repeated colors and every intermediate crossfade/overlap. */
@@ -1573,20 +1574,20 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 }
 .ambient__field--north {
   left: -30vw; top: -34vh;
-  --ambient-name: aura-north; --ambient-duration: 7.8s; --ambient-phase: -2s;
-  --pigment-cycle: 10.8s; --pigment-phase: -1.8s;
+  --ambient-name: aura-north; --ambient-duration: 9.75s; --ambient-phase: -2.5s;
+  --pigment-cycle: 13.5s; --pigment-phase: -2.25s;
   transform: translate(5vw, 6vh) rotate(-12deg) scale(1.06);
 }
 .ambient__field--east {
   right: -30vw; top: 2vh;
-  --ambient-name: aura-east; --ambient-duration: 9.4s; --ambient-phase: -5s;
-  --pigment-cycle: 12.6s; --pigment-phase: -6.3s;
+  --ambient-name: aura-east; --ambient-duration: 11.75s; --ambient-phase: -6.25s;
+  --pigment-cycle: 15.75s; --pigment-phase: -7.875s;
   transform: translate(-8vw, -4vh) rotate(10deg) scale(.94);
 }
 .ambient__field--south {
   left: -12vw; bottom: -39vh;
-  --ambient-name: aura-south; --ambient-duration: 11s; --ambient-phase: -7s;
-  --pigment-cycle: 14.4s; --pigment-phase: -10.8s;
+  --ambient-name: aura-south; --ambient-duration: 13.75s; --ambient-phase: -8.75s;
+  --pigment-cycle: 18s; --pigment-phase: -13.5s;
   transform: translate(6vw, -8vh) rotate(-6deg) scale(1.04);
 }
 .ambient__pigment {

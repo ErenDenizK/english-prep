@@ -32,14 +32,19 @@ export function initScrollRail({
   rail.setAttribute('aria-label', 'Sayfa konumu');
   rail.hidden = true;
   const control = node('div', 'scroll-rail__control');
-  const track = node('span', 'scroll-rail__track');
+  const thread = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  thread.classList.add('scroll-rail__thread');
+  thread.setAttribute('aria-hidden', 'true');
+  thread.setAttribute('focusable', 'false');
+  const track = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  track.classList.add('scroll-rail__track');
+  thread.append(track);
   const thumb = node('span', 'scroll-rail__thumb');
   const grip = node('span', 'scroll-rail__grip');
   const marks = node('span', 'scroll-rail__marks');
-  const pulse = node('span', 'scroll-rail__pulse');
-  for (const item of [track, thumb, marks, pulse]) item.setAttribute('aria-hidden', 'true');
+  for (const item of [thumb, marks]) item.setAttribute('aria-hidden', 'true');
   thumb.append(grip);
-  control.append(track, marks, pulse, thumb);
+  control.append(thread, marks, thumb);
   rail.append(control);
   document.body.appendChild(rail);
 
@@ -47,6 +52,12 @@ export function initScrollRail({
   let frame = 0;
   let idleTimer = 0;
   let feedbackTimer = 0;
+  let releaseTimer = 0;
+  let deformationFrame = 0;
+  let deformationTime = 0;
+  let pull = 0;
+  let pullTarget = 0;
+  let thumbTop = 0;
   let needsLayout = true;
   let interactive = false;
   let compact = false;
@@ -55,23 +66,96 @@ export function initScrollRail({
   let trackHeight = 240;
   let thumbHeight = 44;
   let drag = null;
+  const motionAllowed = () => document.documentElement.dataset.motion !== 'off' && !reducedMotion.matches && !document.hidden;
+  // Only this horizontal shape is damped. Vertical position always comes from
+  // native scrolling: dragging has no delayed or eased position to fight.
+  const bendAt = (y, start, center, end) => {
+    if (y <= start || y >= end) return 0;
+    const first = y <= center;
+    const distance = first ? center - start : end - center;
+    const position = (y - (first ? start : center)) / Math.max(1, distance);
+    const a = first ? .55 : .4;
+    const b = first ? .6 : .45;
+    let lower = 0, upper = 1;
+    // Invert the monotone cubic ordinate; six tiny dots stay on the same
+    // thread while it bends instead of floating beside the grabbed segment.
+    for (let index = 0; index < 10; index += 1) {
+      const t = (lower + upper) / 2;
+      const ordinate = 3 * a * (1 - t) ** 2 * t + 3 * b * (1 - t) * t ** 2 + t ** 3;
+      if (ordinate < position) lower = t;
+      else upper = t;
+    }
+    const t = (lower + upper) / 2;
+    const amount = 3 * t ** 2 - 2 * t ** 3;
+    return first ? amount : 1 - amount;
+  };
+  const paintThread = () => {
+    const axis = compact ? 40 : 22;
+    const center = thumbTop + thumbHeight / 2;
+    const start = Math.max(0, center - 62);
+    const end = Math.min(trackHeight, center + 62);
+    const before = center - start;
+    const after = end - center;
+    const x = axis - pull;
+    track.setAttribute('d', `M ${axis} 0 L ${axis} ${start} C ${axis} ${start + before * .55} ${x} ${center - before * .4} ${x} ${center} C ${x} ${center + after * .4} ${axis} ${end - after * .55} ${axis} ${end} L ${axis} ${trackHeight}`);
+    grip.style.transform = `translateX(${-pull}px)`;
+    for (const landmark of landmarks) {
+      const offset = pull ? pull * bendAt(landmark.y, start, center, end) : 0;
+      landmark.mark.style.transform = `translate(${-offset}px, -50%)`;
+    }
+    rail.style.setProperty('--rail-pull', pull.toFixed(3));
+  };
+  const deform = (time) => {
+    deformationFrame = 0;
+    if (destroyed) return;
+    const elapsed = deformationTime ? Math.min(48, time - deformationTime) : 16;
+    deformationTime = time;
+    const duration = pullTarget > pull ? 75 : 125;
+    pull += (pullTarget - pull) * (1 - Math.exp(-elapsed / duration));
+    if (!motionAllowed() || Math.abs(pullTarget - pull) < .015) {
+      pull = motionAllowed() ? pullTarget : 0;
+      deformationTime = 0;
+      paintThread();
+      delete rail.dataset.deforming;
+      return;
+    }
+    paintThread();
+    deformationFrame = requestAnimationFrame(deform);
+  };
+  const setPull = (next) => {
+    pullTarget = motionAllowed() ? clamp(next, 0, 14) : 0;
+    if (!motionAllowed()) {
+      cancelAnimationFrame(deformationFrame);
+      deformationFrame = 0;
+      deformationTime = 0;
+      pull = 0;
+      delete rail.dataset.deforming;
+      paintThread();
+    } else if (!deformationFrame && Math.abs(pullTarget - pull) >= .015 && !destroyed) {
+      rail.dataset.deforming = 'true';
+      deformationFrame = requestAnimationFrame(deform);
+    }
+  };
   const read = () => ({
     top: scroller.scrollTop,
     viewport: documentScroll ? window.innerHeight : scroller.clientHeight,
     max: Math.max(0, scroller.scrollHeight - (documentScroll ? window.innerHeight : scroller.clientHeight)),
   });
   const setScroll = (top, smooth = false) => {
-    const reduced = document.documentElement.dataset.motion === 'off' || reducedMotion.matches;
-    scroller.scrollTo({ top: clamp(top, 0, read().max), behavior: smooth && !reduced ? 'smooth' : 'instant' });
+    scroller.scrollTo({ top: clamp(top, 0, read().max), behavior: smooth && motionAllowed() ? 'smooth' : 'instant' });
   };
   const setExpanded = (next) => {
     expanded = Boolean(next && compact && interactive);
     rail.dataset.expanded = String(expanded);
   };
-  const feedback = (phase, y) => {
+  const feedback = (phase) => {
     clearTimeout(feedbackTimer);
     rail.dataset.phase = phase;
-    if (y !== undefined) rail.style.setProperty('--rail-pulse-y', `${clamp(y - 22, 0, trackHeight - 44)}px`);
+    clearTimeout(releaseTimer);
+    if (phase === 'jump') {
+      setPull(5);
+      releaseTimer = setTimeout(() => setPull(0), 150);
+    } else setPull(0);
     feedbackTimer = setTimeout(() => { delete rail.dataset.phase; }, 520);
   };
   const offsetOf = (element) => {
@@ -125,7 +209,7 @@ export function initScrollRail({
       control.setAttribute('aria-orientation', 'vertical');
       control.setAttribute('aria-valuemin', '0');
       control.setAttribute('aria-valuemax', '100');
-      control.setAttribute('aria-description', 'Tutamacı sürükle; rayı açmak için dokun. Boş rayda kaydır, noktalarda bölüme git. Oklar, Page Up / Down, Home ve End; bölümler için Shift ve oklar. Escape ile kapat.');
+      control.setAttribute('aria-description', 'İnce tutamacı sürükle; dokunarak bölüm noktalarını göster. Çizgide bir konuma, noktada bölüme git. Oklar, Page Up / Down, Home ve End; bölümler için Shift ve oklar. Escape ile kapat.');
     } else {
       if (document.activeElement === control) control.blur();
       rail.setAttribute('aria-hidden', 'true');
@@ -157,6 +241,8 @@ export function initScrollRail({
     rail.dataset.compact = String(compact);
     configureInteraction(bottomLimit - topLimit >= 120 && !forcedColors.matches);
     rail.style.setProperty('--rail-height', `${trackHeight}px`);
+    rail.style.setProperty('--rail-axis', `${compact ? 40 : 22}px`);
+    thread.setAttribute('viewBox', `0 0 44 ${trackHeight}`);
     rail.style.setProperty('--rail-top', `${Math.max(topLimit, (topLimit + bottomLimit - trackHeight) / 2)}px`);
     rail.style.setProperty('--rail-right', `${compact ? 8 : Math.min(32, Math.max(4, (gutter - 44) / 2))}px`);
     collectLandmarks();
@@ -165,7 +251,7 @@ export function initScrollRail({
     frame = 0;
     if (destroyed) return;
     if (needsLayout) { measure(); needsLayout = false; }
-    const { top, viewport, max } = read();
+    const { top, max } = read();
     const enabled = max > 2 && interactive && !forcedColors.matches;
     if (!enabled) {
       if (document.activeElement === control) control.blur();
@@ -176,9 +262,11 @@ export function initScrollRail({
     if (enabled) scroller.setAttribute('data-scroll-rail-enhanced', '');
     else scroller.removeAttribute('data-scroll-rail-enhanced');
     const ratio = max ? clamp(top / max, 0, 1) : 0;
-    thumbHeight = compact ? 44 : clamp(viewport / (max + viewport) * trackHeight, 28, 86);
+    thumbHeight = 44;
     thumb.style.height = `${thumbHeight}px`;
-    thumb.style.transform = `translateY(${ratio * (trackHeight - thumbHeight)}px)`;
+    thumbTop = ratio * (trackHeight - thumbHeight);
+    thumb.style.transform = `translateY(${thumbTop}px)`;
+    paintThread();
     let current = null;
     for (const landmark of landmarks) {
       if (top + 24 >= landmark.top) current = landmark;
@@ -208,7 +296,7 @@ export function initScrollRail({
     drag = null;
     delete rail.dataset.dragging;
     delete rail.dataset.pressed;
-    rail.style.removeProperty('--rail-pinch');
+    setPull(0);
     if (control.hasPointerCapture(previous.pointerId)) control.releasePointerCapture(previous.pointerId);
     if (restore) {
       setScroll(previous.top);
@@ -226,17 +314,19 @@ export function initScrollRail({
     control.focus({ preventScroll: true });
     setExpanded(true);
     clearTimeout(feedbackTimer);
+    clearTimeout(releaseTimer);
     delete rail.dataset.phase;
+    setPull(5);
     rail.dataset.pressed = 'true';
     drag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, top: read().top, moved: false, onThumb, wasExpanded };
     control.setPointerCapture(event.pointerId);
   };
   const pointerMove = (event) => {
     if (!drag || event.pointerId !== drag.pointerId) return;
-    if (Math.abs(event.clientY - drag.y) < 4 && !drag.moved) return;
+    setPull(5 + clamp((drag.x - event.clientX) * .45, 0, 9));
+    if (Math.hypot(event.clientY - drag.y, event.clientX - drag.x) < 4 && !drag.moved) return;
     drag.moved = true;
     rail.dataset.dragging = 'true';
-    rail.style.setProperty('--rail-pinch', String(clamp(Math.abs(event.clientX - drag.x) / 60, 0, 1)));
     const rect = control.getBoundingClientRect();
     const top = drag.onThumb
       ? drag.top + (event.clientY - drag.y) / Math.max(1, trackHeight - thumbHeight) * read().max
@@ -254,7 +344,7 @@ export function initScrollRail({
       const y = event.clientY - rect.top;
       const landmark = landmarks.find((item) => Math.abs(item.y - y) <= 20);
       rail.dataset.action = landmark ? 'stage' : 'position';
-      feedback('jump', y);
+      feedback('jump');
       setScroll(landmark ? landmark.top : (y - thumbHeight / 2) / Math.max(1, trackHeight - thumbHeight) * read().max, true);
     } else if (inBounds) {
       // A first tap opens the compact rail; a second tap closes it. Dragging
@@ -301,11 +391,11 @@ export function initScrollRail({
     if (drag && event.pointerId !== drag.pointerId) cancelDrag(true);
     if (!rail.contains(event.target)) setExpanded(false);
   };
-  const onVisibility = () => { if (document.hidden) { cancelDrag(true); setExpanded(false); } else refresh(); };
+  const onVisibility = () => { if (document.hidden) { cancelDrag(true); setPull(0); setExpanded(false); } else refresh(); };
   const onFocus = () => setExpanded(true);
   const onBlur = () => { cancelDrag(true); setExpanded(false); };
   const onMotion = () => {
-    if (document.documentElement.dataset.motion === 'off' || reducedMotion.matches) setScroll(read().top);
+    if (!motionAllowed()) { setScroll(read().top); setPull(0); }
     schedule();
   };
   eventTarget.addEventListener('scroll', onScroll, { passive: true });
@@ -336,6 +426,8 @@ export function initScrollRail({
     destroyed = true;
     cancelDrag(true);
     cancelAnimationFrame(frame);
+    cancelAnimationFrame(deformationFrame);
+    clearTimeout(releaseTimer);
     clearTimeout(idleTimer);
     clearTimeout(feedbackTimer);
     resizeObserver.disconnect();

@@ -210,8 +210,12 @@ class ScrollRailTests(unittest.TestCase):
         rail = self.page.locator('.scroll-rail')
         self.page.locator('.scroll-rail__thumb').click()
         expect(rail).to_have_attribute('data-expanded', 'true')
-        self.page.wait_for_function("document.querySelector('.scroll-rail__grip').getBoundingClientRect().width >= 43")
-        self.assertEqual(self.control().evaluate('(el)=>getComputedStyle(el).pointerEvents'), 'auto')
+        self.page.wait_for_timeout(400)
+        self.assertLessEqual(self.page.locator('.scroll-rail__grip').bounding_box()['width'], 8)
+        self.assertEqual(self.control().evaluate('(el)=>getComputedStyle(el).pointerEvents'), 'none')
+        self.assertEqual(self.control().evaluate("(el)=>getComputedStyle(el,'::after').pointerEvents"), 'auto')
+        self.assertEqual(self.control().evaluate("(el)=>getComputedStyle(el,'::after').width"), '16px')
+        self.assertEqual(self.control().evaluate('(el)=>getComputedStyle(el).backgroundColor'), 'rgba(0, 0, 0, 0)')
         # Section stops jump to existing authored block offsets, not made-up pages.
         mark = self.page.locator('.scroll-rail__mark').last.bounding_box()
         self.page.mouse.click(mark['x'] + 3, mark['y'] + 3)
@@ -222,9 +226,9 @@ class ScrollRailTests(unittest.TestCase):
         gap = self.page.evaluate('''() => {
           const rail=document.querySelector('.scroll-rail'),rect=rail.getBoundingClientRect();
           const thumb=rail.querySelector('.scroll-rail__thumb').getBoundingClientRect();
-          const ys=[...rail.querySelectorAll('.scroll-rail__mark')].map(el=>el.getBoundingClientRect().y+3);
+          const ys=[...rail.querySelectorAll('.scroll-rail__mark')].map(el=>el.getBoundingClientRect().y+2);
           for(let y=rect.y+24;y<rect.bottom-24;y+=2) {
-            if(ys.every(v=>Math.abs(v-y)>21)&&(y<thumb.top||y>thumb.bottom)) return {x:rect.x+22,y};
+            if(ys.every(v=>Math.abs(v-y)>21)&&(y<thumb.top||y>thumb.bottom)) return {x:rect.right-4,y};
           }
         }''')
         self.assertIsNotNone(gap)
@@ -233,6 +237,68 @@ class ScrollRailTests(unittest.TestCase):
         expect(rail).to_have_attribute('data-phase', 'jump')
         self.page.mouse.click(160, 200)
         expect(rail).to_have_attribute('data-expanded', 'false')
+
+    def test_side_pinch_is_continuous_small_and_settles_without_scroll_lag(self):
+        for width in (390, 1440):
+            with self.subTest(width=width):
+                self.page.set_viewport_size({'width': width, 'height': 1000})
+                self.visit()
+                self.control().press('PageDown')
+                self.page.wait_for_timeout(400)
+                before = self.scroll_top()
+                grip = self.page.locator('.scroll-rail__grip')
+                box = grip.bounding_box()
+                x, y = box['x'] + box['width'] / 2, box['y'] + box['height'] / 2
+                original_path = self.page.locator('.scroll-rail__track').get_attribute('d')
+                self.page.mouse.move(x, y)
+                self.page.mouse.down()
+                self.page.mouse.move(x - 20, y)
+                self.page.wait_for_timeout(100)
+                first = float(self.page.locator('.scroll-rail').evaluate("el=>el.style.getPropertyValue('--rail-pull')"))
+                self.assertGreater(first, 3)
+                self.assertLess(first, 14.01)
+                self.assertAlmostEqual(self.scroll_top(), before, delta=2)
+                self.assertNotEqual(self.page.locator('.scroll-rail__track').get_attribute('d'), original_path)
+                self.assertLessEqual(grip.bounding_box()['width'], 8.1)
+                self.page.wait_for_timeout(100)
+                held = float(self.page.locator('.scroll-rail').evaluate("el=>el.style.getPropertyValue('--rail-pull')"))
+                self.assertGreaterEqual(held, first)
+                self.page.wait_for_timeout(180)
+                self.assertGreaterEqual(grip.bounding_box()['width'], 7.8)
+                self.page.mouse.up()
+                self.page.wait_for_timeout(60)
+                released = float(self.page.locator('.scroll-rail').evaluate("el=>el.style.getPropertyValue('--rail-pull')"))
+                self.assertGreater(released, .1)
+                self.assertLess(released, held)
+                self.page.wait_for_function("!document.querySelector('.scroll-rail').dataset.deforming")
+                self.assertEqual(self.page.locator('.scroll-rail').evaluate("el=>el.style.getPropertyValue('--rail-pull')"), '0.000')
+                self.assertAlmostEqual(self.scroll_top(), before, delta=2)
+                # No idle animation or repeating rail timeline remains after release.
+                self.assertEqual(self.page.locator('.scroll-rail').evaluate("el=>el.getAnimations({subtree:true}).filter(a=>a.playState==='running').length"), 0)
+                self.assertEqual(self.page.locator('.scroll-rail__pulse').count(), 0)
+                # Let go before the press deformation has finished: return must
+                # start from the painted intermediate value, never a full bow.
+                box = grip.bounding_box()
+                self.page.mouse.move(box['x'] + box['width'] / 2, box['y'] + box['height'] / 2)
+                self.page.mouse.down()
+                self.page.wait_for_timeout(35)
+                early = float(self.page.locator('.scroll-rail').evaluate("el=>el.style.getPropertyValue('--rail-pull')"))
+                self.assertGreater(early, 0)
+                self.assertLess(early, 5)
+                self.page.mouse.up()
+                self.page.wait_for_timeout(35)
+                early_return = float(self.page.locator('.scroll-rail').evaluate("el=>el.style.getPropertyValue('--rail-pull')"))
+                self.assertLess(early_return, early + .2)
+                self.page.wait_for_function("!document.querySelector('.scroll-rail').dataset.deforming")
+                self.page.emulate_media(reduced_motion='reduce')
+                box = grip.bounding_box()
+                self.page.mouse.move(box['x'] + box['width'] / 2, box['y'] + box['height'] / 2)
+                self.page.mouse.down()
+                self.page.mouse.move(box['x'] - 16, box['y'] + box['height'] / 2)
+                self.page.wait_for_timeout(80)
+                self.assertEqual(self.page.locator('.scroll-rail').evaluate("el=>el.style.getPropertyValue('--rail-pull')"), '0.000')
+                self.page.mouse.up()
+                self.page.emulate_media(reduced_motion='no-preference')
 
     def test_multitouch_cancels_drag_without_preventing_second_pointer(self):
         touch = self.browser.new_context(viewport={'width': 390, 'height': 844},

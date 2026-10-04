@@ -1,4 +1,4 @@
-# English Prep · Margin / Sakura: experience · v0.72
+# English Prep · Margin / Sakura: experience · v0.73
 
 ## Product and audience
 
@@ -62,9 +62,24 @@ Margin prioritizes dark plum-neutral surfaces and cherry/Sakura branding. Full o
 
 Examples and explanations group through spacing instead of repetitive rules or highlighted boxes. Answer rows reserve their verdict space before feedback. Resume percentages are separate from English lesson titles, paired with a named linear track. Profile groups study settings, appearance/motion and application links; backup/reset retain their local-data context. Results describe this session's actual answers, with no ring/count-up or broad proficiency judgment from one question.
 
-Three bounded aurora clusters sit behind all routes, including reading and the portfolio, while foreground cards stay opaque. Each cluster cycles cherry `#a04278`, iris `#6350a5` and lagoon `#28798a`; drift takes 7.8/9.4/11 seconds and full pigment cycles 10.8/12.6/14.4 seconds, with independent phases. All nine pigment layers flatten under **one parent cap** of 0.42 dark / 0.09 light, rather than accumulating that alpha per layer. The production palette checker covers the entire continuous composite envelope and intermediate mixtures. A small static halo belongs only to selected neutral titles. Pause keeps the current atmosphere still; reduced motion uses three distinct stationary pools and hidden pages pause all twelve timelines.
+Three bounded aurora clusters sit behind all routes, including reading and the portfolio, while foreground cards stay opaque. Each cluster cycles cherry `#a04278`, iris `#6350a5` and lagoon `#28798a`; drift takes 9.75/11.75/13.75 seconds and full pigment cycles 13.5/15.75/18 seconds, with independent phases. All nine pigment layers flatten under **one parent cap** of 0.42 dark / 0.09 light, rather than accumulating that alpha per layer. The production palette checker covers the entire continuous composite envelope and intermediate mixtures. A small static halo belongs only to selected neutral titles. Pause keeps the current atmosphere still; reduced motion uses three distinct stationary pools and hidden pages pause all twelve timelines.
 
-Interaction motion has distinct tempos: 100ms control response, 220ms reveal, 360ms navigation, 560ms scene, 720ms completion, 900ms artwork story and 1100ms flowing illustrations. Scene motion waits for fonts/images and actual visibility; pending effects cancel on navigation or input. Input, focus, answer commits, final numbers and navigation remain immediate. CSS owns ordinary controls; shared finite effects and bounded sequences compose menus, diagrams and meaningful arrivals. Replacing a scene cancels its old and delayed effects. Pointer/focus input settles moving ancestors before interaction. Menus and native dialogs retain stationary shells and hitboxes. Their outside shadow/outline responds while visible labels, selected checks and action contents assemble separately; no mask clips the usable target. Menus reserve a selected-check column and close immediately. Onboarding sheets, rows, markers and paths use distinct motion roles while its explanatory text stays stationary. Profile composes visible groups only on arrival; name edits and internal renders do not replay it. Routes have no native View Transition snapshot or blocking overlay. Lesson completion and first result presentation receive distinct signatures; wrong answers never shake and numbers never count up. Reading text, input, search and restored prose remain stable.
+Interaction motion is intentionally more visible in v0.73: a 620ms arrival
+composes headings, context and actions with bounded stagger. Larger 24–32px
+travel belongs to display titles, supporting groups use 12px, and compact
+headings use 6px; a contained 6px entrance keeps control labels
+inside their fills. A press compresses the inner face in 120ms, then a 380ms
+release starts from its current position. The surrounding click target stays
+usable, and one keyboard activation produces one release. A pre-paint control
+preparation step avoids reparenting a pointer target during its gesture.
+
+Data, focus, answers and navigation commit immediately. Readiness ensures slow
+fonts or images do not consume an entrance before it can be seen. Replacement,
+real input, motion-off, OS reduction and hidden pages clean up pending/active
+effects. Onboarding retains its articulated drawings and About its interactive
+folio. A resumed article restores position; typing and answer feedback do not
+replay the page's arrival. Earlier restrained-motion reports are historical
+decisions, not a prohibition on the owner's new animation direction.
 
 About's opening object is one inspectable folio, not separate floating devices. Three real article/test/results leaves share an index, frame, inspection controls and caption. Native chapter buttons bring a leaf forward; the front leaf and “Katmanları aç” separate the stack. “Döndür” and “Öne dön” offer deliberate angled/front views. Optional horizontal dragging turns a leaf at a 46px release threshold, with bounded ±16° horizontal / ±5° vertical decoration. Native buttons and Left/Right/Home/End provide alternatives; vertical page swipes and pinch zoom remain available. Text that explains the product stays outside the moving geometry. Cancellation, blur, hidden page and preference changes release handling without selecting another chapter. There is no idle JavaScript frame loop.
 
@@ -72,7 +87,7 @@ Study and architecture selections remain user-paced, with immediate content/pres
 
 A fixed header and navigation or action bar surround the scrolling content. The app works as a single column at 320px. A useful split starts at **1080×600**: introduction beside curriculum, overview beside lesson list, or results beside review. Articles and quizzes remain single-column. At ≥1080px wide and ≥800px tall, the home companion pane stays stationary while the curriculum moves; shorter windows let it flow to preserve access. Enlarged text, spacing overrides, browser zoom and short windows must retain reachable content, controls and focus. Tour pages can grow rather than clipping to a fixed slideshow height.
 
-The current decision is [ADR 011](adr/011-articulated-interface-and-data-portability.md); component contracts and exact tokens are in [margin-design-system.md](margin-design-system.md). [Living atmosphere research](research/2026-10-living-aura-v072.md), [articulated controls](research/2026-10-articulated-controls-v072.md), [folio design](design/about-v072.md), [rail design](design/scroll-rail-v072.md) and [data transfer](research/2026-10-data-transfer-v072.md) record current evidence and choices. Earlier ADRs remain historical evidence; their per-field aura caps, passive mobile rail and whole-popup translation are superseded.
+The current decision is [ADR 012](adr/012-elastic-edge-and-expressive-arrivals.md); component contracts and exact tokens are in [margin-design-system.md](margin-design-system.md). [Living atmosphere research](research/2026-10-living-aura-v072.md), [articulated controls](research/2026-10-articulated-controls-v072.md), [folio design](design/about-v072.md), [rail design](design/scroll-rail-v073.md) and [data transfer](research/2026-10-data-transfer-v072.md) record current evidence and choices. Earlier ADRs remain historical evidence; their per-field aura caps, passive mobile rail and whole-popup translation are superseded.
 
 ## Preservation and verification
 
@@ -85,4 +100,12 @@ The app remains static HTML, CSS and ES modules, with no backend, account requir
 
 Verify navigation/search, article resume, optional checks, all practice modes, quiz refresh and interrupted-session handling, results deduplication, profile preferences, backup success/failure/retry, original navigation, and unchanged learning data. Include keyboard focus, small and short viewports, themes, persisted/reduced/hidden-page motion, rapid repeated interactions, default-open pretest progress boundaries, reflow, menu positioning, dialog padding/backdrop outcomes, editable portfolio content, pointer cleanup and offline assets. Automated and browser checks establish implementation behavior within their tested scope; they do not replace representative learner observation, physical-device testing or complete assistive-technology testing.
 
-The bounded branded rail follows the actual scroll position. Wide layouts with a measured 52px gutter have an always-open 44px rail; compact layouts have an 8px handle inside the outer 16px gutter, a transparent local 44×44px touch target, and an explicitly opened opaque well. Native swipes, wheel and grip dragging remain continuous. A tap on the open track selects a continuous position; a tap on a real article/About section dot or Shift+Arrow travels smoothly to that block. No automatic snapping or quiz navigation is imposed. Grip compression, rebound and distinct position/section pulses explain the input without easing the outer thumb away from its true position. Desktop captions are absent; accessible value text retains section context. Motion-off/reduction disables programmatic smooth scrolling, while insufficient height and forced colors restore native scrollbars. The temporary mobile well is a deliberate overlay, not an invisible capture strip. Captures use 3× phone/2× wide density.
+The branded rail follows actual native scrolling. Mobile and desktop share
+a 1.5px line and a 5px thumb, growing only to 8px on contact. A local curve bends
+up to 14px inward under the finger and settles smoothly; vertical scroll position
+is never eased behind the pointer. Mobile retains a local 44px touch target and
+reveals a narrow 16px edge strip for tap destinations. There is no expanding
+opaque box. Wheel/drag stay continuous; section dots and Shift+Arrow lead to real
+blocks without automatic snapping. Motion-off disables decorative deformation;
+forced colors and insufficient space restore native controls. Captures use 3×
+phone and 2× desktop density.
