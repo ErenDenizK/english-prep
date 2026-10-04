@@ -3,7 +3,7 @@
 import { initMotion, motionEnabled } from "./motion.js";
 
 export const MOTION_DURATIONS = Object.freeze({
-  control: 100, reveal: 220, route: 360, arrival: 620, release: 380, scene: 560, complete: 720, story: 900, flow: 1100,
+  control: 100, reveal: 220, route: 360, release: 380, scene: 560, complete: 720, story: 900, flow: 1100,
 });
 const EASING = "cubic-bezier(0.2, 0, 0, 1)";
 const SETTLE = "cubic-bezier(0.22, 1, 0.36, 1)";
@@ -16,7 +16,6 @@ let listening = false;
 let pressing = null;
 const releasedAt = new WeakMap();
 const PRESSABLE = 'button, a.btn, a.about-button, .nav__item, summary';
-const STATIONARY = 'button, a, input, textarea, select, summary, [role="button"], [tabindex]';
 
 // Move a control's presentation, never the pointer target. Wrapping keeps the
 // original nodes (and their listeners/ARIA IDs); it does not clone a control.
@@ -182,22 +181,6 @@ function preset(kind, direction) {
   const sign = direction === "back" ? -1 : 1;
   switch (kind) {
     // Productive motion: no overshoot or scaling of a reading surface.
-    case "action-arrival": return { role: "arrival", easing: "cubic-bezier(.18,.65,.24,1)", frames: [
-      { transform: "translateY(6px) scale(.96)" },
-      { transform: "translateY(0) scale(1)" },
-    ] };
-    case "detail-arrival": return { role: "arrival", easing: "cubic-bezier(.18,.65,.24,1)", frames: [
-      { transform: "translateY(12px)" },
-      { transform: "translateY(0)" },
-    ] };
-    case "heading-arrival": return { role: "arrival", easing: "cubic-bezier(.18,.65,.24,1)", frames: [
-      { transform: "translateY(6px)" },
-      { transform: "translateY(0)" },
-    ] };
-    case "arrival": return { role: "arrival", easing: "cubic-bezier(.18,.65,.24,1)", frames: [
-      { transform: `translateY(${direction === 'back' ? 24 : 32}px)` },
-      { transform: "translateY(0)" },
-    ] };
     case "release": return { role: "release", easing: "linear", frames: [
       { transform: "scale(.945) translateY(1px)", offset: 0, easing: "cubic-bezier(.15,.7,.25,1)" },
       { transform: "scale(1.035) translateY(-1px)", offset: .48, easing: EASING },
@@ -338,40 +321,6 @@ export function animateSequence(entries, { channel = "sequence", direction = "fo
   return animations;
 }
 
-
-/** Visibly compose a page while actual controls keep their final rectangles.
- * Text groups may travel; interactive ancestors are decomposed into their
- * presentation children. No opacity gate, snapshot or delayed state commit.
- * Call after route data is ready, and only on newly opened visible sections. */
-export function animateArrival(container, { channel = 'page-arrival', direction = 'forward', delay = 0 } = {}) {
-  if (!container?.isConnected) return [];
-  const parts = [];
-  const viewport = document.querySelector('#shell-scroll')?.getBoundingClientRect() ?? { top: 0, bottom: window.innerHeight };
-  function collect(node, depth = 0) {
-    if (parts.length >= 12 || depth > 6 || node.hidden || node.matches('input, textarea, select, label, .visually-hidden, svg')) return;
-    const box = node.getBoundingClientRect();
-    if (!box.height || box.bottom <= viewport.top || box.top >= viewport.bottom) return;
-    if (node.matches(PRESSABLE)) {
-      parts.push(...pressTargets(node, true));
-    } else if (node.matches(STATIONARY) || node.querySelector(STATIONARY)) {
-      [...node.children].forEach((child) => collect(child, depth + 1));
-    } else {
-      parts.push(node);
-    }
-  }
-  // A section's rhythm is visible as heading -> detail -> action rather than
-  // one large card wobbling. Descendant groups only split for target stability.
-  if (container.matches(PRESSABLE) || !container.children.length) collect(container);
-  else [...container.children].forEach((node) => collect(node));
-  return animateSequence(parts.slice(0, 12).map((element, index) => ({
-    element,
-    kind: element.closest(PRESSABLE) ? 'action-arrival'
-      : element.matches('h1') || element.querySelector('h1') ? 'arrival'
-      : element.matches('h2, h3, .section-head') || element.querySelector('h2, h3') ? 'heading-arrival'
-      : 'detail-arrival',
-    at: delay + index * 32,
-  })), { channel, direction });
-}
 
 /** Release outgoing finite effects immediately before closing or replacing UI. */
 export function cancelAnimationsWithin(container) {

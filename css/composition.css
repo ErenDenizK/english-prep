@@ -1,3 +1,10 @@
+/* Follow the available viewport when mobile browser controls expand/collapse.
+   Older engines retain style.css's svh/vh fallback. This does not hide browser
+   UI; standalone installation supplies the address-bar-free application. */
+@supports (height: 100dvh) {
+  html, body { height: 100dvh; }
+}
+
 /* v0.71 · stable chrome and a single result composition.
    Equal outer tracks keep the screen title on the viewport's centre line,
    even when a back action replaces the brand or the trailing slot is empty. */

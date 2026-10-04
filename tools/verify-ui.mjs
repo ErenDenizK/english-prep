@@ -1767,7 +1767,7 @@ async function runIndexStates(browser) {
   // header action away in Profile rather than a repeated landing-page note.
   await view.page.locator("#profile-trigger").click();
   await view.page.waitForSelector("#profile-name");
-  ok((await view.page.locator("#profile-container").textContent()).includes("İlerlemen sadece bu tarayıcıda saklanıyor"), "verinin nerede durduğu Profil'de açıklanıyor");
+  ok((await view.page.locator(".profile-data").textContent()).includes("İlerlemen bu tarayıcıda saklanır; hesap ve otomatik eşitleme yok."), "verinin nerede durduğu Profil'de açıklanıyor");
   await view.page.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
   await view.page.waitForSelector("#index-list .tile");
   ok(
