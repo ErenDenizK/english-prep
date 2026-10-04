@@ -92,7 +92,8 @@ test("finite presentation responds safely to interruption and input changes", as
     assert.equal(first.cancelled, 1);
     assert.equal(second.cancelled, 0);
     assert.equal(node.textContent, "Immediate result");
-    assert.equal(second.timing.duration, 160);
+    assert.equal(second.timing.duration, 220);
+    assert.equal(second.frames[0].transform, "translateY(-8px)", "popup scroll measurements must not be scaled");
     assert.equal(second.timing.fill, "none");
     const independent = ui.animateElement(node, "mark", { channel: "mark" });
     assert.equal(second.cancelled, 0);
@@ -140,6 +141,103 @@ test("finite presentation responds safely to interruption and input changes", as
     const effect = ui.animateElement(child);
     ui.cancelAnimationsWithin(parent);
     assert.equal(effect.cancelled, 1);
+  });
+
+  await t.test("expressive sequences remain finite, readable and immediately cancellable", async () => {
+    const parent = env.element();
+    const heading = env.element();
+    const drawing = env.element();
+    const glyph = env.element();
+    heading.textContent = "Final score is already available";
+    parent.append(heading, drawing, glyph);
+    const sequence = ui.animateSequence([
+      { element: heading, kind: "onboard", at: 0 },
+      { element: drawing, kind: "draw", at: 80 },
+      { element: glyph, kind: "complete", at: 160 },
+    ], { channel: "completion", direction: "back" });
+    assert.equal(sequence.length, 3);
+    assert.deepEqual(sequence.map((a) => a.timing.delay), [0, 80, 160]);
+    assert.deepEqual(sequence.map((a) => a.timing.duration), [560, 720, 720]);
+    assert.deepEqual(sequence.map((a) => a.timing.fill), ["none", "backwards", "backwards"]);
+    assert.equal(heading.textContent, "Final score is already available");
+    assert.equal(sequence[0].frames[0].transform, "translateX(-12px)");
+    assert.ok(sequence[0].frames.every((frame) => frame.opacity === undefined || frame.opacity === 1));
+    assert.equal(sequence[1].frames.at(-1).strokeDashoffset, "0");
+    assert.equal(sequence[2].frames.at(-1).transform, "scale(1) rotate(0deg)");
+    assert.equal(env.frames.size, 0, "composition starts no recurring JavaScript work");
+    ui.cancelAnimationsWithin(parent);
+    assert.ok(sequence.every((animation) => animation.cancelled === 1));
+    await Promise.resolve();
+    motion.setMotionEnabled(false);
+    assert.deepEqual(ui.animateSequence([{ element: glyph, kind: "complete", at: 160 }]), []);
+    motion.setMotionEnabled(true);
+    assert.equal(glyph.effects.length, 1, "interrupted delayed decoration never replays");
+  });
+
+  await t.test("stagger limits and replacements prevent a queued or stale scene", () => {
+    const node = env.element();
+    const first = ui.animateSequence([{ element: node, kind: "story", at: 99999 }]);
+    assert.equal(first[0].timing.delay, 180);
+    assert.equal(first[0].timing.duration, 900);
+    const replacement = ui.animateSequence([{ element: node, kind: "scene", at: -50 }]);
+    assert.equal(first[0].cancelled, 1);
+    assert.equal(replacement[0].timing.delay, 0);
+    assert.equal(replacement[0].timing.fill, "none");
+    assert.equal(replacement[0].timing.duration, 560);
+    env.hide(true);
+    assert.equal(replacement[0].cancelled, 1);
+    assert.deepEqual(ui.animateSequence([{ element: node, kind: "scene", at: 80 }]), []);
+    env.hide(false);
+    assert.equal(node.effects.length, 2);
+    const detached = env.element();
+    detached.isConnected = false;
+    assert.deepEqual(ui.animateSequence([null, {}, { element: detached, kind: "draw" }]), []);
+  });
+
+  await t.test("spatial cues and progress use distinct bounded roles with static endings", () => {
+    const kinds = { control: 100, reveal: 220, menu: 220, dialog: 360, route: 360,
+      mark: 360, onboard: 560, scene: 560, rule: 560, complete: 720, draw: 720,
+      progress: 720, story: 900 };
+    for (const [kind, duration] of Object.entries(kinds)) {
+      const node = env.element();
+      const animation = ui.animateElement(node, kind);
+      assert.equal(animation.timing.duration, duration, kind);
+      assert.equal(animation.timing.delay, 0);
+      assert.equal(animation.timing.fill, "none");
+      assert.ok(animation.frames.every((frame) => frame.opacity === undefined || frame.opacity === 1), kind);
+      animation.finish();
+    }
+    const progress = ui.animateElement(env.element(), "progress");
+    assert.equal(progress.frames[0].transform, "scaleX(0)");
+    assert.equal(progress.frames.at(-1).transform, "scaleX(1)");
+    const previousStyle = env.window.getComputedStyle;
+    env.window.getComputedStyle = () => ({ getPropertyValue: (name) => name === "--d-scene" ? "0.62s" : "" });
+    assert.equal(ui.animateElement(env.element(), "scene").timing.duration, 620);
+    env.window.getComputedStyle = previousStyle;
+  });
+
+  await t.test("direct input settles arriving ancestors without cancelling independent artwork", () => {
+    const container = env.element();
+    const control = env.element();
+    const glyph = env.element();
+    const neighbor = env.element();
+    container.append(control, glyph);
+    const arriving = ui.animateElement(container, "route");
+    const decorative = ui.animateElement(glyph, "complete");
+    const unrelated = ui.animateElement(neighbor, "story");
+    env.document.dispatchEvent({ type: "pointerdown", target: control });
+    assert.equal(arriving.cancelled, 1, "input geometry settles before popup placement");
+    assert.equal(decorative.cancelled, 0);
+    assert.equal(unrelated.cancelled, 0);
+    const focused = ui.animateElement(control, "reveal");
+    env.document.dispatchEvent({ type: "focusin", target: control });
+    assert.equal(focused.cancelled, 1);
+    assert.equal(decorative.cancelled, 0);
+    // Focusing an ancestor does not suppress an independent descendant drawing.
+    env.document.dispatchEvent({ type: "focusin", target: container });
+    assert.equal(decorative.cancelled, 0);
+    ui.cancelAnimationsWithin(container);
+    ui.cancelAnimationsWithin(neighbor);
   });
 
   await t.test("pointer bursts coalesce, remain bounded, and leave no idle frame", () => {

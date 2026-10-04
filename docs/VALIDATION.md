@@ -1,114 +1,127 @@
-# Validation — v0.69
+# Validation — v0.70
 
-4 October 2026 (Türkiye time; 3 October UTC). Baseline: shipped `9e68e84`.
-The original material from `test` commit `39dcd46` remains unchanged:
-**10 topics, 60 continuous lessons, 241 questions and 723 option notes**.
-SHA-256 comparisons against the v0.68 checkout found identical files in
-`data/` (12), `original/` (56) and `legacy/` (17). Previous reports remain in Git.
+4 October 2026. Baseline: shipped `c134dcc` (v0.69). The original material
+from `test` commit `39dcd46` remains unchanged: **10 topics, 60 continuous
+lessons, 241 questions and 723 option notes**. SHA-256 comparisons against
+v0.69 found identical files in `data/` (12), `original/` (56) and `legacy/` (17).
+Previous validation reports remain in Git history.
 
 ## Executed checks
 
 | Check | Result |
 | --- | --- |
-| `npm run check` | **231 unit tests passed**, zero failures/skips; content format/schema and original/current palette checks passed. Includes 13 shared motion/preference tests. |
-| Current palette | **4,524 numeric comparisons passed**: 154 opaque pairs, 330 aura compositions, 4,040 sRGB action-gradient samples. Color calculations are not separate browser or usability tests. |
-| `tools/verify-ui.mjs` | **3,614 checks passed** under `/english-prep/`: articles, themes, responsive flows, keyboard, history, backup and error paths. |
-| `tests/editorial_smoke.py` | **12 scenarios passed**. The first run found a 200% Profile motion-label overflow; it was fixed and the failing scenario passed on rerun. |
-| `tests/quiz_resume_browser.py` | **10 scenarios passed**: refresh/resume, question identity/order, answer timing, history and failure paths. |
-| `tests/ux_refinements.py` | **7 scenarios passed**: focus/caret, report/restore outcomes, deferred navigation and launch counts. |
-| `tests/reading_system.py` | **14 scenarios passed**: interactive optional tour, six selections without learning writes, footer preference, OS reduction, install outcomes and first-visit/offline About modules. |
-| `tests/pretest_progress_browser.py` | **3 scenarios passed**: correct/wrong answers, expanded explanations, body-only progress, resume and short-body completion. |
-| `tests/component_interactions_browser.py` | **6 scenarios passed**: menus, reset/restore dialog padding, answer semantics/focus, local animation and reduction. |
-| `tests/onboarding_interaction_browser.py` | **4 scenarios passed**: responsive geometry, rapid scene replacement, OS/stored motion preference and 200% text. |
-| `tests/about_interaction_browser.py` | **7 scenarios passed**: story/architecture controls, real media, fine-pointer lifecycle, touch, motion preference and long authored additions. |
-| Axe-core 4.10.3 | **80 final scans, zero definite violations**: 32 main-app states and 48 onboarding/About/open-menu states. WCAG 2 A/AA, 2.1 AA and best-practice tags. |
-| Assets | Eight actual app captures regenerated at 390×844 and 1440×1000; all loaded. No mocked question or screen was substituted. |
+| `npm run check` | **237 unit tests passed**, zero failures/skips. Content format/schema and both palette systems passed; includes 17 motion/preference tests and two new negative answer-boundary regressions. |
+| Current palette | **7,848 numeric comparisons passed**, including 3,324 answer-surface/boundary/transition-model checks. These are calculations, not separate usability tests. |
+| `tools/verify-ui.mjs` | **3,611 checks passed** in the final run under `/english-prep/`: source articles, themes, responsive flows, keyboard, history, backup and failure paths. |
+| `tests/editorial_smoke.py` | **12 scenarios passed**. The initial short-landscape menu failure was fixed and rerun; the other 11 passed on the initial run. |
+| `tests/reading_system.py` | **14 scenarios passed**: optional tour, six selections without learning writes, motion controls, OS reduction, install and first-visit/offline modules. |
+| `tests/component_interactions_browser.py` | **6 scenarios passed**: menus, native dialogs, answer semantics/focus, motion and reduction. |
+| `tests/pretest_progress_browser.py` | **3 scenarios passed**: correct/wrong pretest, body-only progress, resume and short-body completion. |
+| `tests/quiz_resume_browser.py` | **10 scenarios passed**: identity/order, answer timing, persistence and failure paths. |
+| `tests/ux_refinements.py` | **7 scenarios passed**: caret/focus, report/restore, deferred navigation and launch counts. |
+| `tests/onboarding_interaction_browser.py` | **6 scenarios passed**: initial composition, all scenes, interruption, motion preferences, responsive geometry and 200% text. |
+| `tests/about_interaction_browser.py` | **11 scenarios passed**: mobile density, real media, disclosures, art/architecture composition, rapid replacement, fine pointer, touch, preferences and long authored content. |
+| `tests/v070_motion_browser.py` | **9 scenarios passed**: actual event boundaries, input priority, menu/dialog interruption, answer geometry, normal quiz completion/reload, once-only lesson completion, Profile editing, route and motion cancellation. |
+| Axe-core 4.10.3 | **86 final scans, zero definite violations**: 32 main-app states and 54 onboarding/About/open-menu/expanded-feature states. WCAG 2 A/AA, 2.1 AA and best-practice tags. |
+| Actual animated colors | **28 Chromium frames / 140 measured pairs passed** across correct/incorrect, both themes and seven timeline samples. Four off/reduced checks and two forced-color checks also passed. |
+| Assets | Eight actual captures regenerated at 390×844 and 1440×1000; all loaded. No fabricated screen or question replaced app output. |
 
-Browser tests ran in Chromium on the prepared cloud machine, against the
-production `/english-prep/` path. No runtime dependency, build or account service
-was added. The preserved app copies and current modules remain separately scoped.
+Checks ran in Chromium on the prepared cloud machine, using the production
+`/english-prep/` prefix. No runtime dependency, build or account service was added.
 
-## Color, typography and geometry
+## Color and stable answers
 
-The accepted jade/coral status candidate was compared with two alternatives in
-actual answer components. Its text contrast is at least **7.26:1 / 6.69:1** in
-dark mode and **5.43:1 / 5.13:1** in light mode under bounded aura compositions.
-English option text stays neutral; words and check/cross shapes identify the
-outcome independently of hue. Forced-colors verdict symbols use `CanvasText`.
-Twelve browser answer cases (2 outcomes × 2 themes × 3 widths) preserved geometry.
-See the [status research](research/2026-10-status-colors-v069.md).
+Three full-surface answer palettes were rendered through the real component.
+The selected Sakura/periwinkle treatment uses separate text, tint and softened
+edge roles. Neutral English text, literal Doğru/Yanlış, check/cross shapes and
+linked accessible descriptions carry meaning independently of hue. Pink is a
+brand-specific educational confirmation, not a universal color convention.
 
-Main reading roles remain Inter 18px/30px and question 20px/32px, with separate
-headings, form labels, annotations and metadata. Layout tests cover 320px,
-200% text and spacing overrides. Menu rows remain 48px high; selected glyphs
-reserve their space. Correct/wrong option bounding boxes changed by **0px**.
+The initial light incorrect border failed against a possible aura composition
+at 2.88:1; it was darkened before acceptance. Final status boundaries pass all
+measured surrounding surfaces. Production checks sample the modeled transitions;
+an independent browser audit also paused the actual 220ms CSS effects at seven
+points. Measured minima were **11.43/11.89:1** for dark/light answer text,
+**7.44/5.65:1** for keys, **8.02/5.61:1** for glyphs and **4.15/3.27:1** for
+boundaries in those actual animation frames. Geometry did not change; text/row
+opacity stayed 1 and row transform stayed none. The result is committed before
+these color effects run. See [answer research](research/2026-10-answer-surfaces-v070.md).
 
-Onboarding measured 649px rather than 745px at 320px, and 682px rather than
-753px at 390px. Its short-screen content scrolls without a nested scroll area.
-About's merged narrative measured 1,430px rather than 2,785px at 390px, and 989px
-rather than 1,852px at 1440px. Long extra text, an additional story stage, feature
-and section reflowed without renderer changes. Its decorative reflection clears
-all live captions across nine widths, with a minimum 15.98px separation.
+Axe marked 1,255 contrast node occurrences incomplete: 1,019 gradient, 144 overlap,
+22 partial overlap, 20 pseudo-element, 20 short numeric and 30 non-text glyph
+occurrences. They repeat across states. Ten popup `aria-controls` checks were
+also incomplete; 12 independent DOM checks confirmed unique connected listboxes
+and valid label IDs before/after opening, in both themes and three widths.
+Zero automated violations is not a whole-app accessibility certification. The
+independent contrast, geometry and keyboard checks supplement those limitations.
 
-Axe reports **1,053 color-contrast node occurrences as incomplete**, including
-918 involving gradients; the rest include overlaps/pseudo-elements and short or
-symbolic text. These occurrences repeat across states. Ten `aria-controls`
-references were also incomplete; closed/open/closed inspection confirmed the
-connected listbox exists exactly once, with the correct active descendant.
-Zero automated violations is not a complete accessibility or contrast verdict.
-Independent palette math, actual styles, geometry and keyboard checks supply
-additional evidence; real assistive-technology testing remains outstanding.
+## Motion verified through actual journeys
 
-## Motion and interaction
+[ADR009](adr/009-expressive-study-motion.md) defines productive 100/220/360ms
+and expressive 560/720/900ms roles. Actual engine timings measured onboarding
+compositions at 720–880ms and About artwork at up to900ms. Delayed entries are
+bounded and interruptible. Native input, focus, scores and navigation never wait.
+Focus/pointer input settles moving ancestors; unrelated illustration can finish.
 
-[ADR008](adr/008-explorable-interactions.md) records the shared 100/160/220/360ms
-roles. Finite WAAPI effects replace earlier effects on the same target/channel.
-Motion-off, OS reduction and hidden-page events cancel effects and reset pointer
-presentation; three bounded aura fields remain pausable. The preference moved
-from headers to Profile, the end of app content and the About footer.
+The independent pass found three interaction regressions and repaired them:
 
-Selection, navigation, focus, scoring and persistence happen immediately.
-Answering no longer fades the entire question; only new verdict marks reveal.
-Scroll-derived reader progress tracks immediately. Native dialogs now distinguish
-outside backdrop clicks from their own interior padding.
+- A normal quiz already records history before reaching results. A separate
+  tab-local presentation marker now controls once-only result choreography;
+  refreshing does not replay completion or duplicate history.
+- Popup scaling mixed transformed rectangles with unscaled scroll coordinates.
+  Menus now translate without scaling, preserving active-option visibility.
+- A moving route could change a popup anchor during queued focus-scroll. Input
+  now settles that route first. Sixteen rapid native/fallback trials had no
+  unexpected closure, and real scrolling still dismisses the popup.
 
-Rapid About stage changes left only one final scene effect, with the latest
-selection already visible. Fine-pointer artwork is bounded to 2°/6px; touch does
-not trigger it. A stationary pointer scheduled zero additional frames over 1.2s.
-In a three-second settled reader sample, both motion-on and motion-off recorded
-zero recurring layout/style/JS work and no requested animation frames. Sampled
-main-task time was 5.066ms on and 0.698ms off. This headless desktop observation
-is not a frame-rate or battery guarantee on phones. See [motion research](research/2026-10-interaction-motion-v069.md).
+A lesson draws its new completion signature only on the existing unfinished→done
+transition. Completed rereads stay quiet. Resumed instructional prose remains
+stationary; fresh lesson entry moves only its heading. A new quiz question can
+enter, while an answer changes only its colors/new marks. Profile entry does not
+replay during name edits. Scores are available immediately and never count up.
 
-## PWA, presentation and limits
+Rapid About selections canceled 12 superseded effects and retained only the
+latest three. Motion-off canceled active effects immediately; a synthetic hidden
+page event canceled WAAPI and paused all three bounded aura fields. Stationary
+onboarding/About samples scheduled zero extra rAF over500ms; the reader did so
+over750ms. These short headless observations do not establish physical-phone
+frame rate, GPU cost or battery use. [Motion research](research/2026-10-motion-v070.md)
+records the sources, methods and distinction from design judgment.
 
-The new interaction, brand and onboarding CSS/modules are precached in `sw.js`.
-Tests exercise offline About selection and worker coexistence after ordinary HTTP
-cache is cleared. Actual screenshots cache when visited; installing does not
-imply every lesson/image has downloaded. Manifest identity is unchanged.
+## Mobile composition and PWA
 
-About now uses real screenshots within the product story, without a dedicated
-gallery. Demo progress/results are disclosed. Content arrays and extra sections
-remain editable; [About authoring](../about/README.md) explains how to add them.
-A 390px viewport is not a claim of physical iPhone testing.
+At390px, About hero height fell from1,009px to871px, study from1,430px to1,201px,
+and features from2,231px to1,314px. Real screenshots are near their selected
+context, with no separate gallery. Native feature disclosures keep useful
+headings visible. Added long content and 200% root text reflowed. Artwork reveals
+observe the actual art, so they do not finish above the phone's viewport.
 
-No physical iPhone/Safari install, Android hardware/battery, full assistive-
-technology audit or participant study was performed. Simulated browser install
-events do not establish universal platform support. Future priorities and a
-manual review route are in the [review guide](design/interaction-backlog-v069.md).
+Onboarding heights stayed649px at320px and682px at390px despite richer drawing.
+Profile identity/stats remained294.8/195.2px at390px. The result's signature adds
+19.6px to its score block; 320px and 200% text reflow without collision.
 
-## Reproduce
+Offline checks cover the new presentation through the scoped v0.70 worker and
+preserved copies. Captures cache when visited; installation does not imply all
+lessons/images are downloaded. Manifest identity and learning backup formats
+remain unchanged. The new result-presentation marker is tab-local decoration,
+not a learning record. [About authoring](../about/README.md) explains extensibility.
 
-Start `python3 -m http.server 8012 --bind 127.0.0.1 --directory /workspace`.
-From `/workspace/english-prep`, run `npm run check` and the eight Python suites
-listed above with `--base-url http://127.0.0.1:8012/english-prep`.
+## Limits and reproduction
+
+No physical iPhone/Safari install, older Android battery profiling, full
+VoiceOver/TalkBack session or participant study was performed. Simulated browser
+install events do not establish universal support. A390px capture is not evidence
+of testing an actual iPhone. Contrast cannot prove the owner's visual preference.
+
+Start `python3 -m http.server 8072 --bind 127.0.0.1 --directory /workspace`.
+From `/workspace/english-prep`, run `npm run check` and the nine Python suites
+above with `--base-url http://127.0.0.1:8072/english-prep`.
 
 ```sh
-PLAYWRIGHT_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright CHROMIUM_PATH=/usr/bin/chromium node tools/verify-ui.mjs http://127.0.0.1:8012/english-prep
+PLAYWRIGHT_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright CHROMIUM_PATH=/usr/bin/chromium node tools/verify-ui.mjs http://127.0.0.1:8072/english-prep
 ```
 
-Generate the screenshots with `python3 tools/capture-portfolio.py --base-url
-http://127.0.0.1:8012/english-prep`. Tool locations are environment-specific;
-recheck them after restoring a workspace. The [four-pass record](audit/interactions-v0.69.md)
-explains diagnosis, integration and final corrections. Checks here describe this
-machine and checkout, not a future environment or physical-device session.
+Generate captures with `python3 tools/capture-portfolio.py --base-url
+http://127.0.0.1:8072/english-prep`. Recheck these environment-specific tool paths
+on restoration. The [four-pass audit and manual route](audit/expressive-motion-v0.70.md)
+explain decisions, discovered defects and the next hands-on review.

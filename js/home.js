@@ -39,6 +39,7 @@ import { avatar } from "./widgets.js";
 import { renderOnboarding } from "./onboarding.js";
 import { announce, scrollToTop, createBar } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
+import { animateSequence, cancelAnimationsWithin } from "./interactions.js";
 
 const VIEW_IDS = ["egitim", "test", "profil", "hosgeldin"];
 const DEFAULT_VIEW = "egitim";
@@ -574,8 +575,21 @@ function parseRoute() {
 let routed = false;
 let routeGeneration = 0;
 
-/** Commit navigation synchronously. The entering view has one finite CSS
- * cue; a second native snapshot transition blocks hit testing during taps. */
+// Compose only the arrival of a library, never each search/filter render.
+function enterLibrary(container, direction) {
+  const candidates = [...container.querySelectorAll(".study-intro, .study-summary, .practice-card, .split > .pane > section, #index-list > section, #topic-list")];
+  const viewport = document.getElementById("shell-scroll").getBoundingClientRect();
+  const visible = candidates.filter((node) => {
+    const box = node.getBoundingClientRect();
+    return box.height > 0 && box.top < viewport.bottom && box.bottom > viewport.top;
+  }).filter((node, index, nodes) => !nodes.some((parent, i) => i !== index && parent.contains(node))).slice(0, 3);
+  animateSequence((visible.length ? visible : [container]).map((element, index) => ({
+    element, kind: "route", at: index * 55,
+  })), { channel: "library-entry", direction });
+}
+
+/** Commit navigation synchronously. Each incoming view owns its finite
+ * composition; no native snapshot overlay may block hit testing. */
 function withTransition(update) {
   update();
 }
@@ -583,6 +597,10 @@ function withTransition(update) {
 async function applyRoute() {
   const generation = ++routeGeneration;
   const { view, param } = parseRoute();
+  const direction = view === "egitim" ? "back" : "forward";
+  // Cancel outgoing and delayed effects before hiding a route. An old scene
+  // must not reappear halfway through its composition after rapid navigation.
+  for (const node of Object.values(views)) cancelAnimationsWithin(node);
 
   // The bar names the screen. A root carries the profile control; Profil
   // carries the way back to the tab it was opened from. Set here, before
@@ -611,10 +629,9 @@ async function applyRoute() {
     for (const id of VIEW_IDS) {
       views[id].hidden = id !== view;
     }
-    // Re-run the screen's entrance on every arrival, not only the first.
+    // Each screen owns its composition after content exists. There is no
+    // second parent fade competing with Profile, onboarding or reader cues.
     views[view].classList.remove("animate-in");
-    void views[view].offsetWidth;
-    views[view].classList.add("animate-in");
 
     // A hash route is a navigation, so focus has to move with it or the
     // next Tab resumes from wherever the last screen left it — and the
@@ -644,6 +661,7 @@ async function applyRoute() {
       return;
     }
     await (param ? openLesson(param) : showLessonIndex());
+    if (!param && generation === routeGeneration) enterLibrary(views.egitim, direction);
     return;
   }
 
@@ -661,6 +679,7 @@ async function applyRoute() {
     });
   } else {
     await renderTestTab();
+    if (generation === routeGeneration) enterLibrary(testPanel, direction);
   }
 }
 

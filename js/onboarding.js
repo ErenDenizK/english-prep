@@ -3,6 +3,7 @@
 import { el } from "./dom.js";
 import { icon } from "./icons.js";
 import { createBrand } from "./brand.js";
+import { animateSequence, cancelAnimationsWithin } from "./interactions.js";
 import { getProfileName, setProfileName, setOnboarded } from "./storage.js";
 
 const STEPS = [
@@ -45,6 +46,22 @@ function shape(tag, attributes, className = "") {
   return node;
 }
 
+function motionPart(node, kind = "scene", at = 0) {
+  node.dataset.onboardMotion = kind;
+  node.dataset.onboardAt = String(at);
+  return node;
+}
+
+// The finished drawing is the DOM. Motion annotates it, so turning motion off
+// or interrupting a sequence always exposes the complete, meaningful scene.
+function playDrawing(drawing, direction = "forward") {
+  if (!drawing) return;
+  const entries = [...drawing.querySelectorAll("[data-onboard-motion]")].map((element) => ({
+    element, kind: element.dataset.onboardMotion, at: Number(element.dataset.onboardAt),
+  }));
+  animateSequence(entries, { channel: "onboard-drawing", direction });
+}
+
 /** Abstract diagrams only: no invented question, answer, lesson or score. */
 function drawScene(kind) {
   const svg = shape("svg", {
@@ -55,45 +72,65 @@ function drawScene(kind) {
   const paper = shape("g", {}, "onboard-flow__paper");
   const rect = (x, y, width, height, className = "onboard-flow__sheet") =>
     shape("rect", { x, y, width, height, rx: 7 }, className);
-  const line = (d, className = "onboard-flow__line") => shape("path", { d }, className);
+  const line = (d, className = "onboard-flow__line", at = 0) => {
+    const path = shape("path", { d }, className);
+    if (className.includes("onboard-flow__stroke")) {
+      path.setAttribute("pathLength", "1");
+      motionPart(path, "draw", at);
+    }
+    return path;
+  };
   const dot = (x, y, r = 3, className = "onboard-flow__dot") => shape("circle", { cx: x, cy: y, r }, className);
 
   if (kind === "topics") {
     for (const [i, width] of [91, 112, 74].entries()) {
       const y = 11 + i * 31;
-      paper.append(rect(37, y, 206, 25), dot(52, y + 12),
+      const row = motionPart(shape("g", {}, "onboard-flow__row"), "scene", i * 80);
+      row.append(rect(37, y, 206, 25), dot(52, y + 12),
         line(`M65 ${y + 12}h${width}`), line(`m221 ${y + 8} 4 4-4 4`, "onboard-flow__accent"));
+      paper.appendChild(row);
     }
     svg.append(paper, line("M26 22v65", "onboard-flow__stroke onboard-flow__accent"));
   } else if (kind === "article") {
-    paper.append(rect(77, 11, 132, 94, "onboard-flow__back-sheet"), rect(68, 4, 132, 94),
+    const backSheet = motionPart(rect(77, 11, 132, 94, "onboard-flow__back-sheet"));
+    motionPart(paper, "scene", 80);
+    paper.append(rect(68, 4, 132, 94),
       line("M83 21h56", "onboard-flow__accent"), line("M83 36h99M83 45h88M83 69h91M83 78h78"),
       shape("rect", { x: 82, y: 51, width: 100, height: 10, rx: 3 }, "onboard-flow__highlight"),
       line("M83 56h99", "onboard-flow__stroke onboard-flow__accent"));
-    svg.append(paper, line("M227 37v38m-5-5 5 5 5-5", "onboard-flow__stroke onboard-flow__accent"));
+    svg.append(backSheet, paper, line("M227 29v48m-5-5 5 5 5-5", "onboard-flow__stroke onboard-flow__accent"));
   } else if (kind === "check" || kind === "question") {
-    paper.append(rect(48, 5, 184, 98), line("M64 21h118M64 30h92"));
+    paper.append(motionPart(rect(48, 5, 184, 98)), line("M64 21h118M64 30h92"));
     for (const [i, width] of [84, 107, 70].entries()) {
       const y = 48 + i * 18;
-      paper.append(shape("circle", { cx: 68, cy: y, r: 4 }, "onboard-flow__line"), line(`M82 ${y}h${width}`));
+      const row = motionPart(shape("g", {}, "onboard-flow__row"), "scene", i * 60);
+      if (i === (kind === "check" ? 1 : 0)) {
+        row.append(rect(57, y - 8, 161, 16, "onboard-flow__answer-highlight"));
+      }
+      row.append(shape("circle", { cx: 68, cy: y, r: 4 }, "onboard-flow__line"), line(`M82 ${y}h${width}`));
+      paper.appendChild(row);
     }
     svg.append(paper);
     if (kind === "check") {
       svg.append(line("m65 66 3 3 5-6", "onboard-flow__stroke onboard-flow__accent"));
       svg.append(line("M241 52h13m-4-4 4 4-4 4", "onboard-flow__stroke onboard-flow__accent"));
     } else {
-      svg.append(dot(68, 48, 2, "onboard-flow__dot onboard-flow__selection"));
+      svg.append(motionPart(dot(68, 48, 2, "onboard-flow__dot onboard-flow__selection"), "complete", 160));
       svg.append(line("M246 23v20m-4-4 4 4 4-4", "onboard-flow__stroke onboard-flow__accent"));
     }
   } else if (kind === "reason") {
-    paper.append(rect(43, 10, 194, 92),
-      line("m59 28 4 4 8-10", "onboard-flow__accent"), line("M82 27h73"),
-      line("M59 47h157M59 58h144M59 69h154M59 80h92"));
+    paper.append(motionPart(rect(43, 10, 194, 92)),
+      line("m59 28 4 4 8-10", "onboard-flow__stroke onboard-flow__accent"), line("M82 27h73"));
+    const reasoning = motionPart(shape("g", {}, "onboard-flow__reason"), "scene", 100);
+    reasoning.append(line("M59 47h157M59 58h144M59 69h154M59 80h92"));
+    paper.appendChild(reasoning);
     svg.append(paper, line("M59 89h70", "onboard-flow__stroke onboard-flow__accent"));
   } else {
-    paper.append(rect(91, 15, 113, 82, "onboard-flow__back-sheet"), rect(78, 8, 113, 82),
+    const backSheet = motionPart(rect(91, 15, 113, 82, "onboard-flow__back-sheet"));
+    motionPart(paper, "scene", 100);
+    paper.append(rect(78, 8, 113, 82),
       line("M94 26h62M94 42h78M94 53h66M94 64h73"));
-    svg.append(paper, line("M214 31c23 17 22 46 0 59M214 90l2-11m-2 11 11-2",
+    svg.append(backSheet, paper, line("M214 31c23 17 22 46 0 59M214 90l2-11m-2 11 11-2",
       "onboard-flow__stroke onboard-flow__accent"),
       line("M57 79C33 59 35 30 57 19M57 19l-2 11m2-11-11 2", "onboard-flow__stroke onboard-flow__accent"));
   }
@@ -126,18 +163,21 @@ function flowPreview(current, selected, onSelect) {
     button.type = "button";
     button.addEventListener("click", () => {
       if (selected === index) return;
+      const direction = index < selected ? "back" : "forward";
       selected = index;
       onSelect(index);
-      paint();
+      paint(true, direction);
     });
     choices.appendChild(button);
     return button;
   });
-  function paint() {
+  function paint(animate = false, direction = "forward") {
+    cancelAnimationsWithin(scene);
     buttons.forEach((button, index) => button.setAttribute("aria-pressed", String(index === selected)));
     preview.dataset.scene = current.scenes[selected].drawing;
     scene.replaceChildren(drawScene(current.scenes[selected].drawing));
     caption.textContent = current.scenes[selected].caption;
+    if (animate) playDrawing(scene, direction);
   }
   paint();
   preview.append(head, choices, scene, caption, navigation);
@@ -173,13 +213,15 @@ export function renderOnboarding(container, { onDone }) {
   form.append(top, progress, panel, actions);
 
   function finish() {
+    cancelAnimationsWithin(form);
     setProfileName(name.trim());
     setOnboarded(true);
     document.dispatchEvent(new CustomEvent("profile:namechange"));
     onDone();
   }
 
-  function show({ focus = false } = {}) {
+  function show({ focus = false, direction = "forward" } = {}) {
+    cancelAnimationsWithin(panel);
     const current = STEPS[step];
     stepText.textContent = `${step + 1} / ${STEPS.length} · ${current.mode}`;
     for (const [index, indicator] of indicators.entries()) {
@@ -189,7 +231,8 @@ export function renderOnboarding(container, { onDone }) {
     const heading = el("h1", "t-display", current.heading);
     heading.id = "onboard-step-title";
     heading.tabIndex = -1;
-    panel.append(heading, el("p", "t-body onboard__description", current.copy));
+    const description = el("p", "t-body onboard__description", current.copy);
+    panel.append(heading, description);
     if (current.scenes) {
       const page = step;
       panel.appendChild(flowPreview(current, sceneSelection[page], (index) => { sceneSelection[page] = index; }));
@@ -197,6 +240,13 @@ export function renderOnboarding(container, { onDone }) {
     } else {
       const wordmark = createBrand({ variant: "full" });
       wordmark.classList.add("onboard__wordmark");
+      const signature = shape("svg", {
+        viewBox: "0 0 240 14", "aria-hidden": "true", focusable: "false", fill: "none",
+      }, "onboard__signature");
+      signature.appendChild(motionPart(shape("path", {
+        d: "M3 10C62 1 121 1 190 7s32 5 47 0", pathLength: 1,
+      }, "onboard-flow__stroke"), "draw"));
+      wordmark.appendChild(signature);
       panel.appendChild(wordmark);
       const field = el("div", "stack stack--snug onboard__name");
       const label = el("label", "t-ui", "Adın · isteğe bağlı");
@@ -217,10 +267,23 @@ export function renderOnboarding(container, { onDone }) {
     }
     back.hidden = step === 0;
     next.replaceChildren(el("span", "", current.next), icon("arrow-right", { size: 20 }));
-    // Only the decorative scene enters. Text, state and focus commit now.
+    // State, copy and focus are ready before motion. There is no exit wait,
+    // timer, auto-advance or deferred action, even in the longer illustration.
     if (focus) {
       container.closest(".shell__scroll")?.scrollTo({ top: 0 });
       heading.focus({ preventScroll: true });
+    }
+    animateSequence([
+      { element: heading, kind: "onboard", at: 0 },
+      { element: description, kind: "onboard", at: 60 },
+    ], { channel: "onboard-step", direction });
+    playDrawing(panel, direction);
+    const wordmark = panel.querySelector(".onboard__wordmark");
+    if (wordmark) {
+      animateSequence([
+        { element: wordmark.querySelector(".brand-mark__letters"), kind: "onboard", at: 80 },
+        { element: wordmark.querySelector(".brand-mark__dot"), kind: "complete", at: 160 },
+      ], { channel: "onboard-brand", direction });
     }
   }
 
@@ -228,7 +291,7 @@ export function renderOnboarding(container, { onDone }) {
   back.addEventListener("click", () => {
     if (step > 0) {
       step -= 1;
-      show({ focus: true });
+      show({ focus: true, direction: "back" });
     }
   });
   form.addEventListener("submit", (event) => {

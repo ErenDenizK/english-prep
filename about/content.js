@@ -81,7 +81,7 @@ export const engineering = {
   ],
   links: [
     { label: "Kaynak kodunu incele", href: "https://github.com/ErenDenizK/english-prep/tree/test" },
-    { label: "Tasarım kararını oku", href: "https://github.com/ErenDenizK/english-prep/blob/test/docs/adr/008-explorable-interactions.md" },
+    { label: "Tasarım kararını oku", href: "https://github.com/ErenDenizK/english-prep/blob/test/docs/adr/009-expressive-study-motion.md" },
     { label: "Doğrulama raporu", href: "https://github.com/ErenDenizK/english-prep/blob/test/docs/VALIDATION.md" },
   ],
 };

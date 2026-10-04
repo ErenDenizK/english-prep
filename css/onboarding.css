@@ -11,16 +11,29 @@
 }
 .onboard .onboard__note { margin-top: 0; }
 .onboard .onboard__wordmark {
+  position: relative;
   font-size: clamp(1.5rem, 7vw, 3rem);
   max-width: 100%;
   justify-self: start;
   margin-block: 18px 8px;
 }
+.onboard .onboard__signature {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -12px;
+  width: 100%;
+  height: 14px;
+  overflow: visible;
+  stroke: var(--accent-text);
+  stroke-width: 2;
+  stroke-linecap: round;
+  pointer-events: none;
+}
 .onboard .onboard__name { padding-block: 0 12px; }
 .onboard .onboard__actions { flex-wrap: wrap; min-width: 0; }
 .onboard .onboard__actions .btn { line-height: 1.5; }
 .onboard .onboard__actions .btn--primary { gap: 12px; flex-basis: 10rem; }
-.onboard .onboard__wordmark .brand-mark__dot { transform-origin: center bottom; animation: onboard-dot-settle var(--d-complete) var(--ease-standard) both; }
+.onboard .onboard__wordmark .brand-mark__dot { transform-origin: center bottom; }
 .onboard .onboard-flow { display: grid; gap: 12px; margin-top: 8px; min-width: 0; }
 .onboard .onboard-flow__head { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
 .onboard .onboard-flow__head .t-meta { font-size: .875rem; line-height: 1.5; }
@@ -77,9 +90,9 @@
 .onboard .onboard-flow__accent { stroke: var(--accent-text); }
 .onboard .onboard-flow__dot { fill: var(--accent-text); stroke: none; }
 .onboard .onboard-flow__highlight { fill: var(--accent-tint); stroke: none; }
-.onboard .onboard-flow__paper { transform-origin: center; animation: onboard-paper-in var(--d-route) var(--ease-standard) both; }
-.onboard .onboard-flow__stroke { stroke-dasharray: 160; animation: onboard-line-in var(--d-complete) var(--ease-standard) both; }
-.onboard .onboard-flow__selection { transform-origin: 68px 48px; animation: onboard-selection-in var(--d-route) var(--ease-standard) both; }
+.onboard .onboard-flow__answer-highlight { fill: var(--accent-tint); stroke: none; }
+.onboard [data-onboard-motion] { transform-box: fill-box; transform-origin: center; }
+.onboard .onboard-flow__stroke { stroke-dasharray: 1; stroke-dashoffset: 0; }
 .onboard .onboard-flow__caption {
   min-height: 3em;
   color: var(--ink);
@@ -97,10 +110,6 @@
 }
 .onboard .onboard-flow__mode { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: .875rem; line-height: 1.5; }
 .onboard .onboard-flow__mode[data-selected="true"] { color: var(--accent-text); font-weight: 600; }
-@keyframes onboard-paper-in { from { transform: translateY(4px); } to { transform: translateY(0); } }
-@keyframes onboard-line-in { from { stroke-dashoffset: 160; } to { stroke-dashoffset: 0; } }
-@keyframes onboard-selection-in { from { transform: scale(.75); } to { transform: scale(1); } }
-@keyframes onboard-dot-settle { from { transform: translateY(-3px); } to { transform: translateY(0); } }
 @media (hover: hover) and (pointer: fine) {
   .onboard .onboard-flow__choice:hover { background: var(--raised); color: var(--ink); }
   .onboard .onboard-flow__choice[aria-pressed="true"]:hover { background: var(--accent-tint); color: var(--accent-text); }
@@ -118,20 +127,11 @@
   .onboard .onboard-flow__scene, .onboard .onboard-flow__drawing { height: 80px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .onboard .onboard-flow__paper, .onboard .onboard-flow__stroke, .onboard .onboard-flow__selection, .onboard .onboard__wordmark .brand-mark__dot { animation: none; }
   .onboard .onboard-flow__choice, .onboard .onboard-flow__choice::after, .onboard .onboard__dot { transition: none; }
 }
-html[data-motion="off"] .onboard .onboard-flow__paper,
-html[data-motion="off"] .onboard .onboard-flow__stroke,
-html[data-motion="off"] .onboard .onboard-flow__selection,
-html[data-motion="off"] .onboard .onboard__wordmark .brand-mark__dot { animation: none; }
 html[data-motion="off"] .onboard .onboard-flow__choice,
 html[data-motion="off"] .onboard .onboard-flow__choice::after,
 html[data-motion="off"] .onboard .onboard__dot { transition: none; }
-html[data-page-visible="false"] .onboard .onboard-flow__paper,
-html[data-page-visible="false"] .onboard .onboard-flow__stroke,
-html[data-page-visible="false"] .onboard .onboard-flow__selection,
-html[data-page-visible="false"] .onboard .onboard__wordmark .brand-mark__dot { animation-play-state: paused; }
 @media (forced-colors: active) {
   .onboard .onboard-flow__choice[aria-pressed="true"] { outline: 2px solid Highlight; outline-offset: -4px; }
   .onboard .onboard-flow__sheet, .onboard .onboard-flow__back-sheet { fill: Canvas; stroke: CanvasText; }

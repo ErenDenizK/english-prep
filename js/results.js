@@ -24,6 +24,7 @@ import { icon } from "./icons.js";
 import { progressMetric } from "./progress.js";
 import { announce, createActionBar, createBar } from "./shell.js";
 import { renderPrompt } from "./prompt.js";
+import { animateSequence } from "./interactions.js";
 
 const container = document.getElementById("results-container");
 const actionBar = createActionBar("results-bar");
@@ -59,14 +60,79 @@ function verdictFor(ratio, total) {
   return "Açıklamaları incele, kaçırdığın ayrımlara geri dön.";
 }
 
+/** A completed page leading to its next reading step. This is decorative,
+ * not a score chart: its check means the run ended, regardless of accuracy.
+ * A deliberately stopped run instead has a return arrow. */
+function completionSignature(partial) {
+  const namespace = "http://www.w3.org/2000/svg";
+  const signature = document.createElementNS(namespace, "svg");
+  signature.setAttribute("viewBox", "0 0 112 42");
+  signature.setAttribute("width", "112");
+  signature.setAttribute("height", "42");
+  signature.setAttribute("aria-hidden", "true");
+  signature.setAttribute("focusable", "false");
+  signature.classList.add("score__signature");
+  signature.dataset.state = partial ? "partial" : "complete";
+  const path = (drawing, name) => {
+    const stroke = document.createElementNS(namespace, "path");
+    stroke.setAttribute("d", drawing);
+    stroke.setAttribute("fill", "none");
+    stroke.setAttribute("stroke", "currentColor");
+    stroke.setAttribute("stroke-width", "2");
+    stroke.setAttribute("stroke-linecap", "round");
+    stroke.setAttribute("stroke-linejoin", "round");
+    stroke.setAttribute("pathLength", "1");
+    stroke.classList.add("score__signature-path");
+    stroke.dataset.completionStroke = name;
+    signature.appendChild(stroke);
+  };
+  path("M7 35V7h17l8 8v20H7M24 7v8h8M13 22h12M13 28h8", "page");
+  path("M42 22h23", "connection");
+  path(partial ? "M89 12l-8 8 8 8M82 20h12a9 9 0 0 1 0 18" : "M80 22l8 8 17-18", "finish");
+  const node = document.createElementNS(namespace, "circle");
+  node.setAttribute("cx", "66");
+  node.setAttribute("cy", "22");
+  node.setAttribute("r", "3");
+  node.setAttribute("fill", "currentColor");
+  node.classList.add("score__signature-node");
+  signature.appendChild(node);
+  return signature;
+}
+
+/** Recording an attempt and presenting its result are separate events: the
+ * quiz normally saves history before it navigates here. This tab-scoped marker
+ * affects only decoration, never the score or the retry-on-storage-failure path. */
+function claimCompletionPresentation(result) {
+  const key = JSON.stringify([result.id ?? null, result.date, result.totalCount, result.partial === true]);
+  try {
+    if (sessionStorage.getItem("englishPrep.resultPresented") === key) return false;
+    sessionStorage.setItem("englishPrep.resultPresented", key);
+    return true;
+  } catch {
+    // Storage may be disabled or full. Keep the useful page functional and
+    // show the longer cue only for a fresh, direct quiz handoff when detectable.
+    const navigation = performance.getEntriesByType?.("navigation")[0];
+    if (navigation?.type === "reload" || !document.referrer) return false;
+    try {
+      const source = new URL(document.referrer);
+      return source.origin === window.location.origin && source.pathname.endsWith("/quiz.html");
+    } catch {
+      return false;
+    }
+  }
+}
+
 function renderScore(result) {
   const block = el("section", "score");
+  block.dataset.choreographed = "true";
   // The bar says "Sonuç"; the section says which test.
-  const mode = el("p", "t-label", describeMode(result));
+  const eyebrow = el("div", "score__eyebrow");
+  const mode = el("p", "t-label score__mode", describeMode(result));
   const hasEnglishTitle = (result.mode === "topic" && Object.keys(result.topicTitles ?? {}).length === 1)
     || (result.mode === "category" && Object.keys(result.categoryBreakdown ?? {}).length === 1);
   if (hasEnglishTitle) mode.lang = "en";
-  block.appendChild(mode);
+  eyebrow.append(mode, completionSignature(result.partial === true));
+  block.appendChild(eyebrow);
 
   const ratio = result.totalCount === 0 ? 0 : result.correctCount / result.totalCount;
   const percent = Math.round(ratio * 100);
@@ -81,6 +147,30 @@ function renderScore(result) {
 
   block.appendChild(el("p", "score__verdict", verdictFor(ratio, result.totalCount)));
   return block;
+}
+
+/** Completion gets a longer visual sentence; revisiting a stored result gets
+ * only a quiet arrival. The score, its accessible value and actions never wait
+ * for this effect, and the long review is never revealed paragraph by paragraph. */
+function presentResults(fresh, score, breakdowns) {
+  const entries = [];
+  if (fresh) {
+    score.querySelectorAll("[data-completion-stroke]").forEach((element, index) => {
+      entries.push({ element, kind: "draw", at: index * 30 });
+    });
+    entries.push({ element: score.querySelector(".score__signature-node"), kind: "complete", at: 80 });
+    entries.push({ element: score.querySelector(".score__verdict"), kind: "reveal", at: 80 });
+  } else {
+    entries.push({ element: score.querySelector(".score__eyebrow"), kind: "reveal", at: 0 });
+  }
+  const viewport = document.getElementById("shell-scroll").getBoundingClientRect();
+  breakdowns.filter((section) => {
+    const box = section.getBoundingClientRect();
+    return box.top < viewport.bottom && box.bottom > viewport.top;
+  }).slice(0, 2).forEach((element, index) => {
+    entries.push({ element, kind: "reveal", at: 100 + index * 40 });
+  });
+  animateSequence(entries, { channel: "results-arrival" });
 }
 
 /**
@@ -387,7 +477,8 @@ async function init() {
   const main = pane();
   container.classList.add("split");
 
-  aside.appendChild(renderScore(result));
+  const score = renderScore(result);
+  aside.appendChild(score);
   const storageMessage = result.recorded ? "" :
     "Sonucun bu sekmede açık, ancak ilerlemene kaydedilemedi. Tarayıcı depolama alanını kontrol edip sayfayı yenileyerek tekrar deneyebilirsin.";
   if (storageMessage) {
@@ -443,6 +534,9 @@ async function init() {
     { label: "Ana sayfa", level: "secondary", href: "index.html" },
     newTestAction(result),
   ]);
+  // Claim presentation only once the complete final DOM is available, even
+  // when motion is off. Turning motion on later must not replay old activity.
+  presentResults(claimCompletionPresentation(result), score, breakdowns);
 }
 
 init();

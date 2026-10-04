@@ -137,6 +137,81 @@ class AboutInteractionTests(unittest.TestCase):
         finally:
             touch.close()
 
+    def test_mobile_story_and_feature_density_preserve_readable_copy(self):
+        self.page.set_viewport_size({'width': 390, 'height': 844})
+        self.open()
+        self.page.wait_for_timeout(1200)
+        study = self.page.locator('#urun').bounding_box()
+        features = self.page.locator('#ozellikler').bounding_box()
+        self.assertLess(study['height'], 1300)
+        self.assertLess(features['height'], 1450)
+        image = self.page.locator('.about-study-art').bounding_box()
+        copy = self.page.locator('.about-study-copy').bounding_box()
+        self.assertLess(image['y'], copy['y'], 'The selected visual should be next to its controls on phones')
+        self.assertGreaterEqual(float(self.page.locator('#study-description').evaluate('e => parseFloat(getComputedStyle(e).fontSize)')), 16)
+        for button in self.page.locator('[data-study-stage]').all():
+            self.assertGreaterEqual(button.bounding_box()['height'], 44)
+        first = self.page.locator('#feature-list details').first
+        expect(first).to_have_attribute('open', '')
+        feature = self.page.locator('#feature-list details').nth(2)
+        summary = feature.locator('summary')
+        summary.focus()
+        summary.press('Enter')
+        expect(summary).to_be_focused()
+        expect(feature.locator('.about-feature-body')).to_be_visible()
+        expect(feature.locator('.about-feature-body')).to_contain_text('başka bir tarayıcıya')
+        self.assertGreater(feature.locator('.about-feature-body').evaluate('e => e.getAnimations().length'), 0)
+        self.assertEqual(feature.locator('.about-feature-label').evaluate('e => e.getAnimations().length'), 0)
+        summary.press('Space')
+        expect(feature).not_to_have_attribute('open', '')
+
+    def test_story_motion_is_longer_and_rapid_selection_cancels_superseded_effects(self):
+        self.open()
+        result = self.page.evaluate("""() => {
+          const stages = ['apply', 'return', 'read', 'apply'];
+          for (const stage of stages) document.querySelector(`[data-study-stage="${stage}"]`).click();
+          const image = document.querySelector('.about-study-image-frame');
+          const animations = image.getAnimations().filter(a => a.effect.getKeyframes().some(frame => frame.transform));
+          return {src: document.querySelector('#study-image').getAttribute('src'),
+            selected: document.querySelector('[data-study-stage][aria-pressed="true"]').dataset.studyStage,
+            animations: animations.length,
+            durations: animations.map(a => a.effect.getTiming().duration),
+            controls: document.querySelector('#study-controls').getAnimations({subtree:true}).filter(a=>a.effect.getKeyframes().some(frame=>frame.transform)).length};
+        }""")
+        self.assertEqual(result['src'], 'assets/test-phone.webp')
+        self.assertEqual(result['selected'], 'apply')
+        self.assertEqual(result['animations'], 1)
+        self.assertTrue(all(500 <= duration <= 1000 for duration in result['durations']), result)
+        self.assertLessEqual(result['controls'], 1)
+        self.page.evaluate('document.querySelector("footer [data-motion-control]").click()')
+        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
+        self.assertEqual(self.page.evaluate('document.getAnimations().filter(a=>Number.isFinite(a.effect.getComputedTiming().endTime)).length'), 0)
+        expect(self.page.locator('#study-title')).to_have_text('Bir seçeneğin ötesine geç.')
+        expect(self.page.locator('#study-action')).to_have_attribute('href', '../index.html#test')
+
+    def test_artwork_entry_waits_for_the_artwork_to_enter_the_viewport(self):
+        self.open()
+        frame = self.page.locator('.about-study-image-frame')
+        self.assertEqual(frame.evaluate('e=>e.getAnimations().length'), 0)
+        frame.evaluate('e=>e.scrollIntoView({block:"center"})')
+        self.page.wait_for_function("document.querySelector('.about-study-image-frame').getAnimations().some(a => a.effect.getTiming().duration >= 800)")
+        self.page.wait_for_timeout(1150)
+        self.assertEqual(frame.evaluate('e=>e.getAnimations().length'), 0)
+        frame.evaluate('e=>e.scrollIntoView({block:"center"})')
+        self.page.wait_for_timeout(100)
+        self.assertEqual(frame.evaluate('e=>e.getAnimations().length'), 0, 'One visible scene must not replay on ordinary scrolling')
+
+    def test_custom_architecture_marks_follow_real_selection_and_reduce_motion(self):
+        self.open()
+        self.page.locator('[data-architecture="interface"]').click()
+        expect(self.page.locator('[data-layer="interface"]')).to_have_attribute('data-active', 'true')
+        expect(self.page.locator('[data-layer][data-active="true"]')).to_have_count(1)
+        self.page.emulate_media(reduced_motion='reduce')
+        self.page.locator('[data-architecture="continuity"]').click()
+        expect(self.page.locator('[data-layer="continuity"]')).to_have_attribute('data-active', 'true')
+        self.assertEqual(self.page.locator('.about-architecture-art').evaluate('e=>e.getAnimations({subtree:true}).length'), 0)
+        expect(self.page.locator('#architecture-body')).to_contain_text('sessionStorage')
+
     def test_authored_long_additions_reflow_without_renderer_changes(self):
         source = (Path(__file__).parents[1] / 'about/content.js').read_text()
         additions = '''

@@ -1,6 +1,6 @@
 import { createInstallControl } from "../js/install.js";
 import { initMotion, createMotionControl } from "../js/motion.js";
-import { animateElement, bindPointerScene } from "../js/interactions.js";
+import { animateElement, animateSequence, cancelAnimationsWithin, bindPointerScene } from "../js/interactions.js";
 import { createBrand } from "../js/brand.js";
 import { icon } from "../js/icons.js";
 import { studyStages, architecture, everydayFeatures, engineering, questions, extraSections } from "./content.js";
@@ -38,16 +38,26 @@ function sectionHeading(parent, content, headingId) {
   if (content.intro) parent.appendChild(node("p", null, content.intro));
 }
 function renderFeatures(parent, items) {
-  for (const item of items) {
+  for (const [index, item] of items.entries()) {
     const article = node("article", "about-feature");
     const sign = node("div", "about-feature-sign");
     sign.appendChild(glyph(item.icon || "spark"));
     if (item.label) sign.appendChild(node("p", "about-feature-label", item.label));
-    article.append(sign, node("h3", null, item.title), node("p", null, item.body));
+    const details = node("details", "about-feature-detail");
+    if (index === 0) details.open = true;
+    const summary = node("summary");
+    const heading = node("h3", null, item.title);
+    const indicator = glyph("chevron-down");
+    indicator.classList.add("about-feature-toggle");
+    summary.append(sign, heading, indicator);
+    const body = node("div", "about-feature-body");
+    body.appendChild(node("p", null, item.body));
+    details.append(summary, body);
+    article.appendChild(details);
     if (item.action) {
       const action = link(item.action);
       setAction(action, item.action);
-      article.appendChild(action);
+      body.appendChild(action);
     }
     parent.appendChild(article);
   }
@@ -61,7 +71,13 @@ byId("about-motion").appendChild(createMotionControl());
 bindPointerScene(document.querySelector(".about-hero-visual"), {
   target: document.querySelector(".about-hero-scene"), maxTilt: 2, maxShift: 6,
 });
-animateElement(document.querySelector(".about-hero-visual"), "scene", { channel: "about-entry" });
+// The three planes have one shared, cancellable entrance. Their final geometry
+// is already in CSS: skipping or cancelling motion never leaves artwork hidden.
+animateSequence([
+  { element: document.querySelector(".about-hero-wide"), kind: "story", at: 0 },
+  { element: document.querySelector(".about-hero-phone"), kind: "scene", at: 90 },
+  { element: document.querySelector(".about-hero-trace .about-trace"), kind: "draw", at: 160 },
+], { channel: "about-opening" });
 
 sectionHeading(byId("features-heading-content"), everydayFeatures, "features-heading");
 renderFeatures(byId("feature-list"), everydayFeatures.items);
@@ -110,7 +126,13 @@ function showStage(stage, announce = true) {
   byId("study-scene").dataset.stage = stage.id;
   if (announce) {
     byId("study-status").textContent = `${stage.label}. ${stage.title}`;
-    animateElement(document.querySelector(".about-study-art"), "scene", { channel: "about-story" });
+    cancelAnimationsWithin(document.querySelector(".about-study-art"));
+    cancelAnimationsWithin(byId("study-controls"));
+    animateSequence([
+      { element: document.querySelector(".about-study-image-frame"), kind: "scene", at: 0 },
+      { element: byId("study-step-label"), kind: "reveal", at: 80 },
+      { element: byId("study-controls").querySelector('[aria-pressed="true"] svg'), kind: "mark", at: 0 },
+    ], { channel: "about-story" });
   }
 }
 for (const [index, stage] of studyStages.entries()) {
@@ -139,9 +161,18 @@ function showArchitecture(item, announce = true) {
   byId("architecture-body").textContent = item.body;
   byId("architecture-detail").textContent = item.detail;
   setAction(byId("architecture-action"), item.action);
+  for (const layer of document.querySelectorAll("[data-layer]")) {
+    layer.dataset.active = String(layer.dataset.layer === item.id);
+  }
   if (announce) {
     byId("architecture-status").textContent = `${item.label}. ${item.title}`;
-    animateElement(byId("architecture-controls").querySelector('[aria-pressed="true"] svg'), "mark", { channel: "about-architecture" });
+    cancelAnimationsWithin(document.querySelector(".about-architecture-art"));
+    cancelAnimationsWithin(byId("architecture-controls"));
+    animateSequence([
+      { element: document.querySelector(`[data-layer="${CSS.escape(item.id)}"]`), kind: "scene", at: 0 },
+      { element: document.querySelector(".about-architecture-thread"), kind: "draw", at: 80 },
+      { element: byId("architecture-controls").querySelector('[aria-pressed="true"] svg'), kind: "mark", at: 0 },
+    ], { channel: "about-architecture" });
   }
 }
 for (const item of architecture) {
@@ -157,22 +188,41 @@ for (const item of architecture) {
 }
 showArchitecture(architecture[0], false);
 
-// One finite accent per visible section. Content is already rendered and is
-// never hidden until a scroll event or animation completion.
+// A one-shot observer sequences already-visible editorial elements. It does
+// not control content visibility, scroll position, focus or semantic state.
+function revealSection(section) {
+  const heading = section.querySelector("h2");
+  const steps = [{ element: heading, kind: "reveal", at: 0 }];
+  animateSequence(steps, { channel: "about-section" });
+}
 if ("IntersectionObserver" in window) {
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
-      const eyebrow = entry.target.querySelector(".about-eyebrow");
-      if (eyebrow) animateElement(eyebrow, "reveal", { channel: "about-section" });
+      if (entry.target.matches(".about-feature")) {
+        animateSequence([
+          { element: entry.target.querySelector(".about-feature-sign svg"), kind: "scene", at: 0 },
+          { element: entry.target.querySelector("h3"), kind: "reveal", at: 70 },
+        ], { channel: "about-feature" });
+      } else if (entry.target.matches(".about-study-image-frame, .about-architecture-art, .about-closing-brand")) {
+        // A tall phone section can start long before its illustration enters.
+        // Observe the artwork itself, and let an in-flight user scene win.
+        if (!entry.target.getAnimations({ subtree: true }).length) {
+          animateElement(entry.target, "story", { channel: "about-art-entry" });
+        }
+      } else revealSection(entry.target);
       observer.unobserve(entry.target);
     }
-  }, { threshold: 0, rootMargin: "0px 0px -12% 0px" });
-  for (const section of document.querySelectorAll(".about-section")) observer.observe(section);
+  }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+  for (const section of document.querySelectorAll(".about-section, .about-feature, .about-study-image-frame, .about-architecture-art, .about-closing-brand")) observer.observe(section);
+  window.addEventListener("pagehide", () => observer.disconnect(), { once: true });
 }
 for (const details of document.querySelectorAll("details")) {
   details.addEventListener("toggle", () => {
-    if (details.open) animateElement(details.querySelector("p"), "reveal", { channel: "about-disclosure" });
+    if (details.open) {
+      animateElement(details.querySelector(".about-feature-body") ?? details.querySelector(":scope > p"), "reveal", { channel: "about-disclosure" });
+      animateElement(details.querySelector(".about-feature-sign svg"), "mark", { channel: "about-disclosure-icon" });
+    } else cancelAnimationsWithin(details);
   });
 }
 
