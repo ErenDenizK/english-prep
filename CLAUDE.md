@@ -2,7 +2,7 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.74)
+## Current presentation (v0.75)
 
 For current UI work, [ADR 013](docs/adr/013-restore-page-entry-and-browser-space.md)
 and [Margin system](docs/margin-design-system.md) supersede historical visual
@@ -42,6 +42,19 @@ and motion preferences clean up presentation. Fresh Home/Test/Profile/article,
 question and result views receive their own visible composition; typing,
 restored article position and answering the current question do not replay it.
 Onboarding's existing illustrated parts and About's folio remain expressive.
+
+Browser-tab `theme-color` is no longer forced to a flat page color: all four
+entry documents restrict it to `(display-mode: standalone)`. Theme preference
+and `color-scheme` still apply normally. The root canvas has the page background
+and the fixed atmosphere extends to at least `100lvh`; app controls stay in the
+dynamic viewport. This addresses the owner's clarified flat backing-band
+complaint, not removal of browser controls. Physical iPhone toolbar composition
+remains unverified; do not claim a confirmed Safari fix from Chromium emulation.
+
+About feature disclosures have an explicit grid inside their `.control-face`:
+icon/label above the heading, a separate chevron column and aligned body copy.
+They use one column on phones and two from 700px. Do not let the shared press
+wrapper's horizontal flex default collapse the label and title together.
 
 The rail is one 1.5px thread with a 5px thumb, growing to just 8px when held.
 A local SVG curve follows an inward pull up to 14px and settles continuously on

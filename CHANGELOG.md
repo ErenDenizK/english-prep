@@ -5,6 +5,14 @@ the [development guide's Versioning section](docs/development.md#versioning) for
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.75 — 2026-10-04
+
+- About özellikleri bölümünde animasyon sarmalayıcısının etiket ve başlıkları aynı satıra sıkıştırması düzeltildi. Etiket/başlık/açıklama ayrı hizalarda; telefonda tek, geniş ekranda iki sütun.
+
+- Normal tarayıcı sekmelerinde sabit `theme-color` zorlaması kaldırıldı; bağımsız uygulama rengi korunur. Tarayıcı kendi saydamlık/renk örneklemesini kullanabilir.
+- Aura katmanı büyük görünüm yüksekliğine uzatıldı; mobil araç çubuğu çevresinde arka planın erken kesilmesi önlenir. İçerik, alt sekmeler ve güvenli dokunma alanları aynı sınırlar içinde kalır.
+- Bu düzenleme URL çubuğunu gizlemez. Fiziksel iPhone/Safari’de alt alanın nasıl birleştirildiği bu ortamda doğrulanmadı.
+
 ## v0.74 — 2026-10-04
 
 - Sayfa açılışları kullanıcının tercihiyle v0.72 animasyonlarına geri döndü. v0.73 buton tepkileri, %20 yavaşlatılan aura ve ince çimdikleme çubuğu korundu.

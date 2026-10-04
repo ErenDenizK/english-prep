@@ -195,3 +195,11 @@ Do not introduce autoplay carousels or continuously moving paragraphs.
 
 New JS/CSS modules must be included in `sw.js` by the release owner. Update the
 release version together with the app; do not change the preserved original.
+
+### Feature disclosure layout
+
+Feature summaries keep their label, heading and chevron in separate grid cells
+inside the shared `.control-face` animation wrapper. Copy remains in
+`everydayFeatures` / `extraSections`; no manual line breaks are needed. Phone
+layouts have one column, widths from 700px have two. The summary has a minimum
+height, not a fixed maximum, so longer titles and larger text can grow.

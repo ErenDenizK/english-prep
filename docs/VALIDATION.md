@@ -1,4 +1,31 @@
-# Validation — v0.74
+# Validation — v0.75
+
+4 October 2026. The owner clarified the Safari target as the flat backing band,
+then reported overlapping labels/headings in About’s feature disclosures.
+
+- `npm run check`: 246 unit tests, content/schema and palette checks passed.
+- `aura_browser.py`: 3 passed after root-canvas and large-viewport changes.
+- `about_interaction_browser.py`: all 15 passed after adjusting feature layout
+  and mobile spacing. An initial overly tall version exceeded its mobile
+  density budget; the final version retains readable type with less empty space.
+- Real feature layouts inspected at 320, 390, 768, 1220 and 1440px: all eight
+  labels sit 8px above their headings, chevrons stay in their column, native
+  keyboard expansion works, and 200% type at 390px does not overflow horizontally.
+- Full app sweep: 3,590/3,591 checks passed; the fixed 1200px reading probe
+  reported zero progress in the desktop flow. It now scrolls into the actual
+  article after the variable-height pretest. The complete affected desktop
+  flow then passed all 69 checks; no reading/scoring implementation changed.
+- Browser-tab metadata probe: standalone-only theme-color does not match a
+  regular tab; dark/light root colors follow the palette, atmosphere min-height
+  covers the viewport, and app/About pages have no horizontal overflow/errors.
+
+The visual goal under Safari’s native toolbar cannot be certified here: these
+are Chromium page-paint checks. No physical iPhone was available. Neither the
+metadata change nor extending the decorative canvas removes native URL controls.
+
+## Earlier release evidence
+
+### Validation — v0.74
 
 4 October 2026. Page-opening callers were restored byte-for-byte from v0.72
 (`5b48cd0`) in Home, Education, Profile, Quiz and Results. v0.73 button feedback,
