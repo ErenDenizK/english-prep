@@ -43,7 +43,10 @@ Always link to a real action; results cannot be opened without a real session.
 
 The browser chooses `assets/<capture>-phone.webp` below 700px and the corresponding
 `assets/<capture>-wide.webp` above that threshold through a native `picture`.
-The phone image is a 390×844 web viewport; wide is 1440×1000. These dimensions are
+The phone image represents a 390×844 web viewport; wide represents 1440×1000.
+Captures are rendered at 3× phone and 2× wide device pixel ratio
+(1170×2532 and 2880×2000 pixels);
+HTML dimensions remain the logical viewport sizes to reserve stable layout. These dimensions are
 not a claim of physical iPhone/Safari testing. The phone image is deliberately
 cropped to a square illustration immediately below its controls; its top remains
 legible and the explanatory copy follows. The desktop story places copy beside
@@ -120,7 +123,8 @@ fallbacks; live totals are read from `data/manifest.json`.
 
 The masthead/footer use the full `english prep.` wordmark; the closing invitation
 uses compact `ep.`. Both use `../js/brand.js`, one type treatment and a cherry dot.
-The system is documented in [ADR 009](../docs/adr/009-expressive-study-motion.md).
+The baseline is documented in [ADR 009](../docs/adr/009-expressive-study-motion.md);
+[the current composition](../docs/design/about-v071.md) explains the scene update.
 Shared `interactions.js` handles finite effects and pointer-scene lifecycle;
 `motion.js` owns the preference, background and reduced-motion behavior.
 
@@ -129,33 +133,41 @@ at most 2 degrees tilt and 6px displacement. No paragraph, headline or click tar
 moves in response to the pointer. The reflection is bounded behind the artwork.
 Touch scroll/zoom stay native. There is no permanent JavaScript animation loop.
 
-The opening has a shared composition: a 900ms artwork entrance, a 560ms phone
-settle and a 720ms normalized SVG trace, offset by at most 160ms. Study selection
-uses a 560ms local scene; the architecture's selected layer settles while its
-connection traces. The real state, copy, link and selected button update first.
-Rapid selections cancel the preceding artwork and selection marks. Feature
-and technical disclosures have immediate native open/close with a 220ms body
-cue; headings and icons have one-shot visible-entry choreography.
+Study and architecture each form one continuous board. Their controls are
+chapters of the same scene: no separate button cards or screenshot gallery.
+The shared selection line follows actual button geometry, including wrapped
+labels and additional authored stages. Labels, links and pressed state update
+immediately, while illustrations follow a softer 1100ms flow and SVG trace.
+Clicking the selected chapter again acknowledges the action through its glyph.
 
-The visibility observer watches each large illustration separately, so a tall
-phone section cannot finish its artwork entrance before the art comes into
-view. Artwork with a running user-selected scene is not given a competing entry.
-Content is never initially hidden. All effects use shared `animateSequence` or
-`animateElement`, rather than a private registry, timer or spring loop. The **Hareket** preference is in the footer, not the
-header. It persists, stops local effects and follows OS reduced motion. A hidden
-page pauses decoration. Do not introduce autoplay carousels or moving text.
+The hero waits for both screenshots to decode. Each story selection waits for
+the selected picture to decode and for its actual frame to intersect the viewport;
+`whenVisible` also waits for fonts and painted frames. Rapid changes cancel
+pending and active effects. A stale decoded image cannot animate the latest
+selection. Copy is never hidden and the application link is usable throughout.
+
+Native feature, technical and FAQ disclosures preserve browser keyboard/focus
+behavior. Supported browsers progressively enhance their intrinsic height with
+`interpolate-size` and `::details-content`, including closing; other browsers
+retain an immediate complete disclosure and finite body/icon cue. No content
+height is hardcoded. Reduced motion and the saved preference disable every cue.
+
+The motion preference is available **only in application settings**. The footer
+links there rather than adding another on/off control. The shared preference
+and OS reduced motion apply to this page; a hidden page pauses decoration.
+Do not introduce autoplay carousels or continuously moving paragraphs.
 
 ## Before publishing
 
 - Check 320, 390, 768 and 1440px, enlarged text and a long appended item.
 - Tab through story and architecture buttons; confirm focus, selected label,
   displayed content and source/action links agree.
-- Confirm there is no screenshot gallery/viewport chooser or header pause.
+- Confirm there is no screenshot gallery/viewport chooser or motion toggle outside settings.
 - Check a feature disclosure with touch and keyboard, then rapid story changes.
   The last selected stage must win with no accumulated scene animations.
 - Scroll to the product illustration and check its one-shot entry starts when
   the illustration enters, not when the distant section heading enters.
-- Test fine-pointer response, pointer leave and touch scrolling. Turn motion off,
+- Test fine-pointer response, pointer leave and touch scrolling. Turn motion off in application settings,
   reload, and enable OS reduced motion; the content must remain usable.
 - Check current captures, alt text, image loading and the `/english-prep/` prefix.
 - Run `tests/about_interaction_browser.py` and the app's required checks.

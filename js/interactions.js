@@ -3,7 +3,7 @@
 import { initMotion, motionEnabled } from "./motion.js";
 
 export const MOTION_DURATIONS = Object.freeze({
-  control: 100, reveal: 220, route: 360, scene: 560, complete: 720, story: 900,
+  control: 100, reveal: 220, route: 360, scene: 560, complete: 720, story: 900, flow: 1100,
 });
 const EASING = "cubic-bezier(0.2, 0, 0, 1)";
 const SETTLE = "cubic-bezier(0.22, 1, 0.36, 1)";
@@ -11,6 +11,7 @@ const MAX_SEQUENCE_DELAY = 180;
 const active = new Set();
 const channels = new WeakMap();
 const pointerScenes = new Set();
+const arrivals = new Set();
 let listening = false;
 
 function canMove() {
@@ -29,6 +30,7 @@ function cancel(record) {
 }
 
 function stopAll() {
+  for (const arrival of [...arrivals]) arrival.dispose();
   for (const record of [...active]) cancel(record);
   for (const scene of pointerScenes) scene.reset();
 }
@@ -39,6 +41,9 @@ function stopAll() {
 function settleInputAncestors(event) {
   const target = event.target;
   if (!target) return;
+  for (const arrival of [...arrivals]) {
+    if (arrival.element === target || arrival.element.contains(target)) arrival.dispose();
+  }
   for (const record of [...active]) {
     if (record.element === target || record.element.contains(target)) cancel(record);
   }
@@ -106,6 +111,14 @@ function preset(kind, direction) {
         { transform: "translateY(0) scale(1) rotate(0deg)", offset: 1 },
       ],
     };
+    case "flow": return {
+      role: "flow", easing: "linear", frames: [
+        { transform: `translateX(${sign * 14}px) translateY(7px) scale(.96) rotate(${-sign * 2}deg)`, offset: 0, easing: "cubic-bezier(.22,.65,.25,1)" },
+        { transform: `translateX(${-sign * 1.5}px) translateY(-2px) scale(1.012) rotate(${sign * .5}deg)`, offset: .65, easing: EASING },
+        { transform: "translateX(0) translateY(0) scale(1) rotate(0deg)", offset: 1 },
+      ],
+    };
+    case "trace": return { role: "flow", easing: "cubic-bezier(.3,.1,.2,1)", frames: [{ strokeDasharray: "1", strokeDashoffset: "1" }, { strokeDasharray: "1", strokeDashoffset: "0" }] };
     // A caller gives decorative paths pathLength=1 and a complete static stroke.
     // The real diagram, score and text never depend on the animated drawing.
     case "draw": return { role: "complete", frames: [{ strokeDasharray: "1", strokeDashoffset: "1" }, { strokeDasharray: "1", strokeDashoffset: "0" }] };
@@ -168,9 +181,75 @@ export function animateSequence(entries, { channel = "sequence", direction = "fo
 /** Release outgoing finite effects immediately before closing or replacing UI. */
 export function cancelAnimationsWithin(container) {
   if (!container) return;
+  for (const arrival of [...arrivals]) {
+    if (arrival.element === container || container.contains(arrival.element)) arrival.dispose();
+  }
   for (const record of [...active]) {
     if (record.element === container || container.contains(record.element)) cancel(record);
   }
+}
+
+/** Start presentation once its real scene is ready AND visible. Content is
+ * already usable: this never hides, loads or commits application state. A slow
+ * font/image cannot consume an offscreen animation. New scenes, real input,
+ * motion-off and hidden pages discard pending arrivals instead of replaying
+ * stale events later. `ready` may be an image.decode() promise. */
+export function whenVisible(element, callback, { ready, channel = "arrival", threshold = .12 } = {}) {
+  initialize();
+  for (const arrival of [...arrivals]) {
+    if (arrival.element === element && arrival.channel === channel) arrival.dispose();
+  }
+  if (!element?.isConnected || !canMove()) return () => {};
+  let observer = null;
+  let frame = null;
+  let disposed = false;
+  let prepared = false;
+  let visible = typeof IntersectionObserver === "undefined";
+  const minimum = Math.min(.5, Math.max(0, Number(threshold) || 0));
+  const record = { element, channel, dispose };
+  arrivals.add(record);
+
+  function dispose() {
+    if (disposed) return;
+    disposed = true;
+    observer?.disconnect();
+    if (frame !== null) cancelAnimationFrame(frame);
+    arrivals.delete(record);
+  }
+  function schedule() {
+    if (disposed || !prepared || !visible || frame !== null) return;
+    // Two render frames leave a complete, painted scene before its flourish.
+    frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        if (disposed || !element.isConnected || !canMove()) { dispose(); return; }
+        if (!visible) return;
+        dispose();
+        callback();
+      });
+    });
+  }
+  if (typeof IntersectionObserver !== "undefined") {
+    observer = new IntersectionObserver((entries) => {
+      const entry = entries.at(-1);
+      visible = !!entry?.isIntersecting && entry.intersectionRatio >= minimum;
+      if (!element.isConnected) { dispose(); return; }
+      schedule();
+    }, { threshold: [0, minimum] });
+    observer.observe(element);
+  }
+  // Called at presentation time after styles exist, not during an early boot
+  // script whose fonts.ready could resolve before the font face is discovered.
+  const fonts = document.fonts;
+  const typography = fonts?.load
+    ? fonts.load('400 16px "Inter"', "İngilizce").then(() => fonts.ready)
+    : fonts?.ready;
+  Promise.allSettled([typography, ready]).then(() => {
+    if (disposed) return;
+    prepared = true;
+    schedule();
+  });
+  return dispose;
 }
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));

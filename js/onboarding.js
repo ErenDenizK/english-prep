@@ -3,7 +3,7 @@
 import { el } from "./dom.js";
 import { icon } from "./icons.js";
 import { createBrand } from "./brand.js";
-import { animateSequence, cancelAnimationsWithin } from "./interactions.js";
+import { animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 import { getProfileName, setProfileName, setOnboarded } from "./storage.js";
 
 const STEPS = [
@@ -14,7 +14,7 @@ const STEPS = [
     scenes: [
       { label: "Konu", drawing: "topics", caption: "İhtiyacın olan konudan başla. Ders sırası sana bağlı." },
       { label: "Ders", drawing: "article", caption: "Dersi kaydırarak oku. Kaldığın yere sonra geri dön." },
-      { label: "Kontrol", drawing: "check", caption: "Kısa sorularla kendini dene; istersen atlayıp okumaya devam et." },
+      { label: "Kontrol", drawing: "check", caption: "Kısa sorularla kendini dene; istersen doğrudan oku." },
     ],
     next: "Testi tanı",
   },
@@ -46,7 +46,7 @@ function shape(tag, attributes, className = "") {
   return node;
 }
 
-function motionPart(node, kind = "scene", at = 0) {
+function motionPart(node, kind = "flow", at = 0) {
   node.dataset.onboardMotion = kind;
   node.dataset.onboardAt = String(at);
   return node;
@@ -59,7 +59,9 @@ function playDrawing(drawing, direction = "forward") {
   const entries = [...drawing.querySelectorAll("[data-onboard-motion]")].map((element) => ({
     element, kind: element.dataset.onboardMotion, at: Number(element.dataset.onboardAt),
   }));
-  animateSequence(entries, { channel: "onboard-drawing", direction });
+  whenVisible(drawing, () => {
+    animateSequence(entries, { channel: "onboard-drawing", direction });
+  }, { channel: "onboard-art-arrival" });
 }
 
 /** Abstract diagrams only: no invented question, answer, lesson or score. */
@@ -76,7 +78,7 @@ function drawScene(kind) {
     const path = shape("path", { d }, className);
     if (className.includes("onboard-flow__stroke")) {
       path.setAttribute("pathLength", "1");
-      motionPart(path, "draw", at);
+      motionPart(path, "trace", at);
     }
     return path;
   };
@@ -85,7 +87,7 @@ function drawScene(kind) {
   if (kind === "topics") {
     for (const [i, width] of [91, 112, 74].entries()) {
       const y = 11 + i * 31;
-      const row = motionPart(shape("g", {}, "onboard-flow__row"), "scene", i * 80);
+      const row = motionPart(shape("g", {}, "onboard-flow__row"), "flow", i * 80);
       row.append(rect(37, y, 206, 25), dot(52, y + 12),
         line(`M65 ${y + 12}h${width}`), line(`m221 ${y + 8} 4 4-4 4`, "onboard-flow__accent"));
       paper.appendChild(row);
@@ -93,7 +95,7 @@ function drawScene(kind) {
     svg.append(paper, line("M26 22v65", "onboard-flow__stroke onboard-flow__accent"));
   } else if (kind === "article") {
     const backSheet = motionPart(rect(77, 11, 132, 94, "onboard-flow__back-sheet"));
-    motionPart(paper, "scene", 80);
+    motionPart(paper, "flow", 80);
     paper.append(rect(68, 4, 132, 94),
       line("M83 21h56", "onboard-flow__accent"), line("M83 36h99M83 45h88M83 69h91M83 78h78"),
       shape("rect", { x: 82, y: 51, width: 100, height: 10, rx: 3 }, "onboard-flow__highlight"),
@@ -103,7 +105,7 @@ function drawScene(kind) {
     paper.append(motionPart(rect(48, 5, 184, 98)), line("M64 21h118M64 30h92"));
     for (const [i, width] of [84, 107, 70].entries()) {
       const y = 48 + i * 18;
-      const row = motionPart(shape("g", {}, "onboard-flow__row"), "scene", i * 60);
+      const row = motionPart(shape("g", {}, "onboard-flow__row"), "flow", i * 60);
       if (i === (kind === "check" ? 1 : 0)) {
         row.append(rect(57, y - 8, 161, 16, "onboard-flow__answer-highlight"));
       }
@@ -115,19 +117,19 @@ function drawScene(kind) {
       svg.append(line("m65 66 3 3 5-6", "onboard-flow__stroke onboard-flow__accent"));
       svg.append(line("M241 52h13m-4-4 4 4-4 4", "onboard-flow__stroke onboard-flow__accent"));
     } else {
-      svg.append(motionPart(dot(68, 48, 2, "onboard-flow__dot onboard-flow__selection"), "complete", 160));
+      svg.append(motionPart(dot(68, 48, 2, "onboard-flow__dot onboard-flow__selection"), "flow", 160));
       svg.append(line("M246 23v20m-4-4 4 4 4-4", "onboard-flow__stroke onboard-flow__accent"));
     }
   } else if (kind === "reason") {
     paper.append(motionPart(rect(43, 10, 194, 92)),
       line("m59 28 4 4 8-10", "onboard-flow__stroke onboard-flow__accent"), line("M82 27h73"));
-    const reasoning = motionPart(shape("g", {}, "onboard-flow__reason"), "scene", 100);
+    const reasoning = motionPart(shape("g", {}, "onboard-flow__reason"), "flow", 100);
     reasoning.append(line("M59 47h157M59 58h144M59 69h154M59 80h92"));
     paper.appendChild(reasoning);
     svg.append(paper, line("M59 89h70", "onboard-flow__stroke onboard-flow__accent"));
   } else {
     const backSheet = motionPart(rect(91, 15, 113, 82, "onboard-flow__back-sheet"));
-    motionPart(paper, "scene", 100);
+    motionPart(paper, "flow", 100);
     paper.append(rect(78, 8, 113, 82),
       line("M94 26h62M94 42h78M94 53h66M94 64h73"));
     svg.append(backSheet, paper, line("M214 31c23 17 22 46 0 59M214 90l2-11m-2 11 11-2",
@@ -140,29 +142,36 @@ function drawScene(kind) {
 function flowPreview(current, selected, onSelect) {
   const preview = el("div", "onboard-flow");
   const head = el("div", "onboard-flow__head");
-  head.append(el("p", "t-meta", "Akış önizlemesi"), el("span", "t-meta onboard-flow__hint", "Dokun, keşfet"));
+  const mode = el("span", "onboard-flow__mode");
+  mode.append(icon(current.mode === "Eğitim" ? "book" : "check-square", { size: 18 }),
+    el("span", "", current.mode));
+  head.append(mode, el("span", "t-meta onboard-flow__hint", "Akışı keşfet"));
   const choices = el("div", "onboard-flow__choices");
   choices.setAttribute("role", "group");
   choices.setAttribute("aria-label", `${current.mode} akışını keşfet`);
+  const marker = el("span", "onboard-flow__marker");
+  marker.setAttribute("aria-hidden", "true");
+  choices.appendChild(marker);
   const scene = el("div", "onboard-flow__scene");
   scene.setAttribute("aria-hidden", "true");
   const caption = el("p", "onboard-flow__caption");
   caption.setAttribute("role", "status");
   caption.setAttribute("aria-live", "polite");
   caption.setAttribute("aria-atomic", "true");
-  const navigation = el("div", "onboard-flow__navigation");
-  navigation.setAttribute("aria-hidden", "true");
-  for (const [name, glyph] of [["Eğitim", "book"], ["Test", "check-square"]]) {
-    const mode = el("span", "onboard-flow__mode");
-    mode.dataset.selected = String(name === current.mode);
-    mode.append(icon(glyph, { size: 20 }), el("span", "", name));
-    navigation.appendChild(mode);
-  }
   const buttons = current.scenes.map((item, index) => {
-    const button = el("button", "onboard-flow__choice", item.label);
+    const button = el("button", "onboard-flow__choice");
+    const stop = el("span", "onboard-flow__stop");
+    stop.setAttribute("aria-hidden", "true");
+    button.append(stop, el("span", "", item.label));
     button.type = "button";
     button.addEventListener("click", () => {
-      if (selected === index) return;
+      if (selected === index) {
+        // A deliberate second tap replays the miniature without changing the
+        // selected state, replacing text, moving focus or advancing the tour.
+        cancelAnimationsWithin(scene);
+        playDrawing(scene);
+        return;
+      }
       const direction = index < selected ? "back" : "forward";
       selected = index;
       onSelect(index);
@@ -175,12 +184,13 @@ function flowPreview(current, selected, onSelect) {
     cancelAnimationsWithin(scene);
     buttons.forEach((button, index) => button.setAttribute("aria-pressed", String(index === selected)));
     preview.dataset.scene = current.scenes[selected].drawing;
+    choices.style.setProperty("--flow-step", String(selected));
     scene.replaceChildren(drawScene(current.scenes[selected].drawing));
     caption.textContent = current.scenes[selected].caption;
     if (animate) playDrawing(scene, direction);
   }
   paint();
-  preview.append(head, choices, scene, caption, navigation);
+  preview.append(head, choices, scene, caption);
   return preview;
 }
 
@@ -245,7 +255,7 @@ export function renderOnboarding(container, { onDone }) {
       }, "onboard__signature");
       signature.appendChild(motionPart(shape("path", {
         d: "M3 10C62 1 121 1 190 7s32 5 47 0", pathLength: 1,
-      }, "onboard-flow__stroke"), "draw"));
+      }, "onboard-flow__stroke"), "trace"));
       wordmark.appendChild(signature);
       panel.appendChild(wordmark);
       const field = el("div", "stack stack--snug onboard__name");
@@ -273,17 +283,18 @@ export function renderOnboarding(container, { onDone }) {
       container.closest(".shell__scroll")?.scrollTo({ top: 0 });
       heading.focus({ preventScroll: true });
     }
-    animateSequence([
+    whenVisible(heading, () => animateSequence([
       { element: heading, kind: "onboard", at: 0 },
       { element: description, kind: "onboard", at: 60 },
-    ], { channel: "onboard-step", direction });
-    playDrawing(panel, direction);
+    ], { channel: "onboard-step", direction }), { channel: "onboard-copy-arrival" });
+    playDrawing(panel.querySelector(".onboard-flow__scene"), direction);
     const wordmark = panel.querySelector(".onboard__wordmark");
     if (wordmark) {
-      animateSequence([
+      playDrawing(wordmark, direction);
+      whenVisible(wordmark, () => animateSequence([
         { element: wordmark.querySelector(".brand-mark__letters"), kind: "onboard", at: 80 },
         { element: wordmark.querySelector(".brand-mark__dot"), kind: "complete", at: 160 },
-      ], { channel: "onboard-brand", direction });
+      ], { channel: "onboard-brand", direction }), { channel: "onboard-brand-arrival" });
     }
   }
 

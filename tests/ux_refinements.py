@@ -54,8 +54,17 @@ class UXRefinementTests(unittest.TestCase):
         expect(self.page.locator('#profile-container h1')).to_have_text('Ada')
         expect(backup).to_be_focused()
         name.fill('Ada Lovelace')
+        self.page.evaluate('''() => {
+          window.profileNameSignals = 0;
+          document.addEventListener('profile:namechange', () => { window.profileNameSignals += 1; });
+        }''')
         name.evaluate('node => { node.focus(); node.setSelectionRange(4, 8, "backward"); node.dispatchEvent(new Event("change", {bubbles:true})); }')
         expect(self.page.locator('#profile-container h1')).to_have_text('Ada Lovelace')
+        # Removing an edited input can dispatch another native change. Allow
+        # both render frames to run, then ensure the same value was committed
+        # once rather than replacing the restored input a second time.
+        self.page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
+        self.assertEqual(self.page.evaluate('window.profileNameSignals'), 1)
         self.assertEqual(name.evaluate('node => [document.activeElement === node, node.selectionStart, node.selectionEnd, node.selectionDirection]'), [True, 4, 8, 'backward'])
         expect(self.page.locator('#profile-exam-date, #profile-goal-label')).to_have_count(0)
         # A user can move to a generated listbox before the async repaint.

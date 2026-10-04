@@ -95,20 +95,22 @@ class AboutInteractionTests(unittest.TestCase):
         expect(self.page.locator('.about-hero-scene')).to_have_attribute('data-scene-active', 'false')
         self.assertEqual(self.page.locator('.about-hero-scene').evaluate('e => e.style.getPropertyValue("--scene-shift-x")'), '0px')
 
-    def test_footer_preference_persists_and_stops_decoration(self):
+    def test_motion_preference_lives_only_in_settings_and_is_respected_here(self):
         self.open()
-        expect(self.page.locator('header [data-motion-control]')).to_have_count(0)
-        toggle = self.page.locator('footer [data-motion-control]')
-        expect(toggle).to_have_count(1)
-        toggle.click()
-        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
-        self.assertEqual(self.page.evaluate('localStorage.getItem("englishPrep.motion")'), 'off')
+        expect(self.page.locator('[data-motion-control]')).to_have_count(0)
+        expect(self.page.locator('.about-motion-settings a')).to_have_attribute('href', '../index.html#profil')
+        self.page.evaluate('localStorage.setItem("englishPrep.motion", "off")')
         self.page.reload()
         expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
         self.page.locator('[data-study-stage="apply"]').click()
-        self.assertEqual(self.page.locator('.about-study-art').evaluate('e => e.getAnimations().length'), 0)
+        self.assertEqual(self.page.locator('.about-study-art').evaluate('e => e.getAnimations({subtree:true}).length'), 0)
+        self.page.evaluate('localStorage.removeItem("englishPrep.motion")')
         self.page.emulate_media(reduced_motion='reduce')
-        expect(self.page.locator('footer [data-motion-control]')).to_have_attribute('aria-disabled', 'true')
+        self.page.reload()
+        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
+        self.page.locator('[data-architecture="continuity"]').click()
+        self.assertEqual(self.page.locator('.about-architecture-art').evaluate('e => e.getAnimations({subtree:true}).length'), 0)
+        expect(self.page.locator('#architecture-body')).to_contain_text('sessionStorage')
 
     def test_responsive_media_and_no_overflow_across_supported_widths(self):
         for width in [320, 390, 768, 1440]:
@@ -123,6 +125,9 @@ class AboutInteractionTests(unittest.TestCase):
         self.page.set_viewport_size({'width': 320, 'height': 900})
         self.page.add_style_tag(content='html { font-size: 200% !important; }')
         self.assertLessEqual(self.page.evaluate('document.documentElement.scrollWidth-innerWidth'), 1)
+        launch = self.page.locator('.about-header-actions a').bounding_box()
+        self.assertLess(launch['height'], 100, 'Enlarged masthead action must wrap as a whole row, not single characters')
+        self.assertLessEqual(launch['x'] + launch['width'], 320)
 
     def test_touch_does_not_require_or_trigger_pointer_effects(self):
         touch = self.browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True, service_workers='block')
@@ -165,29 +170,75 @@ class AboutInteractionTests(unittest.TestCase):
         summary.press('Space')
         expect(feature).not_to_have_attribute('open', '')
 
-    def test_story_motion_is_longer_and_rapid_selection_cancels_superseded_effects(self):
+    def test_native_disclosure_closes_semantically_before_height_settles(self):
+        self.page.set_viewport_size({'width': 390, 'height': 844})
         self.open()
-        result = self.page.evaluate("""() => {
-          const stages = ['apply', 'return', 'read', 'apply'];
-          for (const stage of stages) document.querySelector(`[data-study-stage="${stage}"]`).click();
-          const image = document.querySelector('.about-study-image-frame');
-          const animations = image.getAnimations().filter(a => a.effect.getKeyframes().some(frame => frame.transform));
-          return {src: document.querySelector('#study-image').getAttribute('src'),
-            selected: document.querySelector('[data-study-stage][aria-pressed="true"]').dataset.studyStage,
-            animations: animations.length,
-            durations: animations.map(a => a.effect.getTiming().duration),
-            controls: document.querySelector('#study-controls').getAnimations({subtree:true}).filter(a=>a.effect.getKeyframes().some(frame=>frame.transform)).length};
+        feature = self.page.locator('#feature-list details').nth(2)
+        summary = feature.locator('summary')
+        summary.click()
+        self.page.wait_for_timeout(650)
+        height = feature.evaluate('e=>parseFloat(getComputedStyle(e,"::details-content").height)')
+        summary.click()
+        expect(feature).not_to_have_attribute('open', '')
+        if self.page.evaluate('CSS.supports("interpolate-size", "allow-keywords")'):
+            self.page.wait_for_timeout(60)
+            closing = feature.evaluate('e=>parseFloat(getComputedStyle(e,"::details-content").height)')
+            self.assertGreater(closing, 0)
+            self.assertLess(closing, height)
+            self.page.wait_for_function("""() => parseFloat(getComputedStyle(document.querySelectorAll('#feature-list details')[2], '::details-content').height) === 0""")
+        summary.focus()
+        summary.press('Enter')
+        expect(summary).to_be_focused()
+        expect(feature).to_have_attribute('open', '')
+
+    def test_story_motion_waits_for_pixels_and_latest_selection_wins(self):
+        self.page.add_init_script("""(() => {
+          const decode = HTMLImageElement.prototype.decode;
+          HTMLImageElement.prototype.decode = function() {
+            if (this.id === 'study-image' && this.getAttribute('src').includes('test-phone')) {
+              return new Promise(resolve => { window.__releaseStudy = () => decode.call(this).catch(() => {}).then(resolve); });
+            }
+            return decode.call(this);
+          };
+        })()""")
+        self.open()
+        self.page.locator('.about-study-image-frame').scroll_into_view_if_needed()
+        self.page.wait_for_timeout(1500)
+        self.page.evaluate("""() => {
+          for (const stage of ['apply', 'return', 'read', 'apply'])
+            document.querySelector(`[data-study-stage="${stage}"]`).click();
         }""")
-        self.assertEqual(result['src'], 'assets/test-phone.webp')
-        self.assertEqual(result['selected'], 'apply')
-        self.assertEqual(result['animations'], 1)
-        self.assertTrue(all(500 <= duration <= 1000 for duration in result['durations']), result)
-        self.assertLessEqual(result['controls'], 1)
-        self.page.evaluate('document.querySelector("footer [data-motion-control]").click()')
+        expect(self.page.locator('#study-image')).to_have_attribute('src', 'assets/test-phone.webp')
+        expect(self.page.locator('#study-title')).to_have_text('Bir seçeneğin ötesine geç.')
+        self.page.wait_for_timeout(250)
+        self.assertEqual(self.page.locator('.about-study-image-frame').evaluate('e=>e.getAnimations().filter(a=>a.effect.getKeyframes().some(k=>k.transform)).length'), 0)
+        self.page.evaluate('window.__releaseStudy()')
+        self.page.wait_for_function("document.querySelector('.about-study-image-frame').getAnimations().filter(a=>a.effect.getKeyframes().some(k=>k.transform)).length === 1")
+        durations = self.page.locator('.about-study-image-frame').evaluate('e=>e.getAnimations().filter(a=>a.effect.getKeyframes().some(k=>k.transform)).map(a=>a.effect.getTiming().duration)')
+        self.assertTrue(all(1000 <= duration <= 1400 for duration in durations), durations)
+        self.page.emulate_media(reduced_motion='reduce')
         expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
         self.assertEqual(self.page.evaluate('document.getAnimations().filter(a=>Number.isFinite(a.effect.getComputedTiming().endTime)).length'), 0)
-        expect(self.page.locator('#study-title')).to_have_text('Bir seçeneğin ötesine geç.')
         expect(self.page.locator('#study-action')).to_have_attribute('href', '../index.html#test')
+
+    def test_chapter_rail_stays_inside_one_scene_and_repeat_click_has_a_glyph_cue(self):
+        self.page.set_viewport_size({'width': 390, 'height': 844})
+        self.open()
+        expect(self.page.locator('.about-study-theatre #study-controls')).to_have_count(1)
+        expect(self.page.locator('.about-study-theatre #study-scene')).to_have_count(1)
+        expect(self.page.locator('.about-architecture-board #architecture-controls')).to_have_count(1)
+        self.page.locator('[data-study-stage="apply"]').click()
+        self.page.wait_for_timeout(1400)
+        self.page.locator('[data-study-stage="apply"]').click()
+        self.assertGreater(self.page.locator('[data-study-stage="apply"] svg').evaluate('e=>e.getAnimations().length'), 0)
+        positions = self.page.evaluate("""() => {
+          const controls=document.querySelector('#study-controls');
+          const selected=controls.querySelector('[aria-pressed="true"]');
+          const ink=controls.querySelector('.about-selection-ink');
+          return {selected:selected.offsetLeft, transform:ink.style.transform, width:parseFloat(ink.style.width), expected:selected.offsetWidth};
+        }""")
+        self.assertEqual(positions['width'], positions['expected'])
+        self.assertTrue(positions['transform'].startswith(f"translate({positions['selected']}px,"), positions)
 
     def test_artwork_entry_waits_for_the_artwork_to_enter_the_viewport(self):
         self.open()
@@ -195,7 +246,7 @@ class AboutInteractionTests(unittest.TestCase):
         self.assertEqual(frame.evaluate('e=>e.getAnimations().length'), 0)
         frame.evaluate('e=>e.scrollIntoView({block:"center"})')
         self.page.wait_for_function("document.querySelector('.about-study-image-frame').getAnimations().some(a => a.effect.getTiming().duration >= 800)")
-        self.page.wait_for_timeout(1150)
+        self.page.wait_for_timeout(1450)
         self.assertEqual(frame.evaluate('e=>e.getAnimations().length'), 0)
         frame.evaluate('e=>e.scrollIntoView({block:"center"})')
         self.page.wait_for_timeout(100)

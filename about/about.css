@@ -23,7 +23,6 @@
 .about-page .about-topnav { margin-left:auto; display:flex; gap:24px; }
 .about-page .about-topnav a { display:flex; align-items:center; min-height:44px; color:var(--ink-2); font-size:.875rem; }
 .about-page .about-header-actions { display:flex; align-items:center; gap:10px; margin-left:auto; }
-.about-page #about-motion { display:flex; flex-shrink:0; }
 .about-page .about-button,.about-page .btn { display:inline-flex; align-items:center; justify-content:center; gap:12px; min-height:52px; padding:12px 22px; border:1px solid var(--edge); border-radius:10px; color:var(--ink); background:var(--card); font-size:1rem; font-weight:600; line-height:1.4; text-align:center; cursor:pointer; overflow-wrap:anywhere; }
 .about-page .about-button--primary { background:var(--grad-accent); border-color:transparent; color:var(--accent-ink); }
 .about-page .about-button--small { min-height:44px; padding:10px 15px; font-size:.875rem; }
@@ -183,10 +182,6 @@
 .about-page .about-engineering-detail summary { min-height:48px; padding:10px 4px; font-weight:600; line-height:1.5; cursor:pointer; }
 .about-page .about-engineering-detail summary::marker { color:var(--accent-text); }
 .about-page .about-engineering-detail p { margin-top:10px; padding-bottom:16px; color:var(--ink-2); }
-.about-page .about-motion-preference { flex-basis:100%; display:flex; align-items:center; justify-content:space-between; gap:20px; max-width:520px; padding-block:12px; }
-.about-page .about-motion-preference p { margin:0; color:var(--ink); font-weight:600; }
-.about-page .about-motion-preference span:not(.motion-control__label,.motion-control__icon) { color:var(--ink-2); font-size:.875rem; }
-.about-page .about-motion-preference .motion-control { display:flex; align-items:center; gap:10px; border-color:var(--edge); padding-inline:14px; }
 .about-page .about-link-arrow { display:inline-block; }
 @media(min-width:700px) {
   .about-page .about-study-step { display:flex; justify-content:center; gap:16px; min-height:66px; }
@@ -231,12 +226,10 @@
   .about-page .about-scene-light { display:none; }
 }
 @media print {
-  .about-page :is(.about-header-actions,.about-study-controls,.about-architecture-controls,.about-motion-preference) { display:none!important; }
+  .about-page :is(.about-header-actions,.about-study-controls,.about-architecture-controls) { display:none!important; }
 }
 /* Enlarged text can turn utility groups into multiple rows. */
 .about-page .about-corpus { flex-wrap:wrap; max-width:100%; }
-.about-page .about-motion-preference { flex-wrap:wrap; }
-.about-page .about-motion-preference > div:first-child { min-width:0; flex:1 1 180px; }
 
 /* v0.70: a phone-first editorial rhythm, with finite scene choreography. */
 .about-page .about-hero-trace { position:absolute; inset:8px 0 0; width:100%; height:100%; color:var(--accent); stroke:currentColor; stroke-width:1; opacity:.5; pointer-events:none; }
@@ -316,3 +309,95 @@
   .about-page :is(.about-hero-wide,.about-hero-phone) figcaption { display:none; }
 }
 .about-page .about-architecture-art g, .about-page :is(.about-study-step,.about-architecture-node,.about-feature-sign) > svg { transform-box:fill-box; transform-origin:center; }
+
+/* v0.71: chapters and illustration live inside one continuous composition. */
+.about-page .about-study-theatre,
+.about-page .about-architecture-board { position:relative; border:1px solid var(--hairline); border-radius:24px; background:var(--card); overflow:clip; }
+.about-page :is(.about-study-controls,.about-architecture-controls) { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; max-width:none; margin:0; padding:0; border-bottom:1px solid var(--hairline); }
+.about-page :is(.about-study-step,.about-architecture-node) { position:relative; min-width:0; min-height:76px; margin:0; padding:16px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px; border:0; border-radius:0; background:transparent; text-align:center; color:var(--ink-2); }
+.about-page :is(.about-study-step,.about-architecture-node) svg { display:block; width:23px; height:23px; flex-shrink:0; }
+.about-page .about-study-step > span:last-child { margin:0; font-size:.875rem; }
+.about-page .about-study-step .about-step-number { display:none; }
+.about-page :is(.about-study-step,.about-architecture-node)[aria-pressed="true"] { border:0; background:var(--accent-tint); color:var(--accent-text); }
+.about-page .about-study-step[aria-pressed="true"]::after { content:none; }
+.about-page .about-selection-ink { position:absolute; inset:0 auto auto 0; display:block; height:3px; border-radius:3px; background:var(--accent); pointer-events:none; }
+.about-page .about-study-scene { gap:0; align-items:center; }
+.about-page .about-study-art { padding:24px 22px 0; }
+.about-page .about-study-image-frame { width:100%; max-width:360px; aspect-ratio:1.06; border:1px solid var(--hairline); border-top:2px solid var(--story-color); border-radius:14px; box-shadow:0 12px 34px #00000018; }
+.about-page .about-study-art figcaption { font-size:.75rem; margin-top:12px; }
+.about-page .about-study-copy { padding:26px 24px 28px; }
+.about-page .about-study-copy #study-title { font-size:clamp(1.5rem,3.2vw,2.1rem); line-height:1.25; margin-top:8px; }
+.about-page #study-description { margin-top:16px; }
+.about-page #study-action { margin-top:18px; }
+.about-page .about-architecture-node { gap:8px; }
+.about-page .about-architecture-name { font-size:.875rem; }
+.about-page .about-architecture-subtitle { display:none; }
+.about-page .about-architecture-panel { padding:28px 24px; background:transparent; border-radius:0; }
+.about-page .about-architecture-art { width:min(100%,290px); margin-bottom:24px; }
+.about-page .about-architecture-art rect { fill:var(--page); }
+.about-page .about-architecture-art [data-active="true"] rect { fill:var(--accent-tint); }
+.about-page .about-text-link { text-decoration:none; gap:10px; }
+.about-page .about-text-link::after { content:none; }
+.about-page .about-text-link .about-link-arrow,
+.about-page .about-actions .about-text-link > span { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:var(--accent-tint); color:var(--accent-text); text-decoration:none; }
+.about-page .about-motion-settings { flex-basis:100%; }
+.about-page .about-motion-settings .about-text-link { min-height:44px; color:var(--accent-text); text-decoration:underline; text-underline-offset:4px; }
+.about-page .about-study-controls:focus-within,
+.about-page .about-architecture-controls:focus-within { z-index:1; }
+.about-page :is(.about-study-step,.about-architecture-node):focus-visible { outline-offset:-5px; border-radius:10px; }
+.about-page .about-feature-grid { column-gap:32px; }
+.about-page .about-feature-detail > summary { min-height:94px; padding-block:20px; }
+.about-page .about-feature-toggle { top:36px; }
+.about-page .about-feature-detail h3 { margin-top:8px; }
+.about-page :is(.about-engineering-detail,.about-faq details)::details-content { overflow:clip; }
+@media(min-width:700px) {
+  .about-page :is(.about-study-step,.about-architecture-node) { flex-direction:row; min-height:76px; gap:14px; padding:18px; }
+  .about-page .about-study-step > span:last-child,
+  .about-page .about-architecture-name { font-size:1rem; }
+  .about-page .about-study-art { padding:30px 30px 0; }
+  .about-page .about-study-image-frame { max-width:none; aspect-ratio:1440/1000; }
+  .about-page .about-study-copy { padding:32px; }
+  .about-page .about-architecture-panel { padding:32px; }
+  .about-page .about-architecture-art { margin:0; }
+}
+@media(min-width:1100px) {
+  .about-page .about-study-scene { grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr); }
+  .about-page .about-study-art { padding:32px 32px 32px 12px; }
+  .about-page .about-study-copy { padding:38px; }
+  .about-page .about-architecture-panel { gap:44px; padding:40px; }
+}
+@media(max-width:359px) {
+  .about-page .about-study-theatre,
+  .about-page .about-architecture-board { border-radius:18px; }
+  .about-page :is(.about-study-step,.about-architecture-node) { padding-inline:6px; }
+  .about-page .about-study-art { padding:20px 16px 0; }
+  .about-page .about-study-copy,
+  .about-page .about-architecture-panel { padding:22px 18px; }
+  .about-page .about-architecture-name { font-size:.8125rem; }
+}
+@media(prefers-reduced-motion:no-preference) {
+  .about-page[data-motion="on"] .about-selection-ink { transition:transform 620ms cubic-bezier(.22,1,.36,1),width 620ms cubic-bezier(.22,1,.36,1); }
+  .about-page[data-motion="on"] :is(.about-study-step,.about-architecture-node):active { transform:none; }
+  .about-page[data-motion="on"] :is(.about-study-step,.about-architecture-node) { transition:background-color 420ms ease,color 420ms ease; }
+  .about-page[data-motion="on"] .about-feature-sign svg { transition:color 360ms ease; }
+  @supports (interpolate-size:allow-keywords) {
+    .about-page[data-motion="on"] details { interpolate-size:allow-keywords; }
+    .about-page[data-motion="on"] details::details-content { height:0; overflow:clip; transition:height 480ms cubic-bezier(.22,1,.36,1),content-visibility 480ms allow-discrete; }
+    .about-page[data-motion="on"] details[open]::details-content { height:auto; }
+  }
+}
+@media(hover:hover) and (pointer:fine) {
+  .about-page :is(.about-study-step,.about-architecture-node):not([aria-pressed="true"]):hover { background:var(--raised); }
+  .about-page .about-text-link:hover { text-decoration:none; }
+  .about-page .about-motion-settings .about-text-link:hover { text-decoration:underline; }
+}
+@media(forced-colors:active) {
+  .about-page :is(.about-study-theatre,.about-architecture-board) { border-color:CanvasText; }
+  .about-page .about-selection-ink { background:Highlight; }
+  .about-page :is(.about-study-step,.about-architecture-node)[aria-pressed="true"] { outline:2px solid Highlight; outline-offset:-5px; }
+}
+/* At enlarged text the masthead wraps into two complete rows; the launch
+   action must never collapse into a column of single characters. */
+.about-page .about-masthead { flex-wrap:wrap; padding-block:12px; }
+.about-page .about-header-actions { flex-shrink:0; }
+.about-page .about-header-actions .about-button--small { white-space:nowrap; }

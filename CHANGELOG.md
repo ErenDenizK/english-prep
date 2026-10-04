@@ -5,6 +5,14 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.71 — 2026-10-04
+
+- Görünürlük ve font/görsel hazırlığına bağlı animasyon başlangıcı; tanıtım çizimlerinde yumuşak 1,1 saniyelik akış, kesilebilir sahne geçişleri ve bütünleşik seçim rayları.
+- About ve onboarding tek çalışma sahneleri olarak düzenlendi. Gerçek ekran görüntüleri telefonda 3×, geniş ekranda 2× çözünürlükle yenilendi. Hareket tercihi yalnızca Profil ayarlarında.
+- Ölçülmüş Sakura/iris/kayısı katmanlarında daha belirgin aura hareketi ve yerel renk geçişleri; azaltılmış hareket ve gizli sekme duraklatması korunur.
+- Ekran merkezine sabitlenmiş mobil başlıklar, daha dengeli test sonucu ve uygulamaya özel sınırlı kaydırma rayı. Geniş alanda sürükleme/klavye ve bölüm durakları; telefonda içeriği örtmeyen ince konum göstergesi.
+- Materyal, puanlama ve korunmuş sürümler değişmedi. [ADR 010](docs/adr/010-living-scenes-and-navigation.md).
+
 ## v0.70 — 2026-10-04
 
 - İki tempolu hareket dili: hızlı dokunma/menü tepkileri; onboarding, Profil ve gerçek ders/test bitişleri için daha uzun, sıralı çizim ve yerleşme animasyonları. Veri, odak ve eylemler animasyon beklemez.

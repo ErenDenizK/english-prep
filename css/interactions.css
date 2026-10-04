@@ -1,15 +1,9 @@
 /* Interaction presentation · ADR 009. Input, focus and state always commit now.
    Finite event effects live in js/interactions.js; CSS owns ordinary controls. */
+:root { --d-flow: 1100ms; }
 .brand-mark--responsive .brand-mark__letters--full { display: none; }
 .brand-mark--full { font-size: 1.75rem; letter-spacing: -.055em; }
 .brand-mark__dot { transition: color var(--d-control) var(--ease-standard); }
-.motion-footer {
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
-  gap: 8px 16px; max-width: var(--w-page); margin: 0 auto;
-  padding: 0 var(--gutter) 20px; color: var(--ink-2);
-}
-.motion-footer .motion-control { min-height: 44px; font-size: .875rem; font-weight: 500; padding-inline: 12px; }
-.motion-footer .motion-control__icon .icon { width: 16px; height: 16px; }
 /* Each cue identifies a useful affordance; none changes a control's layout. */
 .btn, .choice, .listbox__trigger, .switch {
   transition: background-color var(--d-reveal) var(--ease-standard),
@@ -114,7 +108,7 @@
 :root[data-motion="off"] :not(.ambient__field),
 :root[data-motion="off"] *::before,
 :root[data-motion="off"] *::after { animation: none !important; transition: none !important; }
-@media print { .motion-footer { display: none; } }
+
 .settings-link__icon { display: inline-flex; flex: 0 0 20px; color: var(--secondary); }
 /* Line/track updates remain local and do not move adjacent text. */
 .bar__progress .progress__fill { transition: width var(--d-control) linear; }

@@ -194,10 +194,45 @@ test("finite presentation responds safely to interruption and input changes", as
     assert.deepEqual(ui.animateSequence([null, {}, { element: detached, kind: "draw" }]), []);
   });
 
+  await t.test("arrival waits for readiness and paint, and pending scenes remain cancellable", async () => {
+    const node = env.element();
+    let resolveReady;
+    let calls = 0;
+    const ready = new Promise((resolve) => { resolveReady = resolve; });
+    ui.whenVisible(node, () => { calls++; }, { ready });
+    env.flush(); env.flush();
+    assert.equal(calls, 0, "slow assets do not consume an arrival");
+    resolveReady();
+    await new Promise((resolve) => setImmediate(resolve));
+    env.flush();
+    assert.equal(calls, 0, "first painted frame stays readable");
+    env.flush();
+    assert.equal(calls, 1);
+    env.flush();
+    assert.equal(calls, 1, "no recurring frame or replay");
+
+    for (const stop of [
+      () => ui.cancelAnimationsWithin(node),
+      () => env.document.dispatchEvent({ type: "pointerdown", target: node }),
+      () => motion.setMotionEnabled(false),
+      () => env.hide(true),
+    ]) {
+      let readyNow;
+      ui.whenVisible(node, () => { calls++; }, { ready: new Promise((r) => { readyNow = r; }) });
+      stop();
+      readyNow();
+      await new Promise((resolve) => setImmediate(resolve));
+      env.flush(); env.flush();
+      motion.setMotionEnabled(true); env.hide(false);
+      assert.equal(calls, 1, "cancelled pending scenes cannot return later");
+    }
+    assert.equal(env.frames.size, 0);
+  });
+
   await t.test("spatial cues and progress use distinct bounded roles with static endings", () => {
     const kinds = { control: 100, reveal: 220, menu: 220, dialog: 360, route: 360,
       mark: 360, onboard: 560, scene: 560, rule: 560, complete: 720, draw: 720,
-      progress: 720, story: 900 };
+      progress: 720, story: 900, flow: 1100, trace: 1100 };
     for (const [kind, duration] of Object.entries(kinds)) {
       const node = env.element();
       const animation = ui.animateElement(node, kind);

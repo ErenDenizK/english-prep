@@ -39,7 +39,7 @@ import { icon } from "./icons.js";
 import { avatar } from "./widgets.js";
 import { progressMetric } from "./progress.js";
 import { createMotionControl } from "./motion.js";
-import { animateElement, animateSequence, cancelAnimationsWithin } from "./interactions.js";
+import { animateElement, animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 import { announce } from "./shell.js";
 import { createInstallControl } from "./install.js";
 
@@ -117,7 +117,12 @@ function renderIdentity() {
   input.autocomplete = "off";
   input.placeholder = "İsteğe bağlı";
   input.addEventListener("change", () => {
-    setProfileName(input.value.trim());
+    const nextName = input.value.trim();
+    // Replacing a focused, edited input can emit its pending native change.
+    // A value already committed by this handler must not schedule a second
+    // full render and detach the field just restored for keyboard input.
+    if (nextName === getProfileName()) return;
+    setProfileName(nextName);
     // The header shows the learner's initial; tell it to catch up without
     // the two modules having to import each other.
     document.dispatchEvent(new CustomEvent("profile:namechange"));
@@ -575,7 +580,8 @@ function presentProfile() {
   // reading, a field edit, or a settings action.
   const identity = container.querySelector('[data-profile-part="identity"] .avatar');
   if (identity) entries.push({ element: identity, kind: "complete", at: 60 });
-  animateSequence(entries, { channel: "profile-arrival" });
+  whenVisible(entries[0]?.element ?? container, () => animateSequence(entries, { channel: "profile-arrival" }),
+    { channel: "profile-arrival", threshold: 0 });
 }
 
 async function render({ enter = false } = {}) {

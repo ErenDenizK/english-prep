@@ -1,0 +1,105 @@
+/* The rail is a progressive enhancement. Native scroll behavior remains the
+   source of truth, and forced-colors restores the browser's own scrollbar. */
+[data-scroll-rail-enhanced] { scrollbar-width: none; }
+[data-scroll-rail-enhanced]::-webkit-scrollbar { display: none; }
+.scroll-rail {
+  position: fixed;
+  z-index: 8;
+  top: var(--rail-top, 25vh);
+  right: var(--rail-right, 2px);
+  width: 44px;
+  height: var(--rail-height, 240px);
+  pointer-events: none;
+  color: var(--accent-text);
+  contain: layout style;
+}
+.scroll-rail[hidden] { display: none; }
+.scroll-rail__control {
+  position: relative;
+  width: 44px;
+  height: 100%;
+  border-radius: 22px;
+  outline: none;
+}
+.scroll-rail[data-interactive="true"] .scroll-rail__control {
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+}
+.scroll-rail__track {
+  position: absolute;
+  inset: 0 auto 0 21px;
+  width: 2px;
+  border-radius: 8px;
+  background: var(--ink-2);
+}
+.scroll-rail__thumb {
+  position: absolute;
+  top: 0;
+  left: 19px;
+  width: 6px;
+  min-height: 28px;
+  border-radius: 8px;
+  background: var(--accent-text);
+  background: linear-gradient(180deg in srgb, var(--accent-text), var(--secondary));
+  transform-origin: center;
+  transition: width 240ms var(--ease-standard), left 240ms var(--ease-standard), box-shadow 240ms var(--ease-standard);
+  /* Position tracks the finger/scroll event exactly; it never eases behind. */
+}
+.scroll-rail__marks { position: absolute; inset: 0; }
+.scroll-rail__mark {
+  position: absolute;
+  left: 19px;
+  width: 6px;
+  height: 6px;
+  border: 2px solid var(--ink-2);
+  border-radius: 50%;
+  background: var(--page);
+  transform: translateY(-50%);
+  transition: background-color 240ms var(--ease-standard), border-color 240ms var(--ease-standard), scale 320ms var(--ease-standard);
+}
+.scroll-rail__mark[data-current="true"] { background: var(--accent-text); border-color: var(--accent-text); scale: 1.35; }
+.scroll-rail__caption {
+  position: absolute;
+  top: 50%;
+  right: 50px;
+  width: max-content;
+  max-width: min(220px, 50vw);
+  padding: 10px 12px;
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: 500 .8125rem/1.5 var(--f-sans);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(4px, -50%);
+  transition: opacity 180ms var(--ease-standard), transform 240ms var(--ease-standard), visibility 180ms;
+}
+.scroll-rail[data-interactive="true"]:is(:hover, :focus-within, [data-dragging="true"]) .scroll-rail__caption {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, -50%);
+  pointer-events: auto;
+}
+.scroll-rail[data-caption-dismissed="true"] .scroll-rail__caption { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+.scroll-rail[data-scrolling="true"] .scroll-rail__thumb,
+.scroll-rail[data-interactive="true"]:is(:hover, :focus-within) .scroll-rail__thumb { width: 8px; left: 18px; }
+.scroll-rail[data-dragging="true"] .scroll-rail__control { cursor: grabbing; }
+.scroll-rail__control:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; background: var(--page); }
+.scroll-rail[data-interactive="false"] { width: 6px; }
+.scroll-rail[data-interactive="false"] .scroll-rail__control { width: 6px; }
+.scroll-rail[data-interactive="false"] .scroll-rail__track { left: 2px; width: 1px; }
+.scroll-rail[data-interactive="false"] .scroll-rail__thumb { left: 1px; width: 3px; }
+.scroll-rail[data-interactive="false"] .scroll-rail__mark { left: 0; width: 5px; height: 5px; border-width: 1px; }
+.scroll-rail[data-interactive="false"] .scroll-rail__caption { display: none; }
+:root[data-motion="off"] .scroll-rail *,
+:root[data-page-visible="false"] .scroll-rail * { animation: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .scroll-rail * { animation: none !important; transition: none !important; }
+}
+@media (forced-colors: active) {
+  html, .shell__scroll, [data-scroll-rail-enhanced] { scrollbar-width: auto; scrollbar-color: auto; }
+  .shell__scroll::-webkit-scrollbar, [data-scroll-rail-enhanced]::-webkit-scrollbar { display: block; width: auto; }
+  .scroll-rail { display: none; }
+}

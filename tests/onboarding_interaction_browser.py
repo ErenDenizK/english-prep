@@ -60,6 +60,12 @@ class OnboardingInteractionTests(unittest.TestCase):
               delay:a.effect.getTiming().delay, iterations:a.effect.getTiming().iterations}))
         ''')
 
+    def wait_for_art_motion(self):
+        self.page.wait_for_function("""() => {
+          const root = document.querySelector('.onboard-flow__scene');
+          return root && root.getAnimations({subtree:true}).some(a => a.playState === 'running');
+        }""")
+
     def test_scenes_keep_action_geometry_stable_at_mobile_and_desktop_widths(self):
         self.page.emulate_media(reduced_motion='reduce')
         for width, height in [(320, 568), (390, 844), (768, 1024), (1440, 900)]:
@@ -103,9 +109,10 @@ class OnboardingInteractionTests(unittest.TestCase):
         self.open_tour()
         self.page.locator('.onboard-flow__choice').nth(1).click()
         expect(self.page.locator('.onboard-flow')).to_have_attribute('data-scene', 'article')
+        self.wait_for_art_motion()
         self.assertTrue(self.decorative_animations())
         for animation in self.decorative_animations():
-            self.assertLessEqual(animation['duration'] + animation['delay'], 900)
+            self.assertLessEqual(animation['duration'] + animation['delay'], 1280)
             self.assertEqual(animation['iterations'], 1)
         self.page.locator('.onboard-flow__choices').evaluate('''group => {
           const choices = group.querySelectorAll('button');
@@ -124,6 +131,7 @@ class OnboardingInteractionTests(unittest.TestCase):
 
     def test_initial_entry_has_articulated_motion_and_page_navigation_interrupts_it(self):
         self.open_tour()
+        self.wait_for_art_motion()
         animations = self.decorative_animations()
         self.assertGreaterEqual(len(animations), 4)
         self.assertGreaterEqual(max(a['duration'] + a['delay'] for a in animations), 700)
@@ -135,6 +143,7 @@ class OnboardingInteractionTests(unittest.TestCase):
         expect(self.page.locator('#onboard-step-title')).to_have_text('Cevabı seç. Nedenini öğren.')
         expect(self.page.locator('#onboard-step-title')).to_be_focused()
         self.assertTrue(self.page.evaluate('previousOnboardAnimations.every(a => a.playState === "idle")'))
+        self.wait_for_art_motion()
         self.assertTrue(self.decorative_animations())
         # Immediate back must reverse the new presentation, not enqueue work.
         self.page.locator('.onboard__actions .btn--quiet').evaluate('(button) => button.click()')
@@ -147,6 +156,7 @@ class OnboardingInteractionTests(unittest.TestCase):
         for step in range(2):
             for scene in range(3):
                 self.page.locator('.onboard-flow__choice').nth(scene).evaluate('(button) => button.click()')
+                self.wait_for_art_motion()
                 # Await the actual finite effects, including delayed group entries.
                 self.page.locator('.onboard-flow__scene').evaluate('''async root => {
                   await Promise.allSettled(root.getAnimations({subtree:true}).map(a => a.finished));
@@ -162,6 +172,41 @@ class OnboardingInteractionTests(unittest.TestCase):
         expect(self.page.locator('#onboard-name')).to_have_value('Deniz')
         self.page.get_by_role('button', name='Uygulamayı aç', exact=True).click()
         expect(self.page.locator('#index-filter')).to_be_visible()
+
+    def test_slow_font_readiness_does_not_consume_the_illustration(self):
+        self.page.add_init_script("""(() => {
+          const load = document.fonts.load.bind(document.fonts);
+          const ready = new Promise(resolve => { window.releaseTourFonts = resolve; });
+          document.fonts.load = (...args) => Promise.all([load(...args), ready]).then(result => result[0]);
+        })();""")
+        self.open_tour()
+        self.page.wait_for_timeout(1300)
+        self.assertEqual(self.decorative_animations(), [])
+        expect(self.page.get_by_role('button', name='Testi tanı', exact=True)).to_be_enabled()
+        self.page.evaluate('window.releaseTourFonts()')
+        self.wait_for_art_motion()
+        effects = self.decorative_animations()
+        self.assertTrue(any(effect['duration'] >= 1000 for effect in effects), effects)
+        self.page.get_by_role('button', name='Tanıtımı geç', exact=True).click()
+        expect(self.page.locator('#index-filter')).to_be_visible()
+
+    def test_repeated_selection_replays_only_art_and_preserves_focus_and_caption(self):
+        self.open_tour()
+        control = self.page.get_by_role('button', name='Ders', exact=True)
+        control.focus()
+        control.press('Enter')
+        self.wait_for_art_motion()
+        self.page.locator('.onboard-flow__scene').evaluate("""async root => {
+          await Promise.allSettled(root.getAnimations({subtree:true}).map(a => a.finished));
+        }""")
+        caption = self.page.locator('.onboard-flow__caption').inner_text()
+        control.press('Enter')
+        self.wait_for_art_motion()
+        expect(control).to_be_focused()
+        expect(control).to_have_attribute('aria-pressed', 'true')
+        expect(self.page.locator('.onboard-flow__caption')).to_have_text(caption)
+        expect(self.page.locator('.onboard-flow__drawing')).to_have_count(1)
+        expect(self.page.locator('#onboard-container [data-motion-control]')).to_have_count(0)
 
     def test_system_reduction_and_stored_off_keep_scenes_and_brand_static(self):
         for preference in ['system', 'stored']:

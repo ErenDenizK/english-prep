@@ -2851,6 +2851,10 @@ async function runChrome(browser) {
   });
   await lively.locator('.nav__item[href="#test"]').click();
   await lively.waitForSelector("#test-panel .surface");
+  // Content commits before v0.71's font/visibility/two-frame presentation gate.
+  // Observe the actual effect instead of sampling the earlier DOM commit.
+  await lively.waitForFunction(() => window.__routeMotion.some((effect) =>
+    effect.visible && effect.duration > 0 && effect.duration <= 1000));
   ok(
     await lively.evaluate(() => window.__routeMotion.some((effect) => effect.visible && effect.duration > 0 && effect.duration <= 1000)),
     "hareket serbestken yeni ekran görünür, süreli bir kompozisyonla geliyor"

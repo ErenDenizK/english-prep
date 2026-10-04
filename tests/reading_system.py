@@ -345,7 +345,7 @@ class ReadingSystemTests(unittest.TestCase):
         self.assertTrue(self.page.locator('.ambient__field').evaluate_all('''nodes =>
           nodes.every(node => node.getAnimations().some(animation =>
             animation.effect.getTiming().iterations === Infinity &&
-            animation.effect.getTiming().duration >= 28000 && animation.playState === 'running'))
+            animation.effect.getTiming().duration >= 16000 && animation.playState === 'running'))
         '''))
 
     def test_ambient_motion_is_available_across_routes_and_pauses_persistently(self):
@@ -360,7 +360,7 @@ class ReadingSystemTests(unittest.TestCase):
             self.assertTrue(self.page.evaluate('document.querySelector(".ambient") === window.__ambientOnArrival'))
             self.assert_ambient_running()
             expect(self.page.locator('#shell-header [data-motion-control]')).to_have_count(0)
-            expect(self.page.locator('.motion-footer [data-motion-control]')).to_have_count(1)
+            expect(self.page.locator('.motion-footer [data-motion-control]')).to_have_count(0)
         # Foreground answer cards remain opaque even though the canvas has aura.
         self.open_tenant_question()
         self.assert_ambient_running()
@@ -373,10 +373,12 @@ class ReadingSystemTests(unittest.TestCase):
           return context.getImageData(0, 0, 1, 1).data[3] === 255;
         })'''))
         expect(self.page.locator('#shell-header [data-motion-control]')).to_have_count(0)
-        control = self.page.locator('.motion-footer [data-motion-control]')
+        expect(self.page.locator('[data-motion-control]')).to_have_count(0)
+        question = self.page.locator('#question-stem').inner_text()
+        self.page.goto(BASE + '/index.html#profil')
+        control = self.page.locator('#profile-container [data-motion-control]')
         control.scroll_into_view_if_needed()
         expect(control).to_have_attribute('aria-pressed', 'true')
-        question = self.page.locator('#question-stem').inner_text()
         route = self.page.url
         session = self.page.evaluate('sessionStorage.getItem("englishPrep.activeQuiz")')
         scroll = self.page.locator('#shell-scroll').evaluate('node => node.scrollTop')
@@ -384,28 +386,29 @@ class ReadingSystemTests(unittest.TestCase):
         expect(control).to_have_attribute('aria-pressed', 'false')
         expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
         self.assertEqual(self.page.evaluate('localStorage.getItem("englishPrep.motion")'), 'off')
-        expect(self.page.locator('#question-stem')).to_have_text(question)
         self.assertEqual(self.page.url, route)
         self.assertEqual(self.page.evaluate('sessionStorage.getItem("englishPrep.activeQuiz")'), session)
         self.assertEqual(self.page.locator('#shell-scroll').evaluate('node => node.scrollTop'), scroll)
         self.assertFalse(self.page.locator('.ambient__field').evaluate_all('''nodes =>
           nodes.some(node => node.getAnimations().some(animation => animation.playState === 'running'))
         '''))
+        self.page.goto(BASE + '/quiz.html')
+        expect(self.page.locator('#question-stem')).to_have_text(question)
         self.page.reload()
         expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
         self.page.goto(BASE + '/index.html#profil')
         expect(self.page.locator('#shell-header [data-motion-control]')).to_have_count(0)
         controls = self.page.locator('[data-motion-control]')
-        expect(controls).to_have_count(2)
-        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-pressed"))'), ['false', 'false'])
+        expect(controls).to_have_count(1)
+        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-pressed"))'), ['false'])
         self.page.locator('#profile-container [data-motion-control]').click()
-        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-pressed"))'), ['true', 'true'])
+        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-pressed"))'), ['true'])
         self.assert_ambient_running()
         # The OS setting wins without erasing the learner's own preference.
         self.page.emulate_media(reduced_motion='reduce')
         expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
         self.assertEqual(self.page.evaluate('localStorage.getItem("englishPrep.motion")'), 'on')
-        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-disabled"))'), ['true', 'true'])
+        self.assertEqual(controls.evaluate_all('nodes => nodes.map(node => node.getAttribute("aria-disabled"))'), ['true'])
         self.assertFalse(self.page.locator('.ambient__field').evaluate_all('''nodes =>
           nodes.some(node => node.getAnimations().some(animation => animation.playState === 'running'))
         '''))

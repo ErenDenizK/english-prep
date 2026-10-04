@@ -1,0 +1,44 @@
+/* v0.71 · stable chrome and a single result composition.
+   Equal outer tracks keep the screen title on the viewport's centre line,
+   even when a back action replaces the brand or the trailing slot is empty. */
+.bar__inner {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+}
+.bar__lead, .bar__trail { max-width: 100%; }
+.bar__title { width: 100%; line-height: 1.5; }
+.bar__lead .brand-mark { flex-shrink: 0; }
+
+@media (max-width: 767px) {
+  .bar__inner { grid-template-columns: 3.5rem minmax(0, 1fr) 3.5rem; gap: 8px; }
+  .bar__back-label {
+    position: absolute; width: 1px; height: 1px; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+  .bar__lead > .btn { min-width: 44px; min-height: 44px; padding: 0; margin: 0; }
+  .bar__lead .brand-mark--responsive { font-size: 1.75rem; }
+  .bar__trail .t-meta { font-size: .875rem; }
+}
+
+/* The identity, figure and next reading step form one summary. The large
+   number stays neutral: a zero is useful information, not a pink reward. */
+.score { gap: 20px; padding-block: 4px 24px; }
+.score__eyebrow { justify-content: flex-start; gap: 14px; }
+.score__identity { display: grid; gap: 4px; min-width: 0; }
+.score__status { font-size: .8125rem; line-height: 1.5; font-weight: 500; color: var(--ink-2); }
+.score__mode { font-size: 1rem; line-height: 1.5; font-weight: 600; color: var(--ink); }
+.score__signature {
+  width: 56px; height: 56px; flex: 0 0 56px;
+  color: var(--secondary);
+}
+.score__signature [data-completion-stroke="page"] { color: var(--ink-2); }
+.score__signature [data-completion-stroke="finish"] { color: var(--accent-text); }
+.score[data-outcome="confirmed"] .score__signature [data-completion-stroke="finish"] { color: var(--ok); }
+.score__metric { gap: 12px; }
+.score__metric .metric__head { align-items: center; gap: 8px 16px; }
+.score__metric .metric__label { font-size: .875rem; line-height: 1.6; }
+.score__metric .metric__value { font-size: 2rem; line-height: 1.2; letter-spacing: -.035em; color: var(--ink); }
+.score__metric .metric__track { height: 6px; }
+.score__verdict { margin-top: -4px; font-size: 1rem; line-height: 1.65; font-weight: 500; }
+@media (forced-colors: active) {
+  .score__signature, .score__signature [data-completion-stroke] { color: CanvasText; }
+}
