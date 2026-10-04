@@ -46,6 +46,7 @@ class ScrollRailTests(unittest.TestCase):
           window.__rail=initScrollRail();
         }''', BASE)
         self.page.wait_for_function("document.querySelector('.scroll-rail')?.dataset.mode")
+        self.page.evaluate("() => document.fonts.ready.then(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))))")
 
     def scroll_top(self):
         return self.page.evaluate("(document.querySelector('#shell-scroll') || document.scrollingElement).scrollTop")
@@ -82,6 +83,7 @@ class ScrollRailTests(unittest.TestCase):
         bar = self.control()
         bar.press('PageDown')
         self.page.wait_for_function("document.querySelector('#shell-scroll').scrollTop > 500")
+        expect(bar).not_to_have_attribute('aria-valuenow', '0')
         original = self.scroll_top()
         thumb = self.page.locator('.scroll-rail__thumb').bounding_box()
         x, y = thumb['x'] + thumb['width'] / 2, thumb['y'] + thumb['height'] / 2
@@ -114,30 +116,41 @@ class ScrollRailTests(unittest.TestCase):
         self.page.wait_for_function("Number(document.querySelector('[role=scrollbar]').getAttribute('aria-valuenow')) > 60")
         self.assertEqual(self.page.url, original_url)
 
-    def test_narrow_layout_is_passive_preserves_content_width_and_tracks_touch_scroll(self):
+    def test_compact_target_is_44px_but_resting_visual_stays_in_outer_gutter(self):
         for width in (320, 390, 640):
             with self.subTest(width=width):
                 self.page.set_viewport_size({'width': width, 'height': 844})
                 self.visit()
-                expect(self.page.locator('.scroll-rail')).to_have_attribute('data-interactive', 'false')
-                self.assertEqual(self.page.get_by_role('scrollbar').count(), 0)
+                rail = self.page.locator('.scroll-rail')
+                expect(rail).to_have_attribute('data-interactive', 'true')
+                expect(rail).to_have_attribute('data-compact', 'true')
+                expect(self.control()).to_be_visible()
                 values = self.page.evaluate('''() => {
                   const rail=document.querySelector('.scroll-rail');
+                  const control=rail.querySelector('.scroll-rail__control');
+                  const thumb=rail.querySelector('.scroll-rail__thumb');
+                  const grip=rail.querySelector('.scroll-rail__grip');
                   const scroller=document.querySelector('#shell-scroll');
-                  const page=scroller.querySelector('.page');
-                  return {width:page.getBoundingClientRect().width,rail:rail.getBoundingClientRect().width,
-                    pointer:getComputedStyle(rail).pointerEvents,overflow:document.documentElement.scrollWidth,
-                    viewport:innerWidth};
+                  return {width:scroller.querySelector('.page').getBoundingClientRect().width,
+                    gripWidth:thumb.getBoundingClientRect().width,gripHeight:thumb.getBoundingClientRect().height,
+                    visual:grip.getBoundingClientRect().toJSON(),track:rail.querySelector('.scroll-rail__track').getBoundingClientRect().toJSON(),
+                    surface:getComputedStyle(thumb).backgroundColor,shadow:getComputedStyle(grip).boxShadow,controlPointer:getComputedStyle(control).pointerEvents,
+                    thumbPointer:getComputedStyle(thumb).pointerEvents,overflow:document.documentElement.scrollWidth,
+                    viewport:innerWidth,right:innerWidth-rail.getBoundingClientRect().right};
                 }''')
-                self.assertLessEqual(values['rail'], 6)
-                self.assertEqual(values['pointer'], 'none')
+                self.assertEqual(values['gripWidth'], 44)
+                self.assertEqual(values['gripHeight'], 44)
+                self.assertEqual(values['surface'], 'rgba(0, 0, 0, 0)')
+                self.assertLessEqual(values['visual']['width'], 12)
+                self.assertGreaterEqual(values['visual']['left'], width - 16)
+                self.assertGreaterEqual(values['track']['left'], width - 16)
+                self.assertEqual(values['shadow'], 'none')
+                self.assertEqual(values['controlPointer'], 'none')
+                self.assertEqual(values['thumbPointer'], 'auto')
+                self.assertGreaterEqual(values['right'], 8)
                 self.assertGreaterEqual(values['width'], min(width, 640) - 1)
                 self.assertLessEqual(values['overflow'], values['viewport'])
-                self.page.evaluate("document.querySelector('#shell-scroll').scrollTo({top:0,behavior:'instant'})")
-                self.page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
-                before = self.page.locator('.scroll-rail__thumb').evaluate('(el)=>getComputedStyle(el).transform')
-                self.page.evaluate("document.querySelector('#shell-scroll').scrollTop=450")
-                self.page.wait_for_function("before => getComputedStyle(document.querySelector('.scroll-rail__thumb')).transform !== before", arg=before)
+                self.assertEqual(self.page.locator('.scroll-rail__caption').count(), 0)
 
     def test_reduce_off_and_forced_colors_keep_scrolling_and_restore_native_fallback(self):
         self.visit()
@@ -156,45 +169,137 @@ class ScrollRailTests(unittest.TestCase):
         expect(self.page.locator('.scroll-rail')).not_to_be_visible()
         self.assertEqual(self.page.locator('#shell-scroll').evaluate('(el)=>getComputedStyle(el).scrollbarWidth'), 'auto')
 
-    def test_coarse_pointer_uses_native_swipe_and_remains_passive_on_a_tablet(self):
+    def test_touch_grab_deforms_releases_and_keeps_native_swipe_elsewhere(self):
         touch = self.browser.new_context(viewport={'width': 390, 'height': 844},
                                          is_mobile=True, has_touch=True, service_workers='block')
         page = touch.new_page()
         try:
             page.goto(BASE + '/' + LESSON)
             expect(page.locator('.lesson')).to_be_visible()
-            expect(page.locator('.scroll-rail')).to_have_attribute('data-interactive', 'false')
+            rail = page.locator('.scroll-rail')
+            expect(rail).to_have_attribute('data-compact', 'true')
             client = touch.new_cdp_session(page)
             client.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': 160, 'y': 700}]})
             for y in (640, 580, 520, 460, 400):
                 client.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [{'x': 160, 'y': y}]})
             client.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
             page.wait_for_function("document.querySelector('#shell-scroll').scrollTop > 100")
-            self.assertEqual(page.get_by_role('scrollbar').count(), 0)
-            page.set_viewport_size({'width': 1024, 'height': 844})
-            expect(page.locator('.scroll-rail')).to_have_attribute('data-interactive', 'false')
-            self.assertEqual(page.get_by_role('scrollbar').count(), 0)
+            page.evaluate("document.querySelector('#shell-scroll').scrollTo({top:400,behavior:'instant'})")
+            page.wait_for_timeout(300)
+            before = page.evaluate("document.querySelector('#shell-scroll').scrollTop")
+            box = page.locator('.scroll-rail__thumb').bounding_box()
+            x, y = box['x'] + 22, box['y'] + 22
+            client.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': x, 'y': y}]})
+            expect(rail).to_have_attribute('data-expanded', 'true')
+            expect(rail).to_have_attribute('data-pressed', 'true')
+            for dy in (10, 20, 35):
+                client.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [{'x': x - 8, 'y': y + dy}]})
+            expect(rail).to_have_attribute('data-dragging', 'true')
+            self.assertGreater(page.evaluate("document.querySelector('#shell-scroll').scrollTop"), before + 100)
+            client.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
+            expect(rail).to_have_attribute('data-phase', 'release')
+            self.assertIsNone(rail.get_attribute('data-dragging'))
+            page.touchscreen.tap(160, 200)
+            expect(rail).to_have_attribute('data-expanded', 'false')
         finally:
             touch.close()
 
-    def test_about_landmarks_resize_caption_dismissal_and_destroy_cleanup(self):
+    def test_touch_tap_opens_and_landmark_or_empty_track_have_distinct_feedback(self):
+        self.page.set_viewport_size({'width': 390, 'height': 844})
+        self.visit()
+        rail = self.page.locator('.scroll-rail')
+        self.page.locator('.scroll-rail__thumb').click()
+        expect(rail).to_have_attribute('data-expanded', 'true')
+        self.page.wait_for_function("document.querySelector('.scroll-rail__grip').getBoundingClientRect().width >= 43")
+        self.assertEqual(self.control().evaluate('(el)=>getComputedStyle(el).pointerEvents'), 'auto')
+        # Section stops jump to existing authored block offsets, not made-up pages.
+        mark = self.page.locator('.scroll-rail__mark').last.bounding_box()
+        self.page.mouse.click(mark['x'] + 3, mark['y'] + 3)
+        expect(rail).to_have_attribute('data-action', 'stage')
+        expect(rail).to_have_attribute('data-phase', 'jump')
+        self.page.wait_for_function("document.querySelector('#shell-scroll').scrollTop > 100")
+        self.page.wait_for_timeout(900)
+        gap = self.page.evaluate('''() => {
+          const rail=document.querySelector('.scroll-rail'),rect=rail.getBoundingClientRect();
+          const thumb=rail.querySelector('.scroll-rail__thumb').getBoundingClientRect();
+          const ys=[...rail.querySelectorAll('.scroll-rail__mark')].map(el=>el.getBoundingClientRect().y+3);
+          for(let y=rect.y+24;y<rect.bottom-24;y+=2) {
+            if(ys.every(v=>Math.abs(v-y)>21)&&(y<thumb.top||y>thumb.bottom)) return {x:rect.x+22,y};
+          }
+        }''')
+        self.assertIsNotNone(gap)
+        self.page.mouse.click(gap['x'], gap['y'])
+        expect(rail).to_have_attribute('data-action', 'position')
+        expect(rail).to_have_attribute('data-phase', 'jump')
+        self.page.mouse.click(160, 200)
+        expect(rail).to_have_attribute('data-expanded', 'false')
+
+    def test_multitouch_cancels_drag_without_preventing_second_pointer(self):
+        touch = self.browser.new_context(viewport={'width': 390, 'height': 844},
+                                         is_mobile=True, has_touch=True, service_workers='block')
+        page = touch.new_page()
+        try:
+            page.goto(BASE + '/' + LESSON)
+            expect(page.locator('.lesson')).to_be_visible()
+            expect(page.locator('.scroll-rail')).to_have_attribute('data-interactive', 'true')
+            expect(page.locator('.scroll-rail__thumb')).to_be_visible()
+            page.evaluate("() => document.fonts.ready.then(() => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))))")
+            client = touch.new_cdp_session(page)
+            thumb = page.locator('.scroll-rail__thumb').bounding_box()
+            x, y = thumb['x'] + 22, thumb['y'] + 22
+            client.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'id': 1, 'x': x, 'y': y}]})
+            client.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [{'id': 1, 'x': x, 'y': y + 35}]})
+            expect(page.locator('.scroll-rail')).to_have_attribute('data-dragging', 'true')
+            client.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [
+                {'id': 1, 'x': x, 'y': y + 35}, {'id': 2, 'x': 160, 'y': 300}]})
+            self.assertIsNone(page.locator('.scroll-rail').get_attribute('data-dragging'))
+            expect(page.locator('.scroll-rail')).to_have_attribute('data-expanded', 'false')
+            self.assertAlmostEqual(page.evaluate("document.querySelector('#shell-scroll').scrollTop"), 0, delta=2)
+            client.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
+        finally:
+            touch.close()
+
+    def test_about_landmarks_have_no_captions_keyboard_stages_and_destroy_cleanup(self):
         self.visit('about/')
         bar = self.control()
         expect(bar).to_be_visible()
         self.assertLessEqual(self.page.locator('.scroll-rail__mark').count(), 6)
         bar.focus()
-        expect(self.page.locator('.scroll-rail__caption')).to_be_visible()
-        bar.press('Escape')
-        expect(self.page.locator('.scroll-rail__caption')).not_to_be_visible()
+        self.assertEqual(self.page.locator('.scroll-rail__caption').count(), 0)
+        bar.press('Shift+ArrowDown')
+        self.page.wait_for_function('window.scrollY > 100')
+        expect(self.page.locator('.scroll-rail')).to_have_attribute('data-action', 'stage')
         bar.press('End')
         expect(bar).to_have_attribute('aria-valuenow', '100')
         self.page.set_viewport_size({'width': 390, 'height': 844})
-        expect(self.page.locator('.scroll-rail')).to_have_attribute('data-interactive', 'false')
+        expect(self.page.locator('.scroll-rail')).to_have_attribute('data-compact', 'true')
+        bar.focus()
+        bar.press('ArrowUp')
+        expect(self.page.locator('.scroll-rail')).to_have_attribute('data-expanded', 'true')
+        bar.press('Escape')
+        expect(self.page.locator('.scroll-rail')).to_have_attribute('data-expanded', 'false')
         self.page.evaluate('window.__rail.destroy()')
         self.assertEqual(self.page.locator('.scroll-rail').count(), 0)
         self.assertEqual(self.page.locator('[data-scroll-rail-enhanced]').count(), 0)
         self.page.evaluate('window.scrollTo({top:0,behavior:"instant"})')
         self.assertEqual(self.scroll_top(), 0)
+
+    def test_about_desktop_rail_uses_real_gutter_and_never_covers_folio(self):
+        for width in (700, 1024, 1200, 1440):
+            with self.subTest(width=width):
+                self.page.set_viewport_size({'width': width, 'height': 1000})
+                self.visit('about/')
+                expect(self.page.locator('.scroll-rail')).to_have_attribute('data-compact', 'false')
+                rect = self.page.evaluate('''() => {
+                  const rail=document.querySelector('.scroll-rail').getBoundingClientRect();
+                  const folio=document.querySelector('#study-folio').getBoundingClientRect();
+                  const frames=[...document.querySelectorAll('main .about-frame')];
+                  const edge=Math.max(...frames.map(el=>el.getBoundingClientRect().right-parseFloat(getComputedStyle(el).paddingRight)));
+                  return {railLeft:rail.left,folioRight:folio.right,contentEdge:edge,width:rail.width};
+                }''')
+                self.assertGreaterEqual(rect['railLeft'] - rect['folioRight'], 8)
+                self.assertGreaterEqual(rect['railLeft'] - rect['contentEdge'], 8)
+                self.assertEqual(rect['width'], 44)
 
     def test_quiz_rail_is_continuous_and_never_changes_attempt(self):
         self.visit('index.html#test')

@@ -231,6 +231,63 @@ class EventMotionTests(unittest.TestCase):
                         self.page.get_by_role('button', name='Sonraki soru', exact=True).evaluate('e => e.click()')
                         expect(self.page.locator('.feedback')).to_have_count(0)
 
+    def test_pending_question_arrival_and_real_pointer_press_never_move_answer_targets(self):
+        self.page.add_init_script('''(() => {
+          const load = document.fonts.load.bind(document.fonts);
+          const gate = new Promise(resolve => { window.releaseQuestionFonts = resolve; });
+          document.fonts.load = (...args) => Promise.all([load(...args), gate]).then(r => r[0]);
+        })();''')
+        self.launch(count=1)
+        self.page.evaluate('document.fonts.ready')
+        option = self.page.locator('.option').first
+        option.scroll_into_view_if_needed()
+        geometry = '''() => [...document.querySelectorAll('.option')].map(node => {
+          const r = node.getBoundingClientRect();
+          return [r.x, r.y + document.querySelector('#shell-scroll').scrollTop, r.width, r.height];
+        })'''
+        pending = self.page.evaluate(geometry)
+        self.page.evaluate('window.releaseQuestionFonts()')
+        self.page.wait_for_function('''() => window.__motionCalls.some(record =>
+          record.target.closest('#quiz-container') && record.animation.playState === 'running')''')
+        self.page.locator('#quiz-container').evaluate('''root => root.getAnimations({subtree:true}).forEach(a => {
+          a.pause(); a.currentTime = a.effect.getTiming().duration / 2;
+        })''')
+        during = self.page.evaluate(geometry)
+        self.assertEqual(pending, during)
+        box = option.bounding_box()
+        self.page.mouse.move(box['x'] + box['width'] / 2, box['y'] + box['height'] / 2)
+        self.page.mouse.down()
+        self.assertEqual(during, self.page.evaluate(geometry))
+        self.page.mouse.up()
+        expect(self.page.locator('.feedback')).to_be_visible()
+        after = self.page.evaluate(geometry)
+        for previous, current in zip(during, after):
+            for start, end in zip(previous, current):
+                self.assertAlmostEqual(start, end, delta=1)
+        self.assertEqual(self.page.locator('.option--picked').count(), 1)
+        self.assertIsNotNone(self.snapshot()['selectedAnswers'][0])
+
+    def test_revealed_choices_focus_first_and_assemble_only_supporting_glyphs(self):
+        self.page.add_init_script('localStorage.setItem("englishPrep.settings", JSON.stringify({thinkFirst:true}))')
+        self.launch(count=1)
+        expect(self.page.locator('.option')).to_have_count(0)
+        self.page.get_by_role('button', name='Şıkları göster', exact=True).click()
+        expect(self.page.locator('.option').first).to_be_focused()
+        self.page.wait_for_function('''() => window.__motionCalls.some(record =>
+          record.target.matches('.option__key') && record.animation.playState === 'running')''')
+        effects = self.page.locator('.options').evaluate('''root => root.getAnimations({subtree:true}).map(a => ({
+          target:a.effect.target.className, frames:a.effect.getKeyframes()
+        }))''')
+        self.assertTrue(effects)
+        transforms = [e for e in effects if any('transform' in frame for frame in e['frames'])]
+        self.assertTrue(transforms)
+        # Native hover/focus color transitions are expected on the option;
+        # only shortcut glyphs may transform inside its stationary target.
+        self.assertTrue(all('option__key' in e['target'].split() for e in transforms), effects)
+        self.page.locator('.option').first.click()
+        expect(self.page.locator('.feedback')).to_be_visible()
+        self.assertIsNotNone(self.snapshot()['selectedAnswers'][0])
+
     def test_results_have_final_score_and_history_while_completion_is_running(self):
         self.launch(count=1)
         self.page.locator('.option').nth(self.choice()).evaluate('e => e.click()')

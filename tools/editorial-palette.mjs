@@ -13,9 +13,9 @@ const colourTokens = [
   "page", "card", "raised", "ink", "ink-2", "hairline", "edge", "accent",
   "accent-2", "accent-ink", "accent-text", "accent-tint", "focus", "ok", "no",
   "ok-tint", "no-tint", "ok-edge", "no-edge", "editorial-mark", "editorial-wash", "editorial-note",
-  "secondary", "tertiary",
+  "secondary", "tertiary", "cool", "cool-tint",
 ];
-const auroraTokens = ["aurora-cherry", "aurora-iris", "aurora-apricot"];
+const auroraTokens = ["aurora-cherry", "aurora-iris", "aurora-lagoon"];
 const monitoredTokens = [...colourTokens, ...auroraTokens, "aurora-opacity", "grad-accent"];
 const auditedDeclarations = new Map();
 
@@ -56,9 +56,8 @@ function palette(name, selector, inherited = {}) {
     throw new Error(`${name}: --aurora-opacity must be an explicit number from 0 to 1`);
   }
   values["aurora-opacity"] = Number(opacity);
-  const maximum = name === "dark" ? 0.10 : 0.05;
-  if (values["aurora-opacity"] > maximum) {
-    throw new Error(`${name}: --aurora-opacity exceeds ADR007's ${maximum} cap; re-evaluate the effect before raising it`);
+  if (values["aurora-opacity"] < 0 || values["aurora-opacity"] > 1) {
+    throw new Error(`${name}: --aurora-opacity must be between 0 and 1`);
   }
   const gradient = declaration("grad-accent", true);
   // Explicit interpolation makes the calculation independent of color-space
@@ -85,7 +84,7 @@ for (const token of monitoredTokens) {
   }
 }
 
-const surfaces = ["page", "card", "raised", "editorial-wash"];
+const surfaces = ["page", "card", "raised", "editorial-wash", "cool-tint"];
 const readingSurfaces = [...surfaces, "accent-tint", "ok-tint", "no-tint"];
 const requirements = [
   { name: "Prose", text: "ink", minimum: 7 },
@@ -97,27 +96,62 @@ const requirements = [
   { name: "Retry feedback", text: "no", minimum: 4.5 },
   { name: "Secondary accent", text: "secondary", minimum: 4.5 },
   { name: "Attention accent", text: "tertiary", minimum: 4.5 },
+  { name: "Cool accent", text: "cool", minimum: 4.5 },
   { name: "Control boundaries", text: "edge", minimum: 3 },
   { name: "Focus indicators", text: "focus", minimum: 3 },
 ];
 
-// 3 single, 6 double, and 6 triple overlaps. Each distinct lobe occurs at most
-// once; these are three fields total, not three per nested reader/container.
+// CSS opacity applies AFTER flattening the whole ambient subtree. Every
+// source is one of the three fixed sRGB pigments or transparent: any number
+// of overlapping/crossfading lobes is a convex mixture, never 9 × the cap.
+// After the group cap, all possible backgrounds belong to the convex hull of
+// --page and the three cap-composited pigment vertices. sRGB luminance is a
+// convex function, so its maximum occurs at a vertex (dark-theme guarantee).
+// Its minimum is bounded by the component-wise minimum of those vertices
+// (light-theme guarantee). A triangular grid additionally reports real mixed
+// colors, but the continuous guarantee does not depend on those samples.
 function auraSurfaces(tokens) {
-  const output = [];
-  function addOrders(order, remaining) {
-    for (const token of remaining) {
-      const next = [...order, token];
-      const rgb = next.reduce((background, foreground) =>
-        hexToRgb(tokens[foreground]).map((channel, index) =>
-          tokens["aurora-opacity"] * channel +
-          (1 - tokens["aurora-opacity"]) * background[index]), hexToRgb(tokens.page));
-      output.push({ name: next.map((item) => item.replace("aurora-", "")).join(" → "), rgb });
-      addOrders(next, remaining.filter((item) => item !== token));
+  const page = hexToRgb(tokens.page);
+  const vertices = [{ name: "group transparent", rgb: page }, ...auroraTokens.map(token => ({
+    name: `group ${token.replace("aurora-", "")}`,
+    rgb: hexToRgb(tokens[token]).map((channel, index) =>
+      tokens["aurora-opacity"] * channel + (1 - tokens["aurora-opacity"]) * page[index]),
+  }))];
+  const output = [...vertices, {
+    name: "continuous minimum-channel bound",
+    rgb: page.map((_, index) => Math.min(...vertices.map(vertex => vertex.rgb[index]))),
+  }];
+  const pigments = vertices.slice(1);
+  for (let a = 0; a <= 10; a++) {
+    for (let b = 0; b <= 10 - a; b++) {
+      const weights = [a / 10, b / 10, (10 - a - b) / 10];
+      for (const alpha of [.25, .5, .75, 1]) {
+        output.push({
+          name: `group mixture ${weights.join("/")} × ${alpha}`,
+          rgb: page.map((channel, index) => (1 - alpha) * channel + alpha *
+            weights.reduce((sum, weight, position) => sum + weight * pigments[position].rgb[index], 0)),
+        });
+      }
     }
   }
-  addOrders([], auroraTokens);
   return output;
+}
+
+// Guard the compositor assumptions as well as the numbers. Moving the cap to
+// individual fields or introducing blend/filter colors invalidates the proof.
+const ambientBlock = css.match(/\.ambient\s*\{([^{}]*)\}/)?.[1] ?? "";
+if (!/opacity\s*:\s*var\(--aurora-opacity\)\s*;/.test(ambientBlock)) {
+  throw new Error("Aura requires one group opacity cap on .ambient");
+}
+const ambientRules = [...css.matchAll(/([^{}]*\.ambient[^{}]*)\{([^{}]*)\}/g)];
+for (const [, selector, declaration] of ambientRules) {
+  if (/(?:mix-blend-mode|filter|backdrop-filter)\s*:/.test(declaration)) {
+    throw new Error(`Unaudited ambient blend/filter in ${selector.trim()}`);
+  }
+  const colors = [...declaration.matchAll(/var\(--aurora-([a-z]+)\)/g)].map(match => match[1]);
+  if (colors.some(color => !["opacity", "cherry", "iris", "lagoon"].includes(color))) {
+    throw new Error("Unaudited ambient pigment");
+  }
 }
 
 function actionGradient(tokens) {
@@ -157,6 +191,7 @@ let opaqueMeasured = 0;
 let auraMeasured = 0;
 let gradientMeasured = 0;
 let answerMeasured = 0;
+let haloMeasured = 0;
 for (const [theme, tokens] of [["dark", dark], ["light", light]]) {
   const opaque = readingSurfaces.map((token) => ({ name: `--${token}`, rgb: hexToRgb(tokens[token]) }));
   const aura = auraSurfaces(tokens);
@@ -170,9 +205,9 @@ for (const [theme, tokens] of [["dark", dark], ["light", light]]) {
   }
   opaqueMeasured += measured - opaqueStart;
 
-  console.log(`\n${theme}: ${aura.length} aura bounds at per-field opacity ${tokens["aurora-opacity"]}; unrounded sRGB source-over`);
-  const triple = aura.filter((surface) => surface.name.split(" → ").length === 3);
-  console.log(`  Maximum three-field composites: ${[...new Set(triple.map((surface) => displayHex(surface.rgb)))].join(", ")} (rounded for display only)`);
+  console.log(`\n${theme}: ${aura.length} aura bounds at group opacity ${tokens["aurora-opacity"]}; continuous convex-envelope guarantee`);
+  const vertices = aura.slice(0, 5);
+  console.log("  Envelope vertices: " + vertices.map(surface => `${surface.name} ${displayHex(surface.rgb)}`).join("; "));
   const auraStart = measured;
   for (const requirement of requirements) {
     const minimum = theme === "dark" ? (requirement.darkMinimum ?? requirement.minimum) : requirement.minimum;
@@ -198,6 +233,19 @@ for (const [theme, tokens] of [["dark", dark], ["light", light]]) {
   // Answer rows now have opaque semantic surfaces. Check their softer borders
   // against both the inside and every surrounding app plane, not only the
   // prominent check/cross color. The colors never replace literal verdicts.
+  const haloStart = measured;
+  console.log(`\n${theme}: optional neutral title halos (full declared alpha, before blur)`);
+  for (const [token, alpha] of [["cool", .14], ["secondary", .12]]) {
+    const glow = hexToRgb(tokens[token]);
+    const candidates = [...opaque, ...aura].map(surface => ({
+      name: `${token} halo / ${surface.name}`,
+      rgb: surface.rgb.map((channel, index) => channel * (1 - alpha) + glow[index] * alpha),
+    }));
+    report(`${token} title halo`, candidates.map(background =>
+      measure(theme, "--ink title halo", tokens.ink, background, 7)), 7);
+  }
+  haloMeasured += measured - haloStart;
+
   console.log(`\n${theme}: filled answer states and transitions`);
   const answerStart = measured;
   for (const state of ["ok", "no"]) {
@@ -231,6 +279,15 @@ for (const [theme, tokens] of [["dark", dark], ["light", light]]) {
       measure(theme, `--${state}-edge transition`, background.border, background, 3)), 3);
   }
   answerMeasured += measured - answerStart;
+  for (const token of [...requirements.map(requirement => requirement.text), "ok-edge", "no-edge", "accent", "accent-2"]) {
+    const foregroundLuminanceOrder = wcagContrast(tokens[token], "#000000");
+    const backgroundOrders = vertices.map(surface => wcagContrast(surface.rgb, "#000000"));
+    if (theme === "dark" ? foregroundLuminanceOrder <= Math.max(...backgroundOrders)
+      : foregroundLuminanceOrder >= Math.min(...backgroundOrders)) {
+      throw new Error(`${theme}: --${token} crosses aura luminance; continuous contrast proof is invalid`);
+    }
+  }
+
 }
 
 if (failed) {
@@ -238,6 +295,6 @@ if (failed) {
   console.error(`\n${failed} of ${measured} editorial contrast pairs failed.`);
   process.exitCode = 1;
 } else {
-  console.log(`\n${measured} editorial contrast pairs passed (${opaqueMeasured} opaque + ${auraMeasured} aura + ${gradientMeasured} gradient + ${answerMeasured} answer samples).`);
-  console.log("Decorative hairlines are not control boundaries. Aura is behind opaque cards; no additional field, blend mode, or animated brightness is covered by these bounds.");
+  console.log(`\n${measured} editorial contrast pairs passed (${opaqueMeasured} opaque + ${auraMeasured} aura + ${gradientMeasured} gradient + ${answerMeasured} answer + ${haloMeasured} title halo samples).`);
+  console.log("Decorative hairlines are not control boundaries. Aura has one group cap; all source-over overlaps of the three fixed pigments are covered. Other blend modes, filters or pigments require a new proof.");
 }

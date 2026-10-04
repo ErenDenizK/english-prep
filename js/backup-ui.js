@@ -20,6 +20,11 @@ import { el } from "./dom.js";
 import { exportState, importState } from "./storage.js";
 import { buildBackup, parseBackup } from "./backup.js";
 import { animateElement, cancelAnimationsWithin } from "./interactions.js";
+import { presentDialog } from "./modal.js";
+import {
+  prepareBackupTransfer, backupFile, canShareBackup,
+  shareBackupFile, downloadBackupFile, copyBackupText,
+} from "./share.js";
 
 const FILE_NAME = "english-prep-yedek.json";
 
@@ -29,6 +34,175 @@ const REASONS = {
   foreign: "Bu bir English Prep yedeği değil.",
   newer: "Bu yedek uygulamanın daha yeni bir sürümünden. Önce uygulamayı yenile.",
 };
+
+/** A reviewable snapshot, then one explicitly chosen transfer mechanism. */
+export function createBackupDialog({ onResult = () => {} } = {}) {
+  const dialog = el("dialog", "dialog transfer-dialog");
+  dialog.id = "backup-dialog";
+  dialog.setAttribute("aria-labelledby", "backup-dialog-title");
+  dialog.setAttribute("aria-describedby", "backup-dialog-description");
+  const content = el("div", "stack");
+  const intro = el("div", "stack stack--tight");
+  const heading = el("h2", "t-title", "İlerlemeni yanında götür");
+  heading.id = "backup-dialog-title";
+  heading.tabIndex = -1;
+  const description = el("p", "t-body", "Yedeği diğer cihazda Profil → Yedekten geri yükle ile aç. Mevcut ilerlemeyle birleştirilir.");
+  description.id = "backup-dialog-description";
+  intro.append(heading, description);
+
+  const preview = el("div", "transfer-preview");
+  const label = el("p", "t-label", "Bu dosyada");
+  const counts = el("p", "transfer-preview__counts");
+  counts.id = "backup-preview-counts";
+  const included = el("p", "t-meta", "");
+  const limits = el("p", "t-quiet", "Dosya şifreli değildir; gönderdiğin kişi kayıtlarını okuyabilir.");
+  preview.append(label, counts, included, limits);
+
+  const details = el("details", "transfer-details");
+  const summary = el("summary", "t-label", "İçeriği gör / elle kopyala");
+  const fields = el("p", "t-quiet", "Derslerin okuma konumu ve tamamlanması; test cevapları ve tarihleri; adın, çalışma ayarların ve varsa eski hedef/sınav tercihlerin. Ders metinleri bu dosyada yer almaz. Açık test oturumu, görünüm ve hareket tercihleri taşınmaz.");
+  const textLabel = el("label", "visually-hidden", "Yedek metni");
+  textLabel.htmlFor = "backup-export-text";
+  const text = el("textarea", "field field--multiline transfer-text");
+  text.id = "backup-export-text";
+  text.readOnly = true;
+  text.spellcheck = false;
+  text.rows = 5;
+  text.setAttribute("autocapitalize", "off");
+  const select = el("button", "btn btn--secondary", "Metnin tümünü seç");
+  select.type = "button";
+  select.addEventListener("click", () => {
+    text.focus({ preventScroll: true });
+    text.select();
+  });
+  const detailsBody = el("div", "stack stack--tight transfer-details__body");
+  detailsBody.append(fields, textLabel, text, select);
+  details.append(summary, detailsBody);
+  details.addEventListener("toggle", () => {
+    if (details.open) animateElement(detailsBody, "reveal", { channel: "transfer-detail" });
+    else cancelAnimationsWithin(detailsBody);
+  });
+
+  const channels = el("div", "transfer-actions dialog__actions");
+  const share = el("button", "btn btn--primary", "Dosyayı paylaş");
+  const download = el("button", "btn btn--secondary", "Dosyayı indir");
+  const copy = el("button", "btn btn--secondary", "Yedek metnini kopyala");
+  for (const button of [share, download, copy]) button.type = "button";
+  channels.append(share, download, copy);
+  const support = el("p", "t-quiet");
+  const status = el("p", "t-meta transfer-status");
+  status.id = "backup-export-status";
+  status.setAttribute("role", "status");
+  status.setAttribute("aria-live", "polite");
+  const footer = el("div", "dialog__actions");
+  const close = el("button", "btn btn--quiet", "Kapat");
+  close.type = "button";
+  footer.append(close);
+  content.append(intro, preview, details, channels, support, status);
+  dialog.append(content, footer);
+  document.body.appendChild(dialog);
+
+  let transfer;
+  let file;
+  let generation = 0;
+  let busy = false;
+  const setBusy = (value) => {
+    busy = value;
+    for (const button of [share, download, copy]) {
+      button.setAttribute("aria-disabled", String(value));
+    }
+    channels.setAttribute("aria-busy", String(value));
+  };
+  const notify = (message) => {
+    status.textContent = message;
+    animateElement(status, "reveal", { channel: "transfer-status" });
+    onResult(message);
+  };
+  share.addEventListener("click", async () => {
+    if (busy) return;
+    const current = generation;
+    setBusy(true);
+    const result = await shareBackupFile(file);
+    if (current !== generation || !dialog.open) return;
+    setBusy(false);
+    notify({
+      "handed-off": "Dosya paylaşım sistemine verildi. Kaydedildiğini seçtiğin uygulamadan kontrol edebilirsin.",
+      canceled: "Paylaşım yapılmadı. İstersen yeniden deneyebilirsin.",
+      unsupported: "Bu tarayıcıda dosya paylaşımı kullanılamıyor. Dosyayı indirebilir ya da metni kopyalayabilirsin.",
+      failed: "Paylaşım açılamadı. Yeniden dene, dosyayı indir ya da metni kopyala.",
+    }[result]);
+  });
+  download.addEventListener("click", () => {
+    if (busy) return;
+    try {
+      downloadBackupFile(file);
+      notify("İndirme başlatıldı. Dosyanı tarayıcının İndirilenler bölümünde kontrol edebilirsin.");
+    } catch {
+      notify("İndirme başlatılamadı. Yedek metnini kopyalayabilirsin.");
+    }
+  });
+  copy.addEventListener("click", async () => {
+    if (busy) return;
+    const current = generation;
+    setBusy(true);
+    const result = await copyBackupText(transfer.json);
+    if (current !== generation || !dialog.open) return;
+    setBusy(false);
+    if (result === "copied") notify("Yedek metni kopyalandı. Diğer cihazda geri yükleme alanına yapıştırabilirsin.");
+    else {
+      details.open = true;
+      text.focus({ preventScroll: false });
+      text.select();
+      notify("Otomatik kopyalama kullanılamıyor. Seçili metni cihazının Kopyala komutuyla alabilirsin.");
+    }
+  });
+  close.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("click", (event) => {
+    if (event.target !== dialog) return;
+    const rect = dialog.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right
+        || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+  });
+  dialog.addEventListener("close", () => {
+    // Native close is queued. A rapid reopen already owns a fresh snapshot.
+    if (dialog.open) return;
+    generation += 1;
+    setBusy(false);
+    cancelAnimationsWithin(dialog);
+    // Do not leave a private export in the inactive page's DOM.
+    text.value = "";
+    transfer = null;
+    file = null;
+  });
+
+  return {
+    open() {
+      if (dialog.open) return;
+      generation += 1;
+      transfer = prepareBackupTransfer(exportState());
+      file = backupFile(transfer);
+      const data = transfer.summary;
+      counts.textContent = `${data.attempts} test · ${data.answers} yanıt · ${data.lessons} ders kaydı`;
+      const size = data.bytes < 1024 ? `${data.bytes} B` : `${(data.bytes / 1024).toLocaleString("tr-TR", { maximumFractionDigits: 1 })} KB`;
+      included.textContent = `${data.completed} ders tamamlanmış. ${data.profileName ? `Adın (${data.profileName}) ve çalışma tercihlerin dahil.` : "Çalışma tercihlerin dahil."} ${size}.`;
+      text.value = transfer.json;
+      details.open = false;
+      status.textContent = "";
+      setBusy(false);
+      const supported = canShareBackup(file);
+      share.hidden = !supported;
+      download.classList.toggle("btn--primary", !supported);
+      download.classList.toggle("btn--secondary", supported);
+      support.textContent = supported
+        ? "Paylaşacağın uygulamayı sen seçersin. English Prep bir sunucuya yedek göndermez."
+        : "Bu tarayıcıda dosya paylaşımı kullanılamıyor; indirme ve metinle aktarım kullanılabilir.";
+      dialog.showModal();
+      heading.focus({ preventScroll: true });
+      dialog.scrollTop = 0;
+      presentDialog(dialog);
+    },
+  };
+}
 
 /**
  * Offers the learner their own data as a file. Tries the share sheet
@@ -205,7 +379,7 @@ export function createRestoreDialog({ onRestored }) {
       dialog.showModal();
       heading.focus({ preventScroll: true });
       dialog.scrollTop = 0;
-      animateElement(dialog, "dialog");
+      presentDialog(dialog);
     },
   };
 }

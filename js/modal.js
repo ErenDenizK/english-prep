@@ -11,7 +11,35 @@
 // least destructive action, so the safe option is the one under the cursor
 // when a destructive dialog appears.
 
-import { animateElement, cancelAnimationsWithin } from "./interactions.js";
+import { animateElement, animateSequence, cancelAnimationsWithin } from "./interactions.js";
+
+/** A dialog assembles around an already usable decision. The top-layer box
+ * never travels or scales, so the backdrop boundary and button targets remain
+ * exact. A caller sets state, opens the native dialog and focuses first. */
+export function presentDialog(dialog) {
+  cancelAnimationsWithin(dialog);
+  const title = dialog.querySelector("h1, h2, h3");
+  const description = title?.parentElement.querySelector("p");
+  const actions = [...dialog.querySelectorAll(".dialog__actions .btn")];
+  // Wrap only the presentation of an existing button, preserving its name,
+  // events, native type and target. Repeat opens reuse the same stable wrapper.
+  const actionLabels = actions.map((button) => {
+    let label = button.querySelector(".dialog__action-label");
+    if (!label) {
+      label = document.createElement("span");
+      label.className = "dialog__action-label";
+      label.append(...button.childNodes);
+      button.appendChild(label);
+    }
+    return label;
+  });
+  animateElement(dialog, "panel", { channel: "dialog-shell" });
+  animateSequence([
+    { element: title, kind: "item", at: 0 },
+    { element: description, kind: "item", at: 45 },
+    ...actionLabels.map((element, index) => ({ element, kind: "item", at: 80 + index * 35 })),
+  ], { channel: "dialog-parts" });
+}
 
 /**
  * @param {{ dialogId: string, confirmId: string, cancelId: string, onConfirm: () => void }} config
@@ -55,7 +83,7 @@ export function createConfirmModal({ dialogId, confirmId, cancelId, onConfirm })
       dialog.returnValue = "";
       dialog.showModal();
       cancelBtn.focus();
-      animateElement(dialog, "dialog");
+      presentDialog(dialog);
     },
     close() {
       dialog.close("cancel");

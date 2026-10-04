@@ -3,7 +3,7 @@
 import { el } from "./dom.js";
 import { icon } from "./icons.js";
 import { createBrand } from "./brand.js";
-import { animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateElement, animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 import { getProfileName, setProfileName, setOnboarded } from "./storage.js";
 
 const STEPS = [
@@ -46,7 +46,7 @@ function shape(tag, attributes, className = "") {
   return node;
 }
 
-function motionPart(node, kind = "flow", at = 0) {
+function motionPart(node, kind = "unfold", at = 0) {
   node.dataset.onboardMotion = kind;
   node.dataset.onboardAt = String(at);
   return node;
@@ -87,54 +87,62 @@ function drawScene(kind) {
   if (kind === "topics") {
     for (const [i, width] of [91, 112, 74].entries()) {
       const y = 11 + i * 31;
-      const row = motionPart(shape("g", {}, "onboard-flow__row"), "flow", i * 80);
-      row.append(rect(37, y, 206, 25), dot(52, y + 12),
-        line(`M65 ${y + 12}h${width}`), line(`m221 ${y + 8} 4 4-4 4`, "onboard-flow__accent"));
+      const row = motionPart(shape("g", {}, "onboard-flow__row"), "item", i * 65);
+      row.append(rect(37, y, 206, 25), motionPart(dot(52, y + 12), "signal", 45 + i * 65),
+        line(`M65 ${y + 12}h${width}`, "onboard-flow__stroke onboard-flow__line", i * 65),
+        line(`m221 ${y + 8} 4 4-4 4`, "onboard-flow__accent"));
       paper.appendChild(row);
     }
-    svg.append(paper, line("M26 22v65", "onboard-flow__stroke onboard-flow__accent"));
+    svg.append(paper, line("M26 22v65", "onboard-flow__stroke onboard-flow__secondary"));
   } else if (kind === "article") {
-    const backSheet = motionPart(rect(77, 11, 132, 94, "onboard-flow__back-sheet"));
-    motionPart(paper, "flow", 80);
+    const backSheet = motionPart(rect(77, 11, 132, 94, "onboard-flow__back-sheet"), "fan");
+    motionPart(paper, "unfold", 65);
     paper.append(rect(68, 4, 132, 94),
-      line("M83 21h56", "onboard-flow__accent"), line("M83 36h99M83 45h88M83 69h91M83 78h78"),
-      shape("rect", { x: 82, y: 51, width: 100, height: 10, rx: 3 }, "onboard-flow__highlight"),
-      line("M83 56h99", "onboard-flow__stroke onboard-flow__accent"));
-    svg.append(backSheet, paper, line("M227 29v48m-5-5 5 5 5-5", "onboard-flow__stroke onboard-flow__accent"));
+      line("M83 21h56", "onboard-flow__stroke onboard-flow__accent", 65),
+      line("M83 36h99M83 45h88", "onboard-flow__stroke onboard-flow__line", 100),
+      line("M83 69h91M83 78h78", "onboard-flow__stroke onboard-flow__line", 160),
+      motionPart(shape("rect", { x: 82, y: 51, width: 100, height: 10, rx: 3 }, "onboard-flow__highlight"), "rule", 140),
+      line("M83 56h99", "onboard-flow__stroke onboard-flow__accent", 180));
+    svg.append(backSheet, paper, line("M227 29v48", "onboard-flow__stroke onboard-flow__secondary", 100),
+      motionPart(line("m222 72 5 5 5-5", "onboard-flow__secondary"), "signal", 180));
   } else if (kind === "check" || kind === "question") {
-    paper.append(motionPart(rect(48, 5, 184, 98)), line("M64 21h118M64 30h92"));
+    paper.append(motionPart(rect(48, 5, 184, 98)),
+      line("M64 21h118M64 30h92", "onboard-flow__stroke onboard-flow__line"));
     for (const [i, width] of [84, 107, 70].entries()) {
       const y = 48 + i * 18;
-      const row = motionPart(shape("g", {}, "onboard-flow__row"), "flow", i * 60);
+      const row = motionPart(shape("g", {}, "onboard-flow__row"), "item", 40 + i * 50);
       if (i === (kind === "check" ? 1 : 0)) {
-        row.append(rect(57, y - 8, 161, 16, "onboard-flow__answer-highlight"));
+        row.append(motionPart(rect(57, y - 8, 161, 16, "onboard-flow__answer-highlight"), "rule", 120));
       }
       row.append(shape("circle", { cx: 68, cy: y, r: 4 }, "onboard-flow__line"), line(`M82 ${y}h${width}`));
       paper.appendChild(row);
     }
     svg.append(paper);
     if (kind === "check") {
-      svg.append(line("m65 66 3 3 5-6", "onboard-flow__stroke onboard-flow__accent"));
-      svg.append(line("M241 52h13m-4-4 4 4-4 4", "onboard-flow__stroke onboard-flow__accent"));
+      svg.append(line("m65 66 3 3 5-6", "onboard-flow__stroke onboard-flow__accent", 180));
+      svg.append(motionPart(line("M241 52h13m-4-4 4 4-4 4", "onboard-flow__secondary"), "signal", 180));
     } else {
-      svg.append(motionPart(dot(68, 48, 2, "onboard-flow__dot onboard-flow__selection"), "flow", 160));
-      svg.append(line("M246 23v20m-4-4 4 4 4-4", "onboard-flow__stroke onboard-flow__accent"));
+      svg.append(motionPart(dot(68, 48, 2, "onboard-flow__dot onboard-flow__selection"), "signal", 160));
+      svg.append(line("M246 23v20m-4-4 4 4 4-4", "onboard-flow__stroke onboard-flow__secondary", 180));
     }
   } else if (kind === "reason") {
     paper.append(motionPart(rect(43, 10, 194, 92)),
-      line("m59 28 4 4 8-10", "onboard-flow__stroke onboard-flow__accent"), line("M82 27h73"));
-    const reasoning = motionPart(shape("g", {}, "onboard-flow__reason"), "flow", 100);
-    reasoning.append(line("M59 47h157M59 58h144M59 69h154M59 80h92"));
-    paper.appendChild(reasoning);
-    svg.append(paper, line("M59 89h70", "onboard-flow__stroke onboard-flow__accent"));
+      line("m59 28 4 4 8-10", "onboard-flow__stroke onboard-flow__accent", 100),
+      line("M82 27h73", "onboard-flow__stroke onboard-flow__line", 60));
+    for (const [i, width] of [157, 144, 154, 92].entries()) {
+      paper.append(line(`M59 ${47 + i * 11}h${width}`, "onboard-flow__stroke onboard-flow__line", i * 45));
+    }
+    svg.append(paper, line("M59 89h70", "onboard-flow__stroke onboard-flow__secondary", 180),
+      motionPart(dot(246, 28, 3, "onboard-flow__dot onboard-flow__secondary-dot"), "signal", 180));
   } else {
-    const backSheet = motionPart(rect(91, 15, 113, 82, "onboard-flow__back-sheet"));
-    motionPart(paper, "flow", 100);
+    const backSheet = motionPart(rect(91, 15, 113, 82, "onboard-flow__back-sheet"), "fan");
+    motionPart(paper, "unfold", 100);
     paper.append(rect(78, 8, 113, 82),
-      line("M94 26h62M94 42h78M94 53h66M94 64h73"));
+      line("M94 26h62", "onboard-flow__stroke onboard-flow__accent", 70),
+      line("M94 42h78M94 53h66M94 64h73", "onboard-flow__stroke onboard-flow__line", 140));
     svg.append(backSheet, paper, line("M214 31c23 17 22 46 0 59M214 90l2-11m-2 11 11-2",
-      "onboard-flow__stroke onboard-flow__accent"),
-      line("M57 79C33 59 35 30 57 19M57 19l-2 11m2-11-11 2", "onboard-flow__stroke onboard-flow__accent"));
+      "onboard-flow__stroke onboard-flow__accent", 80),
+      line("M57 79C33 59 35 30 57 19M57 19l-2 11m2-11-11 2", "onboard-flow__stroke onboard-flow__secondary", 180));
   }
   return svg;
 }
@@ -165,6 +173,7 @@ function flowPreview(current, selected, onSelect) {
     button.append(stop, el("span", "", item.label));
     button.type = "button";
     button.addEventListener("click", () => {
+      animateElement(stop, "signal", { channel: "onboard-choice" });
       if (selected === index) {
         // A deliberate second tap replays the miniature without changing the
         // selected state, replacing text, moving focus or advancing the tour.
@@ -283,17 +292,19 @@ export function renderOnboarding(container, { onDone }) {
       container.closest(".shell__scroll")?.scrollTo({ top: 0 });
       heading.focus({ preventScroll: true });
     }
-    whenVisible(heading, () => animateSequence([
-      { element: heading, kind: "onboard", at: 0 },
-      { element: description, kind: "onboard", at: 60 },
-    ], { channel: "onboard-step", direction }), { channel: "onboard-copy-arrival" });
+    // The copy is a stable reading surface. Art assembles inside the window;
+    // the mode glyph acknowledges page arrival without wobbling the whole page.
+    const modeIcon = panel.querySelector(".onboard-flow__mode svg");
+    if (modeIcon) whenVisible(modeIcon, () => animateElement(modeIcon, "signal", {
+      channel: "onboard-mode", direction,
+    }), { channel: "onboard-mode-arrival" });
     playDrawing(panel.querySelector(".onboard-flow__scene"), direction);
     const wordmark = panel.querySelector(".onboard__wordmark");
     if (wordmark) {
       playDrawing(wordmark, direction);
       whenVisible(wordmark, () => animateSequence([
-        { element: wordmark.querySelector(".brand-mark__letters"), kind: "onboard", at: 80 },
-        { element: wordmark.querySelector(".brand-mark__dot"), kind: "complete", at: 160 },
+        { element: wordmark.querySelector(".brand-mark__letters"), kind: "item", at: 80 },
+        { element: wordmark.querySelector(".brand-mark__dot"), kind: "signal", at: 160 },
       ], { channel: "onboard-brand", direction }), { channel: "onboard-brand-arrival" });
     }
   }

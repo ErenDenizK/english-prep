@@ -445,6 +445,7 @@ function renderIndex() {
   // this is exactly the stack it has always been — see `pane` in
   // js/dom.js and `.split` in css/style.css.
   const aside = pane();
+  aside.classList.add("study-aside");
   const main = pane();
 
   // A screen this app can reach only by running out of both suggestions

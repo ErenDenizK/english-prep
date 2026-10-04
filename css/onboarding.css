@@ -119,10 +119,15 @@
 .onboard .onboard-flow__back-sheet { fill: var(--raised); stroke: var(--hairline); }
 .onboard .onboard-flow__line { stroke: var(--ink-2); }
 .onboard .onboard-flow__accent { stroke: var(--accent-text); }
+.onboard .onboard-flow__secondary { stroke: var(--secondary); }
 .onboard .onboard-flow__dot { fill: var(--accent-text); stroke: none; }
+.onboard .onboard-flow__secondary-dot { fill: var(--secondary); }
 .onboard .onboard-flow__highlight { fill: var(--accent-tint); stroke: none; }
 .onboard .onboard-flow__answer-highlight { fill: var(--accent-tint); stroke: none; }
 .onboard [data-onboard-motion] { transform-box: fill-box; transform-origin: center; }
+.onboard [data-onboard-motion="unfold"] { transform-origin: center bottom; }
+.onboard [data-onboard-motion="fan"] { transform-origin: left bottom; }
+.onboard [data-onboard-motion="rule"] { transform-origin: left center; }
 .onboard .onboard-flow__stroke { stroke-dasharray: 1; stroke-dashoffset: 0; }
 .onboard .onboard-flow__caption {
   min-height: 3em;
@@ -159,8 +164,8 @@ html[data-motion="off"] .onboard .onboard__dot { transition: none; }
 @media (forced-colors: active) {
   .onboard .onboard-flow__choice[aria-pressed="true"] { outline: 2px solid Highlight; outline-offset: -4px; }
   .onboard .onboard-flow__sheet, .onboard .onboard-flow__back-sheet { fill: Canvas; stroke: CanvasText; }
-  .onboard .onboard-flow__line, .onboard .onboard-flow__accent { stroke: CanvasText; }
-  .onboard .onboard-flow__dot { fill: CanvasText; }
+  .onboard .onboard-flow__line, .onboard .onboard-flow__accent, .onboard .onboard-flow__secondary { stroke: CanvasText; }
+  .onboard .onboard-flow__dot, .onboard .onboard-flow__secondary-dot { fill: CanvasText; }
   .onboard .onboard-flow { outline: 1px solid CanvasText; }
   .onboard .onboard-flow__marker { background: Highlight; }
 }

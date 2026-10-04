@@ -15,9 +15,9 @@
   --card: #1d1a20;
   --raised: #28242c;
   --ink: #eee9ed;
-  --ink-2: #c6bcc6;
+  --ink-2: #d2c9d3;
   --hairline: #39313d;
-  --edge: #847988;
+  --edge: #95899b;
   --accent: #ed96b4;
   --accent-2: #dca2d8;
   --accent-ink: #301b27;
@@ -32,7 +32,7 @@
   --no-edge: #8d9bbd;
   --editorial-mark: #efb1cb;
   --editorial-wash: #211b24;
-  --editorial-note: #c6bcc6;
+  --editorial-note: #d2c9d3;
   --line: var(--hairline);
   --line-strong: var(--edge);
   --lit: transparent;
@@ -87,10 +87,12 @@
   --support-size: 1rem;
   --secondary: #c8b4e9;
   --tertiary: #e9bb95;
-  --aurora-cherry: #c65b88;
-  --aurora-iris: #785ca8;
-  --aurora-apricot: #c68571;
-  --aurora-opacity: .10;
+  --cool: #a4d3db;
+  --cool-tint: #1e3038;
+  --aurora-cherry: #a04278;
+  --aurora-iris: #6350a5;
+  --aurora-lagoon: #28798a;
+  --aurora-opacity: .42;
   --d-press: 100ms;
   --d-feedback: 180ms;
   --d-route: 360ms;
@@ -127,7 +129,9 @@
     --editorial-note: #625864;
     --secondary: #7652a0;
     --tertiary: #92501f;
-    --aurora-opacity: .05;
+    --cool: #28677a;
+    --cool-tint: #e5f1f5;
+    --aurora-opacity: .09;
     color-scheme: light;
   }
 }
@@ -156,7 +160,9 @@
   --editorial-note: #625864;
   --secondary: #7652a0;
     --tertiary: #92501f;
-    --aurora-opacity: .05;
+    --cool: #28677a;
+    --cool-tint: #e5f1f5;
+    --aurora-opacity: .09;
     color-scheme: light;
 }
 /* The app frame stays fixed: only the content region scrolls. */
@@ -1550,52 +1556,100 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .onboard__actions > .btn--primary { width: auto; flex: 1; }
 .onboard__actions > .btn--quiet { flex: 0 0 auto; }
 .onboard__name { padding-block: 12px 24px; }
-/* Three fixed pigment fields share the existing measured alpha envelope.
-   Inward lobes, independent phases and viewport-relative travel make their
-   overlaps change color perceptibly. Only transform/opacity animate: no
-   gradient interpolation, filter, extra layer or JavaScript idle loop. */
-.ambient { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; contain: strict; }
+/* Living atmosphere. Three moving clusters each crossfade three pigments.
+   A SINGLE opacity on the parent flattens all nine layers before compositing
+   over --page. The palette audit covers its entire convex color envelope,
+   including repeated colors and every intermediate crossfade/overlap. */
+.ambient {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  overflow: hidden; contain: strict; opacity: var(--aurora-opacity);
+  isolation: isolate;
+}
 .ambient__field {
-  position: absolute;
-  inset: 0;
+  position: absolute; width: max(72vw, 470px); height: max(78vh, 520px);
   transform-origin: center;
   animation: var(--ambient-name) var(--ambient-duration) ease-in-out var(--ambient-phase) infinite alternate;
   animation-play-state: paused;
 }
-.ambient__field--cherry {
-  --ambient-name: aura-cherry; --ambient-duration: 16s; --ambient-phase: -4s;
-  transform: translate(-28vw, -24vh); opacity: .8;
-  background: radial-gradient(ellipse 62% 54% at 50% 50%, color-mix(in srgb, var(--aurora-cherry) calc(var(--aurora-opacity) * 100%), transparent), transparent 78%);
+.ambient__field--north {
+  left: -30vw; top: -34vh;
+  --ambient-name: aura-north; --ambient-duration: 7.8s; --ambient-phase: -2s;
+  --pigment-cycle: 10.8s; --pigment-phase: -1.8s;
+  transform: translate(5vw, 6vh) rotate(-12deg) scale(1.06);
 }
-.ambient__field--iris {
-  --ambient-name: aura-iris; --ambient-duration: 21s; --ambient-phase: -11s;
-  transform: translate(30vw, -2vh); opacity: .8;
-  background: radial-gradient(ellipse 60% 58% at 50% 50%, color-mix(in srgb, var(--aurora-iris) calc(var(--aurora-opacity) * 100%), transparent), transparent 80%);
+.ambient__field--east {
+  right: -30vw; top: 2vh;
+  --ambient-name: aura-east; --ambient-duration: 9.4s; --ambient-phase: -5s;
+  --pigment-cycle: 12.6s; --pigment-phase: -6.3s;
+  transform: translate(-8vw, -4vh) rotate(10deg) scale(.94);
 }
-.ambient__field--apricot {
-  --ambient-name: aura-apricot; --ambient-duration: 27s; --ambient-phase: -7s;
-  transform: translate(-8vw, 34vh); opacity: .65;
-  background: radial-gradient(ellipse 62% 56% at 50% 50%, color-mix(in srgb, var(--aurora-apricot) calc(var(--aurora-opacity) * 100%), transparent), transparent 78%);
+.ambient__field--south {
+  left: -12vw; bottom: -39vh;
+  --ambient-name: aura-south; --ambient-duration: 11s; --ambient-phase: -7s;
+  --pigment-cycle: 14.4s; --pigment-phase: -10.8s;
+  transform: translate(6vw, -8vh) rotate(-6deg) scale(1.04);
 }
-:root[data-motion="on"][data-page-visible="true"] .ambient__field { animation-play-state: running; }
-@keyframes aura-cherry {
-  0% { transform: translate(-37vw, -29vh) scale(1); opacity: .5; }
-  36% { transform: translate(-25vw, -16vh) scale(1.12); opacity: 1; }
-  72% { transform: translate(-16vw, -26vh) scale(1.04); opacity: .72; }
-  100% { transform: translate(-23vw, -32vh) scale(1.1); opacity: .48; }
+.ambient__pigment {
+  position: absolute; inset: 0; opacity: 0;
+  animation: var(--pigment-name) var(--pigment-cycle) linear var(--pigment-phase) infinite;
+  animation-play-state: paused;
+  border-radius: 50%;
 }
-@keyframes aura-iris {
-  0% { transform: translate(40vw, 2vh) scale(1.08); opacity: 1; }
-  38% { transform: translate(22vw, -9vh) scale(1); opacity: .52; }
-  74% { transform: translate(18vw, 6vh) scale(1.12); opacity: .9; }
-  100% { transform: translate(34vw, -5vh) scale(1.04); opacity: .6; }
+.ambient__pigment--cherry {
+  --pigment-name: pigment-cherry; opacity: 1;
+  background: radial-gradient(ellipse at 50% 50% in srgb, var(--aurora-cherry) 5%, transparent 68%);
 }
-@keyframes aura-apricot {
-  0% { transform: translate(-16vw, 40vh) scale(1.04); opacity: .45; }
-  34% { transform: translate(-1vw, 25vh) scale(1.12); opacity: .82; }
-  68% { transform: translate(4vw, 31vh) scale(1); opacity: .5; }
-  100% { transform: translate(-13vw, 26vh) scale(1.08); opacity: 1; }
+.ambient__pigment--iris {
+  --pigment-name: pigment-iris;
+  background: radial-gradient(ellipse at 50% 50% in srgb, var(--aurora-iris) 5%, transparent 68%);
 }
+.ambient__pigment--lagoon {
+  --pigment-name: pigment-lagoon;
+  background: radial-gradient(ellipse at 50% 50% in srgb, var(--aurora-lagoon) 5%, transparent 68%);
+}
+.ambient__field--east .ambient__pigment--cherry,
+.ambient__field--south .ambient__pigment--cherry { opacity: 0; }
+.ambient__field--east .ambient__pigment--iris,
+.ambient__field--south .ambient__pigment--lagoon { opacity: 1; }
+/* At each phase one pigment carries the field; adjacent pigments overlap
+   softly instead of flashing through an empty/black midpoint. */
+@keyframes pigment-cherry {
+  0%, 12%, 100% { opacity: 1; }
+  30%, 70% { opacity: 0; }
+  88% { opacity: 1; }
+}
+@keyframes pigment-iris {
+  0%, 12%, 65%, 100% { opacity: 0; }
+  30%, 47% { opacity: 1; }
+}
+@keyframes pigment-lagoon {
+  0%, 47%, 100% { opacity: 0; }
+  65%, 82% { opacity: 1; }
+}
+:root[data-motion="on"][data-page-visible="true"] :is(.ambient__field, .ambient__pigment) { animation-play-state: running; }
+@keyframes aura-north {
+  0% { transform: translate(-3vw, -3vh) rotate(-18deg) scale(.96); }
+  42% { transform: translate(14vw, 15vh) rotate(12deg) scale(1.1); }
+  100% { transform: translate(3vw, 5vh) rotate(-8deg) scale(1.02); }
+}
+@keyframes aura-east {
+  0% { transform: translate(8vw, -8vh) rotate(12deg) scale(1); }
+  48% { transform: translate(-18vw, 9vh) rotate(-16deg) scale(1.12); }
+  100% { transform: translate(-1vw, -3vh) rotate(4deg) scale(.96); }
+}
+@keyframes aura-south {
+  0% { transform: translate(-10vw, 4vh) rotate(-8deg) scale(1.06); }
+  54% { transform: translate(15vw, -18vh) rotate(14deg) scale(1); }
+  100% { transform: translate(-3vw, -4vh) rotate(-14deg) scale(1.12); }
+}
+/* A static halo belongs to a few neutral titles, never article paragraphs.
+   Neutral ink still carries all contrast; the halo is optional decoration. */
+.study-intro__title, .onboard__title {
+  text-shadow: 0 0 26px color-mix(in srgb, var(--cool) 14%, transparent);
+}
+.lesson .lesson__head h1 { text-shadow: 0 0 28px color-mix(in srgb, var(--secondary) 12%, transparent); }
+.study-intro__eyebrow { color: var(--cool); }
+.lesson .lesson-form-label { color: var(--secondary); }
 /* Instant input and scoring; only the newly exposed panel gets a short cue. */
 .onboard__panel--enter { animation: tutorial-forward var(--d-route) var(--ease-standard) both; }
 .onboard__panel--enter[data-direction="back"] { animation-name: tutorial-back; }
@@ -1603,12 +1657,12 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 @keyframes tutorial-back { from { transform: translateX(-8px); } to { transform: translateX(0); } }
 :root[data-motion="on"] .score__metric .metric__track { animation: metric-settle var(--d-complete) var(--ease-standard) both; transform-origin: left; }
 @keyframes metric-settle { from { transform: scaleX(.97); } to { transform: scaleX(1); } }
-:root[data-motion="off"] :not(.ambient__field),
+:root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
 :root[data-motion="off"] *::before,
 :root[data-motion="off"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 :root[data-motion="off"] :is(.btn, .tile, .listbox__trigger):active { transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  .ambient__field { animation: none !important; }
+  .ambient__field, .ambient__pigment { animation: none !important; }
   .onboard__panel--enter, .score__metric .metric__track { animation: none !important; }
 }
 @media (forced-colors: active) {

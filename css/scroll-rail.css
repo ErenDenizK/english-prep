@@ -1,12 +1,12 @@
-/* The rail is a progressive enhancement. Native scroll behavior remains the
-   source of truth, and forced-colors restores the browser's own scrollbar. */
+/* Native scrolling remains the source of truth. The compact control catches
+   input only in a local 44px square around the slim visible edge grip. */
 [data-scroll-rail-enhanced] { scrollbar-width: none; }
 [data-scroll-rail-enhanced]::-webkit-scrollbar { display: none; }
 .scroll-rail {
   position: fixed;
   z-index: 8;
   top: var(--rail-top, 25vh);
-  right: var(--rail-right, 2px);
+  right: var(--rail-right, 8px);
   width: 44px;
   height: var(--rail-height, 240px);
   pointer-events: none;
@@ -39,14 +39,19 @@
   left: 19px;
   width: 6px;
   min-height: 28px;
-  border-radius: 8px;
+  border-radius: 20px;
+  /* Translation follows the finger immediately. Only the inner grip deforms. */
+}
+.scroll-rail__grip {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   background: var(--accent-text);
   background: linear-gradient(180deg in srgb, var(--accent-text), var(--secondary));
   transform-origin: center;
-  transition: width 240ms var(--ease-standard), left 240ms var(--ease-standard), box-shadow 240ms var(--ease-standard);
-  /* Position tracks the finger/scroll event exactly; it never eases behind. */
+  transition: scale 220ms var(--ease-standard), box-shadow 240ms var(--ease-standard);
 }
-.scroll-rail__marks { position: absolute; inset: 0; }
+.scroll-rail__marks { position: absolute; inset: 0; pointer-events: none; }
 .scroll-rail__mark {
   position: absolute;
   left: 19px;
@@ -58,45 +63,119 @@
   transform: translateY(-50%);
   transition: background-color 240ms var(--ease-standard), border-color 240ms var(--ease-standard), scale 320ms var(--ease-standard);
 }
-.scroll-rail__mark[data-current="true"] { background: var(--accent-text); border-color: var(--accent-text); scale: 1.35; }
-.scroll-rail__caption {
+.scroll-rail__mark[data-current="true"] { background: var(--secondary); border-color: var(--secondary); scale: 1.35; }
+.scroll-rail__pulse {
   position: absolute;
-  top: 50%;
-  right: 50px;
-  width: max-content;
-  max-width: min(220px, 50vw);
-  padding: 10px 12px;
-  border: 1px solid var(--edge);
-  border-radius: 10px;
-  background: var(--card);
-  color: var(--ink);
-  font: 500 .8125rem/1.5 var(--f-sans);
+  inset: var(--rail-pulse-y, 0px) 0 auto;
+  height: 44px;
+  border-radius: 50%;
   opacity: 0;
-  visibility: hidden;
-  transform: translate(4px, -50%);
-  transition: opacity 180ms var(--ease-standard), transform 240ms var(--ease-standard), visibility 180ms;
+  border: 1px solid var(--accent-text);
+  pointer-events: none;
 }
-.scroll-rail[data-interactive="true"]:is(:hover, :focus-within, [data-dragging="true"]) .scroll-rail__caption {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(0, -50%);
-  pointer-events: auto;
+.scroll-rail[data-phase="jump"] .scroll-rail__pulse { animation: rail-position-pulse 480ms var(--ease-standard) both; }
+.scroll-rail[data-phase="jump"][data-action="stage"] .scroll-rail__pulse {
+  border-color: var(--secondary);
+  border-radius: 12px;
+  animation-name: rail-stage-pulse;
 }
-.scroll-rail[data-caption-dismissed="true"] .scroll-rail__caption { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
-.scroll-rail[data-scrolling="true"] .scroll-rail__thumb,
-.scroll-rail[data-interactive="true"]:is(:hover, :focus-within) .scroll-rail__thumb { width: 8px; left: 18px; }
+.scroll-rail[data-scrolling="true"] .scroll-rail__grip,
+.scroll-rail[data-interactive="true"]:is(:hover, :focus-within) .scroll-rail__grip { scale: 1.35 1; }
+.scroll-rail[data-pressed="true"] .scroll-rail__grip { scale: 1.6 .92; }
 .scroll-rail[data-dragging="true"] .scroll-rail__control { cursor: grabbing; }
-.scroll-rail__control:focus-visible { outline: 2px solid var(--focus); outline-offset: 0; background: var(--page); }
-.scroll-rail[data-interactive="false"] { width: 6px; }
-.scroll-rail[data-interactive="false"] .scroll-rail__control { width: 6px; }
-.scroll-rail[data-interactive="false"] .scroll-rail__track { left: 2px; width: 1px; }
-.scroll-rail[data-interactive="false"] .scroll-rail__thumb { left: 1px; width: 3px; }
-.scroll-rail[data-interactive="false"] .scroll-rail__mark { left: 0; width: 5px; height: 5px; border-width: 1px; }
-.scroll-rail[data-interactive="false"] .scroll-rail__caption { display: none; }
+.scroll-rail[data-dragging="true"] .scroll-rail__grip { scale: 1.8 .92; }
+.scroll-rail[data-phase="release"] .scroll-rail__grip { animation: rail-release 460ms var(--ease-standard); }
+.scroll-rail[data-phase="cancel"] .scroll-rail__grip { animation: rail-cancel 220ms var(--ease-standard); }
+.scroll-rail:not([data-input="pointer"]) .scroll-rail__control:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; background: var(--page); }
+
+/* Resting artwork stays in the outer 16px gutter. A local transparent
+   44px-square target surrounds the 8px handle; no tall hit strip covers text.
+   Only explicit activation expands the opaque grip and well inward. */
+.scroll-rail[data-compact="true"] .scroll-rail__control { pointer-events: none; }
+.scroll-rail[data-compact="true"] .scroll-rail__control::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--edge);
+  border-radius: inherit;
+  background: var(--card);
+  opacity: 0;
+  transform: scaleX(.72);
+  transform-origin: right center;
+  transition: opacity 220ms var(--ease-standard), transform 420ms var(--ease-standard);
+  pointer-events: none;
+}
+.scroll-rail[data-compact="true"] .scroll-rail__track { opacity: .72; transform: translateX(18px); transition: transform 320ms var(--ease-standard); }
+.scroll-rail[data-compact="true"] .scroll-rail__marks { opacity: 0; transition: opacity 220ms var(--ease-standard); }
+.scroll-rail[data-compact="true"] .scroll-rail__thumb {
+  left: 0;
+  width: 44px;
+  height: 44px;
+  pointer-events: auto;
+  touch-action: none;
+  border-radius: 17px;
+}
+.scroll-rail[data-compact="true"] .scroll-rail__grip {
+  left: auto;
+  right: 0;
+  width: 8px;
+  border: 0;
+  border-radius: 6px;
+  background: linear-gradient(180deg in srgb, var(--accent-text), var(--secondary));
+  scale: 1;
+  box-shadow: none;
+  transition: width 320ms var(--ease-standard), border-radius 320ms var(--ease-standard), scale 220ms var(--ease-standard), box-shadow 240ms var(--ease-standard);
+}
+.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__grip {
+  width: 44px;
+  border: 1px solid var(--ink-2);
+  border-radius: 17px;
+  background: var(--card);
+  box-shadow: 0 3px 12px rgb(0 0 0 / .14);
+}
+.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__track { transform: none; }
+.scroll-rail[data-compact="true"]:not([data-expanded="true"]) .scroll-rail__control:focus-visible { outline: none; background: transparent; }
+.scroll-rail[data-compact="true"]:not([data-expanded="true"]) .scroll-rail__control:focus-visible .scroll-rail__grip { outline: 2px solid var(--focus); outline-offset: -2px; }
+.scroll-rail[data-compact="true"]:not([data-expanded="true"]) .scroll-rail__grip::before { opacity: 0; }
+.scroll-rail[data-compact="true"]:not([data-expanded="true"]) .scroll-rail__grip { animation: none; }
+
+.scroll-rail[data-compact="true"] .scroll-rail__grip::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 17px;
+  width: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent-text);
+  box-shadow: 6px 0 0 var(--secondary), 0 6px 0 var(--accent-text), 6px 6px 0 var(--secondary), 0 12px 0 var(--accent-text), 6px 12px 0 var(--secondary);
+  transition: scale 260ms var(--ease-standard), background-color 260ms var(--ease-standard);
+}
+.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__control { pointer-events: auto; }
+.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__control::before { opacity: 1; transform: scaleX(1); }
+.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__marks { opacity: 1; }
+.scroll-rail[data-compact="true"][data-pressed="true"] .scroll-rail__grip,
+.scroll-rail[data-compact="true"][data-dragging="true"] .scroll-rail__grip {
+  scale: calc(.88 - var(--rail-pinch, 0) * .08) 1.08;
+  box-shadow: -4px 0 16px rgb(0 0 0 / .18);
+}
+.scroll-rail[data-compact="true"][data-pressed="true"] .scroll-rail__grip::before { scale: .7 1; }
+.scroll-rail[data-compact="true"][data-dragging="true"] .scroll-rail__grip::before { scale: .7 1.08; }
+.scroll-rail[data-compact="true"][data-phase="release"] .scroll-rail__grip { animation-name: rail-compact-release; }
+.scroll-rail[data-interactive="false"] { display: none; }
+@keyframes rail-release { 0% { scale: 1.8 .92; } 48% { scale: .9 1.04; } 100% { scale: 1 1; } }
+@keyframes rail-compact-release { 0% { scale: .88 1.08; } 48% { scale: 1.035 .97; } 100% { scale: 1 1; } }
+@keyframes rail-cancel { from { scale: .94; } to { scale: 1; } }
+@keyframes rail-position-pulse { from { opacity: .7; scale: .28; } to { opacity: 0; scale: 1; } }
+@keyframes rail-stage-pulse { from { opacity: .7; scale: .55 .25; } 55% { opacity: .4; scale: 1 .84; } to { opacity: 0; scale: 1; } }
 :root[data-motion="off"] .scroll-rail *,
-:root[data-page-visible="false"] .scroll-rail * { animation: none !important; transition: none !important; }
+:root[data-motion="off"] .scroll-rail *::before,
+:root[data-motion="off"] .scroll-rail *::after,
+:root[data-page-visible="false"] .scroll-rail *,
+:root[data-page-visible="false"] .scroll-rail *::before,
+:root[data-page-visible="false"] .scroll-rail *::after { animation: none !important; transition: none !important; }
 @media (prefers-reduced-motion: reduce) {
-  .scroll-rail * { animation: none !important; transition: none !important; }
+  .scroll-rail *, .scroll-rail *::before, .scroll-rail *::after { animation: none !important; transition: none !important; }
 }
 @media (forced-colors: active) {
   html, .shell__scroll, [data-scroll-rail-enhanced] { scrollbar-width: auto; scrollbar-color: auto; }

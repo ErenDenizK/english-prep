@@ -194,6 +194,10 @@ function restoreDialog() {
       showModal() { this.open = true; },
       close() { this.open = false; void this.emit("close"); },
       focus(options) { this.focusOptions = options; },
+      // This fixture exercises restore persistence, not visual choreography.
+      // The real dialog's headings/actions are covered in browser tests.
+      querySelector() { return null; },
+      querySelectorAll() { return []; },
     }];
   }));
   globalThis.document = { getElementById: (id) => nodes[id] };

@@ -6,7 +6,7 @@ or CMS is needed. Serve the repository and open `about/` to preview edits.
 | File | Purpose |
 | --- | --- |
 | `index.html` | Metadata, hero, section placement, static fallback, final invitation and footer. |
-| `content.js` | Study stages, architecture, features, engineering details, questions and extra sections. |
+| `content.js` | Hero folio, study stages, architecture, features, engineering details, questions and extra sections. |
 | `about.js` | Safe DOM rendering and accessible story/architecture selection. |
 | `about.css` | Responsive portfolio layout using the app's measured color tokens. |
 | `assets/` | Genuine application viewport captures with demonstration data. |
@@ -52,8 +52,8 @@ cropped to a square illustration immediately below its controls; its top remains
 legible and the explanatory copy follows. The desktop story places copy beside
 the wide capture. All essential claims remain in ordinary page copy.
 
-Actual capture pairs: `education`, `article`, `test`, `results`. The hero uses
-Education and Article; story uses Article, Test and Results. Keep both files
+Actual capture pairs: `education`, `article`, `test`, `results`. The folio and story use
+Article, Test and Results; Education remains available for app/README presentation. Keep both files
 when adding a new capture. If dimensions change, update the `source`/`img`
 attributes and frame ratio in `index.html` and `about.css`.
 
@@ -124,14 +124,33 @@ fallbacks; live totals are read from `data/manifest.json`.
 The masthead/footer use the full `english prep.` wordmark; the closing invitation
 uses compact `ep.`. Both use `../js/brand.js`, one type treatment and a cherry dot.
 The baseline is documented in [ADR 009](../docs/adr/009-expressive-study-motion.md);
-[the current composition](../docs/design/about-v071.md) explains the scene update.
-Shared `interactions.js` handles finite effects and pointer-scene lifecycle;
+[the current composition](../docs/design/about-v072.md) explains the scene update.
+Shared `interactions.js` handles finite effects and cancellable arrivals;
 `motion.js` owns the preference, background and reduced-motion behavior.
 
-The hero's decorative image plane responds only to a fine hover pointer, with
-at most 2 degrees tilt and 6px displacement. No paragraph, headline or click target
-moves in response to the pointer. The reflection is bounded behind the artwork.
-Touch scroll/zoom stay native. There is no permanent JavaScript animation loop.
+The hero is a study folio with three physical leaves, edited through
+`folioChapters` in `content.js`. Each defines an id, label, existing capture,
+short sheet title/note, ordinary heading/body and a real application action.
+Available semantic tones are `accent` (sakura), `cool` (lagoon), `secondary`
+(iris) and `tertiary` (apricot). Headlines and explanations remain neutral;
+the selected leaf uses its tone for its edge, index and small category label.
+
+Selecting a tab brings its real screen to the front and changes the product
+explanation immediately. Tapping the front leaf or “Katmanları aç” fans the
+three layers apart; exposed leaves can be selected directly. “Döndür” gives
+a deliberate side angle, then “Öne dön” restores the front. These are native
+buttons, including all drag alternatives; arrow keys/Home/End also move among
+tabs. Controls stay outside the moving deck and focus remains on the control.
+
+Optional horizontal dragging on the deck turns one leaf after a 46px movement;
+below that threshold the object settles back. The transient angle is bounded
+at 16° horizontal/5° vertical. A vertical intention, pointer cancellation,
+lost capture, blur, hidden page or preference change releases the drag without
+turning. `touch-action: pan-y pinch-zoom` preserves browser scroll and zoom.
+There is no hover-only action, autoplay carousel or idle JavaScript frame loop.
+All meaningful states remain complete with motion disabled; a user-selected
+angle changes instantly instead of animating. The ordinary title/caption
+never rotate with the decorative capture.
 
 Study and architecture each form one continuous board. Their controls are
 chapters of the same scene: no separate button cards or screenshot gallery.
@@ -140,7 +159,7 @@ labels and additional authored stages. Labels, links and pressed state update
 immediately, while illustrations follow a softer 1100ms flow and SVG trace.
 Clicking the selected chapter again acknowledges the action through its glyph.
 
-The hero waits for both screenshots to decode. Each story selection waits for
+The active folio leaf waits for its screenshot to decode. Each story selection waits for
 the selected picture to decode and for its actual frame to intersect the viewport;
 `whenVisible` also waits for fonts and painted frames. Rapid changes cancel
 pending and active effects. A stale decoded image cannot animate the latest
@@ -167,7 +186,7 @@ Do not introduce autoplay carousels or continuously moving paragraphs.
   The last selected stage must win with no accumulated scene animations.
 - Scroll to the product illustration and check its one-shot entry starts when
   the illustration enters, not when the distant section heading enters.
-- Test fine-pointer response, pointer leave and touch scrolling. Turn motion off in application settings,
+- Test folio chapter buttons, layer fan, angle/front return, dragging/cancellation and native touch scrolling. Turn motion off in application settings,
   reload, and enable OS reduced motion; the content must remain usable.
 - Check current captures, alt text, image loading and the `/english-prep/` prefix.
 - Run `tests/about_interaction_browser.py` and the app's required checks.

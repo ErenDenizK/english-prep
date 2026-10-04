@@ -138,7 +138,11 @@ class UXRefinementTests(unittest.TestCase):
         self.page.goto(BASE + '/index.html#profil')
         backup = self.page.get_by_role('button', name='Yedek al', exact=True)
         backup.click()
-        expect(backup.locator('..').get_by_role('status')).to_have_text('Paylaşım iptal edildi.')
+        export = self.page.locator('#backup-dialog')
+        expect(export).to_be_visible()
+        export.get_by_role('button', name='Dosyayı paylaş', exact=True).click()
+        expect(export.locator('#backup-export-status')).to_have_text('Paylaşım yapılmadı. İstersen yeniden deneyebilirsin.')
+        expect(backup.locator('..').get_by_role('status')).to_have_text('Paylaşım yapılmadı. İstersen yeniden deneyebilirsin.')
 
     def test_topic_labels_match_launched_test_instead_of_entire_pool(self):
         self.page.goto(BASE + '/index.html#test')

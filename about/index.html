@@ -34,17 +34,27 @@
     <section class="about-frame about-hero" aria-labelledby="title">
       <div class="about-hero-copy">
         <p class="about-eyebrow"><span class="about-dot" aria-hidden="true"></span>Sezgini bilgiye dönüştür.</p>
-        <h1 id="title">Bildiğin İngilizce.<br><span>Daha net<br class="about-wide-break"> ayrımlar.</span></h1>
+        <h1 id="title">Bildiğin İngilizce.<br><span>Daha net<br class="about-wide-break"> <span class="about-keyword">ayrımlar.</span></span></h1>
         <p class="about-lead">Doğru cevabı sezmekten, neden doğru olduğunu anlamaya. Makale dersleri ve açıklamalı sorularla kendi çalışma alanın.</p>
         <div class="about-actions"><a class="about-button about-button--primary" href="../index.html#egitim">Çalışmaya başla <span aria-hidden="true">↗</span></a><a class="about-text-link" href="#urun">Uygulamayı keşfet <span aria-hidden="true">↓</span></a></div>
         <p class="about-quiet">Ücretsiz. Hesapsız. İlerlemen kendi tarayıcında.</p>
       </div>
-      <div class="about-hero-visual" role="group" aria-label="Uygulamanın telefon ve geniş ekran görünümleri"><div class="about-hero-scene"><div class="about-scene-light" aria-hidden="true"></div>
-        <svg class="about-hero-trace" viewBox="0 0 600 420" fill="none" aria-hidden="true"><path class="about-trace" pathLength="1" d="M48 140C96 62 202 36 313 63S534 127 546 235c10 93-109 140-215 132"/><circle cx="48" cy="140" r="5"/><circle cx="331" cy="367" r="5"/></svg>
-        <div class="about-orbit" aria-hidden="true"><span>Oku.</span><span>Ayırt et.</span><span>Uygula.</span></div>
-        <figure class="about-hero-wide"><img src="assets/article-wide.webp" width="1440" height="1000" alt="Makale dersinin geniş ekrandaki okuma düzeni" fetchpriority="high"><figcaption>Okumaya alan aç.</figcaption></figure>
-        <figure class="about-hero-phone"><img src="assets/education-phone.webp" width="390" height="844" alt="English Prep Eğitim ekranının telefon boyutundaki görünümü"><figcaption>İstediğin yerden başla.</figcaption></figure></div>
-      </div>
+      <section class="about-hero-visual about-folio" id="study-folio" aria-labelledby="folio-heading">
+        <div class="folio-topline"><span class="folio-edition">Çalışma akışı / <span id="folio-count">01—03</span></span><span class="folio-signature" data-brand="compact" aria-hidden="true">ep.</span></div>
+        <div class="folio-tabs" id="folio-tabs" role="group" aria-label="Çalışma yaprağını seç"></div>
+        <div class="folio-stage" id="folio-stage" role="group" aria-label="Döndürülebilen çalışma dosyası" aria-describedby="folio-hint">
+          <div class="folio-orbit" aria-hidden="true"><svg viewBox="0 0 500 360" fill="none"><path class="folio-thread" pathLength="1" d="M74 265C28 145 142 46 274 82s206 130 118 191-171 29-165-49"/><circle cx="74" cy="265" r="4"/><circle cx="227" cy="224" r="4"/></svg></div>
+          <div class="about-hero-scene folio-deck" id="folio-deck" data-expanded="false" data-view="front"></div>
+          <div class="folio-grip" aria-hidden="true"><span></span><span></span><span></span></div>
+        </div>
+        <div class="folio-toolbar" role="group" aria-label="Dosyayı incele">
+          <button type="button" class="folio-tool" id="folio-inspect" aria-pressed="false" aria-controls="folio-deck"><span class="folio-tool-mark" aria-hidden="true"></span><span>Katmanları aç</span></button>
+          <button type="button" class="folio-tool" id="folio-rotate" aria-pressed="false" aria-controls="folio-deck"><span class="folio-rotate-mark" aria-hidden="true">↻</span><span>Döndür</span></button>
+        </div>
+        <div class="folio-caption"><p class="folio-kicker" id="folio-label">01 / Oku</p><h2 id="folio-heading">Bir ayrımı aç.</h2><p id="folio-description">Aynı derste yan yana gelen kullanımları incele.</p><a id="folio-action" class="about-text-link" href="../index.html#egitim/tenses-present-perfect-vs-past-simple">Derse git <span class="about-link-arrow" aria-hidden="true">↗</span></a></div>
+        <p id="folio-hint" class="folio-hint">Bir yaprağa dokun. Katmanları aç, döndür veya yana sürükle.</p>
+        <p id="folio-status" class="about-sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+      </section>
     </section>
     <div class="about-frame about-corpus-band"><dl class="about-corpus" aria-label="Uygulamadaki içerik"><div><dt>Konu</dt><dd id="corpus-topics">10</dd></div><div><dt>Makale dersi</dt><dd id="corpus-lessons">60</dd></div><div><dt>Açıklamalı soru</dt><dd id="corpus-questions">241</dd></div></dl><p>Birbirine benzeyen kullanımlar.<br>Aralarındaki önemli farklar.</p></div>
     <section id="urun" class="about-frame about-section about-study" aria-labelledby="study-heading">

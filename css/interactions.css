@@ -30,6 +30,8 @@
 .listbox__option { gap: 16px; padding-inline: 12px; }
 .listbox__option-label { min-width: 0; flex: 1; }
 .listbox__option-mark { display: inline-flex; justify-content: center; align-items: center; width: 20px; flex: 0 0 20px; color: var(--accent-text); }
+.listbox__option-mark svg { transform-origin: center; }
+.dialog__action-label { display: inline-flex; gap: inherit; align-items: center; justify-content: center; pointer-events: none; }
 .listbox__option[aria-selected="true"] { background: var(--accent-tint); color: var(--ink); }
 .listbox__option--active { outline-offset: -3px; }
 /* Keep geometry steady and separate the actual result from the shortcut key. */
@@ -105,7 +107,7 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
-:root[data-motion="off"] :not(.ambient__field),
+:root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
 :root[data-motion="off"] *::before,
 :root[data-motion="off"] *::after { animation: none !important; transition: none !important; }
 

@@ -1,9 +1,18 @@
 # Changelog
 
 Versioning: `x.y`, `x` fixed at `0` while the app is in development — see
-the README's **Versioning** section for the exact rule (only the project
+the [development guide's Versioning section](docs/development.md#versioning) for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
+
+## v0.72 — 2026-10-04
+
+- Gerçekte görünür, üç noktada Sakura/iris/lagün arasında dönen aura; serin vurgu rolleri, nötr okuma metni ve ölçülmüş güçlü renk/kontrast sistemi.
+- Menüler, diyaloglar ve onboarding parçaları için ayrı açılma, sıralı yerleşme, çizilme ve işaret animasyonları. Hedefler ve uygulama durumu anında kullanılabilir.
+- Mobilde tutulabilen, basma/sürükleme/bırakma tepkili kaydırma tutamacı; sürekli konum ve bölüm durakları; masaüstü yan açıklamaları kaldırıldı.
+- About'ta çevrilebilen ve katmanları açılan etkileşimli çalışma dosyası; gerçek yüksek çözünürlüklü uygulama görüntüleri ve eşdeğer klavye/düğme kullanımı.
+- Masaüstünde sabit devam alanı, belirgin geçmiş sıfırlama düğmesi ve içeriği önceden görülebilen dosya/metin aktarımı. Yedek biçimi korunur.
+- GitHub sunumu gerçek ekranlar, hareketli örnek, tasarım/mimari anlatısı ve yeni özellik yol haritasıyla yenilendi. Önceki yedi tasarım commitinin kimliği kullanıcının talebiyle düzeltildi; materyal ve orijinal kaynak geçmişi aynı kaldı.
 
 ## v0.71 — 2026-10-04
 

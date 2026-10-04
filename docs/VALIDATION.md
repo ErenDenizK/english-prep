@@ -1,112 +1,116 @@
-# Validation — v0.71
+# Validation — v0.72
 
-4 October 2026. Baseline: shipped `cfa4089` (v0.70). Source material from
-`test` commit `39dcd46` remains unchanged: **10 topics, 60 continuous article
-lessons, 241 questions and 723 option notes**. Independent SHA-256 checks found
-identical bytes in all **85 files** under `data/`, `original/` and `legacy/`.
-The preceding validation report remains in Git history.
+4 October 2026. Baseline: shipped v0.71 (`a234205`, reattributed with an identical
+tree as `b3d9549`). Source material from `39dcd46` remains unchanged: **10 topics,
+60 continuous article lessons, 241 questions and 723 option notes**. Independent
+SHA-256 comparison found identical bytes in all **85 files** under `data/`,
+`original/` and `legacy/`. Previous release reports remain in Git history.
 
 ## Executed checks
 
 | Check | Result |
 | --- | --- |
-| `npm run check` | **238 unit tests passed**, no failures or skips. Formatting/schema, current and historical palette checks passed. |
-| Current palette | **7,848 numerical contrast comparisons passed**; the unchanged three aura pigments stay inside the measured alpha envelope. |
-| `tools/verify-ui.mjs` | **3,597 checks passed** in the final comprehensive run, with zero failures. |
-| `tests/editorial_smoke.py` | **12 passed**: real material, responsive flows, history, preserved version and offline coexistence. |
-| `tests/reading_system.py` | **14 passed**: article roles, optional introduction, settings-only motion preference, OS/hidden behavior and install/offline paths. |
-| `tests/component_interactions_browser.py` | **6 passed**: menus, dialogs, answer semantics/focus and motion cancellation. |
-| `tests/pretest_progress_browser.py` | **3 passed**: instructional-body progress, optional checks and resume. |
-| `tests/quiz_resume_browser.py` | **10 passed**: real question identity/order, answer persistence and failure paths. |
-| `tests/ux_refinements.py` | **7 passed across the initial and corrective runs**. Six passed initially; the Profile focus defect was fixed and the affected case plus the adjacent late-route case passed again. |
-| `tests/onboarding_interaction_browser.py` | **8 passed**: cohesive scenes, slow-font readiness, repeat selection, interruption, keyboard, responsive layout and 200% text. |
-| `tests/about_interaction_browser.py` | **13 passed**; two relevant tests repeated after the final enlarged-text masthead correction also passed. |
-| `tests/v070_motion_browser.py` | **9 passed across initial and corrective runs**. Eight passed initially; the result assertion was updated to observe actual readiness-gated motion and the affected case passed. |
-| `tests/v071_motion_browser.py` | **8 passed**: cold fonts/images, latest-scene ownership, settings-only control, centered chrome, image density, native narrow scrolling and desktop rail. |
-| `tests/composition_browser.py` | **5 passed**: header centering, 200% text, changing quiz controls and honest complete/partial/zero-result states. |
-| `tests/scroll_rail_browser.py` | **8 passed**: drag/cancel, keyboard, landmarks, actual emulated touch swipe, coarse-pointer tablet, native fallback, cleanup and unchanged quiz state. |
-| Axe-core 4.10.3 | **24 final scans, zero definite violations**, including WCAG 2 A/AA, 2.1 AA, 2.2 AA and best-practice rules. |
-| Real media | Eight captures regenerated: phone **1170×2532 (3×)**, wide **2880×2000 (2×)**. Responsive selection and intrinsic dimensions verified. |
+| `npm run check` | **246 unit tests passed**, no failures or skips; formatting, schema and current/historical palette checks passed. |
+| Current palette | **67,650 numerical comparisons passed**, including 6,456 aura mixtures and 1,108 title-halo samples; a continuous color-envelope argument bounds intermediate aura states. |
+| `tools/verify-ui.mjs` | **3,600 checks passed**, zero failures in the comprehensive browser sweep. |
+| `tests/editorial_smoke.py` | **12 passed across initial/corrective runs**: all material, responsive flows, history, original interface and offline coexistence. The export case now explicitly reviews then downloads the backup. |
+| `tests/reading_system.py` | **14 passed**: reading roles, onboarding/name, motion preference, install and offline behavior. |
+| `tests/component_interactions_browser.py` | **8 passed**: menus, dialogs, answer semantics, stable click targets and cancellation. |
+| `tests/pretest_progress_browser.py` | **3 passed**: optional preliminary checks do not manufacture article progress. |
+| `tests/quiz_resume_browser.py` | **10 passed**: question order/identity, persistence and interruption/failure paths. |
+| `tests/ux_refinements.py` | **7 passed across initial/corrective runs**. The cancellation case now selects native sharing from the explicit export preview; no automatic fallback is allowed. |
+| `tests/onboarding_interaction_browser.py` | **9 passed**: articulated parts, readiness, rapid/repeated selection, keyboard, narrow layouts and 200% text. |
+| `tests/about_interaction_browser.py` | **15 passed across initial/corrective runs**; final keyboard selection, enlarged-text wrapping and updated transfer-feature copy were checked after integration. |
+| `tests/v070_motion_browser.py` | **11 passed** in the final corrective run: stationary real pointer targets through delayed arrival and hidden-choice reveal, focus and glyph choreography. |
+| `tests/v071_motion_browser.py` | **8 passed**: cold fonts/images, scene ownership, settings-only pause, centered chrome, real image density and native scrolling. |
+| `tests/composition_browser.py` | **5 passed**: centered headers, enlarged text, quiz chrome and honest result states. |
+| `tests/scroll_rail_browser.py` | **11 passed**: desktop content clearance, actual emulated touch drag/multi-touch, track/stage jumps, keyboard, fallback, cleanup and unchanged quiz state. |
+| `tests/aura_browser.py` | **3 passed**: perceptible frame change, three-color local cycles, and off/reduced/hidden behavior. |
+| `tests/transfer_browser.py` | **4 passed**: preview, explicit channels, cancellation, manual copy and stale async cleanup. |
+| `tests/v072_integration_browser.py --axe` | **6 passed with no skips**: five independent behavioral scenarios plus the 36-state accessibility matrix. |
+| Real media | Eight app captures refreshed at **1170×2532 (phone, 3×)** and **2880×2000 (wide, 2×)**. GitHub media derives from actual captures/browser recordings, with static alternatives. |
 
-The twelve Python suites cover **103 test scenarios**. Counts describe automated
-checks, not participants or physical devices. All checks use Chromium and the
-production `/english-prep/` URL prefix. No runtime package or build was added.
+The fifteen Python suites cover **126 passing scenarios**, including corrective runs. These are automated scenarios and numerical assertions, not participants. All
+browser checks use Chromium and the production `/english-prep/` path prefix.
+No runtime package, build step or dependency lockfile was introduced.
 
-## Four rounds of diagnosis and refinement
+## What repeated review changed
 
-1. **Reproduce and measure.** A controlled 2.1-second font delay reproduced an
-   entrance that ended around 589ms before Inter completed around 2154ms. Mobile
-   header centers drifted up to 43.5px. Previous aura displacement was too small
-   to communicate movement. The supplied fragmented compositions were reviewed.
-2. **Implement the shared language.** Font/image readiness plus actual visibility
-   govern finite effects. Onboarding/About group their parts into coherent scenes.
-   The new 1100ms flowing illustration role complements fast control responses.
-   Equal outer header tracks hold the title center; the result is a single folio.
-3. **Review real renders and interaction.** A moving gradient revealed a rectangular
-   boundary and was corrected with contained falloffs. Enlarged mobile About text
-   exposed a launch action wrapping into single characters; it now wraps as a whole.
-   The rail's initial boundary contrast was strengthened. Repeated native name
-   changes caused a redundant Profile rerender; already-committed names no longer
-   redraw the field, preserving actual focus and selection.
-4. **Verify semantics and failure paths.** Axe found an orphan desktop scrollbar;
-   a named navigation landmark corrected it. Rapid selections, delayed resources,
-   forced colors, off/reduced/hidden states and existing learning flows were checked.
-   Two older motion assertions sampled immediate DOM commit; they now wait for
-   the actual finite effect while still verifying that state is immediately usable.
+1. **Measure visible movement.** CSS motion existed but was almost invisible.
+   Over two seconds, pixels changing by at least 12 RGB levels rose from **0% to
+   46.3%** in the controlled 390×844 comparison. Three blank sample areas each
+   cycle through cherry, iris and lagoon over twelve seconds. Layer opacity is
+   capped after composition so overlap cannot accumulate unchecked.
+2. **Protect the interaction boundary.** Popup/dialog frames stay stationary;
+   marks and labels animate separately. A first-frame regression actually clicks
+   one pixel inside an option edge. A retained quiz test exposed a real 12px
+   answer-target shift when input canceled an entering container; the correction
+   confines entry motion to the prompt and key glyphs, preserving answer geometry.
+3. **Inspect real compositions.** The new About folio was reviewed at phone,
+   tablet, desktop and enlarged text sizes. Tabs now wrap as whole controls.
+   GitHub capture review exposed an insufficient desktop rail gutter; final
+   presentation keeps the rail outside the desktop content frame. The opaque
+   resting mobile grip also covered a verdict mark in a real capture; its final
+   paint is now an 8px edge handle in the outer 16px gutter, with a local 44px
+   touch target and an opaque well only after activation.
+   The tall desktop resume pane stays within 1px of its initial screen position
+   through native scrolling; short windows retain full ordinary scroll access.
+4. **Test outcomes and data boundaries.** Transfer channels act only after user
+   selection. Cancellation does not claim delivery or trigger download. Native
+   queued close events and late promises cannot corrupt a new export preview.
+   Every preserved material/archive file matches the preceding release.
 
-There are no animation callbacks that update a score, unlock a button or change
-lesson content. Real input cancels pending/active ancestors before it can move a
-control. A late image cannot resurrect an obsolete scene. Answer prose stays
-opaque and fixed; the existing Sakura/periwinkle semantics remain measured.
+## Contrast and accessibility evidence
 
-## Measurements and honest limits
+The stronger aura's conservative dark minima include **9.66:1 reading ink,
+7.19:1 supporting ink, 7.12:1 cool accent, 6.52:1 Sakura, 3.49:1 essential
+boundary and 6.49:1 focus**. Measured title halos retain at least **7.04:1**.
+Opaque answer surfaces keep neutral prose and check/cross plus written verdicts.
+The [atmosphere research](research/2026-10-living-aura-v072.md) gives the color
+hull derivation and distinguishes continuous bounds from discrete samples.
 
-The same three fixed aura pigments now travel and overlap on 16/21/27-second
-phases, with unchanged maximum field alpha 0.10 dark/0.05 light. In a controlled
-five-second sample, the phone area changing by at least three channel units grew
-from 0.1% to 40.2%; mean RGB change grew from 0.305 to 1.965. These are image differences,
-not a user-preference or battery measurement. The isolated CSS loop added no
-LayoutCount/RecalcStyleCount/ScriptDuration over the sampled 1.2 seconds; headless
-CDP did not report layer events, so GPU compositing is not claimed as measured.
-
-Rail measurements use 101 sRGB gradient positions against 40 conservative aura
-backgrounds per theme. Thumb minima are 6.45:1 dark/4.72:1 light; track/inactive-dot
-edges 6.59:1/5.30:1; focus 6.80:1/4.91:1. Forced colors restores native scrollbars.
-A 44px interactive rail appears only with enough measured whitespace and a fine
-pointer. Narrow/touch layouts retain the full reading column and native gestures,
-with a passive six-pixel indicator. There is no scroll snapping or quiz navigation.
-
-Axe returned 301 incomplete checks: 297 contrast cases and four closed-popup
-`aria-controls` references. They are not counted as passes. Six additional DOM
-checks at 320/1440px verified existing uniquely identified hidden popup targets.
-Numerical palette/rail measurements supplement gradient limitations.
-
-Header centers measure 0.00px offset at 320/390/768/1440px. Onboarding action position
-is unchanged between scenes, including 320px and 200% text. Final artwork sequences
-last 1100–1260ms while selections remain immediate. Current real screenshot files
-are about 101–243KiB each; HTML retains logical viewport dimensions to reserve space.
-
-Official Duolingo pages were proxy-blocked. The research distinguishes that limit
-from retrieved Rive official case-study/technical sources and W3C/MDN source text.
-No invented Duolingo timings, physical iPhone/Safari certification, screen-reader
-usability study, battery benchmark or universally preferred animation is claimed.
+Axe-core 4.10.3 ran **36 states with zero definite violations** across dark phone,
+light phone and dark desktop. **531 incomplete results are not automatic passes**:
+525 concern contrast beneath gradients, handled with separate token/compositing
+measurements and rendered inspection; six concern popup ID relationships.
+Manual DOM checks found all 12 visible `aria-controls` targets in those six
+cases. [Independent review](audit/expressive-v072.md) records the matrix and
+limits. This is evidence within tested states, not a blanket WCAG certification.
 
 ## Reproduce
 
-From `/workspace`, start `python3 -m http.server 8171 --bind 127.0.0.1 --directory /workspace`.
-Confirm a real response from `/english-prep/index.html`; a listening PID alone is
-insufficient. From `/workspace/english-prep`:
+From `/workspace/english-prep`, with Python Playwright and Chromium installed:
 
 ```sh
+python3 -m http.server 8182 --bind 127.0.0.1 --directory /workspace
+# In a separate terminal, from the checkout:
 npm run check
-PLAYWRIGHT_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright CHROMIUM_PATH=/usr/bin/chromium node tools/verify-ui.mjs http://127.0.0.1:8171/english-prep
-python3 tests/v071_motion_browser.py --base-url http://127.0.0.1:8171/english-prep
-python3 tests/scroll_rail_browser.py --base-url http://127.0.0.1:8171/english-prep
-python3 tools/capture-portfolio.py --base-url http://127.0.0.1:8171/english-prep
+PLAYWRIGHT_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright CHROMIUM_PATH=/usr/bin/chromium node tools/verify-ui.mjs http://127.0.0.1:8182/english-prep
+python3 tests/editorial_smoke.py --base-url http://127.0.0.1:8182/english-prep
+python3 tests/v070_motion_browser.py --base-url http://127.0.0.1:8182/english-prep
+python3 tests/aura_browser.py --base-url http://127.0.0.1:8182/english-prep
+python3 tests/scroll_rail_browser.py --base-url http://127.0.0.1:8182/english-prep
+python3 tests/transfer_browser.py --base-url http://127.0.0.1:8182/english-prep
+python3 tests/about_interaction_browser.py --base-url http://127.0.0.1:8182/english-prep
+python3 tests/v072_integration_browser.py --base-url http://127.0.0.1:8182/english-prep --axe
 ```
 
-Other Python suites above use the same `--base-url` argument. Browser tooling is
-prepared development tooling, not a runtime dependency. Processes must restart
-after environment restoration. The [independent audit](audit/expressive-motion-v071.md),
-[motion research](research/2026-10-motion-v071.md), [rail design](design/scroll-rail-v071.md)
-and [ADR010](adr/010-living-scenes-and-navigation.md) contain supporting evidence.
+The other named Python suites accept the same `--base-url`. The optional axe
+matrix also needs axe-core; its test CLI documents the path override. Media
+reproduction lives in `tools/capture-portfolio.py` and `docs/github/capture.py`.
+A restored environment must restart its HTTP process and verify real responses.
+
+## Limits and provenance
+
+Physical iPhone/Safari, real OS share-sheet recipient delivery, screen-reader
+speech, learner usability, battery use and hardware frame rates were not
+certified. Chromium emulation and numerical contrast are useful, narrower
+observations. Several rendered research hosts were proxy-blocked; retrieved
+primary GitHub source documents are identified in each research record.
+
+The owner's authorized attribution correction changes only seven design commits'
+author/committer identity and consequent parent hashes. Trees, messages and both
+dates were verified identical; [the address map](audit/design-attribution-v072.md)
+keeps historical audit references traceable. Older original/content commits were
+not reattributed. Repository presentation on `main` changes documentation/media
+only; the Pages application continues from `test`.

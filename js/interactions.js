@@ -79,6 +79,36 @@ function preset(kind, direction) {
     case "dialog": return { role: "route", frames: [{ transform: "translateY(12px)" }, { transform: "translateY(0)" }] };
     case "route": return { role: "route", frames: [{ transform: `translateX(${sign * 12}px)` }, { transform: "translateX(0)" }] };
     case "onboard": return { role: "scene", frames: [{ transform: `translateX(${sign * 12}px)` }, { transform: "translateX(0)" }] };
+    // An outside halo acknowledges the opening. Clipping even a stable box
+    // would remove its edge hit targets before pointerdown can settle it.
+    case "panel": return { role: "route", frames: [
+      { boxShadow: "0 0 0 1px var(--accent-tint), 0 0 0 0 transparent" },
+      { boxShadow: "0 0 0 5px var(--accent-tint), 0 8px 24px #00000018", offset: .45 },
+      { boxShadow: "0 0 0 8px transparent, 0 0 0 0 transparent" },
+    ] };
+    case "item": return { role: "reveal", frames: [{ transform: "translateY(6px)" }, { transform: "translateY(0)" }] };
+    case "unfold": return { role: "scene", frames: [{ transform: "translateY(5px) scaleY(.84)" }, { transform: "translateY(0) scaleY(1)" }] };
+    case "fan": return {
+      role: "complete", easing: "linear", frames: [
+        { transform: `translateX(${sign * 12}px) rotate(${sign * 5}deg)`, offset: 0, easing: SETTLE },
+        { transform: `translateX(${-sign}px) rotate(${-sign}deg)`, offset: .72, easing: EASING },
+        { transform: "translateX(0) rotate(0deg)", offset: 1 },
+      ],
+    };
+    case "signal": return {
+      role: "scene", easing: "linear", frames: [
+        { transform: "scale(.55)", offset: 0, easing: SETTLE },
+        { transform: "scale(1.22)", offset: .62, easing: EASING },
+        { transform: "scale(1)", offset: 1 },
+      ],
+    };
+    case "folio": return {
+      role: "flow", easing: "linear", frames: [
+        { transform: `perspective(900px) translateX(${sign * 12}px) rotateY(${sign * 24}deg)`, offset: 0, easing: "cubic-bezier(.22,.65,.25,1)" },
+        { transform: `perspective(900px) translateX(${-sign}px) rotateY(${-sign * 2}deg)`, offset: .74, easing: EASING },
+        { transform: "perspective(900px) translateX(0) rotateY(0deg)", offset: 1 },
+      ],
+    };
     // Expressive motion belongs to artwork and small glyphs, never answer text.
     // Explicit finite keyframes give a spring-like settle without an idle solver
     // or a dependence on linear() easing support in the browser.

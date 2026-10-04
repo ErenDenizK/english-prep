@@ -33,7 +33,7 @@ import { SETTINGS } from "./config.js";
 import { createConfirmModal } from "./modal.js";
 import { createListbox } from "./listbox.js";
 import { getTheme, setTheme, THEME_LABELS } from "./theme.js";
-import { downloadBackup, createRestoreDialog, describeRestore } from "./backup-ui.js";
+import { createBackupDialog, createRestoreDialog, describeRestore } from "./backup-ui.js";
 import { el, clear, pane } from "./dom.js";
 import { icon } from "./icons.js";
 import { avatar } from "./widgets.js";
@@ -46,6 +46,7 @@ import { createInstallControl } from "./install.js";
 const container = document.getElementById("profile-container");
 let resetModal;
 let restoreDialog;
+let backupDialog;
 let initialized = false;
 let renderVersion = 0;
 
@@ -129,7 +130,7 @@ function renderIdentity() {
     render();
   });
   surface.appendChild(input);
-  surface.appendChild(el("p", "t-quiet", "Sadece bu cihazda saklanır, hiçbir yere gönderilmez."));
+  surface.appendChild(el("p", "t-quiet", "Adın bu tarayıcıda saklanır ve aldığın yedeğe dahil edilir."));
 
   return surface;
 }
@@ -257,9 +258,9 @@ function renderData() {
     el(
       "p",
       "t-body",
-      "İlerlemen sadece bu tarayıcıda saklanıyor — bir hesap yok, hiçbir yere " +
-        "gönderilmiyor. Telefon değiştirirsen ya da tarayıcı verini silerse kaybolur. " +
-        "Ara sıra yedek al; başka bir cihaza da böyle taşırsın."
+      "İlerlemen bu tarayıcıda saklanır; hesap ve otomatik eşitleme yok. " +
+        "Yedeğini kendin paylaşır veya diğer cihazda geri yüklersin. " +
+        "Tarayıcı verilerini silmeden ya da cihaz değiştirmeden önce yedek al."
     )
   );
   // Installing is the other half of the same argument — a home-screen app
@@ -276,24 +277,13 @@ function renderData() {
   );
 
   const status = el("p", "t-meta");
+  status.classList.add("profile-transfer-status");
   status.setAttribute("role", "status");
 
   const backup = el("button", "btn btn--secondary", "Yedek al");
   backup.prepend(icon("archive", { size: 20 }));
   backup.type = "button";
-  backup.addEventListener("click", () => {
-    downloadBackup()
-      .then((how) => {
-        status.textContent =
-          how === "canceled" ? "Paylaşım iptal edildi." :
-            how === "shared" ? "Yedek paylaşıldı." : "Yedek dosyan indirildi.";
-          animateElement(status, "reveal");
-      })
-      .catch((error) => {
-        console.error(error);
-        status.textContent = "Yedek alınamadı. Tarayıcıyı yenileyip tekrar dene.";
-      });
-  });
+  backup.addEventListener("click", () => backupDialog.open());
   section.appendChild(backup);
 
   const restore = el("button", "btn btn--secondary", "Yedekten geri yükle");
@@ -304,7 +294,8 @@ function renderData() {
   section.appendChild(status);
 
   const resetArea = el("div", "settings-reset stack stack--tight");
-  const reset = el("button", "btn btn--quiet btn--text", "Geçmişi sıfırla");
+  const reset = el("button", "btn btn--secondary btn--reset", "Geçmişi sıfırla");
+  reset.prepend(icon("refresh", { size: 20 }));
   reset.type = "button";
   reset.addEventListener("click", () => resetModal.open());
   resetArea.appendChild(reset);
@@ -685,6 +676,13 @@ async function render({ enter = false } = {}) {
 export async function initProfileTab({ enter = true } = {}) {
   if (!initialized) {
     initialized = true;
+    backupDialog = createBackupDialog({ onResult: (message) => {
+      const status = container.querySelector(".profile-transfer-status");
+      if (status) {
+        status.textContent = message;
+        animateElement(status, "item");
+      }
+    } });
     // A learner can start typing while the arrival is still settling. Stop
     // presentation at that point so the caret and field stay stationary.
     container.addEventListener("focusin", (event) => {

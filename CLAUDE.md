@@ -2,70 +2,98 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.71)
+## Current presentation (v0.72)
 
-For current UI work, [ADR 010](docs/adr/010-living-scenes-and-navigation.md),
-[ADR 009](docs/adr/009-expressive-study-motion.md)
+For current UI work, [ADR 011](docs/adr/011-articulated-interface-and-data-portability.md)
 and [Margin system](docs/margin-design-system.md) supersede historical visual
-values below. ADR 006's role-based Inter typography and ADR 007's Sakura/cherry
-brand and plum-neutral surfaces remain. Correct answers now have full opaque
-Sakura surfaces; selected incorrect answers use periwinkle. Separate `ok-edge`
-and `no-edge` tokens define measured boundaries. English sentences stay neutral;
-check/cross shapes, literal verdicts and Turkish state descriptions carry meaning.
-Pink is a product-specific confirmation, not a universal semantic claim.
+values below. ADR 006's role-based Inter typography and the Sakura/cherry brand
+remain. Correct answers have opaque Sakura surfaces; selected incorrect answers
+use periwinkle. Separate `ok-edge` and `no-edge` tokens define measured boundaries.
+Neutral English sentences, check/cross shapes, literal verdicts and Turkish state
+descriptions carry meaning. Pink is a product-specific confirmation, not a
+universal semantic claim. Cool lagoon supports context/action distinctions;
+iris and apricot retain structural/attention roles. Supporting ink and essential
+boundaries are brighter to remain readable over the stronger atmosphere.
 
-Three bounded aurora fields appear across all routes. Only Profile settings expose the persistent motion toggle; About links to
-those settings. No header, onboarding or content-footer toggle remains. Motion roles are 100/220/360/560/720/900/1100ms for control, reveal,
-route, scene, completion, story and flowing illustration. `js/interactions.js` owns cancellable finite
-effects and sequences with bounded offsets. `whenVisible` waits for font/image
-readiness, intersection and two paint frames without delaying actual state or
-input. Pending arrivals cancel with their active scene. CSS owns ordinary control states.
-New scenes cancel old and delayed effects; pointer/focus input settles moving
-ancestors. Menus translate without scaling. Input, focus, scoring, navigation
-and final values never wait for animation. Reduced motion, saved motion-off
-and hidden-page handling preserve complete static states. No route snapshots,
-idle JavaScript animation loops or repeated answer-passage fade are introduced.
+Three bounded aurora clusters appear across all routes. Each cycles cherry,
+iris and lagoon pigments; 7.8/9.4/11-second drift and 10.8/12.6/14.4-second full
+color cycles have independent phases. One parent opacity cap flattens all nine
+pigment layers at 0.42 dark / 0.09 light; it is NOT a per-layer cap. The palette
+checker proves the continuous convex color envelope and tests intermediate
+mixtures. A small static halo belongs only to selected neutral titles. Reading
+paragraphs neither glow nor animate their color. Only Profile settings expose
+the persistent motion toggle; About links there. Hidden pages pause all twelve
+atmosphere timelines; reduced motion supplies three stationary color pools.
 
-A progressive adaptive scroll rail decorates the real scrolling region. Fine
-pointers with a measured 52px gutter get a 44px interactive rail and meaningful
-lesson/About stops; narrow/touch screens keep native gestures and a passive
-indicator. Forced colors restores native scrollbars. No quiz-state changes.
+Motion roles remain 100/220/360/560/720/900/1100ms for control, reveal, route,
+scene, completion, story and flowing illustration. `js/interactions.js` owns
+cancellable finite effects and bounded sequences. `whenVisible` waits for
+font/image readiness, intersection and two paint frames without delaying state
+or input. Menus and native dialogs keep their control shells and hitboxes
+stationary: shadow/outline respond while visible labels, checks and action
+contents assemble independently. Onboarding uses separate row, unfolding sheet,
+fan, signal and path roles; its explanatory copy stays still. New scenes cancel
+old and delayed effects; pointer/focus input settles moving ancestors. Input,
+focus, scoring, navigation and final values never wait for animation. No route
+snapshots, idle JavaScript animation loops or repeated answer-passage fade are
+introduced. CSS owns ordinary control states.
+
+The adaptive rail controls the real scroll region on both desktop and mobile.
+A measured wide gutter has the full 44px rail; compact layouts expose an
+8px edge handle with a transparent local 44×44px touch target, then an
+explicitly opened opaque well for drag/tap destinations. The resting handle
+stays inside the outer 16px gutter, clear of prose and verdict marks. Grip
+compression and rebound do not move the outer hitbox. Native swipes/wheel and
+dragging are continuous; taps on real article/About landmarks and Shift+Arrow
+travel smoothly to sections without imposing snapping. Desktop captions are
+removed; accessible value text retains the section name. Escape/cancellation
+restores an unfinished drag. Reduced/off motion makes programmatic travel
+instant; forced colors and insufficient usable height restore native scrollbars.
+The rail does not change quiz state or learning rules.
 
 Shared `js/brand.js` provides `ep.`, `english prep.` and responsive signatures.
-The optional three-page introduction has six illustrated Education/Test states
-with composed sheets, answer rows and drawn paths, followed by an optional name.
-Skip and controls remain immediate; it never writes learning progress. Unread
-pretests start open but remain skippable; their height is excluded from article
-progress. A lesson signature runs once on the existing unfinished-to-done event,
-not when reopening a completed lesson. Profile arrival composes visible groups;
-internal rerenders and typing do not replay it. Results use a separate tab-local
-`englishPrep.resultPresented` marker for their first presentation: an attempt
-already being recorded does not mean its result screen was already presented.
-No animation changes lesson completion, scoring or durable history.
+The optional three-page introduction has six illustrated Education/Test states,
+then an optional name. Skip and controls remain immediate; it never writes
+learning progress. Unread pretests start open but remain skippable; their height
+is excluded from article progress. A lesson signature runs once on the existing
+unfinished-to-done event. Profile arrival composes visible groups; internal
+rerenders and typing do not replay it. Results use the separate tab-local
+`englishPrep.resultPresented` marker: an attempt already recorded does not mean
+its result has been presented. No animation changes scoring or durable history.
 
-Resume/profile/results retain labeled linear metrics. `/about/` has a compact
-mobile hero, selectable study and architecture stories, nearby real captures
-and native feature/technical disclosures. There is no screenshot gallery.
-Only decorative artwork follows a fine pointer; text stays stable and touch/
-keyboard expose every feature. See [About authoring](about/README.md).
+Resume/profile/results retain labeled linear metrics. At ≥1080px wide and
+≥800px tall the home companion pane stays in place while the curriculum scrolls;
+shorter windows let it flow so content stays reachable. `/about/` opens with one
+inspectable folio: real article/test/results captures on selectable leaves,
+layer expansion, a named rotate/front action and optional horizontal drag.
+Vertical swipes and pinch zoom remain native; buttons provide every action.
+Explanatory copy stays outside moving geometry. Study/architecture stories and
+native feature/technical disclosures remain expandable. There is no screenshot
+gallery. See [About authoring](about/README.md).
+
+Profile's backup action opens a preview with record counts, name inclusion,
+size and optional raw JSON. Share file, download and copy are explicit actions;
+opening starts no transfer. Unsupported/failed clipboard use exposes selectable
+text. Share cancellation never triggers an unsolicited download. The existing
+v1 backup format, validation, merge and rollback semantics are unchanged. A
+closed/reopened dialog cannot receive an old asynchronous result. Reset is a
+recognizable button with the existing safe confirmation.
 
 Exam dates, daily goals, streaks and absence reminders remain outside the UI;
-their stored values stay compatible. Articles, tests, source material, fixed
-shell, no runtime dependencies and the preserved original are unchanged.
-Portfolio captures are real 3× phone/2× wide WebPs. Onboarding and About group
-choices, artwork and explanatory copy into coherent scenes.
-Current browser coverage includes `tests/v071_motion_browser.py`,
-`tests/scroll_rail_browser.py` and `tests/v070_motion_browser.py`,
-`tests/onboarding_interaction_browser.py`, `tests/reading_system.py`,
-`tests/pretest_progress_browser.py`, `tests/component_interactions_browser.py`
-and `tests/about_interaction_browser.py`. Installation support is in `js/install.js`.
-Historical design/UI2/UI3 descriptions below are context, not authority to
-reinstate old visuals. [Answer research](docs/research/2026-10-answer-surfaces-v070.md),
-[motion research](docs/research/2026-10-motion-v070.md),
-[onboarding design](docs/design/onboarding-v070.md) and
-[Profile/results design](docs/design/profile-results-v070.md) distinguish source
-evidence, browser measurements and design choices. No physical-device
-certification or participant usability study is claimed.
+their stored values stay compatible. Articles, questions, source material, fixed
+shell, no runtime dependencies and preserved original versions are unchanged.
+Portfolio captures are real 3× phone/2× wide WebPs. Current browser coverage
+includes `tests/aura_browser.py`, `tests/scroll_rail_browser.py`,
+`tests/v072_integration_browser.py`, `tests/transfer_browser.py`,
+`tests/onboarding_interaction_browser.py`, `tests/about_interaction_browser.py`,
+`tests/reading_system.py` and earlier regression suites. Installation support
+is in `js/install.js`. [Living atmosphere research](docs/research/2026-10-living-aura-v072.md),
+[articulated controls](docs/research/2026-10-articulated-controls-v072.md),
+[folio design](docs/design/about-v072.md), [rail design](docs/design/scroll-rail-v072.md)
+and [data transfer](docs/research/2026-10-data-transfer-v072.md) distinguish source
+evidence, measurements and design choices. Historical descriptions below do
+not authorize reinstating old visuals. No physical-device certification or
+participant usability study is claimed.
 
 ## What this is
 
