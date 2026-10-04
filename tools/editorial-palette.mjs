@@ -12,7 +12,7 @@ const css = readFileSync(stylesheet, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
 const colourTokens = [
   "page", "card", "raised", "ink", "ink-2", "hairline", "edge", "accent",
   "accent-2", "accent-ink", "accent-text", "accent-tint", "focus", "ok", "no",
-  "ok-tint", "no-tint", "editorial-mark", "editorial-wash", "editorial-note",
+  "ok-tint", "no-tint", "ok-edge", "no-edge", "editorial-mark", "editorial-wash", "editorial-note",
   "secondary", "tertiary",
 ];
 const auroraTokens = ["aurora-cherry", "aurora-iris", "aurora-apricot"];
@@ -156,6 +156,7 @@ console.log("Editorial palette — actual CSS; explicit and system light agree."
 let opaqueMeasured = 0;
 let auraMeasured = 0;
 let gradientMeasured = 0;
+let answerMeasured = 0;
 for (const [theme, tokens] of [["dark", dark], ["light", light]]) {
   const opaque = readingSurfaces.map((token) => ({ name: `--${token}`, rgb: hexToRgb(tokens[token]) }));
   const aura = auraSurfaces(tokens);
@@ -193,6 +194,43 @@ for (const [theme, tokens] of [["dark", dark], ["light", light]]) {
   report("Filled control boundary", gradient.flatMap((sample) => actionSurfaces.map((background) =>
     measure(theme, sample.name, sample.rgb, { ...background, name: `${sample.name} / ${background.name}` }, 3))), 3);
   gradientMeasured += measured - gradientStart;
+
+  // Answer rows now have opaque semantic surfaces. Check their softer borders
+  // against both the inside and every surrounding app plane, not only the
+  // prominent check/cross color. The colors never replace literal verdicts.
+  console.log(`\n${theme}: filled answer states and transitions`);
+  const answerStart = measured;
+  for (const state of ["ok", "no"]) {
+    const inside = { name: `--${state}-tint`, rgb: hexToRgb(tokens[`${state}-tint`]) };
+    report(`${state} answer boundary`, [...opaque, ...aura].map((background) =>
+      measure(theme, `--${state}-edge`, tokens[`${state}-edge`], background, 3)), 3);
+    report(`${state} verdict glyph`, [measure(theme, `--${state}`, tokens[state], inside, 3)], 3);
+
+    // A pointer may still be over a just-committed option. Sample both neutral
+    // and hover starts, including all sRGB intermediate colors. Text never
+    // fades, the surface remains opaque, and no bright overlay crosses prose.
+    const transition = ["card", "raised"].flatMap((start) => {
+      const from = hexToRgb(tokens[start]);
+      const fromBorder = hexToRgb(tokens[start === "raised" ? "ink-2" : "edge"]);
+      const toBorder = hexToRgb(tokens[`${state}-edge`]);
+      return Array.from({ length: 101 }, (_, index) => ({
+        name: `${start} → ${state} ${index}%`,
+        rgb: from.map((channel, position) => channel + (inside.rgb[position] - channel) * index / 100),
+        border: fromBorder.map((channel, position) => channel + (toBorder[position] - channel) * index / 100),
+      }));
+    });
+    for (const [role, token, minimum] of [
+      ["prose", "ink", 7],
+      ["shortcut", "ink-2", theme === "dark" ? 7 : 4.5],
+      ["focus", "focus", 3],
+    ]) {
+      report(`${state} transition ${role}`, transition.map((background) =>
+        measure(theme, `--${token}`, tokens[token], background, minimum)), minimum);
+    }
+    report(`${state} transition edge`, transition.map((background) =>
+      measure(theme, `--${state}-edge transition`, background.border, background, 3)), 3);
+  }
+  answerMeasured += measured - answerStart;
 }
 
 if (failed) {
@@ -200,6 +238,6 @@ if (failed) {
   console.error(`\n${failed} of ${measured} editorial contrast pairs failed.`);
   process.exitCode = 1;
 } else {
-  console.log(`\n${measured} editorial contrast pairs passed (${opaqueMeasured} opaque + ${auraMeasured} aura + ${gradientMeasured} gradient samples).`);
+  console.log(`\n${measured} editorial contrast pairs passed (${opaqueMeasured} opaque + ${auraMeasured} aura + ${gradientMeasured} gradient + ${answerMeasured} answer samples).`);
   console.log("Decorative hairlines are not control boundaries. Aura is behind opaque cards; no additional field, blend mode, or animated brightness is covered by these bounds.");
 }

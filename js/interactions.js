@@ -2,8 +2,12 @@
 // this module never schedules an application mutation after an animation.
 import { initMotion, motionEnabled } from "./motion.js";
 
-export const MOTION_DURATIONS = Object.freeze({ control: 100, reveal: 160, route: 220, complete: 360 });
-const EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
+export const MOTION_DURATIONS = Object.freeze({
+  control: 100, reveal: 220, route: 360, scene: 560, complete: 720, story: 900,
+});
+const EASING = "cubic-bezier(0.2, 0, 0, 1)";
+const SETTLE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const MAX_SEQUENCE_DELAY = 180;
 const active = new Set();
 const channels = new WeakMap();
 const pointerScenes = new Set();
@@ -29,6 +33,17 @@ function stopAll() {
   for (const scene of pointerScenes) scene.reset();
 }
 
+// Real input takes priority over an arriving container. Settle only the
+// animated target/ancestors before focus scrolling or popup positioning reads
+// their geometry; independent artwork siblings keep their expressive sequence.
+function settleInputAncestors(event) {
+  const target = event.target;
+  if (!target) return;
+  for (const record of [...active]) {
+    if (record.element === target || record.element.contains(target)) cancel(record);
+  }
+}
+
 function initialize() {
   initMotion();
   if (listening) return;
@@ -37,10 +52,12 @@ function initialize() {
     if (!event.detail.enabled || !event.detail.visible) stopAll();
   });
   window.addEventListener("pagehide", stopAll);
+  document.addEventListener("pointerdown", settleInputAncestors, true);
+  document.addEventListener("focusin", settleInputAncestors, true);
 }
 
 function timing(role) {
-  const property = { control: "--d-control", reveal: "--d-reveal", route: "--d-route", complete: "--d-complete" }[role];
+  const property = `--d-${role}`;
   const value = window.getComputedStyle?.(document.documentElement).getPropertyValue(property).trim();
   if (value && /^\d+(?:\.\d+)?m?s$/.test(value)) {
     return Number.parseFloat(value) * (value.endsWith("ms") ? 1 : 1000);
@@ -49,31 +66,76 @@ function timing(role) {
 }
 
 function preset(kind, direction) {
+  const sign = direction === "back" ? -1 : 1;
   switch (kind) {
-    case "control": return { role: "control", frames: [{ transform: "scale(.98)" }, { transform: "scale(1)" }] };
-    case "menu": return { role: "reveal", frames: [{ opacity: .86, transform: `translateY(${direction === "top" ? 3 : -3}px)` }, { opacity: 1, transform: "translateY(0)" }] };
-    case "dialog": return { role: "route", frames: [{ transform: "translateY(4px)" }, { transform: "translateY(0)" }] };
-    case "mark": return { role: "reveal", frames: [{ transform: "scale(.86)" }, { transform: "scale(1)" }] };
-    case "scene": return { role: "route", frames: [{ transform: `translateX(${direction === "back" ? -6 : 6}px)` }, { transform: "translateX(0)" }] };
-    case "complete": return { role: "complete", frames: [{ transform: "scale(.96)" }, { transform: "scale(1)" }] };
-    default: return { role: "reveal", frames: [{ opacity: .88, transform: "translateY(3px)" }, { opacity: 1, transform: "translateY(0)" }] };
+    // Productive motion: no overshoot or scaling of a reading surface.
+    case "control": return { role: "control", frames: [{ transform: "scale(.975)" }, { transform: "scale(1)" }] };
+    case "menu": return { role: "reveal", frames: [{ transform: `translateY(${direction === "top" ? 8 : -8}px)` }, { transform: "translateY(0)" }] };
+    case "dialog": return { role: "route", frames: [{ transform: "translateY(12px)" }, { transform: "translateY(0)" }] };
+    case "route": return { role: "route", frames: [{ transform: `translateX(${sign * 12}px)` }, { transform: "translateX(0)" }] };
+    case "onboard": return { role: "scene", frames: [{ transform: `translateX(${sign * 12}px)` }, { transform: "translateX(0)" }] };
+    // Expressive motion belongs to artwork and small glyphs, never answer text.
+    // Explicit finite keyframes give a spring-like settle without an idle solver
+    // or a dependence on linear() easing support in the browser.
+    case "mark": return {
+      role: "route", easing: "linear", frames: [
+        { transform: "scale(.78) rotate(-8deg)", offset: 0, easing: SETTLE },
+        { transform: "scale(1.055) rotate(2deg)", offset: .68, easing: EASING },
+        { transform: "scale(1) rotate(0deg)", offset: 1 },
+      ],
+    };
+    case "scene": return {
+      role: "scene", easing: "linear", frames: [
+        { transform: `translateX(${sign * 20}px) translateY(4px) scale(.985)`, offset: 0, easing: SETTLE },
+        { transform: `translateX(${-sign}px) translateY(0) scale(1.008)`, offset: .72, easing: EASING },
+        { transform: "translateX(0) translateY(0) scale(1)", offset: 1 },
+      ],
+    };
+    case "complete": return {
+      role: "complete", easing: "linear", frames: [
+        { transform: "scale(.84) rotate(-6deg)", offset: 0, easing: SETTLE },
+        { transform: "scale(1.045) rotate(1deg)", offset: .68, easing: EASING },
+        { transform: "scale(1) rotate(0deg)", offset: 1 },
+      ],
+    };
+    case "story":
+    case "storytelling": return {
+      role: "story", easing: "linear", frames: [
+        { transform: "translateY(24px) scale(.96) rotate(-2deg)", offset: 0, easing: SETTLE },
+        { transform: "translateY(-2px) scale(1.008) rotate(.2deg)", offset: .74, easing: EASING },
+        { transform: "translateY(0) scale(1) rotate(0deg)", offset: 1 },
+      ],
+    };
+    // A caller gives decorative paths pathLength=1 and a complete static stroke.
+    // The real diagram, score and text never depend on the animated drawing.
+    case "draw": return { role: "complete", frames: [{ strokeDasharray: "1", strokeDashoffset: "1" }, { strokeDasharray: "1", strokeDashoffset: "0" }] };
+    case "progress": return { role: "complete", frames: [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }] };
+    case "rule": return { role: "scene", frames: [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }] };
+    default: return { role: "reveal", frames: [{ transform: "translateY(8px)" }, { transform: "translateY(0)" }] };
   }
 }
 
 /** Animate connected decoration after its final state is committed.
  * A repeated element/channel replaces its predecessor; detached nodes, reduced
  * motion and browsers without WAAPI simply show the final presentation.
+ * Delays are presentation-only and bounded: no timer or application callback.
  * @returns {Animation|null}
  */
-export function animateElement(element, kind = "reveal", { channel = "default", direction = "forward" } = {}) {
+export function animateElement(element, kind = "reveal", { channel = "default", direction = "forward", delay = 0 } = {}) {
   if (!element) return null;
   const current = channels.get(element)?.get(channel);
   if (current) cancel(current);
   if (!element.isConnected || typeof element.animate !== "function") return null;
   initialize();
   if (!canMove()) return null;
-  const { role, frames } = preset(kind, direction);
-  const animation = element.animate(frames, { duration: timing(role), easing: EASING, fill: "none" });
+  const { role, frames, easing = EASING } = preset(kind, direction);
+  const wait = Math.min(MAX_SEQUENCE_DELAY, Math.max(0, Number(delay) || 0));
+  const animation = element.animate(frames, {
+    duration: timing(role), delay: wait, easing,
+    // Delayed decoration holds its first frame; text stays fully opaque and
+    // interactive throughout. On finish/cancel the authored final CSS wins.
+    fill: wait ? "backwards" : "none",
+  });
   const record = { element, channel, animation };
   let map = channels.get(element);
   if (!map) channels.set(element, (map = new Map()));
@@ -83,6 +145,24 @@ export function animateElement(element, kind = "reveal", { channel = "default", 
   // leave a finished animation or detached element in the active collection.
   animation.finished.then(() => forget(record), () => forget(record));
   return animation;
+}
+
+/** A small, interruptible composition. Entries use { element, kind, at };
+ * at is milliseconds from this call, capped at 180. No content is inserted,
+ * hidden or changed later. Call cancelAnimationsWithin before replacing a scene
+ * to release outgoing entries that the next sequence no longer includes.
+ * @returns {Animation[]}
+ */
+export function animateSequence(entries, { channel = "sequence", direction = "forward" } = {}) {
+  const animations = [];
+  for (const entry of entries ?? []) {
+    if (!entry?.element) continue;
+    const animation = animateElement(entry.element, entry.kind ?? "reveal", {
+      channel, direction, delay: entry.at,
+    });
+    if (animation) animations.push(animation);
+  }
+  return animations;
 }
 
 /** Release outgoing finite effects immediately before closing or replacing UI. */

@@ -53,6 +53,7 @@ import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard
 import { icon } from "./icons.js";
 import { hueOf } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
+import { animateElement, animateSequence, cancelAnimationsWithin } from "./interactions.js";
 
 const bottomNav = document.getElementById("bottom-nav");
 const bar = createBar("shell-header");
@@ -742,7 +743,7 @@ function renderIntro(topic, lessons, progress) {
   // column stays first and keeps the measure, and the six lesson rows —
   // which is what the learner came here to choose from, and which used to
   // sit a screen and a half below the fold — move up beside it.
-  const screen = el("div", "stack stack--loose split split--main-first animate-in");
+  const screen = el("div", "stack stack--loose split split--main-first");
   const page = pane();
   page.classList.add("topic-intro");
   const intro = topic.intro;
@@ -956,6 +957,11 @@ export async function openTopicIntro(topicId) {
   scrollToTop();
 
   document.title = `${entry.title} — English Prep`;
+  const overview = readerContainer.firstElementChild;
+  animateSequence([
+    { element: overview.querySelector(".topic-intro > .stack"), kind: "route" },
+    { element: overview.lastElementChild, kind: "route", at: 65 },
+  ], { channel: "topic-entry" });
   announce(`${entry.title} genel bakış.`);
 
   // A primary, because a screen that ends in lesson rows and offers only a
@@ -1434,7 +1440,7 @@ function handleReaderScroll() {
     // press, because a button that only confirms what the scroll position
     // already proved is a tap asked for nothing.
     if (read >= READ_THRESHOLD) {
-      markLessonDone(lesson.id);
+      finishLessonPresentation(lesson);
     } else {
       recordLessonRead(lesson.id, read);
     }
@@ -1471,9 +1477,10 @@ function renderLesson() {
   // the block it is inside disappear from under the learner.
   const pretest = state.reader.pretest;
 
+  cancelAnimationsWithin(readerContainer);
   clear(readerContainer);
   setReaderBar();
-  const page = el("article", "stack stack--loose animate-in lesson");
+  const page = el("article", "stack stack--loose lesson");
 
   const heading = el("header", "stack stack--tight lesson__head");
   heading.style.setProperty("--hue", String(hueOf(lesson.topicId)));
@@ -1519,6 +1526,9 @@ function renderLesson() {
 
   page.appendChild(renderLessonEnd(lesson));
   readerContainer.appendChild(page);
+  // Orient a fresh open without moving instructional paragraphs. A resumed
+  // article restores its position with no arrival choreography.
+  if (!state.reader.resumeAt) animateElement(heading, "route", { channel: "lesson-entry" });
 
   // No action bar. A lesson is something to read, and a filled amber slab
   // pinned under every screen of it is the loudest thing on a surface
@@ -1532,6 +1542,43 @@ function renderLesson() {
  * lesson is the natural moment to offer the next thing, and making it a
  * screen of its own would mean a tap to see two buttons.
  */
+function completionDrawing() {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 64 40");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  svg.classList.add("lesson-end-signature");
+  for (const [name, path] of [
+    ["page", "M7 7h23v26H7z M12 14h13 M12 20h9 M12 26h11"],
+    ["link", "M31 20h8"],
+    ["check", "M42 21l5 5 11-13"],
+  ]) {
+    const stroke = document.createElementNS(ns, "path");
+    stroke.setAttribute("d", path);
+    stroke.setAttribute("pathLength", "1");
+    stroke.dataset.completionPart = name;
+    svg.appendChild(stroke);
+  }
+  return svg;
+}
+
+function finishLessonPresentation(lesson) {
+  const wasDone = Boolean(getLessonProgress(lesson.id)?.done);
+  markLessonDone(lesson.id);
+  const card = readerContainer.querySelector(".block--end");
+  if (!card || !getLessonProgress(lesson.id)?.done) return;
+  card.dataset.completionState = "saved";
+  if (wasDone || card.dataset.completionCue === "played") return;
+  card.dataset.completionCue = "played";
+  animateSequence([
+    { element: card.querySelector(".lesson-end-signature"), kind: "complete" },
+    { element: card.querySelector('[data-completion-part="page"]'), kind: "draw" },
+    { element: card.querySelector('[data-completion-part="link"]'), kind: "draw", at: 90 },
+    { element: card.querySelector('[data-completion-part="check"]'), kind: "draw", at: 160 },
+  ], { channel: "lesson-complete" });
+}
+
 function renderLessonEnd(lesson) {
   const nextLesson = state.lessons[state.reader.lessonIndex + 1] ?? null;
   // Finishing the last lesson of a topic is a different event from
@@ -1544,10 +1591,12 @@ function renderLessonEnd(lesson) {
   const crossesTopic = nextLesson !== null && nextLesson.topicId !== lesson.topicId;
 
   const card = el("section", "surface hero block--end");
+  card.dataset.completionState = getLessonProgress(lesson.id)?.done ? "saved" : "pending";
   card.appendChild(el("span", "hero__orb"));
   const head = el("div", "stack stack--tight");
   const eyebrow = el("h2", "t-label cluster");
-  eyebrow.appendChild(icon("spark-fill", { size: 18 }));
+  eyebrow.classList.add("lesson-end-heading");
+  eyebrow.appendChild(completionDrawing());
   eyebrow.appendChild(document.createTextNode(crossesTopic ? "Konu bitti" : "Ders bitti"));
   head.appendChild(eyebrow);
   head.appendChild(
@@ -1568,7 +1617,7 @@ function renderLessonEnd(lesson) {
   const test = el("button", "btn btn--secondary", "Bu konudan test çöz");
   test.type = "button";
   test.addEventListener("click", () => {
-    markLessonDone(lesson.id);
+    finishLessonPresentation(lesson);
     startTopicTest(lesson.topicId).catch(console.error);
   });
   card.appendChild(test);
@@ -1580,7 +1629,7 @@ function renderLessonEnd(lesson) {
     const onward = el("button", "btn btn--primary", `Sıradaki konu: ${nextLesson.topicTitle}`);
     onward.type = "button";
     onward.addEventListener("click", () => {
-      markLessonDone(lesson.id);
+      finishLessonPresentation(lesson);
       if (nextLesson.hasIntro) {
         openIntroByHash(nextLesson.topicId);
       } else {
@@ -1592,7 +1641,7 @@ function renderLessonEnd(lesson) {
     const next = el("button", "btn btn--primary", "Sıradaki ders");
     next.type = "button";
     next.addEventListener("click", () => {
-      markLessonDone(lesson.id);
+      finishLessonPresentation(lesson);
       openLessonByHash(nextLesson.id);
     });
     card.appendChild(next);
@@ -1600,7 +1649,7 @@ function renderLessonEnd(lesson) {
     const back = el("button", "btn btn--primary", "Derslere dön");
     back.type = "button";
     back.addEventListener("click", () => {
-      markLessonDone(lesson.id);
+      finishLessonPresentation(lesson);
       showIndexByHash();
     });
     card.appendChild(back);
@@ -1642,6 +1691,7 @@ function setReaderChrome(active) {
 
 /** Leaves reader mode and restores the app header and bottom nav. */
 export function closeReader() {
+  cancelAnimationsWithin(readerContainer);
   navigationVersion += 1;
   state.reader = null;
   setReaderChrome(false);
@@ -1749,6 +1799,7 @@ export async function openLesson(lessonId) {
     nextCheck,
     pretest: unread ? nextCheck() : null,
     pretestOpen: unread,
+    resumeAt: seen && !seen.done ? seen.read : 0,
   };
   setReaderChrome(true);
   // The intro sets the title and the reader did not, so the tab read

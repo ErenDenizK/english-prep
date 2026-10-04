@@ -5,6 +5,13 @@ the README's **Versioning** section for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.70 — 2026-10-04
+
+- İki tempolu hareket dili: hızlı dokunma/menü tepkileri; onboarding, Profil ve gerçek ders/test bitişleri için daha uzun, sıralı çizim ve yerleşme animasyonları. Veri, odak ve eylemler animasyon beklemez.
+- Doğru cevapta Sakura, yanlış cevapta mavi-lila tonlu tam seçenek yüzeyleri. Ayrı kenar renkleri, nötr İngilizce metin, görünür ve erişilebilir durum işaretleri korunur.
+- About telefon ekranından başlayarak yeniden düzenlendi: daha kısa ürün akışı, bağlama yakın gerçek ekranlar, açılabilir özellik ayrıntıları, hareketli mimari çizimi ve daha belirgin görsel tepkiler.
+- Hızlı gezinmede eski animasyonların iptali, yeniden açılan ders/sonuçta gereksiz bitiş tekrarı yapılmaması ve isim yazarken Profil girişinin oynamaması doğrulanır. Öğretim materyali ve korunmuş sürümler değişmedi. [ADR 009](docs/adr/009-expressive-study-motion.md).
+
 ## v0.69 — 2026-10-04
 
 - Ortak ve kesilebilir etkileşim sistemi: menü/diyalog girişleri, seçili öğe işaretleri, yerel cevap geri bildirimi ve iki marka yazımı (`ep.` / `english prep.`). Üst çubuktaki hareket düğmesi kaldırıldı; tercih Profil'de ve içerik sonunda.

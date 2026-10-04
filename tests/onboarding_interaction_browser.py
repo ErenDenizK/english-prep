@@ -57,7 +57,7 @@ class OnboardingInteractionTests(unittest.TestCase):
         return self.page.locator('#onboard-container').evaluate('''root =>
           root.getAnimations({subtree: true}).filter(a => a.playState === 'running')
             .map(a => ({name:a.animationName || '', duration:a.effect.getTiming().duration,
-              iterations:a.effect.getTiming().iterations}))
+              delay:a.effect.getTiming().delay, iterations:a.effect.getTiming().iterations}))
         ''')
 
     def test_scenes_keep_action_geometry_stable_at_mobile_and_desktop_widths(self):
@@ -105,7 +105,7 @@ class OnboardingInteractionTests(unittest.TestCase):
         expect(self.page.locator('.onboard-flow')).to_have_attribute('data-scene', 'article')
         self.assertTrue(self.decorative_animations())
         for animation in self.decorative_animations():
-            self.assertLessEqual(animation['duration'], 500)
+            self.assertLessEqual(animation['duration'] + animation['delay'], 900)
             self.assertEqual(animation['iterations'], 1)
         self.page.locator('.onboard-flow__choices').evaluate('''group => {
           const choices = group.querySelectorAll('button');
@@ -121,6 +121,47 @@ class OnboardingInteractionTests(unittest.TestCase):
         self.page.locator('.onboard-flow__choice').nth(2).click()
         expect(self.page.locator('.onboard-flow')).to_have_attribute('data-scene', 'check')
         self.assertEqual(self.decorative_animations(), [])
+
+    def test_initial_entry_has_articulated_motion_and_page_navigation_interrupts_it(self):
+        self.open_tour()
+        animations = self.decorative_animations()
+        self.assertGreaterEqual(len(animations), 4)
+        self.assertGreaterEqual(max(a['duration'] + a['delay'] for a in animations), 700)
+        self.assertGreaterEqual(len({a['delay'] for a in animations}), 3)
+        self.page.evaluate('''() => {
+          window.previousOnboardAnimations = document.querySelector('.onboard__panel').getAnimations({subtree:true});
+          document.querySelector('.onboard__actions .btn--primary').click();
+        }''')
+        expect(self.page.locator('#onboard-step-title')).to_have_text('Cevabı seç. Nedenini öğren.')
+        expect(self.page.locator('#onboard-step-title')).to_be_focused()
+        self.assertTrue(self.page.evaluate('previousOnboardAnimations.every(a => a.playState === "idle")'))
+        self.assertTrue(self.decorative_animations())
+        # Immediate back must reverse the new presentation, not enqueue work.
+        self.page.locator('.onboard__actions .btn--quiet').evaluate('(button) => button.click()')
+        expect(self.page.locator('#onboard-step-title')).to_have_text('Bildiğin İngilizceyi netleştir.')
+        self.page.get_by_role('button', name='Tanıtımı geç', exact=True).click()
+        expect(self.page.locator('#index-filter')).to_be_visible()
+
+    def test_every_scene_settles_and_the_closing_brand_never_delays_name_input(self):
+        self.open_tour()
+        for step in range(2):
+            for scene in range(3):
+                self.page.locator('.onboard-flow__choice').nth(scene).evaluate('(button) => button.click()')
+                # Await the actual finite effects, including delayed group entries.
+                self.page.locator('.onboard-flow__scene').evaluate('''async root => {
+                  await Promise.allSettled(root.getAnimations({subtree:true}).map(a => a.finished));
+                }''')
+                self.assertEqual(self.page.locator('.onboard-flow__scene').evaluate(
+                    'root => root.getAnimations({subtree:true}).filter(a => a.playState === "running").length'), 0)
+                offsets = self.page.locator('.onboard-flow__stroke').evaluate_all(
+                    'paths => paths.map(path => getComputedStyle(path).strokeDashoffset)')
+                self.assertTrue(all(offset == '0px' for offset in offsets), offsets)
+            self.page.locator('.onboard__actions .btn--primary').click()
+        expect(self.page.locator('.onboard__wordmark')).to_contain_text('english prep')
+        self.page.locator('#onboard-name').fill('Deniz')
+        expect(self.page.locator('#onboard-name')).to_have_value('Deniz')
+        self.page.get_by_role('button', name='Uygulamayı aç', exact=True).click()
+        expect(self.page.locator('#index-filter')).to_be_visible()
 
     def test_system_reduction_and_stored_off_keep_scenes_and_brand_static(self):
         for preference in ['system', 'stored']:

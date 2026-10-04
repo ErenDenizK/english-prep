@@ -1,6 +1,6 @@
 # English Prep
 
-**v0.69 · Margin / Sakura:** [open the redesigned app](index.html),
+**v0.70 · Margin / Sakura:** [open the redesigned app](index.html),
 [compare the full original](original/index.html), or inspect its
 [unchanged runtime source archive](original/source-39dcd46.zip). This version
 uses the full `test` source at `39dcd46`; the earlier `main` prototype
@@ -19,10 +19,14 @@ The detailed refinement record includes the [element inventory](docs/audit/eleme
 [type and color measurements](docs/audit/type-color.md),
 [interaction audit](docs/audit/interaction-accessibility.md), and
 [verified UI research](docs/research/2026-10-ui-principles.md).
-The current [ADR 008](docs/adr/008-explorable-interactions.md),
-[answer-status color research](docs/research/2026-10-status-colors-v069.md),
-[interaction-motion research](docs/research/2026-10-interaction-motion-v069.md), and
-[component review](docs/audit/v0.69-component-review.md) connect evidence to decisions.
+The current [ADR 009](docs/adr/009-expressive-study-motion.md),
+[filled-answer research](docs/research/2026-10-answer-surfaces-v070.md),
+[motion research](docs/research/2026-10-motion-v070.md),
+[onboarding composition](docs/design/onboarding-v070.md), and
+[Profile/results design](docs/design/profile-results-v070.md) connect evidence to decisions.
+[ADR 008](docs/adr/008-explorable-interactions.md) preserves the earlier
+interaction research and native focus/cancellation contracts; its short timing
+scale and neutral answer surfaces are superseded.
 [ADR 007](docs/adr/007-sakura-and-purposeful-motion.md) and its
 [Sakura palette research](docs/research/2026-10-sakura-palette.md) retain the
 background and brand foundation; ADR 008 supersedes its answer-status hues,
@@ -262,35 +266,43 @@ what shipped.
 ## Design
 
 Margin opens in dark mode with plum-neutral surfaces, cherry/sakura brand
-accents, muted jade confirmation and warm coral error markers. Answer text
-and surfaces stay neutral; color accompanies check/cross shapes, literal
-verdicts and accessible descriptions when revisiting answered options.
+accents, Sakura correct-answer surfaces and periwinkle incorrect-answer surfaces.
+Separate measured borders distinguish the full opaque rows; English text stays
+neutral. Check/cross shapes, literal verdicts and accessible descriptions carry
+meaning independently of hue. Pink is a product choice, not a universal correctness cue.
 Inter's distinct heading, pattern, prose, support and control roles continue
 from ADR 006. Explicit light and System preferences remain available.
 
-[ADR 008](docs/adr/008-explorable-interactions.md) defines the current
+[ADR 009](docs/adr/009-expressive-study-motion.md) defines the current
 interaction and answer-status system. Three bounded light fields appear behind
 every route, including reading. Profile and the content footer share a persistent
 motion preference; hidden pages pause decoration and OS reduced motion wins.
-Foreground cards remain opaque. Shared roles use 100ms press feedback, 160ms
-reveals, 220ms route/tutorial cues and 360ms completion emphasis. CSS owns
-ordinary control states; `js/interactions.js` owns cancellable finite effects.
-Inputs, scoring and navigation commit immediately. Answering does not replay
-the question's entrance; no full-page transition overlay blocks interaction.
+Foreground cards remain opaque. Shared roles use 100ms control feedback, 220ms
+reveals, 360ms navigation, 560ms scenes, 720ms completion and 900ms artwork stories.
+CSS owns ordinary control states; `js/interactions.js` owns finite effects and
+bounded sequences. Replacing a scene cancels its delayed effects; pointer/focus
+input settles moving ancestors. Menus translate without scaling. Inputs, scoring
+and navigation commit immediately. Answering does not replay the question's
+entrance; no full-page transition overlay blocks interaction.
 
 The shared brand supports compact `ep.` and full `english prep.` signatures.
-The optional three-page introduction lets learners explore Education and Test
-diagrams, then optionally enter a name. It is skippable and never intercepts deep links.
-Resume, profile and result metrics identify what their actual numbers mean.
+The optional three-page introduction composes six explorable Education/Test
+scenes from sheets, answer rows and drawn paths, then offers an optional name.
+It is skippable, writes no learning progress and never intercepts deep links.
+A lesson signature appears only on its first unfinished-to-done transition.
+Results have a distinct closing signature; a tab-local presentation marker
+prevents replay on reload, separately from recording the attempt. Resume,
+profile and result metrics identify what their actual numbers mean.
 The [product/engineering portfolio](about/) has selectable Read/Apply/Return and
 architecture stories, with real responsive screenshots inside those explanations.
-There is no separate screenshot gallery. A bounded decorative artwork responds
+A compact mobile hero, nearby story controls and native feature/technical
+disclosures keep the phone layout focused. There is no separate screenshot gallery. A bounded decorative artwork responds
 to fine-pointer movement; text and controls remain stable and touch/keyboard
 access does not depend on hover. Content is expandable in `about/content.js`; the
 [authoring guide](about/README.md) explains safe copy, section and image edits.
 
-`npm run color` checks current production roles, action gradients and bounded
-aurora overlaps in both themes. See the [interface system](docs/margin-design-system.md)
+`npm run color` checks current production roles, filled-answer boundaries,
+explicit transition samples, action gradients and bounded aura overlaps in both themes. See the [interface system](docs/margin-design-system.md)
 for exact tokens and [validation](docs/VALIDATION.md) for completed checks and
 limits; passing contrast calculations alone does not establish reading comfort.
 

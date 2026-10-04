@@ -1,4 +1,4 @@
-/* Interaction presentation · ADR 008. Input, focus and state always commit now.
+/* Interaction presentation · ADR 009. Input, focus and state always commit now.
    Finite event effects live in js/interactions.js; CSS owns ordinary controls. */
 .brand-mark--responsive .brand-mark__letters--full { display: none; }
 .brand-mark--full { font-size: 1.75rem; letter-spacing: -.055em; }
@@ -21,8 +21,12 @@
   transition: transform var(--d-reveal) var(--ease-standard), color var(--d-reveal) var(--ease-standard);
 }
 .nav__indicator { transition: transform var(--d-route) var(--ease-standard); }
-:root[data-motion="on"] .nav__item[aria-current] [data-icon] { animation: selected-symbol var(--d-route) var(--ease-standard) both; }
-@keyframes selected-symbol { from { transform: scale(.92); } to { transform: scale(1); } }
+:root[data-motion="on"] .nav__item[aria-current] > [data-icon] { animation: selected-symbol var(--d-scene) var(--ease-standard) both; }
+@keyframes selected-symbol {
+  0% { transform: translateY(3px) scale(.82); }
+  65% { transform: translateY(-1px) scale(1.06); }
+  100% { transform: translateY(0) scale(1); }
+}
 .switch__thumb { transition: transform var(--d-route) var(--ease-standard), background-color var(--d-reveal) var(--ease-standard); }
 .listbox__chevron { transform-origin: center; }
 .listbox__trigger[aria-expanded="true"] .listbox__chevron { transform: rotate(180deg); }
@@ -41,22 +45,63 @@
 .option__mark, .feedback__verdict-mark { transform-origin: center; }
 .feedback { animation: none; }
 .feedback__verdict-mark { flex-shrink: 0; }
+/* Answering replaces the options' DOM. A finite color cue bridges the neutral
+   surface to the already committed result without moving the answer or text. */
+:root[data-motion="on"] .option--ok { animation: answer-confirm var(--d-reveal) var(--ease-standard) both; }
+:root[data-motion="on"] .option--no { animation: answer-retry var(--d-reveal) var(--ease-standard) both; }
+@keyframes answer-confirm {
+  from { background-color: var(--card); border-color: var(--edge); }
+  to { background-color: var(--ok-tint); border-color: var(--ok-edge); }
+}
+@keyframes answer-retry {
+  from { background-color: var(--card); border-color: var(--edge); }
+  to { background-color: var(--no-tint); border-color: var(--no-edge); }
+}
 /* Read the existing passage throughout feedback. Only new marks reveal. */
-:root[data-motion="on"] [data-answer-state] { animation: verdict-mark var(--d-reveal) var(--ease-standard) both; }
-@keyframes verdict-mark { from { transform: scale(.85); opacity: .65; } to { transform: scale(1); opacity: 1; } }
-.quiz-step--enter { animation: question-entry var(--d-route) var(--ease-standard) both; }
-@keyframes question-entry { from { opacity: .8; } to { opacity: 1; } }
+:root[data-motion="on"] [data-answer-state] { animation: verdict-mark var(--d-scene) var(--ease-standard) both; }
+@keyframes verdict-mark {
+  0% { transform: scale(.72) rotate(-8deg); }
+  62% { transform: scale(1.1) rotate(2deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+/* Question arrival uses the same cancellable registry as route entry. */
+.quiz-step--enter { animation: none; }
 /* The focused reader has its own entrance: no parent/child double fade. */
 #view-egitim.animate-in:has(#lesson-reader:not([hidden])) { animation: none; }
 /* Stable text, directional arrows, no hover-only information or moving hitbox. */
 @media (hover: hover) and (pointer: fine) {
   :root[data-motion="on"] .btn:hover [data-icon="arrow-right"],
   :root[data-motion="on"] .btn:hover [data-icon="chevron-right"],
-  :root[data-motion="on"] .row:is(a,button):hover .row__trail .icon { transform: translateX(2px); }
+    :root[data-motion="on"] .row:is(a,button):hover .row__trail .icon { transform: translateX(4px); }
   :root[data-motion="on"] .btn:hover [data-icon="arrow-left"] { transform: translateX(-2px); }
   .row:is(a,button):hover .row__title { color: var(--accent-text); }
   .btn--primary:hover { box-shadow: inset 0 1px 0 #ffffff1a, 0 3px 12px #00000028; }
   .listbox__option:hover { background: var(--card); }
+}
+/* A deliberate release response on touch as well as mouse. Reading and answer
+   hitboxes do not scale; only independent controls and their supporting glyphs. */
+:root[data-motion="on"] .btn:not([aria-disabled="true"]):active { transform: scale(.975); }
+/* A popup anchor must keep its rectangle during release, too. */
+:root[data-motion="on"] .listbox__trigger:active { transform: none; background: var(--accent-tint); }
+:root[data-motion="on"] #index-list .tile:active .tile__title { transform: translateX(3px); }
+#index-list .tile__title { transition: transform var(--d-control) var(--ease-standard), color var(--d-reveal) var(--ease-standard); }
+:root[data-motion="on"] .row:is(a,button):active .row__trail .icon { transform: translateX(5px); }
+.lesson-pretest__summary, .feedback summary { transition: color var(--d-reveal) var(--ease-standard); }
+.lesson-end-heading { gap: 14px; }
+.lesson-end-signature {
+  width: 64px; height: 40px; flex: 0 0 64px; overflow: visible;
+  fill: none; stroke: var(--accent-text); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; transform-origin: center;
+}
+.lesson-end-signature [data-completion-part="page"] { stroke: var(--secondary); }
+.block--end[data-completion-state="pending"] [data-completion-part="check"] { opacity: 0; }
+.score__eyebrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.score__mode { min-width: 0; flex: 1; color: var(--secondary); }
+.score__signature { width: 112px; height: 42px; flex: 0 0 112px; color: var(--accent-text); overflow: visible; }
+.score__signature-node { transform-box: fill-box; transform-origin: center; }
+:root[data-motion] .score[data-choreographed] .metric__track { animation: none; }
+@media (max-width: 359px) {
+  .score__signature { width: 96px; height: 36px; flex-basis: 96px; }
 }
 @media (min-width: 768px) {
   .brand-mark--responsive .brand-mark__letters--compact { display: none; }

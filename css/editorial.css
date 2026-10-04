@@ -24,10 +24,12 @@
   --accent-text: #efb1cb;
   --accent-tint: #30222d;
   --focus: #d4b5f8;
-  --ok: #96cbb8;
-  --no: #e5aaa5;
-  --ok-tint: #202b28;
-  --no-tint: #302326;
+  --ok: #eeb4d1;
+  --no: #b6c6ed;
+  --ok-tint: #392532;
+  --no-tint: #252d42;
+  --ok-edge: #bb8ca4;
+  --no-edge: #8d9bbd;
   --editorial-mark: #efb1cb;
   --editorial-wash: #211b24;
   --editorial-note: #c6bcc6;
@@ -91,10 +93,12 @@
   --aurora-opacity: .10;
   --d-press: 100ms;
   --d-feedback: 180ms;
-  --d-route: 220ms;
-  --d-complete: 360ms;
+  --d-route: 360ms;
+  --d-complete: 720ms;
   --d-control: 100ms;
-  --d-reveal: 160ms;
+  --d-reveal: 220ms;
+  --d-scene: 560ms;
+  --d-story: 900ms;
   --d-enter: var(--d-route);
 }
 @media (prefers-color-scheme: light) {
@@ -112,10 +116,12 @@
     --accent-text: #922e55;
     --accent-tint: #f6e7ed;
     --focus: #7848af;
-    --ok: #2b6557;
-    --no: #9f3f48;
-    --ok-tint: #eaf3ef;
-    --no-tint: #f8eceb;
+    --ok: #953b67;
+    --no: #405f94;
+    --ok-tint: #fae5ef;
+    --no-tint: #eaf0ff;
+    --ok-edge: #b16b8d;
+    --no-edge: #657fac;
     --editorial-mark: #922e55;
     --editorial-wash: #f6eff5;
     --editorial-note: #625864;
@@ -139,10 +145,12 @@
   --accent-text: #922e55;
   --accent-tint: #f6e7ed;
   --focus: #7848af;
-  --ok: #2b6557;
-  --no: #9f3f48;
-  --ok-tint: #eaf3ef;
-  --no-tint: #f8eceb;
+  --ok: #953b67;
+  --no: #405f94;
+  --ok-tint: #fae5ef;
+  --no-tint: #eaf0ff;
+  --ok-edge: #b16b8d;
+  --no-edge: #657fac;
   --editorial-mark: #922e55;
   --editorial-wash: #f6eff5;
   --editorial-note: #625864;
@@ -964,12 +972,12 @@ body.is-reading:has(.lesson) .page {
 .option--ok {
   background: var(--card);
   border-color: var(--ok);
-  animation: none !important;
+  animation: none;
 }
 .option--no {
   background: var(--card);
   border-color: var(--no);
-  animation: none !important;
+  animation: none;
 }
 .option:not([aria-disabled="true"]):active {
   transform: none;
@@ -1468,7 +1476,8 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .lesson-pretest__skip { justify-self: start; padding: 0; color: var(--accent-text); }
 [data-reading-start]:focus { outline: none; }
 .option { border-radius: 10px; }
-.option--ok, .option--no { background: var(--card); border-color: var(--edge); }
+.option--ok { background: var(--ok-tint); border-color: var(--ok-edge); }
+.option--no { background: var(--no-tint); border-color: var(--no-edge); }
 .option--ok .option__mark, .option--ok .option__key { color: var(--ok); }
 .option--no .option__mark, .option--no .option__key { color: var(--no); }
 .option--ok .option__key, .option--no .option__key { border-radius: 50%; }

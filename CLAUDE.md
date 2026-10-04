@@ -2,45 +2,59 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.69)
+## Current presentation (v0.70)
 
-For current UI work, [ADR 008](docs/adr/008-explorable-interactions.md)
-and [Margin system](docs/margin-design-system.md) supersede the historical
-visual values below. ADR 006's role-based Inter reading typography remains;
-its cool-neutral palette, finite atmosphere and one-page introduction are
-previous decisions. ADR 007's Sakura/cherry brand and plum-neutral surfaces
-remain; muted jade confirmation and warm coral error markers replace its
-iris/apricot answer states. Check/cross shapes, literal verdicts and linked
-Turkish state descriptions carry meaning while English answers stay neutral.
+For current UI work, [ADR 009](docs/adr/009-expressive-study-motion.md)
+and [Margin system](docs/margin-design-system.md) supersede historical visual
+values below. ADR 006's role-based Inter typography and ADR 007's Sakura/cherry
+brand and plum-neutral surfaces remain. Correct answers now have full opaque
+Sakura surfaces; selected incorrect answers use periwinkle. Separate `ok-edge`
+and `no-edge` tokens define measured boundaries. English sentences stay neutral;
+check/cross shapes, literal verdicts and Turkish state descriptions carry meaning.
+Pink is a product-specific confirmation, not a universal semantic claim.
 
 Three bounded aurora fields appear across all routes. Profile and a quiet
 content-footer control share the persistent motion setting; no top motion
-button remains. Reduced motion and hidden-page handling are respected.
-Motion roles are 100/160/220/360ms; input, focus, scoring and navigation commit
-immediately. `js/interactions.js` owns cancellable finite effects; CSS owns
-control states and one route cue, without a native View Transition snapshot.
-Answering never replays the whole question's entrance. Shared `js/brand.js`
-provides compact `ep.`, full `english prep.` and responsive signatures.
-The optional three-page introduction has explorable Education/Test diagrams
-and an optional name. Unread pretests start open but remain skippable; their height is excluded
-from article progress. Resume/profile/results use labeled linear metrics.
-Settings are grouped; `/about/` has editable study and architecture stories
-with real responsive captures, rather than a separate screenshot gallery.
-Only its decorative artwork follows a fine pointer; text stays stable and
-touch/keyboard access is complete. See [About authoring](about/README.md).
+button remains. Motion roles are 100/220/360/560/720/900ms for control, reveal,
+route, scene, completion and story. `js/interactions.js` owns cancellable finite
+effects and sequences with bounded offsets. CSS owns ordinary control states.
+New scenes cancel old and delayed effects; pointer/focus input settles moving
+ancestors. Menus translate without scaling. Input, focus, scoring, navigation
+and final values never wait for animation. Reduced motion, saved motion-off
+and hidden-page handling preserve complete static states. No route snapshots,
+idle JavaScript animation loops or repeated answer-passage fade are introduced.
 
-Exam dates, daily goals, streaks and absence reminders are no longer UI.
-Their stored values remain backward-compatible. Articles and tests, source
-material, fixed-shell behavior, no runtime dependencies and the preserved
-original are unchanged. Current regression coverage includes
-`tests/reading_system.py`, `tests/pretest_progress_browser.py`,
-`tests/component_interactions_browser.py` and `tests/about_interaction_browser.py`; installation
-support is in `js/install.js`. Historical design/UI2/UI3 descriptions below
-remain context for the inherited source, not authority to reinstate old visuals.
-The [status-color research](docs/research/2026-10-status-colors-v069.md),
-[motion research](docs/research/2026-10-interaction-motion-v069.md) and
-[component review](docs/audit/v0.69-component-review.md) distinguish source
-evidence and browser measurements from design choices. No physical-device
+Shared `js/brand.js` provides `ep.`, `english prep.` and responsive signatures.
+The optional three-page introduction has six illustrated Education/Test states
+with composed sheets, answer rows and drawn paths, followed by an optional name.
+Skip and controls remain immediate; it never writes learning progress. Unread
+pretests start open but remain skippable; their height is excluded from article
+progress. A lesson signature runs once on the existing unfinished-to-done event,
+not when reopening a completed lesson. Profile arrival composes visible groups;
+internal rerenders and typing do not replay it. Results use a separate tab-local
+`englishPrep.resultPresented` marker for their first presentation: an attempt
+already being recorded does not mean its result screen was already presented.
+No animation changes lesson completion, scoring or durable history.
+
+Resume/profile/results retain labeled linear metrics. `/about/` has a compact
+mobile hero, selectable study and architecture stories, nearby real captures
+and native feature/technical disclosures. There is no screenshot gallery.
+Only decorative artwork follows a fine pointer; text stays stable and touch/
+keyboard expose every feature. See [About authoring](about/README.md).
+
+Exam dates, daily goals, streaks and absence reminders remain outside the UI;
+their stored values stay compatible. Articles, tests, source material, fixed
+shell, no runtime dependencies and the preserved original are unchanged.
+Current browser coverage includes `tests/v070_motion_browser.py`,
+`tests/onboarding_interaction_browser.py`, `tests/reading_system.py`,
+`tests/pretest_progress_browser.py`, `tests/component_interactions_browser.py`
+and `tests/about_interaction_browser.py`. Installation support is in `js/install.js`.
+Historical design/UI2/UI3 descriptions below are context, not authority to
+reinstate old visuals. [Answer research](docs/research/2026-10-answer-surfaces-v070.md),
+[motion research](docs/research/2026-10-motion-v070.md),
+[onboarding design](docs/design/onboarding-v070.md) and
+[Profile/results design](docs/design/profile-results-v070.md) distinguish source
+evidence, browser measurements and design choices. No physical-device
 certification or participant usability study is claimed.
 
 ## What this is
@@ -179,7 +193,7 @@ js/
                         the one live region — shared by all three
   widgets.js          Ring, monogram, avatar, choice group, count-up,
                         haptic — the UI 3 objects
-  onboarding.js       Optional #hosgeldin: three pages, explorable flows and name
+  onboarding.js       Optional #hosgeldin: three pages, six composed scenes and name
   celebrate.js        Confetti on a canvas, for a score that earned it
   answers.js          The answer options, shared by Test and Eğitim checks
   feedback.js         The one answer-feedback block, likewise

@@ -280,7 +280,7 @@ function renderQuestion({ enter = false, reveal = false } = {}) {
   setQuizBar();
   // Only a different question enters. Committing an answer must not fade
   // the prompt the learner has just read a second time.
-  const page = el("div", `stack stack--loose${enter ? " animate-in quiz-step--enter" : ""}`);
+  const page = el("div", `stack stack--loose${enter ? " quiz-step--enter" : ""}`);
 
   const block = el("div", "stack");
   // The prompt on a card of its own: the question is the object the
@@ -323,6 +323,7 @@ function renderQuestion({ enter = false, reveal = false } = {}) {
 
   page.appendChild(block);
   container.appendChild(page);
+  if (enter) animateElement(page, "route", { channel: "question-entry" });
   if (reveal) animateElement(block.querySelector(".options"), "reveal");
 
   // The bar is fixed, so answering never moves the button — but on a short

@@ -39,7 +39,7 @@ import { icon } from "./icons.js";
 import { avatar } from "./widgets.js";
 import { progressMetric } from "./progress.js";
 import { createMotionControl } from "./motion.js";
-import { animateElement } from "./interactions.js";
+import { animateElement, animateSequence, cancelAnimationsWithin } from "./interactions.js";
 import { announce } from "./shell.js";
 import { createInstallControl } from "./install.js";
 
@@ -93,7 +93,8 @@ function formatPercent(value) {
 }
 
 function renderIdentity() {
-  const surface = el("section", "surface hero");
+  const surface = el("section", "surface hero profile-identity");
+  surface.dataset.profilePart = "identity";
   surface.appendChild(el("span", "hero__orb"));
 
   const head = el("div", "hero__figure");
@@ -137,6 +138,7 @@ function stat(value, label) {
 
 function renderStats(stats, lessonsDone, lessonsTotal) {
   const section = el("section", "stack stack--tight");
+  section.dataset.profilePart = "stats";
   section.appendChild(el("h2", "t-label", "Genel durum"));
 
   const metrics = el("div", "profile-metrics");
@@ -244,6 +246,7 @@ function renderWeakList(heading, hint, rows) {
  */
 function renderData() {
   const section = el("section", "stack stack--tight profile-data");
+  section.dataset.profilePart = "data";
   section.appendChild(el("h2", "t-label", "Verilerin"));
   section.appendChild(
     el(
@@ -386,6 +389,7 @@ function renderThemeRow() {
 
 function renderSettings() {
   const section = el("section", "stack stack--tight profile-settings");
+  section.dataset.profilePart = "settings";
   section.appendChild(el("h2", "t-label", "Ayarlar"));
 
   const group = (title) => {
@@ -557,7 +561,24 @@ function renderAbout() {
   return section;
 }
 
-async function render() {
+/** One arrival, not one animation per settings change. All values and controls
+ * already exist before the presentation starts. Offscreen prose stays still. */
+function presentProfile() {
+  if (container.closest("[hidden]")) return;
+  const viewport = document.getElementById("shell-scroll").getBoundingClientRect();
+  const visible = [...container.querySelectorAll(":scope > .stack > section")].filter((section) => {
+    const box = section.getBoundingClientRect();
+    return box.top < viewport.bottom && box.bottom > viewport.top;
+  }).slice(0, 4);
+  const entries = visible.map((element, index) => ({ element, kind: "route", at: index * 45 }));
+  // A bounded identity mark can settle longer than text without delaying
+  // reading, a field edit, or a settings action.
+  const identity = container.querySelector('[data-profile-part="identity"] .avatar');
+  if (identity) entries.push({ element: identity, kind: "complete", at: 60 });
+  animateSequence(entries, { channel: "profile-arrival" });
+}
+
+async function render({ enter = false } = {}) {
   const version = ++renderVersion;
   let titleById = new Map();
   let lessons = [];
@@ -583,6 +604,7 @@ async function render() {
   const lessonIds = lessons.map((lesson) => lesson.id);
   const lessonIdByCategory = new Map(lessons.map((lesson) => [lesson.category, lesson.id]));
 
+  cancelAnimationsWithin(container);
   clear(container);
 
   // Main-first, and the line is what a block is ABOUT rather than where it
@@ -651,11 +673,19 @@ async function render() {
 
   container.append(main, aside);
   restoreFocus(focused);
+  if (enter) presentProfile();
 }
 
-export async function initProfileTab() {
+export async function initProfileTab({ enter = true } = {}) {
   if (!initialized) {
     initialized = true;
+    // A learner can start typing while the arrival is still settling. Stop
+    // presentation at that point so the caret and field stay stationary.
+    container.addEventListener("focusin", (event) => {
+      if (event.target.matches("input, textarea, [contenteditable]")) {
+        cancelAnimationsWithin(container);
+      }
+    });
     restoreDialog = createRestoreDialog({
       onRestored: (summary) => {
         const said = describeRestore(summary);
@@ -679,5 +709,5 @@ export async function initProfileTab() {
       },
     });
   }
-  await render();
+  await render({ enter });
 }

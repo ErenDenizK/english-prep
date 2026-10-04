@@ -41,11 +41,13 @@ a short status announces the selected stage. No automatic rotation, artificial
 quiz demo, iframe, swiping requirement or application-storage mutation exists.
 Always link to a real action; results cannot be opened without a real session.
 
-The browser chooses `assets/<capture>-phone.webp` below700px and the corresponding
+The browser chooses `assets/<capture>-phone.webp` below 700px and the corresponding
 `assets/<capture>-wide.webp` above that threshold through a native `picture`.
-The phone image is a390×844 web viewport; wide is1440×1000. These dimensions are
+The phone image is a 390×844 web viewport; wide is 1440×1000. These dimensions are
 not a claim of physical iPhone/Safari testing. The phone image is deliberately
-cropped as an illustration; all essential claims remain in ordinary page copy.
+cropped to a square illustration immediately below its controls; its top remains
+legible and the explanatory copy follows. The desktop story places copy beside
+the wide capture. All essential claims remain in ordinary page copy.
 
 Actual capture pairs: `education`, `article`, `test`, `results`. The hero uses
 Education and Article; story uses Article, Test and Results. Keep both files
@@ -88,8 +90,11 @@ Append to `everydayFeatures.items`:
 },
 ```
 
-The action is optional. The grid grows from one to two/three columns. No fixed
-text height, truncation or item count is assumed. Unknown icon names fall back
+The action is optional. Each feature is an article containing a native `details`
+disclosure: the full category/title forms its summary and the full body/action
+remains available through touch, Enter or Space. The first feature starts open;
+opening another does not close it. The grid grows from one to two/three columns.
+No fixed text height, truncation or item count is assumed. Unknown icon names fall back
 to the shared spark; choose a meaningful existing icon when possible. All links
 must be relative or HTTP(S). Do not add unimplemented claims or invented usage
 figures/testimonials.
@@ -115,28 +120,41 @@ fallbacks; live totals are read from `data/manifest.json`.
 
 The masthead/footer use the full `english prep.` wordmark; the closing invitation
 uses compact `ep.`. Both use `../js/brand.js`, one type treatment and a cherry dot.
-The system is documented in [ADR008](../docs/adr/008-explorable-interactions.md).
+The system is documented in [ADR 009](../docs/adr/009-expressive-study-motion.md).
 Shared `interactions.js` handles finite effects and pointer-scene lifecycle;
 `motion.js` owns the preference, background and reduced-motion behavior.
 
 The hero's decorative image plane responds only to a fine hover pointer, with
-at most2degrees tilt and6px displacement. No paragraph, headline or click target
+at most 2 degrees tilt and 6px displacement. No paragraph, headline or click target
 moves in response to the pointer. The reflection is bounded behind the artwork.
 Touch scroll/zoom stay native. There is no permanent JavaScript animation loop.
 
-Story selection, architecture marks, disclosure reveals and link arrows use
-shared durations. Content and controls never wait for animation. No section is
-hidden until scroll; the visibility observer only adds a finite accent to
-already visible content. The **Hareket** preference is in the footer, not the
+The opening has a shared composition: a 900ms artwork entrance, a 560ms phone
+settle and a 720ms normalized SVG trace, offset by at most 160ms. Study selection
+uses a 560ms local scene; the architecture's selected layer settles while its
+connection traces. The real state, copy, link and selected button update first.
+Rapid selections cancel the preceding artwork and selection marks. Feature
+and technical disclosures have immediate native open/close with a 220ms body
+cue; headings and icons have one-shot visible-entry choreography.
+
+The visibility observer watches each large illustration separately, so a tall
+phone section cannot finish its artwork entrance before the art comes into
+view. Artwork with a running user-selected scene is not given a competing entry.
+Content is never initially hidden. All effects use shared `animateSequence` or
+`animateElement`, rather than a private registry, timer or spring loop. The **Hareket** preference is in the footer, not the
 header. It persists, stops local effects and follows OS reduced motion. A hidden
 page pauses decoration. Do not introduce autoplay carousels or moving text.
 
 ## Before publishing
 
-- Check320,390,768 and1440px, enlarged text and a long appended item.
+- Check 320, 390, 768 and 1440px, enlarged text and a long appended item.
 - Tab through story and architecture buttons; confirm focus, selected label,
   displayed content and source/action links agree.
 - Confirm there is no screenshot gallery/viewport chooser or header pause.
+- Check a feature disclosure with touch and keyboard, then rapid story changes.
+  The last selected stage must win with no accumulated scene animations.
+- Scroll to the product illustration and check its one-shot entry starts when
+  the illustration enters, not when the distant section heading enters.
 - Test fine-pointer response, pointer leave and touch scrolling. Turn motion off,
   reload, and enable OS reduced motion; the content must remain usable.
 - Check current captures, alt text, image loading and the `/english-prep/` prefix.

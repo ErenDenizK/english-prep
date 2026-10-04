@@ -2835,11 +2835,25 @@ async function runChrome(browser) {
   const lively = await moving.newPage();
   await lively.goto(`${BASE}/index.html#egitim`, { waitUntil: "networkidle" });
   await lively.waitForSelector("#index-list .tile");
+  await lively.evaluate(() => {
+    window.__routeMotion = [];
+    const original = Element.prototype.animate;
+    Element.prototype.animate = function (...args) {
+      const animation = original.apply(this, args);
+      if (this.closest("#view-test")) {
+        window.__routeMotion.push({
+          duration: animation.effect.getComputedTiming().duration,
+          visible: this.isConnected && this.getBoundingClientRect().height > 0,
+        });
+      }
+      return animation;
+    };
+  });
   await lively.locator('.nav__item[href="#test"]').click();
   await lively.waitForSelector("#test-panel .surface");
   ok(
-    await lively.evaluate(() => document.getElementById("view-test").classList.contains("animate-in")),
-    "hareket serbestken yeni ekran bir girişle geliyor"
+    await lively.evaluate(() => window.__routeMotion.some((effect) => effect.visible && effect.duration > 0 && effect.duration <= 1000)),
+    "hareket serbestken yeni ekran görünür, süreli bir kompozisyonla geliyor"
   );
   await moving.close();
 }
