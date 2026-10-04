@@ -95,7 +95,7 @@ class MotionInputReview(unittest.TestCase):
               for (const face of document.querySelectorAll('#test-panel .btn > .control-face, #test-panel .listbox__trigger > .control-face')) {
                 const inner = face.getBoundingClientRect(), outer = face.parentElement.getBoundingClientRect();
                 if (outer.bottom < 0 || outer.top > innerHeight) continue;
-                window.__controlFrames.push({label:face.textContent.trim(), y:inner.y,
+                window.__controlFrames.push({label:face.textContent.trim(), x:inner.x,
                   fits:inner.top >= outer.top - 1 && inner.bottom <= outer.bottom + 1});
               }
             }
@@ -110,8 +110,8 @@ class MotionInputReview(unittest.TestCase):
         self.assertGreater(len(frames), 30)
         self.assertEqual([frame for frame in frames if not frame['fits']], [])
         # A real rendered movement is required, not just an Animation object.
-        action_y = [frame['y'] for frame in frames if frame['label'] == 'Teste başla']
-        self.assertGreater(max(action_y) - min(action_y), 1)
+        action_x = [frame['x'] for frame in frames if frame['label'] == 'Teste başla']
+        self.assertGreater(max(action_x) - min(action_x), 1)
 
     def test_profile_arrival_reset_cancel_and_transfer_cancel_preserve_records(self):
         self.page.add_init_script("localStorage.setItem('englishPrep.profileName','Deniz')")

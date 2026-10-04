@@ -1,4 +1,4 @@
-# English Prep · Margin / Sakura: experience · v0.73
+# English Prep · Margin / Sakura: experience · v0.74
 
 ## Product and audience
 
@@ -64,14 +64,11 @@ Examples and explanations group through spacing instead of repetitive rules or h
 
 Three bounded aurora clusters sit behind all routes, including reading and the portfolio, while foreground cards stay opaque. Each cluster cycles cherry `#a04278`, iris `#6350a5` and lagoon `#28798a`; drift takes 9.75/11.75/13.75 seconds and full pigment cycles 13.5/15.75/18 seconds, with independent phases. All nine pigment layers flatten under **one parent cap** of 0.42 dark / 0.09 light, rather than accumulating that alpha per layer. The production palette checker covers the entire continuous composite envelope and intermediate mixtures. A small static halo belongs only to selected neutral titles. Pause keeps the current atmosphere still; reduced motion uses three distinct stationary pools and hidden pages pause all twelve timelines.
 
-Interaction motion is intentionally more visible in v0.73: a 620ms arrival
-composes headings, context and actions with bounded stagger. Larger 24–32px
-travel belongs to display titles, supporting groups use 12px, and compact
-headings use 6px; a contained 6px entrance keeps control labels
-inside their fills. A press compresses the inner face in 120ms, then a 380ms
-release starts from its current position. The surrounding click target stays
-usable, and one keyboard activation produces one release. A pre-paint control
-preparation step avoids reparenting a pointer target during its gesture.
+Page openings restore v0.72's 360ms, 12px route slide and local question/result
+cues at the owner's request. The larger v0.73 vertical composition is removed.
+Button feedback retains 120ms inner compression and a continuous 380ms release;
+its surrounding target remains usable. Control faces are prepared before input,
+so a first pointer click is not interrupted by reparenting.
 
 Data, focus, answers and navigation commit immediately. Readiness ensures slow
 fonts or images do not consume an entrance before it can be seen. Replacement,
@@ -85,9 +82,9 @@ About's opening object is one inspectable folio, not separate floating devices. 
 
 Study and architecture selections remain user-paced, with immediate content/pressed states and no automatic rotation. Large artwork waits for image/font readiness and its own visibility before one-shot articulation. Native feature/technical disclosures open and close immediately; no illustration sequence gates access.
 
-A fixed header and navigation or action bar surround the scrolling content. The app works as a single column at 320px. A useful split starts at **1080×600**: introduction beside curriculum, overview beside lesson list, or results beside review. Articles and quizzes remain single-column. At ≥1080px wide and ≥800px tall, the home companion pane stays stationary while the curriculum moves; shorter windows let it flow to preserve access. Enlarged text, spacing overrides, browser zoom and short windows must retain reachable content, controls and focus. Tour pages can grow rather than clipping to a fixed slideshow height.
+A fixed header and navigation or action bar surround the scrolling content. Dynamic viewport height uses space released when browser controls collapse. The browser owns its address bar; launch a home-screen installation in standalone mode to use the app without it. The app works as a single column at 320px. A useful split starts at **1080×600**: introduction beside curriculum, overview beside lesson list, or results beside review. Articles and quizzes remain single-column. At ≥1080px wide and ≥800px tall, the home companion pane stays stationary while the curriculum moves; shorter windows let it flow to preserve access. Enlarged text, spacing overrides, browser zoom and short windows must retain reachable content, controls and focus. Tour pages can grow rather than clipping to a fixed slideshow height.
 
-The current decision is [ADR 012](adr/012-elastic-edge-and-expressive-arrivals.md); component contracts and exact tokens are in [margin-design-system.md](margin-design-system.md). [Living atmosphere research](research/2026-10-living-aura-v072.md), [articulated controls](research/2026-10-articulated-controls-v072.md), [folio design](design/about-v072.md), [rail design](design/scroll-rail-v073.md) and [data transfer](research/2026-10-data-transfer-v072.md) record current evidence and choices. Earlier ADRs remain historical evidence; their per-field aura caps, passive mobile rail and whole-popup translation are superseded.
+The current decision is [ADR 013](adr/013-restore-page-entry-and-browser-space.md); component contracts and exact tokens are in [margin-design-system.md](margin-design-system.md). [Living atmosphere research](research/2026-10-living-aura-v072.md), [articulated controls](research/2026-10-articulated-controls-v072.md), [folio design](design/about-v072.md), [rail design](design/scroll-rail-v073.md) and [data transfer](research/2026-10-data-transfer-v072.md) record current evidence and choices. Earlier ADRs remain historical evidence; their per-field aura caps, passive mobile rail and whole-popup translation are superseded.
 
 ## Preservation and verification
 

@@ -1,4 +1,38 @@
-# Validation — v0.73
+# Validation — v0.74
+
+4 October 2026. Page-opening callers were restored byte-for-byte from v0.72
+(`5b48cd0`) in Home, Education, Profile, Quiz and Results. v0.73 button feedback,
+aura tempo and rail remain. No teaching material or preserved version changed.
+
+- `npm run check`: 246 unit tests passed; content format/schema and palette checks passed.
+- `v073_motion_browser.py`: 5 passed, including delayed-resource readiness with
+  the restored 360ms route opening and retained physical press/release.
+- `v073_review_browser.py`: 6 passed for rapid input, containment, dialogs,
+  answer stability and About. Its movement check follows the restored horizontal axis.
+- `v070_motion_browser.py`: 11 passed for route interruption and event/focus boundaries.
+- `reading_system.py`: 14 passed, including honest installation outcomes,
+  manifest identity, optional onboarding, reading, offline and cache failure paths.
+- Full `tools/verify-ui.mjs` sweep: 3,590 of 3,591 checks passed. The sole
+  failure expected outdated Profile storage copy from before v0.72. Updated
+  that assertion to the existing local-storage/no-auto-sync explanation, then
+  reran its complete `runIndexStates` group: all 75 checks passed. The separate
+  onboarding group also passed all 27 checks. No application change was made
+  to satisfy the stale assertion; the unaffected sweep was not repeated.
+- Actual viewport resize probe: 390×660 → 390×844 → 390×660, plus 320×568
+  and 1440×900. Body/scroll area follow available height, navigation remains
+  within the viewport and no horizontal overflow appears. Mobile captures reviewed.
+- Simulated iOS standalone flag selects the installed message and hides the
+  installation button. This is a UI-branch check, not proof of OS installation.
+
+The first browser run hit a stale local server returning empty responses.
+A fresh server on port 8184 was verified against source bytes before rerunning;
+the results above are from the successful rerun. Physical Safari toolbar
+collapse and Add to Home Screen were not tested on a device. The app does not
+claim it can remove browser-owned URL controls. See [ADR 013](adr/013-restore-page-entry-and-browser-space.md).
+
+## Earlier release evidence
+
+### Validation — v0.73
 
 4 October 2026. Baseline: v0.72 (`5b48cd0`). This release changes aura tempo,
 scrollbar deformation and finite button/page motion. It does not change teaching

@@ -232,7 +232,7 @@ test("finite presentation responds safely to interruption and input changes", as
   await t.test("spatial cues and progress use distinct bounded roles with static endings", () => {
     const kinds = { control: 100, reveal: 220, menu: 220, dialog: 360, route: 360,
       mark: 360, onboard: 560, scene: 560, rule: 560, complete: 720, draw: 720,
-      progress: 720, story: 900, flow: 1100, trace: 1100, panel: 360, item: 220, unfold: 560, fan: 720, signal: 560, folio: 1100, arrival: 620, "action-arrival": 620, "detail-arrival": 620, "heading-arrival": 620, release: 380 };
+      progress: 720, story: 900, flow: 1100, trace: 1100, panel: 360, item: 220, unfold: 560, fan: 720, signal: 560, folio: 1100, release: 380 };
     for (const [kind, duration] of Object.entries(kinds)) {
       const node = env.element();
       const animation = ui.animateElement(node, kind);

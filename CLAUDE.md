@@ -2,9 +2,9 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.73)
+## Current presentation (v0.74)
 
-For current UI work, [ADR 012](docs/adr/012-elastic-edge-and-expressive-arrivals.md)
+For current UI work, [ADR 013](docs/adr/013-restore-page-entry-and-browser-space.md)
 and [Margin system](docs/margin-design-system.md) supersede historical visual
 values below. ADR 006's role-based Inter typography and the Sakura/cherry brand
 remain. Correct answers have opaque Sakura surfaces; selected incorrect answers
@@ -25,15 +25,15 @@ paragraphs neither glow nor animate their color. Only Profile settings expose
 the persistent motion toggle; About links there. Hidden pages pause all twelve
 atmosphere timelines; reduced motion supplies three stationary color pools.
 
-Page arrivals now have a visible 620ms composition: large titles travel 24–32px, supporting groups 12px, and compact headings
-and control faces use a contained 6px entrance. Sections
-stagger by 32ms, bounded at 180ms. Pressing compresses a control's inner face
-in 120ms; release continues from its current transform through a 380ms rebound.
-Outer click targets remain usable. Controls are prepared before pointer input;
-never reparent a clicked descendant during pointerdown. One physical keyboard
-activation gets one release. Existing 100/220/360/560/720/900/1100ms artwork and
-short-control roles remain available. These are current choices, not maximum
-motion limits for later user requests.
+Page openings use the v0.72 choreography again: 360ms route slides over 12px,
+short local question cues and quiet result reveals. v0.73's 620ms downward
+composition was removed at the owner's request. Button feedback remains:
+120ms inner-face compression and a continuous 380ms release. Prepare controls
+before pointer input; never reparent a clicked descendant during pointerdown.
+One physical keyboard activation gets one release. Existing artwork, menu,
+onboarding and About motion remains. The aura and elastic rail keep v0.73's
+behavior. These choices follow user feedback rather than imposing a universal
+motion limit.
 
 `js/interactions.js` owns finite effects, bounded sequences and readiness.
 `whenVisible` waits for actual fonts/images and intersection plus two frames.
@@ -93,7 +93,10 @@ includes `tests/aura_browser.py`, `tests/scroll_rail_browser.py`,
 `tests/v072_integration_browser.py`, `tests/transfer_browser.py`,
 `tests/onboarding_interaction_browser.py`, `tests/about_interaction_browser.py`,
 `tests/reading_system.py` and earlier regression suites. Installation support
-is in `js/install.js`. [Living atmosphere research](docs/research/2026-10-living-aura-v072.md),
+is in `js/install.js`. Browser address bars belong to the browser and cannot
+be removed by page CSS or JavaScript. Standalone home-screen installation
+provides the address-bar-free experience; guidance explains how to launch it.
+The shell uses dynamic viewport height with the existing svh/vh fallback. [Living atmosphere research](docs/research/2026-10-living-aura-v072.md),
 [articulated controls](docs/research/2026-10-articulated-controls-v072.md),
 [folio design](docs/design/about-v072.md), [rail design](docs/design/scroll-rail-v073.md)
 and [data transfer](docs/research/2026-10-data-transfer-v072.md) distinguish source

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""v0.73: real input continuity and visible page/press composition."""
+"""Press continuity; v0.74 restores the earlier page entrance."""
 import argparse
 import time
 import unittest
@@ -66,30 +66,25 @@ class Motion73(unittest.TestCase):
         expect(self.page.locator('#backup-dialog')).to_be_visible()
         self.page.keyboard.press('Escape');expect(self.page.locator('#backup-dialog')).not_to_be_visible()
         expect(backup).to_be_focused()
-    def test_cold_data_arrival_is_visible_and_controls_are_stationary_inside_it(self):
+    def test_cold_data_uses_the_restored_route_after_content_and_fonts_are_ready(self):
         def delayed(route):
             time.sleep(.45);route.continue_()
         self.context.route('**/data/manifest.json',delayed)
         self.visit('test')
-        self.page.wait_for_function('window.__effects.some(e=>e.timing.duration===620)')
+        self.page.wait_for_function('window.__effects.some(e=>e.timing.duration===360&&e.frames[0].transform==="translateX(12px)")')
         measured=self.page.evaluate('''() => {
-          const effects=window.__effects.filter(e=>e.timing.duration===620);
-          return {effects:effects.map(e=>({font:e.font,travel:e.frames[0].transform,controls:!!e.target.querySelector('button,a,input,select,textarea'),at:e.at})),
+          const effects=window.__effects.filter(e=>e.frames[0].transform==='translateX(12px)');
+          return {effects:effects.map(e=>({font:e.font,duration:e.timing.duration,at:e.at})),
+            obsolete:window.__effects.some(e=>e.timing.duration===620),
             ready:Math.max(...performance.getEntriesByType('resource').filter(r=>r.name.endsWith('/data/manifest.json')).map(r=>r.responseEnd))};
         }''')
         self.assertTrue(measured['effects'])
+        self.assertFalse(measured['obsolete'],'The larger vertical arrival was removed')
         self.assertGreater(measured['ready'],350,'Controlled cold request actually delayed rendering')
         for effect in measured['effects']:
             self.assertEqual(effect['font'],'loaded')
-            self.assertFalse(effect['controls'],'Moving presentation must not contain native controls')
+            self.assertEqual(effect['duration'],360)
             self.assertGreaterEqual(effect['at'],measured['ready'])
-            self.assertIn(effect['travel'],['translateY(24px)','translateY(32px)','translateY(12px)','translateY(6px)','translateY(6px) scale(.96)'])
-        self.page.evaluate('''() => {window.__arrival=window.__effects.find(e=>e.timing.duration===620&&['translateY(24px)','translateY(32px)','translateY(12px)'].includes(e.frames[0].transform));window.__arrival.animation.pause();window.__arrival.animation.currentTime=80;}''')
-        displacement=self.page.evaluate('new DOMMatrix(getComputedStyle(window.__arrival.target).transform).m42')
-        self.assertGreater(displacement,5,'Visible section arrival rather than a 1–2 px nudge')
-        self.page.evaluate('window.__arrival.animation.currentTime=560')
-        settled=self.page.evaluate('new DOMMatrix(getComputedStyle(window.__arrival.target).transform).m42')
-        self.assertLess(settled,2)
     def test_motion_off_cancels_held_press_and_arrivals_while_input_continues(self):
         self.visit('test');trigger=self.page.locator('[aria-labelledby~="mixed-count-label"]');trigger.wait_for();self.settle()
         box=trigger.bounding_box();self.page.mouse.move(box['x']+20,box['y']+20);self.page.mouse.down()

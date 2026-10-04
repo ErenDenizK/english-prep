@@ -5,6 +5,12 @@ the [development guide's Versioning section](docs/development.md#versioning) for
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.74 — 2026-10-04
+
+- Sayfa açılışları kullanıcının tercihiyle v0.72 animasyonlarına geri döndü. v0.73 buton tepkileri, %20 yavaşlatılan aura ve ince çimdikleme çubuğu korundu.
+- Uygulama, mobil tarayıcı araçları küçüldüğünde açılan yüksekliği kullanır. Profil/About yükleme açıklaması adres çubuğu olmayan ana ekran uygulamasına yönlendirir; tarayıcının kendi çubuğunu gizlediğini iddia etmez.
+- Materyal, kayıtlar ve eski sürümler değişmedi. [ADR 013](docs/adr/013-restore-page-entry-and-browser-space.md).
+
 ## v0.73 — 2026-10-04
 
 - Aura'nın hareket ve renk değişim hızı %20 azaltıldı; renkleri, yayılımı ve canlılığı korundu.

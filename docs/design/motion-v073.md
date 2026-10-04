@@ -1,5 +1,8 @@
 # Motion v0.73 — an opening, a press, a release
 
+Historical page-entry decision: v0.74 restores the v0.72 page choreography at
+the owner’s request. Tactile controls remain. See [ADR 013](../adr/013-restore-page-entry-and-browser-space.md).
+
 The owner asked for clearly visible page and button motion. v0.72's small
 horizontal translation and panel halo were too quiet. That feedback supersedes
 historical preferences for keeping every heading still. The academic content,

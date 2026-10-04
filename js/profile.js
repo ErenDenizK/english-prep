@@ -39,7 +39,7 @@ import { icon } from "./icons.js";
 import { avatar } from "./widgets.js";
 import { progressMetric } from "./progress.js";
 import { createMotionControl } from "./motion.js";
-import { animateElement, animateArrival, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateElement, animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 import { announce } from "./shell.js";
 import { createInstallControl } from "./install.js";
 
@@ -566,13 +566,12 @@ function presentProfile() {
     const box = section.getBoundingClientRect();
     return box.top < viewport.bottom && box.bottom > viewport.top;
   }).slice(0, 4);
+  const entries = visible.map((element, index) => ({ element, kind: "route", at: index * 45 }));
   // A bounded identity mark can settle longer than text without delaying
   // reading, a field edit, or a settings action.
   const identity = container.querySelector('[data-profile-part="identity"] .avatar');
-  whenVisible(visible[0] ?? container, () => {
-    visible.forEach((element, index) => animateArrival(element, { channel: "profile-arrival", delay: index * 45 }));
-    if (identity) animateElement(identity, "complete", { channel: "profile-identity", delay: 60 });
-  },
+  if (identity) entries.push({ element: identity, kind: "complete", at: 60 });
+  whenVisible(entries[0]?.element ?? container, () => animateSequence(entries, { channel: "profile-arrival" }),
     { channel: "profile-arrival", threshold: 0 });
 }
 

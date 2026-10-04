@@ -1,6 +1,6 @@
 /* Interaction presentation · ADR 009. Input, focus and state always commit now.
    Finite event effects live in js/interactions.js; CSS owns ordinary controls. */
-:root { --d-flow: 1100ms; --d-arrival: 620ms; --d-release: 380ms; }
+:root { --d-flow: 1100ms; --d-release: 380ms; }
 .brand-mark--responsive .brand-mark__letters--full { display: none; }
 .brand-mark--full { font-size: 1.75rem; letter-spacing: -.055em; }
 .brand-mark__dot { transition: color var(--d-control) var(--ease-standard); }
