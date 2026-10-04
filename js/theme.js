@@ -49,7 +49,8 @@ function systemIsLight() {
   return media.matches;
 }
 
-/** Paint the preference and resolve browser chrome to the actual palette. */
+/** Paint the preference. Explicit chrome color is limited by the meta's
+ * standalone media query; browser tabs may sample the page behind their UI. */
 export function applyTheme(theme) {
   const choice = validTheme(theme);
   const root = document.documentElement;

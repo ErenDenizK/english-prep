@@ -319,10 +319,29 @@
 .about-page .about-study-controls:focus-within,
 .about-page .about-architecture-controls:focus-within { z-index:1; }
 .about-page :is(.about-study-step,.about-architecture-node):focus-visible { outline-offset:-5px; border-radius:10px; }
-.about-page .about-feature-grid { column-gap:32px; }
-.about-page .about-feature-detail > summary { min-height:94px; padding-block:20px; }
-.about-page .about-feature-toggle { top:36px; }
-.about-page .about-feature-detail h3 { margin-top:8px; }
+/* The shared press face is a layout container: give feature summaries an
+   explicit hierarchy instead of inheriting its default horizontal flex row. */
+.about-page .about-feature-grid { grid-template-columns:minmax(0,1fr); gap:0 40px; }
+.about-page .about-feature-detail > summary { min-height:108px; padding:20px 0; }
+.about-page .about-feature-detail > summary > .control-face {
+  display:grid; width:100%; grid-template-columns:minmax(0,1fr) 20px;
+  gap:8px 20px; align-items:start; text-align:left;
+}
+.about-page .about-feature-sign { grid-column:1; grid-row:1; min-width:0; gap:12px; }
+.about-page .about-feature-label { min-width:0; overflow-wrap:normal; word-break:normal; }
+.about-page .about-feature-detail h3 {
+  grid-column:1; grid-row:2; margin:0; padding-left:36px;
+  font-size:1.125rem; line-height:1.5; overflow-wrap:normal;
+}
+.about-page .about-feature-toggle {
+  grid-column:2; grid-row:1 / span 2; align-self:center;
+  position:static; margin:0; flex-shrink:0;
+}
+.about-page .about-feature-body { padding:0 0 24px 36px; }
+@media (min-width:700px) {
+  .about-page .about-feature-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
 .about-page :is(.about-engineering-detail,.about-faq details)::details-content { overflow:clip; }
 @media(min-width:700px) {
   .about-page :is(.about-study-step,.about-architecture-node) { flex-direction:row; min-height:76px; gap:14px; padding:18px; }

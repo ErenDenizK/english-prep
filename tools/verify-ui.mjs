@@ -392,7 +392,12 @@ async function runFlow(page, viewport) {
 
   // A lesson is one scrolling page, so the way out and the position have
   // to stay on screen however far down it the learner is.
-  await page.evaluate(() => document.getElementById("shell-scroll").scrollBy({ top: 1200 }));
+  // The optional pretest has variable height. A fixed document distance can
+  // still be above the article and correctly report zero reading progress.
+  await page.evaluate(() => {
+    document.querySelector("[data-reading-start]").scrollIntoView({ block: "start", behavior: "instant" });
+    document.getElementById("shell-scroll").scrollBy({ top: 300, behavior: "instant" });
+  });
   await page.waitForTimeout(150);
   const stickyBox = await page.locator("#shell-header").boundingBox();
   ok(stickyBox !== null && stickyBox.y < 80, "okuyucunun barı kaydırırken ekranda kaldı");

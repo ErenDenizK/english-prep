@@ -1,5 +1,10 @@
 # ADR 013 — Restore page entrances; distinguish browser and application space
 
+Update in v0.75: the owner clarified that the target is the flat backing band
+under the URL controls, not the controls themselves. Tab theme-color forcing
+is now removed, and the atmosphere extends to the large viewport. The earlier
+interpretation below is retained as history, not the current user request.
+
 Accepted, 4 October 2026. The owner prefers the page openings from v0.72 after
 trying v0.73. Restore the exact Home, Education, Profile, Quiz and Results
 entrance callers from that version and remove the unused 620ms arrival helper.
