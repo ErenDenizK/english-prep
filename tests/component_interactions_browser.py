@@ -151,12 +151,84 @@ class ComponentInteractionTests(unittest.TestCase):
         trigger.press('End')
         trigger.press('Enter')
         expect(trigger).to_contain_text('Tümü')
+        trigger.click()
+        # Freeze the opening frame and click the outermost first-row edge.
+        # Bounding rectangles alone would miss a clip-path removing hit area.
+        menu.evaluate('''root => root.getAnimations({subtree:true}).forEach(a => {
+          a.pause(); a.currentTime = 0;
+        })''')
+        first = menu.locator('[role="option"]').first
+        expected = first.locator('.listbox__option-label').inner_text()
+        box = first.bounding_box()
+        self.page.mouse.click(box['x'] + box['width'] / 2, box['y'] + 1)
+        expect(trigger).to_have_attribute('aria-expanded', 'false')
+        expect(trigger).to_contain_text(expected)
         self.visit('index.html#profil')
         self.page.get_by_role('button', name='Geçmişi sıfırla', exact=True).click()
         dialog = self.page.locator('#confirm-dialog')
         self.assertFalse(dialog.evaluate("e => e.getAnimations({subtree:true}).some(a => a.playState === 'running')"))
         self.page.get_by_role('button', name='Vazgeç', exact=True).click()
         expect(dialog).not_to_be_visible()
+
+    def test_popup_assembles_visible_labels_without_moving_option_hitboxes(self):
+        self.page.add_init_script('''(() => {
+          const animate = Element.prototype.animate;
+          window.partEffects = [];
+          Element.prototype.animate = function(frames, timing) {
+            window.partEffects.push({className:this.className, id:this.id, frames, timing});
+            return animate.call(this, frames, timing);
+          };
+        })();''')
+        self.visit('index.html#test')
+        trigger = self.page.locator('[aria-labelledby~="mixed-count-label"]')
+        trigger.click()
+        menu = self.page.locator('[role="listbox"]:visible')
+        effects = self.page.evaluate('partEffects.filter(e => String(e.className).startsWith("listbox__"))')
+        labels = [e for e in effects if e['className'] == 'listbox__option-label']
+        self.assertGreaterEqual(len(labels), 2)
+        self.assertLessEqual(len(labels), 4)
+        self.assertEqual(len({e['timing']['delay'] for e in labels}), len(labels))
+        self.assertLessEqual(max(e['timing']['delay'] for e in labels), 105)
+        surface = [e for e in effects if e['className'] == 'listbox__menu']
+        self.assertTrue(surface)
+        self.assertTrue(all('transform' not in frame for frame in surface[-1]['frames']))
+        self.assertFalse(any(e['className'] == 'listbox__option' for e in effects))
+        before = menu.locator('[role="option"]').evaluate_all('''items => items.map(item => {
+          const r = item.getBoundingClientRect(); return [r.x, r.y, r.width, r.height];
+        })''')
+        menu.evaluate('''async root => {
+          await Promise.allSettled(root.getAnimations({subtree:true}).map(a => a.finished));
+        }''')
+        after = menu.locator('[role="option"]').evaluate_all('''items => items.map(item => {
+          const r = item.getBoundingClientRect(); return [r.x, r.y, r.width, r.height];
+        })''')
+        self.assertEqual(before, after)
+        trigger.press('End')
+        trigger.press('Enter')
+        expect(trigger).to_contain_text('Tümü')
+
+    def test_dialog_parts_open_independently_and_cancel_without_waiting(self):
+        self.visit('index.html#profil')
+        self.page.get_by_role('button', name='Geçmişi sıfırla', exact=True).evaluate('(button) => button.click()')
+        dialog = self.page.locator('#confirm-dialog')
+        expect(self.page.get_by_role('button', name='Vazgeç', exact=True)).to_be_focused()
+        targets = dialog.evaluate('''root => root.getAnimations({subtree:true}).map(a => ({
+          id:a.effect.target.id, className:a.effect.target.className,
+          frames:a.effect.getKeyframes(), delay:a.effect.getTiming().delay
+        }))''')
+        self.assertTrue(any(t['id'] == 'confirm-dialog-title' for t in targets))
+        self.assertEqual(len([t for t in targets if t['className'] == 'dialog__action-label']), 2)
+        surface = next(t for t in targets if t['id'] == 'confirm-dialog')
+        self.assertTrue(all('transform' not in frame for frame in surface['frames']))
+        self.page.evaluate('''() => {
+          window.cancelledDialogEffects = document.querySelector('#confirm-dialog').getAnimations({subtree:true});
+          document.querySelector('#confirm-dialog-cancel').click();
+        }''')
+        expect(dialog).not_to_be_visible()
+        self.page.wait_for_function('cancelledDialogEffects.every(a => a.playState === "idle")')
+        self.page.get_by_role('button', name='Geçmişi sıfırla', exact=True).click()
+        self.assertEqual(dialog.locator('.dialog__action-label .dialog__action-label').count(), 0)
+        self.page.keyboard.press('Escape')
 
 
 if __name__ == '__main__':

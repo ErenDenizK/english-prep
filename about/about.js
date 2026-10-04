@@ -1,10 +1,10 @@
 import { createInstallControl } from "../js/install.js";
-import { initMotion } from "../js/motion.js";
-import { animateElement, animateSequence, cancelAnimationsWithin, bindPointerScene, whenVisible } from "../js/interactions.js";
+import { initMotion, motionEnabled } from "../js/motion.js";
+import { animateElement, animateSequence, cancelAnimationsWithin, whenVisible } from "../js/interactions.js";
 import { initScrollRail } from "../js/scroll-rail.js";
 import { createBrand } from "../js/brand.js";
 import { icon } from "../js/icons.js";
-import { studyStages, architecture, everydayFeatures, engineering, questions, extraSections } from "./content.js";
+import { folioChapters, studyStages, architecture, everydayFeatures, engineering, questions, extraSections } from "./content.js";
 
 const node = (tag, className, text) => {
   const element = document.createElement(tag);
@@ -68,20 +68,207 @@ initMotion();
 for (const placeholder of document.querySelectorAll("[data-brand]")) {
   placeholder.replaceChildren(createBrand({ variant: placeholder.dataset.brand }));
 }
-bindPointerScene(document.querySelector(".about-hero-visual"), {
-  target: document.querySelector(".about-hero-scene"), maxTilt: 2, maxShift: 6,
-});
-// Image-heavy scenes start after their actual pixels can be painted. Cold or
-// high-density captures must not spend their entrance while still downloading.
+// Decoding and observation belong to the artwork, never to usable state.
 const decodeImages = (element) => Promise.all([...element.querySelectorAll("img")]
   .map((image) => image.decode().catch(() => {})));
-whenVisible(document.querySelector(".about-hero-visual"), () => {
-  animateSequence([
-    { element: document.querySelector(".about-hero-wide"), kind: "flow", at: 0 },
-    { element: document.querySelector(".about-hero-phone"), kind: "story", at: 100 },
-    { element: document.querySelector(".about-hero-trace .about-trace"), kind: "trace", at: 160 },
-  ], { channel: "about-opening" });
-}, { channel: "about-opening-ready", ready: decodeImages(document.querySelector(".about-hero-visual")) });
+
+/** A directly inspectable product folio. State is synchronous; every animated
+ * piece is expendable. Dragging has native-button alternatives and leaves
+ * browser vertical scrolling and pinch zoom intact. No frame loop runs idle. */
+function mountFolio(chapters) {
+  const root = byId("study-folio");
+  const stage = byId("folio-stage");
+  const deck = byId("folio-deck");
+  const tabs = byId("folio-tabs");
+  const inspect = byId("folio-inspect");
+  const rotate = byId("folio-rotate");
+  if (!chapters.length) { root.hidden = true; return; }
+  let current = 0;
+  let expanded = false;
+  let turned = false;
+  let drag = null;
+  let suppressClick = false;
+  let revision = 0;
+  const leaves = [];
+  const buttons = [];
+  const tone = (item) => ["accent", "secondary", "tertiary", "cool"].includes(item.tone) ? item.tone : "accent";
+  for (const [index, item] of chapters.entries()) {
+    const tab = node("button", "folio-tab");
+    tab.type = "button";
+    tab.dataset.folioChapter = item.id;
+    tab.dataset.tone = tone(item);
+    tab.setAttribute("aria-controls", "folio-deck folio-caption");
+    const number = node("span", "folio-tab-number", String(index + 1).padStart(2, "0"));
+    number.setAttribute("aria-hidden", "true");
+    tab.append(number, node("span", null, item.label));
+    tab.addEventListener("click", () => select(index));
+    buttons.push(tab);
+    tabs.appendChild(tab);
+
+    const leaf = node("div", "folio-leaf");
+    leaf.dataset.folioLeaf = item.id;
+    leaf.dataset.tone = tone(item);
+    const face = node("button", "folio-leaf-face");
+    face.type = "button";
+    face.dataset.folioFace = item.id;
+    const top = node("span", "folio-sheet-top");
+    top.append(glyph(item.icon), node("span", "folio-sheet-label", item.sheetTitle), node("span", "folio-sheet-number", String(index + 1).padStart(2, "0")));
+    const view = node("span", "folio-window");
+    const picture = node("picture");
+    const source = node("source");
+    source.media = "(min-width: 700px)";
+    source.srcset = `assets/${item.capture}-wide.webp`;
+    const image = node("img");
+    image.src = `assets/${item.capture}-phone.webp`;
+    image.width = 390; image.height = 844;
+    image.alt = ""; // The button has an action name; real-media provenance is visible below.
+    image.draggable = false;
+    image.decoding = "async";
+    if (index === 0) image.fetchPriority = "high";
+    else image.loading = "lazy";
+    picture.append(source, image); view.appendChild(picture);
+    const foot = node("span", "folio-sheet-foot", item.sheetNote);
+    const corner = node("span", "folio-sheet-corner"); corner.setAttribute("aria-hidden", "true");
+    face.append(top, view, foot, corner);
+    face.addEventListener("click", (event) => {
+      if (suppressClick && event.detail > 0) { suppressClick = false; event.preventDefault(); return; }
+      if (current === index) setExpanded(!expanded);
+      else select(index);
+    });
+    leaf.appendChild(face); deck.appendChild(leaf); leaves.push(leaf);
+  }
+  document.querySelector(".folio-caption").id = "folio-caption";
+  function paint() {
+    root.dataset.chapter = chapters[current].id;
+    root.dataset.tone = tone(chapters[current]);
+    deck.dataset.expanded = String(expanded);
+    deck.dataset.view = turned ? "angle" : "front";
+    deck.style.setProperty("--folio-view-y", turned ? "-18deg" : "0deg");
+    deck.style.setProperty("--folio-view-x", turned ? "7deg" : "0deg");
+    for (const [index, leaf] of leaves.entries()) {
+      const distance = (index - current + chapters.length) % chapters.length;
+      const slot = distance === 0 ? 0 : distance % 2 ? -Math.ceil(distance / 2) : Math.ceil(distance / 2);
+      leaf.style.setProperty("--folio-slot", String(slot));
+      leaf.style.zIndex = String(chapters.length - Math.abs(slot));
+      leaf.dataset.active = String(index === current);
+      const face = leaf.querySelector("button");
+      face.tabIndex = index === current || expanded ? 0 : -1;
+      face.setAttribute("aria-label", index === current
+        ? `${chapters[index].sheetTitle}. ${expanded ? "Katmanları birleştir" : "Katmanları aç"}`
+        : `${chapters[index].sheetTitle} görünümünü öne getir`);
+      face.setAttribute("aria-pressed", String(index === current));
+      buttons[index].setAttribute("aria-pressed", String(index === current));
+    }
+    inspect.setAttribute("aria-pressed", String(expanded));
+    inspect.lastElementChild.textContent = expanded ? "Katmanları birleştir" : "Katmanları aç";
+    rotate.setAttribute("aria-pressed", String(turned));
+    rotate.lastElementChild.textContent = turned ? "Öne dön" : "Döndür";
+    byId("folio-count").textContent = `${String(current + 1).padStart(2, "0")}—${String(chapters.length).padStart(2, "0")}`;
+  }
+  function announce(text) { byId("folio-status").textContent = text; }
+  function flourish(kind = "folio", direction = "forward") {
+    const ticket = ++revision;
+    const leaf = leaves[current];
+    cancelAnimationsWithin(deck);
+    whenVisible(leaf, () => {
+      if (revision !== ticket) return;
+      animateSequence([
+        { element: leaf.querySelector(".folio-window"), kind, at: 0 },
+        { element: leaf.querySelector("svg"), kind: "complete", at: 75 },
+        { element: leaf.querySelector(".folio-sheet-corner"), kind: "unfold", at: 130 },
+        { element: root.querySelector(".folio-thread"), kind: "trace", at: 160 },
+      ], { channel: "folio-turn", direction });
+    }, { channel: "folio-ready", ready: decodeImages(leaf), threshold: .1 });
+  }
+  function select(index, announceChange = true) {
+    const previous = current;
+    current = (index + chapters.length) % chapters.length;
+    const item = chapters[current];
+    byId("folio-label").textContent = `${String(current + 1).padStart(2, "0")} / ${item.label}`;
+    byId("folio-heading").textContent = item.title;
+    byId("folio-description").textContent = item.body;
+    setAction(byId("folio-action"), item.action);
+    paint();
+    if (announceChange) {
+      announce(`${item.label}. ${item.title}`);
+      flourish("folio", current < previous ? "back" : "forward");
+    }
+  }
+  function setExpanded(value) {
+    expanded = value;
+    paint();
+    announce(expanded ? "Üç çalışma katmanı açık. Bir yaprağı seçerek incele." : `${chapters[current].label} önde. Katmanlar birleşti.`);
+    flourish(expanded ? "fan" : "folio");
+  }
+  inspect.addEventListener("click", () => setExpanded(!expanded));
+  rotate.addEventListener("click", () => {
+    turned = !turned;
+    paint();
+    announce(turned ? "Dosya yan açıdan gösteriliyor. Öne dön düğmesiyle düz görünümü aç." : "Dosya önden gösteriliyor.");
+    animateElement(rotate.querySelector(".folio-rotate-mark"), "complete", { channel: "folio-angle-mark" });
+  });
+  tabs.addEventListener("keydown", (event) => {
+    let next;
+    if (event.key === "ArrowRight") next = current + 1;
+    else if (event.key === "ArrowLeft") next = current - 1;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = chapters.length - 1;
+    else return;
+    event.preventDefault();
+    select(next);
+    buttons[current].focus({ preventScroll: true });
+  });
+  function resetDrag() {
+    const pointer = drag?.id;
+    drag = null;
+    deck.dataset.dragging = "false";
+    deck.style.setProperty("--folio-drag-x", "0deg");
+    deck.style.setProperty("--folio-drag-y", "0deg");
+    if (pointer !== undefined && stage.hasPointerCapture?.(pointer)) stage.releasePointerCapture(pointer);
+  }
+  stage.addEventListener("pointerdown", (event) => {
+    if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+    suppressClick = false;
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, active: false };
+  });
+  stage.addEventListener("pointermove", (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const dx = event.clientX - drag.x;
+    const dy = event.clientY - drag.y;
+    if (!drag.active) {
+      if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { resetDrag(); return; }
+      if (Math.abs(dx) < 8) return;
+      drag.active = true;
+      suppressClick = true;
+      stage.setPointerCapture?.(event.pointerId);
+      cancelAnimationsWithin(deck);
+      deck.dataset.dragging = "true";
+    }
+    drag.dx = dx;
+    if (motionEnabled()) {
+      deck.style.setProperty("--folio-drag-y", `${Math.max(-16, Math.min(16, dx / 8))}deg`);
+      deck.style.setProperty("--folio-drag-x", `${Math.max(-5, Math.min(5, -dy / 18))}deg`);
+    }
+  });
+  stage.addEventListener("pointerup", (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const turn = drag.active && Math.abs(drag.dx) >= 46;
+    const direction = drag.dx < 0 ? 1 : -1;
+    resetDrag();
+    if (turn) select(current + direction);
+  });
+  stage.addEventListener("pointercancel", resetDrag);
+  stage.addEventListener("lostpointercapture", () => { if (drag) resetDrag(); });
+  stage.addEventListener("pointerleave", () => { if (drag && !drag.active) resetDrag(); });
+  document.addEventListener("motion:change", (event) => {
+    if (!event.detail.enabled || !event.detail.visible) { resetDrag(); revision++; cancelAnimationsWithin(deck); }
+  });
+  window.addEventListener("pagehide", resetDrag);
+  window.addEventListener("blur", resetDrag);
+  select(0, false);
+  flourish("fan");
+}
+mountFolio(folioChapters);
 
 // One continuous selection line belongs to the entire composition, not three
 // disconnected button cards. Geometry follows text wrapping and author additions.

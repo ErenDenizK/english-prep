@@ -11,7 +11,7 @@
 // printable characters type ahead, all as a real <select> does.
 
 import { icon } from "./icons.js";
-import { animateElement, cancelAnimationsWithin } from "./interactions.js";
+import { animateElement, animateSequence, cancelAnimationsWithin } from "./interactions.js";
 
 let instanceCount = 0;
 
@@ -79,6 +79,7 @@ export function createListbox({ container, options, value, onChange, labelledBy 
   }
 
   function renderOptions() {
+    cancelAnimationsWithin(menu);
     menu.replaceChildren();
     options.forEach((option, index) => {
       const item = document.createElement("li");
@@ -238,7 +239,19 @@ export function createListbox({ container, options, value, onChange, labelledBy 
     if (usesPopover) menu.showPopover();
     else document.body.appendChild(menu);
     positionMenu();
-    animateElement(menu, "menu", { direction: menu.dataset.side });
+    // The popup and its options have their final geometry before presentation.
+    // Only visible labels assemble; moving an actual row would move the target
+    // under a fast tap or alter the active-option scroll calculation.
+    animateElement(menu, "panel", { channel: "menu-shell", direction: menu.dataset.side });
+    const bounds = menu.getBoundingClientRect();
+    const visible = [...menu.children].filter((item) => {
+      const box = item.getBoundingClientRect();
+      return box.bottom > bounds.top && box.top < bounds.bottom;
+    }).slice(0, 4);
+    animateSequence(visible.flatMap((item, index) => [
+      { element: item.querySelector(".listbox__option-label"), kind: "item", at: index * 35 },
+      { element: item.querySelector(".listbox__option-mark svg"), kind: "signal", at: 100 },
+    ]), { channel: "menu-items" });
     document.addEventListener("pointerdown", handleOutsidePointer, true);
     watchPosition(true);
   }

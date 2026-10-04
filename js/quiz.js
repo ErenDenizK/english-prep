@@ -22,7 +22,7 @@ import { el, clear, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
 import { haptic } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
-import { animateElement, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
 
 const container = document.getElementById("quiz-container");
 const actionBar = createActionBar("quiz-bar");
@@ -302,9 +302,6 @@ function renderQuestion({ enter = false, reveal = false } = {}) {
       saveProgress();
       announce("Şıklar göründü.");
       renderQuestion({ reveal: true });
-      // The learner asked for the options, so put them under the thumb
-      // rather than making them look for what just appeared.
-      document.querySelector(".option")?.focus({ preventScroll: true });
     });
     block.appendChild(reveal);
   } else {
@@ -323,9 +320,24 @@ function renderQuestion({ enter = false, reveal = false } = {}) {
 
   page.appendChild(block);
   container.appendChild(page);
-  if (enter) whenVisible(page, () => animateElement(page, "route", { channel: "question-entry" }),
-    { channel: "question-entry", threshold: 0 });
-  if (reveal) animateElement(block.querySelector(".options"), "reveal");
+  // Establish requested focus before scheduling presentation: the shared
+  // input-priority guard must not mistake this intentional focus for an
+  // interruption of the newly revealed choice glyphs.
+  if (reveal) block.querySelector(".option")?.focus({ preventScroll: true });
+  const choiceMarks = [...block.querySelectorAll(".option__key")].map((element, index) => ({
+    element, kind: "signal", at: index * 35,
+  }));
+  if (enter) whenVisible(page, () => animateSequence([
+    { element: prompt, kind: "panel" },
+    { element: prompt.querySelector(".t-label"), kind: "item", at: 0 },
+    ...choiceMarks,
+  ], { channel: "question-entry" }), { channel: "question-entry", threshold: 0 });
+  // A late visibility callback must never move an answer target under a finger.
+  // Only the small shortcut glyphs assemble; option boxes and English prose
+  // retain their final geometry even before the first frame and during input.
+  if (reveal) whenVisible(block.querySelector(".options"), () => animateSequence(choiceMarks, {
+    channel: "answer-reveal",
+  }), { channel: "answer-reveal", threshold: 0 });
 
   // The bar is fixed, so answering never moves the button — but on a short
   // screen the explanation itself can still land below the fold. "nearest"

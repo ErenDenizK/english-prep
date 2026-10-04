@@ -1,5 +1,11 @@
 # Roadmap
 
+> **Presentation/product follow-up, 2026-10-04:** the v0.72 data-transfer work
+> and newly researched feature opportunities are tracked in
+> [feature-opportunities-v072.md](design/feature-opportunities-v072.md).
+> This historical content plan remains intact; that follow-up does not add or
+> rewrite any lessons or questions.
+
 > **App 1's planning closed on 2026-09-06.** What remains to be built is
 > in **`docs/app1-final.md`** — the complete task list, costed and
 > ordered, with the bar every item must clear and the list of things

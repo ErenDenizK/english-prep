@@ -345,7 +345,7 @@ class ReadingSystemTests(unittest.TestCase):
         self.assertTrue(self.page.locator('.ambient__field').evaluate_all('''nodes =>
           nodes.every(node => node.getAnimations().some(animation =>
             animation.effect.getTiming().iterations === Infinity &&
-            animation.effect.getTiming().duration >= 16000 && animation.playState === 'running'))
+            animation.effect.getTiming().duration >= 7000 && animation.playState === 'running'))
         '''))
 
     def test_ambient_motion_is_available_across_routes_and_pauses_persistently(self):

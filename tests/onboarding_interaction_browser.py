@@ -226,6 +226,23 @@ class OnboardingInteractionTests(unittest.TestCase):
                 expect(self.page.locator('.onboard__wordmark')).to_contain_text('english prep')
                 self.assertEqual(self.decorative_animations(), [])
 
+    def test_articulated_scenes_use_distinct_parts_while_copy_stays_still(self):
+        self.open_tour()
+        for step in range(2):
+            for scene in range(3):
+                self.page.locator('.onboard-flow__choice').nth(scene).evaluate('(button) => button.click()')
+                self.wait_for_art_motion()
+                kinds = self.page.locator('.onboard-flow__scene [data-onboard-motion]').evaluate_all(
+                    'parts => [...new Set(parts.map(p => p.dataset.onboardMotion))]')
+                self.assertGreaterEqual(len(kinds), 3, kinds)
+                self.assertNotIn('flow', kinds)
+                self.assertEqual(self.page.locator('#onboard-step-title').evaluate(
+                    'e => e.getAnimations().length'), 0)
+                self.assertEqual(self.page.locator('.onboard__description').evaluate(
+                    'e => e.getAnimations().length'), 0)
+                self.assertGreater(self.page.locator('.onboard-flow__secondary').count(), 0)
+            self.page.locator('.onboard__actions .btn--primary').click()
+
 
 if __name__ == '__main__':
     unittest.main(argv=[__file__] + TEST_ARGS)

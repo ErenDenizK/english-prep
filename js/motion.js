@@ -12,8 +12,15 @@ function ensureAmbient() {
   if (!document.body || document.querySelector(".ambient")) return;
   const ambient = el("div", "ambient");
   ambient.setAttribute("aria-hidden", "true");
-  for (const tone of ["cherry", "iris", "apricot"]) {
-    ambient.appendChild(el("span", `ambient__field ambient__field--${tone}`));
+  // The parent opacity caps the COMPOSITED group, not each of these nine
+  // layers. Every local cluster visits all three pigments; overlap cannot
+  // accumulate past the audited group envelope. CSS owns the idle timelines.
+  for (const corner of ["north", "east", "south"]) {
+    const field = el("span", `ambient__field ambient__field--${corner}`);
+    for (const tone of ["cherry", "iris", "lagoon"]) {
+      field.appendChild(el("span", `ambient__pigment ambient__pigment--${tone}`));
+    }
+    ambient.appendChild(field);
   }
   document.body.prepend(ambient);
 }

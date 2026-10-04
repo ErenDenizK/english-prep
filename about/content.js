@@ -1,5 +1,28 @@
 // Plain editable product copy. Layout does not depend on item counts.
 // Rendered through textContent; see README.md for additions and real captures.
+// The hero is an inspectable product object, not a second lesson or a quiz.
+// Each leaf points to an existing app view. Keep labels short; body copy may wrap.
+export const folioChapters = [
+  {
+    id: "read", label: "Oku", icon: "book", capture: "article", tone: "accent",
+    title: "Bir ayrımı aç.", body: "Benzer kullanımları aynı makalede, yan yana incele.",
+    sheetTitle: "Makale dersi", sheetNote: "Örnekler · karşılaştırmalar · kısa kontroller",
+    action: { label: "Derse git", href: "../index.html#egitim/tenses-present-perfect-vs-past-simple" },
+  },
+  {
+    id: "apply", label: "Uygula", icon: "check-square", capture: "test", tone: "cool",
+    title: "Sezgini yokla.", body: "Bir cevap seç; açıklama, ayrımın nerede olduğunu göstersin.",
+    sheetTitle: "Açıklamalı test", sheetNote: "Seçenekler · gerekçeler · konuya dönüş",
+    action: { label: "Testleri aç", href: "../index.html#test" },
+  },
+  {
+    id: "return", label: "Geri dön", icon: "refresh", capture: "results", tone: "tertiary",
+    title: "Bağlantıyı kur.", body: "Sonucunu incele. İhtiyacın olan derse veya yanlışına dön.",
+    sheetTitle: "Sonuç ve tekrar", sheetNote: "Cevap inceleme · yanlış defteri · devam",
+    action: { label: "Çalışmaya dön", href: "../index.html#test" },
+  },
+];
+
 export const studyStages = [
   {
     id: "read", label: "Oku", icon: "book", capture: "article",
@@ -58,7 +81,7 @@ export const everydayFeatures = {
   items: [
     { title: "Kaldığın yer durur.", body: "Okuma konumun tarayıcıda saklanır. Aktif testi aynı sekmede yenilersen, geçerli oturum kaydıyla soruların ve cevapların geri gelir.", label: "Devamlılık", icon: "bookmark" },
     { title: "Çalışmanın kapsamını sen seç.", body: "Bir konuya, dersteki belirli ayrıma, karışık sorulara veya yanlışlarına odaklan. Soru sayısını çalışmana göre belirle.", label: "Pratik", icon: "sliders" },
-    { title: "Verin seninle kalsın.", body: "Hesap açman gerekmez. İlerleme bu tarayıcıda tutulur; yedek alıp başka bir tarayıcıya veya cihaza aktarabilirsin.", label: "Yerel veri", icon: "archive" },
+    { title: "Verin seninle kalsın.", body: "Yedeğin içeriğini gör; dosya olarak paylaş, indir veya metnini kopyala. Diğer cihazda geri yükleyerek devam et. Otomatik eşitleme yok.", label: "Yerel veri", icon: "archive" },
     { title: "Bir uygulama gibi aç.", body: "Destekleyen tarayıcılarda ana ekranına ekle. Daha önce açılmış ve önbellekte kalan derslere internet yokken de dönebilirsin.", label: "PWA", icon: "install" },
     { title: "Telefonunda ve masanda.", body: "Küçük ekranda tek çalışma sütunu, geniş ekranda konu haritasına daha fazla alan. Derslerin satırları okumayı zorlaştıracak kadar genişlemez.", label: "Uyarlanabilir düzen", icon: "devices" },
     { title: "Ritmini kendin belirle.", body: "Koyu, açık veya sistem görünümünü seç. Hafif arka plan hareketini durdur; cihazının azaltılmış hareket tercihi her zaman önceliklidir.", label: "Görünüm ve hareket", icon: "spark" },
@@ -81,7 +104,7 @@ export const engineering = {
   ],
   links: [
     { label: "Kaynak kodunu incele", href: "https://github.com/ErenDenizK/english-prep/tree/test" },
-    { label: "Tasarım kararını oku", href: "https://github.com/ErenDenizK/english-prep/blob/test/docs/adr/009-expressive-study-motion.md" },
+    { label: "Tasarım kararını oku", href: "https://github.com/ErenDenizK/english-prep/blob/test/docs/adr/011-articulated-interface-and-data-portability.md" },
     { label: "Doğrulama raporu", href: "https://github.com/ErenDenizK/english-prep/blob/test/docs/VALIDATION.md" },
   ],
 };
