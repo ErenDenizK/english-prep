@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Independent cross-surface v0.72 checks; optional targeted axe matrix."""
 import argparse
+import re
 import json
 from pathlib import Path
 import unittest
@@ -140,23 +141,29 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(self.page.evaluate('JSON.stringify({...localStorage})'), before)
 
     def test_about_keyboard_controls_remain_complete_with_reduced_motion(self):
+        # v0.77 About: the lens, its pager and the anatomy question are fully
+        # keyboard-operable, and reduced motion leaves nothing running.
         self.new_context(reduced_motion='reduce')
         self.visit('about/')
-        chapter = self.page.locator('[data-folio-chapter="apply"]')
-        chapter.focus()
-        chapter.press('Enter')
-        expect(chapter).to_have_attribute('aria-pressed', 'true')
-        expect(chapter).to_be_focused()
-        self.page.locator('#folio-inspect').focus()
+        radios = self.page.locator('#lens-forms [role="radio"]')
+        radios.first.focus()
+        self.page.keyboard.press('ArrowDown')
+        expect(radios.nth(1)).to_be_focused()
+        expect(radios.nth(1)).to_have_attribute('aria-checked', 'true')
+        expect(self.page.locator('#lens-stage')).to_have_attribute('data-state', 'linked')
+        third = self.page.locator('.ab-pager__item').nth(2)
+        third.focus()
         self.page.keyboard.press('Enter')
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-expanded', 'true')
-        self.page.locator('#folio-rotate').focus()
+        expect(third).to_have_attribute('aria-pressed', 'true')
+        expect(third).to_be_focused()
+        expect(self.page.locator('#lens-lesson')).to_have_attribute('href', re.compile(r'#egitim/modals-'))
+        option = self.page.locator('.ab-option').nth(1)
+        option.focus()
         self.page.keyboard.press('Enter')
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-view', 'angle')
-        animations = self.page.locator('#study-folio').evaluate('root => root.getAnimations({subtree:true}).filter(a => a.playState === "running").length')
+        expect(self.page.locator('.ab-result__verdict')).to_be_visible()
+        animations = self.page.evaluate("""document.getAnimations().filter(a => a.playState === 'running'
+          && Number.isFinite(a.effect.getComputedTiming().endTime)).length""")
         self.assertEqual(animations, 0)
-        expect(self.page.locator('#folio-action')).to_have_attribute('href', '../index.html#test')
-        self.assertTrue(self.page.locator('#folio-caption').evaluate('node => node.getAnimations().length === 0'))
 
     @unittest.skipUnless(ARGS.axe, 'Pass --axe to run the 36-state accessibility matrix')
     def test_targeted_accessibility_matrix(self):

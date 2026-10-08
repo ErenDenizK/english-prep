@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
-"""About story, real media, pointer lifecycle, motion preferences and editing."""
+"""/about/ (v0.77): the lens, the distinction map, the question anatomy, the
+study loop, live craft proofs, motion preferences and responsive layout.
+
+Serve the repository under /english-prep/ (as GitHub Pages does) or pass
+--base-url. Learning data must never be written by this page.
+"""
 import argparse
-from pathlib import Path
+import json
+import re
 import unittest
+from pathlib import Path
 from playwright.sync_api import expect, sync_playwright
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -10,6 +17,16 @@ parser.add_argument('--base-url', default='http://127.0.0.1:8012/english-prep')
 parser.add_argument('--browser-path', default='/usr/bin/chromium')
 ARGS, TEST_ARGS = parser.parse_known_args()
 BASE = ARGS.base_url.rstrip('/')
+ROOT = Path(__file__).resolve().parent.parent
+MANIFEST = json.loads((ROOT / 'data' / 'manifest.json').read_text())
+
+
+def lesson_id(topic, category):
+    slug = re.sub(r'[^a-z0-9]+', '-', category.lower()).strip('-')
+    return f'{topic}-{slug}'
+
+
+ALL_LESSONS = {lesson_id(t['id'], l['category']) for t in MANIFEST['topics'] for l in t['lessons']}
 
 
 class AboutInteractionTests(unittest.TestCase):
@@ -24,321 +41,232 @@ class AboutInteractionTests(unittest.TestCase):
         cls.pw.stop()
 
     def setUp(self):
-        self.context = self.browser.new_context(viewport={'width': 1440, 'height': 1000}, service_workers='block')
-        self.page = self.context.new_page()
-        self.page.set_default_timeout(8000)
+        self.context = None
         self.errors = []
-        self.page.on('pageerror', lambda error: self.errors.append(str(error)))
 
     def tearDown(self):
-        self.context.close()
+        if self.context:
+            self.context.close()
         self.assertEqual(self.errors, [])
 
-    def open(self):
+    def open(self, width=1440, height=1000, reduced='no-preference', init=None, block_module=False):
+        self.context = self.browser.new_context(viewport={'width': width, 'height': height},
+                                                service_workers='block', reduced_motion=reduced)
+        if init:
+            self.context.add_init_script(init)
+        self.page = self.context.new_page()
+        self.page.set_default_timeout(8000)
+        self.page.on('pageerror', lambda error: self.errors.append(str(error)))
+        self.page.on('console', lambda m: m.type == 'error' and not block_module and self.errors.append(m.text))
+        if block_module:
+            self.page.route('**/about/about.js', lambda route: route.abort())
         self.page.goto(BASE + '/about/')
-        expect(self.page.locator('[data-study-stage]')).to_have_count(3)
+        if not block_module:
+            expect(self.page.locator('#lens-forms [role="radio"]')).to_have_count(2)
+        return self.page
 
-    def test_study_choices_are_real_actions_and_keep_keyboard_focus(self):
-        self.open()
-        expect(self.page.locator('#tour-screen-controls, #tour-viewport-controls, .about-tour-figure')).to_have_count(0)
-        for stage, capture, title in [
-            ('apply', 'test', 'Bir seçeneğin ötesine geç.'),
-            ('return', 'results', 'Sonucu bir sonraki adıma bağla.'),
-            ('read', 'article', 'Kulağına doğru gelenin nedenini bul.'),
-        ]:
-            control = self.page.locator(f'[data-study-stage="{stage}"]')
-            control.focus()
-            control.press('Enter')
-            expect(control).to_be_focused()
-            expect(control).to_have_attribute('aria-pressed', 'true')
-            expect(self.page.locator('[data-study-stage][aria-pressed="true"]')).to_have_count(1)
-            expect(self.page.locator('#study-title')).to_have_text(title)
-            expect(self.page.locator('#study-image')).to_have_attribute('src', f'assets/{capture}-phone.webp')
-            expect(self.page.locator('#study-wide-source')).to_have_attribute('srcset', f'assets/{capture}-wide.webp')
-            self.assertIn(BASE + '/index.html#', self.page.locator('#study-action').evaluate('(e) => e.href'))
-            self.page.wait_for_function('(capture) => document.querySelector("#study-image").currentSrc.endsWith(capture + "-wide.webp") && document.querySelector("#study-image").complete', arg=capture)
+    def scroll_to(self, selector, block='center'):
+        self.page.locator(selector).first.evaluate('(e, b) => e.scrollIntoView({block: b})', block)
+        self.page.wait_for_timeout(500)
 
-    def test_architecture_choices_explain_actual_layers(self):
-        self.open()
-        button = self.page.locator('[data-architecture="continuity"]')
-        button.focus()
-        button.press('Space')
-        expect(button).to_be_focused()
-        expect(button).to_have_attribute('aria-pressed', 'true')
-        expect(self.page.locator('#architecture-title')).to_have_text('Kaldığın yerin de bir mimarisi var.')
-        expect(self.page.locator('#architecture-body')).to_contain_text('localStorage')
-        expect(self.page.locator('#architecture-detail')).to_contain_text('Otomatik cihaz eşitlemesi yok')
-        expect(self.page.locator('#architecture-action')).to_have_attribute('href', 'https://github.com/ErenDenizK/english-prep/blob/test/js/storage.js')
+    # ---- The lens ----
+    def test_lens_is_a_keyboard_radiogroup_whose_diagram_follows_the_meaning(self):
+        page = self.open()
+        radios = page.locator('#lens-forms [role="radio"]')
+        expect(radios.nth(0)).to_have_attribute('aria-checked', 'true')
+        expect(page.locator('#lens-stage')).to_have_attribute('data-state', 'closed')
+        expect(page.locator('#lens-reading')).to_contain_text('Past Simple.')
+        radios.nth(0).focus()
+        page.keyboard.press('ArrowRight')
+        expect(radios.nth(1)).to_be_focused()
+        expect(radios.nth(1)).to_have_attribute('aria-checked', 'true')
+        expect(radios.nth(0)).to_have_attribute('aria-checked', 'false')
+        expect(page.locator('#lens-stage')).to_have_attribute('data-state', 'linked')
+        expect(page.locator('#lens-reading')).to_contain_text('Present Perfect.')
+        self.assertEqual(radios.nth(1).get_attribute('lang'), 'en')
+        # Only the active state's marks are drawn.
+        self.assertGreater(page.locator('#lens-stage [data-on].is-on').count(), 0)
+        self.assertTrue(all('linked' in (n.get_attribute('data-on') or '').split()
+                            for n in page.locator('#lens-stage [data-on].is-on').all()))
+        href = page.locator('#lens-lesson').get_attribute('href')
+        self.assertEqual(href, '../index.html#egitim/tenses-present-perfect-vs-past-simple')
 
-    def test_folio_turns_inspects_and_returns_to_front_with_keyboard(self):
-        self.open()
-        tabs = self.page.locator('#folio-tabs')
-        read = tabs.locator('[data-folio-chapter="read"]')
-        read.focus()
-        read.press('ArrowRight')
-        selected = tabs.locator('[data-folio-chapter="apply"]')
-        expect(selected).to_be_focused()
-        expect(selected).to_have_attribute('aria-pressed', 'true')
-        expect(self.page.locator('#folio-heading')).to_have_text('Sezgini yokla.')
-        expect(self.page.locator('#folio-action')).to_have_attribute('href', '../index.html#test')
-        expect(self.page.locator('.folio-leaf[data-active="true"]')).to_have_count(1)
-        expect(self.page.locator('[data-folio-leaf="apply"]')).to_have_attribute('data-active', 'true')
-        selected.press('End')
-        expect(tabs.locator('[data-folio-chapter="return"]')).to_be_focused()
-        inspect = self.page.locator('#folio-inspect')
-        inspect.focus()
-        inspect.press('Space')
-        expect(inspect).to_be_focused()
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-expanded', 'true')
-        expect(self.page.locator('.folio-leaf-face[tabindex="0"]')).to_have_count(3)
-        face = self.page.locator('[data-folio-face="read"]')
-        face.focus()
-        face.press('Enter')
-        expect(face).to_be_focused()
-        expect(self.page.locator('#study-folio')).to_have_attribute('data-chapter', 'read')
-        rotate = self.page.locator('#folio-rotate')
-        rotate.focus()
-        rotate.press('Enter')
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-view', 'angle')
-        expect(rotate).to_have_text('↻Öne dön')
-        rotate.press('Enter')
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-view', 'front')
-        inspect.click()
-        expect(self.page.locator('.folio-leaf-face[tabindex="0"]')).to_have_count(1)
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-expanded', 'false')
+    def test_every_pair_links_to_a_real_lesson_and_interaction_stops_autoplay(self):
+        page = self.open()
+        pager = page.locator('.ab-pager__item')
+        expect(pager).to_have_count(3)
+        seen = []
+        for index in range(3):
+            pager.nth(index).click()
+            expect(pager.nth(index)).to_have_attribute('aria-pressed', 'true')
+            href = page.locator('#lens-lesson').get_attribute('href')
+            seen.append(href.split('#egitim/')[1])
+        self.assertEqual(len(set(seen)), 3)
+        self.assertTrue(set(seen) <= ALL_LESSONS, seen)
+        expect(page.locator('#lens-title')).to_have_text('Yasak mı, serbest mi?')
+        expect(page.locator('.ab-autoplay')).to_have_attribute('aria-pressed', 'false')
+        state = page.locator('#lens-stage').get_attribute('data-state')
+        page.wait_for_timeout(3400)
+        self.assertEqual(page.locator('#lens-stage').get_attribute('data-state'), state, 'A touched lens stays put')
 
-    def test_folio_drag_is_bounded_cancelable_and_does_not_move_copy(self):
-        self.open()
-        stage = self.page.locator('#folio-stage')
-        stage.scroll_into_view_if_needed()
-        self.page.wait_for_timeout(1300)
-        heading = self.page.locator('#folio-heading').bounding_box()
-        box = stage.bounding_box()
-        x, y = box['x'] + box['width'] * .65, box['y'] + box['height'] * .5
-        self.page.mouse.move(x, y)
-        self.page.mouse.down()
-        self.page.mouse.move(x - 110, y + 12, steps=8)
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-dragging', 'true')
-        angle = self.page.locator('#folio-deck').evaluate('e=>parseFloat(e.style.getPropertyValue("--folio-drag-y"))')
-        self.assertLessEqual(abs(angle), 16)
-        self.assertGreater(abs(angle), 5)
-        self.assertEqual(heading, self.page.locator('#folio-heading').bounding_box())
-        self.page.mouse.up()
-        expect(self.page.locator('#study-folio')).to_have_attribute('data-chapter', 'apply')
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-dragging', 'false')
-        self.page.mouse.move(x, y)
-        self.page.mouse.down()
-        self.page.mouse.move(x - 70, y, steps=5)
-        self.page.evaluate("window.dispatchEvent(new Event('blur'))")
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-dragging', 'false')
-        self.page.mouse.up()
-        expect(self.page.locator('#study-folio')).to_have_attribute('data-chapter', 'apply')
+    def test_autoplay_walks_the_pairs_and_can_be_paused(self):
+        page = self.open()
+        page.wait_for_function('document.querySelector(".ab-autoplay").getAttribute("aria-pressed") === "true"', timeout=6000)
+        page.wait_for_function('document.querySelector("#lens-stage").dataset.state !== "closed"', timeout=6000)
+        page.locator('.ab-autoplay').click()
+        expect(page.locator('.ab-autoplay')).to_have_attribute('aria-pressed', 'false')
+        state = page.locator('#lens-stage').get_attribute('data-state')
+        page.wait_for_timeout(3200)
+        self.assertEqual(page.locator('#lens-stage').get_attribute('data-state'), state)
 
-    def test_folio_reduced_motion_is_complete_and_never_writes_learning_data(self):
-        self.page.emulate_media(reduced_motion='reduce')
-        self.open()
-        before = self.page.evaluate('JSON.stringify({...localStorage})')
-        self.page.locator('[data-folio-chapter="apply"]').click()
-        self.page.locator('#folio-inspect').click()
-        self.page.locator('#folio-rotate').click()
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-view', 'angle')
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-expanded', 'true')
-        expect(self.page.locator('#folio-heading')).to_have_text('Sezgini yokla.')
-        self.assertEqual(self.page.locator('#study-folio').evaluate('e=>e.getAnimations({subtree:true}).length'), 0)
-        self.assertEqual(before, self.page.evaluate('JSON.stringify({...localStorage})'))
+    # ---- The map ----
+    def test_map_is_read_from_the_manifest_and_every_chip_opens_its_lesson(self):
+        page = self.open()
+        self.scroll_to('#map-grid', 'start')
+        chips = page.locator('.ab-chip')
+        expect(chips).to_have_count(len(ALL_LESSONS))
+        hrefs = chips.evaluate_all('(nodes) => nodes.map((n) => n.getAttribute("href"))')
+        ids = {h.split('#egitim/')[1] for h in hrefs}
+        self.assertEqual(ids, ALL_LESSONS)
+        expect(page.locator('.ab-topic')).to_have_count(len(MANIFEST['topics']))
+        figures = page.locator('.ab-figure dd').all_text_contents()
+        self.assertEqual(figures[:3], [str(len(MANIFEST['topics'])), str(len(ALL_LESSONS)),
+                                       str(sum(t['questionCount'] for t in MANIFEST['topics']))])
+        notes = sum(len(q.get('optionNotes', {})) for t in MANIFEST['topics']
+                    for q in json.loads((ROOT / t['file']).read_text())['questions'])
+        expect(page.locator('.ab-figure dd').nth(3)).to_have_text(str(notes))
+        # Hover/focus previews the lesson's own question in place of the gloss.
+        first = MANIFEST['topics'][0]
+        chips.first.focus()
+        expect(page.locator('.ab-topic__gloss').first).to_have_text(first['lessons'][0]['summary'])
 
-    def test_motion_preference_lives_only_in_settings_and_is_respected_here(self):
-        self.open()
-        expect(self.page.locator('[data-motion-control]')).to_have_count(0)
-        expect(self.page.locator('.about-motion-settings a')).to_have_attribute('href', '../index.html#profil')
-        self.page.evaluate('localStorage.setItem("englishPrep.motion", "off")')
-        self.page.reload()
-        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
-        self.page.locator('[data-study-stage="apply"]').click()
-        self.assertEqual(self.page.locator('.about-study-art').evaluate('e => e.getAnimations({subtree:true}).length'), 0)
-        self.page.evaluate('localStorage.removeItem("englishPrep.motion")')
-        self.page.emulate_media(reduced_motion='reduce')
-        self.page.reload()
-        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
-        self.page.locator('[data-architecture="continuity"]').click()
-        self.assertEqual(self.page.locator('.about-architecture-art').evaluate('e => e.getAnimations({subtree:true}).length'), 0)
-        expect(self.page.locator('#architecture-body')).to_contain_text('sessionStorage')
+    # ---- Anatomy ----
+    def test_anatomy_answers_with_the_picked_options_own_note_and_writes_nothing(self):
+        page = self.open()
+        before = page.evaluate('JSON.stringify({...localStorage})')
+        tenses = json.loads((ROOT / 'data/tenses/tenses.json').read_text())
+        question = next(q for q in tenses['questions'] if q['id'] == 'tenses-t5')
+        wrong = next(o for o in question['options'] if o in question['optionNotes'])
+        self.scroll_to('#specimen')
+        page.locator('.ab-option', has_text=re.compile(rf'^\s*\d\s*{re.escape(wrong)}\s*$')).click()
+        expect(page.locator('.ab-result__verdict')).to_have_text('Bu değil.')
+        expect(page.locator('.ab-result__note')).to_contain_text(question['optionNotes'][wrong])
+        expect(page.locator('.ab-result__why')).to_contain_text(question['options'][question['correctIndex']])
+        expect(page.locator('.ab-blank')).to_have_text(wrong)
+        expect(page.locator('.ab-option.is-right')).to_have_count(1)
+        page.get_by_role('button', name='Başka bir seçenek dene').click()
+        expect(page.locator('.ab-result__hint')).to_be_visible()
+        expect(page.locator('.ab-option').first).to_be_focused()
+        right = question['options'][question['correctIndex']]
+        page.locator('.ab-option', has_text=right).click()
+        expect(page.locator('.ab-result__verdict')).to_have_text('Doğru.')
+        lesson = page.locator('.ab-result__foot a').get_attribute('href').split('#egitim/')[1]
+        self.assertIn(lesson, ALL_LESSONS)
+        self.assertEqual(page.evaluate('JSON.stringify({...localStorage})'), before, 'About never writes learning data')
 
-    def test_responsive_media_and_no_overflow_across_supported_widths(self):
-        for width in [320, 390, 768, 1440]:
+    def test_a_callout_for_a_part_that_does_not_exist_yet_reveals_it(self):
+        page = self.open()
+        self.scroll_to('#callouts')
+        expect(page.locator('#specimen [data-part="tip"]')).to_have_count(0)
+        page.locator('.ab-callout__button').nth(3).click()
+        expect(page.locator('#specimen [data-part="tip"]')).to_have_count(1)
+        expect(page.locator('#specimen')).to_have_attribute('data-highlight', 'tip')
+
+    # ---- Flow ----
+    def test_wide_device_follows_the_step_being_read(self):
+        page = self.open()
+        for step in ['apply', 'return', 'read']:
+            self.scroll_to(f'.ab-step[data-step="{step}"]')
+            expect(page.locator('#flow-device')).to_have_attribute('data-step', step)
+            expect(page.locator(f'.ab-device__img.is-active[data-step="{step}"]')).to_have_count(1)
+            expect(page.locator(f'.ab-step[data-step="{step}"]')).to_have_class(re.compile('is-active'))
+
+    def test_phone_reads_inline_captures_with_alt_text_and_hides_the_device(self):
+        page = self.open(390, 844)
+        expect(page.locator('#flow-device')).to_be_hidden()
+        images = page.locator('.ab-step__img')
+        expect(images).to_have_count(3)
+        for image in images.all():
+            self.assertTrue(image.get_attribute('alt'))
+        self.scroll_to('.ab-step[data-step="apply"] img')
+        page.wait_for_function('document.querySelector(".ab-step[data-step=apply] img").complete')
+
+    # ---- Craft ----
+    def test_craft_proofs_are_computed_from_the_app_itself(self):
+        page = self.open()
+        self.scroll_to('#springs')
+        expect(page.locator('.ab-chart__curve')).to_have_count(3)
+        live = page.evaluate('''async () => {
+          const { spring } = await import("../js/interactions.js");
+          return ["soft", "lively", "bouncy"].map((n) => spring(n).duration + " ms");
+        }''')
+        self.assertEqual(page.locator('.ab-legend__ms').all_text_contents(), live)
+        ratios = [float(t.split(':')[0].replace(',', '.')) for t in page.locator('.ab-swatch__ratio').all_text_contents()]
+        self.assertEqual(len(ratios), 4)
+        self.assertTrue(all(r >= 4.5 for r in ratios), ratios)
+        page.get_by_role('button', name='Oynat').click()
+        page.wait_for_timeout(900)
+        moved = page.evaluate('[...document.querySelectorAll(".ab-lane__ball")].map((b) => getComputedStyle(b).transform)')
+        self.assertTrue(all(t != 'none' for t in moved), moved)
+
+    # ---- Motion preferences ----
+    def test_reduced_motion_shows_everything_and_never_autoplays(self):
+        page = self.open(reduced='reduce')
+        self.assertFalse(page.evaluate('document.documentElement.classList.contains("reveal-ready")'))
+        hidden = page.evaluate('[...document.querySelectorAll("[data-reveal]")].filter((e) => getComputedStyle(e).opacity !== "1").length')
+        self.assertEqual(hidden, 0)
+        page.wait_for_timeout(2500)
+        expect(page.locator('.ab-autoplay')).to_have_attribute('aria-pressed', 'false')
+        expect(page.locator('#lens-stage')).to_have_attribute('data-state', 'closed')
+        self.scroll_to('#springs')
+        expect(page.get_by_role('button', name='Oynat')).to_be_disabled()
+        expect(page.locator('#manifesto-text')).to_have_attribute('data-lit', 'all')
+
+    def test_the_app_motion_switch_is_respected_here(self):
+        page = self.open(init="localStorage.setItem('englishPrep.motion','off')")
+        self.assertFalse(page.evaluate('document.documentElement.classList.contains("reveal-ready")'))
+        page.wait_for_timeout(2500)
+        expect(page.locator('#lens-stage')).to_have_attribute('data-state', 'closed')
+
+    def test_reveals_never_strand_content_when_the_module_fails(self):
+        page = self.open(block_module=True)
+        page.wait_for_timeout(3000)
+        hidden = page.evaluate('[...document.querySelectorAll("[data-reveal]")].filter((e) => getComputedStyle(e).opacity !== "1").length')
+        self.assertEqual(hidden, 0)
+        expect(page.locator('#hero-title')).to_be_visible()
+
+    def test_reveal_shows_sections_as_they_arrive(self):
+        page = self.open()
+        heading = page.locator('#harita .ab-section__head')
+        self.assertEqual(heading.evaluate('(e) => getComputedStyle(e).opacity'), '0')
+        self.scroll_to('#harita .ab-section__head')
+        page.wait_for_function('getComputedStyle(document.querySelector("#harita .ab-section__head")).opacity === "1"')
+
+    # ---- Layout ----
+    def test_no_overflow_and_touch_targets_at_every_width(self):
+        for width, height in [(320, 640), (390, 844), (768, 1024), (1440, 900)]:
             with self.subTest(width=width):
-                self.page.set_viewport_size({'width': width, 'height': 900})
-                self.open()
-                source = 'article-phone.webp' if width < 700 else 'article-wide.webp'
-                self.page.locator('#study-image').scroll_into_view_if_needed()
-                self.page.wait_for_function('(source) => {const i=document.querySelector("#study-image"); return i.currentSrc.endsWith(source) && i.complete && i.naturalWidth > 0}', arg=source)
-                self.assertLessEqual(self.page.evaluate('document.documentElement.scrollWidth-innerWidth'), 1)
-                self.assertEqual(self.page.locator('#study-image').get_attribute('alt'), 'Present Perfect ve Past Simple ayrımını anlatan gerçek makale dersi')
-        self.page.set_viewport_size({'width': 320, 'height': 900})
-        self.page.add_style_tag(content='html { font-size: 200% !important; }')
-        self.assertLessEqual(self.page.evaluate('document.documentElement.scrollWidth-innerWidth'), 1)
-        launch = self.page.locator('.about-header-actions a').bounding_box()
-        self.assertLess(launch['height'], 100, 'Enlarged masthead action must wrap as a whole row, not single characters')
-        self.assertLessEqual(launch['x'] + launch['width'], 320)
+                page = self.open(width, height)
+                page.evaluate('document.documentElement.classList.add("reveal-all")')
+                self.scroll_to('.ab-footer')
+                page.wait_for_timeout(300)
+                self.assertLessEqual(page.evaluate('document.documentElement.scrollWidth'), width)
+                small = page.evaluate('''() => [...document.querySelectorAll(
+                    ".ab-button, .ab-sentence, .ab-pager__item, .ab-autoplay, .ab-option, .ab-callout__button, .ab-chip, .ab-faq__item summary, .ab-topnav a")]
+                  .filter((e) => e.getClientRects().length)
+                  .map((e) => [e.className || e.tagName, Math.round(e.getBoundingClientRect().height), Math.round(e.getBoundingClientRect().width)])
+                  .filter(([, h, w]) => h < 44 || w < 44)''')
+                self.assertEqual(small, [])
+                self.context.close()
+                self.context = None
 
-    def test_touch_does_not_require_or_trigger_pointer_effects(self):
-        touch = self.browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True, service_workers='block')
-        try:
-            page = touch.new_page()
-            page.goto(BASE + '/about/')
-            expect(page.locator('[data-study-stage]')).to_have_count(3)
-            self.assertEqual(page.locator('#folio-stage').evaluate('e=>getComputedStyle(e).touchAction'), 'pan-y pinch-zoom')
-            page.locator('[data-folio-chapter="apply"]').tap()
-            expect(page.locator('#folio-heading')).to_have_text('Sezgini yokla.')
-            page.locator('#folio-inspect').tap()
-            expect(page.locator('#folio-deck')).to_have_attribute('data-expanded', 'true')
-            page.locator('[data-study-stage="apply"]').tap()
-            expect(page.locator('#study-title')).to_have_text('Bir seçeneğin ötesine geç.')
-        finally:
-            touch.close()
-
-    def test_mobile_story_and_feature_density_preserve_readable_copy(self):
-        self.page.set_viewport_size({'width': 390, 'height': 844})
-        self.open()
-        self.page.wait_for_timeout(1200)
-        study = self.page.locator('#urun').bounding_box()
-        features = self.page.locator('#ozellikler').bounding_box()
-        self.assertLess(study['height'], 1300)
-        self.assertLess(features['height'], 1450)
-        image = self.page.locator('.about-study-art').bounding_box()
-        copy = self.page.locator('.about-study-copy').bounding_box()
-        self.assertLess(image['y'], copy['y'], 'The selected visual should be next to its controls on phones')
-        self.assertGreaterEqual(float(self.page.locator('#study-description').evaluate('e => parseFloat(getComputedStyle(e).fontSize)')), 16)
-        for button in self.page.locator('[data-study-stage]').all():
-            self.assertGreaterEqual(button.bounding_box()['height'], 44)
-        first = self.page.locator('#feature-list details').first
+    def test_faq_is_native_disclosure(self):
+        page = self.open()
+        self.scroll_to('#faq-list')
+        first = page.locator('.ab-faq__item').first
+        first.locator('summary').click()
         expect(first).to_have_attribute('open', '')
-        feature = self.page.locator('#feature-list details').nth(2)
-        summary = feature.locator('summary')
-        summary.focus()
-        summary.press('Enter')
-        expect(summary).to_be_focused()
-        expect(feature.locator('.about-feature-body')).to_be_visible()
-        expect(feature.locator('.about-feature-body')).to_contain_text('Diğer cihazda geri yükleyerek')
-        expect(feature.locator('.about-feature-body')).to_contain_text('Otomatik eşitleme yok.')
-        self.assertGreater(feature.locator('.about-feature-body').evaluate('e => e.getAnimations().length'), 0)
-        self.assertEqual(feature.locator('.about-feature-label').evaluate('e => e.getAnimations().length'), 0)
-        summary.press('Space')
-        expect(feature).not_to_have_attribute('open', '')
-
-    def test_native_disclosure_closes_semantically_before_height_settles(self):
-        self.page.set_viewport_size({'width': 390, 'height': 844})
-        self.open()
-        feature = self.page.locator('#feature-list details').nth(2)
-        summary = feature.locator('summary')
-        summary.click()
-        self.page.wait_for_timeout(650)
-        height = feature.evaluate('e=>parseFloat(getComputedStyle(e,"::details-content").height)')
-        summary.click()
-        expect(feature).not_to_have_attribute('open', '')
-        if self.page.evaluate('CSS.supports("interpolate-size", "allow-keywords")'):
-            self.page.wait_for_function("""(height) => {
-              const value = parseFloat(getComputedStyle(document.querySelectorAll('#feature-list details')[2], '::details-content').height);
-              return value > 0 && value < height;
-            }""", arg=height)
-            closing = feature.evaluate('e=>parseFloat(getComputedStyle(e,"::details-content").height)')
-            self.assertGreater(closing, 0)
-            self.assertLess(closing, height)
-            self.page.wait_for_function("""() => parseFloat(getComputedStyle(document.querySelectorAll('#feature-list details')[2], '::details-content').height) === 0""")
-        summary.focus()
-        summary.press('Enter')
-        expect(summary).to_be_focused()
-        expect(feature).to_have_attribute('open', '')
-
-    def test_story_motion_waits_for_pixels_and_latest_selection_wins(self):
-        self.page.add_init_script("""(() => {
-          const decode = HTMLImageElement.prototype.decode;
-          HTMLImageElement.prototype.decode = function() {
-            if (this.id === 'study-image' && this.getAttribute('src').includes('test-phone')) {
-              return new Promise(resolve => { window.__releaseStudy = () => decode.call(this).catch(() => {}).then(resolve); });
-            }
-            return decode.call(this);
-          };
-        })()""")
-        self.open()
-        self.page.locator('.about-study-image-frame').scroll_into_view_if_needed()
-        self.page.wait_for_timeout(1500)
-        self.page.evaluate("""() => {
-          for (const stage of ['apply', 'return', 'read', 'apply'])
-            document.querySelector(`[data-study-stage="${stage}"]`).click();
-        }""")
-        expect(self.page.locator('#study-image')).to_have_attribute('src', 'assets/test-phone.webp')
-        expect(self.page.locator('#study-title')).to_have_text('Bir seçeneğin ötesine geç.')
-        self.page.wait_for_timeout(250)
-        self.assertEqual(self.page.locator('.about-study-image-frame').evaluate('e=>e.getAnimations().filter(a=>a.effect.getKeyframes().some(k=>k.transform)).length'), 0)
-        self.page.evaluate('window.__releaseStudy()')
-        self.page.wait_for_function("document.querySelector('.about-study-image-frame').getAnimations().filter(a=>a.effect.getKeyframes().some(k=>k.transform)).length === 1")
-        durations = self.page.locator('.about-study-image-frame').evaluate('e=>e.getAnimations().filter(a=>a.effect.getKeyframes().some(k=>k.transform)).map(a=>a.effect.getTiming().duration)')
-        self.assertTrue(all(1000 <= duration <= 1400 for duration in durations), durations)
-        self.page.emulate_media(reduced_motion='reduce')
-        expect(self.page.locator('html')).to_have_attribute('data-motion', 'off')
-        self.assertEqual(self.page.evaluate('document.getAnimations().filter(a=>Number.isFinite(a.effect.getComputedTiming().endTime)).length'), 0)
-        expect(self.page.locator('#study-action')).to_have_attribute('href', '../index.html#test')
-
-    def test_chapter_rail_stays_inside_one_scene_and_repeat_click_has_a_glyph_cue(self):
-        self.page.set_viewport_size({'width': 390, 'height': 844})
-        self.open()
-        expect(self.page.locator('.about-study-theatre #study-controls')).to_have_count(1)
-        expect(self.page.locator('.about-study-theatre #study-scene')).to_have_count(1)
-        expect(self.page.locator('.about-architecture-board #architecture-controls')).to_have_count(1)
-        self.page.locator('[data-study-stage="apply"]').click()
-        self.page.wait_for_timeout(1400)
-        self.page.locator('[data-study-stage="apply"]').click()
-        self.assertGreater(self.page.locator('[data-study-stage="apply"] svg').evaluate('e=>e.getAnimations().length'), 0)
-        positions = self.page.evaluate("""() => {
-          const controls=document.querySelector('#study-controls');
-          const selected=controls.querySelector('[aria-pressed="true"]');
-          const ink=controls.querySelector('.about-selection-ink');
-          return {selected:selected.offsetLeft, transform:ink.style.transform, width:parseFloat(ink.style.width), expected:selected.offsetWidth};
-        }""")
-        self.assertEqual(positions['width'], positions['expected'])
-        self.assertTrue(positions['transform'].startswith(f"translate({positions['selected']}px,"), positions)
-
-    def test_artwork_entry_waits_for_the_artwork_to_enter_the_viewport(self):
-        self.open()
-        frame = self.page.locator('.about-study-image-frame')
-        self.assertEqual(frame.evaluate('e=>e.getAnimations().length'), 0)
-        frame.evaluate('e=>e.scrollIntoView({block:"center"})')
-        self.page.wait_for_function("document.querySelector('.about-study-image-frame').getAnimations().some(a => a.effect.getTiming().duration >= 800)")
-        self.page.wait_for_timeout(1450)
-        self.assertEqual(frame.evaluate('e=>e.getAnimations().length'), 0)
-        frame.evaluate('e=>e.scrollIntoView({block:"center"})')
-        self.page.wait_for_timeout(100)
-        self.assertEqual(frame.evaluate('e=>e.getAnimations().length'), 0, 'One visible scene must not replay on ordinary scrolling')
-
-    def test_custom_architecture_marks_follow_real_selection_and_reduce_motion(self):
-        self.open()
-        self.page.locator('[data-architecture="interface"]').click()
-        expect(self.page.locator('[data-layer="interface"]')).to_have_attribute('data-active', 'true')
-        expect(self.page.locator('[data-layer][data-active="true"]')).to_have_count(1)
-        self.page.emulate_media(reduced_motion='reduce')
-        self.page.locator('[data-architecture="continuity"]').click()
-        expect(self.page.locator('[data-layer="continuity"]')).to_have_attribute('data-active', 'true')
-        self.assertEqual(self.page.locator('.about-architecture-art').evaluate('e=>e.getAnimations({subtree:true}).length'), 0)
-        expect(self.page.locator('#architecture-body')).to_contain_text('sessionStorage')
-
-    def test_authored_long_additions_reflow_without_renderer_changes(self):
-        source = (Path(__file__).parents[1] / 'about/content.js').read_text()
-        additions = '''
-        studyStages.push({...studyStages[0], id:'extra', label:'Ek çalışma adımı ve daha uzun başlığı', title:'Daha uzun bir başlık yeni bir düzen gerektirmeden yerini bulur.', body:'Düzenlenebilir uzun açıklama. '.repeat(12)});
-        everydayFeatures.items.push({label:'Yeni özellik',title:'Daha uzun ve ayrıntılı bir özellik başlığı',body:'Açıklama. '.repeat(25),icon:'book'});
-        extraSections.push({eyebrow:'Ek bölüm',title:'Sonradan eklenen bölüm',intro:'Düzenlenebilir giriş.',items:[{title:'Yeni parça',body:'Ek açıklama.'}]});
-        '''
-        self.page.route('**/about/content.js', lambda route: route.fulfill(status=200, content_type='text/javascript', body=source + additions))
-        self.page.set_viewport_size({'width': 320, 'height': 900})
-        self.page.goto(BASE + '/about/')
-        expect(self.page.locator('[data-study-stage]')).to_have_count(4)
-        self.page.locator('[data-study-stage="extra"]').click()
-        expect(self.page.locator('#study-title')).to_have_text('Daha uzun bir başlık yeni bir düzen gerektirmeden yerini bulur.')
-        expect(self.page.locator('#feature-list article')).to_have_count(9)
-        expect(self.page.locator('#extra-sections h2')).to_have_text('Sonradan eklenen bölüm')
-        self.assertLessEqual(self.page.evaluate('document.documentElement.scrollWidth-innerWidth'), 1)
 
 
 if __name__ == '__main__':
-    unittest.main(argv=['about_interaction_browser.py'] + TEST_ARGS)
+    unittest.main(argv=[__file__, *TEST_ARGS], verbosity=2)

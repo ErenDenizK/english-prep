@@ -1,472 +1,809 @@
-import { createInstallControl } from "../js/install.js";
+// /about/ — the product's thesis, shown rather than described.
+// No innerHTML: every node is built here and text is set with textContent.
+// Learning data is never written: this page only reads ../data.
 import { initMotion, motionEnabled } from "../js/motion.js";
-import { animateElement, animateSequence, cancelAnimationsWithin, whenVisible } from "../js/interactions.js";
+import { spring } from "../js/interactions.js";
 import { initScrollRail } from "../js/scroll-rail.js";
-import { createBrand } from "../js/brand.js";
-import { icon } from "../js/icons.js";
-import { folioChapters, studyStages, architecture, everydayFeatures, engineering, questions, extraSections } from "./content.js";
+import { createInstallControl } from "../js/install.js";
+import { lessonId } from "../js/topics.js";
+import { TIER_ORDER, TIER_LABELS } from "../js/tiers.js";
+import { pairs, manifesto, anatomy, flow, craft, questions } from "./content.js";
 
-const node = (tag, className, text) => {
+const SVG = "http://www.w3.org/2000/svg";
+const DATA = new URL("../data/", import.meta.url);
+const byId = (id) => document.getElementById(id);
+
+function node(tag, className, text) {
   const element = document.createElement(tag);
   if (className) element.className = className;
-  if (text !== undefined) element.textContent = text;
+  if (text !== undefined && text !== null) element.textContent = text;
   return element;
-};
-const link = ({ label, href }, className = "about-text-link") => {
-  const element = node("a", className, label);
-  try {
-    const url = new URL(href, location.href);
-    if (["https:", "http:"].includes(url.protocol)) element.href = href;
-  } catch { /* An incomplete authored link remains ordinary text. */ }
+}
+function shape(tag, attributes = {}, className) {
+  const element = document.createElementNS(SVG, tag);
+  for (const [name, value] of Object.entries(attributes)) element.setAttribute(name, String(value));
+  if (className) element.setAttribute("class", className);
   return element;
-};
-const byId = (id) => document.getElementById(id);
-const glyph = (name) => {
-  try { return icon(name, { size: 24 }); } catch { return icon("spark", { size: 24 }); }
-};
-function setAction(element, spec) {
-  const authored = link(spec);
-  if (authored.hasAttribute("href")) element.setAttribute("href", authored.getAttribute("href"));
-  else element.removeAttribute("href");
-  const arrow = node("span", "about-link-arrow", "↗");
-  arrow.setAttribute("aria-hidden", "true");
-  element.replaceChildren(document.createTextNode(spec.label), arrow);
 }
-function sectionHeading(parent, content, headingId) {
-  const title = node("h2", null, content.title);
-  title.id = headingId;
-  parent.append(node("p", "about-eyebrow", content.eyebrow), title);
-  if (content.intro) parent.appendChild(node("p", null, content.intro));
-}
-function renderFeatures(parent, items) {
-  for (const [index, item] of items.entries()) {
-    const article = node("article", "about-feature");
-    const sign = node("div", "about-feature-sign");
-    sign.appendChild(glyph(item.icon || "spark"));
-    if (item.label) sign.appendChild(node("p", "about-feature-label", item.label));
-    const details = node("details", "about-feature-detail");
-    if (index === 0) details.open = true;
-    const summary = node("summary");
-    const heading = node("h3", null, item.title);
-    const indicator = glyph("chevron-down");
-    indicator.classList.add("about-feature-toggle");
-    summary.append(sign, heading, indicator);
-    const body = node("div", "about-feature-body");
-    body.appendChild(node("p", null, item.body));
-    details.append(summary, body);
-    article.appendChild(details);
-    if (item.action) {
-      const action = link(item.action);
-      setAction(action, item.action);
-      body.appendChild(action);
-    }
-    parent.appendChild(article);
+function svgRoot(viewBox, label) {
+  const root = shape("svg", { viewBox, focusable: "false" });
+  if (label) {
+    root.setAttribute("role", "img");
+    root.setAttribute("aria-label", label);
+  } else {
+    root.setAttribute("aria-hidden", "true");
   }
+  return root;
+}
+function svgText(x, y, text, className, anchor = "middle") {
+  const element = shape("text", { x, y, "text-anchor": anchor }, className);
+  element.textContent = text;
+  return element;
+}
+const appLink = (hash) => `../index.html${hash}`;
+const canMove = () => motionEnabled() && !document.hidden;
+
+async function json(path) {
+  const response = await fetch(new URL(path, DATA));
+  if (!response.ok) throw new Error(`HTTP ${response.status} for ${path}`);
+  return response.json();
 }
 
-initMotion();
-for (const placeholder of document.querySelectorAll("[data-brand]")) {
-  placeholder.replaceChildren(createBrand({ variant: placeholder.dataset.brand }));
-}
-// Decoding and observation belong to the artwork, never to usable state.
-const decodeImages = (element) => Promise.all([...element.querySelectorAll("img")]
-  .map((image) => image.decode().catch(() => {})));
-
-/** A directly inspectable product folio. State is synchronous; every animated
- * piece is expendable. Dragging has native-button alternatives and leaves
- * browser vertical scrolling and pinch zoom intact. No frame loop runs idle. */
-function mountFolio(chapters) {
-  const root = byId("study-folio");
-  const stage = byId("folio-stage");
-  const deck = byId("folio-deck");
-  const tabs = byId("folio-tabs");
-  const inspect = byId("folio-inspect");
-  const rotate = byId("folio-rotate");
-  if (!chapters.length) { root.hidden = true; return; }
-  let current = 0;
-  let expanded = false;
-  let turned = false;
-  let drag = null;
-  let suppressClick = false;
-  let revision = 0;
-  const leaves = [];
-  const buttons = [];
-  const tone = (item) => ["accent", "secondary", "tertiary", "cool"].includes(item.tone) ? item.tone : "accent";
-  for (const [index, item] of chapters.entries()) {
-    const tab = node("button", "folio-tab");
-    tab.type = "button";
-    tab.dataset.folioChapter = item.id;
-    tab.dataset.tone = tone(item);
-    tab.setAttribute("aria-controls", "folio-deck folio-caption");
-    const number = node("span", "folio-tab-number", String(index + 1).padStart(2, "0"));
-    number.setAttribute("aria-hidden", "true");
-    tab.append(number, node("span", null, item.label));
-    tab.addEventListener("click", () => select(index));
-    buttons.push(tab);
-    tabs.appendChild(tab);
-
-    const leaf = node("div", "folio-leaf");
-    leaf.dataset.folioLeaf = item.id;
-    leaf.dataset.tone = tone(item);
-    const face = node("button", "folio-leaf-face");
-    face.type = "button";
-    face.dataset.folioFace = item.id;
-    const top = node("span", "folio-sheet-top");
-    top.append(glyph(item.icon), node("span", "folio-sheet-label", item.sheetTitle), node("span", "folio-sheet-number", String(index + 1).padStart(2, "0")));
-    const view = node("span", "folio-window");
-    const picture = node("picture");
-    const source = node("source");
-    source.media = "(min-width: 700px)";
-    source.srcset = `assets/${item.capture}-wide.webp`;
-    const image = node("img");
-    image.src = `assets/${item.capture}-phone.webp`;
-    image.width = 390; image.height = 844;
-    image.alt = ""; // The button has an action name; real-media provenance is visible below.
-    image.draggable = false;
-    image.decoding = "async";
-    if (index === 0) image.fetchPriority = "high";
-    else image.loading = "lazy";
-    picture.append(source, image); view.appendChild(picture);
-    const foot = node("span", "folio-sheet-foot", item.sheetNote);
-    const corner = node("span", "folio-sheet-corner"); corner.setAttribute("aria-hidden", "true");
-    face.append(top, view, foot, corner);
-    face.addEventListener("click", (event) => {
-      if (suppressClick && event.detail > 0) { suppressClick = false; event.preventDefault(); return; }
-      if (current === index) setExpanded(!expanded);
-      else select(index);
+/* ---------------------------------------------------------------------
+ * Reveal. The head script hid [data-reveal] before first paint only when
+ * motion is allowed; here each one is shown as it approaches the viewport.
+ * Spring easings come from the app's own simulation (js/interactions.js).
+ * ------------------------------------------------------------------- */
+function initReveal() {
+  const root = document.documentElement;
+  clearTimeout(window.__aboutRevealFallback);
+  root.style.setProperty("--ab-spring", spring("lively").easing);
+  root.style.setProperty("--ab-spring-soft", spring("soft").easing);
+  root.style.setProperty("--ab-spring-bouncy", spring("bouncy").easing);
+  if (!root.classList.contains("reveal-ready")) return;
+  const showAll = () => root.classList.add("reveal-all");
+  document.addEventListener("motion:change", (event) => { if (!event.detail.enabled) showAll(); });
+  const observer = new IntersectionObserver((entries) => {
+    // Siblings that arrive in the same frame cascade instead of popping as one.
+    const arriving = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target)
+      .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+    arriving.forEach((element, index) => {
+      element.style.setProperty("--i", String(index));
+      element.classList.add("is-in");
+      observer.unobserve(element);
     });
-    leaf.appendChild(face); deck.appendChild(leaf); leaves.push(leaf);
+  }, { rootMargin: "0px 0px -6% 0px", threshold: 0 });
+  for (const element of document.querySelectorAll("[data-reveal]")) observer.observe(element);
+}
+
+/* ---------------------------------------------------------------------
+ * 1 · The lens: one pair of correct sentences, one diagram that changes
+ * with the meaning. Both halves are right; that is the whole point.
+ * ------------------------------------------------------------------- */
+function timelineDiagram(pair) {
+  const root = svgRoot("0 0 360 150");
+  root.classList.add("ab-diagram");
+  const axis = shape("path", { d: "M20 98H334" }, "ab-d-axis");
+  const arrow = shape("path", { d: "M326 92l8 6-8 6" }, "ab-d-axis");
+  root.append(axis, arrow);
+  root.append(svgText(28, 128, "geçmiş", "ab-d-label", "start"));
+  root.append(svgText(268, 128, "şimdi", "ab-d-label ab-d-label--now"));
+  root.append(shape("path", { d: "M268 82v32" }, "ab-d-now"));
+  const parts = [];
+  const add = (element, states) => { element.dataset.on = states; parts.push(element); root.appendChild(element); return element; };
+  if (pair.id === "perfect") {
+    add(shape("path", { d: "M100 80v36M132 80v36", pathLength: 1 }, "ab-d-stroke ab-d-closed"), "closed");
+    add(svgText(116, 70, "kapandı", "ab-d-note"), "closed");
+    add(shape("path", { d: "M116 90C156 26 228 26 266 88", pathLength: 1 }, "ab-d-stroke ab-d-link"), "linked");
+    add(svgText(192, 30, "sonucu şimdide", "ab-d-note ab-d-note--accent"), "linked");
+    add(shape("circle", { cx: 268, cy: 98, r: 11 }, "ab-d-halo"), "linked");
+    add(shape("circle", { cx: 116, cy: 98, r: 7 }, "ab-d-event"), "closed linked");
+  } else {
+    [44, 88, 132, 176, 220, 268, 312].forEach((x, index) => {
+      const dot = add(shape("circle", { cx: x, cy: 98, r: 5 }, "ab-d-event ab-d-repeat"), "habit");
+      dot.style.setProperty("--k", String(index));
+    });
+    add(svgText(176, 70, "düzenli olarak · genel olarak", "ab-d-note"), "habit");
+    add(shape("rect", { x: 222, y: 87, width: 92, height: 22, rx: 11 }, "ab-d-band"), "ongoing");
+    add(svgText(268, 70, "şu sıralar", "ab-d-note ab-d-note--accent"), "ongoing");
   }
-  document.querySelector(".folio-caption").id = "folio-caption";
-  function paint() {
-    root.dataset.chapter = chapters[current].id;
-    root.dataset.tone = tone(chapters[current]);
-    deck.dataset.expanded = String(expanded);
-    deck.dataset.view = turned ? "angle" : "front";
-    deck.style.setProperty("--folio-view-y", turned ? "-18deg" : "0deg");
-    deck.style.setProperty("--folio-view-x", turned ? "7deg" : "0deg");
-    for (const [index, leaf] of leaves.entries()) {
-      const distance = (index - current + chapters.length) % chapters.length;
-      const slot = distance === 0 ? 0 : distance % 2 ? -Math.ceil(distance / 2) : Math.ceil(distance / 2);
-      leaf.style.setProperty("--folio-slot", String(slot));
-      leaf.style.zIndex = String(chapters.length - Math.abs(slot));
-      leaf.dataset.active = String(index === current);
-      const face = leaf.querySelector("button");
-      face.tabIndex = index === current || expanded ? 0 : -1;
-      face.setAttribute("aria-label", index === current
-        ? `${chapters[index].sheetTitle}. ${expanded ? "Katmanları birleştir" : "Katmanları aç"}`
-        : `${chapters[index].sheetTitle} görünümünü öne getir`);
-      face.setAttribute("aria-pressed", String(index === current));
-      buttons[index].setAttribute("aria-pressed", String(index === current));
-    }
-    inspect.setAttribute("aria-pressed", String(expanded));
-    inspect.querySelector("[data-folio-label]").textContent = expanded ? "Katmanları birleştir" : "Katmanları aç";
-    rotate.setAttribute("aria-pressed", String(turned));
-    rotate.querySelector("[data-folio-label]").textContent = turned ? "Öne dön" : "Döndür";
-    byId("folio-count").textContent = `${String(current + 1).padStart(2, "0")}—${String(chapters.length).padStart(2, "0")}`;
-  }
-  function announce(text) { byId("folio-status").textContent = text; }
-  function flourish(kind = "folio", direction = "forward") {
-    const ticket = ++revision;
-    const leaf = leaves[current];
-    cancelAnimationsWithin(deck);
-    whenVisible(leaf, () => {
-      if (revision !== ticket) return;
-      animateSequence([
-        { element: leaf.querySelector(".folio-window"), kind, at: 0 },
-        { element: leaf.querySelector("svg"), kind: "complete", at: 75 },
-        { element: leaf.querySelector(".folio-sheet-corner"), kind: "unfold", at: 130 },
-        { element: root.querySelector(".folio-thread"), kind: "trace", at: 160 },
-      ], { channel: "folio-turn", direction });
-    }, { channel: "folio-ready", ready: decodeImages(leaf), threshold: .1 });
-  }
-  function select(index, announceChange = true) {
-    const previous = current;
-    current = (index + chapters.length) % chapters.length;
-    const item = chapters[current];
-    byId("folio-label").textContent = `${String(current + 1).padStart(2, "0")} / ${item.label}`;
-    byId("folio-heading").textContent = item.title;
-    byId("folio-description").textContent = item.body;
-    setAction(byId("folio-action"), item.action);
-    paint();
-    if (announceChange) {
-      announce(`${item.label}. ${item.title}`);
-      flourish("folio", current < previous ? "back" : "forward");
-    }
-  }
-  function setExpanded(value) {
-    expanded = value;
-    paint();
-    announce(expanded ? "Üç çalışma katmanı açık. Bir yaprağı seçerek incele." : `${chapters[current].label} önde. Katmanlar birleşti.`);
-    flourish(expanded ? "fan" : "folio");
-  }
-  inspect.addEventListener("click", () => setExpanded(!expanded));
-  rotate.addEventListener("click", () => {
-    turned = !turned;
-    paint();
-    announce(turned ? "Dosya yan açıdan gösteriliyor. Öne dön düğmesiyle düz görünümü aç." : "Dosya önden gösteriliyor.");
-    animateElement(rotate.querySelector(".folio-rotate-mark"), "complete", { channel: "folio-angle-mark" });
+  return { root, parts };
+}
+
+function pathDiagram() {
+  const root = svgRoot("0 0 360 150");
+  root.classList.add("ab-diagram");
+  const parts = [];
+  const add = (element, states) => { element.dataset.on = states; parts.push(element); root.appendChild(element); return element; };
+  root.append(shape("circle", { cx: 34, cy: 80, r: 7 }, "ab-d-event"));
+  root.append(svgText(34, 112, "sen", "ab-d-label"));
+  root.append(shape("path", { d: "M42 80H140" }, "ab-d-axis"));
+  // Upper: tell. Lower: don't tell.
+  root.append(shape("path", { d: "M140 80C176 80 196 40 236 40H300" }, "ab-d-axis ab-d-branch"));
+  root.append(shape("path", { d: "M140 80C176 80 196 120 236 120H300" }, "ab-d-axis ab-d-branch"));
+  root.append(svgText(312, 44, "söyle", "ab-d-label", "start"));
+  root.append(svgText(312, 124, "söyleme", "ab-d-label", "start"));
+  add(shape("path", { d: "M140 80C176 80 196 120 236 120H300", pathLength: 1 }, "ab-d-stroke ab-d-open"), "blocked optional");
+  add(shape("path", { d: "M140 80C176 80 196 40 236 40H300", pathLength: 1 }, "ab-d-stroke ab-d-open"), "optional");
+  add(shape("path", { d: "M206 28l20 24M226 28l-20 24" }, "ab-d-block"), "blocked");
+  add(svgText(216, 20, "yasak", "ab-d-note ab-d-note--warn"), "blocked");
+  add(svgText(216, 20, "serbest", "ab-d-note ab-d-note--accent"), "optional");
+  add(svgText(258, 146, "serbest", "ab-d-note ab-d-note--accent"), "optional");
+  add(svgText(258, 146, "tek yol", "ab-d-note"), "blocked");
+  return { root, parts };
+}
+
+function initLens() {
+  const forms = byId("lens-forms");
+  const stage = byId("lens-stage");
+  const reading = byId("lens-reading");
+  const pager = byId("lens-pager");
+  const kicker = byId("lens-kicker");
+  const title = byId("lens-title");
+  const lesson = byId("lens-lesson");
+  if (!forms || !stage) return;
+  let pairIndex = 0;
+  let formIndex = 0;
+  let diagram = null;
+  let timer = null;
+  let touched = false;
+
+  const pagerButtons = pairs.map((pair, index) => {
+    const button = node("button", "ab-pager__item");
+    button.type = "button";
+    button.append(node("span", "ab-pager__n", String(index + 1).padStart(2, "0")), node("span", "ab-pager__q", pair.question));
+    button.addEventListener("click", () => { stop(); showPair(index, { focus: false }); });
+    pager.appendChild(button);
+    return button;
   });
-  tabs.addEventListener("keydown", (event) => {
-    let next;
-    if (event.key === "ArrowRight") next = current + 1;
-    else if (event.key === "ArrowLeft") next = current - 1;
-    else if (event.key === "Home") next = 0;
-    else if (event.key === "End") next = chapters.length - 1;
-    else return;
+  const autoplay = node("button", "ab-autoplay");
+  autoplay.type = "button";
+  autoplay.setAttribute("aria-label", "Ayrımları otomatik göster");
+  autoplay.append(node("span", "ab-autoplay__icon"));
+  autoplay.addEventListener("click", () => { if (timer) stop(); else { touched = false; play(); } });
+  pager.appendChild(autoplay);
+
+  function radios() { return [...forms.querySelectorAll('[role="radio"]')]; }
+
+  function showForm(index, { focus = false } = {}) {
+    const pair = pairs[pairIndex];
+    formIndex = index;
+    const form = pair.forms[index];
+    radios().forEach((radio, i) => {
+      const on = i === index;
+      radio.setAttribute("aria-checked", String(on));
+      radio.tabIndex = on ? 0 : -1;
+      radio.classList.toggle("is-on", on);
+    });
+    if (focus) radios()[index]?.focus();
+    stage.dataset.state = form.state;
+    for (const part of diagram.parts) part.classList.toggle("is-on", part.dataset.on.split(" ").includes(form.state));
+    reading.replaceChildren(node("strong", null, `${form.name}. `), document.createTextNode(form.reading));
+  }
+
+  function showPair(index, { focus = false } = {}) {
+    pairIndex = (index + pairs.length) % pairs.length;
+    const pair = pairs[pairIndex];
+    kicker.textContent = `Ayrım ${pairIndex + 1} / ${pairs.length}`;
+    title.textContent = pair.question;
+    lesson.href = appLink(`#egitim/${lessonId(pair.topic, pair.category)}`);
+    pagerButtons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === pairIndex)));
+    forms.replaceChildren(...pair.forms.map((form, i) => {
+      const radio = node("button", "ab-sentence");
+      radio.type = "button";
+      radio.setAttribute("role", "radio");
+      radio.lang = "en";
+      radio.append(document.createTextNode(form.before), node("mark", "ab-sentence__focus", form.focus), document.createTextNode(form.after));
+      const name = node("span", "ab-sentence__name", form.name);
+      name.lang = "en";
+      radio.append(name);
+      radio.addEventListener("click", () => { stop(); showForm(i); });
+      return radio;
+    }));
+    diagram = pair.diagram === "path" ? pathDiagram(pair) : timelineDiagram(pair);
+    stage.dataset.diagram = pair.diagram;
+    stage.replaceChildren(diagram.root);
+    // The new diagram's first state is drawn without transition, then lives.
+    stage.classList.add("is-switching");
+    showForm(0, { focus });
+    requestAnimationFrame(() => requestAnimationFrame(() => stage.classList.remove("is-switching")));
+  }
+
+  forms.addEventListener("keydown", (event) => {
+    const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+    if (!(event.key in keys)) return;
     event.preventDefault();
-    select(next);
-    buttons[current].focus({ preventScroll: true });
+    stop();
+    showForm((formIndex + keys[event.key] + 2) % 2, { focus: true });
   });
-  function resetDrag() {
-    const pointer = drag?.id;
-    drag = null;
-    deck.dataset.dragging = "false";
-    deck.style.setProperty("--folio-drag-x", "0deg");
-    deck.style.setProperty("--folio-drag-y", "0deg");
-    if (pointer !== undefined && stage.hasPointerCapture?.(pointer)) stage.releasePointerCapture(pointer);
+
+  // Auto-play walks every pair once (both halves), only while the lens is
+  // on screen and motion is allowed. Any interaction stops it; a button
+  // restarts it (WCAG 2.2.2: moving content can be paused).
+  let visible = false;
+  function tick() {
+    if (!visible || !canMove()) return;
+    if (formIndex === 0) showForm(1);
+    else if (pairIndex < pairs.length - 1) showPair(pairIndex + 1);
+    else { stop(); return; }
   }
-  stage.addEventListener("pointerdown", (event) => {
-    if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
-    suppressClick = false;
-    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, active: false };
+  function play() {
+    if (touched || !canMove()) return;
+    clearInterval(timer);
+    timer = setInterval(tick, 2800);
+    autoplay.setAttribute("aria-pressed", "true");
+    autoplay.dataset.playing = "true";
+  }
+  function stop() {
+    touched = true;
+    clearInterval(timer);
+    timer = null;
+    autoplay.setAttribute("aria-pressed", "false");
+    autoplay.dataset.playing = "false";
+  }
+  for (const type of ["pointerdown", "keydown", "focusin"]) {
+    byId("lens").addEventListener(type, (event) => { if (!autoplay.contains(event.target)) stop(); });
+  }
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; }, { threshold: 0.4 }).observe(byId("lens"));
+  document.addEventListener("motion:change", (event) => { if (!event.detail.enabled) stop(); });
+
+  showPair(0);
+  autoplay.setAttribute("aria-pressed", "false");
+  if (canMove()) setTimeout(play, 1600);
+}
+
+/* ---------------------------------------------------------------------
+ * 2 · Manifesto: lit word by word with reading progress.
+ * ------------------------------------------------------------------- */
+function initManifesto() {
+  const text = byId("manifesto-text");
+  if (!text) return;
+  const words = [];
+  const lines = manifesto.map((line) => {
+    const element = node("span", "ab-manifesto__line");
+    line.split(" ").forEach((word, index) => {
+      if (index) element.appendChild(document.createTextNode(" "));
+      const span = node("span", "ab-word", word);
+      words.push(span);
+      element.appendChild(span);
+    });
+    return element;
   });
-  stage.addEventListener("pointermove", (event) => {
-    if (!drag || event.pointerId !== drag.id) return;
-    const dx = event.clientX - drag.x;
-    const dy = event.clientY - drag.y;
-    if (!drag.active) {
-      if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { resetDrag(); return; }
-      if (Math.abs(dx) < 8) return;
-      drag.active = true;
-      suppressClick = true;
-      stage.setPointerCapture?.(event.pointerId);
-      cancelAnimationsWithin(deck);
-      deck.dataset.dragging = "true";
+  text.replaceChildren(...lines.flatMap((line, i) => (i ? [document.createTextNode(" "), line] : [line])));
+  let frame = null;
+  const update = () => {
+    frame = null;
+    if (!canMove()) { text.dataset.lit = "all"; return; }
+    delete text.dataset.lit;
+    const box = text.getBoundingClientRect();
+    const view = window.innerHeight;
+    const progress = Math.min(1, Math.max(0, (view * 0.82 - box.top) / (box.height + view * 0.25)));
+    const lit = Math.round(progress * words.length);
+    words.forEach((word, index) => word.classList.toggle("is-lit", index < lit));
+  };
+  const schedule = () => { if (frame === null) frame = requestAnimationFrame(update); };
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  document.addEventListener("motion:change", schedule);
+  update();
+}
+
+/* ---------------------------------------------------------------------
+ * 3 · The map, straight from data/manifest.json.
+ * ------------------------------------------------------------------- */
+function figure(list, value, label) {
+  const wrap = node("div", "ab-figure");
+  const term = node("dt", null, label);
+  const amount = node("dd", null, value);
+  wrap.append(amount, term);
+  list.appendChild(wrap);
+  return amount;
+}
+
+async function initMap() {
+  const grid = byId("map-grid");
+  const figures = byId("map-figures");
+  let manifest;
+  try {
+    manifest = await json("manifest.json");
+  } catch {
+    grid.replaceChildren(node("p", "ab-quiet", "Ders listesi şu an yüklenemedi. Uygulamada tüm dersler açık."));
+    return null;
+  }
+  const topics = manifest.topics;
+  const lessons = topics.reduce((sum, topic) => sum + topic.lessons.length, 0);
+  const asked = topics.reduce((sum, topic) => sum + (topic.questionCount ?? 0), 0);
+  figure(figures, String(topics.length), "konu");
+  figure(figures, String(lessons), "makale dersi");
+  figure(figures, String(asked), "açıklamalı soru");
+  const notes = figure(figures, "—", "yanlış seçenek notu");
+
+  const order = new Map(TIER_ORDER.map((tier, index) => [tier, index]));
+  const sorted = [...topics].sort((a, b) => (order.get(a.tier) ?? 99) - (order.get(b.tier) ?? 99));
+  const cards = sorted.map((topic, topicIndex) => {
+    const card = node("article", "ab-topic");
+    card.style.setProperty("--hue", String((topicIndex * 37) % 360));
+    card.style.setProperty("--i", String(topicIndex));
+    const head = node("header", "ab-topic__head");
+    head.append(node("p", "ab-topic__tier", TIER_LABELS[topic.tier] ?? ""));
+    const name = node("h3", "ab-topic__title", topic.title);
+    name.lang = "en";
+    head.append(name);
+    const preview = node("p", "ab-topic__gloss", topic.gloss);
+    const chips = node("ul", "ab-topic__chips");
+    for (const entry of topic.lessons) {
+      const item = node("li");
+      const chip = node("a", "ab-chip");
+      chip.href = appLink(`#egitim/${lessonId(topic.id, entry.category)}`);
+      const label = node("span", "ab-chip__label", entry.category);
+      label.lang = "en";
+      chip.append(label);
+      chip.title = entry.summary;
+      const show = () => { preview.textContent = entry.summary; preview.classList.add("is-question"); };
+      const reset = () => { preview.textContent = topic.gloss; preview.classList.remove("is-question"); };
+      chip.addEventListener("pointerenter", show);
+      chip.addEventListener("focus", show);
+      chip.addEventListener("pointerleave", reset);
+      chip.addEventListener("blur", reset);
+      // The summary is the lesson's question; give it to assistive tech too.
+      const summary = node("span", "ab-sr", ` — ${entry.summary}`);
+      chip.append(summary);
+      item.appendChild(chip);
+      chips.appendChild(item);
     }
-    drag.dx = dx;
-    if (motionEnabled()) {
-      deck.style.setProperty("--folio-drag-y", `${Math.max(-16, Math.min(16, dx / 8))}deg`);
-      deck.style.setProperty("--folio-drag-x", `${Math.max(-5, Math.min(5, -dy / 18))}deg`);
+    card.append(head, preview, chips);
+    card.dataset.reveal = "";
+    return card;
+  });
+  grid.replaceChildren(...cards);
+  observeLate(cards);
+
+  // The option-note figure needs every topic file; fetch it only when the map
+  // is near, since the rest of the page does not depend on it.
+  const near = new IntersectionObserver(async ([entry]) => {
+    if (!entry.isIntersecting) return;
+    near.disconnect();
+    try {
+      const files = await Promise.all(topics.map((topic) => json(topic.file.replace(/^data\//, ""))));
+      const count = files.reduce((sum, file) => sum + (file.questions ?? [])
+        .reduce((inner, question) => inner + Object.keys(question.optionNotes ?? {}).length, 0), 0);
+      notes.textContent = String(count);
+    } catch {
+      notes.parentElement.remove();
     }
-  });
-  stage.addEventListener("pointerup", (event) => {
-    if (!drag || event.pointerId !== drag.id) return;
-    const turn = drag.active && Math.abs(drag.dx) >= 46;
-    const direction = drag.dx < 0 ? 1 : -1;
-    resetDrag();
-    if (turn) select(current + direction);
-  });
-  stage.addEventListener("pointercancel", resetDrag);
-  stage.addEventListener("lostpointercapture", () => { if (drag) resetDrag(); });
-  stage.addEventListener("pointerleave", () => { if (drag && !drag.active) resetDrag(); });
-  document.addEventListener("motion:change", (event) => {
-    if (!event.detail.enabled || !event.detail.visible) { resetDrag(); revision++; cancelAnimationsWithin(deck); }
-  });
-  window.addEventListener("pagehide", resetDrag);
-  window.addEventListener("blur", resetDrag);
-  select(0, false);
-  flourish("fan");
-}
-mountFolio(folioChapters);
-
-// One continuous selection line belongs to the entire composition, not three
-// disconnected button cards. Geometry follows text wrapping and author additions.
-function selectionInk(controls) {
-  let ink = controls.querySelector(".about-selection-ink");
-  if (!ink) {
-    ink = node("span", "about-selection-ink");
-    ink.setAttribute("aria-hidden", "true");
-    controls.appendChild(ink);
-  }
-  const selected = controls.querySelector('[aria-pressed="true"]');
-  if (!selected) return;
-  ink.style.width = `${selected.offsetWidth}px`;
-  ink.style.transform = `translate(${selected.offsetLeft}px, ${selected.offsetTop + selected.offsetHeight - 3}px)`;
-}
-function observeSelection(controls) {
-  selectionInk(controls);
-  if (!("ResizeObserver" in window)) return;
-  const observer = new ResizeObserver(() => selectionInk(controls));
-  observer.observe(controls);
-  for (const button of controls.querySelectorAll("button")) observer.observe(button);
-  window.addEventListener("pagehide", () => observer.disconnect(), { once: true });
-}
-function playGlyph(button, channel) {
-  animateElement(button?.querySelector("svg"), "complete", { channel });
-  const path = button?.querySelector("svg path");
-  if (path) {
-    path.setAttribute("pathLength", "1");
-    animateElement(path, "trace", { channel: `${channel}-trace` });
-  }
+  }, { rootMargin: "400px 0px" });
+  near.observe(grid);
+  return manifest;
 }
 
-sectionHeading(byId("features-heading-content"), everydayFeatures, "features-heading");
-renderFeatures(byId("feature-list"), everydayFeatures.items);
-sectionHeading(byId("engineering-heading-content"), engineering, "engineering-heading");
-for (const item of engineering.items) {
-  const details = node("details", "about-engineering-detail");
-  const summary = node("summary", null, item.title);
-  details.append(summary, node("p", null, item.body));
-  byId("engineering-list").appendChild(details);
-}
-for (const item of engineering.links) byId("engineering-links").appendChild(link(item));
-for (const item of questions) {
-  const details = node("details");
-  details.append(node("summary", null, item.title), node("p", null, item.body));
-  byId("question-list").appendChild(details);
-}
-for (const [index, content] of extraSections.entries()) {
-  const section = node("section", "about-frame about-section");
-  const titleId = `extra-section-heading-${index + 1}`;
-  const heading = node("div", "about-section-heading");
-  const items = node("div", "about-feature-grid");
-  section.setAttribute("aria-labelledby", titleId);
-  sectionHeading(heading, content, titleId);
-  renderFeatures(items, content.items);
-  section.append(heading, items);
-  byId("extra-sections").appendChild(section);
+// Nodes created after the first observer pass still reveal on approach.
+let lateObserver = null;
+function observeLate(elements) {
+  if (!document.documentElement.classList.contains("reveal-ready")) return;
+  lateObserver ??= new IntersectionObserver((entries) => {
+    const arriving = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target);
+    arriving.forEach((element, index) => {
+      element.style.setProperty("--i", String(index));
+      element.classList.add("is-in");
+      lateObserver.unobserve(element);
+    });
+  }, { rootMargin: "0px 0px -6% 0px" });
+  elements.forEach((element) => lateObserver.observe(element));
 }
 
-let currentStage = null;
-function showStage(stage, announce = true) {
-  if (!stage) return;
-  if (stage === currentStage) {
-    if (announce) playGlyph(byId("study-controls").querySelector('[aria-pressed="true"]'), "about-study-repeat");
+/* ---------------------------------------------------------------------
+ * 4 · Anatomy: one real question, answerable, with its parts named.
+ * ------------------------------------------------------------------- */
+async function initAnatomy(manifestPromise) {
+  const specimen = byId("specimen");
+  const callouts = byId("callouts");
+  if (!specimen) return;
+  const manifest = await manifestPromise;
+  const topic = manifest?.topics.find((entry) => entry.id === anatomy.topic);
+  let question = null;
+  try {
+    const file = topic ? await json(topic.file.replace(/^data\//, "")) : null;
+    question = file?.questions.find((entry) => entry.id === anatomy.questionId) ?? null;
+  } catch { /* handled below */ }
+  if (!question) {
+    byId("soru").hidden = true;
     return;
   }
-  const direction = currentStage && studyStages.indexOf(stage) < studyStages.indexOf(currentStage) ? "back" : "forward";
-  cancelAnimationsWithin(byId("study-scene"));
-  cancelAnimationsWithin(byId("study-controls"));
-  currentStage = stage;
-  for (const button of byId("study-controls").querySelectorAll("button")) {
-    button.setAttribute("aria-pressed", String(button.dataset.studyStage === stage.id));
-  }
-  byId("study-step-label").textContent = `${String(studyStages.indexOf(stage) + 1).padStart(2, "0")} / ${stage.label}`;
-  byId("study-title").textContent = stage.title;
-  byId("study-description").textContent = stage.body;
-  byId("study-detail").textContent = stage.detail;
-  setAction(byId("study-action"), stage.action);
-  // Real screenshots accompany the learner's action. The browser selects the
-  // appropriate viewport capture; no gallery or screen-size selection exists.
-  byId("study-wide-source").srcset = `assets/${stage.capture}-wide.webp`;
-  byId("study-image").src = `assets/${stage.capture}-phone.webp`;
-  byId("study-image").alt = stage.alt;
-  byId("study-scene").dataset.stage = stage.id;
-  if (announce) {
-    byId("study-status").textContent = `${stage.label}. ${stage.title}`;
-    playGlyph(byId("study-controls").querySelector('[aria-pressed="true"]'), "about-study-mark");
-    const copy = document.querySelector(".about-study-copy");
-    whenVisible(copy, () => {
-      if (currentStage === stage) animateElement(copy, "reveal", { channel: "about-story-copy" });
-    }, { channel: "about-story-copy-ready" });
-    whenVisible(document.querySelector(".about-study-image-frame"), () => {
-      if (currentStage !== stage) return;
-      animateElement(document.querySelector(".about-study-image-frame"), "flow", { channel: "about-story", direction });
-    }, { channel: "about-story-ready", ready: byId("study-image").decode().catch(() => {}) });
-    selectionInk(byId("study-controls"));
-  }
-}
-for (const [index, stage] of studyStages.entries()) {
-  const button = node("button", "about-study-step");
-  button.type = "button";
-  button.dataset.studyStage = stage.id;
-  button.setAttribute("aria-controls", "study-scene");
-  const number = node("span", "about-step-number", String(index + 1).padStart(2, "0"));
-  number.setAttribute("aria-hidden", "true");
-  button.append(number, glyph(stage.icon || "book"), node("span", null, stage.label));
-  button.addEventListener("click", () => showStage(stage));
-  byId("study-controls").appendChild(button);
-}
-byId("study-controls").hidden = studyStages.length === 0;
-showStage(studyStages[0], false);
-observeSelection(byId("study-controls"));
 
-let currentArchitecture = null;
-function showArchitecture(item, announce = true) {
-  if (!item) return;
-  if (item === currentArchitecture) {
-    if (announce) playGlyph(byId("architecture-controls").querySelector('[aria-pressed="true"]'), "about-architecture-repeat");
-    return;
-  }
-  cancelAnimationsWithin(byId("architecture-panel"));
-  cancelAnimationsWithin(byId("architecture-controls"));
-  currentArchitecture = item;
-  for (const button of byId("architecture-controls").querySelectorAll("button")) {
-    button.setAttribute("aria-pressed", String(button.dataset.architecture === item.id));
-  }
-  byId("architecture-label").textContent = item.subtitle;
-  byId("architecture-title").textContent = item.title;
-  byId("architecture-body").textContent = item.body;
-  byId("architecture-detail").textContent = item.detail;
-  setAction(byId("architecture-action"), item.action);
-  for (const layer of document.querySelectorAll("[data-layer]")) {
-    layer.dataset.active = String(layer.dataset.layer === item.id);
-  }
-  if (announce) {
-    byId("architecture-status").textContent = `${item.label}. ${item.title}`;
-    const copy = document.querySelector(".about-architecture-copy");
-    whenVisible(copy, () => {
-      if (currentArchitecture === item) animateElement(copy, "reveal", { channel: "about-architecture-copy" });
-    }, { channel: "about-architecture-copy-ready" });
-    playGlyph(byId("architecture-controls").querySelector('[aria-pressed="true"]'), "about-architecture-mark");
-    whenVisible(document.querySelector(".about-architecture-art"), () => {
-      if (currentArchitecture !== item) return;
-      animateSequence([
-        { element: document.querySelector(`[data-layer="${CSS.escape(item.id)}"]`), kind: "flow", at: 0 },
-        { element: document.querySelector(".about-architecture-thread"), kind: "trace", at: 80 },
-      ], { channel: "about-architecture" });
-    }, { channel: "about-architecture-ready" });
-    selectionInk(byId("architecture-controls"));
-  }
-}
-for (const item of architecture) {
-  const button = node("button", "about-architecture-node");
-  button.type = "button";
-  button.dataset.architecture = item.id;
-  button.setAttribute("aria-controls", "architecture-panel");
-  const copy = node("span");
-  copy.append(node("span", "about-architecture-name", item.label), node("span", "about-architecture-subtitle", item.subtitle));
-  button.append(glyph(item.icon || "book"), copy);
-  button.addEventListener("click", () => showArchitecture(item));
-  byId("architecture-controls").appendChild(button);
-}
-showArchitecture(architecture[0], false);
-observeSelection(byId("architecture-controls"));
+  specimen.replaceChildren();
+  const tag = node("p", "ab-specimen__tag");
+  const category = node("span", "ab-specimen__category", question.category);
+  category.lang = "en";
+  tag.append(node("span", null, "Uygulamadan bir soru · "), category);
+  const prompt = node("p", "ab-specimen__prompt");
+  prompt.lang = "en";
+  prompt.dataset.part = "context";
+  const [before, after = ""] = question.paragraph.split(/_{2,}/);
+  const blank = node("span", "ab-blank");
+  blank.setAttribute("aria-label", "boşluk");
+  prompt.append(document.createTextNode(before), blank, document.createTextNode(after));
 
-// Each component owns its visible entrance. A tall phone section does not
-// start the illustration while only the heading is on screen. The shared gate
-// also waits for fonts, document visibility and two painted frames.
-for (const heading of document.querySelectorAll(".about-section h2")) {
-  whenVisible(heading, () => animateElement(heading, "reveal", { channel: "about-heading" }), { channel: "about-heading-ready" });
-}
-for (const feature of document.querySelectorAll(".about-feature")) {
-  whenVisible(feature, () => playGlyph(feature.querySelector("summary"), "about-feature-entry"), { channel: "about-feature-ready" });
-}
-for (const artwork of document.querySelectorAll(".about-study-image-frame, .about-architecture-art, .about-closing-brand")) {
-  whenVisible(artwork, () => {
-    if (!artwork.getAnimations({ subtree: true }).length) animateElement(artwork, "flow", { channel: "about-art-entry" });
-  }, { channel: "about-art-entry-ready", ready: decodeImages(artwork) });
-}
+  const options = node("div", "ab-options");
+  options.dataset.part = "options";
+  options.setAttribute("role", "group");
+  options.setAttribute("aria-label", "Seçenekler");
+  const result = node("div", "ab-result");
+  result.setAttribute("aria-live", "polite");
+  const correct = question.options[question.correctIndex];
 
-for (const details of document.querySelectorAll("details")) {
-  details.addEventListener("toggle", () => {
-    if (details.open) {
-      animateElement(details.querySelector(".about-feature-body") ?? details.querySelector(":scope > p"), "reveal", { channel: "about-disclosure" });
-      playGlyph(details.querySelector("summary"), "about-disclosure-icon");
-    } else cancelAnimationsWithin(details);
+  const buttons = question.options.map((option, index) => {
+    const button = node("button", "ab-option");
+    button.type = "button";
+    const key = node("span", "ab-option__key", String(index + 1));
+    key.setAttribute("aria-hidden", "true");
+    const text = node("span", "ab-option__text", option);
+    text.lang = "en";
+    button.append(key, text);
+    button.addEventListener("click", () => choose(option));
+    options.appendChild(button);
+    return button;
   });
+
+  function idle() {
+    result.replaceChildren(node("p", "ab-result__hint", "Bir seçenek seç. Cevabın kaydedilmez; bu yalnızca bir örnek."));
+  }
+
+  function choose(option) {
+    const right = option === correct;
+    blank.textContent = option;
+    blank.classList.toggle("is-right", right);
+    blank.classList.toggle("is-wrong", !right);
+    buttons.forEach((button, index) => {
+      const value = question.options[index];
+      button.classList.toggle("is-right", value === correct);
+      button.classList.toggle("is-wrong", value === option && !right);
+      button.classList.toggle("is-picked", value === option);
+      button.setAttribute("aria-pressed", String(value === option));
+    });
+    const verdict = node("p", `ab-result__verdict ${right ? "is-right" : "is-wrong"}`, right ? "Doğru." : "Bu değil.");
+    const parts = [verdict];
+    if (!right && question.optionNotes?.[option]) {
+      const note = node("div", "ab-result__note");
+      note.dataset.part = "notes";
+      const label = node("p", "ab-result__label");
+      const name = node("span", null, option);
+      name.lang = "en";
+      label.append(document.createTextNode("Neden "), name, document.createTextNode(" değil?"));
+      note.append(label, node("p", null, question.optionNotes[option]));
+      parts.push(note);
+    }
+    const why = node("div", "ab-result__why");
+    if (right) why.dataset.part = "notes";
+    const answer = node("p", "ab-result__label");
+    const value = node("span", null, correct);
+    value.lang = "en";
+    answer.append(document.createTextNode("Doğru cevap: "), value);
+    why.append(answer, node("p", null, question.explanation));
+    parts.push(why);
+    if (question.tip) {
+      const tip = node("p", "ab-result__tip");
+      tip.dataset.part = "tip";
+      tip.append(node("strong", null, "İpucu. "), document.createTextNode(question.tip));
+      parts.push(tip);
+    }
+    const foot = node("div", "ab-result__foot");
+    const go = node("a", "ab-link", "Bu ayrımın dersini aç ");
+    go.href = appLink(`#egitim/${lessonId(anatomy.topic, question.category)}`);
+    go.dataset.part = "lesson";
+    const arrow = node("span", null, "↗");
+    arrow.setAttribute("aria-hidden", "true");
+    go.append(arrow);
+    const again = node("button", "ab-link ab-link--button", "Başka bir seçenek dene");
+    again.type = "button";
+    again.addEventListener("click", () => {
+      blank.textContent = "";
+      blank.className = "ab-blank";
+      buttons.forEach((button) => { button.className = "ab-option"; button.removeAttribute("aria-pressed"); });
+      idle();
+      buttons[0].focus();
+    });
+    foot.append(go, again);
+    parts.push(foot);
+    result.replaceChildren(...parts);
+    result.classList.remove("is-new");
+    void result.offsetWidth;
+    result.classList.add("is-new");
+  }
+
+  specimen.append(tag, prompt, options, result);
+  idle();
+
+  // Callouts name the parts. Hover or focus lights the part they name.
+  callouts.replaceChildren(...anatomy.callouts.map((callout, index) => {
+    const item = node("li", "ab-callout");
+    const button = node("button", "ab-callout__button");
+    button.type = "button";
+    button.append(node("span", "ab-callout__n", String(index + 1)), node("span", "ab-callout__title", callout.title));
+    const body = node("p", "ab-callout__body", callout.body);
+    const light = () => { specimen.dataset.highlight = callout.part; };
+    const dim = () => { delete specimen.dataset.highlight; };
+    button.addEventListener("pointerenter", light);
+    button.addEventListener("pointerleave", dim);
+    button.addEventListener("focus", light);
+    button.addEventListener("blur", dim);
+    button.addEventListener("click", () => {
+      // Parts 3–5 exist after an answer; show one rather than point at nothing.
+      if (!specimen.querySelector(`[data-part="${callout.part}"]`)) {
+        const wrong = question.options.find((option) => option !== correct && question.optionNotes?.[option]);
+        choose(wrong ?? correct);
+      }
+      light();
+      specimen.querySelector(`[data-part="${callout.part}"]`)?.scrollIntoView({ block: "nearest", behavior: canMove() ? "smooth" : "auto" });
+    });
+    item.append(button, body);
+    return item;
+  }));
 }
 
-fetch("../data/manifest.json")
-  .then((response) => response.ok ? response.json() : Promise.reject())
-  .then((manifest) => {
-    if (!Array.isArray(manifest.topics)) return;
-    const topics = manifest.topics;
-    byId("corpus-topics").textContent = String(topics.length);
-    byId("corpus-lessons").textContent = String(topics.reduce((sum, topic) => sum + (topic.lessonCount || 0), 0));
-    byId("corpus-questions").textContent = String(topics.reduce((sum, topic) => sum + (topic.questionCount || 0), 0));
-  }).catch(() => {});
-byId("install-control").appendChild(createInstallControl());
+/* ---------------------------------------------------------------------
+ * 5 · The loop: steps scroll past a device whose screen follows them.
+ * ------------------------------------------------------------------- */
+function initFlow() {
+  const list = byId("flow-steps");
+  const screen = byId("flow-screen");
+  const device = byId("flow-device");
+  if (!list) return;
+  const image = (step, className) => {
+    const img = node("img", className);
+    img.src = `assets/${step.capture}-phone.webp`;
+    img.width = 390;
+    img.height = 844;
+    img.alt = step.alt;
+    img.loading = "lazy";
+    img.decoding = "async";
+    return img;
+  };
+  const items = flow.map((step) => {
+    const item = node("li", "ab-step");
+    item.dataset.step = step.id;
+    item.dataset.reveal = "";
+    const head = node("p", "ab-step__head");
+    head.append(node("span", "ab-step__n", step.step), node("span", "ab-step__label", step.label));
+    const link = node("a", "ab-link", "Uygulamada aç ");
+    link.href = step.href;
+    const arrow = node("span", null, "↗");
+    arrow.setAttribute("aria-hidden", "true");
+    link.append(arrow);
+    const shot = node("figure", "ab-step__shot");
+    shot.append(image(step, "ab-step__img"));
+    item.append(head, node("h3", "ab-step__title", step.title), node("p", "ab-step__body", step.body), link, shot);
+    return item;
+  });
+  list.replaceChildren(...items);
+  observeLate(items);
+  // The sticky device carries decorative copies (the inline figures carry
+  // the alt text). display:none keeps its lazy images from loading on phones.
+  screen.replaceChildren(...flow.map((step, index) => {
+    const img = image(step, "ab-device__img");
+    img.alt = "";
+    img.dataset.step = step.id;
+    if (index === 0) img.classList.add("is-active");
+    return img;
+  }));
+  const activate = (id) => {
+    items.forEach((item) => item.classList.toggle("is-active", item.dataset.step === id));
+    screen.querySelectorAll("img").forEach((img) => img.classList.toggle("is-active", img.dataset.step === id));
+    device.dataset.step = id;
+  };
+  activate(flow[0].id);
+  const observer = new IntersectionObserver((entries) => {
+    const hit = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (hit) activate(hit.target.dataset.step);
+  }, { rootMargin: "-40% 0px -40% 0px", threshold: [0, 0.01] });
+  items.forEach((item) => observer.observe(item));
+}
+
+/* ---------------------------------------------------------------------
+ * 6 · Craft, with proofs computed on this page.
+ * ------------------------------------------------------------------- */
+function initSprings() {
+  const card = byId("springs");
+  if (!card) return;
+  const copy = craft.springs;
+  const copyColumn = node("div", "ab-springs__copy");
+  const viz = node("div", "ab-springs__viz");
+  copyColumn.append(node("p", "ab-card__kicker", "Hareket"), node("h3", null, copy.title), node("p", null, copy.body));
+  const names = Object.keys(copy.names);
+  const curves = names.map((name) => ({ name, ...spring(name) }));
+  const longest = Math.max(...curves.map((curve) => curve.duration));
+  // A narrower drawing on phones keeps the axis labels legible when scaled.
+  const W = window.matchMedia("(max-width: 600px)").matches ? 360 : 560; const H = 200; const pad = { l: 36, r: 12, t: 16, b: 30 };
+  const x = (ms) => pad.l + (ms / longest) * (W - pad.l - pad.r);
+  const y = (value) => H - pad.b - (value / 1.25) * (H - pad.t - pad.b);
+  const chart = svgRoot(`0 0 ${W} ${H}`, "Üç yay eğrisi: yumuşak, canlı ve esnek; zamana göre konum.");
+  chart.classList.add("ab-chart");
+  chart.append(shape("path", { d: `M${pad.l} ${y(1)}H${W - pad.r}` }, "ab-chart__rest"));
+  chart.append(shape("path", { d: `M${pad.l} ${y(0)}H${W - pad.r}M${pad.l} ${pad.t}V${y(0)}` }, "ab-chart__axis"));
+  chart.append(svgText(pad.l - 8, y(1) + 4, "1", "ab-chart__tick", "end"));
+  chart.append(svgText(pad.l - 8, y(0) + 4, "0", "ab-chart__tick", "end"));
+  chart.append(svgText(W - pad.r, H - 8, `${longest} ms`, "ab-chart__tick", "end"));
+  for (const [index, curve] of curves.entries()) {
+    const step = 1000 / 60;
+    const d = curve.samples.map((value, i) => `${i ? "L" : "M"}${x(Math.min(i * step, curve.duration)).toFixed(1)} ${y(value).toFixed(1)}`).join("");
+    const path = shape("path", { d, pathLength: 1 }, `ab-chart__curve ab-chart__curve--${index}`);
+    chart.append(path);
+  }
+  const legend = node("ul", "ab-legend");
+  const lanes = node("div", "ab-lanes");
+  lanes.setAttribute("aria-hidden", "true");
+  const balls = curves.map((curve, index) => {
+    const item = node("li", `ab-legend__item ab-legend__item--${index}`);
+    item.append(node("span", "ab-legend__swatch"), node("span", null, copy.names[curve.name]), node("span", "ab-legend__ms", `${curve.duration} ms`));
+    legend.append(item);
+    const lane = node("div", `ab-lane ab-lane--${index}`);
+    const ball = node("span", "ab-lane__ball");
+    lane.append(ball);
+    lanes.append(lane);
+    return { ball, lane, curve };
+  });
+  const play = node("button", "ab-button ab-button--small ab-button--ghost", "Oynat");
+  play.type = "button";
+  const note = node("p", "ab-card__note");
+  let forward = true;
+  const run = () => {
+    if (!canMove()) return;
+    for (const { ball, lane, curve } of balls) {
+      const travel = lane.clientWidth - ball.offsetWidth - 8;
+      const [from, to] = forward ? [0, travel] : [travel, 0];
+      ball.animate([{ transform: `translateX(${from}px)` }, { transform: `translateX(${to}px)` }],
+        { duration: curve.duration, easing: curve.easing, fill: "forwards" });
+    }
+    forward = !forward;
+  };
+  play.addEventListener("click", run);
+  const paint = () => {
+    const allowed = canMove();
+    play.disabled = !allowed;
+    note.textContent = allowed ? "Oynat: aynı yaylarla üç top. Fark, aşmada ve oturmada." : "Hareket kapalı olduğu için oynatma devre dışı.";
+  };
+  document.addEventListener("motion:change", paint);
+  paint();
+  const controls = node("div", "ab-springs__controls");
+  controls.append(play, note);
+  copyColumn.append(legend, controls);
+  viz.append(chart, lanes);
+  card.append(copyColumn, viz);
+  // Once, when the chart is first seen: draw the curves and send the balls.
+  new IntersectionObserver(([entry], observer) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    card.classList.add("is-drawn");
+    setTimeout(run, 500);
+  }, { threshold: 0.5 }).observe(chart);
+}
+
+function luminance(hex) {
+  const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!match) return null;
+  const channel = (offset) => {
+    const value = parseInt(match[1].slice(offset, offset + 2), 16) / 255;
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * channel(0) + 0.7152 * channel(2) + 0.0722 * channel(4);
+}
+
+function initContrast() {
+  const card = byId("contrast");
+  if (!card) return;
+  const copy = craft.contrast;
+  card.append(node("p", "ab-card__kicker", "Renk"), node("h3", null, copy.title), node("p", null, copy.body));
+  const styles = getComputedStyle(document.documentElement);
+  const list = node("ul", "ab-swatches");
+  for (const pair of copy.pairs) {
+    const fg = styles.getPropertyValue(pair.fg).trim();
+    const bg = styles.getPropertyValue(pair.bg).trim();
+    const a = luminance(fg); const b = luminance(bg);
+    if (a === null || b === null) continue;
+    const ratio = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    const item = node("li", "ab-swatch");
+    const sample = node("span", "ab-swatch__sample", "Aa");
+    sample.style.color = fg;
+    sample.style.background = bg;
+    sample.setAttribute("aria-hidden", "true");
+    const text = node("span", "ab-swatch__label", pair.label);
+    const value = node("span", "ab-swatch__ratio", `${ratio.toFixed(1).replace(".", ",")}:1`);
+    const grade = node("span", "ab-swatch__grade", ratio >= 7 ? "AAA" : ratio >= 4.5 ? "AA" : "—");
+    item.append(sample, text, value, grade);
+    list.append(item);
+  }
+  card.append(list);
+}
+
+function initPipeline() {
+  const card = byId("pipeline");
+  if (!card) return;
+  const copy = craft.pipeline;
+  card.append(node("p", "ab-card__kicker", "İçerik"), node("h3", null, copy.title), node("p", null, copy.body));
+  const list = node("ol", "ab-pipeline__steps");
+  copy.steps.forEach((step, index) => {
+    const item = node("li", "ab-pipeline__step");
+    item.style.setProperty("--k", String(index));
+    item.append(node("span", "ab-pipeline__n", String(index + 1)), node("strong", null, step.title), node("span", null, step.body));
+    list.append(item);
+  });
+  card.append(list);
+}
+
+function initFacts() {
+  const wrap = byId("facts");
+  if (!wrap) return;
+  wrap.replaceChildren(...craft.facts.map((fact) => {
+    const item = node("div", "ab-fact");
+    const figureLine = node("p", "ab-fact__figure");
+    figureLine.append(node("span", "ab-fact__value", fact.figure), node("span", "ab-fact__unit", fact.unit));
+    item.append(figureLine, node("p", "ab-fact__body", fact.body));
+    return item;
+  }));
+}
+
+function initPrivacy() {
+  const card = byId("privacy");
+  if (!card) return;
+  const copy = craft.privacy;
+  const text = node("div", "ab-privacy__copy");
+  text.append(node("p", "ab-card__kicker", "Veri"), node("h3", null, copy.title), node("p", null, copy.body));
+  const art = svgRoot("0 0 420 170", "Veri yalnızca bu cihazdaki tarayıcıda; yedek dosyasıyla başka bir cihaza taşınabilir, sunucu yok.");
+  art.classList.add("ab-privacy__art");
+  art.append(shape("rect", { x: 20, y: 30, width: 150, height: 110, rx: 14 }, "ab-p-device"));
+  art.append(svgText(95, 58, "bu cihaz", "ab-d-label"));
+  art.append(shape("rect", { x: 40, y: 72, width: 110, height: 44, rx: 8 }, "ab-p-store"));
+  art.append(svgText(95, 99, "ilerlemen", "ab-d-note ab-d-note--accent"));
+  art.append(shape("rect", { x: 300, y: 50, width: 100, height: 80, rx: 12 }, "ab-p-device"));
+  art.append(svgText(350, 76, "diğer cihaz", "ab-d-label"));
+  art.append(shape("path", { d: "M172 92C214 92 250 92 296 92", pathLength: 1 }, "ab-p-link"));
+  art.append(shape("path", { d: "M288 86l8 6-8 6" }, "ab-p-arrow"));
+  art.append(shape("rect", { x: 200, y: 100, width: 70, height: 26, rx: 6 }, "ab-p-file"));
+  art.append(svgText(235, 118, "yedek", "ab-d-note"));
+  art.append(shape("path", { d: "M205 22c0-10 14-14 20-6 4-8 18-6 18 4 8 0 10 12 2 14h-38c-8 0-10-12-2-12z" }, "ab-p-cloud"));
+  art.append(shape("path", { d: "M208 8l38 30" }, "ab-p-cross"));
+  art.append(svgText(226, 54, "sunucu yok", "ab-d-note"));
+  card.append(text, art);
+}
+
+/* ---------------------------------------------------------------------
+ * 7 · Questions and close.
+ * ------------------------------------------------------------------- */
+function initFaq() {
+  const list = byId("faq-list");
+  if (!list) return;
+  list.replaceChildren(...questions.map((entry) => {
+    const details = node("details", "ab-faq__item");
+    const summary = node("summary", null);
+    summary.append(node("span", null, entry.title), node("span", "ab-faq__mark"));
+    summary.lastChild.setAttribute("aria-hidden", "true");
+    details.append(summary, node("p", null, entry.body));
+    return details;
+  }));
+}
+
+function initMasthead() {
+  const masthead = byId("masthead");
+  let frame = null;
+  const paint = () => { frame = null; masthead.dataset.scrolled = String(window.scrollY > 12); };
+  window.addEventListener("scroll", () => { if (frame === null) frame = requestAnimationFrame(paint); }, { passive: true });
+  paint();
+}
+
+/* ---- Boot. ---- */
+initMotion();
+initReveal();
+initMasthead();
+initLens();
+initManifesto();
+const manifest = initMap();
+initAnatomy(manifest);
+initFlow();
+initSprings();
+initContrast();
+initPipeline();
+initFacts();
+initPrivacy();
+initFaq();
+byId("install-control")?.appendChild(createInstallControl());
 initScrollRail({ scroller: document.scrollingElement, content: document.querySelector("main") });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("../sw.js").catch(() => {});

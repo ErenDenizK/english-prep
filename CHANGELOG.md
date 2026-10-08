@@ -5,6 +5,18 @@ the [development guide's Versioning section](docs/development.md#versioning) for
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.77 — 2026-10-08
+
+- About sayfası sıfırdan yeniden yapıldı. Fikri: “İkisi de doğru. Fark, anlamda.”
+  - *Mercek:* Açılışta iki doğru İngilizce cümle var. Birini seçince anlam farkını gösteren diyagram çiziliyor: zaman çizgisi ya da yol ayrımı. Üç ayrım var, istenirse otomatik oynuyor.
+  - *Fikir:* Kime hitap ettiğini anlatan metin, okudukça kelime kelime aydınlanıyor.
+  - *Ayrım haritası:* Uygulamanın verisinden okunuyor; 60 dersin her biri dokunulunca ilgili dersi açıyor. 723 yanlış seçenek notu sayısı da canlı.
+  - *Soru anatomisi:* Uygulamadan gerçek bir soru cevaplanabiliyor ve seçilen seçeneğin kendi notu okunabiliyor. Cevap hiçbir yere kaydedilmiyor.
+  - *Çalışma döngüsü:* Gerçek ekran görüntüleriyle anlatılıyor; geniş ekranda telefon, okunan adımı izliyor.
+  - *Yapım:* Kanıtlar sayfa açılırken hesaplanıyor: uygulamanın kullandığı gerçek yay eğrileri (oynatılabilir) ve renk kontrast oranları. İçerik süreci ve veri gizliliği de anlatılıyor.
+- Kaydırma rayı yeni About çerçevesini tanıyor; telefonda metnin üstüne binmiyor.
+- Test: About için 15 senaryoluk yeni tarayıcı testi. Çevrimdışı açılış ve hareket tercihi testleri yeni sayfaya güncellendi.
+
 ## v0.76 — 2026-10-08
 
 - Sayfa girişleri baştan tasarlandı: ekran artık önce son hâliyle görünüp sonra kaymıyor; ilk karede başlayan, gerçek yay fiziğiyle akan kısa bir kademe hâlinde geliyor. Sekmeler yana, alt sayfalar yukarı doğru tek bir hareketle açılıyor; başlık çubuğundaki ekran adı da birlikte yerleşiyor.

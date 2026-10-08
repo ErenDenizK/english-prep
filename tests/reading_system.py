@@ -243,24 +243,20 @@ class ReadingSystemTests(unittest.TestCase):
         self.page.goto(BASE + '/about/')
         expect(self.page.get_by_role('heading', level=1)).to_be_visible()
         expect(self.page.get_by_role('link', name='Çalışmaya başla', exact=True)).to_be_visible()
-        # The portfolio's cached content module and controls work offline too;
-        # a static hero alone would hide a missing ES-module dependency.
-        expect(self.page.locator('#study-controls [data-study-stage]')).to_have_count(3)
-        expect(self.page.locator('[data-tour-screen], [data-tour-viewport]')).to_have_count(0)
-        apply = self.page.locator('[data-study-stage="apply"]')
-        apply.click()
-        expect(apply).to_have_attribute('aria-pressed', 'true')
-        expect(apply).to_be_focused()
-        expect(self.page.locator('#study-title')).to_have_text('Bir seçeneğin ötesine geç.')
-        expect(self.page.locator('#study-image')).to_have_attribute('src', 'assets/test-phone.webp')
-        expect(self.page.locator('#study-wide-source')).to_have_attribute('srcset', 'assets/test-wide.webp')
-        continuity = self.page.locator('[data-architecture="continuity"]')
-        continuity.click()
-        expect(continuity).to_have_attribute('aria-pressed', 'true')
-        expect(continuity).to_be_focused()
-        expect(self.page.locator('#architecture-title')).to_have_text('Kaldığın yerin de bir mimarisi var.')
-        expect(self.page.locator('#architecture-body')).to_contain_text('localStorage')
-        expect(self.page.locator('#engineering-heading')).to_be_visible()
+        # The portfolio's cached modules and controls work offline too; a
+        # static hero alone would hide a missing ES-module dependency.
+        radios = self.page.locator('#lens-forms [role="radio"]')
+        expect(radios).to_have_count(2)
+        radios.nth(1).click()
+        expect(radios.nth(1)).to_have_attribute('aria-checked', 'true')
+        expect(self.page.locator('#lens-stage')).to_have_attribute('data-state', 'linked')
+        # The map reads the cached manifest. The anatomy question needs one
+        # topic file: it either renders whole or its section steps aside —
+        # never a half-built card.
+        expect(self.page.locator('.ab-chip')).to_have_count(60)
+        self.page.wait_for_function('''() => document.querySelector('#soru').hidden
+          || document.querySelectorAll('#specimen .ab-option').length === 4''')
+        expect(self.page.locator('#craft-title')).to_be_attached()
 
     def test_unavailable_cache_storage_does_not_block_online_reading(self):
         self.page.add_init_script('''CacheStorage.prototype.open = async () => {
