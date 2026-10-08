@@ -60,6 +60,10 @@ class AtmosphereTests(unittest.TestCase):
 
     def test_three_exposed_regions_visit_all_three_pigments_and_change_visibly(self):
         self.visit()
+        # v0.76: every page offsets the aurora by one wall clock so its phase
+        # continues across documents. Zero it so the sampled phases are the
+        # authored ones rather than whatever the time of day selects.
+        self.page.evaluate("document.querySelector('.ambient').style.setProperty('--aura-clock', '0ms')")
         self.page.wait_for_timeout(1300)
         frames = []
         # The owner requested 20% less speed in v0.73. The same scene travels

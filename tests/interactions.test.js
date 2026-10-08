@@ -93,7 +93,9 @@ test("finite presentation responds safely to interruption and input changes", as
     assert.equal(second.cancelled, 0);
     assert.equal(node.textContent, "Immediate result");
     assert.equal(second.timing.duration, 220);
-    assert.equal(second.frames[0].transform, "translateY(-8px)", "popup scroll measurements must not be scaled");
+    assert.ok(second.frames.every((frame) => frame.transform === undefined), "a popup's option hitboxes never move");
+    assert.equal(second.frames[0].opacity, 0);
+    assert.equal(second.frames.at(-1).opacity, 1, "an entrance always ends fully opaque");
     assert.equal(second.timing.fill, "none");
     const independent = ui.animateElement(node, "mark", { channel: "mark" });
     assert.equal(second.cancelled, 0);
@@ -177,7 +179,7 @@ test("finite presentation responds safely to interruption and input changes", as
   await t.test("stagger limits and replacements prevent a queued or stale scene", () => {
     const node = env.element();
     const first = ui.animateSequence([{ element: node, kind: "story", at: 99999 }]);
-    assert.equal(first[0].timing.delay, 180);
+    assert.equal(first[0].timing.delay, 360);
     assert.equal(first[0].timing.duration, 900);
     const replacement = ui.animateSequence([{ element: node, kind: "scene", at: -50 }]);
     assert.equal(first[0].cancelled, 1);
@@ -230,7 +232,7 @@ test("finite presentation responds safely to interruption and input changes", as
   });
 
   await t.test("spatial cues and progress use distinct bounded roles with static endings", () => {
-    const kinds = { control: 100, reveal: 220, menu: 220, dialog: 360, route: 360,
+    const kinds = { control: 100, reveal: 220, route: 360,
       mark: 360, onboard: 560, scene: 560, rule: 560, complete: 720, draw: 720,
       progress: 720, story: 900, flow: 1100, trace: 1100, panel: 360, item: 220, unfold: 560, fan: 720, signal: 560, folio: 1100, release: 380 };
     for (const [kind, duration] of Object.entries(kinds)) {
@@ -249,6 +251,37 @@ test("finite presentation responds safely to interruption and input changes", as
     env.window.getComputedStyle = () => ({ getPropertyValue: (name) => name === "--d-scene" ? "0.62s" : "" });
     assert.equal(ui.animateElement(env.element(), "scene").timing.duration, 620);
     env.window.getComputedStyle = previousStyle;
+  });
+
+  await t.test("v0.76 entrances fade in from their first frame and end opaque on a spring", () => {
+    for (const name of ["soft", "lively", "bouncy"]) {
+      const curve = ui.spring(name);
+      assert.ok(curve.duration > 300 && curve.duration < 900, `${name} settles in a perceptible, bounded time`);
+      assert.ok(curve.easing.length > 0);
+    }
+    const springs = { enter: "lively", rise: "soft", headline: "soft", title: "soft", pop: "bouncy",
+      prompt: "lively", dialog: "lively" };
+    for (const [kind, name] of Object.entries(springs)) {
+      const animation = ui.animateElement(env.element(), kind);
+      assert.equal(animation.timing.duration, ui.spring(name).duration, kind);
+      assert.equal(animation.timing.fill, "backwards", kind);
+      assert.equal(animation.frames[0].opacity, 0, kind);
+      assert.equal(animation.frames.at(-1).opacity, 1, kind);
+      animation.finish();
+    }
+    const forward = ui.animateElement(env.element(), "enter");
+    const back = ui.animateElement(env.element(), "enter", { direction: "back" });
+    assert.equal(forward.frames[0].transform, "translateX(28px)");
+    assert.equal(back.frames[0].transform, "translateX(-28px)");
+    const parts = [env.element(), env.element(), env.element(), env.element(), env.element(), env.element(), env.element(), env.element(), env.element(), env.element()];
+    const cascade = ui.compose(parts, { kind: "rise" });
+    assert.equal(cascade.length, parts.length);
+    assert.equal(cascade[0].timing.delay, 0);
+    assert.ok(cascade.at(-1).timing.delay <= 360, "a cascade fits inside the shared delay bound");
+    assert.ok(cascade.every((animation, index) => index === 0 || animation.timing.delay >= cascade[index - 1].timing.delay));
+    motion.setMotionEnabled(false);
+    assert.deepEqual(ui.compose(parts), [], "motion off composes nothing; the final layout is already there");
+    motion.setMotionEnabled(true);
   });
 
   await t.test("direct input settles arriving ancestors without cancelling independent artwork", () => {

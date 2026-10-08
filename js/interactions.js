@@ -7,7 +7,64 @@ export const MOTION_DURATIONS = Object.freeze({
 });
 const EASING = "cubic-bezier(0.2, 0, 0, 1)";
 const SETTLE = "cubic-bezier(0.22, 1, 0.36, 1)";
-const MAX_SEQUENCE_DELAY = 180;
+// Compositions may stagger further than a single cue; still bounded, still
+// presentation only. A part that has not started yet is visible as its first
+// keyframe and is released by real input like every other entry.
+const MAX_SEQUENCE_DELAY = 360;
+
+/* ---- Springs (v0.76) ----
+ * A damped spring is simulated once per preset at module load and sampled
+ * into a CSS linear() easing, so the browser compositor plays real spring
+ * physics with no per-frame JavaScript. Browsers without linear() receive an
+ * expo-out curve of the same settling time. Values are unit-free: 0 → 1. */
+const SPRINGS = Object.freeze({
+  // Content: no visible overshoot; most of the travel is done by ~200 ms.
+  soft: { stiffness: 420, damping: 36 },
+  // Route slides and cards: a small, lively settle past rest (~2%).
+  lively: { stiffness: 380, damping: 30 },
+  // Marks, glyphs and celebratory accents: a distinct bounce (~8%).
+  bouncy: { stiffness: 600, damping: 30 },
+});
+
+function simulate({ stiffness, damping, mass = 1 }) {
+  const dt = 1 / 600;
+  let x = 0;
+  let v = 0;
+  let t = 0;
+  const samples = [0];
+  const every = 10; // a linear() point every 1/60 s
+  for (let step = 1; step < 600 * 3; step += 1) {
+    const force = -stiffness * (x - 1) - damping * v;
+    v += (force / mass) * dt;
+    x += v * dt;
+    t += dt;
+    if (step % every === 0) samples.push(x);
+    if (t > 0.12 && Math.abs(1 - x) < 0.0015 && Math.abs(v) < 0.02) break;
+  }
+  samples.push(1);
+  return { duration: Math.round(t * 1000), samples };
+}
+
+const supportsLinear = (() => {
+  try {
+    return typeof CSS !== "undefined" && CSS.supports("transition-timing-function", "linear(0, 1)");
+  } catch {
+    return false;
+  }
+})();
+
+const SPRING_CURVES = Object.fromEntries(Object.entries(SPRINGS).map(([name, spec]) => {
+  const { duration, samples } = simulate(spec);
+  const easing = supportsLinear
+    ? `linear(${samples.map((value) => Number(value.toFixed(4))).join(", ")})`
+    : SETTLE;
+  return [name, Object.freeze({ duration, easing })];
+}));
+
+/** Spring timing for callers and tests: { duration, easing }. */
+export function spring(name = "soft") {
+  return SPRING_CURVES[name] ?? SPRING_CURVES.soft;
+}
 const active = new Set();
 const channels = new WeakMap();
 const pointerScenes = new Set();
@@ -180,6 +237,50 @@ function timing(role) {
 function preset(kind, direction) {
   const sign = direction === "back" ? -1 : 1;
   switch (kind) {
+    /* ---- v0.76 entrances. Each starts from its own first keyframe on the
+     * very first painted frame (the caller animates before yielding), so a
+     * screen never shows its final layout and then jumps. Opacity is part of
+     * an entrance only; reading text is never dimmed after it has arrived. */
+    case "enter": return { curve: "lively", frames: [
+      { opacity: 0, transform: `translateX(${sign * 28}px)` },
+      { opacity: 1, transform: "translateX(0)" },
+    ] };
+    case "rise": return { curve: "soft", frames: [
+      { opacity: 0, transform: "translateY(18px)" },
+      { opacity: 1, transform: "translateY(0)" },
+    ] };
+    case "headline": return { curve: "soft", frames: [
+      { opacity: 0, transform: "translateY(14px)" },
+      { opacity: 1, transform: "translateY(0)" },
+    ] };
+    case "title": return { curve: "soft", frames: [
+      { opacity: 0, transform: "translateY(6px)" },
+      { opacity: 1, transform: "translateY(0)" },
+    ] };
+    // Content the viewport may scroll straight to: present from frame one.
+    case "settle": return { curve: "soft", frames: [
+      { opacity: .45, transform: "translateY(12px)" },
+      { opacity: 1, transform: "translateY(0)" },
+    ] };
+    case "pop": return { curve: "bouncy", frames: [
+      { opacity: 0, transform: "scale(.82)" },
+      { opacity: 1, transform: "scale(1)" },
+    ] };
+    case "fade": return { role: "reveal", easing: "cubic-bezier(.2,.6,.2,1)", frames: [{ opacity: 0 }, { opacity: 1 }] };
+    case "prompt": return { curve: "lively", frames: [
+      { opacity: 0, transform: `translateX(${sign * 40}px)` },
+      { opacity: 1, transform: "translateX(0)" },
+    ] };
+    case "grow": return { curve: "soft", frames: [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }] };
+    case "celebrate": return { role: "scene", easing: "linear", frames: [
+      { transform: "scale(1)", offset: 0, easing: "cubic-bezier(.3,.7,.4,1)" },
+      { transform: "scale(1.035)", offset: .35, easing: EASING },
+      { transform: "scale(1)", offset: 1 },
+    ] };
+    case "shake": return { role: "scene", easing: "cubic-bezier(.36,.07,.19,.97)", frames: [
+      { transform: "translateX(0)" }, { transform: "translateX(-7px)" }, { transform: "translateX(6px)" },
+      { transform: "translateX(-4px)" }, { transform: "translateX(2px)" }, { transform: "translateX(0)" },
+    ] };
     // Productive motion: no overshoot or scaling of a reading surface.
     case "release": return { role: "release", easing: "linear", frames: [
       { transform: "scale(.945) translateY(1px)", offset: 0, easing: "cubic-bezier(.15,.7,.25,1)" },
@@ -187,8 +288,14 @@ function preset(kind, direction) {
       { transform: "scale(1) translateY(0)", offset: 1 },
     ] };
     case "control": return { role: "control", frames: [{ transform: "scale(.975)" }, { transform: "scale(1)" }] };
-    case "menu": return { role: "reveal", frames: [{ transform: `translateY(${direction === "top" ? 8 : -8}px)` }, { transform: "translateY(0)" }] };
-    case "dialog": return { role: "route", frames: [{ transform: "translateY(12px)" }, { transform: "translateY(0)" }] };
+    // Opacity only: the listbox measures option geometry while it opens and
+    // an option under a fast second tap must already be where it is drawn.
+    // Its labels assemble inside it (js/listbox.js).
+    case "menu": return { role: "reveal", easing: "cubic-bezier(.2,.6,.2,1)", frames: [{ opacity: 0 }, { opacity: 1 }] };
+    case "dialog": return { curve: "lively", frames: [
+      { opacity: 0, transform: "translateY(18px) scale(.96)" },
+      { opacity: 1, transform: "translateY(0) scale(1)" },
+    ] };
     case "route": return { role: "route", frames: [{ transform: `translateX(${sign * 12}px)` }, { transform: "translateX(0)" }] };
     case "onboard": return { role: "scene", frames: [{ transform: `translateX(${sign * 12}px)` }, { transform: "translateX(0)" }] };
     // An outside halo acknowledges the opening. Clipping even a stable box
@@ -283,14 +390,20 @@ export function animateElement(element, kind = "reveal", { channel = "default", 
   if (!element.isConnected || typeof element.animate !== "function") return null;
   initialize();
   if (!canMove()) return null;
-  const { role, frames, easing = EASING } = preset(kind, direction);
+  const { role, frames, curve, easing: authored = EASING } = preset(kind, direction);
   if (kind === "release" && startTransform && startTransform !== "none") frames[0].transform = startTransform;
+  // A fill grows to whatever ratio its own style already commits.
+  if (kind === "grow") {
+    const final = window.getComputedStyle?.(element).transform;
+    if (final && final !== "none") frames[1].transform = final;
+  }
   const wait = Math.min(MAX_SEQUENCE_DELAY, Math.max(0, Number(delay) || 0));
+  const motion = curve ? spring(curve) : { duration: timing(role), easing: authored };
   const animation = element.animate(frames, {
-    duration: timing(role), delay: wait, easing,
+    duration: motion.duration, delay: wait, easing: motion.easing,
     // Delayed decoration holds its first frame; text stays fully opaque and
     // interactive throughout. On finish/cancel the authored final CSS wins.
-    fill: wait ? "backwards" : "none",
+    fill: wait || curve ? "backwards" : "none",
   });
   const record = { element, channel, animation };
   let map = channels.get(element);
@@ -321,6 +434,110 @@ export function animateSequence(entries, { channel = "sequence", direction = "fo
   return animations;
 }
 
+
+/* ---- Composition (v0.76) ----
+ * A new screen arrives as a short cascade of its visible parts. The caller
+ * has already committed the final DOM, state and focus; compose() only lays
+ * presentation over it, synchronously, before the browser paints. Parts that
+ * are offscreen are left alone and already final. */
+const ATOMIC = "p, h1, h2, h3, h4, h5, h6, button, a, label, input, textarea, select, svg, img, canvas, figure, table, pre, blockquote, .option, .row, .tile, .btn, .chip, .metric, .avatar, [data-compose-part]";
+// One vector per screen: every part of a cascade moves the same way, so a
+// screen arrives as one gesture rather than as several unrelated motions.
+const CASCADE_SPAN = 220;
+
+function viewportBounds() {
+  const scroller = document.getElementById("shell-scroll");
+  const height = window.innerHeight || document.documentElement.clientHeight || 0;
+  const box = scroller?.getBoundingClientRect?.();
+  return { top: Math.max(0, box?.top ?? 0), bottom: Math.min(height || Infinity, box?.bottom ?? height) };
+}
+
+function onScreen(node, view) {
+  const box = node.getBoundingClientRect?.();
+  return Boolean(box) && box.width > 2 && box.height > 2 && box.top < view.bottom && box.bottom > view.top;
+}
+
+function isSurface(node) {
+  const style = window.getComputedStyle?.(node);
+  if (!style) return false;
+  const background = style.backgroundColor ?? "";
+  const painted = background && background !== "transparent" && !/rgba\([^)]*,\s*0\)$/.test(background);
+  return Boolean(painted || (style.backgroundImage && style.backgroundImage !== "none")
+    || (style.boxShadow && style.boxShadow !== "none") || parseFloat(style.borderTopWidth) > 0);
+}
+
+/** The visible presentation parts of a container, outermost-first. Tall
+ * groups are opened so each card, row or heading arrives on its own beat;
+ * atomic nodes (prose, controls, artwork) are never split. */
+export function collectParts(root, { limit = 8, view = viewportBounds() } = {}) {
+  const parts = [];
+  if (!root?.children) return parts;
+  const tall = Math.min(220, (view.bottom - view.top) * 0.34);
+  (function walk(node, depth) {
+    for (const child of node.children) {
+      if (parts.length >= limit) return;
+      if (child.matches("script, template, style, [hidden], .sr-only, .visually-hidden, [data-compose='skip']")) continue;
+      if (!onScreen(child, view)) continue;
+      const height = child.getBoundingClientRect().height;
+      // A card travels with its contents: an empty surface filling in reads
+      // as loading, so a painted surface is never opened.
+      const open = depth < 4 && !child.matches(ATOMIC) && child.childElementCount > 0 && height > tall
+        && !isSurface(child);
+      if (open) walk(child, depth + 1);
+      else parts.push(child);
+    }
+  })(root, 0);
+  return parts;
+}
+
+/** Cascade the given parts (elements, or { element, kind, at }) into place,
+ * all with the same `kind`. The cascade fits inside ~220 ms however many
+ * parts it has, so the whole screen has landed by about half a second. */
+export function compose(parts, { kind = "rise", direction = "forward", channel = "compose", step = 36 } = {}) {
+  initialize();
+  if (!canMove()) return [];
+  const list = (parts ?? []).map((part) => (part?.element ? part : { element: part }))
+    .filter((part) => part.element?.isConnected);
+  if (!list.length) return [];
+  const gap = list.length > 1 ? Math.min(step, CASCADE_SPAN / (list.length - 1)) : 0;
+  const animations = animateSequence(list.map(({ element, kind: own, at }, index) => ({
+    element,
+    kind: own ?? kind,
+    at: at ?? Math.round(index * gap),
+  })), { channel, direction });
+  if (SIDEWAYS.has(kind)) clipSideways(animations);
+  return animations;
+}
+
+// A sideways entrance briefly extends past the column. Clip the page in x
+// while it runs, so the scroller never gains horizontal overflow that focus
+// or text zoom could scroll into and leave behind.
+const SIDEWAYS = new Set(["enter", "prompt"]);
+let clipping = 0;
+function clipSideways(animations) {
+  const scroller = document.getElementById?.("shell-scroll");
+  if (!scroller || !animations.length) return;
+  const ticket = ++clipping;
+  scroller.dataset.composing = "sideways";
+  Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
+    if (ticket === clipping) delete scroller.dataset.composing;
+  });
+}
+
+/** Compose a whole screen: collect its visible parts and cascade them. */
+export function composeScreen(root, options = {}) {
+  if (!root?.isConnected) return [];
+  initialize();
+  if (!canMove()) return [];
+  const view = viewportBounds();
+  const animations = compose(collectParts(root, { ...options, view }), options);
+  // Visible progress fills grow to their committed ratio after their rows land.
+  const fills = [...root.querySelectorAll(".metric__fill")].filter((fill) => onScreen(fill, view)).slice(0, 6);
+  animations.push(...animateSequence(fills.map((element, index) => ({
+    element, kind: "grow", at: 120 + index * 40,
+  })), { channel: `${options.channel ?? "compose"}-fill` }));
+  return animations;
+}
 
 /** Release outgoing finite effects immediately before closing or replacing UI. */
 export function cancelAnimationsWithin(container) {

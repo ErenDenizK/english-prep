@@ -39,7 +39,7 @@ import { icon } from "./icons.js";
 import { avatar } from "./widgets.js";
 import { progressMetric } from "./progress.js";
 import { createMotionControl } from "./motion.js";
-import { animateElement, animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateElement, cancelAnimationsWithin, collectParts, compose } from "./interactions.js";
 import { announce } from "./shell.js";
 import { createInstallControl } from "./install.js";
 
@@ -287,6 +287,7 @@ function renderData() {
   section.appendChild(backup);
 
   const restore = el("button", "btn btn--secondary", "Yedekten geri yükle");
+  restore.prepend(icon("devices", { size: 20 }));
   restore.type = "button";
   restore.addEventListener("click", () => restoreDialog.open());
   section.appendChild(restore);
@@ -561,18 +562,13 @@ function renderAbout() {
  * already exist before the presentation starts. Offscreen prose stays still. */
 function presentProfile() {
   if (container.closest("[hidden]")) return;
-  const viewport = document.getElementById("shell-scroll").getBoundingClientRect();
-  const visible = [...container.querySelectorAll(":scope > .stack > section")].filter((section) => {
-    const box = section.getBoundingClientRect();
-    return box.top < viewport.bottom && box.bottom > viewport.top;
-  }).slice(0, 4);
-  const entries = visible.map((element, index) => ({ element, kind: "route", at: index * 45 }));
-  // A bounded identity mark can settle longer than text without delaying
-  // reading, a field edit, or a settings action.
+  // A bounded identity mark pops while the sections cascade beneath it.
   const identity = container.querySelector('[data-profile-part="identity"] .avatar');
-  if (identity) entries.push({ element: identity, kind: "complete", at: 60 });
-  whenVisible(entries[0]?.element ?? container, () => animateSequence(entries, { channel: "profile-arrival" }),
-    { channel: "profile-arrival", threshold: 0 });
+  const parts = collectParts(container, { limit: 10 }).map((element) => ({ element }));
+  if (identity && !parts.some(({ element }) => element === identity)) {
+    parts.splice(1, 0, { element: identity, kind: "pop" });
+  }
+  compose(parts, { kind: "rise", channel: "profile-arrival" });
 }
 
 async function render({ enter = false } = {}) {
@@ -694,8 +690,10 @@ export async function initProfileTab({ enter = true } = {}) {
       onRestored: (summary) => {
         const said = describeRestore(summary);
         announce(said);
+        // A restored backup can carry a name; the header shows it at once.
+        document.dispatchEvent(new CustomEvent("profile:namechange"));
         render().then(() => {
-          const status = container.querySelector('[role="status"]');
+          const status = container.querySelector(".profile-transfer-status");
           if (status) {
             status.textContent = said;
           }

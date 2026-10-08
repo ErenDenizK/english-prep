@@ -291,7 +291,7 @@ export function getMistakeBook() {
       // Only counts towards graduating if the item is currently in the
       // book; a correct answer before the first mistake proves nothing
       // about the mistake that has not happened yet.
-      if (entry.lastWrong > 0) {
+      if (entry.wrong > 0) {
         entry.days.add(dayKey(answer.when));
       }
     } else {
@@ -302,7 +302,9 @@ export function getMistakeBook() {
   }
 
   return Object.entries(items)
-    .filter(([, entry]) => entry.lastWrong > 0 && entry.days.size < MISTAKE_BOOK_GRADUATION)
+    // `wrong`, not the timestamp: an imported mistake with an unreadable
+    // date is still a mistake.
+    .filter(([, entry]) => entry.wrong > 0 && entry.days.size < MISTAKE_BOOK_GRADUATION)
     .map(([id, entry]) => ({
       id,
       topicId: entry.topicId,

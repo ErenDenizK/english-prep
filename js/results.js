@@ -24,7 +24,7 @@ import { icon } from "./icons.js";
 import { progressMetric } from "./progress.js";
 import { announce, createActionBar, createBar } from "./shell.js";
 import { renderPrompt } from "./prompt.js";
-import { animateSequence, whenVisible } from "./interactions.js";
+import { animateSequence, collectParts, compose, composeScreen } from "./interactions.js";
 
 const container = document.getElementById("results-container");
 const actionBar = createActionBar("results-bar");
@@ -161,25 +161,29 @@ function renderScore(result) {
 /** Completion gets a longer visual sentence; revisiting a stored result gets
  * only a quiet arrival. The score, its accessible value and actions never wait
  * for this effect, and the long review is never revealed paragraph by paragraph. */
-function presentResults(fresh, score, breakdowns) {
-  const entries = [];
-  if (fresh) {
-    score.querySelectorAll("[data-completion-stroke]").forEach((element, index) => {
-      entries.push({ element, kind: "draw", at: index * 30 });
-    });
-    entries.push({ element: score.querySelector(".score__signature-node"), kind: "complete", at: 80 });
-    entries.push({ element: score.querySelector(".score__verdict"), kind: "reveal", at: 80 });
-  } else {
-    entries.push({ element: score.querySelector(".score__eyebrow"), kind: "reveal", at: 0 });
+function presentResults(fresh, score, aside, main) {
+  if (!fresh) {
+    // A revisit arrives quietly, the same way every other screen does.
+    composeScreen(aside, { kind: "rise", channel: "results-arrival" });
+    composeScreen(main, { kind: "rise", channel: "results-review" });
+    return;
   }
-  const viewport = document.getElementById("shell-scroll").getBoundingClientRect();
-  breakdowns.filter((section) => {
-    const box = section.getBoundingClientRect();
-    return box.top < viewport.bottom && box.bottom > viewport.top;
-  }).slice(0, 2).forEach((element, index) => {
-    entries.push({ element, kind: "reveal", at: 100 + index * 40 });
+  // A fresh completion is a short sentence: the signature draws itself, the
+  // bar fills to the score, the verdict lands, and the breakdowns follow.
+  // Every value is already final in the DOM.
+  const entries = [{ element: score, kind: "rise" }];
+  score.querySelectorAll("[data-completion-stroke]").forEach((element, index) => {
+    entries.push({ element, kind: "draw", at: 60 + index * 40 });
   });
+  entries.push({ element: score.querySelector(".score__signature-node"), kind: "pop", at: 200 });
+  entries.push({ element: score.querySelector(".metric__fill"), kind: "grow", at: 120 });
+  entries.push({ element: score.querySelector(".score__verdict"), kind: "headline", at: 260 });
+  // The figure itself is final from the first frame (no count-up): a score
+  // never reads as something it is not, even for a moment.
   animateSequence(entries, { channel: "results-arrival" });
+  const rest = collectParts(aside).filter((part) => part !== score && !part.contains(score) && !score.contains(part));
+  compose(rest.map((element, index) => ({ element, at: 300 + index * 50 })), { kind: "rise", channel: "results-breakdown" });
+  composeScreen(main, { kind: "rise", channel: "results-review" });
 }
 
 /**
@@ -546,9 +550,7 @@ async function init() {
   // Claim presentation only once the complete final DOM is available, even
   // when motion is off. Turning motion on later must not replay old activity.
   const fresh = claimCompletionPresentation(result);
-  whenVisible(score, () => presentResults(fresh, score, breakdowns), {
-    channel: "results-arrival", threshold: 0,
-  });
+  presentResults(fresh, score, aside, main);
 }
 
 init();

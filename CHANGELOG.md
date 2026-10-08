@@ -5,6 +5,15 @@ the [development guide's Versioning section](docs/development.md#versioning) for
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.76 — 2026-10-08
+
+- Sayfa girişleri baştan tasarlandı: ekran artık önce son hâliyle görünüp sonra kaymıyor; ilk karede başlayan, gerçek yay fiziğiyle akan kısa bir kademe hâlinde geliyor. Sekmeler yana, alt sayfalar yukarı doğru tek bir hareketle açılıyor; başlık çubuğundaki ekran adı da birlikte yerleşiyor.
+- Soru metni kayarak, şıklar yerinde belirerek giriyor (şıklar hiç yer değiştirmez, hızlı dokunuş kaybolmaz); cevapta yanlış şık bir kez sarsılıyor, doğru şık öne çıkıyor, açıklama yükseliyor. Sayfa yalnızca açıklamanın başını gösterecek kadar ve şıkları ekranda tutarak yumuşakça kayıyor.
+- Sonuç ekranında imza çiziliyor, çubuk oranına kadar doluyor; diyalog ve menüler yumuşak açılıyor, arka plan karartısı birlikte geliyor.
+- Aura her sayfanın ilk karesinde var ve renkleri sayfa değişince kesintisiz sürüyor (açılıştaki siyah flaş giderildi).
+- Düzeltmeler: "Şıkları göster" ya da bir şık odaktayken 1–4 tuşları çalışıyor; yedekten geri yüklenen ad başlıkta hemen görünüyor; geri tuşuyla önbellekten dönen ana sayfa güncel sayıları gösteriyor; tarihi okunamayan eski yanlışlar yanlış defterine giriyor; quiz'de cevaptan sonra beliren ✓ "bitir" simgesi × oldu; onboarding'de "devam" düğmesi her sayfada aynı yerde; hata bildirme bağlantısı metin hizasında; sonuç ekranındaki boşluk ve Profil'deki simgesiz geri yükleme düğmesi düzeltildi.
+- Materyal, puanlama ve kayıt biçimleri değişmedi. [ADR 014](docs/adr/014-choreographed-entrances.md), [hareket v0.76](docs/design/motion-v076.md).
+
 ## v0.75 — 2026-10-04
 
 - About özellikleri bölümünde animasyon sarmalayıcısının etiket ve başlıkları aynı satıra sıkıştırması düzeltildi. Etiket/başlık/açıklama ayrı hizalarda; telefonda tek, geniş ekranda iki sütun.

@@ -56,6 +56,12 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/InterVariable.woff2" />
 </head>
 <body>
+  <!-- The atmosphere is part of the first paint, not added by a module a
+       moment later: a page without it flashed flat black on every load.
+       js/motion.js adopts this node; its wall clock keeps the aurora's
+       phase continuous from one page to the next. -->
+  <div class="ambient" aria-hidden="true"><span class="ambient__field ambient__field--north"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span><span class="ambient__field ambient__field--east"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span><span class="ambient__field ambient__field--south"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span></div>
+  <script>document.querySelector(".ambient").style.setProperty("--aura-clock", Date.now() % 86400000 + "ms");</script>
   <!-- bar · body · foot, like every screen. The bar carries the way out
        and the count; the foot the forward action; answering a question
        never moves either. -->

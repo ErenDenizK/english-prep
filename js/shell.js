@@ -14,6 +14,7 @@ import { el, clear } from "./dom.js";
 import { icon } from "./icons.js";
 import { createBrand } from "./brand.js";
 import { initScrollRail } from "./scroll-rail.js";
+import { animateElement } from "./interactions.js";
 
 const liveRegion = document.getElementById("live-region");
 const scrollRegion = document.getElementById("shell-scroll");
@@ -110,7 +111,10 @@ export function createBar(barId) {
     }
 
     const text = typeof spec.title === "string" ? spec.title : spec.title.text;
+    const renamed = title.textContent !== text;
     title.textContent = text;
+    // A new screen name settles into the bar with the screen it names.
+    if (renamed) animateElement(title, "title", { channel: "bar-title" });
     if (typeof spec.title !== "string" && spec.title.lang) {
       title.lang = spec.title.lang;
     } else {

@@ -33,7 +33,7 @@ export function presentDialog(dialog) {
     }
     return label;
   });
-  animateElement(dialog, "panel", { channel: "dialog-shell" });
+  animateElement(dialog, "dialog", { channel: "dialog-shell" });
   animateSequence([
     { element: title, kind: "item", at: 0 },
     { element: description, kind: "item", at: 45 },

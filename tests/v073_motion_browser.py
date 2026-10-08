@@ -71,19 +71,22 @@ class Motion73(unittest.TestCase):
             time.sleep(.45);route.continue_()
         self.context.route('**/data/manifest.json',delayed)
         self.visit('test')
-        self.page.wait_for_function('window.__effects.some(e=>e.timing.duration===360&&e.frames[0].transform==="translateX(12px)")')
+        # v0.76 (ADR 014): the tab cascade starts in the task that commits the
+        # loaded content, from its first keyframe (opacity 0, 28px sideways),
+        # so it can neither run before the data exists nor paint final-then-move.
+        self.page.wait_for_function('window.__effects.some(e=>/^translateX\\(-?28px\\)$/.test(e.frames[0].transform||""))')
         measured=self.page.evaluate('''() => {
-          const effects=window.__effects.filter(e=>e.frames[0].transform==='translateX(12px)');
-          return {effects:effects.map(e=>({font:e.font,duration:e.timing.duration,at:e.at})),
-            obsolete:window.__effects.some(e=>e.timing.duration===620),
+          const effects=window.__effects.filter(e=>/^translateX\\(-?28px\\)$/.test(e.frames[0].transform||''));
+          return {effects:effects.map(e=>({opacity:e.frames[0].opacity,fill:e.timing.fill,at:e.at})),
+            obsolete:window.__effects.some(e=>e.timing.duration===620||e.frames[0].transform==='translateX(12px)'),
             ready:Math.max(...performance.getEntriesByType('resource').filter(r=>r.name.endsWith('/data/manifest.json')).map(r=>r.responseEnd))};
         }''')
         self.assertTrue(measured['effects'])
-        self.assertFalse(measured['obsolete'],'The larger vertical arrival was removed')
+        self.assertFalse(measured['obsolete'],'Neither earlier page-entry variant remains')
         self.assertGreater(measured['ready'],350,'Controlled cold request actually delayed rendering')
         for effect in measured['effects']:
-            self.assertEqual(effect['font'],'loaded')
-            self.assertEqual(effect['duration'],360)
+            self.assertEqual(effect['opacity'],0)
+            self.assertEqual(effect['fill'],'backwards')
             self.assertGreaterEqual(effect['at'],measured['ready'])
     def test_motion_off_cancels_held_press_and_arrivals_while_input_continues(self):
         self.visit('test');trigger=self.page.locator('[aria-labelledby~="mixed-count-label"]');trigger.wait_for();self.settle()

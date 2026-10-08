@@ -169,3 +169,13 @@ html[data-motion="off"] .onboard .onboard__dot { transition: none; }
   .onboard .onboard-flow { outline: 1px solid CanvasText; }
   .onboard .onboard-flow__marker { background: Highlight; }
 }
+
+/* v0.76 · the primary action keeps one place on every page. The tour fills
+   the screen and its actions sit at the bottom edge, so "continue" never
+   jumps up on a shorter page. Taller pages simply scroll as before. */
+.onboard .onboard__tour {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - var(--onboard-inset, 80px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+}
+.onboard .onboard__actions { margin-top: auto; }

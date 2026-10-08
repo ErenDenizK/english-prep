@@ -39,7 +39,7 @@ import { avatar } from "./widgets.js";
 import { renderOnboarding } from "./onboarding.js";
 import { announce, scrollToTop, createBar } from "./shell.js";
 import { MIXED_TEST_DEFAULT_COUNT, TOPIC_TEST_DEFAULT_COUNT, TOPIC_INTRO_PREFIX, SETTINGS } from "./config.js";
-import { animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { cancelAnimationsWithin, composeScreen } from "./interactions.js";
 
 const VIEW_IDS = ["egitim", "test", "profil", "hosgeldin"];
 const DEFAULT_VIEW = "egitim";
@@ -576,18 +576,10 @@ let routed = false;
 let routeGeneration = 0;
 
 // Compose only the arrival of a library, never each search/filter render.
+// Runs in the same task that committed the content, so the first painted
+// frame is already the first frame of the cascade.
 function enterLibrary(container, direction) {
-  const candidates = [...container.querySelectorAll(".study-intro, .study-summary, .practice-card, .split > .pane > section, #index-list > section, #topic-list")];
-  const viewport = document.getElementById("shell-scroll").getBoundingClientRect();
-  const visible = candidates.filter((node) => {
-    const box = node.getBoundingClientRect();
-    return box.height > 0 && box.top < viewport.bottom && box.bottom > viewport.top;
-  }).filter((node, index, nodes) => !nodes.some((parent, i) => i !== index && parent.contains(node))).slice(0, 3);
-  const entries = (visible.length ? visible : [container]).map((element, index) => ({
-    element, kind: "route", at: index * 55,
-  }));
-  whenVisible(entries[0].element, () => animateSequence(entries, { channel: "library-entry", direction }),
-    { channel: "library-entry", threshold: 0 });
+  composeScreen(container, { kind: "enter", direction, channel: "library-entry" });
 }
 
 /** Commit navigation synchronously. Each incoming view owns its finite
@@ -704,6 +696,12 @@ function init() {
 
   window.addEventListener("hashchange", () => {
     applyRoute();
+  });
+  // Back from a finished test can restore this page from the back/forward
+  // cache (iOS Safari does so routinely). Its counts are then stale; draw
+  // the current route again from storage.
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) applyRoute();
   });
 
   registerServiceWorker();

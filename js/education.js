@@ -53,7 +53,7 @@ import { el, clear, pane, appendProse, appendInline, sectionHeading, failureCard
 import { icon } from "./icons.js";
 import { hueOf } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
-import { animateElement, animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateSequence, cancelAnimationsWithin, composeScreen } from "./interactions.js";
 
 const bottomNav = document.getElementById("bottom-nav");
 const bar = createBar("shell-header");
@@ -959,10 +959,7 @@ export async function openTopicIntro(topicId) {
 
   document.title = `${entry.title} — English Prep`;
   const overview = readerContainer.firstElementChild;
-  whenVisible(overview.querySelector(".topic-intro > .stack") ?? overview, () => animateSequence([
-    { element: overview.querySelector(".topic-intro > .stack"), kind: "route" },
-    { element: overview.lastElementChild, kind: "route", at: 65 },
-  ], { channel: "topic-entry" }), { channel: "topic-entry", threshold: 0 });
+  composeScreen(overview, { kind: "rise", channel: "topic-entry" });
   announce(`${entry.title} genel bakış.`);
 
   // A primary, because a screen that ends in lesson rows and offers only a
@@ -1529,8 +1526,7 @@ function renderLesson() {
   readerContainer.appendChild(page);
   // Orient a fresh open without moving instructional paragraphs. A resumed
   // article restores its position with no arrival choreography.
-  if (!state.reader.resumeAt) whenVisible(heading,
-    () => animateElement(heading, "route", { channel: "lesson-entry" }), { channel: "lesson-entry" });
+  if (!state.reader.resumeAt) composeScreen(page, { kind: "rise", channel: "lesson-entry", limit: 8 });
 
   // No action bar. A lesson is something to read, and a filled amber slab
   // pinned under every screen of it is the loudest thing on a surface
