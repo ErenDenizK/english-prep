@@ -2,7 +2,23 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.75)
+## Current presentation (v0.76)
+
+**Motion (v0.76) supersedes the page-opening paragraphs below.** Read
+[motion v0.76](docs/design/motion-v076.md) and [ADR 014](docs/adr/014-choreographed-entrances.md).
+Entrances are created in the same task as their DOM via `compose` /
+`composeScreen` (`js/interactions.js`) and start from their first keyframe
+(`fill: backwards`, opacity included) — never paint the final screen and move
+it later. One vector per screen (tabs sideways 28px, drill-ins rise 18px, a
+question's prompt slides while its options only fade), spring easings sampled into CSS
+`linear()`, at most eight visible parts over ≤220ms. Answers shake/swell/rise
+with a bounded smooth scroll that keeps the options visible. No
+cross-document view transition (it swallows taps); the aurora markup is in
+each HTML page and shares one wall clock (`--aura-clock`). Press/release, rail, aurora
+palette, onboarding art and the About folio are unchanged. `whenVisible` is
+for artwork only. Layout checks must wait for finite animations first.
+
+### v0.75 baseline (historical where it conflicts with the above)
 
 For current UI work, [ADR 013](docs/adr/013-restore-page-entry-and-browser-space.md)
 and [Margin system](docs/margin-design-system.md) supersede historical visual
@@ -225,10 +241,18 @@ as a four-hundred-line diff. `check` fails when the files drift.
 - `test` — **what GitHub Pages actually serves**, confirmed by the owner
   2026-09-06. Day-to-day development; work lands here and is tried on a
   real phone.
-- `main` — one commit, the initial MVP of 2026-09-02, and 180+ commits
-  behind. It was meant to be the published branch and never became one.
+- `main` — **the owner's release branch, pushed only by the owner, by
+  hand.** It receives full versions the owner chooses to call v1 and later.
+  Sessions never push, merge or open PRs into `main` unless the owner asks
+  in so many words (decided 2026-10-08). Today it holds the 2026-09-02 MVP
+  plus two README/media commits.
 
-So `test` is live, and a push to it is a deploy. Treat it that way:
+Only these two branches should exist. Old `claude/*` branches were obsolete
+by 2026-09-03 and are to be deleted (the session git proxy cannot delete
+remote branches; the owner does it on GitHub).
+
+So `test` is live, and a push to it is a deploy — the owner has asked for
+verified work to be pushed straight to `test`. Treat it that way:
 nothing lands here that has not passed `npm run check`, and anything
 touching a screen wants `npm run verify` first. `main` is not a
 safety net — there is no staging branch, and pretending otherwise is

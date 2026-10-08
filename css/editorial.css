@@ -1578,7 +1578,7 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .ambient__field {
   position: absolute; width: max(72vw, 470px); height: max(78vh, 520px);
   transform-origin: center;
-  animation: var(--ambient-name) var(--ambient-duration) ease-in-out var(--ambient-phase) infinite alternate;
+  animation: var(--ambient-name) var(--ambient-duration) ease-in-out calc(var(--ambient-phase) - var(--aura-clock, 0ms)) infinite alternate;
   animation-play-state: paused;
 }
 .ambient__field--north {
@@ -1601,7 +1601,7 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 }
 .ambient__pigment {
   position: absolute; inset: 0; opacity: 0;
-  animation: var(--pigment-name) var(--pigment-cycle) linear var(--pigment-phase) infinite;
+  animation: var(--pigment-name) var(--pigment-cycle) linear calc(var(--pigment-phase) - var(--aura-clock, 0ms)) infinite;
   animation-play-state: paused;
   border-radius: 50%;
 }

@@ -25,6 +25,12 @@
   <script type="module" src="about.js"></script>
 </head>
 <body class="about-page">
+  <!-- The atmosphere is part of the first paint, not added by a module a
+       moment later: a page without it flashed flat black on every load.
+       js/motion.js adopts this node; its wall clock keeps the aurora's
+       phase continuous from one page to the next. -->
+  <div class="ambient" aria-hidden="true"><span class="ambient__field ambient__field--north"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span><span class="ambient__field ambient__field--east"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span><span class="ambient__field ambient__field--south"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span></div>
+  <script>document.querySelector(".ambient").style.setProperty("--aura-clock", Date.now() % 86400000 + "ms");</script>
   <a class="about-skip" href="#main">İçeriğe geç</a>
   <header class="about-frame about-masthead">
     <a class="about-brand" href="../index.html" aria-label="English Prep uygulamasını aç"><span class="about-wordmark" data-brand="full" lang="en">english prep<span>.</span></span></a>

@@ -22,6 +22,9 @@ function ensureAmbient() {
     }
     ambient.appendChild(field);
   }
+  // One wall clock for every document: the aurora keeps its phase across a
+  // page navigation instead of restarting its colors behind the new page.
+  ambient.style?.setProperty?.("--aura-clock", `${Date.now() % 86_400_000}ms`);
   document.body.prepend(ambient);
 }
 

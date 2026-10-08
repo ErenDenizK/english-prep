@@ -255,7 +255,7 @@ export function renderOnboarding(container, { onDone }) {
     if (current.scenes) {
       const page = step;
       panel.appendChild(flowPreview(current, sceneSelection[page], (index) => { sceneSelection[page] = index; }));
-      panel.appendChild(el("p", "t-quiet onboard__note", "İki sekme altta, profil ve ayarlar üstte."));
+      if (step === 0) panel.appendChild(el("p", "t-quiet onboard__note", "İki sekme altta, profil ve ayarlar üstte."));
     } else {
       const wordmark = createBrand({ variant: "full" });
       wordmark.classList.add("onboard__wordmark");

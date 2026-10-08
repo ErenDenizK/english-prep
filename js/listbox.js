@@ -242,7 +242,7 @@ export function createListbox({ container, options, value, onChange, labelledBy 
     // The popup and its options have their final geometry before presentation.
     // Only visible labels assemble; moving an actual row would move the target
     // under a fast tap or alter the active-option scroll calculation.
-    animateElement(menu, "panel", { channel: "menu-shell", direction: menu.dataset.side });
+    animateElement(menu, "menu", { channel: "menu-shell", direction: menu.dataset.side });
     const bounds = menu.getBoundingClientRect();
     const visible = [...menu.children].filter((item) => {
       const box = item.getBoundingClientRect();

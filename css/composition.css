@@ -28,7 +28,7 @@
 
 /* The identity, figure and next reading step form one summary. The large
    number stays neutral: a zero is useful information, not a pink reward. */
-.score { gap: 20px; padding-block: 4px 24px; }
+.score { gap: 20px; padding-block: 4px; }
 .score__eyebrow { justify-content: flex-start; gap: 14px; }
 .score__identity { display: grid; gap: 4px; min-width: 0; }
 .score__status { font-size: .8125rem; line-height: 1.5; font-weight: 500; color: var(--ink-2); }

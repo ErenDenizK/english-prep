@@ -22,7 +22,8 @@ import { el, clear, failureCard } from "./dom.js";
 import { icon } from "./icons.js";
 import { haptic } from "./widgets.js";
 import { announce, scrollToTop, createActionBar, createBar } from "./shell.js";
-import { animateSequence, cancelAnimationsWithin, whenVisible } from "./interactions.js";
+import { animateSequence, cancelAnimationsWithin } from "./interactions.js";
+import { motionEnabled } from "./motion.js";
 
 const container = document.getElementById("quiz-container");
 const actionBar = createActionBar("quiz-bar");
@@ -194,7 +195,9 @@ function setQuizBar() {
   readout.appendChild(el("span", null, `${state.currentIndex + 1} / ${state.session.length}`));
   bar.set({
     title: state.modeLabel,
-    lead: { label: early ? "Bitir" : "Çık", icon: early ? "check" : "close", onClick: exitQuiz },
+    // One exit glyph either way. On a phone the label is visually hidden,
+    // and a bare check beside the title read as "correct", not "finish".
+    lead: { label: early ? "Bitir" : "Çık", icon: "close", onClick: exitQuiz },
     trail: readout,
     progress: (state.currentIndex + 1) / state.session.length,
   });
@@ -215,7 +218,7 @@ function handleOptionSelected(question, selectedOption) {
   // 4.1.3 is explicit that a status message arrives "without receiving
   // focus", and moving focus here would take the learner away from the
   // button they are about to press.
-  renderQuestion();
+  renderQuestion({ answer: true });
 }
 
 function advance() {
@@ -271,7 +274,21 @@ function finishQuiz({ upTo } = {}) {
   window.location.replace("results.html");
 }
 
-function renderQuestion({ enter = false, reveal = false } = {}) {
+/** Scroll just enough to show a verdict's opening lines, never so far that
+ * the options leave the screen. Smooth when motion is on. */
+function revealVerdict(block, feedback) {
+  const scroller = document.getElementById("shell-scroll");
+  if (!scroller) return;
+  const view = scroller.getBoundingClientRect();
+  const bottom = Math.min(view.bottom, window.innerHeight) - 16;
+  const wanted = feedback.getBoundingClientRect().top + 132 - bottom;
+  const options = block.querySelector(".options") ?? block;
+  const allowed = options.getBoundingClientRect().top - view.top - 12;
+  const by = Math.min(wanted, Math.max(0, allowed));
+  if (by > 1) scroller.scrollBy({ top: by, behavior: motionEnabled() ? "smooth" : "instant" });
+}
+
+function renderQuestion({ enter = false, reveal = false, answer = false } = {}) {
   const question = state.session[state.currentIndex];
   const selected = state.selectedAnswers[state.currentIndex] ?? null;
 
@@ -324,25 +341,42 @@ function renderQuestion({ enter = false, reveal = false } = {}) {
   // input-priority guard must not mistake this intentional focus for an
   // interruption of the newly revealed choice glyphs.
   if (reveal) block.querySelector(".option")?.focus({ preventScroll: true });
+  // Presentation starts in this task, before the first paint, so a new
+  // question never shows its final layout and then jumps. The prompt slides
+  // in; option rectangles only fade. An answer target never travels: a fast
+  // tap that lands while a box is moving can end its pointerup elsewhere and
+  // lose the click (tests/v073_review_browser.py). The glyphs pop in.
+  const options = [...block.querySelectorAll(".option")];
   const choiceMarks = [...block.querySelectorAll(".option__key")].map((element, index) => ({
-    element, kind: "signal", at: index * 35,
+    element, kind: "pop", at: 120 + index * 30,
   }));
-  if (enter) whenVisible(page, () => animateSequence([
-    { element: prompt, kind: "panel" },
-    { element: prompt.querySelector(".t-label"), kind: "item", at: 0 },
+  if (enter) animateSequence([
+    { element: prompt, kind: "prompt" },
+    ...options.map((element, index) => ({ element, kind: "fade", at: 40 + index * 30 })),
     ...choiceMarks,
-  ], { channel: "question-entry" }), { channel: "question-entry", threshold: 0 });
-  // A late visibility callback must never move an answer target under a finger.
-  // Only the small shortcut glyphs assemble; option boxes and English prose
-  // retain their final geometry even before the first frame and during input.
-  if (reveal) whenVisible(block.querySelector(".options"), () => animateSequence(choiceMarks, {
-    channel: "answer-reveal",
-  }), { channel: "answer-reveal", threshold: 0 });
+  ], { channel: "question-entry" });
+  if (reveal) animateSequence([
+    ...options.map((element, index) => ({ element, kind: "fade", at: index * 40 })),
+    ...choiceMarks.map((entry, index) => ({ ...entry, at: 60 + index * 40 })),
+  ], { channel: "answer-reveal" });
+  // The verdict: a wrong pick shakes once, the right answer swells, and the
+  // explanation rises beneath them. Answered options are inert, so nothing
+  // moves under a finger that is about to act.
+  if (answer) {
+    const picked = block.querySelector(".option--picked");
+    const right = block.querySelector(".option--ok");
+    animateSequence([
+      picked && picked !== right ? { element: picked, kind: "shake" } : null,
+      right ? { element: right, kind: "celebrate", at: picked && picked !== right ? 160 : 0 } : null,
+      feedback ? { element: feedback, kind: "rise", at: 60 } : null,
+    ].filter(Boolean), { channel: "answer-verdict" });
+  }
 
   // The bar is fixed, so answering never moves the button — but on a short
-  // screen the explanation itself can still land below the fold. "nearest"
-  // scrolls only if it has to.
-  feedback?.scrollIntoView({ block: "nearest" });
+  // screen the verdict can land below the fold. Reveal its first lines and
+  // no more: the picked option and the right one stay on screen beside it,
+  // so the verdict's cue is seen rather than scrolled past.
+  if (answer && feedback) revealVerdict(block, feedback);
 
   if (state.answered) {
     const isLast = state.currentIndex === state.session.length - 1;
@@ -373,7 +407,13 @@ function handleKeydown(event) {
   // takes focus as soon as a question is answered, and it is also the
   // problem-report link inside the feedback block: reporting a question
   // used to skip the next one.
-  if (event.target instanceof Element && event.target.closest("button, a, input, select, textarea")) {
+  // Digits are different: a focused option or "Şıkları göster" has no
+  // meaning for "3", so only a field that takes typing keeps them.
+  const target = event.target instanceof Element ? event.target : null;
+  if (target?.closest("input, select, textarea, [contenteditable]")) {
+    return;
+  }
+  if ((event.key === "Enter" || event.key === " ") && target?.closest("button, a")) {
     return;
   }
 

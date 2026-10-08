@@ -333,6 +333,13 @@ async function bookCount(page) {
  * and broke at once, which is the argument for a helper: the next change
  * to the route has one place to land rather than three.
  */
+/** Waits for every finite animation on the page (entrances, cues) to end. */
+async function settleAnimations(page) {
+  await page.evaluate(() => Promise.all(document.getAnimations()
+    .filter((a) => Number.isFinite(a.effect?.getComputedTiming().endTime))
+    .map((a) => a.finished.catch(() => {}))));
+}
+
 async function openFirstLesson(page) {
   await page.waitForSelector("#index-list .tile");
   await page.locator("#index-list .tile").first().click();
@@ -1588,6 +1595,10 @@ async function runPretest(browser) {
   // The rule the whole shell is built on: answering must not move the
   // thing the learner is looking at. Scrolled into view first, so the
   // measurement is of the answer and not of the driver's own scrolling.
+  // The lesson's entrance cascade (v0.76) is finite; let it land first, or
+  // Playwright's own "wait until stable" re-scrolls the page before its
+  // click and the measurement is of the driver rather than of the answer.
+  await settleAnimations(page);
   const option = page.locator(".option:visible").first();
   await option.scrollIntoViewIfNeeded();
   const before = await page.evaluate(() => document.querySelector(".shell__scroll").scrollTop);
