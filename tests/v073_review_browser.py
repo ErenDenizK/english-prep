@@ -183,25 +183,22 @@ class MotionInputReview(unittest.TestCase):
         expect(self.page.locator('.lesson')).to_be_visible()
 
     def test_reduced_motion_and_about_buttons_keep_all_final_states(self):
+        # v0.77 About under reduced motion: every control reaches its final
+        # state at once and nothing finite keeps running.
         self.page.emulate_media(reduced_motion='reduce')
         self.visit('about/')
-        chapter = self.page.locator('[data-folio-chapter="apply"]')
-        expect(chapter).to_be_visible()
-        # Shared press wrappers must retain About's actual number/label layout.
-        gap = chapter.evaluate('''button => {
-          const number = button.querySelector('.folio-tab-number').getBoundingClientRect();
-          const label = button.querySelector('.control-face > span:last-child').getBoundingClientRect();
-          return label.left - number.right;
-        }''')
-        self.assertGreaterEqual(gap, 5)
-        self.click_now(chapter)
-        expect(chapter).to_have_attribute('aria-pressed', 'true')
-        self.click_now(self.page.locator('#folio-inspect'))
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-expanded', 'true')
-        self.click_now(self.page.locator('#folio-rotate'))
-        expect(self.page.locator('#folio-deck')).to_have_attribute('data-view', 'angle')
+        sentence = self.page.locator('#lens-forms [role="radio"]').nth(1)
+        expect(sentence).to_be_visible()
+        self.click_now(sentence)
+        expect(sentence).to_have_attribute('aria-checked', 'true')
+        self.click_now(self.page.locator('.ab-pager__item').nth(1))
+        expect(self.page.locator('#lens-title')).to_have_text('Alışkanlık mı, şu an mı?')
+        self.page.locator('#specimen').scroll_into_view_if_needed()
+        self.click_now(self.page.locator('.ab-option').first)
+        expect(self.page.locator('.ab-result__verdict')).to_be_visible()
         self.assertEqual(self.finite_running(), 0)
-        expect(self.page.locator('#folio-action')).to_have_attribute('href', '../index.html#test')
+        hidden = self.page.evaluate('[...document.querySelectorAll("[data-reveal]")].filter((e) => getComputedStyle(e).opacity !== "1").length')
+        self.assertEqual(hidden, 0)
         self.assertLessEqual(self.page.evaluate('document.documentElement.scrollWidth'), 390)
 
 

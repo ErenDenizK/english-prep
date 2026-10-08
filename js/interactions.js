@@ -58,10 +58,12 @@ const SPRING_CURVES = Object.fromEntries(Object.entries(SPRINGS).map(([name, spe
   const easing = supportsLinear
     ? `linear(${samples.map((value) => Number(value.toFixed(4))).join(", ")})`
     : SETTLE;
-  return [name, Object.freeze({ duration, easing })];
+  return [name, Object.freeze({ duration, easing, samples: Object.freeze(samples.slice()) })];
 }));
 
-/** Spring timing for callers and tests: { duration, easing }. */
+/** Spring timing for callers and tests: { duration, easing, samples }.
+ * `samples` are the simulated positions at 60 points per second (0 → 1),
+ * so a chart (about/) can draw the very curve the browser plays. */
 export function spring(name = "soft") {
   return SPRING_CURVES[name] ?? SPRING_CURVES.soft;
 }

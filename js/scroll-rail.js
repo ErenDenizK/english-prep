@@ -226,7 +226,7 @@ export function initScrollRail({
     const topLimit = Math.max(80, documentScroll ? 80 : rect.top + 80);
     const bottomLimit = Math.min(viewportHeight - 96, documentScroll ? viewportHeight : rect.bottom - 80);
     trackHeight = clamp((bottomLimit - topLimit) * 0.6, 120, 320);
-    const frameElements = documentScroll ? [...content.querySelectorAll('.about-frame')].filter(visible) : [content];
+    const frameElements = documentScroll ? [...content.querySelectorAll('.about-frame, .ab-frame')].filter(visible) : [content];
     const rightEdge = Math.max(0, ...frameElements.map((element) => {
       const padding = documentScroll ? parseFloat(getComputedStyle(element).paddingRight) || 0 : 0;
       return element.getBoundingClientRect().right - padding;

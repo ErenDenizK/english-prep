@@ -350,7 +350,7 @@ class ScrollRailTests(unittest.TestCase):
         self.page.evaluate('window.scrollTo({top:0,behavior:"instant"})')
         self.assertEqual(self.scroll_top(), 0)
 
-    def test_about_desktop_rail_uses_real_gutter_and_never_covers_folio(self):
+    def test_about_desktop_rail_uses_real_gutter_and_never_covers_the_hero(self):
         for width in (700, 1024, 1200, 1440):
             with self.subTest(width=width):
                 self.page.set_viewport_size({'width': width, 'height': 1000})
@@ -358,8 +358,8 @@ class ScrollRailTests(unittest.TestCase):
                 expect(self.page.locator('.scroll-rail')).to_have_attribute('data-compact', 'false')
                 rect = self.page.evaluate('''() => {
                   const rail=document.querySelector('.scroll-rail').getBoundingClientRect();
-                  const folio=document.querySelector('#study-folio').getBoundingClientRect();
-                  const frames=[...document.querySelectorAll('main .about-frame')];
+                  const folio=document.querySelector('#lens').getBoundingClientRect();
+                  const frames=[...document.querySelectorAll('main .ab-frame')];
                   const edge=Math.max(...frames.map(el=>el.getBoundingClientRect().right-parseFloat(getComputedStyle(el).paddingRight)));
                   return {railLeft:rail.left,folioRight:folio.right,contentEdge:edge,width:rail.width};
                 }''')

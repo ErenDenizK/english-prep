@@ -2,7 +2,17 @@
 
 Context for Claude sessions working in this repository.
 
-## Current presentation (v0.76)
+## Current presentation (v0.77)
+
+**About (v0.77) was rebuilt from scratch; the folio paragraph below is
+history.** The page's idea is the thesis "İkisi de doğru. Fark, anlamda.":
+a lens of two correct sentences whose diagram follows the meaning, a
+distinction map read from `data/manifest.json`, the anatomy of one real
+question (answerable, never recorded), the study loop on real captures, and
+craft proofs computed live (spring curves from `spring()`, contrast ratios
+from the page's tokens). Read [about/README.md](about/README.md) before
+editing; `tests/about_interaction_browser.py` is its suite.
+
 
 **Motion (v0.76) supersedes the page-opening paragraphs below.** Read
 [motion v0.76](docs/design/motion-v076.md) and [ADR 014](docs/adr/014-choreographed-entrances.md).

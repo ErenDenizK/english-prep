@@ -100,39 +100,6 @@ class VisibleMotionTests(unittest.TestCase):
             self.assertGreaterEqual(event['at'], measured['fontEnd'], measured)
             self.assertTrue(event['visible'], measured)
 
-    def test_about_image_entrance_waits_for_decoding_and_superseded_image_never_replays(self):
-        self.page.set_viewport_size({'width':1440,'height':1000})
-        def delayed_image(route):
-            time.sleep(.45)
-            route.continue_()
-        self.context.route('**/about/assets/*.webp', delayed_image)
-        self.visit('about/')
-        self.page.wait_for_function("window.__motionCalls.some(c=>c.target.matches('.folio-window'))")
-        measured = self.page.evaluate("""() => window.__motionCalls.filter(c=>c.target.matches('.folio-window'))
-          .map(c=>({visible:c.visible,images:c.images}))""")
-        self.assertEqual(len(measured),1)
-        for event in measured:
-            self.assertTrue(event['visible'], measured)
-            self.assertTrue(all(i['complete'] and i['width'] for i in event['images']), measured)
-        self.context.unroute('**/about/assets/*.webp', delayed_image)
-        self.page.locator('#study-image').scroll_into_view_if_needed()
-        self.settle()
-        self.page.evaluate("""() => {
-          const image=document.querySelector('#study-image');
-          window.__decodeReleases=[];
-          image.decode=()=>new Promise(resolve=>window.__decodeReleases.push(resolve));
-          window.__motionCalls=[];
-          document.querySelector('[data-study-stage="apply"]').click();
-          document.querySelector('[data-study-stage="return"]').click();
-          window.__decodeReleases[0]();
-        }""")
-        self.page.wait_for_timeout(120)
-        self.assertEqual(self.page.evaluate("window.__motionCalls.filter(c=>c.target.matches('.about-study-image-frame')).length"),0)
-        self.page.evaluate('window.__decodeReleases[1]()')
-        self.page.wait_for_function("window.__motionCalls.some(c=>c.target.matches('.about-study-image-frame'))")
-        expect(self.page.locator('#study-scene')).to_have_attribute('data-stage','return')
-        expect(self.page.locator('[data-study-stage="return"]')).to_have_attribute('aria-pressed','true')
-
     def test_waiting_arrival_requires_visibility_and_real_input_cancels_it(self):
         self.visit('index.html#profil')
         self.page.locator('#profile-name').wait_for()
@@ -179,7 +146,7 @@ class VisibleMotionTests(unittest.TestCase):
           && (Number.isFinite(a.effect.getComputedTiming().endTime)
           || a.effect.target.closest('.ambient'))).length''')
         self.assertEqual(running, 0)
-        expect(self.page.locator('.about-hero h1')).to_be_visible()
+        expect(self.page.locator('.ab-hero h1')).to_be_visible()
 
     def test_mobile_header_center_and_edge_controls_stay_stable_between_routes(self):
         self.page.emulate_media(reduced_motion='reduce')
@@ -210,13 +177,15 @@ class VisibleMotionTests(unittest.TestCase):
                     with Image.open(ROOT/'about/assets'/f'{name}-{family}.webp') as image:
                         self.assertGreaterEqual(image.width, minimum[0])
                         self.assertGreaterEqual(image.height, minimum[1])
+        # v0.77 About shows the phone captures: inline on phones, in the
+        # sticky device on wide screens. Both must be the real 2x pixels.
         self.visit('about/')
-        for width, family in [(390,'phone'),(1440,'wide')]:
+        for width, selector in [(390,'.ab-step[data-step="apply"] .ab-step__img'),(1440,'.ab-device__img.is-active')]:
             self.page.set_viewport_size({'width':width,'height':1000})
-            self.page.locator('#study-image').scroll_into_view_if_needed()
-            self.page.wait_for_function('''family=>{
-              const i=document.querySelector('#study-image');return i.complete&&i.naturalWidth>0&&i.currentSrc.includes('-'+family+'.webp');
-            }''', arg=family)
+            self.page.locator('.ab-step[data-step="apply"]').scroll_into_view_if_needed()
+            self.page.wait_for_function('''selector=>{
+              const i=document.querySelector(selector);return i&&i.complete&&i.naturalWidth>=780&&i.currentSrc.includes('-phone.webp');
+            }''', arg=selector)
             self.assert_no_overflow()
 
     def test_adaptive_rail_leaves_narrow_native_scrolling_and_keyboard_reading_intact(self):

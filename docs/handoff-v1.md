@@ -152,7 +152,7 @@ Geriye kalanlar:
 1. Gerçek iPhone ve Android'de hareket ve geçişlerin elle kontrolü.
 2. `docs/github/` altındaki portfolyo görsellerinin yeni hareketlerle
    yeniden çekilmesi (`tools/capture-portfolio.py`, `docs/github/capture.py`).
-   Mevcut GIF'ler v0.73 hareketlerini gösteriyor.
+   Mevcut GIF'ler v0.73 hareketlerini gösteriyor. `folio.gif` ve README'deki About anlatımı v0.77'de sıfırdan yapılan About sayfasından önceye ait; yeni sayfa (mercek, harita, soru anatomisi) çekilmeli.
 3. Eski dalların silinmesi (§2).
 
 **B. Ürün v1 (`docs/app1-final.md` tanımı).** Bu tanıma göre v1, yeterlik
