@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Independent cross-surface v0.72 checks; optional targeted axe matrix."""
-import argparse
 import re
 import json
 from pathlib import Path
@@ -8,9 +7,9 @@ import unittest
 
 from playwright.sync_api import expect, sync_playwright
 
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--base-url', default='http://127.0.0.1:8182/english-prep')
-parser.add_argument('--browser-path', default='/usr/bin/chromium')
+from _harness import launch_chromium, make_parser
+
+parser = make_parser(__doc__)
 parser.add_argument('--axe', action='store_true')
 parser.add_argument('--axe-path', default='/tmp/english-prep-a11y/node_modules/axe-core/axe.min.js')
 parser.add_argument('--axe-report', default='/tmp/ep72-integration-axe.json')
@@ -22,7 +21,7 @@ class IntegrationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.pw = sync_playwright().start()
-        cls.browser = cls.pw.chromium.launch(executable_path=ARGS.browser_path, args=['--no-sandbox'])
+        cls.browser = launch_chromium(cls.pw, ARGS)
 
     @classmethod
     def tearDownClass(cls):

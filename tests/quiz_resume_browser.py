@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Quiz persistence regressions. Run against a local HTTP server."""
-import argparse
 import json
 from pathlib import Path
 import re
@@ -8,9 +7,9 @@ import unittest
 
 from playwright.sync_api import expect, sync_playwright
 
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--base-url', default='http://127.0.0.1:8001')
-parser.add_argument('--browser-path', default='/usr/bin/chromium')
+from _harness import launch_chromium, make_parser
+
+parser = make_parser(__doc__)
 ARGS, TEST_ARGS = parser.parse_known_args()
 BASE = ARGS.base_url.rstrip('/')
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +25,7 @@ class QuizResumeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.pw = sync_playwright().start()
-        cls.browser = cls.pw.chromium.launch(executable_path=ARGS.browser_path, args=['--no-sandbox'])
+        cls.browser = launch_chromium(cls.pw, ARGS)
 
     @classmethod
     def tearDownClass(cls):

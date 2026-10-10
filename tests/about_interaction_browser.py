@@ -5,16 +5,15 @@ study loop, live craft proofs, motion preferences and responsive layout.
 Serve the repository under /english-prep/ (as GitHub Pages does) or pass
 --base-url. Learning data must never be written by this page.
 """
-import argparse
 import json
 import re
 import unittest
 from pathlib import Path
 from playwright.sync_api import expect, sync_playwright
 
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--base-url', default='http://127.0.0.1:8012/english-prep')
-parser.add_argument('--browser-path', default='/usr/bin/chromium')
+from _harness import launch_chromium, make_parser
+
+parser = make_parser(__doc__)
 ARGS, TEST_ARGS = parser.parse_known_args()
 BASE = ARGS.base_url.rstrip('/')
 ROOT = Path(__file__).resolve().parent.parent
@@ -33,7 +32,7 @@ class AboutInteractionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.pw = sync_playwright().start()
-        cls.browser = cls.pw.chromium.launch(executable_path=ARGS.browser_path, args=['--no-sandbox'])
+        cls.browser = launch_chromium(cls.pw, ARGS)
 
     @classmethod
     def tearDownClass(cls):
