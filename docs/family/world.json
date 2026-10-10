@@ -1,0 +1,220 @@
+{
+  "$schema": "family-world/0 (provisional until the family kit's presentation.md fixes it)",
+  "product": "english-prep",
+  "name": "English Prep",
+  "generatedBy": "tools/make-world.mjs",
+  "sources": [
+    "css/editorial.css",
+    "css/interactions.css",
+    "js/interactions.js",
+    "about/index.html"
+  ],
+  "themes": {
+    "dark": {
+      "ground": "#141216",
+      "card": "#1d1a20",
+      "raised": "#28242c",
+      "ink": [
+        "#eee9ed",
+        "#d2c9d3"
+      ],
+      "hairline": "#39313d",
+      "edge": "#95899b",
+      "accent": {
+        "pair": [
+          "#ed96b4",
+          "#dca2d8"
+        ],
+        "gradient": "linear-gradient(120deg in srgb, #ed96b4, #dca2d8)",
+        "ink": "#301b27",
+        "text": "#efb1cb",
+        "tint": "#30222d"
+      },
+      "focus": "#d4b5f8",
+      "roles": {
+        "secondary": "#c8b4e9",
+        "cool": "#a4d3db",
+        "tertiary": "#e9bb95"
+      },
+      "answers": {
+        "correct": {
+          "ink": "#eeb4d1",
+          "surface": "#392532",
+          "edge": "#bb8ca4"
+        },
+        "incorrect": {
+          "ink": "#b6c6ed",
+          "surface": "#252d42",
+          "edge": "#8d9bbd"
+        }
+      },
+      "aurora": {
+        "pigments": {
+          "cherry": "#a04278",
+          "iris": "#6350a5",
+          "lagoon": "#28798a"
+        },
+        "parentOpacity": 0.42
+      },
+      "contrast": {
+        "inkOnGround": 15.53,
+        "supportingOnGround": 11.56,
+        "accentInkOnAccent": 7.34
+      }
+    },
+    "light": {
+      "ground": "#fbf7fa",
+      "card": "#ffffff",
+      "raised": "#f0eaf0",
+      "ink": [
+        "#302831",
+        "#625864"
+      ],
+      "hairline": "#e2d8e2",
+      "edge": "#887b88",
+      "accent": {
+        "pair": [
+          "#a13462",
+          "#854987"
+        ],
+        "gradient": "linear-gradient(120deg in srgb, #a13462, #854987)",
+        "ink": "#ffffff",
+        "text": "#922e55",
+        "tint": "#f6e7ed"
+      },
+      "focus": "#7848af",
+      "roles": {
+        "secondary": "#7652a0",
+        "cool": "#28677a",
+        "tertiary": "#92501f"
+      },
+      "answers": {
+        "correct": {
+          "ink": "#953b67",
+          "surface": "#fae5ef",
+          "edge": "#b16b8d"
+        },
+        "incorrect": {
+          "ink": "#405f94",
+          "surface": "#eaf0ff",
+          "edge": "#657fac"
+        }
+      },
+      "aurora": {
+        "pigments": {
+          "cherry": "#a04278",
+          "iris": "#6350a5",
+          "lagoon": "#28798a"
+        },
+        "parentOpacity": 0.09
+      },
+      "contrast": {
+        "inkOnGround": 13.43,
+        "supportingOnGround": 6.38,
+        "accentInkOnAccent": 6.36
+      }
+    }
+  },
+  "defaultTheme": "dark",
+  "accentJob": "The one primary action, and a correct answer (always with the check mark and the word Doğru).",
+  "light": {
+    "kind": "aurora",
+    "behaviour": "drift",
+    "clusters": [
+      {
+        "cluster": "north",
+        "drift": 9.75,
+        "driftPhase": -2.5,
+        "colourCycle": 13.5,
+        "colourPhase": -2.25
+      },
+      {
+        "cluster": "east",
+        "drift": 11.75,
+        "driftPhase": -6.25,
+        "colourCycle": 15.75,
+        "colourPhase": -7.875
+      },
+      {
+        "cluster": "south",
+        "drift": 13.75,
+        "driftPhase": -8.75,
+        "colourCycle": 18,
+        "colourPhase": -13.5
+      }
+    ],
+    "note": "Three clusters each crossfade cherry, iris and lagoon; one opacity on the parent flattens all nine layers (not a per-layer cap). Paused when the page is hidden; reduced motion shows three still pools; forced colours hide it."
+  },
+  "materials": {
+    "glass": false,
+    "note": "Opaque cards; no backdrop blur anywhere (Margin system)."
+  },
+  "type": {
+    "family": "Inter",
+    "file": "assets/fonts/InterVariable.woff2",
+    "weights": "100 900",
+    "stack": "Inter, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+    "reading": {
+      "size": "1.125rem",
+      "lineHeight": 1.6667
+    },
+    "mark": {
+      "text": "ep.",
+      "full": "english prep.",
+      "weight": 600,
+      "tracking": "-.065em",
+      "dot": {
+        "dark": "#efb1cb",
+        "light": "#922e55"
+      }
+    }
+  },
+  "motion": {
+    "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+    "durationsMs": {
+      "control": 100,
+      "reveal": 220,
+      "route": 360,
+      "release": 380,
+      "scene": 560,
+      "complete": 720,
+      "story": 900,
+      "flow": 1100
+    },
+    "press": {
+      "ms": 120,
+      "depth": 0.945,
+      "easing": "cubic-bezier(.2,.65,.25,1)"
+    },
+    "springGrammar": {
+      "press": "inner face compresses to .945 in 120 ms",
+      "settle": "continuous 380 ms release (.945 to 1.035 to 1)",
+      "glide": "route 360 ms over 12 px; scene 560 ms",
+      "pop": "verdict mark 560 ms (.72 to 1.1 to 1); colour cue 220 ms",
+      "note": "A naming map onto existing timings. English Prep's values are bezier keyframes, not springs, and stay as they are."
+    }
+  },
+  "shape": {
+    "radii": [
+      "6px",
+      "8px",
+      "12px",
+      "14px"
+    ],
+    "primaryHeight": "52px"
+  },
+  "promise": {
+    "tr": "Ücretsiz · Hesap yok · İlerlemen kendi tarayıcında",
+    "en": "Free. No account. Your progress stays in your browser.",
+    "short": {
+      "tr": "Hesapsız. İlerlemen kendi tarayıcında.",
+      "en": "No account. Your progress stays in your browser."
+    },
+    "register": "Turkish, sen",
+    "source": "about/index.html, .about-quiet"
+  },
+  "captures": {
+    "dir": "captures/portfolio/",
+    "tool": "tools/capture-portfolio.mjs"
+  }
+}
