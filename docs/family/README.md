@@ -67,7 +67,7 @@ the owner's OK before it is built.
 1. **Captures and `world.json` for the portfolio's embassy (no UI change).** Already prepared
    here: `world.json` and `tools/capture-portfolio.mjs`. The portfolio copies them; English Prep
    ships nothing new to learners. The only open question is whether the owner wants the embassy
-   to use these screens (Eğitim, a lesson, an answered question, results, About) and the
+   to use these screens (Eğitim, a lesson, an answered question, About) and the
    answer clip.
 2. **A credits line on About ("Made by edk." variant), in English Prep's own style.** One line
    in the existing About footer, in Inter at the footer's size and `--ink-2`, the `edk.` dot in
@@ -105,18 +105,14 @@ change of face, colour, material or motion to match another product (the vision 
 
 | Tool | What it does |
 |---|---|
-| `node tools/make-world.mjs` | Regenerates [`world.json`](world.json) from `css/editorial.css`, `css/interactions.css`, `js/interactions.js` and `about/index.html`. `--check` fails on drift; `tests/family-world.test.js` runs that check inside `npm test`, so a token change that forgets it fails CI. |
-| `node tools/capture-portfolio.mjs [baseUrl]` | Needs `npm run serve`. Shoots home, lesson, question with feedback, results and About at 1440×900 and 390×844, DPR 2 (broken on v0.77: it waits for the removed folio, `tools/capture-portfolio.mjs:185`; rewritten in roadmap phase 3), and records the answer clip (correct, next question, wrong; about 9 s) at both sizes. Writes to `captures/portfolio/` (gitignored): PNG always, WebP and a trimmed VP9 WebM with a poster when `ffmpeg` is on PATH. Playwright is found as `tools/verify-ui.mjs` finds it; no dependency is added. |
+| `node tools/make-world.mjs` | Regenerates [`world.json`](world.json) on the kit's schema (`kit/world.schema.json`) from `css/editorial.css`, `css/interactions.css`, `js/interactions.js`, `about/index.html` and `sw.js`, plus the capture manifest when present. `--check` fails on drift (source commit, version, date and shot dates excluded: a commit cannot hold its own hash); `tests/family-world.test.js` checks the drift, the schema (built-in validator, no dependency) and the kit's `checkField` inside `npm test`. |
+| `node tools/capture-portfolio.mjs [baseUrl]` | Needs a static server (`npm run serve`). Shoots the kit's set as lossless PNG masters at DPR 2: Eğitim, an answered question (Sakura *Doğru*) and About at 1440×900 and 1180×820 (touch); a lesson, the question and About at 390×844. Records the 7 s signature (press, release, Sakura *Doğru*) at 1440×900@2 from slowed CDP frames and encodes AV1 10-bit, HEVC `hvc1` and H.264, sRGB-tagged. Writes `captures/portfolio/` (gitignored) with `manifest.json` (build per file). Details: [`CAPTURES.md`](CAPTURES.md). |
 | `python3 tools/capture-portfolio.py` | The older tool that keeps About's own committed captures (`about/assets/`); unrelated to the portfolio, left as it is. |
 
 The stills use reduced motion, which shows the aurora as its three still pools and makes every
-frame repeatable; the clips run with motion on. Everything on screen is the real app: the quiz
-session and the 4 / 5 result are seeded through the app's own modules, as the About captures
-are. Playwright's recorder caps clip quality; if the portfolio needs a sharper clip, record a
-CDP screencast instead (a change to this tool, not to the app).
-
-`world.json`'s schema is provisional (`family-world/0`): when the kit's `presentation.md` fixes
-the schema, adjust `tools/make-world.mjs` and regenerate.
+frame repeatable; the clip runs with motion on. Everything on screen is the real app: the reading
+progress and the quiz session are seeded through the app's own modules, as the About captures
+are.
 
 ## 5. For the owner's English Prep session
 
