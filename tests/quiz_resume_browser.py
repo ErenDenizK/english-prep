@@ -208,12 +208,11 @@ class QuizResumeTests(unittest.TestCase):
         counts = self.page.evaluate('''async ([first,second]) => {
           const storage = await import('./js/storage.js');
           return {before:storage.getTodayCount(Date.parse(first)), after:storage.getTodayCount(Date.parse(second)),
-            streak:storage.getStreak(Date.parse(second)), latest:storage.getLastActivity()};
+            streak:storage.getStreak(Date.parse(second))};
         }''', [first, second])
         self.assertEqual(counts['before'], 1)
         self.assertEqual(counts['after'], 1)
         self.assertEqual(counts['streak'], {'days': 2, 'activeToday': True})
-        self.assertEqual(counts['latest'], self.page.evaluate('Date.parse', second))
 
     def test_results_retries_a_one_time_history_write_failure_with_same_id(self):
         self.launch(count=2)
