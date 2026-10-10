@@ -7,7 +7,7 @@ These are engineering/design review passes, not participant usability testing.
    app components, semantic palette and motion precedents. Three color systems
    were compared against Radix/Primer/Material roles; Fluent/Material/Carbon
    timing values were interpreted for this academic app. See
-   [ADR007](../adr/007-sakura-and-purposeful-motion.md) for accepted choices,
+   [ADR007](../../adr/007-sakura-and-purposeful-motion.md) for accepted choices,
    alternatives and source links. Teaching text roles from ADR006 remain.
 2. **Integrated visual pass.** Examined 320/390/1440 layouts: neutral answer
    surfaces, soft topic hover bounds, meaningful linear metrics, grouped settings
@@ -27,7 +27,7 @@ These are engineering/design review passes, not participant usability testing.
    accessibility scans passed within their scope. Real screenshots at 390×844
    and 1440×1000 populate the editable About gallery. All source teaching
    material and the preserved interfaces are unchanged. Details and remaining
-   device/testing limits belong in [VALIDATION](../VALIDATION.md).
+   device/testing limits belong in [VALIDATION](../../VALIDATION.md).
 
 ## Visual/interaction outcomes
 

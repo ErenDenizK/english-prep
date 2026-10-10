@@ -279,7 +279,7 @@ this move; the `decision` block never tells the learner to look at the object.
 
 R2→t21, R1→t22, R4→t23, R5→t24. All four reached.
 
-`docs/research/exam-vocabulary.md` §3.2 pointed the reviewer here first. The
+`docs/history/research/exam-vocabulary.md` §3.2 pointed the reviewer here first. The
 measurement below supports the concern without reaching a blocking verdict.
 
 ### Worth fixing · polarity does most of the work, and at t24 it does all of it

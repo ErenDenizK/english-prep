@@ -45,7 +45,7 @@ claim that a style increases learning outcomes.
   nonessential interaction movement must be suppressible. The miniature is
   fully understandable with all animation removed. Global motion preference
   and the OS reduction setting apply.
-- [Existing motion research](../research/2026-10-motion-language.md):
+- [Existing motion research](../../research/2026-10-motion-language.md):
   state/focus commit immediately; control feedback is short; narrative
   transitions are finite; repeated actions must not enqueue delayed changes.
 

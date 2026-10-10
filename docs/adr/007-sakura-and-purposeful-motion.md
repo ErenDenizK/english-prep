@@ -19,8 +19,8 @@ introduction. It does not undo its typography or answer-geometry findings.
 
 Evidence: [palette research](../research/2026-10-sakura-palette.md),
 [motion research](../research/2026-10-motion-language.md),
-[screen diagnosis](../audit/v0.68-interface-diagnosis.md), and
-[portfolio plan](../design/about-v0.68-plan.md). These separate official-source
+[screen diagnosis](../history/audit/v0.68-interface-diagnosis.md), and
+[portfolio plan](../history/design/about-v0.68-plan.md). These separate official-source
 measurements, applicable accessibility requirements and product judgments.
 Network-blocked live sources are not claimed as visually inspected products.
 
@@ -148,7 +148,7 @@ The final review removed the native View Transition around SPA routing: it
 stacked a browser snapshot on the existing CSS entry cue and briefly blocked
 hit testing. Routes now commit synchronously with one finite CSS cue. The
 motion preference governs both CSS and script effects. See the measured
-[motion engineering review](../audit/v0.68-motion-engineering.md).
+[motion engineering review](../history/audit/v0.68-motion-engineering.md).
 
 The enabled switch thumb uses `accent-ink`, because inherited white failed
 non-text contrast on the dark pink gradient. Empty accuracy values use

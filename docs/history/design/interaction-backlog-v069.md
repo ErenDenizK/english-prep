@@ -3,12 +3,12 @@
 > **v0.72 güncellemesi:** Bu dosya v0.69 inceleme anını korur; aşağıdaki renk ve
 > hareket kontrolü konumları güncel arayüz için yönerge değildir. Hareket kontrolü
 > artık yalnızca Profil ayarlarındadır. Yeni veri aktarımı ve ürün fikirleri
-> [v0.72 özellik keşif listesinde](feature-opportunities-v072.md), güncel hareket
+> [v0.72 özellik keşif listesinde](../../design/feature-opportunities-v072.md), güncel hareket
 > ve kaydırma kararları sonraki ADR'lerde izlenir.
 
 Bu liste yeni özelliklerin eklenmiş olduğu anlamına gelmez. Uygulamanın özünü
 koruyan, materyali değiştirmeden yapılabilecek çalışmaların öncelikli sırasıdır.
-Uygulanan kararlar: [ADR008](../adr/008-explorable-interactions.md).
+Uygulanan kararlar: [ADR008](../../adr/008-explorable-interactions.md).
 
 ## Yarın elle incelemek için
 

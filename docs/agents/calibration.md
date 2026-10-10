@@ -33,7 +33,7 @@ only way to know whether a review is worth acting on is to hand it a set
 whose answer is already known.
 
 The five defects below were found by hand while converting the lessons to
-blocks (`docs/education-notes.md`), before any reviewer existed. That is
+blocks (`docs/history/education-notes.md`), before any reviewer existed. That is
 what makes them fair: nobody wrote them to be caught.
 
 ---
@@ -186,7 +186,7 @@ a brief that had to be rewritten is the most useful thing in this file.
 ### 2026-09-03 — first run of `docs/agents/reviewer.md`
 
 **Recall 5/5. Precision 5/5. Discrimination 4/5.** Believed, and run on
-the rest of the corpus; the findings are in `docs/content-review.md`.
+the rest of the corpus; the findings are in `docs/history/content-review.md`.
 
 Every planted defect was found with the right class. `tenses-t20` came
 back with its second, unrequired defect (D4) as well, and the *Present

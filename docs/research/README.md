@@ -5,10 +5,9 @@ has to outlive the session that did it. Each file states what was found,
 what it would cost to act on, and what the author would *not* do — a
 recommendation with no discarded alternatives is a wish list.
 
-These are inputs to a plan, not the plan. `docs/redesign-plan.md` is the
-plan of record for the interface rebuild; **`docs/v1-plan.md` is the one
-this round produced.** Read that for the decisions; read these for the
-evidence behind them.
+These are inputs to a plan, not the plan. The plans they fed
+(`docs/history/redesign-plan.md`, `docs/history/v1-plan.md`) are history; the
+current plan is `docs/ROADMAP.md`. Read these for the evidence behind decisions.
 
 The six arms of the 2026-09-03 round:
 

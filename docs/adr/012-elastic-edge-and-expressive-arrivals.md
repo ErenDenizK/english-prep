@@ -52,7 +52,7 @@ then move while controls remain usable. Interruption is part of the design:
 rapid repeated selection, an early click, a hidden tab or a motion preference
 change must not leave a pressed control, obsolete entrance or delayed action.
 The shared language and its measured implementation are in
-[motion-v073.md](../design/motion-v073.md).
+[motion-v073.md](../history/design/motion-v073.md).
 
 ## Boundaries
 

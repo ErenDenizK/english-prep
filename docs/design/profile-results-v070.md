@@ -28,7 +28,7 @@ Primary sources retrieved for this work:
   retrieved from the official MDN content repository, documents a returned
   animation object and independent effects on an element. This permits finite,
   cancellable decoration after semantic state has already committed.
-- The repository's [v0.69 interaction research](../research/2026-10-interaction-motion-v069.md)
+- The repository's [v0.69 interaction research](../history/research/2026-10-interaction-motion-v069.md)
   supplies the earlier reduced-motion, lifecycle, visibility and pointer findings.
 
 The Carbon website, Linear features page and Raycast homepage were attempted

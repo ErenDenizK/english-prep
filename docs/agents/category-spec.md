@@ -4,7 +4,7 @@ One page per category, written **before** its questions and its lesson,
 and handed to both authors as fixed input alongside the kickoff.
 
 It costs about an hour. It exists because of what the first content
-review found (`docs/content-review.md`): every defect worth acting on in
+review found (`docs/history/content-review.md`): every defect worth acting on in
 72 questions was **invisible while reading one item and obvious across
 four**. An untested caveat, a cue-only category, a set that spans one
 half of its own contrast, four options that are really two — none of them

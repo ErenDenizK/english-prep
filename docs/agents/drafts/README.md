@@ -6,7 +6,7 @@ lessons, taking the app to 8 topics, 193 questions and 48 lessons. That
 is the whole grammar queue: every topic commissioned to close the cloze
 gap is now served, and **7 of the paper's 10 cloze blanks are
 practisable — 6 of the 8 distinct types.** Both this file and
-`docs/roadmap.md` said 8 until 2026-09-04, and both were also confusing
+`docs/history/roadmap.md` said 8 until 2026-09-04, and both were also confusing
 blanks with types: ten blanks test eight types, because blanks 2 and 4
 are both modals and 5 and 10 are both vocabulary. What was uncovered
 then was vocabulary and `so / such`; vocabulary shipped the next day.
@@ -248,7 +248,7 @@ not a blocker. **Shipped.**
 ## academic-verbs and academic-nouns-adjectives · 48 questions, 12 lessons
 
 **Neither pass has run on either topic.** Written 2026-09-04 against
-`docs/agents/kickoff-vocabulary.md`, after a learner sitting the Bilkent
+`docs/history/agents/kickoff-vocabulary.md`, after a learner sitting the Bilkent
 paper asked for vocabulary. First content in the app that is not grammar,
 and the first to use `optionNotes`, which is mandatory here: every wrong
 option is a different word, so one explanation cannot cover three.

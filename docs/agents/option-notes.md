@@ -6,7 +6,7 @@ select it.
 
 This brief is the method five topics were written to (`connectors`,
 `closest-meaning`, `quantifiers`, `relative-clauses`,
-`gerunds-infinitives` — reports in `docs/audit/option-notes-*.md`). Follow
+`gerunds-infinitives` — reports in `docs/history/audit/option-notes-*.md`). Follow
 it rather than inventing one, and add to it if you find something it
 does not cover.
 

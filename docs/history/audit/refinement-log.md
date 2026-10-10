@@ -9,7 +9,7 @@ The work was divided among research, typography/color, interaction inventory, fu
 - Read the full route/component/learning flow and all reference design exports. Treat the supplied sites as visual references for type, color, space, and motion, not as an application specification.
 - Record 120 rendered states across narrow phones, tablet, and desktop in both themes. Catalogue every shared renderer and its loading, empty, active, answered, error, and recovery states in the [element inventory](element-inventory.md).
 - Measure 48 typography/color combinations and representative reading-line lengths. Find small secondary labels, undersized lesson headings, inconsistent language roles, and dark secondary ink with little perceptual contrast margin at small sizes.
-- Read official Material, Microsoft/Fluent, W3C, and educational-design sources. The [source ledger](../research/2026-10-ui-principles.md) distinguishes retrieved evidence from inaccessible sources and design judgment.
+- Read official Material, Microsoft/Fluent, W3C, and educational-design sources. The [source ledger](../../research/2026-10-ui-principles.md) distinguishes retrieved evidence from inaccessible sources and design judgment.
 
 ## 2. System and flow changes
 
@@ -43,9 +43,9 @@ See the [interaction audit](interaction-accessibility.md) and [independent code 
 
 ## 4. Integrated acceptance and publication
 
-Final acceptance uses the repository checks, the comprehensive source browser verifier, the expanded article/application suite, focused UX and resume suites, enlarged-text/keyboard checks, actual service-worker/offline checks, and a fresh axe scan matrix. The final executed results and limitations are recorded in [VALIDATION.md](../VALIDATION.md); that file is the authority for counts and pass status.
+Final acceptance uses the repository checks, the comprehensive source browser verifier, the expanded article/application suite, focused UX and resume suites, enlarged-text/keyboard checks, actual service-worker/offline checks, and a fresh axe scan matrix. The final executed results and limitations are recorded in [VALIDATION.md](../../VALIDATION.md); that file is the authority for counts and pass status.
 
-The final [mobile](../previews/mobile.png), [desktop](../previews/desktop.png), [article](../previews/article.png), and [profile](../previews/profile.png) reference views use the actual app. The [component catalogue](../components.html) uses the same production stylesheet and module-built controls.
+The final [mobile](../../previews/mobile.png), [desktop](../../previews/desktop.png), [article](../../previews/article.png), and [profile](../../previews/profile.png) reference views use the actual app. The [component catalogue](../../components.html) uses the same production stylesheet and module-built controls.
 
 Publication targets the existing GitHub Pages `test` branch after verification. It does not replace the protected v0.64 original or change the academic material. Remote publication and live-host verification are separate outcomes and must be reported separately when network policy prevents the latter.
 

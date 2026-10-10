@@ -1,7 +1,7 @@
 # Motion v0.73 — an opening, a press, a release
 
 Historical page-entry decision: v0.74 restores the v0.72 page choreography at
-the owner’s request. Tactile controls remain. See [ADR 013](../adr/013-restore-page-entry-and-browser-space.md).
+the owner’s request. Tactile controls remain. See [ADR 013](../../adr/013-restore-page-entry-and-browser-space.md).
 
 The owner asked for clearly visible page and button motion. v0.72's small
 horizontal translation and panel halo were too quiet. That feedback supersedes
@@ -91,7 +91,7 @@ platform behavior described by:
 - [WAI-ARIA APG button keyboard interaction](https://www.w3.org/WAI/ARIA/apg/patterns/button/).
 - [WCAG animation from interactions](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html).
 
-The earlier [articulated-controls research](../research/2026-10-articulated-controls-v072.md)
+The earlier [articulated-controls research](../../research/2026-10-articulated-controls-v072.md)
 provides the Rive/layered-animation precedents; this revision uses independently
 moving presentation parts without adding a Rive runtime.
 

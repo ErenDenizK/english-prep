@@ -28,7 +28,7 @@ soruyu gerçekten çözmesi.
 ayrışıyor: `content-pipeline.md` §7.1 "on beş soru, on dakika" diyor
 (soru başına 40 saniye), başka bir yerde 6–8 dakika geçiyor. 241 soru
 için bu, 3 saat ile 28 saat arasında bir fark demek — ve
-`docs/business/` altındaki bütün planlar bu birime bağlı.
+`docs/history/business/` altındaki bütün planlar bu birime bağlı.
 
 **İlk oturumun asıl işi bu ölçümü üretmek.** Araç zaten kaydediyor;
 bir akşam, tahmini sayıya çeviriyor.
@@ -88,7 +88,7 @@ yeniden açılıyor.
 
 **Ve ikinci çözücü bir katkı değil, bir rol.** İçerik yazmak külliyatın
 tek standartta olma özelliğini bozar ve telif sorusunu hemen açar
-(`docs/business/licensing.md` §5). Çözmek hiçbirini yapmaz — sadece
+(`docs/history/business/licensing.md` §5). Çözmek hiçbirini yapmaz — sadece
 önemli olan tek sayıyı yarıya indirir.
 
 ---

@@ -3,8 +3,8 @@
 4 Ekim 2026. Bu liste uygulanmış özellik beyanı veya onaylanmış teslim takvimi
 değildir. Akademik makale + konu testi akışını korur. Göreli efor: **S** küçük
 yerel arayüz/veri eklemesi; **M** veri modeli ve çok cihazlı davranış; **L** yeni
-altyapı veya kapsamlı değerlendirme. Mevcut [etkileşim inceleme listesi](interaction-backlog-v069.md)
-ve [tarihî içerik roadmap'i](../roadmap.md) ile birlikte okunur.
+altyapı veya kapsamlı değerlendirme. Mevcut [etkileşim inceleme listesi](../history/design/interaction-backlog-v069.md)
+ve [tarihî içerik roadmap'i](../history/roadmap.md) ile birlikte okunur.
 
 ## Bu turda uygulanan
 

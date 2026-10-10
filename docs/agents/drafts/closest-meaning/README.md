@@ -1,7 +1,7 @@
 # Closest Meaning — reviewed draft, **not shipped**
 
 24 restatement questions and 6 lessons, written 2026-09-03 to
-`docs/agents/closest-meaning-spec.md` and reviewed. **They are not in
+`docs/history/agents/closest-meaning-spec.md` and reviewed. **They are not in
 `data/` and not in the manifest, so the app does not serve them.**
 
 They are here rather than discarded because the review found the content

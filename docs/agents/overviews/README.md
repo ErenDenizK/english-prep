@@ -11,7 +11,7 @@ validator ignored keys it did not recognise. It now warns on any
 top-level key the app does not read, which is how they surfaced.
 
 They are moved here rather than deleted, because they are the only
-existing draft of the thing `docs/research/orientation.md` calls the
+existing draft of the thing `docs/history/research/orientation.md` calls the
 **topic screen** (its option **(e2)**), which is staged after the
 vocabulary topics ship. Three of eight topics are written; the other five
 have a "what this topic is" section at the top of their
@@ -29,7 +29,7 @@ studies, added interesting-but-inessential material *hurt* learning
 (g = −0.16).
 
 So the `keyPoints` arrays are closer to what should ship than the `body`
-paragraphs are. `docs/research/orientation.md` §3.2 has the template and
+paragraphs are. `docs/history/research/orientation.md` §3.2 has the template and
 §3.1 a worked draft for `relative-clauses`; both were written after this
 material and supersede it on shape.
 
