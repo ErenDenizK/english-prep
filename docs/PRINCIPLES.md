@@ -158,7 +158,7 @@ asserts no network requests).
 
 | Charter rule | Enforced by | State (v0.77) |
 |---|---|---|
-| 1 Still twin | reduced-motion and forced-colours screenshots in the sweep | App passes; About fails in forced colours |
+| 1 Still twin | reduced-motion and forced-colours screenshots in the sweep | App passes; About passes in forced colours (lens and masthead checked in `tests/about_interaction_browser.py`) |
 | 2 Contrast measured | `npm run color` (`tools/editorial-palette.mjs`) in CI | Passes |
 | 3 Real captures | capture scripts in `tools/`; every image names its build | Captures are v0.73; About draws a fake device frame |
 | 4 No characters as icons | `js/icons.js`; a sweep check for arrow/tick glyphs in UI strings | About and some help text use Unicode arrows |

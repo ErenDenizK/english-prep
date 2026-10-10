@@ -442,10 +442,38 @@
 @media (min-width: 900px) { .ab-footer { grid-template-columns: 1fr auto; align-items: start; } .ab-footer__note { grid-column: 1 / -1; } }
 
 /* ---- Forced colours (reduced motion: editorial.css's overrides layer) ---- */
+/* Charter rule 1 (docs/PRINCIPLES.md §6): every state survives forced
+   colours. The browser forces HTML colours but not SVG fill and stroke, and
+   it reverts author colours to the UA's (a <mark> to MarkText on Canvas,
+   which vanishes on a dark scheme), so each is named in system colours.
+   Selection is told by weight and HighlightText-on-Highlight, not hue. */
 @media (forced-colors: active) {
   .ab-line--accent, .ab-fact__value { color: CanvasText; background: none; }
-  .ab-sentence.is-on, .ab-option.is-right, .ab-option.is-wrong, .ab-pager__item[aria-pressed="true"] { border-color: Highlight; }
-  [data-on] { stroke: CanvasText; }
+  .ab-option.is-right, .ab-option.is-wrong { border-color: Highlight; }
+  .ab-sentence__focus { color: ButtonText; background: none; }
+  .ab-sentence.is-on { padding: 12px 16px; border: 3px solid Highlight; }
+  .ab-sentence.is-on .ab-sentence__focus { background: Highlight; color: HighlightText; }
+  .ab-sentence.is-on .ab-sentence__name { color: ButtonText; text-decoration: underline; text-underline-offset: 3px; }
+  .ab-pager__item { border-color: transparent; }
+  .ab-pager__item[aria-pressed="true"] { border: 2px solid Highlight; }
+  /* The autoplay glyphs are drawn with backgrounds and borders, which
+     forced colours repaints; keep their shapes in ButtonText. */
+  .ab-autoplay__icon::before, .ab-autoplay__icon::after { background: ButtonText; }
+  .ab-autoplay:not([data-playing="true"]) .ab-autoplay__icon::before { background: none; border-left-color: ButtonText; border-block-color: Canvas; }
+  .ab-autoplay[data-playing="true"]::after { border-color: ButtonText; border-right-color: Canvas; }
+  .ab-autoplay__icon, .ab-autoplay::after { forced-color-adjust: none; }
+  /* Diagrams: text is filled, never stroked (a stroked label doubles). */
+  .ab-diagram text, .ab-privacy__art text, .ab-chart text { fill: CanvasText; stroke: none; }
+  .ab-d-axis, .ab-d-now, .ab-d-closed, .ab-d-halo, .ab-d-block, .ab-chart__axis, .ab-chart__rest, .ab-p-device, .ab-p-file, .ab-p-cloud, .ab-p-cross { stroke: CanvasText; }
+  .ab-d-branch { stroke: GrayText; }
+  .ab-d-event { fill: CanvasText; }
+  .ab-d-stroke, .ab-d-open, .ab-d-band, .ab-p-store, .ab-p-link, .ab-p-arrow { stroke: Highlight; }
+  .ab-d-band, .ab-p-device, .ab-p-store, .ab-p-file { fill: Canvas; }
+  /* Three springs stay three: three system colours, in legend order. */
+  .ab-chart__curve--0 { stroke: LinkText; } .ab-legend__item--0 .ab-legend__swatch, .ab-lane--0 .ab-lane__ball { background: LinkText; }
+  .ab-chart__curve--1 { stroke: GrayText; } .ab-legend__item--1 .ab-legend__swatch, .ab-lane--1 .ab-lane__ball { background: GrayText; }
+  .ab-chart__curve--2 { stroke: CanvasText; } .ab-legend__item--2 .ab-legend__swatch, .ab-lane--2 .ab-lane__ball { background: CanvasText; }
+  .ab-legend__swatch, .ab-lane__ball { forced-color-adjust: none; }
 }
 @media print { .ab-masthead, .ab-lens__foot, .ab-springs__controls, .ab-lanes { display: none; } }
 } /* @layer about */
