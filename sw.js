@@ -18,7 +18,6 @@ const SHELL = [
   "./quiz.html",
   "./results.html",
   "./css/style.css",
-  "./css/fonts.css",
   "./css/editorial.css",
   "./css/interactions.css",
   "./css/composition.css",
