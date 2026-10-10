@@ -271,7 +271,7 @@ function renderData() {
       "p",
       "t-quiet",
       "Ana ekrana eklersen uygulama gibi açılır ve tarayıcı verini daha zor " +
-        "siler: Safari'de Paylaş → Ana Ekrana Ekle, Chrome'da menüden " +
+        "siler: Safari'de Paylaş, sonra Ana Ekrana Ekle; Chrome'da menüden " +
         "Ana ekrana ekle."
     )
   );

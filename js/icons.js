@@ -134,6 +134,26 @@ const ICONS = {
     ["path", { d: "m13 5 7 7-7 7" }],
   ],
 
+  // The vertical pair is arrow-right turned a quarter: shaft 16, head 7
+  // deep and 7 either side. x 5…19, y 4…20.
+  "arrow-down": [
+    ["path", { d: "M12 4v16" }],
+    ["path", { d: "m5 13 7 7 7-7" }],
+  ],
+
+  "arrow-up": [
+    ["path", { d: "M12 20V4" }],
+    ["path", { d: "m5 11 7-7 7 7" }],
+  ],
+
+  // Leaving the page (another site, another screen of the app). A diagonal
+  // reads longer than a straight shaft, so it is drawn shorter: 12 across,
+  // head arms 10, which keeps its ink level with arrow-right. x 6…18, y 6…18.
+  "arrow-up-right": [
+    ["path", { d: "M6 18 18 6" }],
+    ["path", { d: "M8 6h10v10" }],
+  ],
+
   // A single shared motion toggle: pause when moving, play when still.
   pause: [["path", { d: "M8 5v14M16 5v14" }]],
   play: [["path", { d: "m8 4 12 8-12 8z" }]],
