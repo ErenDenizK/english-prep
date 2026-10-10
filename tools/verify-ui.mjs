@@ -3250,6 +3250,67 @@ async function runAccessibility(page) {
  *      the case where two panes are worse than the phone layout they
  *      replaced. Both fall back to the single column.
  */
+/**
+ * The tab capsule floats over the scroller, so content passes under it
+ * in between; at the end the scroller's foot padding (--foot-space,
+ * css/style.css, built from --nav-h and --nav-inset) must let the last
+ * row come to rest above it. Measured on every screen that shows the
+ * capsule, at the sweep's widths and a landscape tablet (docs/STATE.md §6).
+ */
+async function runNavClearance(browser) {
+  const GAP = 8;
+  const screens = [
+    { name: "Eğitim indeksi", url: "index.html#egitim", wait: "#index-list .tile" },
+    { name: "Test sekmesi", url: "index.html#test", wait: "#topic-list .row" },
+    { name: "Profil", url: "index.html#profil", wait: "#profile-container .stats" },
+  ];
+  const sizes = [
+    ...VIEWPORTS.filter((viewport) => !viewport.theme),
+    { name: "1180 (yatay tablet)", width: 1180, height: 820 },
+  ];
+  for (const size of sizes) {
+    const context = await browser.newContext({ viewport: { width: size.width, height: size.height } });
+    const page = await context.newPage();
+    for (const screen of screens) {
+      await page.goto(`${BASE}/${screen.url}`, { waitUntil: "networkidle" });
+      await page.waitForSelector(screen.wait);
+      await settleAnimations(page);
+      const box = await page.evaluate(() => {
+        const nav = document.getElementById("bottom-nav");
+        if (!nav || nav.hidden || getComputedStyle(nav).display === "none") {
+          return null;
+        }
+        const region = document.getElementById("shell-scroll");
+        region.scrollTop = region.scrollHeight;
+        // The last content row: the lowest rendered leaf in the region.
+        let last = 0;
+        for (const node of region.querySelectorAll("*")) {
+          if (node.children.length || node.closest("[hidden]")) {
+            continue;
+          }
+          const style = getComputedStyle(node);
+          const rect = node.getBoundingClientRect();
+          if (style.visibility === "hidden" || !rect.width || !rect.height) {
+            continue;
+          }
+          last = Math.max(last, rect.bottom);
+        }
+        return { last, navTop: nav.getBoundingClientRect().top };
+      });
+      ok(box !== null, `${screen.name} ${size.name}: alt sekme çubuğu görünüyor`);
+      if (!box) {
+        continue;
+      }
+      ok(
+        box.last <= box.navTop - GAP,
+        `${screen.name} ${size.name}: en alta kaydırınca son satır kapsülün ${GAP}px üstünde biter ` +
+          `(satır ${Math.round(box.last)}, kapsül ${Math.round(box.navTop)})`
+      );
+    }
+    await context.close();
+  }
+}
+
 async function runWideLayout(browser) {
   // Where each split lives, and how to get to it. `pane` is the reading
   // column — the one whose width must not move.
@@ -3465,6 +3526,9 @@ try {
   const lessonContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
   await runEveryLesson(await lessonContext.newPage());
   await lessonContext.close();
+
+  console.log("\n=== sekme kapsülü son satırı örtmüyor ===");
+  await runNavClearance(browser);
 
   console.log("\n=== geniş ekran ===");
   await runWideLayout(browser);
