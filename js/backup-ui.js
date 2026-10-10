@@ -44,7 +44,7 @@ export function createBackupDialog({ onResult = () => {} } = {}) {
   const heading = el("h2", "t-title", "İlerlemeni yanında götür");
   heading.id = "backup-dialog-title";
   heading.tabIndex = -1;
-  const description = el("p", "t-body", "Yedeği diğer cihazda Profil → Yedekten geri yükle ile aç. Mevcut ilerlemeyle birleştirilir.");
+  const description = el("p", "t-body", "Yedeği diğer cihazda Profil'deki Yedekten geri yükle ile aç. Mevcut ilerlemeyle birleştirilir.");
   description.id = "backup-dialog-description";
   intro.append(heading, description);
 

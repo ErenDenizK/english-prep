@@ -158,14 +158,14 @@ asserts no network requests).
 
 | Charter rule | Enforced by | State (v0.77) |
 |---|---|---|
-| 1 Still twin | reduced-motion and forced-colours screenshots in the sweep | App passes; About fails in forced colours |
+| 1 Still twin | reduced-motion and forced-colours screenshots in the sweep | App passes; About passes in forced colours (lens and masthead checked in `tests/about_interaction_browser.py`) |
 | 2 Contrast measured | `npm run color` (`tools/editorial-palette.mjs`) in CI | Passes |
 | 3 Real captures | capture scripts in `tools/`; every image names its build | Captures are v0.73; About draws a fake device frame |
-| 4 No characters as icons | `js/icons.js`; a sweep check for arrow/tick glyphs in UI strings | About and some help text use Unicode arrows |
+| 4 No characters as icons | `js/icons.js`; `tests/no-glyph-icons.test.js` fails on arrow/tick/cross glyphs in UI code | Passes |
 | 5 Rest is still | an idle-frames check in the sweep | About runs three infinite loops |
 | 6 Seen at three sizes | screenshots at 1440×900, 1180×820 touch, 390×844 (plus 320 and 768) | Not yet in the sweep's size list |
 | 7 Decisions written | ADRs; this page's two kinds of rule | Partly; About v0.77 has no design note |
-| 8 Promise proven | the promise links to `js/storage.js` and the no-network test | No link yet |
+| 8 Promise proven | the promise links to `js/storage.js` and the no-network test | Passes: the promise opens the privacy card, which links both (wording awaits the owner) |
 
 Closing the "State" column is part of V1 (`ROADMAP.md`, phase 3).
 

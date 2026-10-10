@@ -48,9 +48,9 @@ class AboutInteractionTests(unittest.TestCase):
             self.context.close()
         self.assertEqual(self.errors, [])
 
-    def open(self, width=1440, height=1000, reduced='no-preference', init=None, block_module=False):
+    def open(self, width=1440, height=1000, reduced='no-preference', init=None, block_module=False, **media):
         self.context = self.browser.new_context(viewport={'width': width, 'height': height},
-                                                service_workers='block', reduced_motion=reduced)
+                                                service_workers='block', reduced_motion=reduced, **media)
         if init:
             self.context.add_init_script(init)
         self.page = self.context.new_page()
@@ -254,13 +254,75 @@ class AboutInteractionTests(unittest.TestCase):
                 page.wait_for_timeout(300)
                 self.assertLessEqual(page.evaluate('document.documentElement.scrollWidth'), width)
                 small = page.evaluate('''() => [...document.querySelectorAll(
-                    ".ab-button, .ab-sentence, .ab-pager__item, .ab-autoplay, .ab-option, .ab-callout__button, .ab-chip, .ab-faq__item summary, .ab-topnav a")]
+                    ".ab-button, .ab-sentence, .ab-pager__item, .ab-autoplay, .ab-option, .ab-callout__button, .ab-chip, .ab-faq__item summary, .ab-topnav a, .ab-promise")]
                   .filter((e) => e.getClientRects().length)
                   .map((e) => [e.className || e.tagName, Math.round(e.getBoundingClientRect().height), Math.round(e.getBoundingClientRect().width)])
                   .filter(([, h, w]) => h < 44 || w < 44)''')
                 self.assertEqual(small, [])
                 self.context.close()
                 self.context = None
+
+    def test_the_promise_links_to_its_proof(self):
+        # Charter rule 8: the promise line opens the privacy card, which links
+        # the storage code and the test that a session sends nothing away.
+        page = self.open(390, 844, reduced='reduce')
+        promise = page.locator('.ab-hero .ab-promise')
+        expect(promise).to_have_text('Ücretsiz · Hesap yok · İlerlemen kendi tarayıcında')
+        promise.click()
+        expect(page).to_have_url(re.compile('#privacy$'))
+        proof = page.locator('#privacy .ab-privacy__proof a')
+        expect(proof).to_have_count(2)
+        expect(proof.nth(0)).to_have_attribute('href', re.compile(r'/blob/test/js/storage\.js$'))
+        expect(proof.nth(1)).to_have_attribute('href', re.compile(r'/blob/test/tests/cross_surface_browser\.py$'))
+        self.assertIn('def test_a_study_session_sends_nothing_off_the_device',
+                      (ROOT / 'tests' / 'cross_surface_browser.py').read_text())
+        self.assertTrue((ROOT / 'js' / 'storage.js').is_file())
+
+    # ---- Material and forced colours (docs/PRINCIPLES.md §4, §6 rule 1) ----
+    def test_masthead_blurs_over_a_safe_tint_and_is_solid_for_every_twin(self):
+        read = """() => { const s = getComputedStyle(document.querySelector('#masthead'));
+          return [s.backdropFilter, s.backgroundColor]; }"""
+        for media, blurred in [({}, True), ({'contrast': 'more'}, False), ({'forced_colors': 'active'}, False)]:
+            page = self.open(**media)
+            page.mouse.wheel(0, 600)
+            expect(page.locator('#masthead')).to_have_attribute('data-scrolled', 'true')
+            page.wait_for_timeout(400)
+            backdrop, background = page.evaluate(read)
+            # rgb(r, g, b) is opaque; rgba(r, g, b, a) and color(srgb r g b / a) carry alpha.
+            alpha = re.search(r'(?:rgba\(.*,|/)\s*([\d.]+)\)$', background)
+            alpha = alpha and alpha.group(1)
+            if blurred:
+                self.assertEqual(backdrop, 'blur(16px)', media)
+                self.assertGreaterEqual(float(alpha), 0.93, media)
+            else:
+                self.assertEqual(backdrop, 'none', media)
+                self.assertIsNone(alpha, (media, background))
+            self.context.close()
+            self.context = None
+
+    def test_forced_colours_keep_the_lens_readable_and_its_state_visible(self):
+        page = self.open(width=390, height=844, forced_colors='active', color_scheme='dark')
+        page.locator('#lens-forms [role="radio"]').first.click()
+        state = page.evaluate("""() => {
+          const probe = (value) => { const p = document.createElement('i'); p.style.color = value;
+            document.body.append(p); const c = getComputedStyle(p).color; p.remove(); return c; };
+          const system = new Set(['CanvasText', 'ButtonText', 'Highlight', 'HighlightText', 'GrayText', 'LinkText', 'Canvas'].map(probe));
+          const on = document.querySelector('.ab-sentence.is-on');
+          const off = document.querySelector('.ab-sentence:not(.is-on)');
+          const mark = getComputedStyle(on.querySelector('mark'));
+          const texts = [...document.querySelectorAll('#lens-stage text')].map((t) => getComputedStyle(t));
+          return {
+            onBorder: parseFloat(getComputedStyle(on).borderTopWidth), offBorder: parseFloat(getComputedStyle(off).borderTopWidth),
+            markPair: [mark.backgroundColor, mark.color], highlight: probe('Highlight'), highlightText: probe('HighlightText'),
+            offMark: getComputedStyle(off.querySelector('mark')).color, canvas: probe('Canvas'),
+            textFillsSystem: texts.every((t) => system.has(t.fill)), textStrokes: texts.map((t) => t.stroke),
+          };
+        }""")
+        self.assertGreater(state['onBorder'], state['offBorder'])
+        self.assertEqual(state['markPair'], [state['highlight'], state['highlightText']])
+        self.assertNotEqual(state['offMark'], state['canvas'])
+        self.assertTrue(state['textFillsSystem'])
+        self.assertTrue(all(stroke == 'none' for stroke in state['textStrokes']), state['textStrokes'])
 
     def test_faq_is_native_disclosure(self):
         page = self.open()
