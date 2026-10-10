@@ -49,10 +49,10 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 
 **Pages:** `index.html` (185 lines), `quiz.html`, `results.html` (94 each) and `about/index.html` (190). Each one carries its own aurora markup. `original/` holds the preserved v0.64 interface (`legacy/`, the MVP, was removed in roadmap phase 1; it remains in the `main` history).
 
-**JS (`js/`, 34 modules, 10,782 lines; `wc -l js/*.js`):**
+**JS (`js/`, 33 modules, 10,394 lines; `wc -l js/*.js`):**
 
 - Routing/screens: `home.js` 715 (hash router), `education.js` 1823 (index, topic, reader), `quiz.js` 520, `results.js` 556, `profile.js` 715, `onboarding.js` 330, `quiz-launch.js`, `quiz-engine.js` 164, `session-state.js` 159.
-- Data/state: `storage.js` 1181 (history, progress, settings, backup), `topics.js` 377 (loading, manifest), `backup.js` 195, `backup-ui.js` 408, `share.js`, `report.js`, `tiers.js`.
+- Data/state: `storage.js` 1149 (history, progress, settings, backup), `topics.js` 361 (loading, manifest), `backup.js` 195, `backup-ui.js` 370, `share.js`, `report.js`, `tiers.js`.
 - Motion: `interactions.js` 691 (springs → `linear()`, `compose`/`composeScreen`, presets, press/release, `whenVisible`), `motion.js` 141 (preference, aura clock), `scroll-rail.js` 454.
 - Shell/UI: `shell.js` 228, `dom.js` 197 (no `innerHTML`), `widgets.js` 53, `icons.js` 306, `listbox.js` 348, `modal.js`, `feedback.js`, `answers.js`, `brand.js`, `theme.js`, `install.js`, `prompt.js`, `progress.js`, `config.js`.
 - About: `about/about.js` 809, `about/content.js` 169 (all strings), `about/about.css` 434. It imports `js/motion.js`, `interactions.js`, `scroll-rail.js`, `install.js`, `topics.js` and `tiers.js` (`about/about.js:4-10`).
@@ -117,7 +117,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 11. **README and repo media are from v0.73.** `docs/github/*` was last changed at `2db1000`. `README.md:56-63` still presents the folio and `folio.gif`.
 12. **Fonts.** `css/fonts.css` and `fonts/` (the unused Source Sans 3 / Source Serif 4 faces) are gone; `css/style.css:133-134` still names those families in tokens that `editorial.css` overrides. Inter is a subset (Latin, Latin-1, Latin Extended-A, general punctuation, arrows and the symbols in use; both axes kept), cut by `tools/subset-font.sh` from the full 352,240 B file in git history: `assets/fonts/InterVariable.woff2` is 92,672 B, preloaded on every page and precached. `editorial.css` declares the matching `unicode-range`, and `tests/font-subset.test.js` fails if a character the app shows is outside the range or the font's cmap.
 13. **About images (fixed).** `sw.js` now precaches the three study-loop captures About shows (`about/assets/{article,test,results}-phone.webp`, 476 KB); a unit test ties the list to `about/content.js`.
-14. Small duplications: the question-count picker is built twice in `home.js`, the weak-category list exists in both `home.js` and `profile.js`, and backup transfer is spread over three files (handoff-v1 §7.6, unverified). `storage.js` (1181) and `education.js` (1823) are candidates for splitting.
+14. Small duplications: the question-count picker is built twice in `home.js`, the weak-category list exists in both `home.js` and `profile.js`, and backup transfer is spread over three files (handoff-v1 §7.6, unverified). `storage.js` (1149) and `education.js` (1823) are candidates for splitting.
 
 ## 7. How to run and verify
 
