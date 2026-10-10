@@ -20,7 +20,7 @@ captures). No `innerHTML`; every node is built and text set with
 | 3 | **Map** — every topic and lesson, each chip opening its lesson | `data/manifest.json` at runtime |
 | 4 | **Anatomy** — one real question, answerable, with five named parts | `anatomy` + the topic file at runtime |
 | 5 | **Loop** — Oku / Uygula / Geri dön on real captures; a sticky device follows the step on wide screens | `flow` + `assets/*-phone.webp` |
-| 6 | **Craft** — spring curves drawn from `spring()` in `js/interactions.js`; contrast ratios computed from this page's tokens; content pipeline; figures; data/privacy | `craft` |
+| 6 | **Craft** — spring curves drawn from `spring()` in `js/interactions.js`; contrast ratios computed from this page's tokens; content pipeline; figures; data/privacy, with links to its proof (the hero's promise line links to it) | `craft` |
 | 7 | FAQ (native `<details>`) | `questions` |
 
 ## Rules for editing

@@ -750,7 +750,14 @@ function initPrivacy() {
   if (!card) return;
   const copy = craft.privacy;
   const text = node("div", "ab-privacy__copy");
-  text.append(node("p", "ab-card__kicker", "Veri"), node("h3", null, copy.title), node("p", null, copy.body));
+  const proof = node("p", "ab-privacy__proof");
+  proof.append(...copy.evidence.map(({ label, href }) => {
+    const link = node("a", "ab-link", `${label} `);
+    link.href = href;
+    link.append(linkIcon("arrow-up-right"));
+    return link;
+  }));
+  text.append(node("p", "ab-card__kicker", "Veri"), node("h3", null, copy.title), node("p", null, copy.body), proof);
   const art = svgRoot("0 0 420 170", "Veri yalnızca bu cihazdaki tarayıcıda; yedek dosyasıyla başka bir cihaza taşınabilir, sunucu yok.");
   art.classList.add("ab-privacy__art");
   art.append(shape("rect", { x: 20, y: 30, width: 150, height: 110, rx: 14 }, "ab-p-device"));
