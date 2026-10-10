@@ -68,7 +68,6 @@ const SHELL = [
   "./js/topics.js",
   "./js/widgets.js",
   "./js/onboarding.js",
-  "./js/celebrate.js",
 ];
 
 function isScopedContent(request) {
