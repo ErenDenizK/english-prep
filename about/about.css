@@ -78,7 +78,23 @@
 
 /* ---- Masthead ---- */
 .ab-masthead { position: sticky; top: 0; z-index: 10; transition: background-color 260ms var(--ab-ease), border-color 260ms var(--ab-ease); border-bottom: 1px solid transparent; }
-.ab-masthead[data-scrolled="true"] { background: color-mix(in srgb, var(--page) 82%, transparent); border-bottom-color: var(--hairline); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); }
+/* The scrolled masthead is chrome, so it may blur, under the material
+   contract (docs/PRINCIPLES.md §4). G2, failure is safe: the tint is 95 %
+   page, so if the blur never renders the content behind stays unreadable.
+   Residual contrast of ink under the tint (computed from editorial.css):
+   dark #eee9ed under 95 % #141216 is 1.11:1 (white vs black 1.13:1); light
+   #302831 under 95 % #fbf7fa is 1.10:1 (1.12:1); the gate is <= 1.15:1. The
+   old 82 % tint left 1.63:1 (dark) and 1.41:1 (light), readable unblurred.
+   G4, still twin: solid page without backdrop-filter support, under reduced
+   transparency, more contrast and forced colours. No saturation boost: chrome
+   does not shift the colour of what passes under it. */
+.ab-masthead[data-scrolled="true"] { background: var(--page); border-bottom-color: var(--hairline); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .ab-masthead[data-scrolled="true"] { background: color-mix(in srgb, var(--page) 95%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+  .ab-masthead[data-scrolled="true"] { background: var(--page); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
 .ab-masthead__inner { display: flex; align-items: center; gap: 20px; min-height: 68px; }
 .ab-brand { display: inline-flex; align-items: baseline; min-height: 44px; align-items: center; font-size: 1.1875rem; font-weight: 650; letter-spacing: -.045em; }
 .ab-brand__dot { color: var(--accent); }
