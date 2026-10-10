@@ -56,7 +56,7 @@ one expected skip.
 
 | File | Covers |
 | --- | --- |
-| `about_interaction_browser.py` | About: the lens, distinction map, question anatomy, keyboard and motion |
+| `about_interaction_browser.py` | About: the lens, distinction map, question anatomy, keyboard and motion, masthead material, forced colours |
 | `aura_browser.py` | Aurora atmosphere (pixel comparisons, needs Pillow) |
 | `component_interactions_browser.py` | Native dialog, menu and answer-state regressions |
 | `composition_browser.py` | Header geometry and result presentation at responsive sizes |
