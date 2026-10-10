@@ -489,12 +489,6 @@ body::after {
   color: var(--ink-2);
   max-width: 430px;
 }
-.study-intro__line {
-  font-family: var(--f-sans);
-  font-size: 1.125rem;
-  line-height: 1.45;
-  margin-top: 16px;
-}
 .study-intro__action {
   display: flex;
   align-items: center;
@@ -845,7 +839,6 @@ body.is-reading:has(.lesson) .page {
 .block--end .btn {
   font-size: 1rem;
 }
-.quote,
 .example {
   border-left: 2px solid var(--editorial-mark);
 }
@@ -977,10 +970,6 @@ body.is-reading:has(.lesson) .page {
 .feedback__body .t-body {
   font-size: 1.125rem;
   line-height: 1.77;
-}
-.feedback__tip {
-  font-size: 1rem;
-  line-height: 1.7;
 }
 .score {
   padding: 28px 0;
@@ -1293,7 +1282,7 @@ body.is-reading:has(.lesson) .page {
 strong, b { font-weight: 600; }
 .t-display, .t-title { font-weight: 600; }
 .t-label { text-transform: none; letter-spacing: 0; color: var(--ink-2); }
-h2.t-label, .onboard__modes h2 {
+h2.t-label {
   font-size: var(--section-size);
   line-height: 1.4;
   font-weight: 600;
@@ -1366,16 +1355,13 @@ h2.t-label, .onboard__modes h2 {
 .option__mark { grid-column: 3; margin-top: 6px; }
 .option--ok, .option--no { border-color: var(--edge); }
 .option--ok .option__key, .option--no .option__key { background: transparent; }
-.lesson .quote, .lesson .example { border: 0; }
+.lesson .example { border: 0; }
 .lesson-pretest { border: 0; background: var(--card); }
 .lesson-pretest__summary { font-size: 1rem; color: var(--ink); }
 .lesson-pretest[open] > summary { border: 0; }
 .row + .row { box-shadow: none; }
 .surface, .hero { border-color: transparent; }
 .onboard { max-width: 560px; margin-inline: auto; }
-.onboard__intro { gap: 28px; }
-.onboard__modes { display: grid; gap: 24px; }
-.onboard__modes p { margin-top: 8px; }
 .onboard__actions .btn { flex: 1; }
 @media (min-width: 1080px) and (min-height: 600px) {
   .study-intro__title, .lesson .lesson__head h1 { font-size: 2.25rem; }
@@ -1409,7 +1395,6 @@ h2.t-label, .onboard__modes h2 {
 .nav__indicator { background: var(--accent-tint); box-shadow: none; }
 .study-intro { border-bottom: 0; padding-bottom: 12px; }
 .study-intro__eyebrow { color: var(--accent-text); }
-.study-intro__line { color: var(--ink); line-height: 1.6; }
 .study-intro__meta { color: var(--secondary); }
 #index-list .tile:hover .tile__title { color: var(--accent-text); }
 #index-list .tiles { margin-inline: -12px; width: calc(100% + 24px); }
@@ -1483,9 +1468,8 @@ h2.t-label, .onboard__modes h2 {
 /* The optional introduction has three user-paced panels, never a carousel. */
 .onboard { max-width: 560px; padding-block: 0; }
 .onboard__tour { display: grid; gap: 24px; }
-.onboard__top, .onboard__utilities, .onboard__progress { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.onboard__top, .onboard__progress { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .onboard__top .brand-mark { font-size: 3.5rem; }
-.onboard__utilities { gap: 0; }
 .onboard__skip { font-size: .875rem; padding-inline: 10px; }
 .onboard__progress { margin-top: 4px; }
 .onboard__progress .t-meta { color: var(--ink-2); }
@@ -1493,7 +1477,6 @@ h2.t-label, .onboard__modes h2 {
 .onboard__dot { width: 6px; height: 6px; border-radius: 99px; background: var(--edge); }
 .onboard__dot[data-current="true"] { width: 24px; background: var(--accent-text); }
 .onboard__panel { display: grid; gap: 16px; min-width: 0; }
-.onboard__eyebrow { color: var(--accent-text); }
 .onboard__panel h1 { font-size: clamp(1.875rem, 5vw, 2.5rem); line-height: 1.18; font-weight: 600; letter-spacing: -.04em; max-width: 15ch; outline: none; }
 .onboard__description { font-size: 1.125rem; line-height: 1.65; }
 .onboard__note { font-size: .875rem; line-height: 1.6; }
@@ -1595,7 +1578,7 @@ h2.t-label, .onboard__modes h2 {
 }
 /* A static halo belongs to a few neutral titles, never article paragraphs.
    Neutral ink still carries all contrast; the halo is optional decoration. */
-.study-intro__title, .onboard__title {
+.study-intro__title {
   text-shadow: 0 0 26px color-mix(in srgb, var(--cool) 14%, transparent);
 }
 .lesson .lesson__head h1 { text-shadow: 0 0 28px color-mix(in srgb, var(--secondary) 12%, transparent); }
