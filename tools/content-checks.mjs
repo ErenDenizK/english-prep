@@ -1,7 +1,7 @@
 // The content checks that could not live in the schema validator.
 //
 // They are here rather than in tools/validate-content.mjs for the same
-// reason tools/color.mjs is not inside tools/palette.mjs: a script with a
+// reason tools/color.mjs is a module of its own: a script with a
 // top-level await main() cannot be imported, so nothing in it can be unit
 // tested, and these are the checks whose thresholds most need a test
 // around them. tests/content-checks.test.mjs plants each defect and asserts
