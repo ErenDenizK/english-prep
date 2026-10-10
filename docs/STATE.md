@@ -92,7 +92,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
    - Removed in roadmap phase 1: `js/celebrate.js`, and the `ring`, `monogram`, `initialsOf`, `choices`, `countUp` and `motionWelcome` exports of `js/widgets.js` (which now holds only `hueOf`, `avatar` and `haptic`). `docs/components.html` draws its monograms itself and no longer shows rings or choice groups.
    - Also removed: `downloadBackup` in `js/backup-ui.js` and its one test; the live share path is `js/share.js`, covered by `tests/share.test.js`.
    - Also removed: `loadRoadmap` and `data/roadmap.json` (no caller; the validator no longer checks the file).
-   - `getTopicTotals` :323, `getCategoryTotals` :333 and `getLastActivity` :575 in `js/storage.js` are used only by tests.
+   - Also removed: `getTopicTotals` and `getCategoryTotals` in `js/storage.js` and their test cases. `getLastActivity` stays for now: no screen calls it, but `tests/quiz_resume_browser.py` still asserts on it.
    - Dead CSS: `.onboard__orb/__steps` (style.css), `.onboard__preview*`, `.onboard__panel--enter`, `.section-head` and `.formula` (editorial.css) have no JS/HTML users. `.ring*` and `.choice*` serve only the dead widgets.
    - Tokens `--d-exit`, `--d-view`, `--ease-in` and `--s-10` are defined once and never used.
 4. **Browser tests are not in CI and not portable.**
