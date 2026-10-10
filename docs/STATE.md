@@ -8,10 +8,10 @@ A static, mobile-first web app for Turkish university prep-school proficiency ex
 
 | Fact | Value | Evidence |
 |---|---|---|
-| Topics / lessons / questions | 10 / 60 / 241 | `npm run validate` → "10 live … 241 question(s), 60 lesson(s), 7 roadmap row(s)" |
+| Topics / lessons / questions | 10 / 60 / 241 | `npm run validate` → "10 live … 241 question(s), 60 lesson(s)." |
 | Option notes | 723 (every question has `optionNotes`) | node count over `data/*/*.json`; About shows it live (`about/about.js:369`) |
 | Validate warning | `academic-nouns-adjectives-t13` / `-t16` have identical option sets | `npm run validate` (1 warning, passes) |
-| Unit tests | 248, all pass | `npm test` → `# tests 248 # pass 248` (incl. `tests/family-world.test.js`) |
+| Unit tests | 250, all pass | `npm test` → `# tests 250 # pass 250` (incl. `tests/family-world.test.js`) |
 | Browser scenario files | 17 Python Playwright scripts, not in CI | `ls tests/*.py` |
 | `npm run verify` sweep | 3,591 checks at 4 widths, all pass (2026-10-10) | `npm run verify` |
 | Planned, not built | `so / such` (cloze map points at missing topic `so-such`, `js/topics.js:334`), paragraph completion, reading passages | |
@@ -47,25 +47,25 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 
 ## 4. Architecture
 
-**Pages:** `index.html` (185 lines), `quiz.html`, `results.html` (94 each) and `about/index.html` (190). Each one carries its own aurora markup. `legacy/` and `original/` hold preserved earlier versions.
+**Pages:** `index.html` (185 lines), `quiz.html`, `results.html` (94 each) and `about/index.html` (190). Each one carries its own aurora markup. `original/` holds the preserved v0.64 interface (`legacy/`, the MVP, was removed in roadmap phase 1; it remains in the `main` history).
 
-**JS (`js/`, 34 modules, 10,782 lines; `wc -l js/*.js`):**
+**JS (`js/`, 33 modules, 10,394 lines; `wc -l js/*.js`):**
 
 - Routing/screens: `home.js` 715 (hash router), `education.js` 1823 (index, topic, reader), `quiz.js` 520, `results.js` 556, `profile.js` 715, `onboarding.js` 330, `quiz-launch.js`, `quiz-engine.js` 164, `session-state.js` 159.
-- Data/state: `storage.js` 1181 (history, progress, settings, backup), `topics.js` 377 (loading, manifest), `backup.js` 195, `backup-ui.js` 408, `share.js`, `report.js`, `tiers.js`.
-- Motion: `interactions.js` 691 (springs → `linear()`, `compose`/`composeScreen`, presets, press/release, `whenVisible`), `motion.js` 141 (preference, aura clock), `scroll-rail.js` 454, `celebrate.js` 94 (dead).
-- Shell/UI: `shell.js` 228, `dom.js` 197 (no `innerHTML`), `widgets.js` 261, `icons.js` 306, `listbox.js` 348, `modal.js`, `feedback.js`, `answers.js`, `brand.js`, `theme.js`, `install.js`, `prompt.js`, `progress.js`, `config.js`.
+- Data/state: `storage.js` 1149 (history, progress, settings, backup), `topics.js` 361 (loading, manifest), `backup.js` 195, `backup-ui.js` 370, `share.js`, `report.js`, `tiers.js`.
+- Motion: `interactions.js` 691 (springs → `linear()`, `compose`/`composeScreen`, presets, press/release, `whenVisible`), `motion.js` 141 (preference, aura clock), `scroll-rail.js` 454.
+- Shell/UI: `shell.js` 228, `dom.js` 197 (no `innerHTML`), `widgets.js` 53, `icons.js` 306, `listbox.js` 348, `modal.js`, `feedback.js`, `answers.js`, `brand.js`, `theme.js`, `install.js`, `prompt.js`, `progress.js`, `config.js`.
 - About: `about/about.js` 809, `about/content.js` 169 (all strings), `about/about.css` 434. It imports `js/motion.js`, `interactions.js`, `scroll-rail.js`, `install.js`, `topics.js` and `tiers.js` (`about/about.js:4-10`).
 
-**CSS and the two-layer problem:** `css/style.css` (2031 lines) is the old UI 3 skin with glass, glow and a slate palette. It is the only file that uses `@layer` (`css/style.css:28`). `css/editorial.css` (1699 lines) is the current look. It is unlayered, so it and the five small files beat every `style.css` layer regardless of specificity. It also uses 8 `!important`. Small files: `interactions.css` (press/release), `composition.css` (wide layout), `scroll-rail.css`, `onboarding.css`, `share.css`. The app pages load `fonts.css` + `style.css` + `editorial.css` + the small files (`index.html:49-56`). About loads only `editorial.css`, `interactions.css`, `scroll-rail.css` and `about.css`, with no `style.css` (`about/index.html:34-37`).
+**CSS and the two-layer problem:** `css/style.css` (2031 lines) is the old UI 3 skin with glass, glow and a slate palette. It is the only file that uses `@layer` (`css/style.css:28`). `css/editorial.css` (1699 lines) is the current look. It is unlayered, so it and the five small files beat every `style.css` layer regardless of specificity. It also uses 8 `!important`. Small files: `interactions.css` (press/release), `composition.css` (wide layout), `scroll-rail.css`, `onboarding.css`, `share.css`. The app pages load `style.css` + `editorial.css` + the small files (`index.html:49-55`). About loads only `editorial.css`, `interactions.css`, `scroll-rail.css` and `about.css`, with no `style.css` (`about/index.html:34-37`).
 
-**Data:** `data/manifest.json` plus `data/<topic>/<topic>.json` (10 topics) and `data/roadmap.json`, which no screen reads. Adding content requires no JS change.
+**Data:** `data/manifest.json` plus `data/<topic>/<topic>.json` (10 topics). Adding content requires no JS change.
 
 **Tools (`tools/`):** `validate-content.mjs` 1193, `content-checks.mjs`, `format-content.mjs`. Colour tools: `palette.mjs`, `token-check.mjs` (both measure `css/style.css`, `tools/token-check.mjs:23`) and `editorial-palette.mjs` (the live layer). Others: `verify-ui.mjs` 3470 (browser sweep), `audit-ui.mjs`, `capture-portfolio.{mjs,py}`, `solve.mjs`, `blind-corpus.mjs`, `make-calibration.mjs`, `check-draft.mjs`, `make-icons.mjs`, `make-world.mjs`, `ship-topic.mjs`.
 
-**Tests:** 248 node:test unit tests (`tests/*.test.js`) and 17 Python browser scripts (`tests/*.py`); see weak spot 4.
+**Tests:** 250 node:test unit tests (`tests/*.test.js`) and 17 Python browser scripts (`tests/*.py`); see weak spot 4.
 
-**Service worker:** `sw.js` precaches the shell, every module, the About HTML/CSS/JS and `InterVariable.woff2` (`sw.js:15-72`). Content is network-first and cached on visit.
+**Service worker:** `sw.js` precaches the shell, every module, the About HTML/CSS/JS and its three captures, and `InterVariable.woff2` (`sw.js:15-72`). Content is network-first and cached on visit.
 
 ## 5. Visual language as implemented
 
@@ -86,14 +86,13 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 
 ## 6. Known weak spots
 
-1. **Documentation drift (largely fixed 2026-10-10).** `CLAUDE.md` was rewritten and superseded docs moved to `docs/history/`. Still stale: the Margin doc header says v0.74 (`docs/margin-design-system.md:1`); About's craft figures hard-code "247 birim testi" (`about/content.js:144`) while there are 248; code comments still cite docs now under `docs/history/`.
+1. **Documentation drift (largely fixed 2026-10-10).** `CLAUDE.md` was rewritten and superseded docs moved to `docs/history/`. Still stale: the Margin doc header says v0.74 (`docs/margin-design-system.md:1`); About's craft figures hard-code "247 birim testi" (`about/content.js:144`) while there are 250; code comments still cite docs now under `docs/history/`.
 2. **Two style layers** (§4). 135 selectors are defined in both `style.css` and `editorial.css` (handoff-v1 §7.2, unverified count). `tools/palette.mjs` and `tools/token-check.mjs` still measure the overridden `style.css`. `tools/verify-ui.mjs:2776-2779` still asserts "bars ≥0.8 opaque before blur" for glass that no longer exists.
 3. **Dead code.** Each item below was checked by grepping for callers in `js about *.html tools tests`:
-   - `js/celebrate.js` is imported nowhere; `sw.js:71` only precaches it.
-   - `js/widgets.js`: `ring` :27, `monogram` :111, `initialsOf` :95, `choices` :147, `countUp` :216 and `motionWelcome` :13 (used only by the dead functions and `celebrate.js`). The live imports are only `hueOf`, `avatar` and `haptic`.
-   - `downloadBackup` (`js/backup-ui.js:215`) is used only by a test.
-   - `loadRoadmap` (`js/topics.js:90`) has no caller, so `data/roadmap.json` is never shown.
-   - `getTopicTotals` :323, `getCategoryTotals` :333 and `getLastActivity` :575 in `js/storage.js` are used only by tests.
+   - Removed in roadmap phase 1: `js/celebrate.js`, and the `ring`, `monogram`, `initialsOf`, `choices`, `countUp` and `motionWelcome` exports of `js/widgets.js` (which now holds only `hueOf`, `avatar` and `haptic`). `docs/components.html` draws its monograms itself and no longer shows rings or choice groups.
+   - Also removed: `downloadBackup` in `js/backup-ui.js` and its one test; the live share path is `js/share.js`, covered by `tests/share.test.js`.
+   - Also removed: `loadRoadmap` and `data/roadmap.json` (no caller; the validator no longer checks the file).
+   - Also removed: `getTopicTotals` and `getCategoryTotals` in `js/storage.js` and their test cases. `getLastActivity` stays for now: no screen calls it, but `tests/quiz_resume_browser.py` still asserts on it.
    - Dead CSS: `.onboard__orb/__steps` (style.css), `.onboard__preview*`, `.onboard__panel--enter`, `.section-head` and `.formula` (editorial.css) have no JS/HTML users. `.ring*` and `.choice*` serve only the dead widgets.
    - Tokens `--d-exit`, `--d-view`, `--ease-in` and `--s-10` are defined once and never used.
 4. **Browser tests are not in CI and not portable.**
@@ -116,15 +115,15 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
    - The masthead blur has no fallback (§5).
 10. **Portfolio capture is broken on v0.77.** `tools/capture-portfolio.mjs:185` waits for `#folio-deck .folio-leaf` and `docs/github/capture.py:174` waits for `#study-folio`. Neither exists in the rebuilt About.
 11. **README and repo media are from v0.73.** `docs/github/*` was last changed at `2db1000`. `README.md:56-63` still presents the folio and `folio.gif`.
-12. **Fonts.** `css/fonts.css` declares the Source Sans 3 / Source Serif 4 faces (`:74-146`), and all three app pages load it (`index.html:49`). `editorial.css` maps both families to Inter, so the faces are unused, yet `sw.js:21` precaches the CSS. Inter is shipped as one unsubsetted variable file: `assets/fonts/InterVariable.woff2` is 352,240 B (~344 KiB), preloaded on every page and precached.
-13. **About images are not precached.** `sw.js` lists no `about/assets/*.webp`, so the loop captures are missing offline until visited.
-14. Small duplications: the question-count picker is built twice in `home.js`, the weak-category list exists in both `home.js` and `profile.js`, and backup transfer is spread over three files (handoff-v1 §7.6, unverified). `storage.js` (1181) and `education.js` (1823) are candidates for splitting.
+12. **Fonts.** `css/fonts.css` and `fonts/` (the unused Source Sans 3 / Source Serif 4 faces) are gone; `css/style.css:133-134` still names those families in tokens that `editorial.css` overrides. Inter is a subset (Latin, Latin-1, Latin Extended-A, general punctuation, arrows and the symbols in use; both axes kept), cut by `tools/subset-font.sh` from the full 352,240 B file in git history: `assets/fonts/InterVariable.woff2` is 92,672 B, preloaded on every page and precached. `editorial.css` declares the matching `unicode-range`, and `tests/font-subset.test.js` fails if a character the app shows is outside the range or the font's cmap.
+13. **About images (fixed).** `sw.js` now precaches the three study-loop captures About shows (`about/assets/{article,test,results}-phone.webp`, 476 KB); a unit test ties the list to `about/content.js`.
+14. Small duplications: the question-count picker is built twice in `home.js`, the weak-category list exists in both `home.js` and `profile.js`, and backup transfer is spread over three files (handoff-v1 §7.6, unverified). `storage.js` (1149) and `education.js` (1823) are candidates for splitting.
 
 ## 7. How to run and verify
 
 ```bash
 npm run check          # format:check + validate + color + test (what CI runs)
-npm test               # 248 unit tests
+npm test               # 250 unit tests
 npm run validate       # content schema; expect the one t13/t16 warning
 npm run color          # WCAG 2 + APCA token proofs
 npm run serve          # python3 -m http.server 8000

@@ -18,15 +18,13 @@
 
 import { el } from "./dom.js";
 import { exportState, importState } from "./storage.js";
-import { buildBackup, parseBackup } from "./backup.js";
+import { parseBackup } from "./backup.js";
 import { animateElement, cancelAnimationsWithin } from "./interactions.js";
 import { presentDialog } from "./modal.js";
 import {
   prepareBackupTransfer, backupFile, canShareBackup,
   shareBackupFile, downloadBackupFile, copyBackupText,
 } from "./share.js";
-
-const FILE_NAME = "english-prep-yedek.json";
 
 const REASONS = {
   empty: "Önce bir dosya seç ya da yedek metnini yapıştır.",
@@ -202,42 +200,6 @@ export function createBackupDialog({ onResult = () => {} } = {}) {
       presentDialog(dialog);
     },
   };
-}
-
-/**
- * Offers the learner their own data as a file. Tries the share sheet
- * first, because on a phone that is what reaches the other device — it
- * opens WhatsApp, AirDrop, Files, mail. Falls back to a download, which is
- * what a desktop wants anyway.
- *
- * @returns {Promise<"shared"|"downloaded"|"canceled">}
- */
-export async function downloadBackup() {
-  const json = JSON.stringify(buildBackup(exportState()), null, 2);
-  const file = new File([json], FILE_NAME, { type: "application/json" });
-
-  if (navigator.canShare?.({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file], title: "English Prep yedeği" });
-      return "shared";
-    } catch (error) {
-      // A cancelled share sheet is a decision, not a failure, and must not
-      // fall through to a download the learner did not ask for.
-      if (error?.name === "AbortError") {
-        return "canceled";
-      }
-    }
-  }
-
-  const url = URL.createObjectURL(file);
-  const link = el("a");
-  link.href = url;
-  link.download = FILE_NAME;
-  link.click();
-  // Revoking immediately can cancel the download on some engines; a turn
-  // of the event loop is enough and the object is small.
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
-  return "downloaded";
 }
 
 /**

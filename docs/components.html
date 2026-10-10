@@ -31,7 +31,6 @@
       resolved === "light" ? "#fbf7fa" : "#141216";
     document.querySelector('meta[name="color-scheme"]').content = resolved;
 </script>
-<link rel="stylesheet" href="../css/fonts.css">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/editorial.css">
 <link rel="stylesheet" href="../css/interactions.css">
@@ -184,7 +183,6 @@
           <p class="t-label">Kaldığın yer</p>
           <p class="t-title">Karışık test</p>
         </div>
-        <div id="cat-hero-ring"></div>
       </div>
       <div class="cluster">
         <span class="chip chip--accent"><span data-icon="calendar"></span>10 soru</span>
@@ -219,25 +217,12 @@
   </section>
 
   <section class="stack stack--tight">
-    <h2 class="t-label">18 · Halka</h2>
-    <p class="t-quiet">Gerçek bir oran: tamamlanan ders, doğruluk veya test sonucu. Başarı ve düzeltme renkleri ayrıdır; sayı oranı açıklar. Hareket azaltıldığında yay son değerinde doğrudan çizilir.</p>
-    <div class="cluster" id="cat-rings"></div>
-  </section>
-
-  <section class="stack stack--tight">
     <h2 class="t-label">19 · Anahtar</h2>
     <p class="t-quiet">Bir boolean ayarın anahtarı: ray ve topuz; durum dolguda ve topuzun tarafında, asla yalnızca renkte. Bir satırın kuyruğunda yaşar (5 · Satır).</p>
     <div class="cluster">
       <span role="switch" aria-checked="true" class="cluster"><span class="switch"><span class="switch__thumb"></span></span></span>
       <span role="switch" aria-checked="false" class="cluster"><span class="switch"><span class="switch__thumb"></span></span></span>
     </div>
-  </section>
-
-  <section class="stack stack--tight">
-    <h2 class="t-label">20 · Seçim</h2>
-    <p class="t-quiet">Birkaç değerden biri: soru sayısı, isteğe bağlı hedef veya tercih. Seçili durum nötr dolgu ve karşıt metinle gösterilir; kısa bir geçiş kullanır. Kart biçimi bir başlık ve kısa açıklama taşır.</p>
-    <div id="cat-choices"></div>
-    <div id="cat-choice-cards"></div>
   </section>
 
   <section class="stack stack--tight">
@@ -253,8 +238,7 @@
 
   <section class="stack stack--tight">
     <h2 class="t-label">8 · İstatistik</h2>
-    <p class="t-quiet">Bir sayı, etiketinin üstünde, küçük bir düzlemde; üçü yan yana. Bir kesir halka olur.</p>
-    <div class="stats stats--rings" id="cat-stat-rings"></div>
+    <p class="t-quiet">Bir sayı, etiketinin üstünde, küçük bir düzlemde; üçü yan yana.</p>
     <div class="stats">
       <div class="stat"><div class="stat__value t-num">7</div><div class="stat__label">Gün seri</div></div>
       <div class="stat"><div class="stat__value t-num">126</div><div class="stat__label">Çözülen soru</div></div>
@@ -447,9 +431,19 @@
     onChange: setTheme,
   });
 
-  const { ring, monogram, avatar, choices } = await import("../js/widgets.js");
+  const { avatar, hueOf } = await import("../js/widgets.js");
+  // The app builds its monograms in place (js/home.js); the catalogue
+  // draws the same span: initials, the topic's hue, hidden from the tree.
+  const monogram = (id, title, { size = "md" } = {}) => {
+    const node = document.createElement("span");
+    node.className = size === "lg" ? "monogram monogram--lg" : "monogram";
+    node.textContent = title.split(/[\s-]+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join("");
+    node.style.setProperty("--hue", String(hueOf(id)));
+    node.setAttribute("aria-hidden", "true");
+    node.lang = "en";
+    return node;
+  };
   document.getElementById("cat-avatar-host").appendChild(avatar("Eren"));
-  document.getElementById("cat-hero-ring").appendChild(ring({ ratio: 0.4, label: "4/10", describedAs: "Son denemede 10 sorudan 4 doğru" }));
   document.getElementById("cat-hero-mono").replaceWith(monogram("mistakes", "Yanlış Defteri"));
   document.getElementById("cat-tile-mono-1").replaceWith(monogram("tenses", "Tenses"));
   document.getElementById("cat-tile-mono-2").replaceWith(monogram("relative-clauses", "Relative Clauses"));
@@ -461,22 +455,6 @@
   monos.appendChild(monogram("tenses", "Tenses", { size: "lg" }));
   const avatars = document.getElementById("cat-avatars");
   avatars.append(avatar("Eren"), avatar(""), avatar("İpek", { size: "lg" }), avatar("", { size: "lg" }));
-  const rings = document.getElementById("cat-rings");
-  rings.append(
-    ring({ ratio: 0.74, label: "%74", describedAs: "yüzde 74" }),
-    ring({ ratio: 1, label: "10/10", tone: "ok", describedAs: "hedef tamam" }),
-    ring({ ratio: 0.3, label: "3/10", tone: "no", describedAs: "yüzde 30" }),
-    ring({ ratio: 0.5, size: "sm" }),
-    ring({ ratio: 0.85, label: "%85", size: "lg", tone: "ok", describedAs: "yüzde 85" })
-  );
-  document.getElementById("cat-stat-rings").append(
-    (() => { const c = document.createElement("div"); c.className = "stat stat--row"; c.append(ring({ ratio: 0.17, label: "3/18" })); const l = document.createElement("div"); l.className = "stat__label"; l.textContent = "Tamamlanan ders"; c.append(l); return c; })(),
-    (() => { const c = document.createElement("div"); c.className = "stat stat--row"; c.append(ring({ ratio: 0.74, label: "%74", tone: "ok" })); const l = document.createElement("div"); l.className = "stat__label"; l.textContent = "Son 20 soruda"; c.append(l); return c; })()
-  );
-  const goalLabel = document.createElement("p"); goalLabel.className = "t-label"; goalLabel.id = "cat-choice-label"; goalLabel.textContent = "Günlük hedef";
-  document.getElementById("cat-choices").append(goalLabel, choices({ options: ["5", "10", "20"].map((v) => ({ value: v, label: v })), value: "10", onChange: () => {}, labelledBy: "cat-choice-label" }).element);
-  const cardLabel = document.createElement("p"); cardLabel.className = "t-label"; cardLabel.id = "cat-choice-card-label"; cardLabel.textContent = "Kart biçimi";
-  document.getElementById("cat-choice-cards").append(cardLabel, choices({ options: [{ value: "5", label: "5 soru", sub: "Hafif — günde üç dakika" }, { value: "10", label: "10 soru", sub: "Dengeli — günde altı dakika" }], value: "10", onChange: () => {}, labelledBy: "cat-choice-card-label", card: true }).element);
 
   for (const host of document.querySelectorAll("[data-icon]")) {
     host.appendChild(icon(host.dataset.icon, { size: host.closest(".nav") ? 24 : 20 }));
