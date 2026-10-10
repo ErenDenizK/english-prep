@@ -74,13 +74,13 @@ const arrivals = new Set();
 let listening = false;
 let pressing = null;
 const releasedAt = new WeakMap();
-const PRESSABLE = 'button, a.btn, a.about-button, .nav__item, summary';
+const PRESSABLE = 'button, a.btn, .nav__item, summary';
 
 // Move a control's presentation, never the pointer target. Wrapping keeps the
 // original nodes (and their listeners/ARIA IDs); it does not clone a control.
 function controlFace(control, prepare = false) {
-  if (control.matches('.option, .switch, .folio-leaf-face, .scroll-rail *, [role="slider"]')) return null;
-  if (!control.matches('.btn, .about-button, .choice:not(.choice--card), .nav__item, .listbox__trigger, summary') && !control.className.startsWith('folio-')) return null;
+  if (control.matches('.option, .switch, .scroll-rail *, [role="slider"]')) return null;
+  if (!control.matches('.btn, .nav__item, .listbox__trigger, summary')) return null;
   let face = control.querySelector(':scope > .control-face');
   if (!face && prepare) {
     face = document.createElement('span');

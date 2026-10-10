@@ -5,6 +5,18 @@ the [development guide's Versioning section](docs/development.md#versioning) for
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.78 — 2026-10-10
+
+Görünürde bir şey değişmedi; uygulama daha hafif ve daha sağlam bir temele oturdu.
+
+- Yazı tipi küçüldü: Inter yalnızca kullanılan karakterlerle (Türkçe harfler, tırnaklar, oklar dahil) yeniden paketlendi; 352 KB'tan 93 KB'a indi. İlk açılış yaklaşık %30 daha az veri indiriyor. Bir test, uygulamadaki her karakterin yazı tipinde olduğunu denetliyor.
+- Stil dosyaları tek bir katman düzenine toplandı. Eski görünümün (UI 3: cam, parıltı, halkalar, eski palet) altta kalan kalıntıları ve hiçbir yerde kullanılmayan kodlar silindi; `!important` kalmadı. Ekran görüntüleri dört genişlikte, iki temada piksel piksel aynı.
+- Renk denetimi artık yalnızca gerçekten görünen renkleri ölçüyor.
+- About'taki çalışma döngüsü görüntüleri çevrimdışı da açılıyor.
+- Kullanılmayan eski MVP kopyası (`legacy/`) kaldırıldı.
+- Test: 17 tarayıcı senaryo dosyası ortak bir düzene kavuştu ve artık her push'ta CI'da çalışıyor (`npm run browser`).
+- Belgeler baştan düzenlendi: `CLAUDE.md` kısaldı; güncel durum `docs/STATE.md`, ilkeler `docs/PRINCIPLES.md`, yol haritası `docs/ROADMAP.md`; eski planlar `docs/history/`.
+
 ## v0.77 — 2026-10-08
 
 - About sayfası sıfırdan yeniden yapıldı. Fikri: “İkisi de doğru. Fark, anlamda.”
