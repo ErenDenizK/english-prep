@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Numune levhası — english-prep tasarım dili</title>
+<link rel="stylesheet" href="../../../css/fonts.css">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="numune.css">
+<style>
+@keyframes press { 0%,60%,100%{transform:scale(1)} 20%,40%{transform:scale(0.985)} }
+@keyframes arrive { 0%{opacity:0;transform:translateY(8px)} 55%,100%{opacity:1;transform:none} }
+@keyframes verdict { 0%,30%{box-shadow:inset 0 1px 0 var(--lit-edge), var(--shadow-rest)}
+  55%,100%{box-shadow:inset 0 0 0 2px var(--ok), var(--shadow-rest)} }
+.anim-press  { animation: press 1.8s var(--e,cubic-bezier(.2,0,0,1)) infinite; }
+.anim-arrive { animation: arrive 2.4s cubic-bezier(0,0,0,1) infinite; }
+.anim-verdict{ animation: verdict 2.4s cubic-bezier(0,0,0,1) infinite; }
+@media (prefers-reduced-motion: reduce) { .anim-press,.anim-arrive,.anim-verdict { animation: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Numune levhası</h1>
+<p class="lede">Adım 8. Uygulama ekranı değil — <b>malzemenin kendisi</b>, gerçek
+boyutta, her birinin yanında ölçümü. A1 (işaret H&nbsp;45), A2 (sıcak zemin H&nbsp;70)
+ve A7 (serif) cevaplandı ve buraya gömülü. Levhanın sorduğu dört şey
+<em style="color:#ffb454;font-style:normal">A3 · A4 · A5 · A6</em>.</p>
+
+<div class="tools">
+  <div class="tool"><b>Tema</b><div class="seg" id="t">
+    <button data-v="dark" aria-pressed="true">Koyu</button>
+    <button data-v="light" aria-pressed="false">Açık</button></div></div>
+</div>
+
+<!-- 1 · ALAN -->
+<h2>1 · Alan — <b>A5: tam alan ne kadar geniş?</b></h2>
+<p class="say">Tek radyal gradyan, sol üste çapalı, %135 × %115. Kaydırılınca
+kaymaz: ekrana ait, içeriğe değil. Üç seviye — tam, kısık, alansız — ve ekranın
+işi birini seçer. Tam alanın genişliği aşağıda üç değerde.</p>
+<div class="grid">
+  <figure><div data-m="f15" class="sheet sheet--tam" style="width:260px;height:562px;--alan-tam:radial-gradient(100% 52% at 6% -4%,var(--lit) 0%,color-mix(in srgb,var(--lit) 45%,var(--page)) 40%,transparent 78%)"></div>
+    <figcaption>tam · <em>%15</em> — dar lob</figcaption></figure>
+  <figure><div data-m="f20" class="sheet sheet--tam" style="width:260px;height:562px;--alan-tam:radial-gradient(120% 66% at 6% -6%,var(--lit) 0%,color-mix(in srgb,var(--lit) 50%,var(--page)) 38%,transparent 80%)"></div>
+    <figcaption>tam · <em>%20</em></figcaption></figure>
+  <figure><div data-m="f25" class="sheet sheet--tam" style="width:260px;height:562px;--alan-tam:radial-gradient(135% 80% at 6% -8%,var(--lit) 0%,color-mix(in srgb,var(--lit) 58%,var(--page)) 36%,color-mix(in srgb,var(--lit) 22%,var(--page)) 62%,transparent 84%)"></div>
+    <figcaption>tam · <em>%25</em></figcaption></figure>
+  <figure><div data-m="fkisik" class="sheet sheet--kisik" style="width:260px;height:562px"></div>
+    <figcaption>kısık — soru ekranı</figcaption></figure>
+  <figure><div data-m="fyok" class="sheet" style="width:260px;height:562px"></div>
+    <figcaption>alansız — okuyucu</figcaption></figure>
+</div>
+
+<!-- 2 · CAM -->
+<h2>2 · Cam — <b>A6: koyu temada beyaza yakın pano gece göz yorar mı?</b></h2>
+<p class="say">Aynı pano dört opaklıkta, alanın en parlak ucunun üstünde.
+Alttaki Lc sayıları uydurma değil: tint alanın 1. ve 5. durağına bindirilip
+mürekkep en kötü sonuca karşı ölçüldü. %55 açık temada metin taşıyamıyor —
+kural bu yüzden <b>α ≥ 0.78</b>.</p>
+<div class="grid">
+  <figure><div class="sheet sheet--tam" style="width:250px;height:230px;padding:20px">
+    <div class="pane pane--a55" style="height:100%"><p class="lbl">α 0.55</p>
+    <p style="font-size:18px;margin-top:6px">Bu satır gövde metni.</p></div></div>
+    <figcaption>koyu Lc 93 · açık <em>Lc 82 ✗</em></figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:250px;height:230px;padding:20px">
+    <div class="pane pane--a70" style="height:100%"><p class="lbl">α 0.70</p>
+    <p style="font-size:18px;margin-top:6px">Bu satır gövde metni.</p></div></div>
+    <figcaption>koyu Lc 95 · açık Lc 89</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:250px;height:230px;padding:20px">
+    <div class="pane" style="height:100%"><p class="lbl">α 0.78 · kural</p>
+    <p style="font-size:18px;margin-top:6px">Bu satır gövde metni.</p></div></div>
+    <figcaption><em>koyu Lc 95 · açık Lc 92</em></figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:250px;height:230px;padding:20px">
+    <div class="pane pane--a90" style="height:100%"><p class="lbl">α 0.90</p>
+    <p style="font-size:18px;margin-top:6px">Bu satır gövde metni.</p></div></div>
+    <figcaption>koyu Lc 96 · açık Lc 96</figcaption></figure>
+</div>
+
+<!-- 3 · YARIÇAP -->
+<h2>3 · Yarıçap — <b>A4: kontrol ailesi düz yay olarak yaşıyor mu?</b></h2>
+<p class="say">Aynı nesne üç oranda. <code>corner-shape</code> sadece
+Chromium'da (~%65, Baseline değil), yani tasarım <b>yay</b> sürümü olmak
+zorunda. 0.16'da yayın teğette bıraktığı kırık burada görünüyor.</p>
+<div class="grid">
+  <figure><div class="sheet sheet--tam" style="width:240px;height:190px;padding:20px">
+    <div class="pane" style="height:100%;border-radius:11px"></div></div>
+    <figcaption>r/w 0.056 — bugünkü</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:240px;height:190px;padding:20px">
+    <div class="pane" style="height:100%;border-radius:18px"></div></div>
+    <figcaption>r/w <em>0.09</em> — içerik</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:240px;height:190px;padding:20px">
+    <div class="pane" style="height:100%;border-radius:32px"></div></div>
+    <figcaption>r/w <em>0.16</em> — kontrol, yay</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:240px;height:190px;padding:20px">
+    <div class="pane" style="height:100%;border-radius:32px;corner-shape:superellipse(4)"></div></div>
+    <figcaption>0.16 — süperelips (%65)</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:240px;height:190px;padding:20px;display:flex;gap:12px">
+    <div class="pane" style="flex:1;border-radius:16px"></div>
+    <div class="pane" style="flex:1;border-radius:16px;corner-shape:superellipse(4)"></div></div>
+    <figcaption>100px kutucuk · yay / süperelips</figcaption></figure>
+</div>
+
+<!-- 4 · TİP -->
+<h2>4 · Tip — A7 cevaplandı: sınanan her İngilizce serif</h2>
+<p class="say">Aynı soru, üç kurulumla. Ayrım punto ile değil <b>sınıf</b> ile:
+sınanan İngilizce serif, uygulamanın söylediği her şey sans, ölçülen her sayı
+tabular. Dördüncü font dosyası yok.</p>
+<div class="grid">
+  <figure><div class="sheet sheet--kisik" style="width:330px;height:300px">
+    <p style="font-size:18px;line-height:29px">Every morning, Elif <span class="blank"></span>
+      to the university library before her first class starts.</p>
+    <p style="font-size:18px;line-height:27px;color:var(--ink-2);margin-top:14px">
+      <b>Every morning</b> bir rutin bildirir, o yüzden Present Simple.</p></div>
+    <figcaption>hepsi sans — bugünkü</figcaption></figure>
+  <figure><div class="sheet sheet--kisik" style="width:330px;height:300px">
+    <p class="en" style="font-size:18px;line-height:29px">Every morning, Elif <span class="blank"></span>
+      to the university library before her first class starts.</p>
+    <p style="font-size:18px;line-height:27px;color:var(--ink-2);margin-top:14px">
+      <b class="en" lang="en">Every morning</b> bir rutin bildirir, o yüzden
+      <b class="en" lang="en">Present Simple</b>.</p></div>
+    <figcaption><em>sınanan İngilizce serif</em> [K]</figcaption></figure>
+  <figure><div class="sheet sheet--kisik" style="width:270px;height:300px">
+    <p class="en" style="font-size:18px;line-height:29px">Every morning, Elif <span class="blank"></span>
+      to the university library before her first class starts.</p>
+    <p style="font-size:18px;line-height:27px;color:var(--ink-2);margin-top:14px">
+      <b class="en" lang="en">Every morning</b> bir rutin bildirir.</p></div>
+    <figcaption>320'de aynısı</figcaption></figure>
+</div>
+
+<!-- 5 · IŞIK -->
+<h2>5 · Işık — tek yön, her ekranda aynı köşe</h2>
+<p class="say">Aynı pano, alan dört köşeden aydınlatılmış. Panonun üst kenarı
+ışığı bir piksellik çizgi olarak yakalıyor; gölge onu alandan kaldırıyor,
+iki düzlemi birbirinden ayırmıyor.</p>
+<div class="grid">
+  <figure><div class="sheet" style="width:225px;height:200px;padding:22px;background:radial-gradient(135% 115% at 6% -8%,var(--lit) 0%,transparent 72%) var(--page)">
+    <div class="pane pane--lift" style="height:100%"></div></div><figcaption><em>sol üst</em> — kural</figcaption></figure>
+  <figure><div class="sheet" style="width:225px;height:200px;padding:22px;background:radial-gradient(135% 115% at 94% -8%,var(--lit) 0%,transparent 72%) var(--page)">
+    <div class="pane pane--lift" style="height:100%"></div></div><figcaption>sağ üst</figcaption></figure>
+  <figure><div class="sheet" style="width:225px;height:200px;padding:22px;background:radial-gradient(135% 115% at 6% 108%,var(--lit) 0%,transparent 72%) var(--page)">
+    <div class="pane pane--lift" style="height:100%"></div></div><figcaption>sol alt</figcaption></figure>
+  <figure><div class="sheet" style="width:225px;height:200px;padding:22px;background:radial-gradient(135% 115% at 50% -20%,var(--lit) 0%,transparent 72%) var(--page)">
+    <div class="pane pane--lift" style="height:100%"></div></div><figcaption>üst orta</figcaption></figure>
+</div>
+
+<!-- 6 · EYLEM -->
+<h2>6 · Eylem — <b>A3: boyalı mı, düzlem mi?</b></h2>
+<p class="say">Aynı buton, alanın üstünde, iki malzemede. Düzlem kontrastta
+yirmi Lc önde. Boyalı olan, camdan bir ekranda tek opak ve doygun nesne
+olmakla kazanıyor — referans 10 sarı, 4 yeşil, 8 altın, hepsi tam bir tane.</p>
+<div class="grid">
+  <figure><div class="sheet sheet--tam" style="width:330px;height:230px;display:flex;flex-direction:column;justify-content:space-between">
+    <div class="pane" style="padding:16px"><p class="lbl">Bugünün çalışması</p>
+      <p style="font-size:22px;line-height:28px;font-weight:600;margin-top:4px">Perfect Aspects</p></div>
+    <button class="act" style="width:100%">Başla</button></div>
+    <figcaption><em>boyalı</em> · etiket Lc 77 / 65</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:330px;height:230px;display:flex;flex-direction:column;justify-content:space-between">
+    <div class="pane" style="padding:16px"><p class="lbl">Bugünün çalışması</p>
+      <p style="font-size:22px;line-height:28px;font-weight:600;margin-top:4px">Perfect Aspects</p></div>
+    <button class="act act--plane" style="width:100%">Başla</button></div>
+    <figcaption>düzlem · etiket Lc 97 / 92</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:330px;height:230px;display:flex;flex-direction:column;justify-content:space-between">
+    <div class="pane" style="padding:16px"><p class="lbl">Bugünün çalışması</p>
+      <p style="font-size:22px;line-height:28px;font-weight:600;margin-top:4px">Perfect Aspects</p></div>
+    <div style="display:flex;gap:10px"><button class="act act--quiet" style="flex:1">Atla</button>
+      <button class="act" style="flex:2">Başla</button></div></div>
+    <figcaption>boyalı + sessiz ikinci</figcaption></figure>
+</div>
+
+<!-- 7 · DOKU -->
+<h2>7 · Doku — alana aittir, üstüne oturduğunu açar</h2>
+<p class="say">Nokta alanı üç yoğunlukta. Daima <b>açar</b>, karartmaz: dokunun
+altındaki en karanlık nokta hâlâ ölçülen yüzey, yani her PAIRS satırı kuruluşu
+gereği geçerli kalıyor. Tarama "henüz ölçülmedi" demektir, başka bir şey değil.</p>
+<div class="grid">
+  <figure><div class="sheet sheet--tam" style="width:225px;height:180px"><span class="tex" style="opacity:0.05"></span></div><figcaption>%5</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:225px;height:180px"><span class="tex"></span></div><figcaption><em>%10 koyu / %6 açık</em></figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:225px;height:180px"><span class="tex" style="opacity:0.18"></span></div><figcaption>%18 — fazla</figcaption></figure>
+  <figure><div class="sheet sheet--kisik" style="width:330px;height:180px">
+    <p class="lbl">En zayıf kalıp</p>
+    <div style="display:grid;gap:10px;margin-top:12px">
+      <span><span class="meta" style="color:var(--ink)">Perfect Aspects</span>
+        <span class="bar" style="margin-top:4px"><i style="width:44%"></i></span></span>
+      <span><span class="meta">Reported Speech — henüz ölçülmedi</span>
+        <span class="bar hatch" style="margin-top:4px"></span></span></div></div>
+    <figcaption>tarama = <em>henüz ölçülmedi</em></figcaption></figure>
+</div>
+
+<!-- 8 · HAREKET -->
+<h2>8 · Hareket — ışığı değiştirir, yerleşimi değil</h2>
+<p class="say">Sadece transform ve opacity; hiçbir şey yeniden akmıyor.
+<code>prefers-reduced-motion</code> altında üçü de duruyor.</p>
+<div class="grid">
+  <figure><div class="sheet sheet--tam" style="width:225px;height:180px;padding:22px">
+    <div class="pane anim-press" style="height:100%"></div></div><figcaption>basış · 120ms</figcaption></figure>
+  <figure><div class="sheet sheet--tam" style="width:225px;height:180px;padding:22px">
+    <div class="pane anim-arrive" style="height:100%"></div></div><figcaption>geliş · 260ms</figcaption></figure>
+  <figure><div class="sheet sheet--kisik" style="width:300px;height:180px;padding:22px;display:grid;place-items:center">
+    <button class="opt anim-verdict" style="width:100%"><span class="opt__k">A</span>
+      <span class="opt__t" lang="en">goes</span></button></div>
+    <figcaption>hüküm — kenar yanar, kutu şişmez</figcaption></figure>
+</div>
+
+<!-- 9 · BİLEŞENLER -->
+<h2>9 · Bileşenler — hepsi dinlenme hâlinde</h2>
+<div class="grid">
+  <figure><div class="sheet sheet--tam" style="width:360px;padding:22px">
+    <p class="lbl" style="margin-bottom:10px">Bölüm başlığı</p>
+    <div class="pane" style="padding:6px 16px"><ul class="rows">
+      <li><div class="row"><span class="row__t"><span class="row__title">Konu çalış</span>
+        <span class="meta">18 ders · 6'sı yarım</span></span><span class="meta">›</span></div></li>
+      <li><div class="row"><span class="row__t"><span class="row__title">Test çöz</span>
+        <span class="meta">10 konu · 241 soru</span></span><span class="meta">›</span></div></li>
+      <li><div class="row"><span class="row__t"><span class="row__title">Yanlış defteri</span>
+        <span class="meta">Sadece yanlışlarını çöz</span></span><span class="meta">12</span></div></li>
+    </ul></div>
+    <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
+      <button class="act" style="min-height:40px;padding:0 18px;font-size:15px">Seçili çip</button>
+      <button class="act act--quiet" style="min-height:40px;padding:0 18px;font-size:15px">Çip</button>
+      <button class="act act--quiet" style="min-height:40px;padding:0 18px;font-size:15px">Çip</button></div>
+    <div class="pane pane--ctl" style="margin-top:16px;padding:14px 16px">
+      <p class="lbl">Kutucuk — kontrolün kendisi</p>
+      <p class="num" style="margin-top:2px">74<span class="meta" style="font-size:18px">%</span></p>
+      <span class="bar" style="margin-top:8px"><i style="width:74%"></i></span></div>
+    <p style="margin-top:16px"><span class="num">7</span> <span class="meta">/ 10 · dün</span></p>
+    <button class="act" style="width:100%;margin-top:14px">Tek dolu eylem</button></div>
+    <figcaption>liste · çip · kutucuk · istatistik · eylem</figcaption></figure>
+  <figure><div class="sheet sheet--kisik" style="width:360px;padding:22px">
+    <p class="en" style="font-size:18px;line-height:29px">Every morning, Elif
+      <span class="blank"></span> to the university library.</p>
+    <div style="display:grid;gap:10px;margin-top:16px">
+      <button class="opt opt--ok"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v">Doğru</span></button>
+      <button class="opt opt--no"><span class="opt__k">B</span><span class="opt__t" lang="en">is going</span><span class="opt__v">Seçtiğin</span></button>
+      <button class="opt"><span class="opt__k">C</span><span class="opt__t" lang="en">has gone</span></button>
+    </div>
+    <p class="lbl" style="margin-top:18px">Neden</p>
+    <p style="font-size:18px;line-height:27px;color:var(--ink-2);margin-top:4px">
+      <b class="en" lang="en">Every morning</b> bir rutin bildirir, o yüzden
+      <b class="en" lang="en">Present Simple</b>.</p></div>
+    <figcaption>soru · seçenek · hüküm · açıklama</figcaption></figure>
+</div>
+
+<!-- 10 · DURUMLAR -->
+<h2>10 · Durumlar — aynı nesne, on hâl</h2>
+<div class="grid">
+  <figure><div class="sheet sheet--kisik" style="width:360px;padding:22px;display:grid;gap:10px">
+    <button class="opt"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v" style="color:var(--ink-3)">dinlenme</span></button>
+    <button class="opt pane--lift"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v" style="color:var(--ink-3)">üzerinde</span></button>
+    <button class="opt" style="transform:scale(0.985)"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v" style="color:var(--ink-3)">basılı</span></button>
+    <button class="opt" style="outline:2px solid var(--mark);outline-offset:2px"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v" style="color:var(--ink-3)">odak</span></button>
+    <button class="opt" style="opacity:0.55;box-shadow:none"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v" style="color:var(--ink-3)">kapalı</span></button>
+  </div><figcaption>dinlenme · üzerinde · basılı · odak · kapalı</figcaption></figure>
+  <figure><div class="sheet sheet--kisik" style="width:360px;padding:22px;display:grid;gap:10px">
+    <button class="opt" style="background:var(--action);color:var(--on-action);box-shadow:var(--shadow-lift)"><span class="opt__k" style="color:var(--on-action);opacity:.7">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v" style="color:var(--on-action)">seçili</span></button>
+    <button class="opt opt--ok"><span class="opt__k">A</span><span class="opt__t" lang="en">goes</span><span class="opt__v">doğru</span></button>
+    <button class="opt opt--no"><span class="opt__k">B</span><span class="opt__t" lang="en">is going</span><span class="opt__v">yanlış</span></button>
+    <div class="pane hatch" style="min-height:52px;border-radius:16px;display:flex;align-items:center;padding:0 18px">
+      <span class="meta">boş — henüz ölçülmedi</span></div>
+    <div class="sheet sheet--kisik" style="min-height:52px;border-radius:16px;padding:0 18px;display:flex;align-items:center">
+      <span class="meta">yükleniyor — iskelet kutu yok, sadece alan</span></div>
+  </div><figcaption>seçili · doğru · yanlış · boş · yükleniyor</figcaption></figure>
+</div>
+
+</div>
+<script>
+  document.getElementById("t").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    for (const x of e.currentTarget.querySelectorAll("button")) x.setAttribute("aria-pressed", String(x===b));
+    document.documentElement.setAttribute("data-theme", b.dataset.v);
+  });
+</script>
+</body></html>

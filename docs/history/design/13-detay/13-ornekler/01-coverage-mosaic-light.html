@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>specimen — coverage mosaic (light)</title>
+<style>
+  :root{
+    --page:#F6F1E7; --card:#EEE8DD; --raised:#E5DFD3;
+    --ink-1:#211B14; --ink-2:#413A31;
+    --accent-text:#623200;
+    --accent:#A05801; --accent-2:#B44200;
+    --edge:#76736B; --hairline:#D6D1C8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--page);}
+  body{
+    width:390px; height:844px; overflow:hidden; position:relative;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    color:var(--ink-1);
+  }
+  .bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 20px 4px;
+  }
+  .bar h1{ font-family: Georgia, "Times New Roman", serif; font-weight:600; font-size:28px; margin:0; color:var(--ink-1); }
+  .avatar{ width:26px; height:26px; border-radius:50%; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%); }
+  .body{ padding: 6px 20px 0; }
+
+  .section-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    margin: 8px 0 10px;
+  }
+  /* Every size/weight/token pair below is one already checked by
+     tools/palette.mjs's PAIRS table against surface-2 (the worst
+     surface it appears on in the real app); text here sits on --page,
+     which is never the worst case, so every pair clears its bar with
+     margin to spare (verified separately, see 13-kayit-modeli.md). */
+  .t-label{ /* = .t-label, 15/600, accent-text */
+    font-size:15px; font-weight:600; letter-spacing:.09em;
+    color: var(--accent-text);
+  }
+  .t-meta{ /* = .t-meta / .row__trail, 15/600, text-2 */
+    font-size:15px; font-weight:600; color: var(--ink-2);
+  }
+
+  .mosaic{ margin-bottom: 10px; }
+  .trow{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:4px 0; border-bottom:1px solid var(--hairline);
+  }
+  .trow:last-child{ border-bottom:none; }
+  .trow__title{ /* = .row__title, 18/400, text-1, serif for English */
+    font-size:18px; font-weight:400; color:var(--ink-1);
+    flex: 0 0 auto; width: 150px; line-height:1.22;
+  }
+  .trow__cells{ display:flex; gap:4px; flex:0 0 auto; }
+  .cell{ width:31px; height:31px; border-radius:7px; }
+
+  .legend{ /* = quiet sentence (page), 18/400, text-2, on surface-0 */
+    font-size:18px; line-height:1.4; color:var(--ink-2); margin: 8px 0 22px;
+  }
+
+  .eyebrow{ /* = .t-label, 15/600, accent-text (not a second, invented style) */
+    font-size:15px; font-weight:600; letter-spacing:.09em;
+    color:var(--accent-text); margin:0 0 8px;
+  }
+  h2{ /* = .score__verdict, 22/600, text-1 */
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight:600; font-size:22px; line-height:1.18; margin:0 0 10px;
+    color:var(--ink-1);
+  }
+  p.lead{ /* = quiet sentence (page), 18/400, text-2 */
+    font-size:18px; line-height:1.5; color:var(--ink-2); margin:0 0 8px;
+  }
+  p.lead b{ color:var(--ink-1); font-weight:600; }
+  .meta{ font-size:15px; font-weight:600; color:var(--ink-2); margin:0 0 16px; }
+
+  .session{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:15px; font-weight:600; letter-spacing:.02em; color:var(--ink-2);
+    padding-bottom:10px; border-bottom:1px solid var(--hairline);
+    margin-bottom:2px;
+  }
+  .session .n{ font-variant-numeric: tabular-nums; color:var(--ink-1); }
+
+  .footbar{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:12px 20px calc(10px + env(safe-area-inset-bottom,0px));
+    background:var(--page);
+  }
+  .btn{
+    display:flex; align-items:center; justify-content:center;
+    height:50px; border-radius:25px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color:#F6F1E7; font-size:18px; font-weight:600;
+  }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <h1 lang="tr">Bugün</h1>
+    <div class="avatar"></div>
+  </div>
+  <div class="body">
+
+    <div class="section-head">
+      <span class="t-label" lang="tr">KAPSAMA</span>
+      <span class="t-meta" lang="tr">6 hafta</span>
+    </div>
+    <div class="mosaic">
+      
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Tenses</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.8);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.8);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.98);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.98);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Modals</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.8);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.8);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Passive Voice</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.8);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Closest Meaning</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Connectors &amp; Discourse Markers</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Quantifiers &amp; Determiners</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Relative Clauses</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Gerunds &amp; Infinitives</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.62);border:1.5px solid transparent;"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Academic Nouns &amp; Adjectives</span>
+        <div class="trow__cells"><div class="cell" style="background:rgb(160 88 1 / 0.42);border:1.5px solid transparent;"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div></div>
+      </div>
+      <div class="trow">
+        <span class="trow__title t-en" lang="en">Academic Verbs</span>
+        <div class="trow__cells"><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div><div class="cell" style="background:transparent;border:1.5px solid rgb(118 115 107 / .35);"></div></div>
+      </div>
+    </div>
+    <p class="legend" lang="tr">Koyuluk: bu 6 haftada kaç kez çalıştığın — boş: hiç görülmedi.</p>
+
+    <div class="eyebrow" lang="tr">Bugünün çalışması</div>
+    <h2 lang="tr">Perfect Aspects ve Past Simple</h2>
+    <p class="lead" lang="tr">Son yedi karşılaşmada en sık <b lang="en" class="t-en">been</b> ile <b lang="en" class="t-en">gone</b> karıştı.</p>
+    <p class="meta" lang="tr">6 soru · yaklaşık 8 dakika</p>
+
+    <div class="session">
+      <span lang="tr">I. Oturum · 60 puan</span>
+      <span class="n">30 / 60</span>
+    </div>
+  </div>
+
+  <div class="footbar">
+    <div class="btn" lang="tr">Oturumu başlat</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+/* One transfer document, not a dashboard of disconnected data cards. */
+.transfer-dialog {
+  width: min(34rem, calc(100vw - 24px));
+}
+.transfer-preview {
+  display: grid;
+  gap: 10px;
+  padding-block: 18px;
+  border-block: 1px solid var(--line);
+}
+.transfer-preview__counts {
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.transfer-details > summary {
+  display: list-item;
+  min-height: 44px;
+  padding: 10px 4px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.transfer-details > summary::marker {
+  color: var(--ink-2);
+}
+.transfer-details > summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.transfer-details__body { padding-block: 8px 12px; }
+.transfer-text {
+  width: 100%;
+  resize: vertical;
+  min-height: 8rem;
+  max-height: 20rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.transfer-actions { display: grid; gap: 10px; margin-top: 0; }
+.transfer-actions .btn { width: 100%; }
+.transfer-actions .btn[aria-disabled="true"] { cursor: progress; }
+.transfer-status:empty { display: none; }
+.transfer-status:not(:empty) {
+  padding-inline-start: 12px;
+  border-inline-start: 2px solid var(--accent);
+}
+@media (min-width: 480px) {
+  .transfer-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .transfer-actions .btn:last-child { grid-column: 1 / -1; }
+}

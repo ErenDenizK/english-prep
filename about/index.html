@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#141216" media="(display-mode: standalone)">
+  <meta name="color-scheme" content="dark">
+  <title>English Prep — İkisi de doğru. Fark, anlamda.</title>
+  <meta name="description" content="Kulağın doğruyu biliyor; English Prep nedenini gösterir. Birbirine benzeyen İngilizce kullanımları makale dersleri ve her yanlışı açıklanan sorularla ayırt et.">
+  <link rel="canonical" href="https://erendenizk.github.io/english-prep/about/">
+  <link rel="icon" href="../icons/icon-192.png">
+  <link rel="apple-touch-icon" href="../icons/icon-180.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <meta property="og:title" content="English Prep — İkisi de doğru. Fark, anlamda.">
+  <meta property="og:description" content="Kulağın doğruyu biliyor. English Prep, bildiğin İngilizcenin arasındaki sınırı çizer.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://erendenizk.github.io/english-prep/about/">
+  <meta property="og:image" content="https://erendenizk.github.io/english-prep/icons/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../assets/fonts/InterVariable.woff2">
+  <!-- Scroll reveals hide content before the first paint only when they can
+       run: motion allowed, the observer available. If the module never
+       arrives, the fallback timer shows everything. -->
+  <script>
+    (function () {
+      var root = document.documentElement, off = false;
+      try { off = localStorage.getItem("englishPrep.motion") === "off"; } catch (e) {}
+      var reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (off || reduced || !("IntersectionObserver" in window)) return;
+      root.classList.add("reveal-ready");
+      window.__aboutRevealFallback = setTimeout(function () { root.classList.add("reveal-all"); }, 2500);
+    })();
+  </script>
+  <link rel="stylesheet" href="../css/editorial.css">
+  <link rel="stylesheet" href="../css/interactions.css">
+  <link rel="stylesheet" href="../css/scroll-rail.css">
+  <link rel="stylesheet" href="about.css">
+  <script type="module" src="about.js"></script>
+</head>
+<body class="about-page">
+  <!-- The atmosphere is part of the first paint; js/motion.js adopts it. -->
+  <div class="ambient" aria-hidden="true"><span class="ambient__field ambient__field--north"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span><span class="ambient__field ambient__field--east"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span><span class="ambient__field ambient__field--south"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span></div>
+  <script>document.querySelector(".ambient").style.setProperty("--aura-clock", Date.now() % 86400000 + "ms");</script>
+  <a class="ab-skip" href="#main">İçeriğe geç</a>
+
+  <header class="ab-masthead" id="masthead">
+    <div class="ab-frame ab-masthead__inner">
+      <a class="ab-brand" href="../index.html" aria-label="English Prep uygulamasını aç"><span lang="en">english prep</span><span class="ab-brand__dot">.</span></a>
+      <nav class="ab-topnav" aria-label="Sayfa bölümleri">
+        <a href="#fikir">Fikir</a><a href="#harita">Harita</a><a href="#urun">Ürün</a><a href="#yapim">Yapım</a>
+      </nav>
+      <a class="ab-button ab-button--small" href="../index.html">Uygulamayı aç</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- 1 · Hero: the product's thesis, live. -->
+    <section class="ab-frame ab-hero" aria-labelledby="hero-title">
+      <div class="ab-hero__copy">
+        <p class="ab-eyebrow" data-reveal><span class="ab-dot" aria-hidden="true"></span>Hazırlık yeterlik sınavları için</p>
+        <h1 id="hero-title" class="ab-hero__title" data-reveal>
+          <span class="ab-line">İkisi de doğru.</span>
+          <span class="ab-line ab-line--accent">Fark, anlamda.</span>
+        </h1>
+        <p class="ab-lead" data-reveal>Kulağın doğruyu zaten biliyor. English Prep, bildiğin İngilizcenin arasındaki sınırı çizer: aynı anda doğru gelen iki kullanımın neyi farklı söylediğini.</p>
+        <div class="ab-actions" data-reveal>
+          <a class="ab-button ab-button--primary" href="../index.html#egitim">Çalışmaya başla</a>
+          <a class="ab-link" href="#fikir">Nasıl düşündüğünü gör <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="ab-quiet" data-reveal>Ücretsiz · Hesap yok · İlerlemen kendi tarayıcında</p>
+      </div>
+
+      <section class="ab-lens" id="lens" aria-labelledby="lens-title" data-reveal>
+        <div class="ab-lens__head">
+          <p class="ab-kicker" id="lens-kicker">Ayrım 1 / 3</p>
+          <h2 class="ab-lens__question" id="lens-title">Bitti mi, şimdiye mi uzanıyor?</h2>
+        </div>
+        <div class="ab-lens__forms" id="lens-forms" role="radiogroup" aria-labelledby="lens-title">
+          <noscript><p class="ab-sentence" lang="en">I lost my keys. · I’ve lost my keys.</p></noscript>
+        </div>
+        <div class="ab-lens__stage" id="lens-stage"></div>
+        <p class="ab-lens__reading" id="lens-reading" aria-live="polite"></p>
+        <div class="ab-lens__foot">
+          <div class="ab-lens__pager" id="lens-pager" role="group" aria-label="Ayrım seç"></div>
+          <a class="ab-link" id="lens-lesson" href="../index.html#egitim">Bu ayrımın dersi <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+    </section>
+
+    <!-- 2 · Manifesto: who it is for. -->
+    <section class="ab-frame ab-manifesto" id="fikir" aria-labelledby="manifesto-title">
+      <p class="ab-eyebrow" data-reveal>Fikir</p>
+      <h2 id="manifesto-title" class="ab-sr">Kimin için</h2>
+      <p class="ab-manifesto__text" id="manifesto-text">Dizileri altyazısız izliyorsun. Doğru olanı duyuyorsun. Ama sınav kâğıdında iki seçenek de kulağına doğru geldiğinde, karar verecek bir ölçüt gerekir. English Prep İngilizceyi sıfırdan anlatmaz. Zaten bildiklerinin arasındaki sınırı çizer.</p>
+    </section>
+
+    <!-- 3 · The map: every distinction in the app, read from data/manifest.json. -->
+    <section class="ab-frame ab-section ab-map" id="harita" aria-labelledby="map-title">
+      <header class="ab-section__head" data-reveal>
+        <p class="ab-eyebrow">Ayrım haritası</p>
+        <h2 id="map-title">Kulağının karıştırdığı her şey, tek haritada.</h2>
+        <p>Her ders bir soru: bu mu, o mu? Bir ayrıma dokun; o dersi uygulamada açar.</p>
+      </header>
+      <dl class="ab-figures" id="map-figures" data-reveal></dl>
+      <div class="ab-map__grid" id="map-grid">
+        <p class="ab-quiet">Dersler yükleniyor…</p>
+      </div>
+    </section>
+
+    <!-- 4 · Anatomy of one real question. -->
+    <section class="ab-frame ab-section ab-anatomy" id="soru" aria-labelledby="anatomy-title">
+      <header class="ab-section__head" data-reveal>
+        <p class="ab-eyebrow">Bir sorunun anatomisi</p>
+        <h2 id="anatomy-title">Doğruyu bulmak yetmez. Yanlışın da bir açıklaması var.</h2>
+        <p>Uygulamadaki gerçek bir soru. Bir seçenek işaretle; seçtiğin seçeneğin neden uyduğunu ya da uymadığını oku.</p>
+      </header>
+      <div class="ab-anatomy__body">
+        <div class="ab-specimen" id="specimen" data-reveal></div>
+        <ol class="ab-callouts" id="callouts" data-reveal></ol>
+      </div>
+    </section>
+
+    <!-- 5 · The study loop, on real captures. -->
+    <section class="ab-frame ab-section ab-flow" id="urun" aria-labelledby="flow-title">
+      <header class="ab-section__head" data-reveal>
+        <p class="ab-eyebrow">Çalışma döngüsü</p>
+        <h2 id="flow-title">Oku. Uygula. Gereken yere dön.</h2>
+      </header>
+      <div class="ab-flow__body">
+        <ol class="ab-flow__steps" id="flow-steps"></ol>
+        <div class="ab-device" id="flow-device" aria-hidden="true"><div class="ab-device__screen" id="flow-screen"></div></div>
+      </div>
+    </section>
+
+    <!-- 6 · Craft, with live proofs. -->
+    <section class="ab-frame ab-section ab-craft" id="yapim" aria-labelledby="craft-title">
+      <header class="ab-section__head" data-reveal>
+        <p class="ab-eyebrow">Yapım</p>
+        <h2 id="craft-title">Sade görünen her şeyin bir ölçüsü var.</h2>
+        <p>Bu bölümdeki kanıtlar resim değil: eğriler ve oranlar, bu sayfa açılırken uygulamanın kendi kodundan hesaplandı.</p>
+      </header>
+      <div class="ab-craft__grid">
+        <article class="ab-card ab-card--wide ab-springs" id="springs" data-reveal></article>
+        <article class="ab-card ab-contrast" id="contrast" data-reveal></article>
+        <article class="ab-card ab-pipeline" id="pipeline" data-reveal></article>
+        <div class="ab-facts" id="facts" data-reveal></div>
+        <article class="ab-card ab-card--wide ab-privacy" id="privacy" data-reveal></article>
+      </div>
+      <p class="ab-evidence" data-reveal>
+        <a class="ab-link" href="https://github.com/ErenDenizK/english-prep/tree/test">Kaynak kodu <span aria-hidden="true">↗</span></a>
+        <a class="ab-link" href="https://github.com/ErenDenizK/english-prep/blob/test/docs/design/motion-v076.md">Hareket tasarımı <span aria-hidden="true">↗</span></a>
+        <a class="ab-link" href="https://github.com/ErenDenizK/english-prep/blob/test/docs/agents/README.md">İçerik süreci <span aria-hidden="true">↗</span></a>
+      </p>
+    </section>
+
+    <!-- 7 · Questions. -->
+    <section class="ab-frame ab-section ab-faq" aria-labelledby="faq-title">
+      <header class="ab-section__head" data-reveal>
+        <p class="ab-eyebrow">Sorular</p>
+        <h2 id="faq-title">Açık cevaplar.</h2>
+      </header>
+      <div class="ab-faq__list" id="faq-list" data-reveal></div>
+    </section>
+
+    <!-- 8 · Close. -->
+    <section class="ab-frame ab-close" aria-labelledby="close-title">
+      <div class="ab-close__mark" aria-hidden="true">ep<span>.</span></div>
+      <h2 id="close-title" data-reveal>Bir ayrımı netleştir.<br>Oradan devam et.</h2>
+      <p data-reveal>Tarayıcıda başla; istersen ana ekranına ekle. Çalışmanın temposu sende.</p>
+      <div class="ab-actions ab-actions--center" data-reveal>
+        <a class="ab-button ab-button--primary" href="../index.html#egitim">İlk ayrımını seç</a>
+      </div>
+      <div class="ab-install" id="install-control"></div>
+    </section>
+  </main>
+
+  <footer class="ab-frame ab-footer">
+    <div>
+      <a class="ab-brand" href="../index.html"><span lang="en">english prep</span><span class="ab-brand__dot">.</span></a>
+      <p>İngilizceyi sıfırdan değil, ayrımlarıyla düşün.</p>
+    </div>
+    <nav aria-label="Proje bağlantıları">
+      <a class="ab-link" href="https://github.com/ErenDenizK/english-prep/tree/test">Kaynak kodu ↗</a>
+      <a class="ab-link" href="../original/">Özgün sürüm ↗</a>
+      <a class="ab-link" href="#main">Başa dön ↑</a>
+    </nav>
+    <p class="ab-footer__note">Hareket tercihini <a class="ab-link" href="../index.html#profil">uygulama ayarlarından</a> değiştirebilirsin. Bağımsız bir eğitim projesi; içerik yapay zekâ desteğiyle hazırlanıp gözden geçirildi, hata içerebilir. Resmî bir üniversite ürünü değildir.</p>
+  </footer>
+</body>
+</html>

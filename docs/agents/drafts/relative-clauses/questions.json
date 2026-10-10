@@ -1,0 +1,362 @@
+[
+  {
+    "id": "relative-clauses-t1",
+    "type": "cloze",
+    "category": "Who vs Whom vs Whose",
+    "paragraph": "The island's last lighthouse keeper retired in 1987 and no maintenance record from his final years survives. Local historians are still trying to trace the engineer ____ repaired the lamp mechanism that winter.",
+    "options": [
+      "whom",
+      "who",
+      "whose",
+      "which"
+    ],
+    "correctIndex": 1,
+    "explanation": "Boşluktan hemen sonra çekimli bir fiil ('repaired') geliyor, yani yan cümlenin öznesi eksik; bu boşluğu özne görevindeki 'who' doldurur. 'whom' yalnızca nesne konumunda durur ve daha resmi göründüğü için seçilir, oysa özne yerine geçemez. 'whose' kendisinden sonra bir isim ister ('whose tools'), 'which' ise insan için kullanılmaz.",
+    "tip": "Boşluktan sonra doğrudan çekimli bir fiil geliyorsa ilgi zamiri öznedir ve 'who' kullanılır; 'whom' asla özne olamaz."
+  },
+  {
+    "id": "relative-clauses-t2",
+    "type": "cloze",
+    "category": "Who vs Whom vs Whose",
+    "paragraph": "Our department pays a great deal for a monthly newsletter written by an analyst ____ reports on shipping costs are quoted by half the industry. Nobody at the office has ever met him.",
+    "options": [
+      "who",
+      "who's",
+      "whose",
+      "whom"
+    ],
+    "correctIndex": 2,
+    "explanation": "'reports' burada fiil değil isim: cümlenin yüklemi 'are quoted' ve çoğul bir özne arıyor. O ismin sahibi analist olduğu için sahiplik bildiren 'whose' gerekir. 'who' seçilirse 'who reports on shipping costs' bir fiil okuması olur ve 'are quoted' öznesiz kalır. 'who's' ise sahiplik değil, 'who is/has' kısaltmasıdır.",
+    "tip": "'whose' + isim yapısı sahiplik kurar; 'who's' her zaman 'who is' ya da 'who has' kısaltmasıdır ve ilgi cümlesinde sahiplik bildiremez."
+  },
+  {
+    "id": "relative-clauses-t3",
+    "type": "cloze",
+    "category": "Who vs Whom vs Whose",
+    "paragraph": "After a long argument about the cost, the council has approved the restoration of a 1930s cinema ____ ceiling collapsed during a storm two winters ago. Until then the hall had been rented out as a furniture depot.",
+    "options": [
+      "which",
+      "whose",
+      "of which",
+      "that"
+    ],
+    "correctIndex": 1,
+    "explanation": "Sahiplik yalnızca insanlara özgü değildir: tavan sinemaya aittir, bu yüzden cansız bir öncülde de 'whose' kullanılır. 'which' seçilirse 'cinema which ceiling collapsed' olur; 'which' kendisinden sonra bir isim alamaz ve cümle dağılır. 'of which' doğru bir yapıdır ama sırası farklıdır — 'the ceiling of which collapsed' denmesi gerekirdi.",
+    "tip": "Cansız bir varlığın sahipliğini de 'whose' kurar; aynı ilişki 'isim + of which' sırasıyla da yazılabilir, ama 'which' tek başına ismin önüne gelemez."
+  },
+  {
+    "id": "relative-clauses-t4",
+    "type": "cloze",
+    "category": "Who vs Whom vs Whose",
+    "paragraph": "This year's prize went to a drummer from Trabzon, ____ the jury had heard only once, on a recording made in a school gymnasium. Two of the judges later admitted that they had expected a pianist to win.",
+    "options": [
+      "that",
+      "which",
+      "whom",
+      "whose"
+    ],
+    "correctIndex": 2,
+    "explanation": "Virgülle ayrılmış açıklayıcı bir ilgi cümlesi var ve boşluk 'had heard' fiilinin nesnesi: kişi + nesne görevi 'whom' demektir. 'that' virgülden sonra hiçbir ilgi cümlesinde kullanılamaz; Türkçede virgülün böyle bir görevi olmadığı için en sık yapılan hata budur. 'which' insan için kullanılmaz, 'whose' ise ardından bir isim bekler.",
+    "tip": "Virgülden sonra 'that' asla gelmez; açıklayıcı ilgi cümlelerinde kişi için 'who/whom', cansız varlık için 'which' kullanılır."
+  },
+  {
+    "id": "relative-clauses-t5",
+    "type": "cloze",
+    "category": "Defining vs Non-defining: That vs Which",
+    "paragraph": "Kerem keeps eleven hives on a hillside above the village and knows each one by its temper. The oldest hive, ____ he inherited from his grandfather, still gives more honey than the four new ones together.",
+    "options": [
+      "that",
+      "which",
+      "who",
+      "what"
+    ],
+    "correctIndex": 1,
+    "explanation": "Hangi kovandan söz edildiği zaten belli ('the oldest hive'); virgüller arasındaki cümle yalnızca ek bilgi veriyor. Bu non-defining yapıda cansız bir öncül için tek seçenek 'which'tir. 'that' tanımlayıcı cümlelerde 'which' ile eş değer olsa da virgülden sonra kullanılamaz. 'what' ise ilgi zamiri değildir; öncülünü kendi içinde taşır.",
+    "tip": "Virgüller arasına giren ilgi cümlesi ek bilgi verir ve cansız öncül için yalnızca 'which' alır; 'that' virgülle birlikte kullanılamaz."
+  },
+  {
+    "id": "relative-clauses-t6",
+    "type": "cloze",
+    "category": "Defining vs Non-defining: That vs Which",
+    "paragraph": "Snow closed the mountain road the night before the race and the organisers slept in the sports hall. The volunteers and the timing equipment ____ were due from Ankara at midnight only reached the town after the start.",
+    "options": [
+      "which",
+      "that",
+      "who",
+      "whose"
+    ],
+    "correctIndex": 1,
+    "explanation": "Öncül hem insanları hem eşyayı kapsıyor: 'the volunteers and the timing equipment'. İkisini birlikte niteleyebilen tek ilgi zamiri 'that'tir; yan cümlenin çoğul yüklemi ('were due') de öncülün ikisi birden olduğunu gösterir. 'which' boşluğa en yakın isim ('equipment') yüzünden çok seçilir, ama yalnızca cansız varlıkları kapsar ve gönüllüleri dışarıda bırakır. 'who' ise tersini yapıp ekipmanı dışarıda bırakır.",
+    "tip": "Öncül insan ve nesneyi birlikte içeriyorsa ilgi zamiri 'that' olur; ilgi zamiri en yakın isme değil, öncülün tamamına bağlanır."
+  },
+  {
+    "id": "relative-clauses-t7",
+    "type": "cloze",
+    "category": "Defining vs Non-defining: That vs Which",
+    "paragraph": "The power failed at the bakery just as the ovens reached temperature, ____ meant that the whole morning's dough had to be thrown away. The owner reopened at four with nothing on the shelves but yesterday's bread.",
+    "options": [
+      "which",
+      "that",
+      "what",
+      "this"
+    ],
+    "correctIndex": 0,
+    "explanation": "Boşluktaki zamir tek bir isme değil, önündeki olayın tamamına (elektriğin kesilmesine) gönderme yapıyor; bunu yalnızca virgülden sonra gelen 'which' yapabilir. 'that' bir cümlenin bütününü öncül alamaz ve virgülden sonra zaten kullanılmaz. 'this' ise ilgi zamiri değildir: iki bağımsız cümleyi yalnızca virgülle birbirine yapıştırır.",
+    "tip": "Önceki cümlenin tamamına gönderme yapan ilgi cümlesi 'virgül + which' ile kurulur; 'that' ve 'what' bu görevi üstlenemez."
+  },
+  {
+    "id": "relative-clauses-t8",
+    "type": "cloze",
+    "category": "Defining vs Non-defining: That vs Which",
+    "paragraph": "The excavation on the riverbank ran for three summers and cost a small fortune in equipment alone. All ____ the team found in the lowest layer was a broken comb and a handful of iron nails.",
+    "options": [
+      "what",
+      "whose",
+      "that",
+      "which"
+    ],
+    "correctIndex": 2,
+    "explanation": "'All' öncülünden sonra ilgi zamiri olarak yalnızca 'that' kullanılır (ya da hiç kullanılmaz); 'all which' biçimi İngilizcede kurulmaz, çünkü 'that' ile 'which' denkliği yalnızca sıradan tanımlayıcı cümleler için geçerlidir. 'what' ise öncülünü kendi içinde taşır: 'what the team found' tek başına doğrudur ama önünde 'All' varken iki öncül üst üste gelir.",
+    "tip": "'all', 'everything' ve 'the only thing' gibi öncüllerden sonra 'which' değil 'that' gelir; 'what' zaten öncülü olan yapılarda kullanılamaz."
+  },
+  {
+    "id": "relative-clauses-t9",
+    "type": "cloze",
+    "category": "Where vs When vs Why vs Which",
+    "paragraph": "Ceramics is one of the few crafts ____ a complete beginner can see real progress within a month. By the third week most people have glazed something they are willing to keep at home.",
+    "options": [
+      "which",
+      "where",
+      "when",
+      "why"
+    ],
+    "correctIndex": 1,
+    "explanation": "Boşluktan sonraki cümle eksiksiz: öznesi ('a beginner') ve nesnesi ('real progress') yerinde. Demek ki boşluk bir ismin değil, 'in this craft' gibi bir zarf öbeğinin yerini tutuyor; bunu 'where' karşılar. 'which' ancak yan cümlede eksik bir özne ya da nesne olsaydı kullanılabilirdi. Öncül somut bir mekân olmasa da bir alan bildirdiği için 'where' alabilir.",
+    "tip": "Yan cümlede özne ve nesne tamsa boşluk bir zarfın yerine geçer: alan için 'where', zaman için 'when'; 'which' yalnızca eksik bir isim yerini doldurur."
+  },
+  {
+    "id": "relative-clauses-t10",
+    "type": "cloze",
+    "category": "Where vs When vs Why vs Which",
+    "paragraph": "The new observatory stands at the end of a dirt road above the tree line, two hours from the nearest town. It is a building ____ the foundation put up in a single summer, and the only one on the ridge with heating.",
+    "options": [
+      "where",
+      "whose",
+      "which",
+      "when"
+    ],
+    "correctIndex": 2,
+    "explanation": "Öncül bir bina, yani bir yer; ama yan cümlede 'put up' fiilinin nesnesi eksik, dolayısıyla eksik olan bir isimdir ve boşluk 'which' ister. 'where' seçilirse vakfın ne diktiği hiç söylenmemiş olur — yer bildiren bir öncül tek başına 'where' gerektirmez. 'whose' ise kendisinden sonra bir isim bekler.",
+    "tip": "Yer bildiren bir öncül otomatik olarak 'where' almaz: yan cümlede özne ya da nesne eksikse 'which' kullanılır."
+  },
+  {
+    "id": "relative-clauses-t11",
+    "type": "cloze",
+    "category": "Where vs When vs Why vs Which",
+    "paragraph": "The village still talks about the summer ____ the reservoir dried up completely. Children walked out across the cracked bed and found the roof of the old mill standing in the middle of it.",
+    "options": [
+      "what",
+      "when",
+      "where",
+      "which"
+    ],
+    "correctIndex": 1,
+    "explanation": "Öncül 'the summer', yani bir zaman dilimi, ve yan cümle eksiksizdir; bu yüzden zaman zarfının yerini tutan 'when' gerekir. Baraj bir mekân gibi durduğu için 'where' cazip gelir, ama ilgi zamiri barajı değil, hemen önündeki yazı niteler. 'which' ise ancak 'the reservoir dried up' cümlesinde eksik bir öge olsaydı kullanılabilirdi.",
+    "tip": "İlgi zamiri, boşluğun hemen solundaki öncüle bağlanır; cümlenin başka bir yerindeki yer ya da zaman sözcüğüne değil."
+  },
+  {
+    "id": "relative-clauses-t12",
+    "type": "cloze",
+    "category": "Where vs When vs Why vs Which",
+    "paragraph": "The ferry service was suspended for eleven days last November, and the company's statement never gave the real reason ____ the crossings stopped. Passengers learned about the failed engine inspection from a local newspaper.",
+    "options": [
+      "where",
+      "what",
+      "why",
+      "when"
+    ],
+    "correctIndex": 2,
+    "explanation": "Öncül 'the real reason' ve yan cümle eksiksiz; sebep bildiren bir öncülün ilgi zarfı 'why'dır. 'when' cazip görünür çünkü paragrafta 'eleven days' ve 'last November' geçiyor — ama ilgi zarfı bu zaman ifadelerine değil, hemen önündeki 'reason' sözcüğüne bağlanır. 'where' de aynı hatayı yapıp seferleri bir güzergâh gibi okur.",
+    "tip": "'reason' öncülünden sonra sebep ilgi zarfı 'why' gelir; paragraftaki zaman ve yer ifadeleri değil, öncülün kendisi seçimi belirler."
+  },
+  {
+    "id": "relative-clauses-t13",
+    "type": "cloze",
+    "category": "Preposition + Relative Pronoun: In Which / For Whom / Of Which",
+    "paragraph": "The composer dedicated her last sonata to a young pianist she had never met and never heard play. He is the one performer ____ she wrote a full cadenza, and he learned of the dedication from a radio broadcast.",
+    "options": [
+      "for whom",
+      "by whom",
+      "for who",
+      "for which"
+    ],
+    "correctIndex": 0,
+    "explanation": "Kadansı besteci, piyanist için yazıyor; anlam 'for' edatını gerektiriyor ve edattan sonra kişi için tek doğru biçim 'whom'dur. 'by whom' parçayı piyanistin yazdığı anlamına gelirdi, oysa yazan kişi bestecidir ('she wrote'). 'for who' ise hiçbir zaman kurulmaz: bir edattan sonra 'who' gelemez.",
+    "tip": "Edat öne alındığında ardından kişi için 'whom', cansız varlık için 'which' gelir; edatı ise fiilin anlamı seçer, alışkanlık değil."
+  },
+  {
+    "id": "relative-clauses-t14",
+    "type": "cloze",
+    "category": "Preposition + Relative Pronoun: In Which / For Whom / Of Which",
+    "paragraph": "The neighbourhood collected money for a small emergency fund in the weeks after the fire, the purpose ____ was never written down anywhere. Fifteen years later nobody can agree whether it was meant for repairs or for the families.",
+    "options": [
+      "of whom",
+      "whose",
+      "of which",
+      "of it"
+    ],
+    "correctIndex": 2,
+    "explanation": "Yapı 'the purpose of the fund' ilişkisini ilgi cümlesine taşıyor: isim + 'of which'. 'whose' aynı sahipliği kurar ama sırası terstir — 'a fund whose purpose was never written down' doğru olurdu; boşluğun önünde 'the purpose' zaten yazıldığı için buraya sığmaz. 'of it' ise ilgi zamiri değildir ve iki bağımsız cümleyi yalnızca virgülle birbirine bağlar.",
+    "tip": "'isim + of which' ile 'whose + isim' aynı sahiplik ilişkisini kurar; hangisinin kullanılacağını öncülden sonra ismin yazılıp yazılmadığı belirler."
+  },
+  {
+    "id": "relative-clauses-t15",
+    "type": "cloze",
+    "category": "Preposition + Relative Pronoun: In Which / For Whom / Of Which",
+    "paragraph": "She sat for eleven winters in the same crowded staff room as a history teacher with ____ she had almost nothing in common. They still exchange long letters every December, mostly about their grandchildren.",
+    "options": [
+      "who",
+      "whom",
+      "which",
+      "that"
+    ],
+    "correctIndex": 1,
+    "explanation": "Boşluk bir edatın ('with') hemen ardında ve öncül bir insan; bu konumda tek doğru biçim 'whom'dur. 'who' günlük İngilizcede edat cümlenin sonunda kaldığında duyulur ('who she had nothing in common with'), ama edat öne alındığında kullanılamaz. 'that' ise hiçbir edattan sonra gelmez, 'which' de insan için kullanılmaz.",
+    "tip": "Bir edat ilgi zamirinin önüne geçtiğinde ardından yalnızca 'whom' ya da 'which' gelebilir; 'who' ve 'that' bu konumda kullanılamaz."
+  },
+  {
+    "id": "relative-clauses-t16",
+    "type": "cloze",
+    "category": "Preposition + Relative Pronoun: In Which / For Whom / Of Which",
+    "paragraph": "Nobody disputes that the glacier is shrinking; the argument is about the rate ____ it is losing ice. Two teams measured the same tongue a decade apart and published figures that differ by half.",
+    "options": [
+      "which",
+      "at which",
+      "where",
+      "that"
+    ],
+    "correctIndex": 1,
+    "explanation": "Düz cümle 'it is losing ice at that rate' biçimindedir, yani 'at' edatı zorunludur ve ilgi zamirinin önüne geçerek 'at which' olur. 'which' seçilirse edat büsbütün kaybolur ve öncülle yan cümle arasındaki ölçü ilişkisi kopar — Türkçede bu ilişki ekle taşındığı için edatı düşürmek çok kolaydır. 'where' ise bir yer bildirir; 'rate' ölçülen bir hızdır.",
+    "tip": "İlgi cümlesini kurmadan önce cümleyi düz yaz: öncül hangi edatla kullanılıyorsa o edat ilgi zamirinin önüne geçer ('at which', 'for which', 'from which')."
+  },
+  {
+    "id": "relative-clauses-t17",
+    "type": "cloze",
+    "category": "Reduced Relative Clauses: -ing vs -ed",
+    "paragraph": "Half of the folders stacked on her desk turned out to be duplicates of one another. The documents ____ to the ministry in March were returned unopened, and nobody in the office could explain the missing stamp.",
+    "options": [
+      "sending",
+      "sent",
+      "were sent",
+      "had sent"
+    ],
+    "correctIndex": 1,
+    "explanation": "Belgeler gönderen değil, gönderilen taraftır; edilgen bir ilgi cümlesi kısaltıldığında geriye yalnızca fiilin üçüncü hâli ('sent') kalır. 'sending' etken okunur ve belgelerin bir şey gönderdiğini söyler. 'were sent' ise cümleye ikinci bir çekimli fiil ekler: asıl yüklem zaten 'were returned'dır, kısaltmada yardımcı fiil düşmek zorundadır.",
+    "tip": "Kısaltmada özne eylemi yapıyorsa '-ing', eylemden etkileniyorsa fiilin üçüncü hâli kullanılır; 'was/were' gibi yardımcı fiiller düşer."
+  },
+  {
+    "id": "relative-clauses-t18",
+    "type": "cloze",
+    "category": "Reduced Relative Clauses: -ing vs -ed",
+    "paragraph": "By eight in the morning the corridor outside the clinic was already full and there were not enough chairs. The families ____ for news of the night shift's patients had been there since before sunrise.",
+    "options": [
+      "waited",
+      "having waited",
+      "were waiting",
+      "waiting"
+    ],
+    "correctIndex": 3,
+    "explanation": "Aileler bekleyen taraftır, yani eylemi kendileri yapar; etken kısaltma '-ing' biçimini alır. 'waited' geçmiş zaman düşünülerek seçilir, oysa üçüncü hâl kısaltmada edilgen anlam verir ve ailelerin beklendiğini söylemiş olur. 'were waiting' ise cümleye ikinci bir çekimli fiil ekler; asıl yüklem 'had been there'dir.",
+    "tip": "Kısaltmayı zaman değil çatı belirler: olay geçmişte geçse bile eylemi yapan özne '-ing' ile kısaltılır."
+  },
+  {
+    "id": "relative-clauses-t19",
+    "type": "cloze",
+    "category": "Reduced Relative Clauses: -ing vs -ed",
+    "paragraph": "Two whole streets of the old quarter were put up by a textile company ____ nearly four hundred weavers at the time. Only the gatehouse and a single chimney are still standing today.",
+    "options": [
+      "employed",
+      "employing",
+      "was employing",
+      "to employ"
+    ],
+    "correctIndex": 1,
+    "explanation": "Kısaltmayı çatı belirler: dokumacıları işe alan taraf şirkettir, bu yüzden etken '-ing' biçimi gelir. 'employed' seçilirse şirketin kendisinin işe alındığı okunur; bu fiil çoğunlukla edilgen duyulduğu için ('the weavers employed by the company') tuzak güçlüdür. 'was employing' ise cümleye ikinci bir çekimli fiil ekleyerek yapıyı bozar.",
+    "tip": "Kısaltmada soruyu tersten sor: öncül eylemi yapıyor mu ('-ing'), yoksa eylem ona mı yapılıyor (üçüncü hâl)?"
+  },
+  {
+    "id": "relative-clauses-t20",
+    "type": "cloze",
+    "category": "Reduced Relative Clauses: -ing vs -ed",
+    "paragraph": "The choir gave two concerts in the cathedral last spring, with a harpsichord borrowed from a museum. The money ____ that weekend paid for a new roof over the vestry, and there was enough left to tune the organ.",
+    "options": [
+      "rising",
+      "raising",
+      "raised",
+      "was raised"
+    ],
+    "correctIndex": 2,
+    "explanation": "Parayı toplayan koro, toplanan ise paradır; bu edilgen ilişki fiilin üçüncü hâlini ('raised') gerektirir. 'raising' etken okunur ve paranın bir şeyi yükselttiğini söyler. 'rising' ise geçişsiz bir fiildir: kendiliğinden yükselen şeyler için kullanılır, nesne almaz ve edilgen kurulamaz, dolayısıyla bağış toplamayı anlatamaz.",
+    "tip": "'raise' bir nesneyi yükseltir ya da toplar ve edilgen olabilir; 'rise' geçişsizdir, bu yüzden edilgen kısaltmada yer alamaz."
+  },
+  {
+    "id": "relative-clauses-t21",
+    "type": "cloze",
+    "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom",
+    "paragraph": "The seed bank at the head of the valley holds about nine thousand samples in unheated store rooms, ____ have not been tested for germination since the 1970s. The staff are working through the oldest boxes first.",
+    "options": [
+      "some of them",
+      "some of which",
+      "some of whom",
+      "some of what"
+    ],
+    "correctIndex": 1,
+    "explanation": "Virgülden sonra yeni bir cümle değil, aynı cümleye bağlı bir ilgi cümlesi kuruluyor; niceleyiciden sonra cansız öncül için 'of which' gelir. 'some of them' bir ilgi zamiri içermez ve iki bağımsız cümleyi yalnızca virgülle birleştirir — Türkçede doğal olan bu bağlantı İngilizcede hatalıdır. 'some of whom' ise insanlar için kullanılır, oysa öncül tohum örnekleridir.",
+    "tip": "Virgülden sonra 'some/many/none of' kalıbı 'which' (cansız) ya da 'whom' (kişi) ile sürer; 'of them' bir cümleyi ötekine bağlayamaz."
+  },
+  {
+    "id": "relative-clauses-t22",
+    "type": "cloze",
+    "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom",
+    "paragraph": "The dairy at the edge of Kars was started by two sisters, ____ had learned the trade in an Alpine creamery before coming home. The younger one still turns the wheels in the ageing cellar herself.",
+    "options": [
+      "both of which",
+      "both of who",
+      "both of whom",
+      "both of them"
+    ],
+    "correctIndex": 2,
+    "explanation": "Öncül iki kişidir ('two sisters'), bu yüzden niceleyiciden sonra kişi biçimi gelir ve yapı 'both of whom' olur. 'both of who' hiçbir zaman kurulmaz: 'of' bir edattır ve edattan sonra 'who' gelemez. 'both of them' ise ilgi zamiri değildir; virgülden sonra bağımsız yeni bir cümle başlatır ve iki cümle bağlaçsız kalır.",
+    "tip": "'of' bir edattır: ardından kişi için her zaman 'whom', cansız varlık için 'which' gelir — 'of who' ve 'of that' biçimleri yoktur."
+  },
+  {
+    "id": "relative-clauses-t23",
+    "type": "cloze",
+    "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom",
+    "paragraph": "The council spent two years and a good deal of money on three separate tram proposals, ____ survived the first public meeting. A fourth plan, drawn up by a student for a term project, is now being discussed seriously.",
+    "options": [
+      "none of which",
+      "neither of which",
+      "none of whom",
+      "none of them"
+    ],
+    "correctIndex": 0,
+    "explanation": "Ortada üç öneri var ve hiçbiri ayakta kalmamış; ikiden fazla öge için 'none' kullanılır. 'neither of which' yalnızca tam olarak iki seçenek varken doğrudur, bu yüzden 'three separate tram proposals' ile kurulamaz — sayıyı veren bilgi boşluğun hemen önünde, virgülden önce duruyor. 'none of them' ise ilgi cümlesi kurmaz; virgülden sonra öznesi olan yeni bir cümle başlatır.",
+    "tip": "'neither' tam olarak iki öge için, 'none' ikiden fazlası için kullanılır; ikisi de ilgi cümlesinde 'of which / of whom' ile sürer."
+  },
+  {
+    "id": "relative-clauses-t24",
+    "type": "cloze",
+    "category": "Quantifier + Relative Pronoun: Some Of Which / All Of Whom",
+    "paragraph": "The hiking club called off its winter walk when only nine people signed up by the deadline, ____ had already paid the coach fare in advance. The treasurer needed a fortnight to arrange the refunds.",
+    "options": [
+      "all of which",
+      "all of whose",
+      "all of them",
+      "all of whom"
+    ],
+    "correctIndex": 3,
+    "explanation": "Öncül insanlardır ('nine people'), bu yüzden niceleyiciden sonra 'of whom' gelir. 'all of which' yalnızca cansız varlıklar için kullanılır ve kayıt olan kişileri karşılayamaz. 'all of them' ise virgülden sonra bağımsız bir cümle başlatır: Türkçede 'hepsi de parasını ödemişti' diye virgülle bağlanabilir, ama İngilizcede bu bağlantı için bir ilgi zamiri gerekir.",
+    "tip": "İki cümleyi bir niceleyiciyle bağlarken 'of them' değil 'of whom / of which' kullanılır; 'of them' ancak yeni cümle 'and' ile başlarsa doğru olur."
+  }
+]

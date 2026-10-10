@@ -1,0 +1,131 @@
+/* One continuous thread, a small local grab target, and native scroll state.
+   The 44px interaction area never becomes a visible panel or thick control. */
+[data-scroll-rail-enhanced] { scrollbar-width: none; }
+[data-scroll-rail-enhanced]::-webkit-scrollbar { display: none; }
+.scroll-rail {
+  position: fixed;
+  z-index: 8;
+  top: var(--rail-top, 25vh);
+  right: var(--rail-right, 8px);
+  width: 44px;
+  height: var(--rail-height, 240px);
+  pointer-events: none;
+  color: var(--accent-text);
+  contain: layout style;
+}
+.scroll-rail[hidden] { display: none; }
+.scroll-rail__control {
+  position: relative;
+  width: 44px;
+  height: 100%;
+  outline: none;
+}
+.scroll-rail[data-interactive="true"] .scroll-rail__control {
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+}
+.scroll-rail__thread {
+  position: absolute;
+  inset: 0;
+  width: 44px;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.scroll-rail__track {
+  fill: none;
+  stroke: var(--ink-2);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  opacity: .65;
+  transition: stroke 380ms var(--ease-standard), opacity 380ms var(--ease-standard);
+}
+.scroll-rail__thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  pointer-events: auto;
+  touch-action: none;
+  /* The outer target follows native scroll immediately. Only its art bends. */
+}
+.scroll-rail__grip {
+  position: absolute;
+  top: 3px;
+  left: calc(var(--rail-axis, 22px) - 2.5px);
+  width: 5px;
+  height: 38px;
+  border-radius: 8px;
+  background: linear-gradient(180deg in srgb, var(--accent-text), var(--secondary));
+  transform-origin: center;
+  pointer-events: none;
+  transition: width 340ms var(--ease-standard), margin-left 340ms var(--ease-standard),
+    height 340ms var(--ease-standard), top 340ms var(--ease-standard), box-shadow 420ms var(--ease-standard);
+}
+.scroll-rail__marks { position: absolute; inset: 0; pointer-events: none; }
+.scroll-rail__mark {
+  position: absolute;
+  left: calc(var(--rail-axis, 22px) - 2px);
+  width: 4px;
+  height: 4px;
+  border: 1px solid var(--ink-2);
+  border-radius: 50%;
+  background: var(--page);
+  transform: translateY(-50%);
+  transition: background-color 380ms var(--ease-standard), border-color 380ms var(--ease-standard), opacity 380ms var(--ease-standard);
+}
+.scroll-rail__mark[data-current="true"] { background: var(--secondary); border-color: var(--secondary); }
+.scroll-rail[data-scrolling="true"] .scroll-rail__grip,
+.scroll-rail[data-interactive="true"]:is(:hover, :focus-within) .scroll-rail__grip {
+  width: 6px;
+  margin-left: -.5px;
+}
+.scroll-rail[data-interactive="true"][data-pressed="true"] .scroll-rail__grip,
+.scroll-rail[data-interactive="true"][data-dragging="true"] .scroll-rail__grip {
+  width: 8px;
+  margin-left: -1.5px;
+  top: 5px;
+  height: 34px;
+  box-shadow: 0 0 9px color-mix(in srgb, var(--accent-text) 18%, transparent);
+}
+.scroll-rail[data-dragging="true"] .scroll-rail__control { cursor: grabbing; }
+.scroll-rail[data-pressed="true"] .scroll-rail__track { stroke: var(--accent-text); opacity: .95; }
+.scroll-rail[data-phase="jump"] .scroll-rail__grip { box-shadow: 0 0 10px color-mix(in srgb, var(--accent-text) 26%, transparent); }
+.scroll-rail[data-phase="jump"][data-action="stage"] .scroll-rail__track { stroke: var(--secondary); opacity: .95; }
+.scroll-rail:not([data-input="pointer"]) .scroll-rail__control:focus-visible .scroll-rail__track { stroke: var(--focus); opacity: 1; stroke-width: 2.5; }
+.scroll-rail:not([data-input="pointer"]) .scroll-rail__control:focus-visible .scroll-rail__grip { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+/* At narrow widths only the thumb catches input at rest. Once tapped, a slim
+   16px edge strip accepts destinations. No filled well or wide invisible layer
+   sits over the reading column, even while the thread is pulled inward. */
+.scroll-rail[data-compact="true"] .scroll-rail__control { pointer-events: none; }
+.scroll-rail[data-compact="true"] .scroll-rail__control::after {
+  content: "";
+  position: absolute;
+  inset: 0 -4px 0 auto;
+  width: 16px;
+  pointer-events: none;
+  touch-action: none;
+}
+.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__control::after { pointer-events: auto; }
+.scroll-rail[data-compact="true"] .scroll-rail__marks { opacity: 0; transition: opacity 380ms var(--ease-standard); }
+.scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__marks { opacity: 1; }
+.scroll-rail[data-interactive="false"] { display: none; }
+:root[data-motion="off"] .scroll-rail *,
+:root[data-motion="off"] .scroll-rail *::before,
+:root[data-motion="off"] .scroll-rail *::after,
+:root[data-page-visible="false"] .scroll-rail *,
+:root[data-page-visible="false"] .scroll-rail *::before,
+:root[data-page-visible="false"] .scroll-rail *::after { animation: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .scroll-rail *, .scroll-rail *::before, .scroll-rail *::after { animation: none !important; transition: none !important; }
+}
+@media (forced-colors: active) {
+  html, .shell__scroll, [data-scroll-rail-enhanced] { scrollbar-width: auto; scrollbar-color: auto; }
+  .shell__scroll::-webkit-scrollbar, [data-scroll-rail-enhanced]::-webkit-scrollbar { display: block; width: auto; }
+  .scroll-rail { display: none; }
+}

@@ -1,0 +1,167 @@
+/* Interaction presentation · ADR 009. Input, focus and state always commit now.
+   Finite event effects live in js/interactions.js; CSS owns ordinary controls. */
+:root { --d-flow: 1100ms; --d-release: 380ms; }
+.brand-mark--responsive .brand-mark__letters--full { display: none; }
+.brand-mark--full { font-size: 1.75rem; letter-spacing: -.055em; }
+.brand-mark__dot { transition: color var(--d-control) var(--ease-standard); }
+/* Each cue identifies a useful affordance; none changes a control's layout. */
+.btn, .choice, .listbox__trigger, .switch {
+  transition: background-color var(--d-reveal) var(--ease-standard),
+    border-color var(--d-reveal) var(--ease-standard),
+    box-shadow var(--d-reveal) var(--ease-standard),
+    transform var(--d-control) var(--ease-standard);
+}
+.btn .icon, .row__trail .icon, .listbox__chevron {
+  transition: transform var(--d-reveal) var(--ease-standard), color var(--d-reveal) var(--ease-standard);
+}
+.nav__indicator { transition: transform var(--d-route) var(--ease-standard); }
+:root[data-motion="on"] .nav__item[aria-current] [data-icon] { animation: selected-symbol var(--d-scene) var(--ease-standard) both; }
+@keyframes selected-symbol {
+  0% { transform: translateY(3px) scale(.82); }
+  65% { transform: translateY(-1px) scale(1.06); }
+  100% { transform: translateY(0) scale(1); }
+}
+.switch__thumb { transition: transform var(--d-route) var(--ease-standard), background-color var(--d-reveal) var(--ease-standard); }
+.listbox__chevron { transform-origin: center; }
+.listbox__trigger[aria-expanded="true"] .listbox__chevron { transform: rotate(180deg); }
+.listbox__menu[data-side="top"] { transform-origin: center bottom; }
+.listbox__menu[data-side="bottom"] { transform-origin: center top; }
+.listbox__menu { padding: 6px; border-radius: 12px; }
+.listbox__option { gap: 16px; padding-inline: 12px; }
+.listbox__option-label { min-width: 0; flex: 1; }
+.listbox__option-mark { display: inline-flex; justify-content: center; align-items: center; width: 20px; flex: 0 0 20px; color: var(--accent-text); }
+.listbox__option-mark svg { transform-origin: center; }
+.dialog__action-label { display: inline-flex; gap: inherit; align-items: center; justify-content: center; pointer-events: none; }
+.listbox__option[aria-selected="true"] { background: var(--accent-tint); color: var(--ink); }
+.listbox__option--active { outline-offset: -3px; }
+/* Keep geometry steady and separate the actual result from the shortcut key. */
+.option--ok .option__key, .option--no .option__key { background: transparent; border-radius: 0; color: var(--ink-2); }
+.option--ok .option__mark, .feedback--ok .feedback__verdict { color: var(--ok); }
+.option--no .option__mark, .feedback--no .feedback__verdict { color: var(--no); }
+.option__mark, .feedback__verdict-mark { transform-origin: center; }
+.feedback { animation: none; }
+.feedback__verdict-mark { flex-shrink: 0; }
+/* Answering replaces the options' DOM. A finite color cue bridges the neutral
+   surface to the already committed result without moving the answer or text. */
+:root[data-motion="on"] .option--ok { animation: answer-confirm var(--d-reveal) var(--ease-standard) both; }
+:root[data-motion="on"] .option--no { animation: answer-retry var(--d-reveal) var(--ease-standard) both; }
+@keyframes answer-confirm {
+  from { background-color: var(--card); border-color: var(--edge); }
+  to { background-color: var(--ok-tint); border-color: var(--ok-edge); }
+}
+@keyframes answer-retry {
+  from { background-color: var(--card); border-color: var(--edge); }
+  to { background-color: var(--no-tint); border-color: var(--no-edge); }
+}
+/* Read the existing passage throughout feedback. Only new marks reveal. */
+:root[data-motion="on"] [data-answer-state] { animation: verdict-mark var(--d-scene) var(--ease-standard) both; }
+@keyframes verdict-mark {
+  0% { transform: scale(.72) rotate(-8deg); }
+  62% { transform: scale(1.1) rotate(2deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+/* Question arrival uses the same cancellable registry as route entry. */
+.quiz-step--enter { animation: none; }
+/* The focused reader has its own entrance: no parent/child double fade. */
+#view-egitim.animate-in:has(#lesson-reader:not([hidden])) { animation: none; }
+/* Stable text, directional arrows, no hover-only information or moving hitbox. */
+@media (hover: hover) and (pointer: fine) {
+  :root[data-motion="on"] .btn:hover [data-icon="arrow-right"],
+  :root[data-motion="on"] .btn:hover [data-icon="chevron-right"],
+    :root[data-motion="on"] .row:is(a,button):hover .row__trail .icon { transform: translateX(4px); }
+  :root[data-motion="on"] .btn:hover [data-icon="arrow-left"] { transform: translateX(-2px); }
+  .row:is(a,button):hover .row__title { color: var(--accent-text); }
+  .btn--primary:hover { box-shadow: inset 0 1px 0 #ffffff1a, 0 3px 12px #00000028; }
+  .listbox__option:hover { background: var(--card); }
+}
+/* A deliberate release response on touch as well as mouse. Reading and answer
+   hitboxes do not scale; only independent controls and their supporting glyphs. */
+/* Press follows a stationary outer target. The inner face visibly compresses
+   and the shared release continues for 380 ms after a quick tap. */
+.control-face {
+  display: inline-flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  align-items: inherit;
+  justify-content: inherit;
+  flex-direction: inherit;
+  gap: inherit;
+  pointer-events: none;
+  transform-origin: center;
+  transition: transform 120ms cubic-bezier(.2,.65,.25,1);
+}
+.nav__item > .control-face { align-items: center; }
+summary > .control-face { align-items: center; }
+:root[data-motion="on"] :is(.btn, .about-button, .nav__item, .choice, .tile, .row, .listbox__trigger):active { transform: none; }
+:root[data-motion="on"] [data-pressing="true"] > :is(.control-face, .control-press-part, .row__main, .row__trail, .tile__head, .tile__sub, .tile__meta, .option__key, .icon) {
+  transform: scale(var(--press-depth, .945)) translateY(1px);
+  transition: transform 120ms cubic-bezier(.2,.65,.25,1);
+}
+:root[data-motion="on"] :is(.btn, .about-button, .tile, .row, .listbox__trigger)[data-pressing="true"] {
+  box-shadow: inset 0 0 0 1px var(--accent-text), inset 0 2px 8px #00000015;
+}
+:root[data-motion="on"] :is(.btn--primary, .about-button--primary)[data-pressing="true"] {
+  box-shadow: inset 0 2px 8px #00000025;
+}
+:root[data-motion="off"] .control-face { transform: none; }
+/* A popup anchor must keep its rectangle during release, too. */
+:root[data-motion="on"] .listbox__trigger:active { transform: none; background: var(--accent-tint); }
+:root[data-motion="on"] #index-list .tile:active .tile__title { transform: translateX(3px); }
+#index-list .tile__title { transition: transform var(--d-control) var(--ease-standard), color var(--d-reveal) var(--ease-standard); }
+:root[data-motion="on"] .row:is(a,button):active .row__trail .icon { transform: translateX(5px); }
+.lesson-pretest__summary, .feedback summary { transition: color var(--d-reveal) var(--ease-standard); }
+.lesson-end-heading { gap: 14px; }
+.lesson-end-signature {
+  width: 64px; height: 40px; flex: 0 0 64px; overflow: visible;
+  fill: none; stroke: var(--accent-text); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; transform-origin: center;
+}
+.lesson-end-signature [data-completion-part="page"] { stroke: var(--secondary); }
+.block--end[data-completion-state="pending"] [data-completion-part="check"] { opacity: 0; }
+.score__eyebrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.score__mode { min-width: 0; flex: 1; color: var(--secondary); }
+.score__signature { width: 112px; height: 42px; flex: 0 0 112px; color: var(--accent-text); overflow: visible; }
+.score__signature-node { transform-box: fill-box; transform-origin: center; }
+:root[data-motion] .score[data-choreographed] .metric__track { animation: none; }
+@media (max-width: 359px) {
+  .score__signature { width: 96px; height: 36px; flex-basis: 96px; }
+}
+@media (min-width: 768px) {
+  .brand-mark--responsive .brand-mark__letters--compact { display: none; }
+  .brand-mark--responsive .brand-mark__letters--full { display: inline; }
+  .bar__lead .brand-mark--responsive { font-size: 1.375rem; letter-spacing: -.055em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+:root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+
+.settings-link__icon { display: inline-flex; flex: 0 0 20px; color: var(--secondary); }
+/* Line/track updates remain local and do not move adjacent text. */
+.bar__progress .progress__fill { transition: width var(--d-control) linear; }
+body.is-reading .bar__progress .progress__fill { transition: none; }
+/* A reduced-motion system label must reflow at 200% text, too. */
+.motion-control:not(.motion-control--compact) { max-width: 100%; min-width: 0; white-space: normal; }
+.motion-control__label { min-width: 0; white-space: normal; overflow-wrap: anywhere; text-align: start; }
+@media (forced-colors: active) {
+  .feedback .feedback__verdict > .feedback__verdict-mark { color: CanvasText; stroke: CanvasText; }
+}
+
+/* ---- v0.76 · no cross-document view transition ----
+   Tried and removed: while a navigation's snapshot animates, Chromium sends
+   every pointer event to the root element, so a tap on a quiz option in the
+   first ~280 ms after arrival was lost (tests/v073_review_browser.py). The
+   aurora is in each page's first paint instead, with one wall clock
+   (js/motion.js), and each page composes its own entrance. */
+
+/* A modal's backdrop arrives with its panel rather than snapping in. */
+:root[data-motion="on"] dialog[open]::backdrop { animation: backdrop-in 280ms cubic-bezier(0, 0, .2, 1) both; }
+@keyframes backdrop-in { from { opacity: 0; } }
+
+/* The report action's words start on the explanation's left edge; only its
+   padded touch target extends beyond the column. */
+.feedback .feedback__report { padding-inline: 8px; margin-inline-start: -8px; }
+/* See clipSideways in js/interactions.js. */
+.shell__scroll[data-composing="sideways"] > .page { overflow-x: clip; }

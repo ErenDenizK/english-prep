@@ -1,27 +1,94 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Results — English Prep Practice</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#141216" media="(display-mode: standalone)" />
+  <title>Sonuç — English Prep</title>
+  <!-- Applied before the stylesheet, because the alternative is a flash of
+       the wrong theme on every cold start. Duplicated in all three pages:
+       there is no build step, and an external file would be a second
+       round trip in front of first paint. Keep the three copies
+       identical. -->
+  <script>
+    var t = "dark";
+    try { t = localStorage.getItem("englishPrep.theme"); } catch (e) {}
+    if (t !== "light" && t !== "system") t = "dark";
+    if (t === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", t);
+    var resolved = t === "system"
+      ? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark")
+      : t;
+    document.querySelector('meta[name="theme-color"]').content =
+      resolved === "light" ? "#fbf7fa" : "#141216";
+    document.querySelector('meta[name="color-scheme"]').content = resolved;
+  </script>
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <!-- iOS ignores the manifest's icons for Add to Home Screen and wants
+       this one. Without it the home-screen icon is a screenshot of the
+       page, which is what it was. -->
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <!-- This app is distributed by pasting a URL into a group chat, so the
+       preview card is the first thing every one of its users will ever see
+       of it. It was blank. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="English Prep" />
+  <meta property="og:locale" content="tr_TR" />
+  <meta property="og:title" content="English Prep — Sonuç" />
+  <meta property="og:description" content="Üniversite İngilizce hazırlık yeterlik sınavı için ücretsiz eğitim ve test uygulaması." />
+  <meta property="og:url" content="https://erendenizk.github.io/english-prep/" />
+  <meta property="og:image" content="https://erendenizk.github.io/english-prep/icons/social-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="English Prep — üniversite İngilizce yeterlik sınavı için ders ve test." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/editorial.css" />
+  <link rel="stylesheet" href="css/interactions.css" />
+  <link rel="stylesheet" href="css/composition.css" />
+  <link rel="stylesheet" href="css/scroll-rail.css" />
+  <link rel="stylesheet" href="css/share.css" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/InterVariable.woff2" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header__inner">
-      <div>
-        <h1><a href="index.html">English Prep Practice</a></h1>
-      </div>
+  <!-- The atmosphere is part of the first paint, not added by a module a
+       moment later: a page without it flashed flat black on every load.
+       js/motion.js adopts this node; its wall clock keeps the aurora's
+       phase continuous from one page to the next. -->
+  <div class="ambient" aria-hidden="true"><span class="ambient__field ambient__field--north"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span><span class="ambient__field ambient__field--east"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span><span class="ambient__field ambient__field--south"><span class="ambient__pigment ambient__pigment--cherry"></span><span class="ambient__pigment ambient__pigment--iris"></span><span class="ambient__pigment ambient__pigment--lagoon"></span></span></div>
+  <script>document.querySelector(".ambient").style.setProperty("--aura-clock", Date.now() % 86400000 + "ms");</script>
+  <!-- bar · body · foot, like every screen. The bar carries the way out
+       and the count; the foot the forward action; answering a question
+       never moves either. -->
+  <header class="bar glass" id="shell-header">
+    <div class="bar__inner">
+      <div class="bar__lead"></div>
+      <h1 class="bar__title"></h1>
+      <div class="bar__trail"></div>
     </div>
+    <div class="bar__progress" hidden><div class="progress__fill"></div></div>
   </header>
-
-  <main class="page">
-    <div id="results-container">
-      <p class="empty-state">Loading results&hellip;</p>
+  <main class="shell__scroll" id="shell-scroll">
+    <div class="page stack stack--loose" id="results-container">
+      <p class="t-meta">Sonuçlar yükleniyor&hellip;</p>
     </div>
   </main>
 
+  <footer class="shell__bar glass" id="results-bar" hidden>
+    <div class="shell__bar-inner"></div>
+  </footer>
+
+  <p class="visually-hidden" id="live-region" role="status"></p>
+
+  <script type="module">
+    import { initTheme } from "./js/theme.js";
+    initTheme();
+  </script>
   <script type="module" src="js/results.js"></script>
 </body>
 </html>

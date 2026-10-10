@@ -1,0 +1,94 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 2180,
+      "title": "Ders okuyucu · Koyu"
+    },
+    {
+      "file": "IndexDark.dc.html",
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 1180,
+      "title": "Eğitim indeksi · Koyu"
+    },
+    {
+      "file": "HomeDark.dc.html",
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 1000,
+      "title": "Ana ekran · Koyu"
+    },
+    {
+      "file": "QuizDark.dc.html",
+      "x": 1410,
+      "y": 0,
+      "w": 390,
+      "h": 940,
+      "title": "Test sorusu · Koyu"
+    },
+    {
+      "file": "LessonLight.dc.html",
+      "x": 0,
+      "y": 2400,
+      "w": 390,
+      "h": 2180,
+      "title": "Ders okuyucu · Açık"
+    },
+    {
+      "file": "IndexLight.dc.html",
+      "x": 470,
+      "y": 2400,
+      "w": 390,
+      "h": 1180,
+      "title": "Eğitim indeksi · Açık"
+    },
+    {
+      "file": "HomeLight.dc.html",
+      "x": 940,
+      "y": 2400,
+      "w": 390,
+      "h": 1000,
+      "title": "Ana ekran · Açık"
+    },
+    {
+      "file": "QuizLight.dc.html",
+      "x": 1410,
+      "y": 2400,
+      "w": 390,
+      "h": 940,
+      "title": "Test sorusu · Açık"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "row-dark",
+      "x": -300,
+      "y": 0,
+      "w": 240,
+      "text": "KOYU YÖN\n\nMevcut kimliğin devamı ama kontrast artırılmış.\nAmber yalnızca tek bir işte: birincil eylem, ilerleme ve blok etiketleri."
+    },
+    {
+      "id": "row-light",
+      "x": -300,
+      "y": 2400,
+      "w": 240,
+      "text": "AÇIK YÖN\n\nSıcak kâğıt zemin. Uzun Türkçe metin okumak için genelde daha rahat;\nmevcut görsel kimlik tamamen değişir."
+    },
+    {
+      "id": "system",
+      "x": -300,
+      "y": 700,
+      "w": 240,
+      "text": "İKİ KURAL\n\n1 · Kutu yok. Bloklar saç teli çizgi ve boşlukla ayrılır, kenardan kenara uzanır. Renkli bant okumayı böler ama kart olmaz.\n\n2 · Serif = İngilizce, sans = Türkçe. Yazı tipi, öğrenci daha okumadan hangi dile baktığını söyler."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
