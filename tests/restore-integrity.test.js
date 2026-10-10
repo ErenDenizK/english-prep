@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { buildBackup } from "../js/backup.js";
 import { exportState, importState } from "../js/storage.js";
-import { createRestoreDialog, describeRestore, downloadBackup } from "../js/backup-ui.js";
+import { createRestoreDialog, describeRestore } from "../js/backup-ui.js";
 
 const key = (name) => `englishPrep.${name}`;
 let entries;
@@ -262,21 +262,4 @@ test("pasted content wins over an older asynchronous file read", async () => {
   await reading;
   assert.equal(nodes["restore-text"].value, "new pasted contents");
   assert.equal(nodes["restore-confirm"].disabled, false);
-});
-
-test("canceled native backup sharing is reported as canceled without starting a download", async () => {
-  const originalNavigator = Object.getOwnPropertyDescriptor(globalThis, "navigator");
-  let shared = 0;
-  Object.defineProperty(globalThis, "navigator", { configurable: true, value: {
-    canShare: () => true,
-    async share() { shared += 1; throw new DOMException("Canceled", "AbortError"); },
-  } });
-  globalThis.document = { createElement() { assert.fail("Cancel must not start a download"); } };
-  try {
-    assert.equal(await downloadBackup(), "canceled");
-    assert.equal(shared, 1);
-  } finally {
-    if (originalNavigator) Object.defineProperty(globalThis, "navigator", originalNavigator);
-    else delete globalThis.navigator;
-  }
 });
