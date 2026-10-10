@@ -67,7 +67,7 @@ Whether the product is an exam app, a general English app or two apps is open an
 - Content pipeline: `docs/agents/` (author, reviewer, calibration, blind review, human solver).
 - Family: `docs/family/` (English Prep's page in the maker's design family, the copied kit,
   `world.json`). The kit is copied from the portfolio repo; never edit `docs/family/kit/`.
-- `original/` (v0.64) and `legacy/` (MVP) are served snapshots: do not edit.
+- `original/` (the v0.64 interface, linked from About) is a served snapshot: do not edit.
 
 ## Hard rules
 
