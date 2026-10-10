@@ -90,7 +90,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 2. **Two style layers** (§4). 135 selectors are defined in both `style.css` and `editorial.css` (handoff-v1 §7.2, unverified count). `tools/palette.mjs` and `tools/token-check.mjs` still measure the overridden `style.css`. `tools/verify-ui.mjs:2776-2779` still asserts "bars ≥0.8 opaque before blur" for glass that no longer exists.
 3. **Dead code.** Each item below was checked by grepping for callers in `js about *.html tools tests`:
    - Removed in roadmap phase 1: `js/celebrate.js`, and the `ring`, `monogram`, `initialsOf`, `choices`, `countUp` and `motionWelcome` exports of `js/widgets.js` (which now holds only `hueOf`, `avatar` and `haptic`). `docs/components.html` draws its monograms itself and no longer shows rings or choice groups.
-   - `downloadBackup` (`js/backup-ui.js:215`) is used only by a test.
+   - Also removed: `downloadBackup` in `js/backup-ui.js` and its one test; the live share path is `js/share.js`, covered by `tests/share.test.js`.
    - Also removed: `loadRoadmap` and `data/roadmap.json` (no caller; the validator no longer checks the file).
    - `getTopicTotals` :323, `getCategoryTotals` :333 and `getLastActivity` :575 in `js/storage.js` are used only by tests.
    - Dead CSS: `.onboard__orb/__steps` (style.css), `.onboard__preview*`, `.onboard__panel--enter`, `.section-head` and `.formula` (editorial.css) have no JS/HTML users. `.ring*` and `.choice*` serve only the dead widgets.
