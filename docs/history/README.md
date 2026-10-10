@@ -8,8 +8,11 @@ current guidance, the current guidance wins, and nothing here authorises
 reinstating an old visual, plan or rule. Current guidance is
 [CLAUDE.md](../../CLAUDE.md), [docs/STATE.md](../STATE.md),
 [docs/PRINCIPLES.md](../PRINCIPLES.md) and [docs/ROADMAP.md](../ROADMAP.md).
-Files keep the relative path they had under `docs/`, so `docs/ui3-plan.md`
-is now `docs/history/ui3-plan.md`.
+Most files keep the relative path they had under `docs/` (`docs/ui3-plan.md` is now
+`docs/history/ui3-plan.md`). Also here: [CLAUDE-v0.77.md](CLAUDE-v0.77.md) (the instructions
+file until 2026-10-10), [handoff-v1.md](handoff-v1.md) (the v0.76 handoff),
+[handover/](handover/) (the 2026-10-10 audit and drafts written at v0.75) and
+[family/](family/) (the 2026-10-09 family session prompt).
 
 ## Index
 

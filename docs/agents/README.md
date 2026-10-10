@@ -100,7 +100,7 @@ Rules of thumb for setting one:
    decide the answer or only usually? And, because a lesson is a page of
    typed blocks rather than an article, whether the author used them: a
    lesson carried by `text` blocks is the old prose in new packaging.
-6. **Ship** — commit to `test`, try it on a phone, then merge to `main`.
+6. **Ship** — commit and push to `test` after the checks, then try it on a phone. `main` is the owner's.
 
 ## What agents must not do
 

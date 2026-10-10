@@ -1,5 +1,7 @@
 # Repository presentation assets
 
+> **Superseded 2026-10-10:** sessions never push to `main`; it is the owner's release branch. These assets are re-shot in roadmap phase 3; the folio media show a page that no longer exists.
+
 The landing README is product-first, while the development guide holds the full
 content and engineering rationale. Runtime and documentation links target
 `test` explicitly so this presentation also works on the historical `main`

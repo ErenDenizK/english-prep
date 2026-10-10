@@ -16,14 +16,16 @@ signs off. Each phase lists what it delivers and how it is checked. Owner decisi
 Goal: a new session reads three short documents and acts correctly.
 
 - [x] Merge the family kit and handover drafts into `test`; fix `tools/make-world.mjs` for v0.77.
-- [ ] New `CLAUDE.md` (about 120 lines): what the app is, where things live, the hard rules,
+- [x] New `CLAUDE.md` (about 120 lines): what the app is, where things live, the hard rules,
       cheap verification. No design values, no history.
-- [ ] `docs/STATE.md`: the app as the code is today (v0.77), verified file by file. Replaces
-      `docs/handover/CURRENT.md` and `docs/handoff-v1.md`.
-- [ ] `docs/PRINCIPLES.md`, this roadmap, `docs/PRODUCT-DIRECTION.md`.
-- [ ] Superseded plans, specs, audits and round notes move to `docs/history/`.
-- [ ] Agent briefs: fix the delivery paths in `docs/agents/`; family `README.md` and
-      `SESSION-PROMPT.md` drop "no glass" for the material contract.
+- [x] `docs/STATE.md`: the app as the code is today (v0.77), verified file by file. Replaces
+      `docs/history/handover/CURRENT.md` and `docs/history/handoff-v1.md`.
+- [x] `docs/PRINCIPLES.md`, this roadmap, `docs/PRODUCT-DIRECTION.md`.
+- [x] Superseded plans, specs, audits and round notes move to `docs/history/`.
+- [ ] Remaining live docs that still describe the folio About or old motion (EXPERIENCE,
+      Margin, development) get rewritten sections, not just banners.
+- [x] Agent briefs: fix the delivery paths in `docs/agents/`; the family `README.md` drops "no glass" for
+      the material contract; the old session prompt moves to history.
 - [ ] `docs/family/OUTBOX.md` for findings to the portfolio **[owner: approve the outbox idea]**.
 - [ ] Old branches deleted on GitHub, leaving `main` and `test` **[owner: the session cannot
       delete remote branches]**.

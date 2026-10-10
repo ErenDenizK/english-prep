@@ -306,8 +306,7 @@ profile and result metrics identify what their actual numbers mean.
 The [product/engineering portfolio](../about/) has selectable Read/Apply/Return and
 architecture stories, with real responsive screenshots inside those explanations.
 A compact mobile hero, nearby story controls and native feature/technical
-disclosures keep the phone layout focused. There is no separate screenshot gallery. The About hero is an explorable folio with Read/Apply/Return chapters,
-spread and rotation controls, and touch/pointer exploration. Text and controls
+disclosures keep the phone layout focused. (Superseded: v0.77 rebuilt About without the folio; see `about/README.md`.) Text and controls
 remain stable; keyboard access and reduced-motion states remain complete. Content is expandable in `about/content.js`; the
 [authoring guide](../about/README.md) explains safe copy, section and image edits.
 
@@ -350,18 +349,13 @@ the two disagree.
 - **`test`** — what GitHub Pages serves. Day-to-day development lands
   here and is tried on a real phone, so **a push to `test` is a
   deploy**.
-- **`main`** — one commit, the initial MVP of 2026-09-02. It was meant
-  to be the published branch and never became one.
+- **`main`** — the owner's release branch, moved by the owner's hand at V1
+  and later. Sessions never push, merge or open pull requests into it
+  (owner, 2026-10-10; see `CLAUDE.md`).
 
-To publish: **Settings → Pages → Deploy from a branch**, pick the branch
-and the `/ (root)` folder. No Actions workflow builds it; CI only runs
-the checks.
-
-The two-branch arrangement above is the plan the repository was set up
-for; it is not what happens. `main` never received the merge, and Pages
-was pointed at `test` instead. That is worth stating plainly rather than
-leaving the older sentence in place, because it changes what a push
-means: **there is no staging branch.** Work is verified before it lands,
+To publish: **Settings → Pages → Deploy from a branch**, pick `test` and
+the `/ (root)` folder. No Actions workflow builds it; CI only runs the
+checks. So **there is no staging branch.** Work is verified before it lands,
 not after.
 
 ---
