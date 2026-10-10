@@ -47,7 +47,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 
 ## 4. Architecture
 
-**Pages:** `index.html` (185 lines), `quiz.html`, `results.html` (94 each) and `about/index.html` (190). Each one carries its own aurora markup. `legacy/` and `original/` hold preserved earlier versions.
+**Pages:** `index.html` (185 lines), `quiz.html`, `results.html` (94 each) and `about/index.html` (190). Each one carries its own aurora markup. `original/` holds the preserved v0.64 interface (`legacy/`, the MVP, was removed in roadmap phase 1; it remains in the `main` history).
 
 **JS (`js/`, 34 modules, 10,782 lines; `wc -l js/*.js`):**
 
