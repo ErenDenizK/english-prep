@@ -2739,8 +2739,8 @@ async function runThemes(browser) {
 }
 
 /**
- * The chrome layer: header, tab bar and action bar float over the content
- * as a material, and the content starts and ends clear of them. And the
+ * The chrome layer: header, tab bar and action bar sit over the content
+ * as an opaque material, and the content starts and ends clear of them. And the
  * motion system: nothing runs when the person asked for less, and a route
  * change is an entrance when they did not.
  */
@@ -2754,15 +2754,26 @@ async function runChrome(browser) {
     const nav = document.getElementById("bottom-nav");
     const alpha = (node) => {
       const m = getComputedStyle(node).backgroundColor.match(/rgba?\(([^)]+)\)/);
-      const parts = m ? m[1].split(/[,\s\/]+/).map(Number) : [];
+      const parts = m ? m[1].split(/[,\s\/]+/).filter(Boolean).map(Number) : [];
       return parts.length === 4 ? parts[3] : 1;
+    };
+    // The chrome's material: no backdrop blur, a fully opaque fill and no
+    // element opacity on any bar that is showing.
+    const material = (node) => {
+      const style = getComputedStyle(node);
+      return {
+        id: node.id,
+        alpha: alpha(node),
+        opacity: Number(style.opacity),
+        backdrop: style.backdropFilter || "none",
+        webkitBackdrop: style.webkitBackdropFilter || "none",
+      };
     };
     const h = header.getBoundingClientRect();
     const n = nav.getBoundingClientRect();
     const first = document.querySelector("#lesson-index > *")?.getBoundingClientRect();
     return {
-      headerAlpha: alpha(header),
-      navAlpha: alpha(nav),
+      bars: [header, nav, ...document.querySelectorAll(".shell__bar:not([hidden])")].map(material),
       headerBottom: h.bottom,
       firstTop: first?.top ?? null,
       nav: { top: n.top, bottom: n.bottom, left: n.left, right: n.right, width: n.width, height: n.height },
@@ -2773,11 +2784,15 @@ async function runChrome(browser) {
       viewport: { w: innerWidth, h: innerHeight },
     };
   });
-  // Glass, not gauze: every bar is at least 0.8 opaque before its blur,
-  // so text passing under it is a tint and never a word (ui3-plan §2).
+  // The chrome is opaque, with no live glass (docs/PRINCIPLES.md §4: glass
+  // returns only through the lab, with a solid twin). Content scrolling
+  // under a bar is hidden, never a tint.
+  const seeThrough = chrome.bars.filter(
+    (bar) => bar.alpha !== 1 || bar.opacity !== 1 || bar.backdrop !== "none" || bar.webkitBackdrop !== "none"
+  );
   ok(
-    chrome.headerAlpha >= 0.8 && chrome.navAlpha >= 0.8,
-    `barlar en az %80 opak — arkasından metin okunmuyor (${chrome.headerAlpha.toFixed(2)} / ${chrome.navAlpha.toFixed(2)})`
+    chrome.bars.length >= 2 && seeThrough.length === 0,
+    `barlar opak, bulanıklık yok (${chrome.bars.map((bar) => bar.id).join(", ")})${seeThrough.length ? ` — ${JSON.stringify(seeThrough)}` : ""}`
   );
 
   // Every screen names itself in the bar (docs/ui2-plan.md §3.1).

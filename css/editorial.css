@@ -14,6 +14,15 @@
     U+0306-0308, U+030A-030C, U+0327-0328, U+2000-206F, U+20AC, U+20BA, U+2122,
     U+2190-21FF, U+2212, U+2215, U+2260, U+2264-2265, U+2713, U+FEFF, U+FFFD;
 }
+
+/* One cascade for every sheet, in this order (docs/STATE.md §4). style.css
+   declares the same list: whichever sheet a page loads first fixes it, and
+   About loads this one first. Unlayered rules would beat every layer, so
+   every sheet puts all of its rules in one of these. */
+@layer tokens, reset, layout, components, screens, utilities, skin, motion, composition, rail, share, onboarding, about, overrides;
+
+/* Margin, the live look: everything below until the overrides. */
+@layer skin {
 :root {
   --page: #141216;
   --card: #1d1a20;
@@ -185,11 +194,10 @@ body::before,
 body::after {
   display: none;
 }
+/* The chrome is opaque: no live glass (docs/PRINCIPLES.md §4). */
 .glass,
 .nav {
   background: var(--page);
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
 }
 .bar {
   box-shadow: none;
@@ -344,9 +352,6 @@ body::after {
 .t-num {
   font-variant-numeric: tabular-nums;
 }
-.section-head {
-  padding-bottom: 4px;
-}
 /* Neutral actions, generous targets, no neon or floating glass. */
 .btn {
   min-height: 48px;
@@ -414,18 +419,6 @@ body::after {
     color: var(--ink);
     background: var(--raised);
   }
-}
-.choice {
-  min-height: 44px;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  box-shadow: none;
-}
-.choice[aria-pressed="true"] {
-  background: var(--accent);
-  color: var(--accent-ink);
-  box-shadow: none;
 }
 .field,
 .listbox__trigger {
@@ -499,12 +492,6 @@ body::after {
   line-height: 1.7;
   color: var(--ink-2);
   max-width: 430px;
-}
-.study-intro__line {
-  font-family: var(--f-sans);
-  font-size: 1.125rem;
-  line-height: 1.45;
-  margin-top: 16px;
 }
 .study-intro__action {
   display: flex;
@@ -761,27 +748,6 @@ body::after {
   font-weight: 400;
   line-height: 1.5;
 }
-.ring__fill {
-  stroke: var(--accent-text);
-}
-.ring--ok .ring__fill {
-  stroke: var(--ok);
-}
-.ring--no .ring__fill {
-  stroke: var(--no);
-}
-.ring__track {
-  stroke: var(--raised);
-}
-.ring__value {
-  font-family: var(--f-sans);
-  font-size: 1.125rem;
-  font-weight: 400;
-}
-.ring--lg .ring__value {
-  font-size: 2rem;
-  font-weight: 400;
-}
 /* One article, one reading column; role refinements live in ADR 006 below. */
 body.is-reading:has(.lesson) .page {
   padding-top: 0;
@@ -877,13 +843,6 @@ body.is-reading:has(.lesson) .page {
 .block--end .btn {
   font-size: 1rem;
 }
-.formula {
-  border-radius: 5px;
-  background: var(--raised);
-  font-size: 1rem;
-  line-height: 1.75;
-}
-.quote,
 .example {
   border-left: 2px solid var(--editorial-mark);
 }
@@ -1016,10 +975,6 @@ body.is-reading:has(.lesson) .page {
   font-size: 1.125rem;
   line-height: 1.77;
 }
-.feedback__tip {
-  font-size: 1rem;
-  line-height: 1.7;
-}
 .score {
   padding: 28px 0;
   gap: 18px;
@@ -1042,7 +997,6 @@ body.is-reading:has(.lesson) .page {
   overscroll-behavior: contain;
 }
 .dialog::backdrop {
-  backdrop-filter: none;
   background: #0007;
 }
 /* A wide display buys a useful second column, never longer lines of text. */
@@ -1180,22 +1134,13 @@ body.is-reading:has(.lesson) .page {
   }
 }
 /* Facts pair each figure with a readable label, even at enlarged text sizes. */
-.stats--rings {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.stat--row {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-}
 .stat__label {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 /* Settings remain readable when browser text preferences enlarge rem units.
    The label and its control reflow as a pair, without reducing type size. */
-#profile-container .row:has(.field, .choices, .listbox, .motion-control) {
+#profile-container .row:has(.field, .listbox, .motion-control) {
   flex-wrap: wrap;
   min-width: 0;
   max-width: 100%;
@@ -1203,10 +1148,10 @@ body.is-reading:has(.lesson) .page {
 #profile-container .stack {
   grid-template-columns: minmax(0, 1fr);
 }
-#profile-container .row:has(.field, .choices, .listbox, .motion-control) > .row__main {
+#profile-container .row:has(.field, .listbox, .motion-control) > .row__main {
   flex: 1 1 12rem;
 }
-#profile-container .row:has(.field, .choices, .listbox, .motion-control) > .row__trail {
+#profile-container .row:has(.field, .listbox, .motion-control) > .row__trail {
   flex: 0 1 auto;
   min-width: 0;
   max-width: 100%;
@@ -1313,13 +1258,6 @@ body.is-reading:has(.lesson) .page {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
   .tile:active,
   .btn:active,
   .listbox__trigger:active {
@@ -1348,7 +1286,7 @@ body.is-reading:has(.lesson) .page {
 strong, b { font-weight: 600; }
 .t-display, .t-title { font-weight: 600; }
 .t-label { text-transform: none; letter-spacing: 0; color: var(--ink-2); }
-h2.t-label, .section-head > .t-label, .onboard__modes h2 {
+h2.t-label {
   font-size: var(--section-size);
   line-height: 1.4;
   font-weight: 600;
@@ -1421,16 +1359,13 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .option__mark { grid-column: 3; margin-top: 6px; }
 .option--ok, .option--no { border-color: var(--edge); }
 .option--ok .option__key, .option--no .option__key { background: transparent; }
-.lesson .quote, .lesson .example { border: 0; }
+.lesson .example { border: 0; }
 .lesson-pretest { border: 0; background: var(--card); }
 .lesson-pretest__summary { font-size: 1rem; color: var(--ink); }
 .lesson-pretest[open] > summary { border: 0; }
 .row + .row { box-shadow: none; }
 .surface, .hero { border-color: transparent; }
 .onboard { max-width: 560px; margin-inline: auto; }
-.onboard__intro { gap: 28px; }
-.onboard__modes { display: grid; gap: 24px; }
-.onboard__modes p { margin-top: 8px; }
 .onboard__actions .btn { flex: 1; }
 @media (min-width: 1080px) and (min-height: 600px) {
   .study-intro__title, .lesson .lesson__head h1 { font-size: 2.25rem; }
@@ -1464,7 +1399,6 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .nav__indicator { background: var(--accent-tint); box-shadow: none; }
 .study-intro { border-bottom: 0; padding-bottom: 12px; }
 .study-intro__eyebrow { color: var(--accent-text); }
-.study-intro__line { color: var(--ink); line-height: 1.6; }
 .study-intro__meta { color: var(--secondary); }
 #index-list .tile:hover .tile__title { color: var(--accent-text); }
 #index-list .tiles { margin-inline: -12px; width: calc(100% + 24px); }
@@ -1481,7 +1415,7 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 /* Reading is open prose. Forms and terms use typography, not highlighted boxes. */
 .lesson .lesson-form-label { color: var(--secondary); }
 .lesson .lesson-term { color: var(--accent-text); }
-.lesson .formula, .lesson .chip { background: transparent; padding: 0; border: 0; border-radius: 0; color: var(--ink); }
+.lesson .chip { background: transparent; padding: 0; border: 0; border-radius: 0; color: var(--ink); }
 .lesson-pretest { border-radius: 14px; }
 .lesson-pretest__summary { color: var(--accent-text); padding: 16px 20px; }
 .lesson-pretest__body { padding: 0 20px 4px; }
@@ -1538,9 +1472,8 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 /* The optional introduction has three user-paced panels, never a carousel. */
 .onboard { max-width: 560px; padding-block: 0; }
 .onboard__tour { display: grid; gap: 24px; }
-.onboard__top, .onboard__utilities, .onboard__progress { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.onboard__top, .onboard__progress { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .onboard__top .brand-mark { font-size: 3.5rem; }
-.onboard__utilities { gap: 0; }
 .onboard__skip { font-size: .875rem; padding-inline: 10px; }
 .onboard__progress { margin-top: 4px; }
 .onboard__progress .t-meta { color: var(--ink-2); }
@@ -1548,17 +1481,8 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .onboard__dot { width: 6px; height: 6px; border-radius: 99px; background: var(--edge); }
 .onboard__dot[data-current="true"] { width: 24px; background: var(--accent-text); }
 .onboard__panel { display: grid; gap: 16px; min-width: 0; }
-.onboard__eyebrow { color: var(--accent-text); }
 .onboard__panel h1 { font-size: clamp(1.875rem, 5vw, 2.5rem); line-height: 1.18; font-weight: 600; letter-spacing: -.04em; max-width: 15ch; outline: none; }
 .onboard__description { font-size: 1.125rem; line-height: 1.65; }
-.onboard__preview { display: grid; gap: 0; margin: 4px 0; padding: 8px 20px; list-style: none; background: var(--card); border-radius: 16px; }
-.onboard__preview-step { display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: start; gap: 16px; padding: 16px 0; }
-.onboard__preview-icon { display: flex; color: var(--accent-text); padding-top: 2px; }
-.onboard__preview-step:nth-child(2) .onboard__preview-icon { color: var(--secondary); }
-.onboard__preview-step:nth-child(3) .onboard__preview-icon { color: var(--tertiary); }
-.onboard__preview-copy { display: grid; gap: 4px; }
-.onboard__preview-copy .t-ui { font-weight: 600; line-height: 1.5; }
-.onboard__preview-copy .t-body { color: var(--ink-2); font-size: .875rem; line-height: 1.6; }
 .onboard__note { font-size: .875rem; line-height: 1.6; }
 .onboard__actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .onboard__actions > .btn--primary { width: auto; flex: 1; }
@@ -1658,27 +1582,15 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 }
 /* A static halo belongs to a few neutral titles, never article paragraphs.
    Neutral ink still carries all contrast; the halo is optional decoration. */
-.study-intro__title, .onboard__title {
+.study-intro__title {
   text-shadow: 0 0 26px color-mix(in srgb, var(--cool) 14%, transparent);
 }
 .lesson .lesson__head h1 { text-shadow: 0 0 28px color-mix(in srgb, var(--secondary) 12%, transparent); }
 .study-intro__eyebrow { color: var(--cool); }
 .lesson .lesson-form-label { color: var(--secondary); }
-/* Instant input and scoring; only the newly exposed panel gets a short cue. */
-.onboard__panel--enter { animation: tutorial-forward var(--d-route) var(--ease-standard) both; }
-.onboard__panel--enter[data-direction="back"] { animation-name: tutorial-back; }
-@keyframes tutorial-forward { from { transform: translateX(8px); } to { transform: translateX(0); } }
-@keyframes tutorial-back { from { transform: translateX(-8px); } to { transform: translateX(0); } }
 :root[data-motion="on"] .score__metric .metric__track { animation: metric-settle var(--d-complete) var(--ease-standard) both; transform-origin: left; }
 @keyframes metric-settle { from { transform: scaleX(.97); } to { transform: scaleX(1); } }
-:root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
-:root[data-motion="off"] *::before,
-:root[data-motion="off"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 :root[data-motion="off"] :is(.btn, .tile, .listbox__trigger):active { transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  .ambient__field, .ambient__pigment { animation: none !important; }
-  .onboard__panel--enter, .score__metric .metric__track { animation: none !important; }
-}
 @media (forced-colors: active) {
   .ambient { display: none; }
   .metric__track { border: 1px solid CanvasText; background: Canvas; }
@@ -1694,10 +1606,28 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
   .lesson-pretest__summary { padding-inline: 16px; }
   .lesson-pretest__body { padding-inline: 16px; }
   .onboard__top .brand-mark { font-size: 3rem; }
-  .onboard__preview { padding-inline: 16px; }
 }
 @media print { .ambient, .motion-control { display: none; } }
 
 /* Enabled switch state uses the same measured on-primary ink as its action. */
 [aria-checked="true"] .switch__thumb { background: var(--accent-ink); }
 .metric--empty .metric__value { color: var(--ink-2); }
+} /* @layer skin */
+
+/* Still twins (CLAUDE.md "Every effect has a still twin"). The last layer
+   beats every other one without !important; the aurora keeps its own pause
+   switch when only the in-app motion setting is off. */
+@layer overrides {
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
+  }
+}
+:root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after { animation: none; transition: none; scroll-behavior: auto; }
+}
