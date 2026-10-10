@@ -1,0 +1,6 @@
+# Python browser suites (tests/README.md). Tooling only, never shipped.
+# playwright 1.56 drives Chromium build 1194, the same build the Node
+# Playwright 1.56 used by `npm run verify` installs. Pillow >= 12.1 for
+# Image.get_flattened_data (aura_browser.py).
+playwright==1.56.0
+pillow==12.3.0

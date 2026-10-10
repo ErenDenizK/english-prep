@@ -124,10 +124,10 @@ Run what covers the change, all of it before a push to `test`.
 - Logic: `npm test` (node:test, `tests/*.test.js`).
 - Any screen: `npm run serve` (port 8000) in the background, then `npm run verify` (Chromium sweep
   at 320/390/768/1280, about 3,600 checks; Playwright is global or `PLAYWRIGHT_PATH`), plus the
-  matching Python suite in `tests/*.py` (17 files). They need `pip install playwright pillow` and
-  an explicit browser: `python3 tests/<file>.py --base-url http://127.0.0.1:<port>
-  --browser-path /opt/pw-browsers/chromium-1194/chrome-linux/chrome`. Ports and flag names
-  still differ per file (`docs/STATE.md` §6; unified in roadmap phase 1).
+  matching Python suite in `tests/*.py` (17 files), or all of them with `npm run browser` (starts
+  its own server). They need `pip install -r tests/requirements.txt`; every file takes
+  `--base-url` (`EP_BASE_URL`) and `--browser-path` (`EP_BROWSER`, e.g.
+  `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`; see `tests/README.md`).
 - UI work: screenshot at 390×844, 1180×820 (touch) and 1440×900, dark and light, and look before
   reporting. Emulation is not a device test; say so.
 
@@ -136,6 +136,7 @@ npm run check      # format:check + validate + color + test (CI on main and test
 npm run format     # canonical JSON formatting for data/
 npm run serve      # static server on :8000
 npm run verify     # Chromium sweep; needs serve running
+npm run browser    # every Python browser suite (tests/README.md)
 npm run audit      # screen measurements
 npm run icons      # regenerates icons/ (never hand-edit)
 npm run draft -- docs/agents/drafts/<topic>   # check an unshipped topic

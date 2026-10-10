@@ -4,15 +4,14 @@
 Seeks real CSS timelines for deterministic rendered frames; it does not change
 colors, app content, geometry or opacity. Native scroll/learning are untouched.
 """
-import argparse
 from io import BytesIO
 import unittest
 from PIL import Image, ImageChops
 from playwright.sync_api import expect, sync_playwright
 
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--base-url', default='http://127.0.0.1:8000')
-parser.add_argument('--browser-path', default='/usr/bin/chromium')
+from _harness import launch_chromium, make_parser
+
+parser = make_parser(__doc__)
 ARGS, TEST_ARGS = parser.parse_known_args()
 BASE = ARGS.base_url.rstrip('/')
 
@@ -32,8 +31,7 @@ class AtmosphereTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.pw = sync_playwright().start()
-        cls.browser = cls.pw.chromium.launch(executable_path=ARGS.browser_path,
-                                            args=['--no-sandbox'])
+        cls.browser = launch_chromium(cls.pw, ARGS)
 
     @classmethod
     def tearDownClass(cls):
