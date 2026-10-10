@@ -77,3 +77,9 @@ stay single-column at ~592 px. The home pane is sticky only from 800 px tall.
 4. How free is About to change, including the folio?
 5. Adopt the draft `CLAUDE.md` and move history to `docs/history/` now, or in steps?
 6. Later, as code work: remove the dead UI 3 layer from `css/style.css` and the dead modules?
+
+## Owner decisions (2026-10-10)
+
+Glass allowed again (measured, separate experiments first, no harm to the UI); no grain for now;
+`app1-final.md` is history and a new roadmap follows; About (folio included) may be redesigned
+from scratch. See `AUDIT.md`.
