@@ -6,12 +6,20 @@ from pathlib import Path
 import unittest
 from playwright.sync_api import sync_playwright, expect
 
+from _harness import launch_chromium, make_parser
+
+# `--base` is the older spelling of `--base-url`; both still work.
+parser = make_parser(__doc__)
+parser.add_argument('--base', dest='base_url', help=argparse.SUPPRESS)
+ARGS, TEST_ARGS = parser.parse_known_args()
+BASE = ARGS.base_url.rstrip('/')
+
 
 class TransferBrowser(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.pw = sync_playwright().start()
-        cls.browser = cls.pw.chromium.launch(executable_path=ARGS.browser_path, args=['--no-sandbox'])
+        cls.browser = launch_chromium(cls.pw, ARGS)
 
     @classmethod
     def tearDownClass(cls):
@@ -32,7 +40,7 @@ class TransferBrowser(unittest.TestCase):
         self.assertEqual(self.errors, [])
 
     def open_transfer(self):
-        self.page.goto(ARGS.base.rstrip('/') + '/index.html#profil')
+        self.page.goto(BASE + '/index.html#profil')
         self.page.get_by_role('button', name='Yedek al', exact=True).click()
         expect(self.page.locator('#backup-dialog')).to_be_visible()
 
@@ -104,8 +112,4 @@ class TransferBrowser(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--base', default='http://127.0.0.1:8182/english-prep')
-    parser.add_argument('--browser-path', default='/usr/bin/chromium')
-    ARGS, rest = parser.parse_known_args()
-    unittest.main(argv=[__file__, *rest])
+    unittest.main(argv=[__file__, *TEST_ARGS])

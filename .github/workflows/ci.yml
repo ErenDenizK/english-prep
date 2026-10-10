@@ -41,3 +41,42 @@ jobs:
 
       - name: Run unit tests
         run: npm test
+
+  browser:
+    name: Browser suites
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Playwright stays out of package.json (zero dependencies): Python
+      # Playwright for tests/*.py, a global Node Playwright of the same
+      # minor for tools/verify-ui.mjs. Both drive the same Chromium build,
+      # so one browser download serves both.
+      - name: Install Playwright
+        run: |
+          pip install -r tests/requirements.txt
+          python -m playwright install --with-deps chromium
+          npm i -g playwright@1.56.1
+          echo "PLAYWRIGHT_PATH=$(npm root -g)/playwright" >> "$GITHUB_ENV"
+
+      - name: Start the static server
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/serve.log 2>&1 &
+          for i in $(seq 1 50); do curl -sf http://127.0.0.1:8000/index.html > /dev/null && exit 0; sleep 0.2; done
+          cat /tmp/serve.log; exit 1
+
+      - name: Browser sweep (npm run verify)
+        run: npm run verify -- http://127.0.0.1:8000
+
+      # The runner starts its own server on a free port.
+      - name: Python browser suites (npm run browser)
+        if: success() || failure()
+        run: npm run browser
