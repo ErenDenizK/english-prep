@@ -235,3 +235,16 @@ Plans and specs that describe earlier presentations or closed rounds:
 
 `legacy/` and `original/` are served snapshots of the MVP and the v0.64 interface; they stay
 where they are.
+
+## Owner decisions (2026-10-10)
+
+1. **Glass:** the "no glass" rule is lifted. Glass may be used; readability is measured (no text
+   readable through a blurred bar), and the existing UI must not be harmed. Experiments run in a
+   separate, independent setup first, not in the live UI.
+2. **Grain:** no grain for now.
+3. **`app1-final.md`:** no longer binding. It becomes history; a new roadmap is written for
+   app-level improvements.
+4. **Drafts:** adopt all at once: replace `CLAUDE.md` with the draft and move the historical plans
+   to `docs/history/` in one change, in the owner's English Prep session.
+5. **About:** when English Prep is reworked, About (including the folio, the three-leaf
+   screenshot showcase) may be redesigned from scratch; nothing on it is untouchable.
