@@ -225,6 +225,16 @@ test("installation precaches scope-relative assets before calling skipWaiting", 
   assert.ok(root.config.SHELL.includes("./assets/fonts/InterVariable.woff2"));
 });
 
+test("About's study-loop captures are precached, so the page reads whole offline", async () => {
+  const content = await readFile(new URL("../about/content.js", import.meta.url), "utf8");
+  const captures = [...content.matchAll(/capture:\s*"([^"]+)"/g)].map((match) => match[1]);
+  assert.ok(captures.length >= 3, `found ${captures.length} captures`);
+  const { SHELL } = worker().config;
+  for (const capture of captures) {
+    assert.ok(SHELL.includes(`./about/assets/${capture}-phone.webp`), capture);
+  }
+});
+
 test("a new release bypasses stale HTTP-cache assets while building its offline shell", async () => {
   const app = worker();
   await app.dispatch("install");
