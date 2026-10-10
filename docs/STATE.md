@@ -8,7 +8,7 @@ A static, mobile-first web app for Turkish university prep-school proficiency ex
 
 | Fact | Value | Evidence |
 |---|---|---|
-| Topics / lessons / questions | 10 / 60 / 241 | `npm run validate` → "10 live … 241 question(s), 60 lesson(s), 7 roadmap row(s)" |
+| Topics / lessons / questions | 10 / 60 / 241 | `npm run validate` → "10 live … 241 question(s), 60 lesson(s)." |
 | Option notes | 723 (every question has `optionNotes`) | node count over `data/*/*.json`; About shows it live (`about/about.js:369`) |
 | Validate warning | `academic-nouns-adjectives-t13` / `-t16` have identical option sets | `npm run validate` (1 warning, passes) |
 | Unit tests | 248, all pass | `npm test` → `# tests 248 # pass 248` (incl. `tests/family-world.test.js`) |
@@ -59,7 +59,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 
 **CSS and the two-layer problem:** `css/style.css` (2031 lines) is the old UI 3 skin with glass, glow and a slate palette. It is the only file that uses `@layer` (`css/style.css:28`). `css/editorial.css` (1699 lines) is the current look. It is unlayered, so it and the five small files beat every `style.css` layer regardless of specificity. It also uses 8 `!important`. Small files: `interactions.css` (press/release), `composition.css` (wide layout), `scroll-rail.css`, `onboarding.css`, `share.css`. The app pages load `fonts.css` + `style.css` + `editorial.css` + the small files (`index.html:49-56`). About loads only `editorial.css`, `interactions.css`, `scroll-rail.css` and `about.css`, with no `style.css` (`about/index.html:34-37`).
 
-**Data:** `data/manifest.json` plus `data/<topic>/<topic>.json` (10 topics) and `data/roadmap.json`, which no screen reads. Adding content requires no JS change.
+**Data:** `data/manifest.json` plus `data/<topic>/<topic>.json` (10 topics). Adding content requires no JS change.
 
 **Tools (`tools/`):** `validate-content.mjs` 1193, `content-checks.mjs`, `format-content.mjs`. Colour tools: `palette.mjs`, `token-check.mjs` (both measure `css/style.css`, `tools/token-check.mjs:23`) and `editorial-palette.mjs` (the live layer). Others: `verify-ui.mjs` 3470 (browser sweep), `audit-ui.mjs`, `capture-portfolio.{mjs,py}`, `solve.mjs`, `blind-corpus.mjs`, `make-calibration.mjs`, `check-draft.mjs`, `make-icons.mjs`, `make-world.mjs`, `ship-topic.mjs`.
 
@@ -91,7 +91,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 3. **Dead code.** Each item below was checked by grepping for callers in `js about *.html tools tests`:
    - Removed in roadmap phase 1: `js/celebrate.js`, and the `ring`, `monogram`, `initialsOf`, `choices`, `countUp` and `motionWelcome` exports of `js/widgets.js` (which now holds only `hueOf`, `avatar` and `haptic`). `docs/components.html` draws its monograms itself and no longer shows rings or choice groups.
    - `downloadBackup` (`js/backup-ui.js:215`) is used only by a test.
-   - `loadRoadmap` (`js/topics.js:90`) has no caller, so `data/roadmap.json` is never shown.
+   - Also removed: `loadRoadmap` and `data/roadmap.json` (no caller; the validator no longer checks the file).
    - `getTopicTotals` :323, `getCategoryTotals` :333 and `getLastActivity` :575 in `js/storage.js` are used only by tests.
    - Dead CSS: `.onboard__orb/__steps` (style.css), `.onboard__preview*`, `.onboard__panel--enter`, `.section-head` and `.formula` (editorial.css) have no JS/HTML users. `.ring*` and `.choice*` serve only the dead widgets.
    - Tokens `--d-exit`, `--d-view`, `--ease-in` and `--s-10` are defined once and never used.
