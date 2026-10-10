@@ -41,7 +41,7 @@ export function createInstallControl() {
         ? "English Prep yüklendi. Ana ekranından veya uygulamalarından açabilirsin."
       : deferredPrompt
         ? "Adres çubuğu olmadan, ayrı bir uygulama olarak aç. Daha önce okuduğun derslere çevrimdışı dön."
-        : "Adres çubuğu olmadan kullanmak için uygulamayı ana ekranına ekle ve simgesinden aç. iPhone veya iPad’de tarayıcı menüsü → Paylaş → Ana Ekrana Ekle yolunu izle; varsa “Web Uygulaması Olarak Aç” seçeneğini açık bırak. Diğer cihazlarda tarayıcının uygulama yükleme menüsünü kullan. Çevrimdışı erişim, daha önce açtığın içerikle sınırlıdır.";
+        : "Adres çubuğu olmadan kullanmak için uygulamayı ana ekranına ekle ve simgesinden aç. iPhone veya iPad’de tarayıcı menüsünden Paylaş’ı, sonra Ana Ekrana Ekle’yi seç; varsa “Web Uygulaması Olarak Aç” seçeneğini açık bırak. Diğer cihazlarda tarayıcının uygulama yükleme menüsünü kullan. Çevrimdışı erişim, daha önce açtığın içerikle sınırlıdır.";
   }
   button.addEventListener("click", async () => {
     if (!deferredPrompt || button.getAttribute("aria-disabled") === "true") return;

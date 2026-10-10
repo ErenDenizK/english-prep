@@ -54,8 +54,8 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 - Routing/screens: `home.js` 715 (hash router), `education.js` 1823 (index, topic, reader), `quiz.js` 520, `results.js` 556, `profile.js` 715, `onboarding.js` 330, `quiz-launch.js`, `quiz-engine.js` 164, `session-state.js` 159.
 - Data/state: `storage.js` 1149 (history, progress, settings, backup), `topics.js` 361 (loading, manifest), `backup.js` 195, `backup-ui.js` 370, `share.js`, `report.js`, `tiers.js`.
 - Motion: `interactions.js` 691 (springs → `linear()`, `compose`/`composeScreen`, presets, press/release, `whenVisible`), `motion.js` 141 (preference, aura clock), `scroll-rail.js` 454.
-- Shell/UI: `shell.js` 228, `dom.js` 197 (no `innerHTML`), `widgets.js` 53, `icons.js` 306, `listbox.js` 348, `modal.js`, `feedback.js`, `answers.js`, `brand.js`, `theme.js`, `install.js`, `prompt.js`, `progress.js`, `config.js`.
-- About: `about/about.js` 809, `about/content.js` 169 (all strings), `about/about.css` 434. It imports `js/motion.js`, `interactions.js`, `scroll-rail.js`, `install.js`, `topics.js` and `tiers.js` (`about/about.js:4-10`).
+- Shell/UI: `shell.js` 228, `dom.js` 197 (no `innerHTML`), `widgets.js` 53, `icons.js` 326, `listbox.js` 348, `modal.js`, `feedback.js`, `answers.js`, `brand.js`, `theme.js`, `install.js`, `prompt.js`, `progress.js`, `config.js`.
+- About: `about/about.js` 814, `about/content.js` 169 (all strings), `about/about.css` 485. It imports `js/motion.js`, `interactions.js`, `scroll-rail.js`, `install.js`, `topics.js`, `icons.js` and `tiers.js` (`about/about.js:4-11`).
 
 **CSS, one layer stack:** every sheet puts its rules in one ordered `@layer` list, declared identically at the top of `css/style.css` and `css/editorial.css` (whichever a page loads first fixes it): `tokens, reset, layout, components, screens, utilities` (`style.css`), `skin` (`editorial.css`), `motion` (`interactions.css`), `composition`, `rail` (`scroll-rail.css`), `share`, `onboarding`, `about` (`about/about.css`; its `:where()` resets sit in `reset`) and `overrides` (the reduced-motion, motion-off and hidden-tab still twins and `[hidden]`). No declaration uses `!important`. `css/style.css` (~1050 lines) is the structure only: the UI 3 skin, its slate palette and every declaration `editorial.css` always overrode were deleted, so colour, type, radius, shadow and motion tokens have one source, `editorial.css` (the live look). 74 selectors still appear in both files; none of their style.css declarations is one editorial.css always overrides. Small files: `interactions.css` (press/release), `composition.css` (wide layout), `scroll-rail.css`, `onboarding.css`, `share.css`. The app pages load `style.css` + `editorial.css` + the small files. About loads only `editorial.css`, `interactions.css`, `scroll-rail.css` and `about.css`, with no `style.css` (`about/index.html:34-37`).
 
@@ -82,6 +82,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
   - Answers: the wrong pick shakes, the right one swells (`celebrate`), and the explanation rises (`js/quiz.js:362-372`). A bounded scroll keeps the options visible (`revealVerdict`).
   - Press 120ms (`css/interactions.css:91,98`) and release 380ms (`css/interactions.css:3`) are unchanged.
   - There is no cross-document view transition. `whenVisible` is used for artwork only.
+- **Icons:** every arrow, tick and cross in the interface is an icon from `js/icons.js` (About's links use `arrow-up-right`, `arrow-down`, `arrow-up`, filled from `<span data-icon>` by `about/about.js`); help text says "Paylaş, sonra Ana Ekrana Ekle" in words. `tests/no-glyph-icons.test.js` fails on U+2190–21FF and the dingbat ticks, crosses and arrows in `*.html`, `about/`, `js/` and `css/` outside comments; `data/` keeps its arrows as content.
 - **Brand:** `ep.` / `english prep.` in Inter 600 with a Sakura dot (`js/brand.js`, 21 lines). About has its own masthead brand (`about/about.css:80-81`).
 
 ## 6. Known weak spots
@@ -102,7 +103,6 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 9. **About issues:**
    - About is hard-coded dark (`about/index.html:2` `data-theme="dark"`, `:7` color-scheme dark) and ignores the Profil theme.
    - Infinite loops: `ab-pulse` (`:188`) and `ab-flowdash` (`:391`) are gated on motion and page visibility. `ab-spin` (`:158`) is gated only by `prefers-reduced-motion` (`:426`), not by the Profil motion switch.
-   - Arrows are Unicode glyphs (↗ ↓ ↑) instead of icons (`about/index.html:68,85,150-152,183-185`; `about/about.js:493,569`).
    - The phone is a CSS-drawn device frame around the captures (`.ab-device`, `about/about.css:304-320`).
    - The captures in `about/assets/*.webp` were last committed at v0.73 (`2db1000`), so they predate the v0.76 motion and fixes.
 10. **Portfolio capture is broken on v0.77.** `tools/capture-portfolio.mjs:185` waits for `#folio-deck .folio-leaf` and `docs/github/capture.py:174` waits for `#study-folio`. Neither exists in the rebuilt About.
