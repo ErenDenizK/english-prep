@@ -13,7 +13,7 @@ A static, mobile-first web app for Turkish university prep-school proficiency ex
 | Validate warning | `academic-nouns-adjectives-t13` / `-t16` have identical option sets | `npm run validate` (1 warning, passes) |
 | Unit tests | 248, all pass | `npm test` → `# tests 248 # pass 248` (incl. `tests/family-world.test.js`) |
 | Browser scenario files | 17 Python Playwright scripts, not in CI | `ls tests/*.py` |
-| `npm run verify` sweep | ~3,600 checks at 4 widths (unverified, not run here) | handoff-v1 §1 |
+| `npm run verify` sweep | 3,591 checks at 4 widths, all pass (2026-10-10) | `npm run verify` |
 | Planned, not built | `so / such` (cloze map points at missing topic `so-such`, `js/topics.js:334`), paragraph completion, reading passages | |
 
 ## 2. Branches and release
@@ -72,7 +72,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 - **Ground:** dark first. Plum page `#141216` (`about/index.html:6`), opaque cards (`--card`, computed `rgb(29,26,32)`) and a raised surface, plus a pale Sakura light theme. Live tokens are in `css/editorial.css:13-105`.
 - **Roles:** the cherry/Sakura gradient marks the one primary action (`--grad-accent`, `css/editorial.css:47`). Iris is structure, lagoon is context, apricot is attention. A correct answer gets an opaque Sakura surface; a selected wrong answer is periwinkle. Both always carry a mark and the word Doğru/Yanlış. Contrast is proven by `npm run color` ("67650 editorial contrast pairs passed").
 - **Type:** Inter variable for both languages. `--f-serif: var(--f-sans)` and `--f-sans: Inter, …` (`css/editorial.css:48-50`). Role sizes start at `css/editorial.css:51`.
-- **Atmosphere:** three drifting aurora clusters (cherry/iris/lagoon) with one parent opacity cap (.42 dark / .09 light, per CLAUDE.md, unverified here). The markup is in every page and shares one wall clock, `--aura-clock` (`js/motion.js:27`, `css/editorial.css:1581,1604`, inline in `about/index.html:43`). Pools are still under reduced motion; the aura pauses in hidden tabs.
+- **Atmosphere:** three drifting aurora clusters (cherry/iris/lagoon) with one parent opacity cap (.42 dark / .09 light, `css/editorial.css:95,134,165`). The markup is in every page and shares one wall clock, `--aura-clock` (`js/motion.js:27`, `css/editorial.css:1581,1604`, inline in `about/index.html:43`). Pools are still under reduced motion; the aura pauses in hidden tabs.
 - **Material:** the app shell has no live glass. `css/editorial.css:184-189` sets `backdrop-filter: none !important` on `.glass,.nav`, and `:1041` does the same for the dialog backdrop. Measured in Chromium: `.nav` has `backdropFilter: none` and an opaque card background. **"No blur anywhere" is false:** the About masthead blurs once scrolled (`about/about.css:78`, `blur(16px) saturate(1.4)` over an 82% page colour). It has no `@supports` and no `prefers-reduced-transparency` guard. The owner allows glass again, measured and tested separately first (`docs/PRINCIPLES.md` §4).
 - **Motion (v0.76, ADR 014, `docs/design/motion-v076.md`):**
   - Entrances are built in the same task as their DOM via `compose` / `composeScreen` (`js/interactions.js:498,530`; callers `js/home.js:582`, `js/education.js:962,1529`, `js/results.js:167-186`, `js/profile.js:571`). They start from their first keyframe.

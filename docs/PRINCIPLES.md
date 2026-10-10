@@ -88,7 +88,7 @@ never in the instructions. Engineering lessons from one bug ("never reparent a c
 during pointerdown") live as a comment beside the code they protect.
 
 When two documents disagree, the order is: the code and its checks › `STATE.md` › `CLAUDE.md` ›
-`margin-design-system.md` › the newest ADR on the topic › anything in `docs/history/`.
+the newest ADR on the topic › `margin-design-system.md` › anything in `docs/history/`.
 
 ## 4. Changing safely: one axis, through the lab, behind a gate
 

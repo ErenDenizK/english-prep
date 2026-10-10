@@ -1,5 +1,7 @@
 # English Prep · Margin / Sakura: experience · v0.74
 
+> **Partly superseded (2026-10-10).** Written at v0.74. Motion is now [ADR 014](adr/014-choreographed-entrances.md) and [motion v0.76](design/motion-v076.md); About was rebuilt in v0.77 ([about/README.md](../about/README.md)), so every folio passage here is history. The learning journeys still hold. Precedence: `CLAUDE.md`.
+
 ## Product and audience
 
 The redesign starts from the full `test` branch source at `39dcd46`. Its **10 topics, 60 scrolling article lessons, and 241 questions** retain their original explanations, option notes, category mappings, and exam-coverage boundaries. No learning data was rewritten for the makeover.

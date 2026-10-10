@@ -8,7 +8,7 @@ closest-meaning questions with instant feedback), plus **Profil** from the heade
 page at `about/`. No accounts, no backend, no analytics: a learner's data stays in their
 browser's `localStorage`.
 
-Read in this order, and nothing else is binding:
+Read in this order; nothing else binds except the interface values named below:
 
 1. This file: rules and how to verify.
 2. [`docs/STATE.md`](docs/STATE.md): what the code does today, its weak spots.
@@ -20,7 +20,7 @@ Read in this order, and nothing else is binding:
 Interface values live in [`docs/margin-design-system.md`](docs/margin-design-system.md) and the
 newest ADR on a topic in `docs/adr/` (motion: ADR 014 and `docs/design/motion-v076.md`). Old plans
 and specs are in `docs/history/`: they explain, they never bind. If documents disagree: code and
-its checks › STATE › this file › Margin › newest ADR › history.
+its checks › STATE › this file › newest ADR on the topic › Margin › history.
 
 ## Who it is for (owner, 2026-09-05)
 
@@ -33,6 +33,9 @@ them the labels. Every content and copy decision follows from that:
   competent teacher would accept is a wrong option, not a "less natural" one.
 - Refine, never teach from zero. Copy that assumes no English is aimed at someone else.
 
+**V1** (owner, 2026-10-10) is a working, presentable, family-aligned product the owner signs
+off; it is not about content or exam coverage (`docs/PRINCIPLES.md` §1).
+
 Whether the product is an exam app, a general English app or two apps is open and parked
 ([`docs/PRODUCT-DIRECTION.md`](docs/PRODUCT-DIRECTION.md)); do not settle it in passing.
 
@@ -44,7 +47,8 @@ Whether the product is an exam app, a general English app or two apps is open an
   merge or open a pull request into `main`.
 - No other branches. If the session was given another branch name, ignore it for this repo and
   use `test`.
-- Bump `VERSION` in `sw.js` with every release, or phones keep the old cache.
+- Bump `VERSION` in `sw.js` with every release, or phones keep the old cache. It must equal the
+  newest `CHANGELOG.md` heading (`tests/service-worker.test.js` checks it).
 
 ## Where things live
 
@@ -82,8 +86,11 @@ Whether the product is an exam app, a general English app or two apps is open an
 - **Version `x` stays `0`** until the owner declares V1. `CHANGELOG.md` is `x.y` in Turkish; `y`
   grows per shipped round.
 - **New techniques go through the lab** (`docs/PRINCIPLES.md` §4): glass, new motion or
-  atmosphere effects are tried in `lab/`, gated by measurements, approved by the owner, then
-  promoted one surface per release behind a switch. One visual axis changes per release.
+  atmosphere effects are tried in `lab/` (not linked, `noindex`, not precached; note that `test`
+  serves it publicly), gated by measurements, approved by the owner, then promoted one surface
+  per release behind a switch. One visual axis changes per release.
+- **Glass is allowed** (owner, 2026-10-10) only under the material contract in
+  `docs/PRINCIPLES.md` §4: chrome only, measured legibility, a solid twin. Not by eye.
 
 Settled by the owner (reopen only when asked): Eğitim and Test are the two nav peers and Profil is
 in the header; lesson checks never gate reading; no exam dates, daily goals, streaks or reminders
@@ -102,7 +109,8 @@ measured and recorded in an ADR.
   `npm run calibrate` (never show a reviewer `docs/agents/calibration.md`); never build a question
   on a sentence from its own lesson. Run `npm run format` after editing `data/`.
 - If you change a token, run `node tools/make-world.mjs` (`npm test` fails on drift).
-- Findings for the other family products go in `docs/family/OUTBOX.md`, never into their repos.
+- Never write into the other family products' repositories. Findings for them go in
+  `docs/family/OUTBOX.md` (proposed, awaiting the owner; `docs/PRINCIPLES.md` §2).
 - Keep `docs/STATE.md` true: a change that alters what it says updates it in the same commit.
 - The owner speaks Turkish, often by dictation: read through transcription errors, confirm names.
 
@@ -115,9 +123,11 @@ Run what covers the change, all of it before a push to `test`.
 - Tokens/colours: `npm run color`.
 - Logic: `npm test` (node:test, `tests/*.test.js`).
 - Any screen: `npm run serve` (port 8000) in the background, then `npm run verify` (Chromium sweep
-  at 320/390/768/1280; Playwright is global or `PLAYWRIGHT_PATH`), plus the matching
-  `tests/*_browser.py` suite (Chromium: `/opt/pw-browsers`; flags differ per file until roadmap
-  phase 1 unifies them).
+  at 320/390/768/1280, about 3,600 checks; Playwright is global or `PLAYWRIGHT_PATH`), plus the
+  matching Python suite in `tests/*.py` (17 files). They need `pip install playwright pillow` and
+  an explicit browser: `python3 tests/<file>.py --base-url http://127.0.0.1:<port>
+  --browser-path /opt/pw-browsers/chromium-1194/chrome-linux/chrome`. Ports and flag names
+  still differ per file (`docs/STATE.md` §6; unified in roadmap phase 1).
 - UI work: screenshot at 390×844, 1180×820 (touch) and 1440×900, dark and light, and look before
   reporting. Emulation is not a device test; say so.
 

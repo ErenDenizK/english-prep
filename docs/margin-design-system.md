@@ -1,5 +1,7 @@
 # Margin / Sakura: interface system · v0.74
 
+> **Partly superseded (2026-10-10).** Written at v0.74. Motion is now [ADR 014](adr/014-choreographed-entrances.md) and [motion v0.76](design/motion-v076.md); About was rebuilt in v0.77 ([about/README.md](../about/README.md)), so every folio passage here is history. Tokens, colour roles, answer semantics, type and the aurora still hold. Precedence: `CLAUDE.md`.
+
 Margin is English Prep's current interface. [ADR 012](adr/012-elastic-edge-and-expressive-arrivals.md) records the living atmosphere, articulated controls, inspectable portfolio, mobile scroll grip and explicit data transfer. Earlier ADRs remain historical evidence: ADR 006 retains the typography decision and the Sakura answer semantics remain, while earlier per-field aura caps, passive mobile rail and whole-popup motion are superseded. [css/editorial.css](../css/editorial.css) supplies presentation tokens over inherited [css/style.css](../css/style.css); [css/interactions.css](../css/interactions.css) owns shared control states, [css/onboarding.css](../css/onboarding.css) the introduction, and [css/scroll-rail.css](../css/scroll-rail.css) the grip and rail. The older [design-system.md](history/design-system.md) remains historical source documentation. [EXPERIENCE.md](EXPERIENCE.md) describes the learning journeys.
 
 ## Direction and themes

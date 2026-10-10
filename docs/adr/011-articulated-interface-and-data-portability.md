@@ -90,7 +90,7 @@ copy arrays and native disclosures continue to support longer future content.
 
 GitHub presents the same product through a static brand, real study montage,
 optional actual browser recordings, architecture diagram and linked evidence.
-A static alternative accompanies each GIF. `main` receives only README/media;
+A static alternative accompanies each GIF. (Superseded 2026-10-10: sessions never push to `main`; it is the owner's release branch.) `main` receives only README/media;
 the original runtime on that branch stays intact, and source links name `test`.
 
 ## Explicit, reviewable data transfer
