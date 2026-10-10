@@ -59,7 +59,7 @@ Goal: every later change is cheap and safe to verify.
 7. Content: fix the identical option sets in `academic-nouns-adjectives` t13/t16.
 
 
-**Done in v0.78 (2026-10-10):** items 1 (suites unified, in CI — not yet seen running in Actions), 2, 3 (Inter 352 → 93 KB, with a codepoint test), 4 (one `@layer` stack, no `!important`, UI 3 skin and `palette.mjs`/`token-check.mjs` removed; 74 selectors still split across `style.css` and `editorial.css`) and 6. Left: 5 (split `storage.js`, `education.js`), 7 (t13/t16 options), and merging the 74 split selectors.
+**Done in v0.78 (2026-10-10):** items 1 (suites unified, green in Actions), 2, 3 (Inter 352 → 93 KB, with a codepoint test), 4 (one `@layer` stack, no `!important`, UI 3 skin and `palette.mjs`/`token-check.mjs` removed; 74 selectors still split across `style.css` and `editorial.css`) and 6. Left: 5 (split `storage.js`, `education.js`), 7 (t13/t16 options), and merging the 74 split selectors.
 
 Check: identical screenshots before and after at the three sizes; all suites green in CI; first
 load bytes measured and recorded in `STATE.md`.
