@@ -59,9 +59,10 @@ Whether the product is an exam app, a general English app or two apps is open an
   `backup*.js` local data · `topics.js` content loading and `lessonId()` · `interactions.js`
   motion engine (`compose`, springs, press/release) · `motion.js` preference and aurora ·
   `scroll-rail.js` · `listbox.js`, `modal.js` controls · `dom.js` node builders · `icons.js`.
-- CSS: `editorial.css` is the live look (Margin/Sakura tokens, aurora) and overrides
-  `style.css`, which still carries the old UI 3 skin underneath (removing it is roadmap phase 1);
-  `interactions.css`, `composition.css`, `scroll-rail.css`, `onboarding.css`, `share.css`.
+- CSS: one ordered `@layer` stack, declared at the top of `style.css` and `editorial.css`; no
+  `!important`. `style.css` is structure; `editorial.css` is the live look and the one token
+  source (Margin/Sakura, aurora); then `interactions.css`, `composition.css`, `scroll-rail.css`,
+  `share.css`, `onboarding.css`, `about/about.css`, and `overrides` (the still twins).
 - Content: `data/manifest.json` and `data/<topic>/<topic>.json` (lessons + questions). Schema:
   `docs/CONTENT_GUIDE.md`, enforced by `tools/validate-content.mjs`.
 - Content pipeline: `docs/agents/` (author, reviewer, calibration, blind review, human solver).

@@ -141,7 +141,7 @@ export const craft = {
   facts: [
     { figure: "0", unit: "bağımlılık", body: "Derleme adımı yok, çalışma zamanında paket yok. HTML, CSS ve ES modülleri olduğu gibi sunuluyor." },
     { figure: "0", unit: "innerHTML", body: "İçerik JSON’dan gelir ve düğüm düğüm kurulur. Hiçbir metin HTML olarak yorumlanmaz." },
-    { figure: "247", unit: "birim testi", body: "Puanlama, kayıt, yedekleme ve içerik kuralları. Her push’ta yeniden çalışır." },
+    { figure: "250", unit: "birim testi", body: "Puanlama, kayıt, yedekleme ve içerik kuralları. Her push’ta yeniden çalışır." },
     { figure: "3.500+", unit: "tarayıcı kontrolü", body: "Dört ekran genişliğinde tam bir öğrenci yolculuğu: taşma, dokunma alanı, odak, ekran okuyucu." },
   ],
   pipeline: {
