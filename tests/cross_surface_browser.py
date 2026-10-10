@@ -139,6 +139,32 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(requests, [])
         self.assertEqual(self.page.evaluate('JSON.stringify({...localStorage})'), before)
 
+    def test_a_study_session_sends_nothing_off_the_device(self):
+        # About's promise, "İlerlemen kendi tarayıcında", links here
+        # (docs/PRINCIPLES.md §5, charter rule 8): reading, answering and
+        # opening Profil only fetch this site's own files; progress is
+        # written to localStorage and never leaves in a request.
+        requests = []
+        self.context.on('request', lambda request: requests.append(
+            (request.method, request.url, request.post_data)))
+        self.visit('index.html#egitim/tenses-present-perfect-vs-past-simple')
+        expect(self.page.locator('#shell-scroll')).to_contain_text('Present Perfect')
+        self.visit('index.html#test')
+        self.page.evaluate("async () => (await import('./js/quiz-launch.js')).startMixedTest(5)")
+        expect(self.page.locator('#question-stem')).to_be_visible()
+        self.page.locator('.option').first.click()
+        expect(self.page.locator('.feedback__verdict')).to_be_visible()
+        self.page.goto(BASE + '/index.html#profil')
+        expect(self.page.get_by_role('button', name='Yedek al', exact=True)).to_be_visible()
+        self.visit('about/')
+        expect(self.page.locator('#lens-forms [role="radio"]')).to_have_count(2)
+        self.page.wait_for_load_state('networkidle')
+        self.assertTrue(self.page.evaluate("Object.keys(localStorage).some((key) => key.startsWith('englishPrep.'))"))
+        self.assertGreater(len(requests), 10)
+        away = [(method, url) for method, url, body in requests
+                if method != 'GET' or body is not None or not url.startswith(BASE + '/')]
+        self.assertEqual(away, [])
+
     def test_about_keyboard_controls_remain_complete_with_reduced_motion(self):
         # v0.77 About: the lens, its pager and the anatomy question are fully
         # keyboard-operable, and reduced motion leaves nothing running.

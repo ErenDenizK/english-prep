@@ -254,13 +254,29 @@ class AboutInteractionTests(unittest.TestCase):
                 page.wait_for_timeout(300)
                 self.assertLessEqual(page.evaluate('document.documentElement.scrollWidth'), width)
                 small = page.evaluate('''() => [...document.querySelectorAll(
-                    ".ab-button, .ab-sentence, .ab-pager__item, .ab-autoplay, .ab-option, .ab-callout__button, .ab-chip, .ab-faq__item summary, .ab-topnav a")]
+                    ".ab-button, .ab-sentence, .ab-pager__item, .ab-autoplay, .ab-option, .ab-callout__button, .ab-chip, .ab-faq__item summary, .ab-topnav a, .ab-promise")]
                   .filter((e) => e.getClientRects().length)
                   .map((e) => [e.className || e.tagName, Math.round(e.getBoundingClientRect().height), Math.round(e.getBoundingClientRect().width)])
                   .filter(([, h, w]) => h < 44 || w < 44)''')
                 self.assertEqual(small, [])
                 self.context.close()
                 self.context = None
+
+    def test_the_promise_links_to_its_proof(self):
+        # Charter rule 8: the promise line opens the privacy card, which links
+        # the storage code and the test that a session sends nothing away.
+        page = self.open(390, 844, reduced='reduce')
+        promise = page.locator('.ab-hero .ab-promise')
+        expect(promise).to_have_text('Ücretsiz · Hesap yok · İlerlemen kendi tarayıcında')
+        promise.click()
+        expect(page).to_have_url(re.compile('#privacy$'))
+        proof = page.locator('#privacy .ab-privacy__proof a')
+        expect(proof).to_have_count(2)
+        expect(proof.nth(0)).to_have_attribute('href', re.compile(r'/blob/test/js/storage\.js$'))
+        expect(proof.nth(1)).to_have_attribute('href', re.compile(r'/blob/test/tests/cross_surface_browser\.py$'))
+        self.assertIn('def test_a_study_session_sends_nothing_off_the_device',
+                      (ROOT / 'tests' / 'cross_surface_browser.py').read_text())
+        self.assertTrue((ROOT / 'js' / 'storage.js').is_file())
 
     # ---- Material and forced colours (docs/PRINCIPLES.md §4, §6 rule 1) ----
     def test_masthead_blurs_over_a_safe_tint_and_is_solid_for_every_twin(self):

@@ -165,7 +165,7 @@ asserts no network requests).
 | 5 Rest is still | an idle-frames check in the sweep | About runs three infinite loops |
 | 6 Seen at three sizes | screenshots at 1440×900, 1180×820 touch, 390×844 (plus 320 and 768) | Not yet in the sweep's size list |
 | 7 Decisions written | ADRs; this page's two kinds of rule | Partly; About v0.77 has no design note |
-| 8 Promise proven | the promise links to `js/storage.js` and the no-network test | No link yet |
+| 8 Promise proven | the promise links to `js/storage.js` and the no-network test | Passes: the promise opens the privacy card, which links both (wording awaits the owner) |
 
 Closing the "State" column is part of V1 (`ROADMAP.md`, phase 3).
 
