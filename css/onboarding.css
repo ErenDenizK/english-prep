@@ -1,4 +1,5 @@
 /* Optional tour: one user-paced miniature, scoped away from study material. */
+@layer onboarding {
 .onboard .onboard__tour { gap: 20px; }
 .onboard .onboard__top .brand-mark { font-size: 2.75rem; }
 .onboard .onboard__progress { margin-top: 0; }
@@ -179,3 +180,4 @@ html[data-motion="off"] .onboard .onboard__dot { transition: none; }
   min-height: calc(100dvh - var(--onboard-inset, 80px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
 }
 .onboard .onboard__actions { margin-top: auto; }
+} /* @layer onboarding */

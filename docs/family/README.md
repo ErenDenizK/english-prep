@@ -40,8 +40,8 @@ values in machine form; it is generated, never edited (§4).
 | Promise line | "Ücretsiz · Hesap yok · İlerlemen kendi tarayıcında" (*Free. No account. Your progress stays in your browser.*); the family's short form drops the first word | `about/index.html` `.ab-quiet` |
 
 Note on the checkers: the live palette is audited by `tools/editorial-palette.mjs` against
-`css/editorial.css`. `tools/palette.mjs` and the tokens at the top of `css/style.css` are the
-UI 3 layer underneath, which `editorial.css` overrides; `world.json` reads the live layer.
+`css/editorial.css`, the one token source; `world.json` reads the same layer. The UI 3 palette
+and its checker are gone.
 
 ## 2. What stays untouchable
 

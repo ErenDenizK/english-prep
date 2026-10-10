@@ -2,6 +2,18 @@
    ../css/editorial.css; everything here is scoped to .about-page so the
    app is never affected. Motion: springs are handed in by about.js as
    --ab-spring*, sampled from the app's own simulation. */
+/* Resets sit in the reset layer, so the app's components (.btn) and every
+   rule below win over them, as they did when this sheet was unlayered. */
+@layer reset {
+:where(.about-page) *, :where(.about-page) *::before, :where(.about-page) *::after { box-sizing: border-box; }
+:where(.about-page) :where(h1, h2, h3, p, figure, ol, ul, dl, dd) { margin: 0; }
+:where(.about-page) :where(ol, ul) { padding: 0; list-style: none; }
+:where(.about-page) :where(a) { color: inherit; text-decoration: none; }
+:where(.about-page) :where(button) { font: inherit; color: inherit; }
+:where(.about-page) :where(img) { display: block; max-width: 100%; height: auto; }
+}
+
+@layer about {
 
 .about-page {
   margin: 0;
@@ -15,14 +27,6 @@
   --ab-surface: color-mix(in srgb, var(--card) 78%, transparent);
   --ab-surface-strong: color-mix(in srgb, var(--card) 92%, transparent);
 }
-:where(.about-page) *, :where(.about-page) *::before, :where(.about-page) *::after { box-sizing: border-box; }
-/* Resets carry no specificity, so a component's own colour always wins. */
-:where(.about-page) :where(h1, h2, h3, p, figure, ol, ul, dl, dd) { margin: 0; }
-:where(.about-page) :where(ol, ul) { padding: 0; list-style: none; }
-:where(.about-page) :where(a) { color: inherit; text-decoration: none; }
-:where(.about-page) :where(button) { font: inherit; color: inherit; }
-:where(.about-page) :where(img) { display: block; max-width: 100%; height: auto; }
-.about-page [hidden] { display: none !important; }
 .about-page :is(header, main, footer) { position: relative; z-index: 1; }
 .about-page :is(h1, h2, h3) { font-weight: 600; text-wrap: balance; }
 .about-page p { text-wrap: pretty; }
@@ -71,7 +75,6 @@
     transform 900ms var(--ab-spring, cubic-bezier(.22, 1, .36, 1)) min(calc(var(--i, 0) * 70ms), 420ms);
 }
 .reveal-ready:not(.reveal-all) [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(26px); }
-:root[data-motion="off"] [data-reveal] { opacity: 1 !important; transform: none !important; }
 
 /* ---- Masthead ---- */
 .ab-masthead { position: sticky; top: 0; z-index: 10; transition: background-color 260ms var(--ab-ease), border-color 260ms var(--ab-ease); border-bottom: 1px solid transparent; }
@@ -341,8 +344,8 @@
 .ab-chart__curve { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
 .reveal-ready .ab-springs:not(.is-drawn) .ab-chart__curve { stroke-dashoffset: 1; }
 .reveal-ready .ab-chart__curve { transition: stroke-dashoffset 1400ms var(--ab-ease); }
-.ab-chart__curve--1 { transition-delay: 150ms !important; }
-.ab-chart__curve--2 { transition-delay: 300ms !important; }
+.reveal-ready .ab-chart__curve--1 { transition-delay: 150ms; }
+.reveal-ready .ab-chart__curve--2 { transition-delay: 300ms; }
 .ab-chart__curve--0, .ab-legend__item--0 { --c: var(--cool); stroke: var(--cool); }
 .ab-chart__curve--1, .ab-legend__item--1 { --c: var(--accent); stroke: var(--accent); }
 .ab-chart__curve--2, .ab-legend__item--2 { --c: var(--tertiary); stroke: var(--tertiary); }
@@ -422,13 +425,17 @@
 .ab-footer__note { max-width: 80ch; font-size: .8125rem; line-height: 1.7; }
 @media (min-width: 900px) { .ab-footer { grid-template-columns: 1fr auto; align-items: start; } .ab-footer__note { grid-column: 1 / -1; } }
 
-/* ---- Reduced motion and forced colours ---- */
-@media (prefers-reduced-motion: reduce) {
-  .about-page *, .about-page *::before, .about-page *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-}
+/* ---- Forced colours (reduced motion: editorial.css's overrides layer) ---- */
 @media (forced-colors: active) {
   .ab-line--accent, .ab-fact__value { color: CanvasText; background: none; }
   .ab-sentence.is-on, .ab-option.is-right, .ab-option.is-wrong, .ab-pager__item[aria-pressed="true"] { border-color: Highlight; }
   [data-on] { stroke: CanvasText; }
 }
-@media print { .ab-masthead, .ab-lens__foot, .ab-springs__controls, .ab-lanes { display: none; } [data-reveal] { opacity: 1 !important; transform: none !important; } }
+@media print { .ab-masthead, .ab-lens__foot, .ab-springs__controls, .ab-lanes { display: none; } }
+} /* @layer about */
+
+@layer overrides {
+.about-page [hidden] { display: none; }
+:root[data-motion="off"] [data-reveal] { opacity: 1; transform: none; }
+@media print { [data-reveal] { opacity: 1; transform: none; } }
+}
