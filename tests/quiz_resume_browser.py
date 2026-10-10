@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Quiz persistence regressions. Run against a local HTTP server."""
-import argparse
 import json
 from pathlib import Path
 import re
@@ -8,9 +7,9 @@ import unittest
 
 from playwright.sync_api import expect, sync_playwright
 
-parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--base-url', default='http://127.0.0.1:8001')
-parser.add_argument('--browser-path', default='/usr/bin/chromium')
+from _harness import launch_chromium, make_parser
+
+parser = make_parser(__doc__)
 ARGS, TEST_ARGS = parser.parse_known_args()
 BASE = ARGS.base_url.rstrip('/')
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +25,7 @@ class QuizResumeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.pw = sync_playwright().start()
-        cls.browser = cls.pw.chromium.launch(executable_path=ARGS.browser_path, args=['--no-sandbox'])
+        cls.browser = launch_chromium(cls.pw, ARGS)
 
     @classmethod
     def tearDownClass(cls):
@@ -209,12 +208,11 @@ class QuizResumeTests(unittest.TestCase):
         counts = self.page.evaluate('''async ([first,second]) => {
           const storage = await import('./js/storage.js');
           return {before:storage.getTodayCount(Date.parse(first)), after:storage.getTodayCount(Date.parse(second)),
-            streak:storage.getStreak(Date.parse(second)), latest:storage.getLastActivity()};
+            streak:storage.getStreak(Date.parse(second))};
         }''', [first, second])
         self.assertEqual(counts['before'], 1)
         self.assertEqual(counts['after'], 1)
         self.assertEqual(counts['streak'], {'days': 2, 'activeToday': True})
-        self.assertEqual(counts['latest'], self.page.evaluate('Date.parse', second))
 
     def test_results_retries_a_one_time_history_write_failure_with_same_id(self):
         self.launch(count=2)

@@ -12,7 +12,7 @@ A static, mobile-first web app for Turkish university prep-school proficiency ex
 | Option notes | 723 (every question has `optionNotes`) | node count over `data/*/*.json`; About shows it live (`about/about.js:369`) |
 | Validate warning | `academic-nouns-adjectives-t13` / `-t16` have identical option sets | `npm run validate` (1 warning, passes) |
 | Unit tests | 250, all pass | `npm test` → `# tests 250 # pass 250` (incl. `tests/family-world.test.js`) |
-| Browser scenario files | 17 Python Playwright scripts, not in CI | `ls tests/*.py` |
+| Browser scenario files | 17 Python Playwright suites, 136 pass + 1 skip (axe matrix, opt-in) (2026-10-10) | `npm run browser` |
 | `npm run verify` sweep | 3,591 checks at 4 widths, all pass (2026-10-10) | `npm run verify` |
 | Planned, not built | `so / such` (cloze map points at missing topic `so-such`, `js/topics.js:334`), paragraph completion, reading passages | |
 
@@ -23,7 +23,7 @@ The owner's policy (2026-10-10) is that only two branches exist:
 - **`test`** is the live GitHub Pages site and the only development branch. Sessions work here and push after checks: `npm run check`, plus `npm run serve` + `npm run verify` for any change to a screen.
 - **`main`** is the owner's release branch. Only the owner pushes to it, by hand.
 
-CI (`.github/workflows/ci.yml`) runs format:check, validate, color and test on push or PR to both branches. It runs no browser tests.
+CI (`.github/workflows/ci.yml`) runs two jobs on push or PR to both branches: `check` (format:check, validate, color, test) and `browser` (`npm run verify`, then `npm run browser`, with Playwright 1.56 installed in the job).
 
 Each release bumps `VERSION` in `sw.js:4` (currently `"english-prep-v0.77"`). Without the bump, installed clients keep the old shell cache.
 
@@ -63,7 +63,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 
 **Tools (`tools/`):** `validate-content.mjs` 1193, `content-checks.mjs`, `format-content.mjs`. Colour tools: `palette.mjs`, `token-check.mjs` (both measure `css/style.css`, `tools/token-check.mjs:23`) and `editorial-palette.mjs` (the live layer). Others: `verify-ui.mjs` 3470 (browser sweep), `audit-ui.mjs`, `capture-portfolio.{mjs,py}`, `solve.mjs`, `blind-corpus.mjs`, `make-calibration.mjs`, `check-draft.mjs`, `make-icons.mjs`, `make-world.mjs`, `ship-topic.mjs`.
 
-**Tests:** 250 node:test unit tests (`tests/*.test.js`) and 17 Python browser scripts (`tests/*.py`); see weak spot 4.
+**Tests:** 250 node:test unit tests (`tests/*.test.js`) and 17 Python browser suites (`tests/*.py`, shared setup in `tests/_harness.py`, runner `tests/run_all.py`, guide `tests/README.md`).
 
 **Service worker:** `sw.js` precaches the shell, every module, the About HTML/CSS/JS and its three captures, and `InterVariable.woff2` (`sw.js:15-72`). Content is network-first and cached on visit.
 
@@ -92,15 +92,10 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
    - Removed in roadmap phase 1: `js/celebrate.js`, and the `ring`, `monogram`, `initialsOf`, `choices`, `countUp` and `motionWelcome` exports of `js/widgets.js` (which now holds only `hueOf`, `avatar` and `haptic`). `docs/components.html` draws its monograms itself and no longer shows rings or choice groups.
    - Also removed: `downloadBackup` in `js/backup-ui.js` and its one test; the live share path is `js/share.js`, covered by `tests/share.test.js`.
    - Also removed: `loadRoadmap` and `data/roadmap.json` (no caller; the validator no longer checks the file).
-   - Also removed: `getTopicTotals` and `getCategoryTotals` in `js/storage.js` and their test cases. `getLastActivity` stays for now: no screen calls it, but `tests/quiz_resume_browser.py` still asserts on it.
+   - Also removed: `getTopicTotals` and `getCategoryTotals` in `js/storage.js` and their test cases. `getLastActivity` is dead too: no screen calls it, and the browser suite no longer asserts on it.
    - Dead CSS: `.onboard__orb/__steps` (style.css), `.onboard__preview*`, `.onboard__panel--enter`, `.section-head` and `.formula` (editorial.css) have no JS/HTML users. `.ring*` and `.choice*` serve only the dead widgets.
    - Tokens `--d-exit`, `--d-view`, `--ease-in` and `--s-10` are defined once and never used.
-4. **Browser tests are not in CI and not portable.**
-   - The 17 `tests/*.py` files are run by no npm script and no CI step.
-   - Every file defaults to `/usr/bin/chromium`. `tests/v073_motion_browser.py:27` hard-codes it with no `--browser-path` flag.
-   - Default ports are mixed: 8000 (aura, component_interactions, composition, editorial_smoke, scroll_rail, v070, v071), 8001 (quiz_resume, ux_refinements), 8010 (onboarding, pretest_progress, reading_system), 8012 (about) and 8182 (transfer, v072, v073×2). Some use the `/english-prep` prefix.
-   - `tests/transfer_browser.py:108` takes `--base`; the others take `--base-url`.
-   - `PIL` is imported by `tests/aura_browser.py` and `tests/v071_motion_browser.py`, but no requirements file declares it or `playwright`.
+4. **Browser tests (fixed 2026-10-10).** The Python suites share `tests/_harness.py`: every file takes `--base-url` (`EP_BASE_URL`, default `http://127.0.0.1:8000/`) and `--browser-path` (`EP_BROWSER`, default Playwright's own Chromium); `transfer_browser.py` still accepts `--base`. Version-named suites were renamed by feature. `tests/requirements.txt` pins `playwright` and `pillow`; CI runs them. Not yet run in GitHub Actions itself.
 5. **Unverified on real devices.** All evidence is Chromium emulation. Not checked: iOS Safari `linear()` (17.2+), toolbar composition, and aurora performance on phones.
 6. **Desktop tab capsule overlap.** `.nav` is an opaque `var(--card)` capsule with `border-radius:14px` (`css/editorial.css:264-273`), not glass. Measured headless at 1440×900 and 1280×800 on `#egitim`: it sits centred over the right-hand list column at rest and covers a topic row (Gerunds / Quantifiers). The same happens on `#test`.
 7. **Rail placement.** The track defaults to `top: 25vh` with a fixed height (`css/scroll-rail.css:8-11`). It spans roughly the middle third, so at the top of a page the thumb sits mid-screen (handoff-v1 §5; on lessons unverified).
@@ -129,9 +124,8 @@ npm run color          # WCAG 2 + APCA token proofs
 npm run serve          # python3 -m http.server 8000
 npm run verify         # browser sweep (needs serve; Playwright found globally or via PLAYWRIGHT_PATH)
 npm run audit          # tools/audit-ui.mjs
-# Python scenarios (pip install playwright pillow; serve on each file's port first):
-python3 tests/<name>.py --base-url http://127.0.0.1:<port> --browser-path <chrome>
-#   transfer_browser.py uses --base; v073_motion_browser.py has no --browser-path
+npm run browser        # all Python suites; starts its own server (pip install -r tests/requirements.txt)
+python3 tests/<name>.py --base-url http://127.0.0.1:<port> [--browser-path <chrome>]   # one suite (tests/README.md)
 ```
 
 Other scripts: `format`, `tokens`, `icons`, `blind`, `solve`, `calibrate`, `draft` (`package.json:7-22`). Before a release, bump `sw.js:4` `VERSION`.
