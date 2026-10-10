@@ -229,7 +229,10 @@ class AboutInteractionTests(unittest.TestCase):
 
     def test_reveals_never_strand_content_when_the_module_fails(self):
         page = self.open(block_module=True)
-        page.wait_for_timeout(3000)
+        # The fallback fires at 2500 ms and the fade then runs up to 640 ms
+        # plus a 420 ms stagger, so wait for the end state rather than a
+        # fixed 3 s that races it on a busy machine.
+        page.wait_for_function('[...document.querySelectorAll("[data-reveal]")].every((e) => getComputedStyle(e).opacity === "1")', timeout=6000)
         hidden = page.evaluate('[...document.querySelectorAll("[data-reveal]")].filter((e) => getComputedStyle(e).opacity !== "1").length')
         self.assertEqual(hidden, 0)
         expect(page.locator('#hero-title')).to_be_visible()
