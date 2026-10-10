@@ -18,7 +18,6 @@ const SHELL = [
   "./quiz.html",
   "./results.html",
   "./css/style.css",
-  "./css/fonts.css",
   "./css/editorial.css",
   "./css/interactions.css",
   "./css/composition.css",
@@ -47,6 +46,11 @@ const SHELL = [
   "./about/about.css",
   "./about/about.js",
   "./about/content.js",
+  // The study loop's three captures (about/content.js `capture`), so About
+  // reads whole offline. The -wide and education captures are docs-only.
+  "./about/assets/article-phone.webp",
+  "./about/assets/test-phone.webp",
+  "./about/assets/results-phone.webp",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-180.png",
@@ -68,7 +72,6 @@ const SHELL = [
   "./js/topics.js",
   "./js/widgets.js",
   "./js/onboarding.js",
-  "./js/celebrate.js",
 ];
 
 function isScopedContent(request) {

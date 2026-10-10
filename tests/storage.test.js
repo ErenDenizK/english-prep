@@ -36,8 +36,6 @@ test.beforeEach(() => entries.clear());
 
 test("an empty store reports empty stats rather than throwing", () => {
   assert.deepEqual(storage.getHistory(), []);
-  assert.deepEqual(storage.getTopicTotals(), {});
-  assert.deepEqual(storage.getCategoryTotals(), {});
   assert.deepEqual(storage.getWeakTopics(), []);
   assert.equal(storage.getTopicAccuracy("tenses"), null);
   assert.deepEqual(storage.getOverallStats(), {
@@ -50,37 +48,13 @@ test("an empty store reports empty stats rather than throwing", () => {
   });
 });
 
-test("totals accumulate across attempts, per topic and per category", () => {
-  storage.recordAttempt(
-    attempt({
-      topics: { tenses: { correct: 3, total: 4 } },
-      categories: { "Future Forms": { correct: 3, total: 4 } },
-    })
-  );
-  storage.recordAttempt(
-    attempt({
-      topics: { tenses: { correct: 1, total: 2 }, modals: { correct: 2, total: 2 } },
-      categories: { "Future Forms": { correct: 0, total: 1 }, Obligation: { correct: 2, total: 2 } },
-    })
-  );
-
-  assert.deepEqual(storage.getTopicTotals(), {
-    tenses: { correct: 4, total: 6 },
-    modals: { correct: 2, total: 2 },
-  });
-  assert.deepEqual(storage.getCategoryTotals(), {
-    "Future Forms": { correct: 3, total: 5 },
-    Obligation: { correct: 2, total: 2 },
-  });
-});
-
-test("attempts recorded before category history existed are skipped, not fatal", () => {
+test("attempts recorded before category history existed are kept, not fatal", () => {
   const legacy = attempt({ topics: { tenses: { correct: 1, total: 2 } } });
   delete legacy.categoryBreakdown;
   storage.recordAttempt(legacy);
 
-  assert.deepEqual(storage.getCategoryTotals(), {});
-  assert.deepEqual(storage.getTopicTotals(), { tenses: { correct: 1, total: 2 } });
+  const [kept] = storage.getHistory();
+  assert.deepEqual(kept.topicBreakdown, { tenses: { correct: 1, total: 2 } });
 });
 
 test("topic accuracy spans attempts, not just the last one", () => {

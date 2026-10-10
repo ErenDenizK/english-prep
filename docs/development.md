@@ -10,8 +10,8 @@
 **Margin / Sakura:** [open the redesigned app](../index.html),
 [compare the full original](../original/index.html), or inspect its
 [unchanged runtime source archive](../original/source-39dcd46.zip). This version
-uses the full `test` source at `39dcd46`; the earlier `main` prototype
-is preserved separately in [legacy/](../legacy/index.html). The original's
+uses the full `test` source at `39dcd46`; the earlier prototype lives on in
+the `main` branch's history. The original's
 hosted service worker has only been adapted to isolate its offline caches.
 
 Run `npm run serve` and open `http://localhost:8000/`; run `npm run check`
@@ -260,7 +260,6 @@ tools/                Validator, formatter, colour maths, browser sweep
 tests/                Unit tests
 docs/                 Design system, content schema, research, agent briefs
 original/             Full original interface and unchanged source archive
-legacy/               Earlier main-branch prototype
 ```
 
 `docs/` is where the reasoning lives. `docs/margin-design-system.md` documents

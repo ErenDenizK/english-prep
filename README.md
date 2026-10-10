@@ -161,7 +161,6 @@ runtime**. A push to `test` is a deployment, so checks happen before publication
 
 [Current app](https://erendenizk.github.io/english-prep/) ·
 [Full original interface](https://erendenizk.github.io/english-prep/original/) ·
-[Earlier prototype](https://erendenizk.github.io/english-prep/legacy/) ·
 [Unchanged original source ZIP](https://erendenizk.github.io/english-prep/original/source-39dcd46.zip)
 
 The historical hosted versions share the origin's local progress and settings;

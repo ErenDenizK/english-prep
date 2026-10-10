@@ -173,20 +173,6 @@ function chronologicalHistory() {
   return getHistory().sort((a, b) => (attemptActivity(a) ?? 0) - (attemptActivity(b) ?? 0));
 }
 
-function sumBreakdowns(attempts, breakdownKey) {
-  const totals = {};
-  for (const attempt of attempts) {
-    for (const [key, stats] of Object.entries(attempt[breakdownKey] ?? {})) {
-      if (!totals[key]) {
-        totals[key] = { correct: 0, total: 0 };
-      }
-      totals[key].correct += stats.correct;
-      totals[key].total += stats.total;
-    }
-  }
-  return totals;
-}
-
 /**
  * Per-question history, derived rather than stored: every attempt already
  * carries answer timestamps (or an attempt date in older records), so
@@ -314,24 +300,6 @@ export function getMistakeBook() {
       correctDays: entry.days.size,
     }))
     .sort((a, b) => b.wrong - a.wrong || b.lastWrong - a.lastWrong);
-}
-
-/**
- * Aggregates correct/total counts per topic across all recorded attempts.
- * @returns {Record<string, {correct: number, total: number}>}
- */
-export function getTopicTotals() {
-  return sumBreakdowns(getHistory(), "topicBreakdown");
-}
-
-/**
- * Aggregates correct/total counts per grammar category across all
- * recorded attempts. Attempts recorded before category history existed
- * simply have no `categoryBreakdown` and are skipped for this one.
- * @returns {Record<string, {correct: number, total: number}>}
- */
-export function getCategoryTotals() {
-  return sumBreakdowns(getHistory(), "categoryBreakdown");
 }
 
 /**
