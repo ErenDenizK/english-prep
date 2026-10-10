@@ -157,6 +157,12 @@ export const craft = {
   privacy: {
     title: "Hesap yok. Sunucu yok. Verin, senin tarayıcında.",
     body: "İlerlemen yalnızca bu cihazda tutulur. Yedeğini dosya ya da metin olarak alır, başka bir cihazda geri yüklersin. Otomatik eşitleme yok; analitik yok.",
+    // The promise's proof (docs/PRINCIPLES.md §5, charter rule 8): the code
+    // that stores progress, and the test that a study session sends nothing.
+    evidence: [
+      { label: "Depolama kodu", href: "https://github.com/ErenDenizK/english-prep/blob/test/js/storage.js" },
+      { label: "Ağ isteği testi", href: "https://github.com/ErenDenizK/english-prep/blob/test/tests/cross_surface_browser.py" },
+    ],
   },
 };
 

@@ -6,6 +6,7 @@ import { spring } from "../js/interactions.js";
 import { initScrollRail } from "../js/scroll-rail.js";
 import { createInstallControl } from "../js/install.js";
 import { lessonId } from "../js/topics.js";
+import { icon } from "../js/icons.js";
 import { TIER_ORDER, TIER_LABELS } from "../js/tiers.js";
 import { pairs, manifesto, anatomy, flow, craft, questions } from "./content.js";
 
@@ -41,6 +42,13 @@ function svgText(x, y, text, className, anchor = "middle") {
   return element;
 }
 const appLink = (hash) => `../index.html${hash}`;
+// Charter rule 4 (docs/PRINCIPLES.md §6): arrows are icons, never
+// characters. The static links name theirs in index.html as
+// <span data-icon="…">, filled here; without the module they read as words.
+const linkIcon = (name) => icon(name, { size: 16 });
+function initIcons() {
+  for (const slot of document.querySelectorAll("span[data-icon]")) slot.replaceWith(linkIcon(slot.dataset.icon));
+}
 const canMove = () => motionEnabled() && !document.hidden;
 
 async function json(path) {
@@ -490,9 +498,7 @@ async function initAnatomy(manifestPromise) {
     const go = node("a", "ab-link", "Bu ayrımın dersini aç ");
     go.href = appLink(`#egitim/${lessonId(anatomy.topic, question.category)}`);
     go.dataset.part = "lesson";
-    const arrow = node("span", null, "↗");
-    arrow.setAttribute("aria-hidden", "true");
-    go.append(arrow);
+    go.append(linkIcon("arrow-up-right"));
     const again = node("button", "ab-link ab-link--button", "Başka bir seçenek dene");
     again.type = "button";
     again.addEventListener("click", () => {
@@ -566,9 +572,7 @@ function initFlow() {
     head.append(node("span", "ab-step__n", step.step), node("span", "ab-step__label", step.label));
     const link = node("a", "ab-link", "Uygulamada aç ");
     link.href = step.href;
-    const arrow = node("span", null, "↗");
-    arrow.setAttribute("aria-hidden", "true");
-    link.append(arrow);
+    link.append(linkIcon("arrow-up-right"));
     const shot = node("figure", "ab-step__shot");
     shot.append(image(step, "ab-step__img"));
     item.append(head, node("h3", "ab-step__title", step.title), node("p", "ab-step__body", step.body), link, shot);
@@ -746,7 +750,14 @@ function initPrivacy() {
   if (!card) return;
   const copy = craft.privacy;
   const text = node("div", "ab-privacy__copy");
-  text.append(node("p", "ab-card__kicker", "Veri"), node("h3", null, copy.title), node("p", null, copy.body));
+  const proof = node("p", "ab-privacy__proof");
+  proof.append(...copy.evidence.map(({ label, href }) => {
+    const link = node("a", "ab-link", `${label} `);
+    link.href = href;
+    link.append(linkIcon("arrow-up-right"));
+    return link;
+  }));
+  text.append(node("p", "ab-card__kicker", "Veri"), node("h3", null, copy.title), node("p", null, copy.body), proof);
   const art = svgRoot("0 0 420 170", "Veri yalnızca bu cihazdaki tarayıcıda; yedek dosyasıyla başka bir cihaza taşınabilir, sunucu yok.");
   art.classList.add("ab-privacy__art");
   art.append(shape("rect", { x: 20, y: 30, width: 150, height: 110, rx: 14 }, "ab-p-device"));
@@ -791,6 +802,7 @@ function initMasthead() {
 
 /* ---- Boot. ---- */
 initMotion();
+initIcons();
 initReveal();
 initMasthead();
 initLens();
