@@ -1,5 +1,6 @@
 /* One continuous thread, a small local grab target, and native scroll state.
    The 44px interaction area never becomes a visible panel or thick control. */
+@layer rail {
 [data-scroll-rail-enhanced] { scrollbar-width: none; }
 [data-scroll-rail-enhanced]::-webkit-scrollbar { display: none; }
 .scroll-rail {
@@ -115,17 +116,16 @@
 .scroll-rail[data-compact="true"] .scroll-rail__marks { opacity: 0; transition: opacity 380ms var(--ease-standard); }
 .scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__marks { opacity: 1; }
 .scroll-rail[data-interactive="false"] { display: none; }
-:root[data-motion="off"] .scroll-rail *,
-:root[data-motion="off"] .scroll-rail *::before,
-:root[data-motion="off"] .scroll-rail *::after,
-:root[data-page-visible="false"] .scroll-rail *,
-:root[data-page-visible="false"] .scroll-rail *::before,
-:root[data-page-visible="false"] .scroll-rail *::after { animation: none !important; transition: none !important; }
-@media (prefers-reduced-motion: reduce) {
-  .scroll-rail *, .scroll-rail *::before, .scroll-rail *::after { animation: none !important; transition: none !important; }
-}
 @media (forced-colors: active) {
   html, .shell__scroll, [data-scroll-rail-enhanced] { scrollbar-width: auto; scrollbar-color: auto; }
   .shell__scroll::-webkit-scrollbar, [data-scroll-rail-enhanced]::-webkit-scrollbar { display: block; width: auto; }
   .scroll-rail { display: none; }
+}
+} /* @layer rail */
+
+/* A hidden tab stops the rail too; motion settings are editorial.css's. */
+@layer overrides {
+:root[data-page-visible="false"] .scroll-rail *,
+:root[data-page-visible="false"] .scroll-rail *::before,
+:root[data-page-visible="false"] .scroll-rail *::after { animation: none; transition: none; }
 }

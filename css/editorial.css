@@ -10,6 +10,15 @@
   font-weight: 100 900;
   font-display: swap;
 }
+
+/* One cascade for every sheet, in this order (docs/STATE.md §4). style.css
+   declares the same list: whichever sheet a page loads first fixes it, and
+   About loads this one first. Unlayered rules would beat every layer, so
+   every sheet puts all of its rules in one of these. */
+@layer tokens, reset, layout, components, screens, utilities, skin, motion, composition, rail, share, onboarding, about, overrides;
+
+/* Margin, the live look: everything below until the overrides. */
+@layer skin {
 :root {
   --page: #141216;
   --card: #1d1a20;
@@ -1256,13 +1265,6 @@ body.is-reading:has(.lesson) .page {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
   .tile:active,
   .btn:active,
   .listbox__trigger:active {
@@ -1601,14 +1603,7 @@ h2.t-label, .onboard__modes h2 {
 .lesson .lesson-form-label { color: var(--secondary); }
 :root[data-motion="on"] .score__metric .metric__track { animation: metric-settle var(--d-complete) var(--ease-standard) both; transform-origin: left; }
 @keyframes metric-settle { from { transform: scaleX(.97); } to { transform: scaleX(1); } }
-:root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
-:root[data-motion="off"] *::before,
-:root[data-motion="off"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 :root[data-motion="off"] :is(.btn, .tile, .listbox__trigger):active { transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  .ambient__field, .ambient__pigment { animation: none !important; }
-  .score__metric .metric__track { animation: none !important; }
-}
 @media (forced-colors: active) {
   .ambient { display: none; }
   .metric__track { border: 1px solid CanvasText; background: Canvas; }
@@ -1630,3 +1625,22 @@ h2.t-label, .onboard__modes h2 {
 /* Enabled switch state uses the same measured on-primary ink as its action. */
 [aria-checked="true"] .switch__thumb { background: var(--accent-ink); }
 .metric--empty .metric__value { color: var(--ink-2); }
+} /* @layer skin */
+
+/* Still twins (CLAUDE.md "Every effect has a still twin"). The last layer
+   beats every other one without !important; the aurora keeps its own pause
+   switch when only the in-app motion setting is off. */
+@layer overrides {
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
+  }
+}
+:root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after { animation: none; transition: none; scroll-behavior: auto; }
+}

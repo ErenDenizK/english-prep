@@ -1,6 +1,7 @@
 /* Follow the available viewport when mobile browser controls expand/collapse.
    Older engines retain style.css's svh/vh fallback. This does not hide browser
    UI; standalone installation supplies the address-bar-free application. */
+@layer composition {
 @supports (height: 100dvh) {
   html, body { height: 100dvh; }
 }
@@ -69,3 +70,4 @@
 }
 .settings-reset > .btn--reset .icon { color: var(--tertiary); }
 .settings-reset > .btn--reset:is(:hover, :focus-visible) { border-color: var(--tertiary); }
+} /* @layer composition */
