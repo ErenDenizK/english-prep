@@ -5,6 +5,15 @@ the [development guide's Versioning section](docs/development.md#versioning) for
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.79 — 2026-10-10
+
+- About başlık çubuğu cam sözleşmesine uyduruldu: arka plan %95 opak, bulanıklık yalnızca destekleyen tarayıcıda; saydamlığı azalt, yüksek kontrast ve zorlanmış renklerde düz. Bulanıklık hiç çalışmasa bile arkadaki yazı okunmuyor (ölçülen kalıntı kontrast 1,11:1).
+- About yüksek kontrast (zorlanmış renk) modunda düzgün: mercek etiketleri, diyagramlar ve seçili cümle sistem renkleriyle görünüyor.
+- Ok karakterleri gerçek ikonlarla değiştirildi; yardım metinlerinde oklar kelimeye döndü ("Paylaş, sonra Ana Ekrana Ekle"). Bir test bunu koruyor.
+- "Hesap yok · İlerlemen kendi tarayıcında" sözü kanıtına bağlandı: gizlilik kartında depolama koduna ve hiçbir verinin cihazdan çıkmadığını gösteren teste bağlantı.
+- Geniş ekranda alt sekme kapsülünün boşluğu bir tokene bağlandı; son satır kapsülden her zaman ayrı. Tarama bunu her genişlikte denetliyor.
+- Portfolyo için: yeni ekran görüntüsü ve imza klibi aracı (AV1/HEVC/H.264, sRGB), `world.json` aile şemasında.
+
 ## v0.78 — 2026-10-10
 
 Görünürde bir şey değişmedi; uygulama daha hafif ve daha sağlam bir temele oturdu.
