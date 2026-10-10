@@ -1005,6 +1005,9 @@ body.is-reading:has(.lesson) .page {
     --gutter: 24px;
     --bar-h: 76px;
     --foot-pad: 14px;
+    /* The capsule's inset is a token so the scroller's end padding
+       (--foot-space, css/style.css) clears it at this width too. */
+    --nav-inset: 18px;
     --s-8: 48px;
     --w-wide: calc(var(--w-page) + var(--w-aside) + var(--s-8));
   }
@@ -1075,9 +1078,6 @@ body.is-reading:has(.lesson) .page {
   .shell__bar-inner {
     padding-block: 14px;
     min-height: 81px;
-  }
-  .nav {
-    bottom: 18px;
   }
   .quiz__prompt {
     padding: 28px;
