@@ -112,8 +112,8 @@ Actual timed captures exposed defects that endpoint-only tests missed:
   a button's last child after wrapping erased its icon; scoped label updates
   preserve both animation and content.
 
-The [independent audit](audit/motion-v073.md), [rail design](design/scroll-rail-v073.md),
-[motion language](design/motion-v073.md) and [ADR012](adr/012-elastic-edge-and-expressive-arrivals.md)
+The [independent audit](history/audit/motion-v073.md), [rail design](design/scroll-rail-v073.md),
+[motion language](history/design/motion-v073.md) and [ADR012](adr/012-elastic-edge-and-expressive-arrivals.md)
 distinguish the chosen visual direction from functional acceptance. Previous
 restrained-motion decisions are not treated as restrictions on the owner's new
 request.

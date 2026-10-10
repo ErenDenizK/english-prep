@@ -1,6 +1,6 @@
 # English Prep in the family
 
-**Status:** documentation and tooling only, 2026-10-09. Nothing here changes the app, and
+**Status:** documentation and tooling only, 2026-10-09; corrected 2026-10-10 for v0.77 and the owner's decisions (glass gated, About free to change). The work on these moves is in `docs/ROADMAP.md` phase 3. Nothing here changes the app, and
 nothing here is binding on English Prep. Every move in §3 needs the owner's yes, one at a time,
 in an English Prep session of their own.
 
@@ -31,11 +31,11 @@ values in machine form; it is generated, never edited (§4).
 | Supporting roles | iris `#c8b4e9` (structure), lagoon `#a4d3db` (context, application), apricot `#e9bb95` (attention, return) | `--secondary`, `--cool`, `--tertiary` |
 | Answers | correct: opaque Sakura `#eeb4d1` on `#392532`, edge `#bb8ca4`; selected incorrect: periwinkle `#b6c6ed` on `#252d42`, edge `#8d9bbd` | `--ok*`, `--no*` |
 | Light (the aurora) | three clusters (north, east, south), each crossfading cherry `#a04278`, iris `#6350a5`, lagoon `#28798a`; drift 9.75 / 11.75 / 13.75 s, colour cycles 13.5 / 15.75 / 18 s, independent phases; **one parent opacity** .42 dark / .09 light; paused when hidden; reduced motion = three still pools; forced colours hide it | `.ambient*` in `css/editorial.css`, `js/motion.js` |
-| Materials | no glass by decision: `--glass: var(--page)`, `backdrop-filter: none`; opaque cards; elevation `0 8px 28px #00000024` + 1 px inner highlight | `css/editorial.css` |
+| Materials | opaque today (`--glass: var(--page)`, `backdrop-filter: none` in the app shell; About's masthead blurs); glass is gated by the material contract (`docs/PRINCIPLES.md` §4), not banned; opaque cards; elevation `0 8px 28px #00000024` + 1 px inner highlight | `css/editorial.css` |
 | Type | Inter variable (self-hosted `assets/fonts/InterVariable.woff2`), both languages; reading 18/30 in a ~600 px column; titles 600 with tight tracking | same |
 | Mark | `ep.` / `english prep.`, Inter 600, tracking −0.065 em, the dot in Sakura `#efb1cb` | `js/brand.js`, `.brand-mark` |
 | Motion | press: inner face to .945 in 120 ms; release 380 ms (.945 → 1.035 → 1); route 360 ms over 12 px; scene 560; complete 720; story 900; flow 1100; ease `cubic-bezier(0.22, 1, 0.36, 1)` | `css/interactions.css`, `js/interactions.js` |
-| Signatures | the living aurora; the answer commit (colour cue 220 ms, verdict mark 560 ms); the elastic scroll rail; the drawn lesson signature; the About folio (leaves 860 ms, deck 680 ms) | `CLAUDE.md`, `about/about.css` |
+| Signatures | the living aurora; the answer commit (colour cue 220 ms, verdict mark 560 ms); the elastic scroll rail; the drawn lesson signature; About v0.77's two-sentence lens (the v0.72–0.76 folio is gone) | `CLAUDE.md`, `about/about.css` |
 | Voice | Turkish in *sen*, short and warm; English example sentences; "refine, not teach from zero" | `CLAUDE.md` |
 | Promise line | "Ücretsiz. Hesapsız. İlerlemen kendi tarayıcında." (*Free. No account. Your progress stays in your browser.*); the family's short form drops the first word | `about/index.html` `.about-quiet` |
 
@@ -50,11 +50,11 @@ the move loses.
 
 - The plum ground and the Sakura / periwinkle answer semantics, always with words and marks.
 - The living three-cluster aurora under one parent cap, with its still twin.
-- No glass; opaque cards.
+- Opaque cards; any glass only through the material contract (owner, 2026-10-10).
 - Inter reading 18/30 in a ~600 px column; no new font bytes for the family.
 - `ep.` with the Sakura dot.
 - The 120 ms press and the 380 ms release; v0.72 route choreography (ADR 013).
-- The folio About and the scroll rail.
+- The scroll rail. (About may be redesigned from scratch: owner, 2026-10-10.)
 - Turkish *sen* voice.
 - Settled navigation: two peers in the capsule, Profil in the header.
 - No build step, no runtime dependency, no `innerHTML`; `CHANGELOG` `x` stays 0; `test` is live.
@@ -120,4 +120,6 @@ the schema, adjust `tools/make-world.mjs` and regenerate.
 
 ## 5. For the owner's English Prep session
 
-[`SESSION-PROMPT.md`](SESSION-PROMPT.md) is a ready-to-paste prompt.
+The 2026-10-09 session prompt is in `docs/history/family/SESSION-PROMPT.md`; it predates the
+owner's 2026-10-10 decisions and is superseded by `CLAUDE.md`, `docs/PRINCIPLES.md` and
+`docs/ROADMAP.md`. Findings for the family go in [`OUTBOX.md`](OUTBOX.md).

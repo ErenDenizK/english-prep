@@ -2,7 +2,7 @@
 
 > **Presentation/product follow-up, 2026-10-04:** the v0.72 data-transfer work
 > and newly researched feature opportunities are tracked in
-> [feature-opportunities-v072.md](design/feature-opportunities-v072.md).
+> [feature-opportunities-v072.md](../design/feature-opportunities-v072.md).
 > This historical content plan remains intact; that follow-up does not add or
 > rewrite any lessons or questions.
 

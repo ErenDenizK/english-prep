@@ -22,16 +22,16 @@ Current product captures: [phone](../about/assets/education-phone.webp),
 and [results](../about/assets/results-phone.webp). These are browser viewport
 captures with demonstration state, not physical-device certification.
 See [validation evidence and commands](../docs/VALIDATION.md).
-The detailed refinement record includes the [element inventory](../docs/audit/element-inventory.md),
-[type and color measurements](../docs/audit/type-color.md),
-[interaction audit](../docs/audit/interaction-accessibility.md), and
+The detailed refinement record includes the [element inventory](history/audit/element-inventory.md),
+[type and color measurements](history/audit/type-color.md),
+[interaction audit](history/audit/interaction-accessibility.md), and
 [verified UI research](../docs/research/2026-10-ui-principles.md).
 The v0.71 [ADR 010](../docs/adr/010-living-scenes-and-navigation.md) adds readiness-gated motion,
 cohesive scenes, high-density captures and an adaptive scroll rail.
 [ADR 009](../docs/adr/009-expressive-study-motion.md),
 [filled-answer research](../docs/research/2026-10-answer-surfaces-v070.md),
-[motion research](../docs/research/2026-10-motion-v070.md),
-[onboarding composition](../docs/design/onboarding-v070.md), and
+[motion research](history/research/2026-10-motion-v070.md),
+[onboarding composition](history/design/onboarding-v070.md), and
 [Profile/results design](../docs/design/profile-results-v070.md) connect evidence to decisions.
 [ADR 008](../docs/adr/008-explorable-interactions.md) preserves the earlier
 interaction research and native focus/cancellation contracts; its short timing
@@ -40,7 +40,7 @@ scale and neutral answer surfaces are superseded.
 [Sakura palette research](../docs/research/2026-10-sakura-palette.md) retain the
 background and brand foundation; ADR 008 supersedes its answer-status hues,
 header motion control and screenshot gallery.
-The previous [v0.67 review](../docs/audit/readability-v0.67.md) and
+The previous [v0.67 review](history/audit/readability-v0.67.md) and
 [ADR 006](../docs/adr/006-reading-hierarchy-and-atmosphere.md) preserve the earlier
 comparison; its reading typography remains applicable, while the later ADRs
 supersede its palette, atmosphere and introduction.
@@ -264,9 +264,9 @@ legacy/               Earlier main-branch prototype
 ```
 
 `docs/` is where the reasoning lives. `docs/margin-design-system.md` documents
-the current extension; `docs/design-system.md` preserves the historical
+the current extension; `docs/history/design-system.md` preserves the historical
 source specification. `docs/CONTENT_GUIDE.md` is the content
-schema; `docs/roadmap.md` is what ships next; `docs/research/` holds the
+schema; `docs/ROADMAP.md` is what ships next; `docs/research/` holds the
 arms each decision was made from, including the ones that argued against
 what shipped.
 
@@ -368,6 +368,6 @@ not after.
 
 ## Where it is going
 
-`docs/roadmap.md` is the current plan and `docs/business/` is the
-newer question — what this becomes after the exam it was built for.
-Neither is decided here.
+`docs/ROADMAP.md` is the current plan. What the product becomes after V1 (exam app,
+general English app, or two apps) is parked in `docs/PRODUCT-DIRECTION.md`; the
+September business research is in `docs/history/business/`.

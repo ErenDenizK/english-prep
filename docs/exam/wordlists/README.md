@@ -36,19 +36,19 @@ proves something other than what it claims.
 
 **It settles that Bilkent publishes a level-banded lexical syllabus.**
 That is the useful finding, and a bigger one than this particular file:
-`docs/research/exam-vocabulary.md` traces the upper-level lists, which
+`docs/history/research/exam-vocabulary.md` traces the upper-level lists, which
 are `HEADWORD | VERB | NOUN | ADJECTIVE | ADVERB | COLLOCATION` tables —
 a published answer to "which words, in which forms, with which
 collocations does this institution expect", for the exam that actually
 has a discrete vocabulary section.
 
 **It is not the syllabus for either proficiency exam.** This is the
-lowest band. `docs/research/vocabulary.md` §2.3 excludes K1–K3 in their
+lowest band. `docs/history/research/vocabulary.md` §2.3 excludes K1–K3 in their
 core senses because the learner already has them, and this list is almost
 entirely that. Nothing in it should become an item.
 
 **It does still validate the vocabulary taxonomy by not overlapping it,
-for Bilkent.** All sixty target words in `docs/agents/kickoff-vocabulary.md`
+for Bilkent.** All sixty target words in `docs/history/agents/kickoff-vocabulary.md`
 were checked against every entry here, split on the source's own `/` and
 `–` alternatives:
 
@@ -65,7 +65,7 @@ version of this file claimed it did.
 
 **Bilkent's upper lists**, which is where a hit would mean the opposite
 thing and would be worth acting on — and which are published and
-findable; `docs/research/exam-vocabulary.md` has the URLs and the reason
+findable; `docs/history/research/exam-vocabulary.md` has the URLs and the reason
 `tools/extract-wordlist.py` needs work before it can read their
 six-column layout.
 

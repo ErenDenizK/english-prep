@@ -145,11 +145,11 @@ Implemented in this round in `js/theme.js` and the three root HTML first-paint s
 
 ## Reference interpretation and sources
 
-The broader verified source ledger is [2026-10 UI principles](../research/2026-10-ui-principles.md), including platform-to-web caveats and the distinction between user research, guidelines, and reference styling.
+The broader verified source ledger is [2026-10 UI principles](../../research/2026-10-ui-principles.md), including platform-to-web caveats and the distinction between user research, guidelines, and reference styling.
 
-- Supplied [Raycast / Origin](../reference/design_origin/DESIGN.md): near-black surfaces, neutral actions, one warm accent, Inter role separation. Its 10–11px website labels and decorative hero gradients are not academic-app requirements.
-- Supplied [Monopo](../reference/design_monopo/DESIGN.md): strong type hierarchy and controlled negative space. Do not import monumental marketing-page scale.
-- Supplied [Home](../reference/design_home/DESIGN.md) and [Ventriloc](../reference/design_ventriloc/DESIGN.md): quiet divisions, warm light surfaces, precise corner treatment. Keep these as visual references rather than functional specifications.
+- Supplied [Raycast / Origin](../../reference/design_origin/DESIGN.md): near-black surfaces, neutral actions, one warm accent, Inter role separation. Its 10–11px website labels and decorative hero gradients are not academic-app requirements.
+- Supplied [Monopo](../../reference/design_monopo/DESIGN.md): strong type hierarchy and controlled negative space. Do not import monumental marketing-page scale.
+- Supplied [Home](../../reference/design_home/DESIGN.md) and [Ventriloc](../../reference/design_ventriloc/DESIGN.md): quiet divisions, warm light surfaces, precise corner treatment. Keep these as visual references rather than functional specifications.
 - [Material Web typography source](https://raw.githubusercontent.com/material-components/material-web/main/docs/theming/typography.md): a role combines family, size, weight, and line-height; display/headline/title/body/label are distinct roles.
 - [Material Web color source](https://raw.githubusercontent.com/material-components/material-web/main/docs/theming/color.md): semantic surface/container/outline roles and paired foreground colors.
 - [Microsoft typography source](https://raw.githubusercontent.com/MicrosoftDocs/windows-dev-docs/docs/hub/apps/design/signature-experiences/typography.md): regular body, stronger title hierarchy, left alignment, and a roughly 50–60-character measure. Native XAML sizes are not universal web minimums.

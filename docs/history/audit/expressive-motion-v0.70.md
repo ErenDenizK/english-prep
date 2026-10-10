@@ -1,8 +1,8 @@
 # Four passes — expressive motion, v0.70
 
 4 October 2026. Baseline `c134dcc` (v0.69). Teaching material, source archive and
-preserved versions are outside the change. [ADR009](../adr/009-expressive-study-motion.md)
-records the decisions; [VALIDATION](../VALIDATION.md) records executed totals.
+preserved versions are outside the change. [ADR009](../../adr/009-expressive-study-motion.md)
+records the decisions; [VALIDATION](../../VALIDATION.md) records executed totals.
 
 ## 1. Measure the missing character
 

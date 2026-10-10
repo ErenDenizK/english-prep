@@ -17,7 +17,7 @@ Test, Profile and lessons. Lesson completion had no event-specific cue. About's
 390px hero used 1,010px, its study section 1,430px and feature list 2,231px.
 Changing only durations would leave the missing visual relationships unresolved.
 
-[Motion research](../research/2026-10-motion-v070.md) examines official Material,
+[Motion research](../history/research/2026-10-motion-v070.md) examines official Material,
 Fluent and Carbon implementations, including productive/expressive roles,
 emphasized easing, springs and sequencing. Live Linear/Raycast and several guide
 hosts were proxy-blocked; source access is distinguished from live observation.

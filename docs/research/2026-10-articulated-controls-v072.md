@@ -22,7 +22,7 @@ parts feel more intentional. A select menu only moved as a single rectangle.
 - The official [Duolingo animation-principles page](https://design.duolingo.com/animation/animation-principles)
   was requested, but this environment returned a proxy 403. We do not claim to
   have measured the current Duolingo app, copied its timing, or observed its
-  proprietary animation implementation. The previous [v0.71 research](2026-10-motion-v071.md)
+  proprietary animation implementation. The previous [v0.71 research](../history/research/2026-10-motion-v071.md)
   records the verified official case-study links and their access limits.
 
 ## Choreography decisions

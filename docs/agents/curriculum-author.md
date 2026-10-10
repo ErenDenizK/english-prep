@@ -38,10 +38,17 @@ Read `docs/CONTENT_GUIDE.md` first — it is the authoritative schema, and
 `tools/validate-content.mjs` enforces it. This brief tells you how to
 write well against it; where the two ever disagree, the guide wins.
 
-Deliver **one file**: `data/<topicId>/<topicId>.lessons.json`, containing
-a single JSON array of lesson objects — one per category, in the
-kickoff's order. Do not touch `data/manifest.json`, the app code, or the
-topic's questions; a separate session is writing those.
+Deliver **one file**: `docs/agents/drafts/<topicId>/lessons.json`,
+containing a single JSON array of lesson objects — one per category, in
+the kickoff's order. Do not touch `data/`, `data/manifest.json`, the app
+code, or the topic's questions; a separate session is writing those.
+`npm run draft -- docs/agents/drafts/<topicId>` (`tools/check-draft.mjs`)
+checks the draft; the supervisor ships it with `node tools/ship-topic.mjs
+<topicId>`, which merges `questions.json` and `lessons.json` into
+`data/<topicId>/<topicId>.json` and writes the manifest entry. A new topic
+also needs an entry in the hardcoded `TOPICS` table in
+`tools/ship-topic.mjs` (title, tier, level, note) — the supervisor's job,
+not yours.
 
 ## A lesson is a page of blocks, not an article
 

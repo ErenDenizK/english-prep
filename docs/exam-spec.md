@@ -5,7 +5,7 @@ Exam**, the two sample papers the owner supplied on 2026-09-03: Session I
 (*Use of English & Reading*, 9 pages) and Session II (*While-Listening*,
 2 pages).
 
-This supersedes `docs/research/the-exam.md` wherever the two disagree.
+This supersedes `docs/history/research/the-exam.md` wherever the two disagree.
 That document was written without access to any primary source and says
 so; it got the sections right and several of the numbers wrong. Where a
 fact here has a page behind it, it is stated plainly. Where something is

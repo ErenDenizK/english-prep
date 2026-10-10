@@ -2,8 +2,8 @@
 
 4 October 2026. Starting release: `cfa4089` (v0.70). This pass concerns interface
 presentation and scrolling. It does not change articles, questions, explanations,
-answer scoring or the preserved versions. [ADR 010](../adr/010-living-scenes-and-navigation.md)
-records the decisions; [validation](../VALIDATION.md) records the combined release
+answer scoring or the preserved versions. [ADR 010](../../adr/010-living-scenes-and-navigation.md)
+records the decisions; [validation](../../VALIDATION.md) records the combined release
 checks from all agents.
 
 ## 1. Reproduce the reported problems

@@ -19,7 +19,7 @@ looked disconnected from the brand, despite satisfying numeric contrast.
 
 ## 2. Resolve the system and integrate
 
-[ADR008](../adr/008-explorable-interactions.md) chooses a cancellable finite
+[ADR008](../../adr/008-explorable-interactions.md) chooses a cancellable finite
 effect system, native immediate interaction, compact/full wordmarks and
 explorable diagrams. Status text and symbols use measured jade/coral; English
 answer text and surfaces remain neutral. Three alternatives were compared in
@@ -53,7 +53,7 @@ from 2,785px to 1,430px. These are local layout measurements, not usability scor
 The final pass covers content hashes, real lesson/quiz journeys, short and wide
 screens, 200% text, keyboard/focus, forced colors, OS/stored reduced motion,
 rapid interaction replacement, stationary-pointer work, offline modules and
-fresh real screenshots. See [VALIDATION](../VALIDATION.md) for executed totals.
+fresh real screenshots. See [VALIDATION](../../VALIDATION.md) for executed totals.
 
 Input and focus never wait for a cue. A settled three-second reader sample had
 no recurring layout/style/JS work; a stationary About pointer scheduled no

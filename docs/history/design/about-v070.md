@@ -2,7 +2,7 @@
 
 4 October 2026, Türkiye time. UI/presentation only; no learning material changes.
 This implements the owner's request for stronger motion and a portfolio that
-feels intentionally composed on phones. [ADR 009](../adr/009-expressive-study-motion.md)
+feels intentionally composed on phones. [ADR 009](../../adr/009-expressive-study-motion.md)
 and [the motion study](../research/2026-10-motion-v070.md) define the shared system.
 
 ## Diagnosis before implementation

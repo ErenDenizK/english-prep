@@ -48,10 +48,10 @@ One existing content warning remains unchanged: `academic-nouns-adjectives-t13` 
 
 ## Evidence and limits
 
-The [four-pass record](audit/refinement-log.md), [full element inventory](audit/element-inventory.md), [type/color measurements](audit/type-color.md), [interaction audit](audit/interaction-accessibility.md), and [independent code review](audit/pass3-code-review.md) retain the findings and repairs. The [research ledger](research/2026-10-ui-principles.md) distinguishes retrieved sources from inaccessible references and design judgment.
+The [four-pass record](audit/refinement-log.md), [full element inventory](audit/element-inventory.md), [type/color measurements](audit/type-color.md), [interaction audit](audit/interaction-accessibility.md), and [independent code review](audit/pass3-code-review.md) retain the findings and repairs. The [research ledger](../research/2026-10-ui-principles.md) distinguishes retrieved sources from inaccessible references and design judgment.
 
 Axe marked SVG ring contrast and closed-popup control references for manual review. The labels use measured text colors; popup IDs and open/closed keyboard behavior were checked separately. Zero automatic violations does not establish complete accessibility conformance. Real iOS Safari, screen readers, native sharing, and sustained student use were not tested on physical devices.
 
 `original/source-39dcd46.zip` contains the exact **55-file runtime source archive**, not the entire repository's historical documentation and tooling. The source commit remains in Git history. Active quiz state is tab-scoped and is not included in exported progress backups.
 
-Final reference views: [mobile](previews/mobile.png), [desktop](previews/desktop.png), [article](previews/article.png), [profile](previews/profile.png), and [light alternative](previews/light.png). The [component catalogue](components.html) loads the production system.
+Final reference views: [mobile](../previews/mobile.png), [desktop](../previews/desktop.png), [article](../previews/article.png), [profile](../previews/profile.png), and [light alternative](../previews/light.png). The [component catalogue](../components.html) loads the production system.

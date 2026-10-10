@@ -19,7 +19,7 @@ as asymmetric leading/trailing controls changed. Equal outer grid tracks solve
 that geometry without changing labels, navigation or the available reading area.
 The mobile back action retains its full accessible name with an icon-only face.
 
-[Motion research](../research/2026-10-motion-v071.md) records the actual sources
+[Motion research](../history/research/2026-10-motion-v071.md) records the actual sources
 retrieved and access limits. Duolingo's official animation pages were requested
 but proxy-blocked. Rive's official repository identifies Duolingo's animation
 case study; its available technical documentation supports state-based,
@@ -73,7 +73,7 @@ Arrow/Page/Home/End and an ARIA scrollbar relationship. On narrow/touch screens,
 a thin passive branded indicator accompanies native finger scrolling. This
 avoids a 44px invisible hitbox over article text or an extra floating menu on a
 320px phone. Forced colors and unsuccessful enhancement retain native controls.
-See [rail design](../design/scroll-rail-v071.md) for exact implementation.
+See [rail design](../history/design/scroll-rail-v071.md) for exact implementation.
 
 ## Real high-density media and evidence
 

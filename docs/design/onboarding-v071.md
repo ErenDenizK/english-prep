@@ -28,7 +28,7 @@ controls retain independent 44 px or larger hit areas.
 
 ## Evidence and limits
 
-The shared [motion research](../research/2026-10-motion-v071.md) documents the
+The shared [motion research](../history/research/2026-10-motion-v071.md) documents the
 accessible official Rive sources and their Duolingo references. The Duolingo
 blog/video hosts were blocked by the environment, so no measured Duolingo
 frame timing, rendered comparison or direct inspection is claimed. The useful

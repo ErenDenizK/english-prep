@@ -12,11 +12,11 @@ inside its product story rather than a separate screenshot gallery. Teaching
 material must remain unchanged. This supersedes ADR007's header control, status
 hues and gallery; its measured background/typographic system remains.
 
-Evidence is separated into [status color research](../research/2026-10-status-colors-v069.md),
-[interaction research](../research/2026-10-interaction-motion-v069.md),
-[component audit](../audit/v0.69-component-review.md),
-[onboarding proposal](../design/onboarding-v069.md), and
-[About proposal](../design/about-v069.md). Official sources, local measurements
+Evidence is separated into [status color research](../history/research/2026-10-status-colors-v069.md),
+[interaction research](../history/research/2026-10-interaction-motion-v069.md),
+[component audit](../history/audit/v0.69-component-review.md),
+[onboarding proposal](../history/design/onboarding-v069.md), and
+[About proposal](../history/design/about-v069.md). Official sources, local measurements
 and design judgments are explicitly distinguished; no learner study is claimed.
 
 ## Color communicates an answer, brand communicates identity

@@ -27,7 +27,7 @@ Vocabulary / Word Formation, which needs a different question shape than
 the paragraph-cloze format everything else is built on, and needs its own
 schema design first.
 
-`docs/education-notes.md` is the running content/dev channel — curriculum
+`docs/history/education-notes.md` is the running content/dev channel — curriculum
 order for upcoming topics, proposals from the content side, and the
 development side's answers. Read it before a kickoff and write decisions
 back into it, so the reasoning outlives any one session.
@@ -113,3 +113,65 @@ agent does not:
 - change the schema. If the schema seems to be in the way, say so and
   stop — that's a decision for the supervisor, and a schema change means
   changing the validator and the app together.
+
+
+## Why the pipeline works this way
+
+Moved here from `CLAUDE.md` on 2026-10-10: these are the incidents behind the content rules.
+
+Lessons and questions are written by separate Claude sessions working
+from `docs/agents/`. The supervisor fixes the category taxonomy first —
+that's the one thing the two agents must agree on, and the thing the app
+uses to link a wrong answer on the results screen to the lesson that
+teaches it. See `docs/agents/README.md` for the loop.
+
+**A reviewer is calibrated with a file, never with a document.**
+`docs/agents/calibration.md` is the supervisor's *key*; `npm run calibrate`
+assembles the same ten items from `data/` and `npm run blind` unkeys them.
+Two briefs said "work the calibration set" and pointed at the key. Both
+reviewers obeyed, read the answers, and refused to report a score — which
+was correct, and cost two review passes their only measurement. The ids
+live in `tools/make-calibration.mjs` so that building the corpus never
+opens the key.
+
+**Blind a corpus with `npm run blind`, never by hand.** The first
+hand-rolled attempt hid `correctIndex` and `explanation` and left `tip`
+— and a tip is a standalone rule written for the item it belongs to, so
+it names the keyed form outright in twenty-two items out of
+twenty-four. Two reviewers opened their reports by saying so and had to
+discount their own agreement rate, which is the one number a blind pass
+exists to produce. `tools/blind-corpus.mjs` works by allow-list, shuffles
+the options, and writes the key back beside the source rather than into
+the directory the reviewer is pointed at.
+
+**The one step that cannot be delegated is a person solving the item.**
+`npm run solve` puts items in a terminal unkeyed, shuffled and with the
+category hidden, and records the result in `docs/audit/solve-log.json`;
+`docs/agents/solver.md` is the protocol, and it is written for a human
+rather than a session. The finding it exists to collect is not the score
+but the `b?` answer — *I chose b and another option is defensible too* —
+which is the project's "an option a competent teacher would accept is a
+wrong option" rule, seen from the solver's side. Measured cost: ~7
+minutes an item, ~28 hours for the corpus, which
+`docs/history/business/vision.md` argues is the gate on charging money.
+
+**Content is reviewed by a session that has not seen the key.** The one
+controlled comparison in the literature found teacher-plus-AI items
+carrying *more* flaws than teacher-only items, because reviewers gave the
+drafts less engagement — so `docs/agents/reviewer.md` is built to stop
+that, and `calibration.md` grades the reviewer against ten items whose
+answer is already known before its findings are believed. This applies to
+your own rewrites too: three of the first six failed their re-review, one
+because the fix traded a defect for a worse one.
+
+**Write the category spec before the content.** `docs/agents/category-spec.md`,
+with a worked example beside it. Every finding worth acting on in the
+first review was invisible inside one item and obvious across four, which
+is what the spec is for.
+
+Two rules that only exist because a review found them, both in
+`docs/agents/question-author.md`: a question must never be built on a
+sentence from its own lesson (`check` blocks draw from the same category,
+so the learner would meet the answer three blocks above the question),
+and an option a competent teacher would accept is a wrong option, not a
+less natural one.

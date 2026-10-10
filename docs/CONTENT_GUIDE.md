@@ -86,7 +86,7 @@ should name a confusable pair or triad wherever the grammar allows it
 | --- | --- | --- |
 | `id` | yes | Lowercase slug. Prefixes every question and lesson id in the topic. |
 | `title` | yes | English. Shown on topic cards. |
-| `gloss` | no | **Turkish, one line, under 110 characters.** What this group of six lessons *is*, shown under the topic heading on the Eğitim index. Every lesson in this app is a contrast, so a learner who does not already have the category met `Relative Clauses` and then, immediately, `Who vs Whom vs Whose`. It does not teach the category and must not try: it is one line, and the evidence for the short form over the long one is in `docs/research/orientation.md` §1.1 and §1.3. Omit it and the heading simply stands alone. |
+| `gloss` | no | **Turkish, one line, under 110 characters.** What this group of six lessons *is*, shown under the topic heading on the Eğitim index. Every lesson in this app is a contrast, so a learner who does not already have the category met `Relative Clauses` and then, immediately, `Who vs Whom vs Whose`. It does not teach the category and must not try: it is one line, and the evidence for the short form over the long one is in `docs/history/research/orientation.md` §1.1 and §1.3. Omit it and the heading simply stands alone. |
 | `tier` | yes | One of the ids in `js/tiers.js`. A display grouping only — topics can be authored in any order. |
 | `file` | live topics | Path to the topic file. |
 | `questionCount` | live topics | Must equal the number of questions in the file. |
@@ -147,7 +147,7 @@ Turkish prose field cannot, because `js/dom.js` has no `lang` handling
 and `text-transform: uppercase` would turn SIMPLE into SİMPLE.
 
 **The five prose fields are five questions, in order**, from
-`docs/research/orientation.md` §3.2: what is this in function terms, with
+`docs/history/research/orientation.md` §3.2: what is this in function terms, with
 a Turkish example the learner already produces (`what`); what are its
 parts, named (`parts`); what choice does English make that Turkish does
 not (`choice`); what do the lessons divide between them (`lessons`); what

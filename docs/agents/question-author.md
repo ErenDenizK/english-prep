@@ -31,10 +31,16 @@ Read `docs/CONTENT_GUIDE.md` first — it is the authoritative schema and
 the validator enforces it. Read the existing `data/tenses/tenses.json`
 questions as a worked example of the bar you're aiming at.
 
-Deliver **one file**: `data/<topicId>/<topicId>.questions.json`,
+Deliver **one file**: `docs/agents/drafts/<topicId>/questions.json`,
 containing a single JSON array of question objects. Nothing else. Do not
-touch `data/manifest.json`, the app code, or the topic's lessons — a
-separate session is writing those.
+touch `data/`, `data/manifest.json`, the app code, or the topic's lessons
+— a separate session is writing those. `npm run draft --
+docs/agents/drafts/<topicId>` (`tools/check-draft.mjs`) checks the draft;
+the supervisor ships it with `node tools/ship-topic.mjs <topicId>`, which
+merges `questions.json` and `lessons.json` into `data/<topicId>/<topicId>.json`
+and writes the manifest entry. A new topic also needs an entry in the
+hardcoded `TOPICS` table in `tools/ship-topic.mjs` (title, tier, level,
+note) — the supervisor's job, not yours.
 
 ## Shape
 
@@ -128,7 +134,7 @@ without reading the full passage? Every one of those needs more context.
 
 Everything above is the schema. These five are what a review of the first
 72 questions found the schema could not say, and each one names a defect
-that reached shipped content. `docs/content-review.md` has the evidence.
+that reached shipped content. `docs/history/content-review.md` has the evidence.
 
 **1 · Never build a question on a sentence from its own lesson.** This is
 the one nobody would guess. `check` blocks are filled from the questions
@@ -179,7 +185,7 @@ changing the validator and the app too, and that's the supervisor's call.
 
 Every category in this app sits at the same level by design. The tiers
 are a display grouping, not an order (`js/tiers.js`), nothing is locked,
-and `docs/research/progression.md` measured the corpus and found no
+and `docs/history/research/progression.md` measured the corpus and found no
 curriculum underneath: six content edges across sixty lessons, all six
 already neutralised by the importing lesson re-teaching what it imports.
 

@@ -15,7 +15,7 @@ tell whether the ground has moved:
 |---|---|
 | `docs/agents/drafts/gerunds-infinitives/lessons.json` (6 lessons) | `4100efb168ee8f09a7a02d2a95e56eb3010c64d6` |
 | `docs/agents/drafts/gerunds-infinitives/questions.json` (24 cloze items) | `17e399970ff7382e09e6e09ca0b67ad3a482c116` |
-| `docs/agents/gerunds-infinitives-spec.md` | `0148c14881ae0518647929e15ee224d839f4a7ff` |
+| `docs/history/agents/gerunds-infinitives-spec.md` | `0148c14881ae0518647929e15ee224d839f4a7ff` |
 
 Also read as the standard being applied, not audited:
 `docs/agents/curriculum-author.md`, `docs/CONTENT_GUIDE.md`, and

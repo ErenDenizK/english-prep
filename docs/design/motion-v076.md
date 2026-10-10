@@ -1,7 +1,7 @@
 # Motion v0.76 — choreography
 
 Current page-entry and answer motion. Supersedes the page-opening parts of
-[motion-v073](motion-v073.md) and [ADR 013](../adr/013-restore-page-entry-and-browser-space.md);
+[motion-v073](../history/design/motion-v073.md) and [ADR 013](../adr/013-restore-page-entry-and-browser-space.md);
 button press/release, the scroll rail, the aurora tempo, onboarding artwork and
 the About folio are unchanged. Decision record: [ADR 014](../adr/014-choreographed-entrances.md).
 

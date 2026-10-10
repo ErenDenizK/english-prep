@@ -1,6 +1,6 @@
 # Interaction and accessibility refinement audit
 
-Audit baseline: `f607d0e`, Chromium at `http://127.0.0.1:8001`, 2026-10-03. This pass supplements the earlier functional and axe checks in [VALIDATION.md](../VALIDATION.md). It concentrates on keyboard use, enlarged text, short viewports, and states that a static screenshot misses. All six findings below have been fixed and their focused regressions pass. The final broad browser verification is recorded separately; earlier sweep totals are not presented as verification of new changes.
+Audit baseline: `f607d0e`, Chromium at `http://127.0.0.1:8001`, 2026-10-03. This pass supplements the earlier functional and axe checks in [VALIDATION.md](../../VALIDATION.md). It concentrates on keyboard use, enlarged text, short viewports, and states that a static screenshot misses. All six findings below have been fixed and their focused regressions pass. The final broad browser verification is recorded separately; earlier sweep totals are not presented as verification of new changes.
 
 ## Methods and scope
 
