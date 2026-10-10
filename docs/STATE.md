@@ -53,8 +53,8 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 
 - Routing/screens: `home.js` 715 (hash router), `education.js` 1823 (index, topic, reader), `quiz.js` 520, `results.js` 556, `profile.js` 715, `onboarding.js` 330, `quiz-launch.js`, `quiz-engine.js` 164, `session-state.js` 159.
 - Data/state: `storage.js` 1181 (history, progress, settings, backup), `topics.js` 377 (loading, manifest), `backup.js` 195, `backup-ui.js` 408, `share.js`, `report.js`, `tiers.js`.
-- Motion: `interactions.js` 691 (springs → `linear()`, `compose`/`composeScreen`, presets, press/release, `whenVisible`), `motion.js` 141 (preference, aura clock), `scroll-rail.js` 454, `celebrate.js` 94 (dead).
-- Shell/UI: `shell.js` 228, `dom.js` 197 (no `innerHTML`), `widgets.js` 261, `icons.js` 306, `listbox.js` 348, `modal.js`, `feedback.js`, `answers.js`, `brand.js`, `theme.js`, `install.js`, `prompt.js`, `progress.js`, `config.js`.
+- Motion: `interactions.js` 691 (springs → `linear()`, `compose`/`composeScreen`, presets, press/release, `whenVisible`), `motion.js` 141 (preference, aura clock), `scroll-rail.js` 454.
+- Shell/UI: `shell.js` 228, `dom.js` 197 (no `innerHTML`), `widgets.js` 53, `icons.js` 306, `listbox.js` 348, `modal.js`, `feedback.js`, `answers.js`, `brand.js`, `theme.js`, `install.js`, `prompt.js`, `progress.js`, `config.js`.
 - About: `about/about.js` 809, `about/content.js` 169 (all strings), `about/about.css` 434. It imports `js/motion.js`, `interactions.js`, `scroll-rail.js`, `install.js`, `topics.js` and `tiers.js` (`about/about.js:4-10`).
 
 **CSS and the two-layer problem:** `css/style.css` (2031 lines) is the old UI 3 skin with glass, glow and a slate palette. It is the only file that uses `@layer` (`css/style.css:28`). `css/editorial.css` (1699 lines) is the current look. It is unlayered, so it and the five small files beat every `style.css` layer regardless of specificity. It also uses 8 `!important`. Small files: `interactions.css` (press/release), `composition.css` (wide layout), `scroll-rail.css`, `onboarding.css`, `share.css`. The app pages load `fonts.css` + `style.css` + `editorial.css` + the small files (`index.html:49-56`). About loads only `editorial.css`, `interactions.css`, `scroll-rail.css` and `about.css`, with no `style.css` (`about/index.html:34-37`).
@@ -89,8 +89,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 1. **Documentation drift (largely fixed 2026-10-10).** `CLAUDE.md` was rewritten and superseded docs moved to `docs/history/`. Still stale: the Margin doc header says v0.74 (`docs/margin-design-system.md:1`); About's craft figures hard-code "247 birim testi" (`about/content.js:144`) while there are 248; code comments still cite docs now under `docs/history/`.
 2. **Two style layers** (§4). 135 selectors are defined in both `style.css` and `editorial.css` (handoff-v1 §7.2, unverified count). `tools/palette.mjs` and `tools/token-check.mjs` still measure the overridden `style.css`. `tools/verify-ui.mjs:2776-2779` still asserts "bars ≥0.8 opaque before blur" for glass that no longer exists.
 3. **Dead code.** Each item below was checked by grepping for callers in `js about *.html tools tests`:
-   - `js/celebrate.js` is imported nowhere; `sw.js:71` only precaches it.
-   - `js/widgets.js`: `ring` :27, `monogram` :111, `initialsOf` :95, `choices` :147, `countUp` :216 and `motionWelcome` :13 (used only by the dead functions and `celebrate.js`). The live imports are only `hueOf`, `avatar` and `haptic`.
+   - Removed in roadmap phase 1: `js/celebrate.js`, and the `ring`, `monogram`, `initialsOf`, `choices`, `countUp` and `motionWelcome` exports of `js/widgets.js` (which now holds only `hueOf`, `avatar` and `haptic`). `docs/components.html` draws its monograms itself and no longer shows rings or choice groups.
    - `downloadBackup` (`js/backup-ui.js:215`) is used only by a test.
    - `loadRoadmap` (`js/topics.js:90`) has no caller, so `data/roadmap.json` is never shown.
    - `getTopicTotals` :323, `getCategoryTotals` :333 and `getLastActivity` :575 in `js/storage.js` are used only by tests.
