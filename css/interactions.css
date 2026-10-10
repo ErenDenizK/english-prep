@@ -1,5 +1,6 @@
 /* Interaction presentation · ADR 009. Input, focus and state always commit now.
    Finite event effects live in js/interactions.js; CSS owns ordinary controls. */
+@layer motion {
 :root { --d-flow: 1100ms; --d-release: 380ms; }
 .brand-mark--responsive .brand-mark__letters--full { display: none; }
 .brand-mark--full { font-size: 1.75rem; letter-spacing: -.055em; }
@@ -131,12 +132,6 @@ summary > .control-face { align-items: center; }
   .brand-mark--responsive .brand-mark__letters--full { display: inline; }
   .bar__lead .brand-mark--responsive { font-size: 1.375rem; letter-spacing: -.055em; }
 }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-}
-:root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
-:root[data-motion="off"] *::before,
-:root[data-motion="off"] *::after { animation: none !important; transition: none !important; }
 
 .settings-link__icon { display: inline-flex; flex: 0 0 20px; color: var(--secondary); }
 /* Line/track updates remain local and do not move adjacent text. */
@@ -165,3 +160,4 @@ body.is-reading .bar__progress .progress__fill { transition: none; }
 .feedback .feedback__report { padding-inline: 8px; margin-inline-start: -8px; }
 /* See clipSideways in js/interactions.js. */
 .shell__scroll[data-composing="sideways"] > .page { overflow-x: clip; }
+} /* @layer motion */

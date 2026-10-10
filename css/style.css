@@ -18,6 +18,11 @@
      screens     what only one screen needs (the reader, the quiz, onboarding)
      utilities   type roles, motion, a11y, forced colours
 
+   The list continues past this file: skin (editorial.css, the live Margin
+   look), motion (interactions.css), composition, rail (scroll-rail.css),
+   share, onboarding, about (about/about.css) and overrides, the still
+   twins and [hidden], which beat every layer without !important.
+
    Colour values are solved and measured by tools/palette.mjs; they are
    copied here, never edited here. Every rule that sets text has a row in
    PAIRS there. The spring easings are the output of
@@ -25,7 +30,7 @@
    they are regenerated, not tuned.
    ========================================================================== */
 
-@layer tokens, reset, layout, components, screens, utilities;
+@layer tokens, reset, layout, components, screens, utilities, skin, motion, composition, rail, share, onboarding, about, overrides;
 
 /* ==========================================================================
    Tokens
@@ -351,10 +356,6 @@
     box-sizing: border-box;
   }
 
-  [hidden] {
-    display: none !important;
-  }
-
   html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
@@ -411,17 +412,6 @@
 
   canvas {
     display: block;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
   }
 }
 
@@ -1816,5 +1806,12 @@
     .switch {
       border: 1px solid ButtonText;
     }
+  }
+}
+
+/* Hidden means hidden, whatever display a later layer gives the element. */
+@layer overrides {
+  [hidden] {
+    display: none;
   }
 }
