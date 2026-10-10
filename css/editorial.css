@@ -181,11 +181,10 @@ body::before,
 body::after {
   display: none;
 }
+/* The chrome is opaque: no live glass (docs/PRINCIPLES.md §4). */
 .glass,
 .nav {
   background: var(--page);
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
 }
 .bar {
   box-shadow: none;
@@ -340,9 +339,6 @@ body::after {
 .t-num {
   font-variant-numeric: tabular-nums;
 }
-.section-head {
-  padding-bottom: 4px;
-}
 /* Neutral actions, generous targets, no neon or floating glass. */
 .btn {
   min-height: 48px;
@@ -410,18 +406,6 @@ body::after {
     color: var(--ink);
     background: var(--raised);
   }
-}
-.choice {
-  min-height: 44px;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  box-shadow: none;
-}
-.choice[aria-pressed="true"] {
-  background: var(--accent);
-  color: var(--accent-ink);
-  box-shadow: none;
 }
 .field,
 .listbox__trigger {
@@ -757,27 +741,6 @@ body::after {
   font-weight: 400;
   line-height: 1.5;
 }
-.ring__fill {
-  stroke: var(--accent-text);
-}
-.ring--ok .ring__fill {
-  stroke: var(--ok);
-}
-.ring--no .ring__fill {
-  stroke: var(--no);
-}
-.ring__track {
-  stroke: var(--raised);
-}
-.ring__value {
-  font-family: var(--f-sans);
-  font-size: 1.125rem;
-  font-weight: 400;
-}
-.ring--lg .ring__value {
-  font-size: 2rem;
-  font-weight: 400;
-}
 /* One article, one reading column; role refinements live in ADR 006 below. */
 body.is-reading:has(.lesson) .page {
   padding-top: 0;
@@ -872,12 +835,6 @@ body.is-reading:has(.lesson) .page {
 }
 .block--end .btn {
   font-size: 1rem;
-}
-.formula {
-  border-radius: 5px;
-  background: var(--raised);
-  font-size: 1rem;
-  line-height: 1.75;
 }
 .quote,
 .example {
@@ -1038,7 +995,6 @@ body.is-reading:has(.lesson) .page {
   overscroll-behavior: contain;
 }
 .dialog::backdrop {
-  backdrop-filter: none;
   background: #0007;
 }
 /* A wide display buys a useful second column, never longer lines of text. */
@@ -1176,22 +1132,13 @@ body.is-reading:has(.lesson) .page {
   }
 }
 /* Facts pair each figure with a readable label, even at enlarged text sizes. */
-.stats--rings {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.stat--row {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-}
 .stat__label {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 /* Settings remain readable when browser text preferences enlarge rem units.
    The label and its control reflow as a pair, without reducing type size. */
-#profile-container .row:has(.field, .choices, .listbox, .motion-control) {
+#profile-container .row:has(.field, .listbox, .motion-control) {
   flex-wrap: wrap;
   min-width: 0;
   max-width: 100%;
@@ -1199,10 +1146,10 @@ body.is-reading:has(.lesson) .page {
 #profile-container .stack {
   grid-template-columns: minmax(0, 1fr);
 }
-#profile-container .row:has(.field, .choices, .listbox, .motion-control) > .row__main {
+#profile-container .row:has(.field, .listbox, .motion-control) > .row__main {
   flex: 1 1 12rem;
 }
-#profile-container .row:has(.field, .choices, .listbox, .motion-control) > .row__trail {
+#profile-container .row:has(.field, .listbox, .motion-control) > .row__trail {
   flex: 0 1 auto;
   min-width: 0;
   max-width: 100%;
@@ -1344,7 +1291,7 @@ body.is-reading:has(.lesson) .page {
 strong, b { font-weight: 600; }
 .t-display, .t-title { font-weight: 600; }
 .t-label { text-transform: none; letter-spacing: 0; color: var(--ink-2); }
-h2.t-label, .section-head > .t-label, .onboard__modes h2 {
+h2.t-label, .onboard__modes h2 {
   font-size: var(--section-size);
   line-height: 1.4;
   font-weight: 600;
@@ -1477,7 +1424,7 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 /* Reading is open prose. Forms and terms use typography, not highlighted boxes. */
 .lesson .lesson-form-label { color: var(--secondary); }
 .lesson .lesson-term { color: var(--accent-text); }
-.lesson .formula, .lesson .chip { background: transparent; padding: 0; border: 0; border-radius: 0; color: var(--ink); }
+.lesson .chip { background: transparent; padding: 0; border: 0; border-radius: 0; color: var(--ink); }
 .lesson-pretest { border-radius: 14px; }
 .lesson-pretest__summary { color: var(--accent-text); padding: 16px 20px; }
 .lesson-pretest__body { padding: 0 20px 4px; }
@@ -1547,14 +1494,6 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .onboard__eyebrow { color: var(--accent-text); }
 .onboard__panel h1 { font-size: clamp(1.875rem, 5vw, 2.5rem); line-height: 1.18; font-weight: 600; letter-spacing: -.04em; max-width: 15ch; outline: none; }
 .onboard__description { font-size: 1.125rem; line-height: 1.65; }
-.onboard__preview { display: grid; gap: 0; margin: 4px 0; padding: 8px 20px; list-style: none; background: var(--card); border-radius: 16px; }
-.onboard__preview-step { display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: start; gap: 16px; padding: 16px 0; }
-.onboard__preview-icon { display: flex; color: var(--accent-text); padding-top: 2px; }
-.onboard__preview-step:nth-child(2) .onboard__preview-icon { color: var(--secondary); }
-.onboard__preview-step:nth-child(3) .onboard__preview-icon { color: var(--tertiary); }
-.onboard__preview-copy { display: grid; gap: 4px; }
-.onboard__preview-copy .t-ui { font-weight: 600; line-height: 1.5; }
-.onboard__preview-copy .t-body { color: var(--ink-2); font-size: .875rem; line-height: 1.6; }
 .onboard__note { font-size: .875rem; line-height: 1.6; }
 .onboard__actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .onboard__actions > .btn--primary { width: auto; flex: 1; }
@@ -1660,11 +1599,6 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 .lesson .lesson__head h1 { text-shadow: 0 0 28px color-mix(in srgb, var(--secondary) 12%, transparent); }
 .study-intro__eyebrow { color: var(--cool); }
 .lesson .lesson-form-label { color: var(--secondary); }
-/* Instant input and scoring; only the newly exposed panel gets a short cue. */
-.onboard__panel--enter { animation: tutorial-forward var(--d-route) var(--ease-standard) both; }
-.onboard__panel--enter[data-direction="back"] { animation-name: tutorial-back; }
-@keyframes tutorial-forward { from { transform: translateX(8px); } to { transform: translateX(0); } }
-@keyframes tutorial-back { from { transform: translateX(-8px); } to { transform: translateX(0); } }
 :root[data-motion="on"] .score__metric .metric__track { animation: metric-settle var(--d-complete) var(--ease-standard) both; transform-origin: left; }
 @keyframes metric-settle { from { transform: scaleX(.97); } to { transform: scaleX(1); } }
 :root[data-motion="off"] :not(.ambient__field):not(.ambient__pigment),
@@ -1673,7 +1607,7 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
 :root[data-motion="off"] :is(.btn, .tile, .listbox__trigger):active { transform: none; }
 @media (prefers-reduced-motion: reduce) {
   .ambient__field, .ambient__pigment { animation: none !important; }
-  .onboard__panel--enter, .score__metric .metric__track { animation: none !important; }
+  .score__metric .metric__track { animation: none !important; }
 }
 @media (forced-colors: active) {
   .ambient { display: none; }
@@ -1690,7 +1624,6 @@ h2.t-label, .section-head > .t-label, .onboard__modes h2 {
   .lesson-pretest__summary { padding-inline: 16px; }
   .lesson-pretest__body { padding-inline: 16px; }
   .onboard__top .brand-mark { font-size: 3rem; }
-  .onboard__preview { padding-inline: 16px; }
 }
 @media print { .ambient, .motion-control { display: none; } }
 

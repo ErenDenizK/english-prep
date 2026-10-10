@@ -5,7 +5,7 @@
 .brand-mark--full { font-size: 1.75rem; letter-spacing: -.055em; }
 .brand-mark__dot { transition: color var(--d-control) var(--ease-standard); }
 /* Each cue identifies a useful affordance; none changes a control's layout. */
-.btn, .choice, .listbox__trigger, .switch {
+.btn, .listbox__trigger, .switch {
   transition: background-color var(--d-reveal) var(--ease-standard),
     border-color var(--d-reveal) var(--ease-standard),
     box-shadow var(--d-reveal) var(--ease-standard),
@@ -92,7 +92,7 @@
 }
 .nav__item > .control-face { align-items: center; }
 summary > .control-face { align-items: center; }
-:root[data-motion="on"] :is(.btn, .about-button, .nav__item, .choice, .tile, .row, .listbox__trigger):active { transform: none; }
+:root[data-motion="on"] :is(.btn, .about-button, .nav__item, .tile, .row, .listbox__trigger):active { transform: none; }
 :root[data-motion="on"] [data-pressing="true"] > :is(.control-face, .control-press-part, .row__main, .row__trail, .tile__head, .tile__sub, .tile__meta, .option__key, .icon) {
   transform: scale(var(--press-depth, .945)) translateY(1px);
   transition: transform 120ms cubic-bezier(.2,.65,.25,1);

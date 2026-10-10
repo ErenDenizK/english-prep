@@ -83,7 +83,6 @@
     --s-7: 32px;
     --s-8: 40px;
     --s-9: 48px;
-    --s-10: 64px;
 
     /* -- Radius. 0 for anything full-bleed.
 
@@ -130,8 +129,8 @@
           distinguished the way Material separates Label from Body, by
           weight and ink rather than by a fifth size nobody can tell from
           the fourth. See docs/design/17-olcum/00-teshis.md D1, D2. -- */
-    --f-serif: "Source Serif 4", "Source Serif 4 Fallback", "Times New Roman", Georgia, serif;
-    --f-sans: "Source Sans 3", "Source Sans 3 Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-serif: var(--f-sans);
 
     --t-display: 36px;
     --t-display-lh: 40px;
@@ -148,10 +147,7 @@
           that move. Nothing over 800ms; exits shorter than entrances. -- */
     --d-micro: 120ms;
     --d-enter: 260ms;
-    --d-exit: 170ms;
-    --d-view: 300ms;
     --ease-out: cubic-bezier(0, 0, 0, 1);
-    --ease-in: cubic-bezier(0.3, 0, 1, 1);
     --ease-standard: cubic-bezier(0.2, 0, 0, 1);
     /* gentle: k=320 c=32 — a screen arriving, a press, a fill */
     --spring-gentle: linear(0, 0.011 2%, 0.049 4.5%, 0.614 25%, 0.794 34.5%, 0.94 49.5%, 1.002);
@@ -207,8 +203,6 @@
     --btn-min-primary: 135px;
     --row-min: 56px;
     --foot-pad: var(--s-3);
-    --ring-size: 72px;
-    --ring-stroke: 7px;
   }
 
   @media (min-width: 1080px) and (min-height: 600px) {
@@ -475,21 +469,6 @@
     display: none;
   }
 
-  /* -- Glass: the chrome's material. Solid where there is no blur; ≥ 82%
-        opaque before the blur where there is, so nothing that passes under
-        it is ever legible through it. -- */
-  .glass {
-    background: var(--glass);
-  }
-
-  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .glass {
-      background: var(--glass-blur);
-      -webkit-backdrop-filter: blur(18px) saturate(1.5);
-      backdrop-filter: blur(18px) saturate(1.5);
-    }
-  }
-
   /* -- The bar. leading · title · trailing, floating over the top of the
         region. -- */
   .bar {
@@ -586,14 +565,6 @@
     border-radius: var(--r-pill);
     box-shadow: inset 0 0 0 1px var(--line-strong), inset 0 1px 0 var(--lit), var(--shadow-2);
     background: var(--glass);
-  }
-
-  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .nav {
-      background: var(--glass-raised);
-      -webkit-backdrop-filter: blur(20px) saturate(1.5);
-      backdrop-filter: blur(20px) saturate(1.5);
-    }
   }
 
   .shell__bar {
@@ -895,66 +866,6 @@
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), var(--shadow-glow);
   }
 
-  /* -- Ring. A fraction as an arc: the day's goal, a topic's accuracy,
-        the score. The arc is a stroked circle whose dash offset is the
-        value; the number sits in the middle. -- */
-  .ring {
-    position: relative;
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: var(--ring-size);
-    height: var(--ring-size);
-  }
-
-  .ring__svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-
-  .ring__track {
-    fill: none;
-    stroke: var(--raised);
-    stroke-width: var(--ring-stroke);
-  }
-
-  .ring__fill {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: var(--ring-stroke);
-    stroke-linecap: round;
-    transition: stroke-dashoffset var(--d-spring-pop) var(--spring-pop);
-  }
-
-  .ring--ok .ring__fill { stroke: var(--ok); }
-  .ring--no .ring__fill { stroke: var(--no); }
-
-  .ring__value {
-    position: relative;
-    font-size: var(--t-meta);
-    line-height: var(--t-meta-lh);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .ring--lg {
-    --ring-size: 148px;
-    --ring-stroke: 12px;
-  }
-
-  .ring--sm {
-    --ring-size: 36px;
-    --ring-stroke: 5px;
-  }
-
-  .ring--lg .ring__value {
-    font-size: var(--t-display);
-    line-height: var(--t-display-lh);
-  }
-
   /* -- Row. Homogeneous, scannable; the whole row is the target. -- */
   .row {
     display: flex;
@@ -1195,58 +1106,6 @@
   .chip--no { background: var(--no-tint); color: var(--no); }
   .chip--accent { background: var(--accent-tint); color: var(--accent-text); }
 
-  /* -- Choice. A chip that IS interactive: one of a few values (a count,
-        a theme, a goal), pressed state on a spring. A radiogroup of
-        buttons with aria-pressed. -- */
-  .choices {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-3);
-  }
-
-  .choice {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--s-2);
-    min-height: 44px;
-    min-width: 56px;
-    padding: 0 var(--s-5);
-    border-radius: var(--r-2);
-    background: var(--raised);
-    box-shadow: inset 0 0 0 1px var(--line);
-    font-size: var(--t-body);
-    font-weight: 600;
-    color: var(--ink);
-    transition: background-color var(--d-micro) var(--ease-standard), transform var(--d-spring-bouncy) var(--spring-bouncy), box-shadow var(--d-micro) var(--ease-standard);
-  }
-
-  .choice[aria-pressed="true"] {
-    background: var(--grad-accent);
-    color: var(--accent-ink);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 4px 14px -4px var(--glow);
-  }
-
-  /* A pressed card's second line takes the label's ink too. */
-  .choice[aria-pressed="true"] .row__sub {
-    color: inherit;
-    opacity: 0.85;
-  }
-
-  .choice:active {
-    transform: scale(0.94);
-  }
-
-  /* A choice that is a card: a title and a line, for the goal step. */
-  .choice--card {
-    justify-content: flex-start;
-    width: 100%;
-    min-height: var(--row-min);
-    padding: var(--s-4) var(--s-5);
-    border-radius: var(--r-3);
-    text-align: left;
-  }
-
   /* -- Field. -- */
   .field {
     width: 100%;
@@ -1363,13 +1222,6 @@
 
   .dialog::backdrop {
     background: rgb(0 0 0 / 0.55);
-  }
-
-  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .dialog::backdrop {
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-    }
   }
 
   .dialog__actions {
@@ -1594,12 +1446,6 @@
     gap: var(--s-3);
   }
 
-  /* Two ring stats side by side; each needs the width of a ring and a
-     two-word label. */
-  .stats--rings {
-    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-  }
-
   .stat {
     display: grid;
     align-content: start;
@@ -1608,16 +1454,6 @@
     border-radius: var(--r-3);
     background: var(--card);
     box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 0 var(--lit), var(--shadow-1);
-  }
-
-  .stat--row {
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    column-gap: var(--s-4);
-  }
-
-  .stat--row > .ring {
-    grid-row: span 2;
   }
 
   .stat__value {
@@ -1745,36 +1581,6 @@
     align-content: start;
     gap: var(--s-7);
     min-height: 100%;
-  }
-
-  .onboard__orb {
-    position: relative;
-    width: 152px;
-    height: 152px;
-    margin: var(--s-6) auto 0;
-    border-radius: 50%;
-    background: var(--grad-accent);
-    box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.4), 0 20px 60px -10px var(--glow), 0 0 0 18px var(--accent-tint);
-    display: grid;
-    place-items: center;
-    color: var(--accent-ink);
-  }
-
-  .onboard__steps {
-    display: flex;
-    gap: var(--s-2);
-  }
-
-  .onboard__step {
-    flex: 1;
-    height: 4px;
-    border-radius: var(--r-pill);
-    background: var(--raised);
-    overflow: hidden;
-  }
-
-  .onboard__step--done {
-    background: var(--accent);
   }
 
   .onboard__actions {
@@ -1920,15 +1726,9 @@
     white-space: nowrap;
   }
 
-  /* -- Motion. The route crossfade; the entrance of an arriving screen,
-        its children staggered eight deep; the verdict on an option; the
-        feedback's rise. Opacity only when motion is not welcome. -- */
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: var(--d-enter);
-    animation-timing-function: var(--ease-standard);
-  }
-
+  /* -- Motion. The entrance of an arriving screen, its children staggered
+        eight deep; the verdict on an option; the feedback's rise. Opacity
+        only when motion is not welcome. -- */
   @media (prefers-reduced-motion: no-preference) {
     .animate-in {
       animation: fade-rise var(--d-spring-gentle) var(--spring-gentle) both;
@@ -1979,15 +1779,6 @@
       30%, 50%, 70% { transform: translateX(-5px); }
       40%, 60% { transform: translateX(5px); }
     }
-
-    .onboard__orb {
-      animation: breathe 4s ease-in-out infinite;
-    }
-
-    @keyframes breathe {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.04); }
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -2006,7 +1797,6 @@
     .option,
     .nav__item,
     .chip,
-    .choice,
     .tile,
     .surface,
     .hero {
@@ -2015,8 +1805,7 @@
 
     .option--ok,
     .option--no,
-    .nav__item[aria-current],
-    .choice[aria-pressed="true"] {
+    .nav__item[aria-current] {
       border-color: Highlight;
     }
 
