@@ -103,6 +103,7 @@ The first visit is always dark: `js/theme.js:11` falls back to `"dark"`, and lig
 9. **About issues:**
    - About is hard-coded dark (`about/index.html:2` `data-theme="dark"`, `:7` color-scheme dark) and ignores the Profil theme.
    - Infinite loops: `ab-pulse` (`:188`) and `ab-flowdash` (`:391`) are gated on motion and page visibility. `ab-spin` (`:158`) is gated only by `prefers-reduced-motion` (`:426`), not by the Profil motion switch.
+   - The masthead is not sticky: `.about-page :is(header, main, footer) { position: relative }` (`about/about.css:30`, specificity 0,1,1) beats `.ab-masthead { position: sticky }` (0,1,0), so the bar scrolls away and its blur is never seen over content (measured 2026-10-10: `top` −420 px at scrollY 420).
    - The phone is a CSS-drawn device frame around the captures (`.ab-device`, `about/about.css:304-320`).
    - The captures in `about/assets/*.webp` were last committed at v0.73 (`2db1000`), so they predate the v0.76 motion and fixes.
 10. **Portfolio capture is broken on v0.77.** `tools/capture-portfolio.mjs:185` waits for `#folio-deck .folio-leaf` and `docs/github/capture.py:174` waits for `#study-folio`. Neither exists in the rebuilt About.
