@@ -1,220 +1,359 @@
 {
-  "$schema": "family-world/0 (provisional until the family kit's presentation.md fixes it)",
-  "product": "english-prep",
+  "version": 1,
+  "slug": "english-prep",
   "name": "English Prep",
-  "generatedBy": "tools/make-world.mjs",
-  "sources": [
-    "css/editorial.css",
-    "css/interactions.css",
-    "js/interactions.js",
-    "about/index.html"
-  ],
-  "themes": {
-    "dark": {
-      "ground": "#141216",
-      "card": "#1d1a20",
-      "raised": "#28242c",
-      "ink": [
-        "#eee9ed",
-        "#d2c9d3"
-      ],
-      "hairline": "#39313d",
-      "edge": "#95899b",
-      "accent": {
-        "pair": [
-          "#ed96b4",
-          "#dca2d8"
-        ],
-        "gradient": "linear-gradient(120deg in srgb, #ed96b4, #dca2d8)",
-        "ink": "#301b27",
-        "text": "#efb1cb",
-        "tint": "#30222d"
-      },
-      "focus": "#d4b5f8",
-      "roles": {
-        "secondary": "#c8b4e9",
-        "cool": "#a4d3db",
-        "tertiary": "#e9bb95"
-      },
-      "answers": {
-        "correct": {
-          "ink": "#eeb4d1",
-          "surface": "#392532",
-          "edge": "#bb8ca4"
-        },
-        "incorrect": {
-          "ink": "#b6c6ed",
-          "surface": "#252d42",
-          "edge": "#8d9bbd"
-        }
-      },
-      "aurora": {
-        "pigments": {
-          "cherry": "#a04278",
-          "iris": "#6350a5",
-          "lagoon": "#28798a"
-        },
-        "parentOpacity": 0.42
-      },
-      "contrast": {
-        "inkOnGround": 15.53,
-        "supportingOnGround": 11.56,
-        "accentInkOnAccent": 7.34
-      }
-    },
-    "light": {
-      "ground": "#fbf7fa",
-      "card": "#ffffff",
-      "raised": "#f0eaf0",
-      "ink": [
-        "#302831",
-        "#625864"
-      ],
-      "hairline": "#e2d8e2",
-      "edge": "#887b88",
-      "accent": {
-        "pair": [
-          "#a13462",
-          "#854987"
-        ],
-        "gradient": "linear-gradient(120deg in srgb, #a13462, #854987)",
-        "ink": "#ffffff",
-        "text": "#922e55",
-        "tint": "#f6e7ed"
-      },
-      "focus": "#7848af",
-      "roles": {
-        "secondary": "#7652a0",
-        "cool": "#28677a",
-        "tertiary": "#92501f"
-      },
-      "answers": {
-        "correct": {
-          "ink": "#953b67",
-          "surface": "#fae5ef",
-          "edge": "#b16b8d"
-        },
-        "incorrect": {
-          "ink": "#405f94",
-          "surface": "#eaf0ff",
-          "edge": "#657fac"
-        }
-      },
-      "aurora": {
-        "pigments": {
-          "cherry": "#a04278",
-          "iris": "#6350a5",
-          "lagoon": "#28798a"
-        },
-        "parentOpacity": 0.09
-      },
-      "contrast": {
-        "inkOnGround": 13.43,
-        "supportingOnGround": 6.38,
-        "accentInkOnAccent": 6.36
-      }
-    }
+  "source": {
+    "repo": "ErenDenizK/english-prep",
+    "commit": "ec0fbe9291cc0d1655fe93a1ef6c273b1ea53f5c",
+    "version": "0.78",
+    "files": [
+      "css/editorial.css",
+      "css/interactions.css",
+      "js/interactions.js",
+      "about/index.html",
+      "sw.js"
+    ],
+    "date": "2026-10-10",
+    "estimated": [
+      "/motion/press"
+    ]
   },
-  "defaultTheme": "dark",
-  "accentJob": "The one primary action, and a correct answer (always with the check mark and the word Doğru).",
+  "ground": {
+    "base": "#141216",
+    "frame": "#1d1a20",
+    "raised": "#28242c",
+    "hairline": "#39313d"
+  },
+  "ink": {
+    "primary": "#eee9ed",
+    "secondary": "#d2c9d3"
+  },
+  "accent": {
+    "color": "#ed96b4",
+    "gradient": {
+      "stops": [
+        "#ed96b4",
+        "#dca2d8"
+      ],
+      "angle": 120
+    },
+    "ink": "#301b27",
+    "radius": 8,
+    "job": "The one primary action, and a correct answer, always with the check mark and the word Doğru.",
+    "light": "#efb1cb"
+  },
   "light": {
-    "kind": "aurora",
     "behaviour": "drift",
-    "clusters": [
+    "theme": "dark",
+    "cap": 0.42,
+    "sources": [
       {
-        "cluster": "north",
-        "drift": 9.75,
-        "driftPhase": -2.5,
-        "colourCycle": 13.5,
-        "colourPhase": -2.25
+        "pigments": [
+          "#a04278",
+          "#6350a5",
+          "#28798a"
+        ],
+        "at": [
+          6,
+          5
+        ],
+        "size": [
+          72,
+          78
+        ],
+        "drift": {
+          "period": 9.75,
+          "phase": -2.5
+        },
+        "cycle": {
+          "period": 13.5,
+          "phase": -2.25
+        }
       },
       {
-        "cluster": "east",
-        "drift": 11.75,
-        "driftPhase": -6.25,
-        "colourCycle": 15.75,
-        "colourPhase": -7.875
+        "pigments": [
+          "#6350a5",
+          "#28798a",
+          "#a04278"
+        ],
+        "at": [
+          94,
+          41
+        ],
+        "size": [
+          72,
+          78
+        ],
+        "drift": {
+          "period": 11.75,
+          "phase": -6.25
+        },
+        "cycle": {
+          "period": 15.75,
+          "phase": -7.875
+        }
       },
       {
-        "cluster": "south",
-        "drift": 13.75,
-        "driftPhase": -8.75,
-        "colourCycle": 18,
-        "colourPhase": -13.5
+        "pigments": [
+          "#28798a",
+          "#a04278",
+          "#6350a5"
+        ],
+        "at": [
+          24,
+          100
+        ],
+        "size": [
+          72,
+          78
+        ],
+        "drift": {
+          "period": 13.75,
+          "phase": -8.75
+        },
+        "cycle": {
+          "period": 18,
+          "phase": -13.5
+        }
       }
     ],
-    "note": "Three clusters each crossfade cherry, iris and lagoon; one opacity on the parent flattens all nine layers (not a per-layer cap). Paused when the page is hidden; reduced motion shows three still pools; forced colours hide it."
+    "note": "English Prep's own CSS aurora (.ambient in css/editorial.css): one opacity on the parent flattens all nine layers; each source sits at its cluster's rest centre in % of the viewport, sized max(72vw, 470px) × max(78vh, 520px). The light theme lowers the cap to 0.09. Paused when hidden; reduced motion shows three still pools; forced colours hide it."
   },
-  "materials": {
-    "glass": false,
-    "note": "Opaque cards; no backdrop blur anywhere (Margin system)."
-  },
-  "type": {
-    "family": "Inter",
-    "file": "assets/fonts/InterVariable.woff2",
-    "weights": "100 900",
-    "stack": "Inter, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
-    "reading": {
-      "size": "1.125rem",
-      "lineHeight": 1.6667
+  "fonts": {
+    "ui": {
+      "family": "Inter",
+      "stack": "Inter, ui-sans-serif, system-ui, -apple-system, \"segoe ui\", sans-serif",
+      "weights": [
+        400,
+        500,
+        600
+      ]
     },
-    "mark": {
-      "text": "ep.",
-      "full": "english prep.",
-      "weight": 600,
-      "tracking": "-.065em",
-      "dot": {
-        "dark": "#efb1cb",
-        "light": "#922e55"
-      }
+    "display": {
+      "family": "Inter",
+      "stack": "Inter, ui-sans-serif, system-ui, -apple-system, \"segoe ui\", sans-serif",
+      "weights": [
+        600
+      ],
+      "tracking": -0.065,
+      "size": 30,
+      "lineHeight": 36
+    },
+    "reading": {
+      "family": "Inter",
+      "stack": "Inter, ui-sans-serif, system-ui, -apple-system, \"segoe ui\", sans-serif",
+      "weights": [
+        400
+      ],
+      "size": 18,
+      "lineHeight": 30
     }
   },
   "motion": {
-    "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
-    "durationsMs": {
-      "control": 100,
-      "reveal": 220,
-      "route": 360,
-      "release": 380,
-      "scene": 560,
-      "complete": 720,
-      "story": 900,
-      "flow": 1100
-    },
     "press": {
-      "ms": 120,
-      "depth": 0.945,
-      "easing": "cubic-bezier(.2,.65,.25,1)"
+      "duration": 0.298,
+      "bounce": 0.425
     },
-    "springGrammar": {
-      "press": "inner face compresses to .945 in 120 ms",
-      "settle": "continuous 380 ms release (.945 to 1.035 to 1)",
-      "glide": "route 360 ms over 12 px; scene 560 ms",
-      "pop": "verdict mark 560 ms (.72 to 1.1 to 1); colour cue 220 ms",
-      "note": "A naming map onto existing timings. English Prep's values are bezier keyframes, not springs, and stay as they are."
-    }
-  },
-  "shape": {
-    "radii": [
-      "6px",
-      "8px",
-      "12px",
-      "14px"
-    ],
-    "primaryHeight": "52px"
+    "settle": {
+      "stiffness": 420,
+      "damping": 36
+    },
+    "glide": {
+      "stiffness": 380,
+      "damping": 30
+    },
+    "pop": {
+      "stiffness": 600,
+      "damping": 30
+    },
+    "pressScale": {
+      "mouse": 0.945,
+      "touch": 0.945
+    },
+    "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+    "note": "press: the release is the spring (kit motion.md §2). English Prep presses the inner face to 0.945 in 120 ms (cubic-bezier(.2,.65,.25,1)) and releases in a 380 ms keyframe 0.945 → 1.035 → 1 (peak at 48 %), not a spring; that overshoot is why the release sits under press and not under settle. The press spring here peaks and rests when the release does (estimated: no spring from rest reaches the keyframe's overshoot). settle, glide and pop are the app's own v0.76 springs (js/interactions.js SPRINGS): soft ζ 0.88 for content, lively ζ 0.77 for route slides and dialogs (about 2 % past rest: recorded, not retuned to the kit's zero-bounce glide), bouncy ζ 0.61 for marks and glyphs. The route itself moves 360 ms over 12 px on the ease; the verdict mark takes 560 ms after a 220 ms colour cue. Reduced motion and the Profil toggle make every spatial move instant."
   },
   "promise": {
-    "tr": "Ücretsiz · Hesap yok · İlerlemen kendi tarayıcında",
-    "en": "Free. No account. Your progress stays in your browser.",
-    "short": {
-      "tr": "Hesapsız. İlerlemen kendi tarayıcında.",
-      "en": "No account. Your progress stays in your browser."
-    },
-    "register": "Turkish, sen",
-    "source": "about/index.html, .about-quiet"
+    "text": "Ücretsiz · Hesap yok · İlerlemen kendi tarayıcında",
+    "lang": "tr",
+    "gloss": "Free · No account · Your progress stays in your browser",
+    "evidence": "https://erendenizk.github.io/english-prep/about/"
   },
-  "captures": {
-    "dir": "captures/portfolio/",
-    "tool": "tools/capture-portfolio.mjs"
-  }
+  "links": {
+    "open": "https://erendenizk.github.io/english-prep/",
+    "code": "https://github.com/ErenDenizK/english-prep",
+    "about": "https://erendenizk.github.io/english-prep/about/"
+  },
+  "captures": [
+    {
+      "id": "egitim-wide",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-egitim-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "Eğitim: every lesson is one boundary the ear already hears, X vs Y.",
+      "alt": "English Prep's Eğitim tab: a list of lessons on a dark plum ground, with cherry, iris and lagoon light resting behind it.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "question-wide",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-question-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "An answered question: the choice turns Sakura, with the check and the word Doğru.",
+      "alt": "A test question with its correct option marked in Sakura pink, a check mark and the word Doğru, and the explanation below.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "about-wide",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-about-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "About: both are correct; the difference is in the meaning.",
+      "alt": "English Prep's About page: the headline İkisi de doğru. Fark, anlamda. over the plum ground, with the promise line beneath.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "egitim-touch",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-egitim-1180x820@2x.png"
+      ],
+      "viewport": [
+        1180,
+        820
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "Eğitim: every lesson is one boundary the ear already hears, X vs Y.",
+      "alt": "English Prep's Eğitim tab: a list of lessons on a dark plum ground, with cherry, iris and lagoon light resting behind it.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "question-touch",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-question-1180x820@2x.png"
+      ],
+      "viewport": [
+        1180,
+        820
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "An answered question: the choice turns Sakura, with the check and the word Doğru.",
+      "alt": "A test question with its correct option marked in Sakura pink, a check mark and the word Doğru, and the explanation below.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "about-touch",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-about-1180x820@2x.png"
+      ],
+      "viewport": [
+        1180,
+        820
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "About: both are correct; the difference is in the meaning.",
+      "alt": "English Prep's About page: the headline İkisi de doğru. Fark, anlamda. over the plum ground, with the promise line beneath.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "lesson-phone",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-lesson-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "A lesson opens on its question, then a try-first check that never gates reading.",
+      "alt": "A lesson on a phone: Present Perfect vs Past Simple, the Turkish question Geçmiş kapandı mı, şimdiye mi uzanıyor?, and a try-first cloze with four English options.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "question-phone",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-question-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "An answered question: the choice turns Sakura, with the check and the word Doğru.",
+      "alt": "A test question with its correct option marked in Sakura pink, a check mark and the word Doğru, and the explanation below.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "about-phone",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-about-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "About: both are correct; the difference is in the meaning.",
+      "alt": "English Prep's About page: the headline İkisi de doğru. Fark, anlamda. over the plum ground, with the promise line beneath.",
+      "shot": "2026-10-10"
+    },
+    {
+      "id": "signature",
+      "kind": "signature",
+      "files": [
+        "captures/english-prep-signature-1440x900@2x-poster.png",
+        "captures/english-prep-signature-1440x900@2x.av1.mp4",
+        "captures/english-prep-signature-1440x900@2x.hevc.mp4",
+        "captures/english-prep-signature-1440x900@2x.h264.mp4"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "An answer: the press, the release, and the Sakura Doğru.",
+      "alt": "A test question: an option is pressed and released, turns Sakura with a check mark and Doğru, and the explanation opens below.",
+      "durationSeconds": 7,
+      "shot": "2026-10-10"
+    }
+  ]
 }
