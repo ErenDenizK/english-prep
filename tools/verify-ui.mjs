@@ -412,6 +412,8 @@ async function runFlow(page, viewport) {
   // down the page the reader is shows on the bar's edge.
   const readout = (await page.locator("#shell-header .bar__trail").textContent()).trim();
   ok(/^\d+ \/ \d+$/.test(readout), `bar dersin konudaki yerini söylüyor (${readout})`);
+  // The fill follows scroll events; a slow runner may need a few frames.
+  await page.waitForFunction(() => parseFloat(document.querySelector("#shell-header .bar__progress .progress__fill")?.style.width) > 0, null, { timeout: 2000 }).catch(() => {});
   const fillAfterScroll = await page.locator("#shell-header .bar__progress .progress__fill").evaluate((node) => parseFloat(node.style.width));
   ok(fillAfterScroll > 0, `okuma çubuğu ilerledi (%${fillAfterScroll})`);
 
