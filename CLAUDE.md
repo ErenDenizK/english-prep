@@ -107,6 +107,11 @@ measured and recorded in an ADR.
 
 - Conventional Commits, lower-case subject, header ≤ 100 characters, with the trailers the
   session gives you. Never write an AI model name into code, comments or docs.
+- Commit as the owner, with the assistant credited as co-author (owner, 2026-10-14): before the
+  first commit run `git config user.name "ErenDenizK"` and
+  `git config user.email "109629701+ErenDenizK@users.noreply.github.com"`; keep the session's
+  `Co-Authored-By:` trailer. The work shows on the owner's GitHub graph and stays honest about
+  who wrote it.
 - Code reads like its neighbours; comments cite the doc section a behaviour comes from. A lesson
   from one bug is a comment beside that code, not a rule here.
 - Replaced native controls owe the full native contract (`js/listbox.js`); prefer the platform
