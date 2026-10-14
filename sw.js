@@ -7,6 +7,9 @@ const NAMESPACE = `english-prep:${encodeURIComponent(SCOPE.pathname)}:`;
 const SHELL_PREFIX = `${NAMESPACE}shell:`;
 const SHELL_CACHE = `${SHELL_PREFIX}${VERSION}`;
 const CONTENT = `${NAMESPACE}content`;
+// The pre-scope shared content cache, copied from on activate. Remove the
+// migration after 2027-01: by then every installed copy has activated a
+// scoped worker at least once (2026-10-14).
 const LEGACY_CONTENT = "english-prep-content";
 const DATA = new URL("./data/", SCOPE);
 
@@ -150,9 +153,12 @@ self.addEventListener("fetch", (event) => {
           // Also preserve offline access if migration could not write due
           // to quota. This lookup is for the exact request in our data path.
           if ((await caches.keys()).includes(LEGACY_CONTENT)) {
-            return (await caches.open(LEGACY_CONTENT)).match(request);
+            const legacy = await (await caches.open(LEGACY_CONTENT)).match(request);
+            if (legacy) return legacy;
           }
-          return undefined;
+          // respondWith needs a Response; undefined is a TypeError, not an
+          // offline failure the page can handle.
+          return Response.error();
         })
     );
     return;
@@ -160,8 +166,14 @@ self.addEventListener("fetch", (event) => {
 
   // Shell lookups are deliberately local to this cache. CacheStorage.match
   // would search other releases/copies and could resurrect their stale UI.
-  const cached = caches.open(SHELL_CACHE).then((cache) => cache.match(request));
+  // A page opened with a query (a shared link with tracking parameters,
+  // index.html?source=…) is the same document offline: navigations ignore
+  // the search when matching the shell.
+  const options = request.mode === "navigate" ? { ignoreSearch: true } : undefined;
+  const cached = caches.open(SHELL_CACHE).then((cache) => cache.match(request, options));
   const live = fetchFresh(request, SHELL_CACHE).catch(() => cached);
   event.waitUntil(live.then(() => undefined));
-  event.respondWith(cached.then((response) => response ?? live));
+  event.respondWith(cached
+    .then((response) => response ?? live)
+    .then((response) => response ?? Response.error()));
 });

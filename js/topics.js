@@ -105,7 +105,7 @@ function normalizeQuestion(question) {
  * @param {{id: string, file: string}} topic
  * @returns {Promise<Array<object>>} the topic's questions, normalized
  */
-export async function loadTopicQuestions(topic) {
+async function loadTopicQuestions(topic) {
   const data = await loadJson(topic.file);
   return data.questions.map(normalizeQuestion);
 }

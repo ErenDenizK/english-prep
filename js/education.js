@@ -302,7 +302,7 @@ function renderWelcome(firstLesson) {
  *
  * It suggests and never locks. Every lesson row below stays open and in
  * the same order — a recommendation is not a gate, which is what
- * `docs/education-notes.md` settled and what `practice-modes.md` refuses
+ * `docs/history/education-notes.md` settled and what `docs/history/research/practice-modes.md` refuses
  * under "unlock progression".
  */
 function renderNextStepCard(lessons, progress, completed) {
@@ -609,7 +609,7 @@ function renderIndexFilter(lessons, progress) {
  * Eight topic rows, not forty-eight lesson rows.
  *
  * The index used to list every lesson in the app, flat. That was a
- * deliberate decision — `docs/education-notes.md` records the index
+ * deliberate decision — `docs/history/education-notes.md` records the index
  * "going flat" instead of gaining a topic level — and it outgrew itself:
  * measured at 320 it was **5,332px, 8.3 screens**, two and a half times
  * the next-longest screen, and a learner reported it as the topics
@@ -690,7 +690,7 @@ function renderTopicGroup(heading, lessons, progress) {
     tile.appendChild(englishTitle("span", "tile__title t-en", title));
     // The one Turkish line that says what the topic IS, clamped to two
     // lines: the orientation the index owes a learner who has never met
-    // the term (docs/research/orientation.md), kept on the tile.
+    // the term (docs/history/research/orientation.md), kept on the tile.
     if (inTopic[0].topicGloss) {
       tile.appendChild(el("span", "tile__sub", inTopic[0].topicGloss));
     }
@@ -715,7 +715,7 @@ function renderTopicGroup(heading, lessons, progress) {
  * with nothing anywhere saying what a relative clause is.
  *
  * It is a SCREEN and not a block inside every lesson, and that is the
- * whole design. `docs/research/orientation.md` settles it on the
+ * whole design. `docs/history/research/orientation.md` settles it on the
  * expertise-reversal literature: across 60 studies, giving support to
  * novices helped (+0.505) while giving the same support to people who
  * already had the schema HURT them (−0.428). The effect is asymmetrical,

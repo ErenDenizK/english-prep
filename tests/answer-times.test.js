@@ -17,14 +17,14 @@ function attempt(id, date, questions, mode = 'mixed') {
 }
 test.beforeEach(() => entries.clear());
 
-test('a resumed session counts each answer on its own local calendar day', () => {
+test('a resumed session dates each answer by when it was given', () => {
   storage.recordAttempt(attempt('spanning', at(1), [
     answer('q1', true, at(2)), answer('q2', false, at(3)), answer('q3', true, at(3, 13)),
   ]));
-  assert.equal(storage.getTodayCount(Date.parse(at(1))), 0, 'starting a session is not an answer');
-  assert.equal(storage.getTodayCount(Date.parse(at(2))), 1);
-  assert.equal(storage.getTodayCount(Date.parse(at(3))), 2);
-  assert.deepEqual(storage.getStreak(Date.parse(at(3, 15))), { days: 2, activeToday: true });
+  const stats = storage.getItemStats();
+  assert.equal(stats.q1.last, Date.parse(at(2)), 'starting a session is not an answer');
+  assert.equal(stats.q2.last, Date.parse(at(3)));
+  assert.equal(stats.q3.last, Date.parse(at(3, 13)));
   assert.equal(storage.getLastActivity(), Date.parse(at(3, 13)));
 });
 
@@ -60,15 +60,13 @@ test('recent accuracy windows include an older session resumed most recently', (
 
 test('legacy and malformed answer times fall back to the original attempt date', () => {
   storage.recordAttempt(attempt('legacy', at(2), [answer('legacy', false), answer('bad-time', true, 'not-a-date')]));
-  assert.equal(storage.getTodayCount(Date.parse(at(2))), 2);
+  assert.equal(storage.getItemStats().legacy.last, Date.parse(at(2)));
   assert.equal(storage.getItemStats()['bad-time'].last, Date.parse(at(2)));
   assert.equal(storage.getLastActivity(), Date.parse(at(2)));
-  assert.deepEqual(storage.getStreak(Date.parse(at(2))), {days: 1, activeToday: true});
 });
 
 test('valid answer time remains usable when the attempt date is absent or malformed', () => {
   storage.recordAttempt(attempt('recovered', 'invalid', [answer('good', true, at(3)), answer('unknown', false, 'invalid')]));
-  assert.equal(storage.getTodayCount(Date.parse(at(3))), 1);
+  assert.equal(storage.getItemStats().good.last, Date.parse(at(3)));
   assert.equal(storage.getLastActivity(), Date.parse(at(3)));
-  assert.deepEqual(storage.getStreak(Date.parse(at(3))), {days: 1, activeToday: true});
 });

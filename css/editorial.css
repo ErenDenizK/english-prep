@@ -45,20 +45,15 @@
   --no-edge: #8d9bbd;
   --editorial-mark: #efb1cb;
   --editorial-wash: #211b24;
-  --editorial-note: #d2c9d3;
   --line: var(--hairline);
   --line-strong: var(--edge);
   --lit: transparent;
-  --glass: var(--page);
-  --glass-blur: var(--page);
-  --glass-raised: var(--card);
   --shadow-1: none;
   --shadow-2: none;
   --shadow-glow: none;
   --glow: transparent;
   --orb: none;
   --grad-accent: linear-gradient(120deg in srgb, var(--accent), var(--accent-2));
-  --f-serif: var(--f-sans);
   --f-sans:
     Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --t-display: 1.875rem;
@@ -71,10 +66,8 @@
   --t-body-lh: 1.75rem;
   --t-meta: 0.875rem;
   --t-meta-lh: 1.375rem;
-  --r-1: 6px;
   --r-2: 8px;
   --r-3: 12px;
-  --r-4: 14px;
   --btn-h: 48px;
   --btn-h-primary: 52px;
   --nav-h: 62px;
@@ -86,13 +79,8 @@
   --foot-pad: 12px;
   --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
   --spring-gentle: var(--ease-standard);
-  --spring-bouncy: var(--ease-standard);
-  --spring-pop: var(--ease-standard);
   --d-spring-gentle: 220ms;
-  --d-spring-bouncy: 220ms;
-  --d-spring-pop: 180ms;
   color-scheme: dark;
-  --editorial-elevation: 0 8px 28px #00000024;
   --editorial-highlight: inset 0 1px 0 #ffffff06;
   --reading-size: 1.125rem;
   --reading-leading: 1.6667;
@@ -101,7 +89,6 @@
   --secondary: #c8b4e9;
   --tertiary: #e9bb95;
   --cool: #a4d3db;
-  --cool-tint: #1e3038;
   --aurora-cherry: #a04278;
   --aurora-iris: #6350a5;
   --aurora-lagoon: #28798a;
@@ -114,7 +101,6 @@
   --d-reveal: 220ms;
   --d-scene: 560ms;
   --d-story: 900ms;
-  --d-enter: var(--d-route);
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
@@ -139,11 +125,9 @@
     --no-edge: #657fac;
     --editorial-mark: #922e55;
     --editorial-wash: #f6eff5;
-    --editorial-note: #625864;
     --secondary: #7652a0;
     --tertiary: #92501f;
     --cool: #28677a;
-    --cool-tint: #e5f1f5;
     --aurora-opacity: .09;
     color-scheme: light;
   }
@@ -170,11 +154,9 @@
   --no-edge: #657fac;
   --editorial-mark: #922e55;
   --editorial-wash: #f6eff5;
-  --editorial-note: #625864;
   --secondary: #7652a0;
     --tertiary: #92501f;
     --cool: #28677a;
-    --cool-tint: #e5f1f5;
     --aurora-opacity: .09;
     color-scheme: light;
 }

@@ -1,0 +1,45 @@
+{
+  "app": "english-prep",
+  "version": 1,
+  "exportedAt": "2026-10-09T08:14:31.077Z",
+  "data": {
+    "history": {
+      "attempts": [
+        {
+          "id": "a-1728400000000-k3",
+          "date": "2026-10-08T15:00:00.000Z",
+          "mode": "topic",
+          "partial": true,
+          "topicBreakdown": { "connectors": { "correct": 1, "total": 2 } },
+          "categoryBreakdown": { "Although vs Despite": { "correct": 1, "total": 2 } },
+          "questions": [
+            {
+              "id": "connectors-t2",
+              "topicId": "connectors",
+              "category": "Although vs Despite",
+              "correct": true,
+              "selected": "Although",
+              "answeredAt": "2026-10-08T15:00:40.000Z"
+            },
+            {
+              "id": "connectors-t5",
+              "topicId": "connectors",
+              "category": "Although vs Despite",
+              "correct": false,
+              "selected": null,
+              "answeredAt": "2026-10-09T07:58:02.000Z"
+            }
+          ]
+        }
+      ]
+    },
+    "lessonProgress": {
+      "connectors-although-vs-despite": { "read": 0.35, "done": false, "at": 1728460000000 }
+    },
+    "seenVersions": { "connectors": 4 },
+    "profileName": "",
+    "settings": { "thinkFirst": false },
+    "examDate": null,
+    "dailyGoal": 10
+  }
+}

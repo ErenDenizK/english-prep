@@ -1,4 +1,4 @@
-// Measures the app against docs/design-system.md, screen by screen.
+// Measures the app against docs/history/design-system.md, screen by screen.
 //
 // Separate from tools/verify-ui.mjs on purpose: that one asserts a
 // contract and fails the build, this one reports numbers a designer
