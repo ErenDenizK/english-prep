@@ -1,7 +1,7 @@
 # Changelog
 
 Versioning: `x.y`, `x` fixed at `0` while the app is in development — see
-the [development guide's Versioning section](docs/development.md#versioning) for the exact rule (only the project
+the [development guide's Versioning section](docs/history/development.md#versioning) for the exact rule (only the project
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
@@ -106,7 +106,7 @@ Görünürde bir şey değişmedi; uygulama daha hafif ve daha sağlam bir temel
 - Açıklamalı doğrusal ilerleme göstergeleri; daha sakin seçenekler, konu satırları ve gruplanmış ayarlar. Okunmamış derste ön test açık gelir; isteğe bağlıdır ve makalenin okuma yüzdesine katılmaz.
 - Eğitim → Test → isteğe bağlı ad akışını anlatan üç sayfalı tanıtım; kalıcı hareket kontrolü, sistem tercihi ve sekme görünürlüğüne uyan üç hafif aurora alanı.
 - `/about/` ürün ve mühendislik portfolyosu: düzenlenebilir içerik modeli, gerçek telefon/geniş ekran galerisi ve açık çevrimdışı erişim sınırları. Marka ikonları ve paylaşım görseli yeni paletle üretilir.
-- Araştırma ve kararlar: [ADR 007](docs/adr/007-sakura-and-purposeful-motion.md). Son doğrulama: [VALIDATION](docs/VALIDATION.md).
+- Araştırma ve kararlar: [ADR 007](docs/adr/007-sakura-and-purposeful-motion.md). Son doğrulama: [VALIDATION](docs/history/VALIDATION.md).
 
 ## v0.67 — 2026-10-04
 
@@ -137,7 +137,7 @@ and an editable product/project page at `/about/`.
 and decisions. The typography and palette/motion reports, plus the screen
 hierarchy audit, distinguish source evidence from browser measurements and
 user research. Final check results are recorded separately in
-[VALIDATION.md](docs/VALIDATION.md). The original v0.64 interface and all learning
+[VALIDATION.md](docs/history/VALIDATION.md). The original v0.64 interface and all learning
 data remain unchanged.
 
 ## v0.66 — 2026-10-03
