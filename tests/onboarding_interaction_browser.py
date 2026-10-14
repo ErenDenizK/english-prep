@@ -93,6 +93,23 @@ class OnboardingInteractionTests(unittest.TestCase):
                 self.page.get_by_role('button', name='Uygulamayı aç', exact=True).click()
                 expect(self.page.locator('#index-filter')).to_be_visible()
 
+    def test_primary_action_is_on_screen_without_scrolling_on_short_phones(self):
+        # css/onboarding.css: on a short screen the actions are a bottom bar.
+        self.page.emulate_media(reduced_motion='reduce')
+        for width, height in [(320, 640), (375, 667), (1180, 820)]:
+            with self.subTest(width=width, height=height):
+                self.page.set_viewport_size({'width': width, 'height': height})
+                self.open_tour()
+                for step in range(3):
+                    bottom = self.page.locator('.onboard__actions .btn--primary').evaluate(
+                        'b => b.getBoundingClientRect().bottom')
+                    self.assertLessEqual(bottom, height, f'page {step + 1}')
+                    if step < 2:
+                        self.page.locator('.onboard__actions .btn--primary').click()
+                # No phantom scroll on a page that fits (was 40px on wide screens).
+                overflow = self.page.locator('#shell-scroll').evaluate('s => s.scrollHeight - s.clientHeight')
+                self.assertLessEqual(overflow, 0)
+
     def test_200_percent_text_keeps_every_page_and_primary_action_reachable(self):
         self.page.set_viewport_size({'width': 320, 'height': 568})
         self.page.emulate_media(reduced_motion='reduce')

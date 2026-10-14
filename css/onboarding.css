@@ -186,4 +186,27 @@ html[data-motion="off"] .onboard .onboard__dot { transition: none; }
 @media (min-width: 1080px) and (min-height: 600px) {
   .onboard { --onboard-inset: 120px; }
 }
+/* On a short screen the tour is taller than the screen (89px at 320x640,
+   103px at 375x667) and the primary action fell below the fold. There the
+   actions become an action bar on the bottom edge, opaque with a hairline
+   like the quiz and lesson bars (css/editorial.css .shell__bar), so the
+   learner never scrolls to continue. The bar is the page's foot, so the
+   page and scroller drop their own bottom padding and the inset with it. */
+@media (max-height: 800px) {
+  body.is-onboarding .shell__scroll { --foot-space: 0px; }
+  body.is-onboarding .page { padding-bottom: 0; }
+  .onboard { --onboard-inset: 28px; }
+  .onboard .onboard__actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--page);
+    border-top: 1px solid var(--hairline);
+  }
+}
+@media (max-height: 800px) and (min-width: 1080px) and (min-height: 600px) {
+  .onboard { --onboard-inset: 48px; }
+}
 } /* @layer onboarding */
