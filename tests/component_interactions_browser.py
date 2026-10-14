@@ -169,6 +169,26 @@ class ComponentInteractionTests(unittest.TestCase):
         self.page.get_by_role('button', name='Vazgeç', exact=True).click()
         expect(dialog).not_to_be_visible()
 
+    def test_forced_colours_tell_a_switch_on_from_off(self):
+        # Forced colours discard fills: the thumb must be named in system
+        # colours or it disappears into the track (css/editorial.css).
+        self.page.emulate_media(forced_colors='active')
+        self.visit('index.html#profil')
+        row = self.page.get_by_role('switch').first
+        paint = '''r => {
+          const t = getComputedStyle(r.querySelector('.switch__thumb'));
+          const s = getComputedStyle(r.querySelector('.switch'));
+          return {thumb: t.backgroundColor, track: s.backgroundColor};
+        }'''
+        before = row.evaluate(paint)
+        self.assertNotEqual(before['thumb'], before['track'], 'off thumb is invisible on its track')
+        row.click()
+        row.evaluate("r => Promise.all(r.getAnimations({subtree: true}).map(a => a.finished))")
+        after = row.evaluate(paint)
+        self.assertNotEqual(after['thumb'], after['track'], 'on thumb is invisible on its track')
+        self.assertNotEqual(before['thumb'], after['thumb'])
+        self.assertNotEqual(before['track'], after['track'])
+
     def test_popup_assembles_visible_labels_without_moving_option_hitboxes(self):
         self.page.add_init_script('''(() => {
           const animate = Element.prototype.animate;
