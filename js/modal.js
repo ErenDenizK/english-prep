@@ -13,11 +13,20 @@
 
 import { animateElement, animateSequence, cancelAnimationsWithin } from "./interactions.js";
 
+const settlesOnCancel = new WeakSet();
+
 /** A dialog assembles around an already usable decision. The top-layer box
  * never travels or scales, so the backdrop boundary and button targets remain
  * exact. A caller sets state, opens the native dialog and focuses first. */
 export function presentDialog(dialog) {
   cancelAnimationsWithin(dialog);
+  // Escape fires `cancel` synchronously, before the dialog closes; `close`
+  // only follows in a later task. Settle the entrance on the first of them so
+  // a dismissed dialog never has a part still moving (slow CI machines saw it).
+  if (!settlesOnCancel.has(dialog)) {
+    settlesOnCancel.add(dialog);
+    dialog.addEventListener?.("cancel", () => cancelAnimationsWithin(dialog));
+  }
   const title = dialog.querySelector("h1, h2, h3");
   const description = title?.parentElement.querySelector("p");
   const actions = [...dialog.querySelectorAll(".dialog__actions .btn")];
@@ -51,9 +60,11 @@ export function createConfirmModal({ dialogId, confirmId, cancelId, onConfirm })
   const cancelBtn = document.getElementById(cancelId);
 
   confirmBtn.addEventListener("click", () => {
+    cancelAnimationsWithin(dialog);
     dialog.close("confirm");
   });
   cancelBtn.addEventListener("click", () => {
+    cancelAnimationsWithin(dialog);
     dialog.close("cancel");
   });
 
