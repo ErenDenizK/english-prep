@@ -1,6 +1,6 @@
 # English Prep — state of the app · v0.80
 
-Checked against branch `test` at `69e6519` (release commit) on 2026-10-14. Where this and another document disagree, the code and its checks win, then this page (`CLAUDE.md`). Every claim names a path or a command.
+Checked against branch `test` at `f405f10` (release commit) on 2026-10-14. Where this and another document disagree, the code and its checks win, then this page (`CLAUDE.md`). Every claim names a path or a command.
 
 ## 0. Status
 
@@ -96,7 +96,7 @@ First visit is dark: `js/theme.js:11` falls back to `"dark"`. About is always da
 
 None known. (The browser-suite failure found while writing this page, a test still opening deleted About captures, was fixed in v0.80, and a known timing flake in the rail's side-pinch test was made tolerant of one extra frame.)
 
-The UI bugs found before parking were fixed in v0.80 (`1178f13`, `6753b71`, `f8c5f56`, `bbf5c34`, `0bf4cb7`, `6e2fd7c`, `f50ef8b`, `59a72e4`).
+The UI bugs found before parking were fixed in v0.80 (`355b083`, `731d139`, `4b9c7c8`, `3365601`, `d8c307e`, `1ac8ad9`, `5fcd963`, `510d684`).
 
 **(b) Taste decisions waiting for the owner** (none is a defect; ask with a short Turkish brief):
 
