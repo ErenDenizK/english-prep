@@ -17,6 +17,16 @@ pip install -r tests/requirements.txt
 python -m playwright install chromium   # skip if a Chromium is already there (see EP_BROWSER)
 ```
 
+## Bumping Playwright
+
+Three pins name one Chromium build, so they move together in one commit: `playwright` in
+`tests/requirements.txt` (Python suites), the global `npm i -g playwright@…` in
+`.github/workflows/ci.yml` (the `npm run verify` sweep) and the build both install. Keep the two
+on the same minor, then check that `python -m playwright install chromium` and the Node package
+fetch the same `chromium-<build>` directory, and update the build number named in
+`tests/requirements.txt`'s comment and in `EP_BROWSER` examples. Run `npm run verify` and
+`npm run browser` on the new build before pushing.
+
 ## Run all suites
 
 ```bash
