@@ -24,7 +24,9 @@ const PROFILE_NAME_KEY = "englishPrep.profileName";
 const LESSON_PROGRESS_KEY = "englishPrep.lessonProgress";
 const SETTINGS_KEY = "englishPrep.settings";
 const BACKUP_NUDGE_KEY = "englishPrep.backupNudgeDismissed";
+// read for backup compatibility (docs/STATE.md)
 const EXAM_DATE_KEY = "englishPrep.examDate";
+// read for backup compatibility (docs/STATE.md)
 const DAILY_GOAL_KEY = "englishPrep.dailyGoal";
 const ONBOARDED_KEY = "englishPrep.onboarded";
 
@@ -222,10 +224,10 @@ export function getItemStats() {
 }
 
 /** Two correct answers, on two different days, and an item graduates. */
-export const MISTAKE_BOOK_GRADUATION = 2;
+const MISTAKE_BOOK_GRADUATION = 2;
 
 /** A local calendar day, because "on separate days" is what a learner means. */
-export function dayKey(timestamp) {
+function dayKey(timestamp) {
   const date = new Date(timestamp);
   return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 }
@@ -561,19 +563,6 @@ export function getLastActivity() {
   return latest;
 }
 
-/**
- * The gap after which the Eğitim index offers a way back in rather than a
- * plain "carry on from 73%".
- *
- * Ten days, and it is not a lapse. Cepeda et al. taught over 1,350 people
- * and reviewed them at gaps up to 3.5 months: the useful gap scales with
- * how far off the test is, and for an exam a couple of months out it lands
- * around one to two weeks. So a fortnight away is roughly what the
- * literature would have picked, and the screen must not treat it as
- * something to apologise for.
- */
-export const RE_ENTRY_DAYS = 10;
-
 export function getSeenVersion(topicId) {
   return loadSeenVersions()[topicId] ?? 0;
 }
@@ -731,7 +720,7 @@ export function clearLessonProgress() {
    learner has never seen should not change what the app does. */
 
 /** @returns {Record<string, boolean>} */
-export function getSettings() {
+function getSettings() {
   return readJson(SETTINGS_KEY, {}, isPlainObject);
 }
 
@@ -792,8 +781,13 @@ export function setChoice(name, value, allowed) {
    browser without asking. These two functions are how a learner takes it
    with them; the merge itself is pure and lives in js/backup.js. */
 
-/* ---- The learner's own facts: the exam, the goal, the streak ---------- */
+/* ---- The exam date and daily goal ------------------------------------
+   UI 3 let a learner set both; the owner has since ruled out exam dates
+   and daily goals in the UI (CLAUDE.md, settled). Nothing sets them now,
+   but older devices hold them and older backups carry them, so they are
+   still read, exported and restored: dropping them would lose data. */
 
+// read for backup compatibility (docs/STATE.md)
 /**
  * The exam date, as `YYYY-MM-DD`, or null when the learner has not said.
  * Stored as the date string a native date field produces, so the day is
@@ -808,39 +802,10 @@ export function getExamDate() {
   }
 }
 
-/** @param {string|null} date - `YYYY-MM-DD`, or null to forget it */
-export function setExamDate(date) {
-  try {
-    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      localStorage.setItem(EXAM_DATE_KEY, date);
-    } else {
-      localStorage.removeItem(EXAM_DATE_KEY);
-    }
-  } catch {
-    // Unavailable; the home screen simply shows no countdown.
-  }
-}
+const DAILY_GOAL_OPTIONS = [5, 10, 20];
+const DAILY_GOAL_DEFAULT = 10;
 
-/**
- * Whole days from today to the exam, in the learner's own calendar: 0 on
- * the day, negative once it has passed, null when unknown.
- * @param {number} [now]
- */
-export function daysToExam(now = Date.now()) {
-  const date = getExamDate();
-  if (!date) {
-    return null;
-  }
-  const [y, m, d] = date.split("-").map(Number);
-  const exam = new Date(y, m - 1, d);
-  const today = new Date(now);
-  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  return Math.round((exam - start) / 86_400_000);
-}
-
-export const DAILY_GOAL_OPTIONS = [5, 10, 20];
-export const DAILY_GOAL_DEFAULT = 10;
-
+// read for backup compatibility (docs/STATE.md)
 /** Questions a day the learner said they would do. */
 export function getDailyGoal() {
   try {
@@ -851,89 +816,11 @@ export function getDailyGoal() {
   }
 }
 
-/** @param {number} goal - one of DAILY_GOAL_OPTIONS */
-export function setDailyGoal(goal) {
-  try {
-    if (DAILY_GOAL_OPTIONS.includes(goal)) {
-      localStorage.setItem(DAILY_GOAL_KEY, String(goal));
-    }
-  } catch {
-    // Unavailable; the default holds.
-  }
-}
-
 /**
- * Questions answered today, in the learner's own calendar day — the
- * number shown against the optional daily goal. Partial attempts count
- * too, on the date each answer was given rather than when its test began.
- * @param {number} [now]
+ * Records that the first-run flow was completed or skipped. The app no
+ * longer reads the flag back (the introduction is optional, `#hosgeldin`);
+ * it is still written, and the browser suites check that it is.
  */
-export function getTodayCount(now = Date.now()) {
-  const today = dayKey(now);
-  let count = 0;
-  for (const attempt of getHistory()) {
-    for (const question of attempt.questions) {
-      const at = answerTime(question, attempt);
-      if (at !== null && dayKey(at) === today) count += 1;
-    }
-  }
-  return count;
-}
-
-/**
- * The streak: consecutive days with any activity — an answer or a page
- * read — ending today or yesterday. Lenient the way Headspace's is: one
- * missed day inside a run is forgiven, two break it. It counts, it never
- * nags, and nothing in the app notifies (docs/ui3-plan.md §7).
- *
- * @param {number} [now]
- * @returns {{days: number, activeToday: boolean}}
- */
-export function getStreak(now = Date.now()) {
-  const active = new Set();
-  for (const attempt of getHistory()) {
-    for (const question of attempt.questions.length ? attempt.questions : [{}]) {
-      const at = answerTime(question, attempt);
-      if (at !== null) active.add(dayKey(at));
-    }
-  }
-  for (const entry of Object.values(getAllLessonProgress())) {
-    if (typeof entry.at === "number") {
-      active.add(dayKey(entry.at));
-    }
-  }
-  const activeToday = active.has(dayKey(now));
-  let days = 0;
-  let forgiven = false;
-  // Walk back one calendar day at a time from today. Today itself may be
-  // empty without breaking anything — the day is not over.
-  for (let back = 0; back < 400; back += 1) {
-    const key = dayKey(now - back * 86_400_000);
-    if (active.has(key)) {
-      days += 1;
-    } else if (back === 0) {
-      continue;
-    } else if (!forgiven) {
-      forgiven = true;
-    } else {
-      break;
-    }
-  }
-  // A forgiven gap at the very end of the walk is not part of the run.
-  return { days, activeToday };
-}
-
-/** Whether the first-run flow has been completed or skipped. */
-export function isOnboarded() {
-  try {
-    return localStorage.getItem(ONBOARDED_KEY) === "1";
-  } catch {
-    // Storage unavailable: nothing could be saved, so never show a flow
-    // whose answers would be lost.
-    return true;
-  }
-}
-
 export function setOnboarded(done = true) {
   try {
     if (done) {
@@ -1132,7 +1019,7 @@ export function shouldOfferBackup() {
   return getHistory().length >= BACKUP_NUDGE_AFTER;
 }
 
-export function isBackupNudgeDismissed() {
+function isBackupNudgeDismissed() {
   try {
     return localStorage.getItem(BACKUP_NUDGE_KEY) === "1";
   } catch {

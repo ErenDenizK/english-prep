@@ -52,7 +52,7 @@ for (const name of FIXTURES) {
     // Read for backup compatibility: no screen shows them, but a file that
     // carries them must hand them on to the next export.
     assert.equal(state.examDate, theirs.examDate ?? null);
-    assert.equal(state.dailyGoal, theirs.dailyGoal ?? storage.DAILY_GOAL_DEFAULT);
+    assert.equal(state.dailyGoal, theirs.dailyGoal ?? 10, "unset reads as the old default of ten");
 
     // Every reader copes with the oldest shapes.
     assert.ok(storage.getOverallStats().totalQuestions > 0);
