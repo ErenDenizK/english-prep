@@ -1,7 +1,7 @@
 # ADR 009 — A visible motion language for study
 
 Date: 4 October 2026. Baseline: `c134dcc`, v0.69.
-Status: implemented; executed evidence is in [VALIDATION](../VALIDATION.md).
+Status: implemented; executed evidence is in [VALIDATION](../history/VALIDATION.md).
 
 ## Problem and research
 

@@ -24,7 +24,7 @@ we did not measure its proprietary timings or claim to reproduce its system.
 - [About folio decisions](../history/design/about-v072.md)
 - [Touch rail architecture](../history/design/scroll-rail-v072.md)
 - [Transfer research](../research/2026-10-data-transfer-v072.md)
-- [GitHub presentation](../github/presentation-plan.md)
+- GitHub presentation plan (removed 2026-10-14 with the old README media)
 
 ## More visible atmosphere, quieter reading
 
@@ -103,12 +103,12 @@ A completed platform share promise means handoff, not verified recipient receipt
 The v1 format and conservative merge/rollback behavior remain compatible.
 
 There is no account, automatic cloud sync or remote backup service. Further
-ideas are ranked separately in the [feature opportunity list](../design/feature-opportunities-v072.md),
+ideas are ranked separately in the [feature opportunity list](../history/design/feature-opportunities-v072.md),
 with value, effort and data implications; a roadmap entry is not a shipped claim.
 
 ## Acceptance and limits
 
-The release record in [VALIDATION.md](../VALIDATION.md) covers numerical contrast,
+The release record in [VALIDATION.md](../history/VALIDATION.md) covers numerical contrast,
 real motion frames, stable hit targets, touch and keyboard cancellation, reduced
 motion, mobile reflow, enlarged text, transfer failure/retry, article/test/history
 flows, offline behavior and byte-identical preservation of 85 material/archive

@@ -1,26 +1,29 @@
 # Research and rationale · v0.70
 
+> **History (moved 2026-10-14, project parked at v0.79).** Describes an earlier build; it never
+> binds. Current guidance: `CLAUDE.md`, `docs/STATE.md`.
+
 Research access date: **4 October 2026**. The app retains the full source corpus: **10 topics, 60 scrolling articles, 241 questions and 723 option notes**. No learner interviews, comparative participant usability study or educational-outcome experiment was conducted.
 
-The current filled-answer, motion and product-presentation decision is [ADR 009](adr/009-expressive-study-motion.md):
+The current filled-answer, motion and product-presentation decision is [ADR 009](../adr/009-expressive-study-motion.md):
 
-- [Filled-answer research](research/2026-10-answer-surfaces-v070.md): official WCAG/Radix/Carbon/Fluent sources, three real dark/light component candidates, opaque Sakura/periwinkle surfaces, measured boundaries, grayscale and forced-color checks. The first light incorrect border failed its outer-background measurement and was corrected before integration.
-- [Motion research](history/research/2026-10-motion-v070.md): official Material, Fluent and Carbon roles, productive/expressive pacing, timing/easing/sequencing choices and lifecycle constraints. Blocked live-product access is distinguished from source review.
-- [Onboarding composition](history/design/onboarding-v070.md): six user-paced drawn scenes, bounded sequences, immediate optional controls and unchanged learning storage.
-- [Profile/results design](design/profile-results-v070.md): arrival-only Profile composition, real completion signatures and the distinction between recording an attempt and presenting its result.
-- [About authoring](../about/README.md): the mobile hero, native feature/technical disclosures, visible-artwork entry, responsive real captures and extensible product/architecture stories.
+- [Filled-answer research](../research/2026-10-answer-surfaces-v070.md): official WCAG/Radix/Carbon/Fluent sources, three real dark/light component candidates, opaque Sakura/periwinkle surfaces, measured boundaries, grayscale and forced-color checks. The first light incorrect border failed its outer-background measurement and was corrected before integration.
+- [Motion research](research/2026-10-motion-v070.md): official Material, Fluent and Carbon roles, productive/expressive pacing, timing/easing/sequencing choices and lifecycle constraints. Blocked live-product access is distinguished from source review.
+- [Onboarding composition](design/onboarding-v070.md): six user-paced drawn scenes, bounded sequences, immediate optional controls and unchanged learning storage.
+- [Profile/results design](../design/profile-results-v070.md): arrival-only Profile composition, real completion signatures and the distinction between recording an attempt and presenting its result.
+- [About authoring](../../about/README.md): the mobile hero, native feature/technical disclosures, visible-artwork entry, responsive real captures and extensible product/architecture stories.
 
-[ADR 008](adr/008-explorable-interactions.md), [v0.69 answer-status research](history/research/2026-10-status-colors-v069.md), [earlier interaction research](history/research/2026-10-interaction-motion-v069.md) and [component review](history/audit/v0.69-component-review.md) preserve the previous comparison and native-input/focus contracts. Its neutral answer cards, jade/coral verdicts and 100/160/220/360ms scale are superseded, not retained as constraints against the owner's new direction.
+[ADR 008](../adr/008-explorable-interactions.md), [v0.69 answer-status research](research/2026-10-status-colors-v069.md), [earlier interaction research](research/2026-10-interaction-motion-v069.md) and [component review](audit/v0.69-component-review.md) preserve the previous comparison and native-input/focus contracts. Its neutral answer cards, jade/coral verdicts and 100/160/220/360ms scale are superseded, not retained as constraints against the owner's new direction.
 
-[ADR 007](adr/007-sakura-and-purposeful-motion.md) retains the Sakura background/brand foundation and linear progress design. Its [palette research](research/2026-10-sakura-palette.md), [purposeful-motion research](research/2026-10-motion-language.md), [interface diagnosis](history/audit/v0.68-interface-diagnosis.md), [portfolio plan](history/design/about-v0.68-plan.md) and [motion engineering review](history/audit/v0.68-motion-engineering.md) describe that revision. The old answer-status hues, header pause control, 180/420ms role choices and dedicated screenshot gallery are superseded by ADR 008.
+[ADR 007](../adr/007-sakura-and-purposeful-motion.md) retains the Sakura background/brand foundation and linear progress design. Its [palette research](../research/2026-10-sakura-palette.md), [purposeful-motion research](../research/2026-10-motion-language.md), [interface diagnosis](audit/v0.68-interface-diagnosis.md), [portfolio plan](design/about-v0.68-plan.md) and [motion engineering review](audit/v0.68-motion-engineering.md) describe that revision. The old answer-status hues, header pause control, 180/420ms role choices and dedicated screenshot gallery are superseded by ADR 008.
 
-[ADR 006](adr/006-reading-hierarchy-and-atmosphere.md) still governs the retained reading typography. Its palette, finite atmosphere and one-page introduction describe the previous version. Earlier evidence is separated into:
+[ADR 006](../adr/006-reading-hierarchy-and-atmosphere.md) still governs the retained reading typography. Its palette, finite atmosphere and one-page introduction describe the previous version. Earlier evidence is separated into:
 
-- [Typography evidence and alternatives](research/2026-10-04-typography-evidence.md): OpenStax, Wikipedia, Hypothesis, GOV.UK and USWDS official frontend sources; actual bundled-font specimens; integrated A/B/C browser comparisons on the owner's Unless lesson and incorrect-answer feedback.
-- [Color and motion evidence](research/2026-10-04-color-motion-evidence.md): VS Code, Primer and JupyterLab source palettes; semantic color contracts; two measured candidate systems; finite atmosphere and motion constraints.
-- [Screen hierarchy audit](research/2026-10-04-screen-hierarchy.md): baseline/prototype teaching roles, grouping and rendering defects across the actual application.
+- [Typography evidence and alternatives](../research/2026-10-04-typography-evidence.md): OpenStax, Wikipedia, Hypothesis, GOV.UK and USWDS official frontend sources; actual bundled-font specimens; integrated A/B/C browser comparisons on the owner's Unless lesson and incorrect-answer feedback.
+- [Color and motion evidence](../research/2026-10-04-color-motion-evidence.md): VS Code, Primer and JupyterLab source palettes; semantic color contracts; two measured candidate systems; finite atmosphere and motion constraints.
+- [Screen hierarchy audit](../research/2026-10-04-screen-hierarchy.md): baseline/prototype teaching roles, grouping and rendering defects across the actual application.
 
-The [3 October principles research](research/2026-10-ui-principles.md) remains useful background for Material, Microsoft/Fluent, W3C and The Carpentries. Historical audits describe their measured revision; they do not certify the latest one. Current implementation contracts are in [EXPERIENCE.md](EXPERIENCE.md) and [margin-design-system.md](margin-design-system.md).
+The [3 October principles research](../research/2026-10-ui-principles.md) remains useful background for Material, Microsoft/Fluent, W3C and The Carpentries. Historical audits describe their measured revision; they do not certify the latest one. Current implementation contracts are in [EXPERIENCE.md](EXPERIENCE.md) and [margin-design-system.md](../margin-design-system.md).
 
 ## Evidence and limits
 

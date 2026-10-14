@@ -1,7 +1,7 @@
 # ADR 008 — Explorable interfaces and a shared interaction language
 
 Date: 4 October 2026 (Türkiye time). Baseline: `9e68e84`, v0.68.
-Status: implemented. Executed checks are recorded in [VALIDATION](../VALIDATION.md).
+Status: implemented. Executed checks are recorded in [VALIDATION](../history/VALIDATION.md).
 
 ## Scope and evidence
 

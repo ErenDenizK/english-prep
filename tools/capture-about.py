@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Regenerate actual About screenshots from a locally served app.
-Requires development-only Python Playwright, Chromium and Pillow. No app deps.
-Run: python3 tools/capture-portfolio.py --base-url http://127.0.0.1:8000
+"""Regenerate About's study-loop captures (about/assets/{article,test,results}-phone.webp)
+from a locally served app. Requires development-only Python Playwright, Chromium and Pillow.
+Run: python3 tools/capture-about.py --base-url http://127.0.0.1:8000
 The isolated demo context uses the real bank, scoring and DOM; no mock screens.
 """
 import argparse
@@ -21,7 +21,7 @@ lesson = 'tenses-present-perfect-vs-past-simple'
 
 with sync_playwright() as pw:
     browser = pw.chromium.launch(executable_path=args.browser_path)
-    for size, width, height, density in [('phone', 390, 844, 3), ('wide', 1440, 1000, 2)]:
+    for size, width, height, density in [('phone', 390, 844, 3)]:
         context = browser.new_context(viewport={'width': width, 'height': height}, device_scale_factor=density,
                                       color_scheme='dark', reduced_motion='reduce', service_workers='block')
         page = context.new_page()
@@ -46,7 +46,6 @@ with sync_playwright() as pw:
             print(f'{name}-{size}.webp: {image.width}×{image.height} ({density}×)', flush=True)
 
         page.wait_for_selector('.study-intro__progress')
-        capture('education')
         page.goto(base + '/index.html#egitim/' + lesson)
         page.wait_for_selector('[data-reading-start]')
         page.evaluate('document.fonts.ready')
