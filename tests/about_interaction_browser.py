@@ -279,6 +279,24 @@ class AboutInteractionTests(unittest.TestCase):
         self.assertTrue((ROOT / 'js' / 'storage.js').is_file())
 
     # ---- Material and forced colours (docs/PRINCIPLES.md §4, §6 rule 1) ----
+    def test_masthead_stays_at_the_top_while_the_page_scrolls(self):
+        # about/about.css: the lift rule once beat `position: sticky` and the
+        # bar scrolled away (top -420px at scrollY 420).
+        for width, height in [(390, 844), (1440, 900)]:
+            page = self.open(width=width, height=height)
+            page.mouse.wheel(0, 1200)
+            expect(page.locator('#masthead')).to_have_attribute('data-scrolled', 'true')
+            page.wait_for_function('scrollY > 600')
+            top = page.evaluate("document.querySelector('#masthead').getBoundingClientRect().top")
+            self.assertEqual(top, 0, width)
+            # An anchor lands below the bar, not under it.
+            page.evaluate("document.querySelector('#privacy').scrollIntoView()")
+            gap = page.evaluate('''() => document.querySelector('#privacy').getBoundingClientRect().top
+              - document.querySelector('#masthead').getBoundingClientRect().bottom''')
+            self.assertGreaterEqual(gap, 0, width)
+            self.context.close()
+            self.context = None
+
     def test_masthead_blurs_over_a_safe_tint_and_is_solid_for_every_twin(self):
         read = """() => { const s = getComputedStyle(document.querySelector('#masthead'));
           return [s.backdropFilter, s.backgroundColor]; }"""
