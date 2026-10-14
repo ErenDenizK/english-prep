@@ -179,7 +179,10 @@
 .ab-autoplay__icon::before { left: 1px; } .ab-autoplay__icon::after { right: 1px; }
 .ab-autoplay:not([data-playing="true"]) .ab-autoplay__icon::before { left: 2px; width: 0; height: 0; border-radius: 0; background: none; border-left: 11px solid currentColor; border-block: 6px solid transparent; }
 .ab-autoplay:not([data-playing="true"]) .ab-autoplay__icon::after { display: none; }
-.ab-autoplay[data-playing="true"]::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--accent) 70%, transparent); border-right-color: transparent; animation: ab-spin 2.8s linear infinite; }
+.ab-autoplay[data-playing="true"]::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--accent) 70%, transparent); border-right-color: transparent; }
+/* Gated like ab-pulse and ab-flowdash: the Profil motion switch and a hidden
+   tab stop the loop; the ring itself stays as the still twin of "playing". */
+:root[data-motion="on"][data-page-visible="true"] .ab-autoplay[data-playing="true"]::after { animation: ab-spin 2.8s linear infinite; }
 @keyframes ab-spin { to { transform: rotate(360deg); } }
 @media (min-width: 560px) {
   .ab-pager__q { position: static; width: auto; height: auto; clip-path: none; margin-left: 8px; font-size: .8125rem; }
