@@ -12,8 +12,8 @@ const css = readFileSync(stylesheet, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
 const colourTokens = [
   "page", "card", "raised", "ink", "ink-2", "hairline", "edge", "accent",
   "accent-2", "accent-ink", "accent-text", "accent-tint", "focus", "ok", "no",
-  "ok-tint", "no-tint", "ok-edge", "no-edge", "editorial-mark", "editorial-wash", "editorial-note",
-  "secondary", "tertiary", "cool", "cool-tint",
+  "ok-tint", "no-tint", "ok-edge", "no-edge", "editorial-mark", "editorial-wash",
+  "secondary", "tertiary", "cool",
 ];
 const auroraTokens = ["aurora-cherry", "aurora-iris", "aurora-lagoon"];
 const monitoredTokens = [...colourTokens, ...auroraTokens, "aurora-opacity", "grad-accent"];
@@ -84,14 +84,13 @@ for (const token of monitoredTokens) {
   }
 }
 
-const surfaces = ["page", "card", "raised", "editorial-wash", "cool-tint"];
+const surfaces = ["page", "card", "raised", "editorial-wash"];
 const readingSurfaces = [...surfaces, "accent-tint", "ok-tint", "no-tint"];
 const requirements = [
   { name: "Prose", text: "ink", minimum: 7 },
   { name: "Supporting text", text: "ink-2", minimum: 4.5, darkMinimum: 7 },
   { name: "Sakura labels", text: "accent-text", minimum: 4.5 },
   { name: "Reading emphasis", text: "editorial-mark", minimum: 4.5 },
-  { name: "Reading notes", text: "editorial-note", minimum: 4.5, darkMinimum: 7 },
   { name: "Correct feedback", text: "ok", minimum: 4.5 },
   { name: "Retry feedback", text: "no", minimum: 4.5 },
   { name: "Secondary accent", text: "secondary", minimum: 4.5 },
