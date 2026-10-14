@@ -66,8 +66,9 @@ Whether the product is an exam app, a general English app or two apps is open an
 - Content: `data/manifest.json` and `data/<topic>/<topic>.json` (lessons + questions). Schema:
   `docs/CONTENT_GUIDE.md`, enforced by `tools/validate-content.mjs`.
 - Content pipeline: `docs/agents/` (author, reviewer, calibration, blind review, human solver).
-- Family: `docs/family/` (English Prep's page in the maker's design family, the copied kit,
-  `world.json`). The kit is copied from the portfolio repo; never edit `docs/family/kit/`.
+- Family: the shared principles are in `docs/PRINCIPLES.md` §2; the kit itself lives in the
+  portfolio repo (`docs/family-kit/`). The portfolio owns its presentation (owner, 2026-10-14).
+- About's study-loop captures (`about/assets/*-phone.webp`) come from `tools/capture-about.py`.
 - `original/` (the v0.64 interface, linked from About) is a served snapshot: do not edit.
 
 ## Hard rules
@@ -109,9 +110,7 @@ measured and recorded in an ADR.
 - Content: write the category spec first; review blind (`npm run blind`), calibrate with
   `npm run calibrate` (never show a reviewer `docs/agents/calibration.md`); never build a question
   on a sentence from its own lesson. Run `npm run format` after editing `data/`.
-- If you change a token, run `node tools/make-world.mjs` (`npm test` fails on drift).
-- Never write into the other family products' repositories. Findings for them go in
-  `docs/family/OUTBOX.md` (proposed, awaiting the owner; `docs/PRINCIPLES.md` §2).
+- Never write into the other family products' repositories.
 - Keep `docs/STATE.md` true: a change that alters what it says updates it in the same commit.
 - The owner speaks Turkish, often by dictation: read through transcription errors, confirm names.
 

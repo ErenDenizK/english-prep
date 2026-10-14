@@ -7,7 +7,7 @@ holds no pixel values; it says why the rules exist and how one is added, changed
 
 > **Özet.** Bu sayfa kuralların nasıl doğduğunu ve öldüğünü anlatır. Beş fikir: (1) V1, içerik
 > değil, sunulabilir bir üründür ve onu sen onaylarsın; (2) ailenin ortak paydası tüzük, ışık,
-> hareket dili, imza ve sunumdur; malzeme, font ve renk her ürünün kendisinindir; (3) her kural ya
+> hareket dili ve imzadır; malzeme, font ve renk her ürünün kendisinindir; (3) her kural ya
 > senin tarihli bir tat kararın ya da CI'da ölçülen bir kapıdır, üçüncü tür kural yoktur; (4) her
 > yeni teknik önce laboratuvarda denenir, ölçülür, sen onaylarsın, tek yüzeyle ve geri alınabilir
 > girer; (5) bir sürüm yalnızca bir görsel ekseni değiştirir. UI 3'ü batıran cam değil, her şeyin
@@ -24,7 +24,7 @@ V1 when the product clears four bars and they sign it off:
 | **Works** | No known defect on the main journeys; every automated suite runs in CI and is green; one pass on a real iPhone and a real Android | CI, `npm run verify`, the browser suites, a dated device note in `STATE.md` |
 | **Looks** | Every screen holds up at 390×844, 1180×820 (touch) and 1440×900, dark and light, with motion on, reduced and off, and in forced colours | Screenshots checked before every report; the V1 polish list in `ROADMAP.md` is empty |
 | **Tells** | One story, said the same way on About, the README, the manifest, page metadata and onboarding; every image is a current capture | §5 below; captures carry the build they were shot from |
-| **Belongs** | It meets the family charter and ships the portfolio's embassy assets | §2 below; `docs/family/world.json` on the kit's schema; the clip and captures |
+| **Belongs** | It follows the family principles | §2 below; the charter table in §6 |
 
 The version number follows the decision: `x` stays `0` until the owner says V1, then becomes `1`
 and `main` receives the build by the owner's hand. Nothing an assistant does moves `x`.
@@ -35,38 +35,12 @@ V1 may close either road.
 
 ## 2. The family and its common ground
 
-English Prep is one of several products by one maker (`edk.`), presented in the portfolio as
-"embassies" of one "house". The family kit in [`family/kit/`](family/kit/) is copied from the
-portfolio repository and never edited here; [`family/README.md`](family/README.md) is English
-Prep's own page in it.
-
-**Shared (we adopt):**
-
-1. **The quality charter** ([`kit/charter.md`](family/kit/charter.md)): eight rules, each enforced
-   here by a named check (table in §6).
-2. **Light as the shared origin** ([`kit/light.md`](family/kit/light.md)): English Prep's aurora is
-   the kit's reference implementation. Keep it and keep its own CSS.
-3. **A motion grammar** ([`kit/motion.md`](family/kit/motion.md)): the four roles press, settle,
-   glide and pop. English Prep names its existing motions with these roles. The roles are
-   vocabulary, not values: no duration is retuned to match another product.
-4. **The maker's mark at exits only**: a credits line on About ("Yapan: edk." or the owner's
-   chosen wording), never inside a working screen.
-5. **Presentation** ([`kit/presentation.md`](family/kit/presentation.md)): real captures, a
-   signature clip, `world.json`, the promise line with its proof.
-
-**Own (never flattened to match a sibling):** typeface (Inter), colour and pigments (plum ground,
-Sakura, iris, lagoon, apricot), answer semantics (opaque Sakura *Doğru*, periwinkle *Yanlış*,
-always with words and marks), material choices, the press-and-release feel, the scroll rail, the
-`ep.` mark, the Turkish *sen* voice, navigation. If a family idea conflicts with one of these, the
-idea loses and the owner is told.
-
-Material is explicitly **own**: Recto is glass, Eat Map is system glass, English Prep is opaque
-today. Whether English Prep gains glass is decided by §4, not by the family.
-
-**Talking to the family** (proposed 2026-10-10, awaiting the owner's yes). Findings that matter to the other products go in
-`docs/family/OUTBOX.md` (date · finding · evidence · suggestion), written only in this repo. The
-portfolio session reads every app's outbox and folds what it accepts into the kit. No session
-writes into another product's repository.
+English Prep is one of several products by one maker (`edk.`). **Shared:** the quality charter
+(enforced here, §6), light as the common origin (the aurora), the motion roles press, settle,
+glide and pop (names, not retuned values), the maker's mark at exits only. **Own**, never
+flattened to match a sibling: type, colour, answer semantics, material, feel, navigation and the
+*sen* voice. The kit lives in the portfolio repo's `docs/family-kit/` (2026-10-09 copy in
+[`history/family/`](history/family/)); the portfolio owns its presentation (owner, 2026-10-14).
 
 ## 3. Two kinds of rule, and no third
 
@@ -144,13 +118,13 @@ not teach English from zero; it draws the boundary between two things the ear co
 it. The unit of the product is a *distinction*.
 
 For V1 the story is told from that thesis on every surface (About, README, manifest, page
-metadata, onboarding, the portfolio embassy): who it is for and what it does, not which exam it
+metadata, onboarding): who it is for and what it does, not which exam it
 serves. The exam is a context the app is good for, mentioned where it helps (the Test tab, the
 FAQ), not the headline. This keeps both roads in `PRODUCT-DIRECTION.md` open. The exact headline
 and copy are the owner's to approve; sessions propose wording, never ship it unseen.
 
-Presentation follows the charter: real captures of the shipping build, dated; no drawn device
-frames; one signature clip (press, release, the Sakura *Doğru*); the promise line ("Ücretsiz ·
+Presentation follows the charter: README and About images are real captures of the shipping
+build; no drawn device frames; the promise line ("Ücretsiz ·
 Hesap yok · İlerlemen kendi tarayıcında") linked to its proof (the storage code and the test that
 asserts no network requests).
 
@@ -160,7 +134,7 @@ asserts no network requests).
 |---|---|---|
 | 1 Still twin | reduced-motion and forced-colours screenshots in the sweep | App passes; About passes in forced colours (lens and masthead checked in `tests/about_interaction_browser.py`) |
 | 2 Contrast measured | `npm run color` (`tools/editorial-palette.mjs`) in CI | Passes |
-| 3 Real captures | capture scripts in `tools/`; every image names its build | Captures are v0.73; About draws a fake device frame |
+| 3 Real captures | README/About images are real captures of the shipping build (`tools/capture-about.py`) | About's captures are v0.73; About draws a fake device frame |
 | 4 No characters as icons | `js/icons.js`; `tests/no-glyph-icons.test.js` fails on arrow/tick/cross glyphs in UI code | Passes |
 | 5 Rest is still | an idle-frames check in the sweep | About runs three infinite loops |
 | 6 Seen at three sizes | screenshots at 1440×900, 1180×820 touch, 390×844 (plus 320 and 768) | Not yet in the sweep's size list |
