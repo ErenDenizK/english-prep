@@ -1,0 +1,48 @@
+{
+  "app": "english-prep",
+  "version": 1,
+  "exportedAt": "2026-05-18T19:42:07.311Z",
+  "data": {
+    "history": {
+      "attempts": [
+        {
+          "date": "2026-05-02T18:11:40.000Z",
+          "mode": "topic",
+          "topicBreakdown": { "tenses": { "correct": 1, "total": 2 } },
+          "questions": [
+            { "id": "tenses-t1", "topicId": "tenses", "correct": true },
+            { "id": "tenses-t2", "topicId": "tenses", "correct": false }
+          ]
+        },
+        {
+          "date": "2026-05-09T07:55:12.000Z",
+          "mode": "mixed",
+          "topicBreakdown": {
+            "tenses": { "correct": 1, "total": 1 },
+            "modals": { "correct": 0, "total": 1 }
+          },
+          "categoryBreakdown": {
+            "Present Simple vs Present Continuous": { "correct": 1, "total": 1 },
+            "Must vs Have To": { "correct": 0, "total": 1 }
+          },
+          "questions": [
+            {
+              "id": "tenses-t1",
+              "topicId": "tenses",
+              "category": "Present Simple vs Present Continuous",
+              "correct": true
+            },
+            { "id": "modals-t3", "topicId": "modals", "category": "Must vs Have To", "correct": false }
+          ]
+        }
+      ]
+    },
+    "lessonProgress": {
+      "tenses-present-simple-vs-present-continuous": { "read": 1, "done": true },
+      "tenses-present-perfect-vs-past-simple": { "read": 0.42, "done": false }
+    },
+    "seenVersions": { "tenses": 3, "modals": 1 },
+    "profileName": "Elif",
+    "devNoteDismissed": true
+  }
+}

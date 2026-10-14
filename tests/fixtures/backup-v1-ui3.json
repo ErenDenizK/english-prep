@@ -1,0 +1,42 @@
+{
+  "app": "english-prep",
+  "version": 1,
+  "exportedAt": "2026-09-21T21:03:55.902Z",
+  "data": {
+    "history": {
+      "attempts": [
+        {
+          "date": "2026-09-14T16:20:00.000Z",
+          "mode": "mistakes",
+          "topicBreakdown": { "passive-voice": { "correct": 1, "total": 2 } },
+          "categoryBreakdown": { "Active vs Passive": { "correct": 1, "total": 2 } },
+          "questions": [
+            {
+              "id": "passive-voice-t4",
+              "topicId": "passive-voice",
+              "category": "Active vs Passive",
+              "correct": true,
+              "selected": "was built"
+            },
+            {
+              "id": "passive-voice-t7",
+              "topicId": "passive-voice",
+              "category": "Active vs Passive",
+              "correct": false,
+              "selected": "has repaired"
+            }
+          ]
+        }
+      ]
+    },
+    "lessonProgress": {
+      "passive-voice-active-vs-passive": { "read": 0.8, "done": false, "at": 1726330000000 },
+      "tenses-present-simple-vs-present-continuous": { "read": 1, "done": true, "at": 1726000000000 }
+    },
+    "seenVersions": { "passive-voice": 2 },
+    "profileName": "Mert",
+    "settings": { "thinkFirst": true, "mixedCount": "20", "mistakeCount": "all" },
+    "examDate": "2026-12-14",
+    "dailyGoal": 20
+  }
+}
