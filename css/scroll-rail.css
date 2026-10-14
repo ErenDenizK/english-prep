@@ -116,6 +116,13 @@
 .scroll-rail[data-compact="true"] .scroll-rail__marks { opacity: 0; transition: opacity 380ms var(--ease-standard); }
 .scroll-rail[data-compact="true"][data-expanded="true"] .scroll-rail__marks { opacity: 1; }
 .scroll-rail[data-interactive="false"] { display: none; }
+/* Below 360px the page gutter is 16px (css/editorial.css) and the grip at
+   8px sat 1.5px from the column, touching "6 / 10" on results and card
+   edges. Move the compact rail into the gutter: at rest the grip clears the
+   column by 5.5px, pressed (8px wide) by 4px. Its vertical place is kept. */
+@media (max-width: 359px) {
+  .scroll-rail[data-compact="true"] { right: 4px; }
+}
 @media (forced-colors: active) {
   html, .shell__scroll, [data-scroll-rail-enhanced] { scrollbar-width: auto; scrollbar-color: auto; }
   .shell__scroll::-webkit-scrollbar, [data-scroll-rail-enhanced]::-webkit-scrollbar { display: block; width: auto; }

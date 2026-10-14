@@ -1593,6 +1593,14 @@ h2.t-label {
 
 /* Enabled switch state uses the same measured on-primary ink as its action. */
 [aria-checked="true"] .switch__thumb { background: var(--accent-ink); }
+/* Forced colours discard both fills, so the thumb vanished into the track and
+   on/off was told by nothing. Name them in system colours: the thumb is
+   ButtonText, and on, the track is Highlight with its paired HighlightText. */
+@media (forced-colors: active) {
+  .switch__thumb { background: ButtonText; box-shadow: none; }
+  [aria-checked="true"] .switch { background: Highlight; border-color: Highlight; }
+  [aria-checked="true"] .switch__thumb { background: HighlightText; }
+}
 .metric--empty .metric__value { color: var(--ink-2); }
 } /* @layer skin */
 

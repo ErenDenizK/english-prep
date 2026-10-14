@@ -95,6 +95,11 @@
     height: 100svh;
     margin: 0;
     overflow: hidden;
+    /* Only #shell-scroll scrolls. `hidden` still lets a script's
+       scrollIntoView scroll <body> if anything overflows it, shifting the
+       fixed shell; `clip` is not a scroll container. `hidden` is the
+       fallback where `clip` is unknown. */
+    overflow: clip;
   }
 
   body {
@@ -870,6 +875,15 @@
    ========================================================================== */
 
 @layer screens {
+  /* -- Profil. A setting's help text is the only account of what it does:
+        never clamp it (at 320px "Önce kendin düşün" ran to three lines and
+        lost its end). -- */
+  .settings-list .row__sub {
+    display: block;
+    -webkit-line-clamp: none;
+    overflow: visible;
+  }
+
   /* -- The reader. -- */
   .lesson__head {
     --hue: 60;
