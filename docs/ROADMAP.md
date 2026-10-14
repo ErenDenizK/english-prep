@@ -5,6 +5,12 @@ in [`PRINCIPLES.md`](PRINCIPLES.md) §1: a working, presentable, family-aligned 
 signs off. Each phase lists what it delivers and how it is checked. Owner decisions are marked
 **[owner]**; a session proposes, the owner chooses, and nothing marked so ships unseen.
 
+> **Status: parked at v0.80 (owner, 2026-10-14).** The project is complete, working and tested,
+> and is not in active development. Nothing below is scheduled. Phases 0 and 1 are done; phase 1's
+> module splits, phases 2–4 and V1 wait for the owner to resume. What is open, and what would justify
+> resuming, is in "After parking" at the end. **Rafta (v0.80):** proje tamam ve çalışıyor; aşağıdaki
+> hiçbir iş planlı değil.
+
 > **Özet.** Beş faz: (0) dokümanları tek doğruluk kaynağına indirmek, (1) teknik temel: testleri
 > CI'a almak, ölü kodu ve eski görünüm katmanını silmek, fontu küçültmek, (2) ürün cilası:
 > bilinen görsel kusurlar, (3) aile ve sunum: tüzüğün sekiz kuralı, hikâye (portföy sunumu
@@ -130,3 +136,19 @@ In order of dependency, not commitment:
 3. **Platform:** customizable `<select>` replacing `js/listbox.js`; Navigation API router;
    scroll-driven rail; `light-dark()` tokens.
 4. **App 2**, if chosen: research in `docs/history/app2/`.
+
+## After parking (2026-10-14)
+
+Resume only on a real signal, not on the urge to redesign:
+
+| Signal | Then |
+|---|---|
+| Strangers use it or ask for it (unprompted messages, a teacher sharing it) | A human cold-solve pass (`npm run solve`), then `so / such` and paragraph completion; no interface rounds |
+| A reachable exam season (a prep teacher or class rep who will distribute it) | A 4–6 week content sprint toward Session I, free |
+| A collaborator who writes or validates content | Hand them `docs/agents/`; the owner reviews |
+| A lasting itch for the general "good ear, no labels" product | A 20-item diagnostic as a landing-page test before any new app (`PRODUCT-DIRECTION.md`) |
+| Only the urge to polish or redesign | Not a signal |
+
+Open work when resuming, cheapest first: the owner's taste list in `STATE.md` §6(b); the deferred
+refactors in §6(c) (`js/education.js` and `js/storage.js` splits, the 74 split selectors); one pass
+on a real iPhone and Android.
