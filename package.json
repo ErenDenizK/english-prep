@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "description": "Static English prep-school practice app. Tooling only — the app itself has no build step and no dependencies.",
   "scripts": {
     "test": "node --test \"tests/**/*.test.js\"",

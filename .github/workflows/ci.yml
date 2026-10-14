@@ -9,16 +9,26 @@ on:
   pull_request:
     branches: [main, test]
 
+# Read the code, nothing else: no job writes to the repository.
+permissions:
+  contents: read
+
+# A newer push to the same ref makes an older run's verdict moot.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
     name: Validate content and run tests
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
 
       # No `npm ci` step on purpose: the project has zero dependencies, so
       # there is no lockfile to install from and nothing to build.
@@ -45,21 +55,23 @@ jobs:
   browser:
     name: Browser suites
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
       # Playwright stays out of package.json (zero dependencies): Python
       # Playwright for tests/*.py, a global Node Playwright of the same
       # minor for tools/verify-ui.mjs. Both drive the same Chromium build,
-      # so one browser download serves both.
+      # so one browser download serves both. Bump them together
+      # (tests/README.md, "Bumping Playwright").
       - name: Install Playwright
         run: |
           pip install -r tests/requirements.txt
