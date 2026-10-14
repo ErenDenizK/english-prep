@@ -45,7 +45,7 @@ const LOG_PATH = "docs/audit/solve-log.json";
 const LOG_VERSION = 1;
 
 /** Minutes of attention one item costs, from the pipeline measurements
- *  cited in docs/business/vision.md §4. Used only to turn a count into an
+ *  cited in docs/history/business/vision.md §4. Used only to turn a count into an
  *  hour figure somebody can put in a calendar. */
 const MINUTES_PER_ITEM = 7;
 

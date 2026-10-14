@@ -1,7 +1,7 @@
 // Drives the real app in a real browser and checks the things the unit
 // tests structurally cannot: layout at four widths, touch-target sizes,
 // horizontal overflow, console errors, and the accessibility contract in
-// docs/design-system.md §8.
+// docs/history/design-system.md §8.
 //
 // This is not optional diligence. WCAG conformance is defined per *page*,
 // and the spec is explicit that each responsive variation conforms
@@ -51,7 +51,7 @@ const MIN_GUTTER = 16;
 //
 // Re-derived 2026-09-26. The meta tier moved 15px -> 18px because 15/600
 // missed its APCA threshold by 19.3 Lc once Source Sans 3's real x-height
-// was used (docs/design/17-olcum/00-teshis.md D1), and larger type is
+// was used (docs/history/design/17-olcum/00-teshis.md D1), and larger type is
 // taller type: the Egitim landing grew 116px at 320. Most of that was
 // given back by tightening heading leading to the documented 1.1-1.3 band
 // and reclaiming the hero's padding; the worst remaining screen measures
@@ -1406,7 +1406,7 @@ async function runComponents(browser) {
     await auditLayout(page, `bileşen sayfası ${width}px`, width, { catalogue: true });
     ok(errors.length === 0, `${width}px: konsol temiz${errors.length ? ` — ${errors[0]}` : ""}`);
 
-    // A component without a catalogue entry does not exist (ui2-plan
+    // A component without a catalogue entry does not exist (docs/history/ui2-plan.md
     // §3.3): every class the components layer declares is on this page,
     // except the three the listbox only creates while its menu is open.
     if (width === 390) {
@@ -2795,7 +2795,7 @@ async function runChrome(browser) {
     `barlar opak, bulanıklık yok (${chrome.bars.map((bar) => bar.id).join(", ")})${seeThrough.length ? ` — ${JSON.stringify(seeThrough)}` : ""}`
   );
 
-  // Every screen names itself in the bar (docs/ui2-plan.md §3.1).
+  // Every screen names itself in the bar (docs/history/ui2-plan.md §3.1).
   const titleOf = async () => (await page.locator("#shell-header .bar__title").textContent()).trim();
   ok((await titleOf()) === "Eğitim", `Eğitim'in barı "Eğitim" diyor (${await titleOf()})`);
   await page.goto(`${BASE}/index.html#test`, { waitUntil: "networkidle" });
