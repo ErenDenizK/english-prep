@@ -1,10 +1,13 @@
 # Materyali değiştirmeden sonraki ürün çalışmaları
 
+> **History (moved 2026-10-14, project parked at v0.79).** Describes an earlier build; it never
+> binds. Current guidance: `CLAUDE.md`, `docs/STATE.md`.
+
 4 Ekim 2026. Bu liste uygulanmış özellik beyanı veya onaylanmış teslim takvimi
 değildir. Akademik makale + konu testi akışını korur. Göreli efor: **S** küçük
 yerel arayüz/veri eklemesi; **M** veri modeli ve çok cihazlı davranış; **L** yeni
-altyapı veya kapsamlı değerlendirme. Mevcut [etkileşim inceleme listesi](../history/design/interaction-backlog-v069.md)
-ve [tarihî içerik roadmap'i](../history/roadmap.md) ile birlikte okunur.
+altyapı veya kapsamlı değerlendirme. Mevcut [etkileşim inceleme listesi](interaction-backlog-v069.md)
+ve [tarihî içerik roadmap'i](../roadmap.md) ile birlikte okunur.
 
 ## Bu turda uygulanan
 
@@ -39,4 +42,4 @@ bulutta hesabı veya otomatik senkronizasyonu olduğu ima edilmez.
    eski yedek uyumu açıklanır. “Yerel” demek “kaybolmaz” demek değildir.
 
 Kaynak ve aktarım tasarım gerekçeleri:
-[veri paylaşımı araştırması](../research/2026-10-data-transfer-v072.md).
+[veri paylaşımı araştırması](../../research/2026-10-data-transfer-v072.md).

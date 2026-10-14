@@ -1,7 +1,7 @@
 # ADR 007 — Sakura palette, purposeful motion and product presentation
 
 Date: 4 October 2026 (Türkiye time). Baseline: `c92be0c`, v0.67.
-Status: implemented in v0.68; measured outcomes are in [VALIDATION.md](../VALIDATION.md).
+Status: implemented in v0.68; measured outcomes are in [VALIDATION.md](../history/VALIDATION.md).
 
 ## Context and evidence
 
