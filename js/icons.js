@@ -174,15 +174,6 @@ const ICONS = {
 
   "chevron-right": [["path", { d: "m8.5 5 7 7-7 7" }]],
 
-  // Axis plus three bars at 4 spacing (2 of ink between each), bars stopping
-  // 4 short of the baseline. x 4…20, y 4…20.
-  "bar-chart": [
-    ["path", { d: "M4 4v16h16" }],
-    ["path", { d: "M8 16v-3" }],
-    ["path", { d: "M12 16V9" }],
-    ["path", { d: "M16 16V5" }],
-  ],
-
   // Three quarters of an r8 circle, open at the top right, with a chevron
   // head on the tangent at 12 o'clock. The circle sits at y13 rather than
   // y12 so the head has room above it without leaving the live area.
@@ -191,35 +182,8 @@ const ICONS = {
     ["path", { d: "m9 2 3 3-3 3" }],
   ],
 
-  // A flame for the streak: one outer lick from the base up to a tip at
-  // y3, an inner tongue. x 6…18, y 3…21.
-  flame: [
-    ["path", { d: "M12 3c1 3 4 4.5 4 9a4 4 0 0 1-8 0c0-1.5.5-2.5 1.5-3.5.5 2 1.5 2.5 2.5 2.5 0-2.5-1-4.5 0-8z" }],
-  ],
-
-  // A calendar: 16-wide sheet, two rings at the top, one rule under
-  // the header. x 4…20, y 3…21.
-  calendar: [
-    ["path", { d: "M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" }],
-    ["path", { d: "M4 10h16M8 3v4M16 3v4" }],
-  ],
-
-  // A four-point spark for a goal reached. x 4…20, y 4…20.
-  spark: [["path", { d: "M12 4c.6 4.4 3.6 7.4 8 8-4.4.6-7.4 3.6-8 8-.6-4.4-3.6-7.4-8-8 4.4-.6 7.4-3.6 8-8z" }]],
-
-  // The same spark, filled: the goal's ring when it closes.
-  "spark-fill": [
-    ["path", { d: "M12 4c.6 4.4 3.6 7.4 8 8-4.4.6-7.4 3.6-8 8-.6-4.4-3.6-7.4-8-8 4.4-.6 7.4-3.6 8-8z", ...FILLED }],
-  ],
-
   // A bolt for the mixed test: a zigzag. x 6…18, y 3…21.
   bolt: [["path", { d: "M13 3 6 13h5l-1 8 8-11h-5z" }]],
-
-  // A pen for the name: a diagonal with a nib. x 4…20, y 4…20.
-  pen: [
-    ["path", { d: "m4 20 1-4L16 5l3 3L8 19z" }],
-    ["path", { d: "m13 8 3 3" }],
-  ],
 
   // r 10 / 6 / 2 is the only set of three concentric rings that fits the
   // live area and still keeps 2 of ink between each. Do not adjust.
@@ -227,19 +191,6 @@ const ICONS = {
     ["circle", { cx: "12", cy: "12", r: "10" }],
     ["circle", { cx: "12", cy: "12", r: "6" }],
     ["circle", { cx: "12", cy: "12", r: "2" }],
-  ],
-
-  // Saved reading position: open bottom makes the bookmark recognisable even
-  // at the small end of the set. x 6…18, y 3…21.
-  bookmark: [["path", { d: "M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16l-6-4z" }]],
-
-  // Three settings rails with offset knobs; the rail gaps leave the knobs
-  // legible without increasing their stroke or adding a filled background.
-  sliders: [
-    ["path", { d: "M4 6h4m4 0h8M4 12h10m4 0h2M4 18h4m4 0h8" }],
-    ["circle", { cx: "10", cy: "6", r: "2" }],
-    ["circle", { cx: "16", cy: "12", r: "2" }],
-    ["circle", { cx: "10", cy: "18", r: "2" }],
   ],
 
   // Local backup archive: lid, box and one handle, with no cloud metaphor.
