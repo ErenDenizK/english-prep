@@ -1,4 +1,4 @@
-// The icon set. Hand-drawn, to the contract in docs/design-system.md §6 —
+// The icon set. Hand-drawn, to the contract in docs/history/design-system.md §6 —
 // which is binding, because a hand-built set decays within a dozen icons
 // without one. If you are adding the thirteenth icon, draw it to this:
 //

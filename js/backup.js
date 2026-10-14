@@ -9,7 +9,7 @@
 // escape is a home-screen install, and installing on iOS moves the app
 // into a *separate* storage container, which destroys the progress on the
 // way. Backup therefore has to exist before the app is allowed to suggest
-// installing itself. See docs/research/onboarding.md.
+// installing itself. See docs/history/research/onboarding.md.
 //
 // The merge functions here are pure, and tested the way quiz-engine is,
 // because the one thing a restore must never do is lose something that

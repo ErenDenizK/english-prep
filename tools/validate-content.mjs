@@ -354,7 +354,7 @@ const MAX_TOPIC_GLOSS = 110;
 /**
  * The whole intro, Turkish only, counted across every prose field.
  *
- * `docs/research/orientation.md` §3.2: past roughly this it is an
+ * `docs/history/research/orientation.md` §3.2: past roughly this it is an
  * article, and articles were removed from this app once already. The
  * evidence is not a preference — the coherence principle found added
  * inessential material measurably *hurting* learning across 50 studies,
@@ -911,7 +911,7 @@ function checkIntroGiveaway(report, file, intro, questions, tier) {
  * its own field so the renderer can give it `lang="en"` — a Turkish
  * prose field cannot, because `js/dom.js` has no `lang` handling and
  * `text-transform: uppercase` would turn SIMPLE into SİMPLE — and the
- * five fields are the five questions `docs/research/orientation.md` §3.2
+ * five fields are the five questions `docs/history/research/orientation.md` §3.2
  * says an orientation answers, in order. A sixth field would be a sixth
  * question nobody has argued for.
  */

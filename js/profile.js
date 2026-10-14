@@ -446,7 +446,7 @@ function renderSettings() {
  * Where the content comes from, said plainly.
  *
  * It is written by a language model and reviewed by another one, against
- * a written brief, and `docs/content-review.md` records what that process
+ * a written brief, and `docs/history/content-review.md` records what that process
  * caught and what it missed. Someone studying for an exam that decides
  * their year is entitled to know that before they trust a question — and
  * knowing it is also what turns a learner into the only pretest panel
