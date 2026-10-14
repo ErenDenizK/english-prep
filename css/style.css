@@ -95,6 +95,11 @@
     height: 100svh;
     margin: 0;
     overflow: hidden;
+    /* Only #shell-scroll scrolls. `hidden` still lets a script's
+       scrollIntoView scroll <body> if anything overflows it, shifting the
+       fixed shell; `clip` is not a scroll container. `hidden` is the
+       fallback where `clip` is unknown. */
+    overflow: clip;
   }
 
   body {
