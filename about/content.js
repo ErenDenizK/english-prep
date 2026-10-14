@@ -141,7 +141,9 @@ export const craft = {
   facts: [
     { figure: "0", unit: "bağımlılık", body: "Derleme adımı yok, çalışma zamanında paket yok. HTML, CSS ve ES modülleri olduğu gibi sunuluyor." },
     { figure: "0", unit: "innerHTML", body: "İçerik JSON’dan gelir ve düğüm düğüm kurulur. Hiçbir metin HTML olarak yorumlanmaz." },
-    { figure: "261", unit: "birim testi", body: "Puanlama, kayıt, yedekleme ve içerik kuralları. Her push’ta yeniden çalışır." },
+    // A count of unit tests went stale with every new test;
+    // the backup format is a promise that does not (BACKUP_VERSION, js/backup.js).
+    { figure: "1", unit: "yedek biçimi", body: "Yedekleme geldiğinden beri tek biçim. Eski yedek dosyaları, puanlama ve içerik kurallarıyla birlikte, her push’ta birim testleriyle yeniden yüklenir." },
     { figure: "3.500+", unit: "tarayıcı kontrolü", body: "Dört ekran genişliğinde tam bir öğrenci yolculuğu: taşma, dokunma alanı, odak, ekran okuyucu." },
   ],
   pipeline: {

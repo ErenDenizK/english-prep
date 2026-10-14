@@ -205,14 +205,15 @@ class QuizResumeTests(unittest.TestCase):
         self.assertEqual(history[0]['date'], first)
         self.assertEqual([q['answeredAt'] for q in history[0]['questions']], [first, second])
         self.assertEqual([q['answeredAt'] for q in self.stored('englishPrep.quizResult')['questionResults']], [first, second])
-        counts = self.page.evaluate('''async ([first,second]) => {
+        # Each answer is dated when it was given, not when the session began.
+        times = self.page.evaluate('''async ([ids, first, second]) => {
           const storage = await import('./js/storage.js');
-          return {before:storage.getTodayCount(Date.parse(first)), after:storage.getTodayCount(Date.parse(second)),
-            streak:storage.getStreak(Date.parse(second))};
-        }''', [first, second])
-        self.assertEqual(counts['before'], 1)
-        self.assertEqual(counts['after'], 1)
-        self.assertEqual(counts['streak'], {'days': 2, 'activeToday': True})
+          const stats = storage.getItemStats();
+          return {items: ids.map((id) => stats[id].last),
+            expected: [Date.parse(first), Date.parse(second)], latest: storage.getLastActivity()};
+        }''', [[q['id'] for q in history[0]['questions']], first, second])
+        self.assertEqual(times['items'], times['expected'])
+        self.assertEqual(times['latest'], times['expected'][1])
 
     def test_results_retries_a_one_time_history_write_failure_with_same_id(self):
         self.launch(count=2)

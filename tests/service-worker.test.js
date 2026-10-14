@@ -24,7 +24,10 @@ function memoryCaches() {
       if (!stores.has(name)) stores.set(name, new Map());
       const entries = stores.get(name);
       const cache = {
-        match: async (request) => entries.get(key(request))?.clone(),
+        match: async (request, options) => {
+          const url = key(request);
+          return entries.get(options?.ignoreSearch ? url.split("?")[0] : url)?.clone();
+        },
         keys: async () => [...entries.keys()].map((url) => new Request(url)),
         put: async (request, response) => {
           if (this.failWrites) throw new Error("Cache quota exceeded");
@@ -70,7 +73,8 @@ function worker(source = sw, scope = ROOT, caches = memoryCaches()) {
       let response;
       let handled = false;
       handlers.get("fetch")({
-        request: new Request(url, options),
+        // A navigation cannot be built with new Request(); its shape will do.
+        request: options?.mode === "navigate" ? { url, method: "GET", mode: "navigate" } : new Request(url, options),
         waitUntil: (promise) => pending.push(promise),
         respondWith: (promise) => { handled = true; response = promise; },
       });
@@ -179,6 +183,23 @@ test("shell requests use only the active scope's shell cache", async () => {
   root.setNetwork(async () => { throw new Error("Offline"); });
   assert.equal(await (await root.request(url)).response.text(), "current network UI");
   assert.equal(await cachedText(caches, original.config.SHELL_CACHE, url), "wrong copy");
+});
+
+test("offline misses answer with a network error, never undefined", async () => {
+  const root = worker();
+  const shell = (await root.request(`${ROOT}missing.js`)).response;
+  assert.equal(shell.type, "error");
+  const content = (await root.request(`${ROOT}data/missing.json`)).response;
+  assert.equal(content.type, "error");
+});
+
+test("an offline navigation with a query is served the cached page", async () => {
+  const root = worker();
+  await seed(root.caches, root.config.SHELL_CACHE, `${ROOT}index.html`, "cached shell");
+  const page = (await root.request(`${ROOT}index.html?source=share`, { mode: "navigate" })).response;
+  assert.equal(await page.text(), "cached shell");
+  const asset = (await root.request(`${ROOT}index.html?source=share`)).response;
+  assert.equal(asset.type, "error", "subresources still match exactly");
 });
 
 test("content is refreshed in its stable cache and shell entries are unaffected", async () => {

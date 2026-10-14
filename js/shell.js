@@ -1,6 +1,6 @@
 // The app shell: the bar, the one scrolling region, the action bar and
 // the polite live region. Every screen is bar · body · foot
-// (docs/ui2-plan.md §3.1), and this module owns the bar and the foot so
+// (docs/history/ui2-plan.md §3.1), and this module owns the bar and the foot so
 // that seven screens cannot each grow their own top — which is how the
 // three focused screens drifted apart last time.
 //

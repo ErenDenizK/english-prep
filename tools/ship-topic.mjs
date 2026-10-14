@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+// Needs its TOPICS table rewritten before reuse (see docs/agents/README.md):
+// it holds the seven topics shipped in v0.5x, and their specs and kickoffs
+// now live in docs/history/agents/.
+//
 // Moves a reviewed draft topic out of docs/agents/drafts/ and into data/,
 // and adds or updates its manifest entry. This is the act of shipping:
 // nothing in drafts/ is served, and a topic in the manifest is.
@@ -29,7 +33,7 @@ import { join } from "node:path";
 const DRAFTS = "docs/agents/drafts";
 const MANIFEST = "data/manifest.json";
 
-/** Fixed at kickoff (docs/agents/kickoff-v11.md), verbatim. Category order
+/** Fixed at kickoff (docs/history/agents/kickoff-v11.md), verbatim. Category order
  *  is the order the topic is meant to be studied in, and both the topic
  *  file and the manifest are written in it. */
 const TOPICS = {
@@ -37,7 +41,7 @@ const TOPICS = {
     title: "Closest Meaning",
     tier: "compound-structures",
     level: "B2-C1",
-    note: "The exam's sentence-restatement section: fifteen of Session I's sixty points. Written to docs/agents/closest-meaning-spec.md.",
+    note: "The exam's sentence-restatement section: fifteen of Session I's sixty points. Written to docs/history/agents/closest-meaning-spec.md.",
     categories: [
       "Third Conditional vs Mixed Conditional",
       "Unless vs If Not vs Otherwise",
@@ -51,37 +55,37 @@ const TOPICS = {
     title: "Connectors & Discourse Markers",
     tier: "compound-structures",
     level: "B2-C1",
-    note: "Written to docs/agents/connectors-spec.md.",
+    note: "Written to docs/history/agents/connectors-spec.md.",
   },
   "relative-clauses": {
     title: "Relative Clauses",
     tier: "compound-structures",
     level: "B2-C1",
-    note: "Written to docs/agents/relative-clauses-spec.md.",
+    note: "Written to docs/history/agents/relative-clauses-spec.md.",
   },
   quantifiers: {
     title: "Quantifiers & Determiners",
     tier: "core-grammar",
     level: "B2-C1",
-    note: "Written to docs/agents/quantifiers-spec.md.",
+    note: "Written to docs/history/agents/quantifiers-spec.md.",
   },
   "gerunds-infinitives": {
     title: "Gerunds & Infinitives",
     tier: "core-grammar",
     level: "B2-C1",
-    note: "Written to docs/agents/gerunds-infinitives-spec.md.",
+    note: "Written to docs/history/agents/gerunds-infinitives-spec.md.",
   },
   "academic-verbs": {
     title: "Academic Verbs",
     tier: "vocabulary",
     level: "B2-C1",
-    note: "Two of the sample cloze's ten blanks are vocabulary, and every reading text carries a vocabulary-in-context item. Written to docs/agents/kickoff-vocabulary.md.",
+    note: "Two of the sample cloze's ten blanks are vocabulary, and every reading text carries a vocabulary-in-context item. Written to docs/history/agents/kickoff-vocabulary.md.",
   },
   "academic-nouns-adjectives": {
     title: "Academic Nouns & Adjectives",
     tier: "vocabulary",
     level: "B2-C1",
-    note: "The other half of the vocabulary the paper rewards: the nouns and adjectives an academic passage turns on. Written to docs/agents/kickoff-vocabulary.md.",
+    note: "The other half of the vocabulary the paper rewards: the nouns and adjectives an academic passage turns on. Written to docs/history/agents/kickoff-vocabulary.md.",
   },
 };
 

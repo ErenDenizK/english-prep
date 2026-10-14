@@ -259,11 +259,6 @@ function preset(kind, direction) {
       { opacity: 0, transform: "translateY(6px)" },
       { opacity: 1, transform: "translateY(0)" },
     ] };
-    // Content the viewport may scroll straight to: present from frame one.
-    case "settle": return { curve: "soft", frames: [
-      { opacity: .45, transform: "translateY(12px)" },
-      { opacity: 1, transform: "translateY(0)" },
-    ] };
     case "pop": return { curve: "bouncy", frames: [
       { opacity: 0, transform: "scale(.82)" },
       { opacity: 1, transform: "scale(1)" },
@@ -289,7 +284,6 @@ function preset(kind, direction) {
       { transform: "scale(1.035) translateY(-1px)", offset: .48, easing: EASING },
       { transform: "scale(1) translateY(0)", offset: 1 },
     ] };
-    case "control": return { role: "control", frames: [{ transform: "scale(.975)" }, { transform: "scale(1)" }] };
     // Opacity only: the listbox measures option geometry while it opens and
     // an option under a fast second tap must already be where it is drawn.
     // Its labels assemble inside it (js/listbox.js).
@@ -300,13 +294,6 @@ function preset(kind, direction) {
     ] };
     case "route": return { role: "route", frames: [{ transform: `translateX(${sign * 12}px)` }, { transform: "translateX(0)" }] };
     case "onboard": return { role: "scene", frames: [{ transform: `translateX(${sign * 12}px)` }, { transform: "translateX(0)" }] };
-    // An outside halo acknowledges the opening. Clipping even a stable box
-    // would remove its edge hit targets before pointerdown can settle it.
-    case "panel": return { role: "route", frames: [
-      { boxShadow: "0 0 0 1px var(--accent-tint), 0 0 0 0 transparent" },
-      { boxShadow: "0 0 0 5px var(--accent-tint), 0 8px 24px #00000018", offset: .45 },
-      { boxShadow: "0 0 0 8px transparent, 0 0 0 0 transparent" },
-    ] };
     case "item": return { role: "reveal", frames: [{ transform: "translateY(6px)" }, { transform: "translateY(0)" }] };
     case "unfold": return { role: "scene", frames: [{ transform: "translateY(5px) scaleY(.84)" }, { transform: "translateY(0) scaleY(1)" }] };
     case "fan": return {
@@ -321,13 +308,6 @@ function preset(kind, direction) {
         { transform: "scale(.55)", offset: 0, easing: SETTLE },
         { transform: "scale(1.22)", offset: .62, easing: EASING },
         { transform: "scale(1)", offset: 1 },
-      ],
-    };
-    case "folio": return {
-      role: "flow", easing: "linear", frames: [
-        { transform: `perspective(900px) translateX(${sign * 12}px) rotateY(${sign * 24}deg)`, offset: 0, easing: "cubic-bezier(.22,.65,.25,1)" },
-        { transform: `perspective(900px) translateX(${-sign}px) rotateY(${-sign * 2}deg)`, offset: .74, easing: EASING },
-        { transform: "perspective(900px) translateX(0) rotateY(0deg)", offset: 1 },
       ],
     };
     // Expressive motion belongs to artwork and small glyphs, never answer text.
@@ -354,8 +334,7 @@ function preset(kind, direction) {
         { transform: "scale(1) rotate(0deg)", offset: 1 },
       ],
     };
-    case "story":
-    case "storytelling": return {
+    case "story": return {
       role: "story", easing: "linear", frames: [
         { transform: "translateY(24px) scale(.96) rotate(-2deg)", offset: 0, easing: SETTLE },
         { transform: "translateY(-2px) scale(1.008) rotate(.2deg)", offset: .74, easing: EASING },

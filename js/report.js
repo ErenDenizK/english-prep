@@ -11,7 +11,7 @@
 // Why it is worth the fifty lines: six friends sitting the real exam are
 // the only pretest panel this project can ever have. Every published
 // question here was written by a language model and reviewed by another
-// one, and `docs/content-review.md` is the record of what that missed. A
+// one, and `docs/history/content-review.md` is the record of what that missed. A
 // learner who stops on an item and thinks "that's wrong" is the most
 // reliable detector in the whole pipeline, and until now there was
 // nowhere for them to say so.
