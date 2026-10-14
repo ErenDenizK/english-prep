@@ -24,7 +24,7 @@ we did not measure its proprietary timings or claim to reproduce its system.
 - [About folio decisions](../history/design/about-v072.md)
 - [Touch rail architecture](../history/design/scroll-rail-v072.md)
 - [Transfer research](../research/2026-10-data-transfer-v072.md)
-- [GitHub presentation](../github/presentation-plan.md)
+- GitHub presentation plan (removed 2026-10-14 with the old README media)
 
 ## More visible atmosphere, quieter reading
 
