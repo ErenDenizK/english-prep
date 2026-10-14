@@ -22,8 +22,8 @@ Goal: a new session reads three short documents and acts correctly.
       `docs/history/handover/CURRENT.md` and `docs/history/handoff-v1.md`.
 - [x] `docs/PRINCIPLES.md`, this roadmap, `docs/PRODUCT-DIRECTION.md`.
 - [x] Superseded plans, specs, audits and round notes move to `docs/history/`.
-- [ ] Remaining live docs that still describe the folio About or old motion (EXPERIENCE,
-      Margin, development) get rewritten sections, not just banners.
+- [x] Remaining live docs that still describe the folio About or old motion: EXPERIENCE and
+      development moved to `docs/history/` on 2026-10-14 (project parked); Margin keeps its banner.
 - [x] Agent briefs: fix the delivery paths in `docs/agents/`; the family `README.md` drops "no glass" for
       the material contract; the old session prompt moves to history.
 - [-] ~~Family outbox for findings to the portfolio.~~ Dropped 2026-10-14: the portfolio owns

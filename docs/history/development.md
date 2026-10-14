@@ -1,50 +1,53 @@
 # Development and content guide
 
+> **History (moved 2026-10-14, project parked at v0.79).** Describes an earlier build; it never
+> binds. Current guidance: `CLAUDE.md`, `docs/STATE.md`.
+
 > The detailed product, content and engineering rationale moved here from the
 > repository README during the v0.72 presentation pass. File-tree paths and shell
 > commands are relative to the repository root. Historical measurements and
 > design decisions remain dated; [validation](VALIDATION.md), the
-> [current interface system](margin-design-system.md), and the [decision records](adr/)
+> [current interface system](../margin-design-system.md), and the [decision records](../adr)
 > are the maintained references for current behavior.
 
-**Margin / Sakura:** [open the redesigned app](../index.html),
-[compare the full original](../original/index.html), or inspect its
-[unchanged runtime source archive](../original/source-39dcd46.zip). This version
+**Margin / Sakura:** [open the redesigned app](../../index.html),
+[compare the full original](../../original/index.html), or inspect its
+[unchanged runtime source archive](../../original/source-39dcd46.zip). This version
 uses the full `test` source at `39dcd46`; the earlier prototype lives on in
 the `main` branch's history. The original's
 hosted service worker has only been adapted to isolate its offline caches.
 
 Run `npm run serve` and open `http://localhost:8000/`; run `npm run check`
-for the repository checks. See the current [experience](../docs/EXPERIENCE.md),
-[interface system](../docs/margin-design-system.md), and [research](../docs/RESEARCH.md).
+for the repository checks. See the current [experience](EXPERIENCE.md),
+[interface system](../margin-design-system.md), and [research](RESEARCH.md).
 Current product captures: [phone](../about/assets/education-phone.webp),
-[wide screen](../about/assets/education-wide.webp), [article](../about/assets/article-phone.webp),
-and [results](../about/assets/results-phone.webp). These are browser viewport
+[wide screen](../about/assets/education-wide.webp), [article](../../about/assets/article-phone.webp),
+and [results](../../about/assets/results-phone.webp). These are browser viewport
 captures with demonstration state, not physical-device certification.
-See [validation evidence and commands](../docs/VALIDATION.md).
-The detailed refinement record includes the [element inventory](history/audit/element-inventory.md),
-[type and color measurements](history/audit/type-color.md),
-[interaction audit](history/audit/interaction-accessibility.md), and
-[verified UI research](../docs/research/2026-10-ui-principles.md).
-The v0.71 [ADR 010](../docs/adr/010-living-scenes-and-navigation.md) adds readiness-gated motion,
+See [validation evidence and commands](VALIDATION.md).
+The detailed refinement record includes the [element inventory](audit/element-inventory.md),
+[type and color measurements](audit/type-color.md),
+[interaction audit](audit/interaction-accessibility.md), and
+[verified UI research](../research/2026-10-ui-principles.md).
+The v0.71 [ADR 010](../adr/010-living-scenes-and-navigation.md) adds readiness-gated motion,
 cohesive scenes, high-density captures and an adaptive scroll rail.
-[ADR 009](../docs/adr/009-expressive-study-motion.md),
-[filled-answer research](../docs/research/2026-10-answer-surfaces-v070.md),
-[motion research](history/research/2026-10-motion-v070.md),
-[onboarding composition](history/design/onboarding-v070.md), and
-[Profile/results design](../docs/design/profile-results-v070.md) connect evidence to decisions.
-[ADR 008](../docs/adr/008-explorable-interactions.md) preserves the earlier
+[ADR 009](../adr/009-expressive-study-motion.md),
+[filled-answer research](../research/2026-10-answer-surfaces-v070.md),
+[motion research](research/2026-10-motion-v070.md),
+[onboarding composition](design/onboarding-v070.md), and
+[Profile/results design](../design/profile-results-v070.md) connect evidence to decisions.
+[ADR 008](../adr/008-explorable-interactions.md) preserves the earlier
 interaction research and native focus/cancellation contracts; its short timing
 scale and neutral answer surfaces are superseded.
-[ADR 007](../docs/adr/007-sakura-and-purposeful-motion.md) and its
-[Sakura palette research](../docs/research/2026-10-sakura-palette.md) retain the
+[ADR 007](../adr/007-sakura-and-purposeful-motion.md) and its
+[Sakura palette research](../research/2026-10-sakura-palette.md) retain the
 background and brand foundation; ADR 008 supersedes its answer-status hues,
 header motion control and screenshot gallery.
-The previous [v0.67 review](history/audit/readability-v0.67.md) and
-[ADR 006](../docs/adr/006-reading-hierarchy-and-atmosphere.md) preserve the earlier
+The previous [v0.67 review](audit/readability-v0.67.md) and
+[ADR 006](../adr/006-reading-hierarchy-and-atmosphere.md) preserve the earlier
 comparison; its reading typography remains applicable, while the later ADRs
 supersede its palette, atmosphere and introduction.
-The [component catalogue](../docs/components.html) uses the production stylesheet.
+The [component catalogue](../components.html) uses the production stylesheet.
 The hosted versions share the browser origin's existing local progress
 and settings; their offline shell/content caches are isolated.
 
@@ -281,7 +284,7 @@ meaning independently of hue. Pink is a product choice, not a universal correctn
 Inter's distinct heading, pattern, prose, support and control roles continue
 from ADR 006. Explicit light and System preferences remain available.
 
-[ADR 009](../docs/adr/009-expressive-study-motion.md) records the v0.70
+[ADR 009](../adr/009-expressive-study-motion.md) records the v0.70
 interaction and answer-status system; later decisions refine its motion. Three bounded aura groups appear behind
 every route, including reading; cherry, iris and lagoon pigments crossfade within
 a measured group-opacity envelope. Profile settings provide the persistent motion preference; hidden pages
@@ -302,16 +305,16 @@ A lesson signature appears only on its first unfinished-to-done transition.
 Results have a distinct closing signature; a tab-local presentation marker
 prevents replay on reload, separately from recording the attempt. Resume,
 profile and result metrics identify what their actual numbers mean.
-The [product/engineering portfolio](../about/) has selectable Read/Apply/Return and
+The [product/engineering portfolio](../../about) has selectable Read/Apply/Return and
 architecture stories, with real responsive screenshots inside those explanations.
 A compact mobile hero, nearby story controls and native feature/technical
 disclosures keep the phone layout focused. (Superseded: v0.77 rebuilt About without the folio; see `about/README.md`.) Text and controls
 remain stable; keyboard access and reduced-motion states remain complete. Content is expandable in `about/content.js`; the
-[authoring guide](../about/README.md) explains safe copy, section and image edits.
+[authoring guide](../../about/README.md) explains safe copy, section and image edits.
 
 `npm run color` checks current production roles, filled-answer boundaries,
-explicit transition samples, action gradients and bounded aura overlaps in both themes. See the [interface system](../docs/margin-design-system.md)
-for exact tokens and [validation](../docs/VALIDATION.md) for completed checks and
+explicit transition samples, action gradients and bounded aura overlaps in both themes. See the [interface system](../margin-design-system.md)
+for exact tokens and [validation](VALIDATION.md) for completed checks and
 limits; passing contrast calculations alone does not establish reading comfort.
 
 ---

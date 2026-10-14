@@ -12,7 +12,8 @@ Most files keep the relative path they had under `docs/` (`docs/ui3-plan.md` is 
 `docs/history/ui3-plan.md`). Also here: [CLAUDE-v0.77.md](CLAUDE-v0.77.md) (the instructions
 file until 2026-10-10), [handoff-v1.md](handoff-v1.md) (the v0.76 handoff),
 [handover/](handover/) (the 2026-10-10 audit and drafts written at v0.75) and
-[family/](family/) (the 2026-10-09 family session prompt).
+[family/](family/) (the 2026-10-09 family session prompt, English Prep's family page and the
+copied kit, moved here on 2026-10-14 when the portfolio took over its own presentation).
 
 ## Index
 
@@ -26,6 +27,14 @@ file until 2026-10-10), [handoff-v1.md](handoff-v1.md) (the v0.76 handoff),
 (the UI 2/UI 3 spec, replaced by `docs/margin-design-system.md`),
 [VALIDATION-v0.66.md](VALIDATION-v0.66.md), [content-review.md](content-review.md),
 [education-notes.md](education-notes.md).
+
+**Live docs retired when the project was parked (2026-10-14)** —
+[EXPERIENCE.md](EXPERIENCE.md) (learning journeys, v0.74),
+[development.md](development.md) (the old development and content guide),
+[RESEARCH.md](RESEARCH.md) (research and rationale, v0.70),
+[VALIDATION.md](VALIDATION.md) (validation record, v0.75),
+[design/feature-opportunities-v072.md](design/feature-opportunities-v072.md), and
+[reference/](reference/) (third-party design-system exports used as visual references).
 
 **Audits** — [audit/](audit/): interface, motion, readability and content
 audits, re-audit and repair passes, option-note reports.

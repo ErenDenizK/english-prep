@@ -2,7 +2,7 @@
 
 **Access date: 3 October 2026. Scope: research and recommendations, not an implementation or usability-test report.**
 
-This pass informs the requested premium academic refinement of the full English Prep app on mobile and desktop. It starts from `CLAUDE.md`, the current [Margin system](../margin-design-system.md), the existing [research record](../RESEARCH.md), and the supplied style exports. The product contains 10 topics, 60 continuously scrolling lessons, and 241 questions. The reading and testing modes, Turkish teaching/interface language, English examples, existing explanations, local progress, and question data remain the foundation.
+This pass informs the requested premium academic refinement of the full English Prep app on mobile and desktop. It starts from `CLAUDE.md`, the current [Margin system](../margin-design-system.md), the existing [research record](../history/RESEARCH.md), and the supplied style exports. The product contains 10 topics, 60 continuously scrolling lessons, and 241 questions. The reading and testing modes, Turkish teaching/interface language, English examples, existing explanations, local progress, and question data remain the foundation.
 
 The intended learner already functions in English but lacks some academic concepts and labels. A polished interface should help that learner find a distinction, read it, apply it, and understand feedback. It should not recast the app as beginner language instruction, a marketing landing page, or a proficiency certification.
 
