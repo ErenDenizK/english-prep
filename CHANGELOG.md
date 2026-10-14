@@ -5,6 +5,16 @@ the [development guide's Versioning section](docs/history/development.md#version
 owner bumps `x`; everything below is a `0.y` development build, not a
 release).
 
+## v0.80 — 2026-10-14
+
+Proje rafa kaldırıldı: temiz, çalışır ve testli bir noktada donduruldu.
+
+- Hatalar düzeltildi: About başlığı artık kaydırırken üstte kalıyor; Profil'deki anahtar yüksek kontrast modunda açık/kapalı durumunu gösteriyor; ayar açıklamaları 320 px'te kesilmiyor; kısa ekranlarda tanıtımın ana düğmesi kaydırmadan görünüyor, geniş ekrandaki fazladan kaydırma gitti; kaydırma rayı dar telefonda içeriğe değmiyor; About'taki dönen halka Profil'deki hareket ayarına uyuyor.
+- Temizlik: kullanılmayan eski özellik kodları (seri, günlük hedef, sınav tarihi ayarlayıcıları), ölü stiller, ikonlar ve hareket ön ayarları silindi. Eski yedekler eskisi gibi açılıyor; bunu üç örnek yedek dosyası test ediyor.
+- Portföy sunumu için eklenen araçlar kaldırıldı (portföy kendi görsellerini alıyor). Eski medya ve dağınık belgeler `docs/history/` altına alındı ya da silindi; depo ~12 MB küçüldü.
+- README rafta olan proje için yeniden yazıldı; güncel bir ekran görüntüsü eklendi.
+- CI: GitHub Actions v6, Node 24; çevrimdışı önbellekte küçük düzeltmeler.
+
 ## v0.79 — 2026-10-10
 
 - About başlık çubuğu cam sözleşmesine uyduruldu: arka plan %95 opak, bulanıklık yalnızca destekleyen tarayıcıda; saydamlığı azalt, yüksek kontrast ve zorlanmış renklerde düz. Bulanıklık hiç çalışmasa bile arkadaki yazı okunmuyor (ölçülen kalıntı kontrast 1,11:1).

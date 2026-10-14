@@ -8,6 +8,9 @@ closest-meaning questions with instant feedback), plus **Profil** from the heade
 page at `about/`. No accounts, no backend, no analytics: a learner's data stays in their
 browser's `localStorage`.
 
+**Status: parked at v0.80 (2026-10-14).** Complete and working; not in active development. Do not
+start work unless the owner asks; when they do, follow `docs/STATE.md` §0 (how to resume).
+
 Read in this order; nothing else binds except the interface values named below:
 
 1. This file: rules and how to verify.
