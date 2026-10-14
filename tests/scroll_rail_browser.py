@@ -130,7 +130,9 @@ class ScrollRailTests(unittest.TestCase):
                   const thumb=rail.querySelector('.scroll-rail__thumb');
                   const grip=rail.querySelector('.scroll-rail__grip');
                   const scroller=document.querySelector('#shell-scroll');
-                  return {width:scroller.querySelector('.page').getBoundingClientRect().width,
+                  const page=scroller.querySelector('.page');
+                  return {width:page.getBoundingClientRect().width,
+                    columnEnd:page.getBoundingClientRect().right-parseFloat(getComputedStyle(page).paddingRight),
                     gripWidth:thumb.getBoundingClientRect().width,gripHeight:thumb.getBoundingClientRect().height,
                     visual:grip.getBoundingClientRect().toJSON(),track:rail.querySelector('.scroll-rail__track').getBoundingClientRect().toJSON(),
                     surface:getComputedStyle(thumb).backgroundColor,shadow:getComputedStyle(grip).boxShadow,controlPointer:getComputedStyle(control).pointerEvents,
@@ -146,7 +148,10 @@ class ScrollRailTests(unittest.TestCase):
                 self.assertEqual(values['shadow'], 'none')
                 self.assertEqual(values['controlPointer'], 'none')
                 self.assertEqual(values['thumbPointer'], 'auto')
-                self.assertGreaterEqual(values['right'], 8)
+                # The grip clears the text column, even at 320 where the
+                # gutter is 16px and the rail moves into it (css/scroll-rail.css).
+                self.assertGreaterEqual(values['visual']['left'], values['columnEnd'] + 4)
+                self.assertGreaterEqual(values['right'], 4)
                 self.assertGreaterEqual(values['width'], min(width, 640) - 1)
                 self.assertLessEqual(values['overflow'], values['viewport'])
                 self.assertEqual(self.page.locator('.scroll-rail__caption').count(), 0)

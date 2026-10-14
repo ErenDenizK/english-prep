@@ -27,7 +27,12 @@
   --ab-surface: color-mix(in srgb, var(--card) 78%, transparent);
   --ab-surface-strong: color-mix(in srgb, var(--card) 92%, transparent);
 }
-.about-page :is(header, main, footer) { position: relative; z-index: 1; }
+/* Lifted above the aurora. The masthead is left out: this rule (0,1,1) beat
+   its `position: sticky` (0,1,0) and the bar scrolled away with the page. */
+.about-page :is(header:not(.ab-masthead), main, footer) { position: relative; z-index: 1; }
+/* Anchors, "nearest" scrolls and keyboard focus all stop clear of the sticky
+   bar (68px + hairline); this replaces the per-section scroll margins. */
+:root { scroll-padding-top: 72px; }
 .about-page :is(h1, h2, h3) { font-weight: 600; text-wrap: balance; }
 .about-page p { text-wrap: pretty; }
 .about-page :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
@@ -174,7 +179,10 @@
 .ab-autoplay__icon::before { left: 1px; } .ab-autoplay__icon::after { right: 1px; }
 .ab-autoplay:not([data-playing="true"]) .ab-autoplay__icon::before { left: 2px; width: 0; height: 0; border-radius: 0; background: none; border-left: 11px solid currentColor; border-block: 6px solid transparent; }
 .ab-autoplay:not([data-playing="true"]) .ab-autoplay__icon::after { display: none; }
-.ab-autoplay[data-playing="true"]::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--accent) 70%, transparent); border-right-color: transparent; animation: ab-spin 2.8s linear infinite; }
+.ab-autoplay[data-playing="true"]::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--accent) 70%, transparent); border-right-color: transparent; }
+/* Gated like ab-pulse and ab-flowdash: the Profil motion switch and a hidden
+   tab stop the loop; the ring itself stays as the still twin of "playing". */
+:root[data-motion="on"][data-page-visible="true"] .ab-autoplay[data-playing="true"]::after { animation: ab-spin 2.8s linear infinite; }
 @keyframes ab-spin { to { transform: rotate(360deg); } }
 @media (min-width: 560px) {
   .ab-pager__q { position: static; width: auto; height: auto; clip-path: none; margin-left: 8px; font-size: .8125rem; }
@@ -209,7 +217,7 @@
 .ab-lens__stage.is-switching [data-on] { transition: none; }
 
 /* ---- 2 · Manifesto ---- */
-.ab-manifesto { display: grid; gap: 28px; padding-block: clamp(72px, 14vh, 160px); scroll-margin-top: 72px; }
+.ab-manifesto { display: grid; gap: 28px; padding-block: clamp(72px, 14vh, 160px); }
 .ab-manifesto__text { max-width: 26ch; font-size: clamp(1.75rem, 5vw, 3.5rem); line-height: 1.18; font-weight: 600; letter-spacing: -.04em; }
 .ab-manifesto__line:nth-child(n + 5) .ab-word.is-lit, .ab-manifesto__text[data-lit="all"] .ab-manifesto__line:nth-child(n + 5) .ab-word { color: var(--accent-text); }
 .ab-word { opacity: .26; transition: opacity 420ms var(--ab-ease), color 420ms var(--ab-ease); }
@@ -217,7 +225,7 @@
 @media (min-width: 900px) { .ab-manifesto__text { max-width: 22ch; } }
 
 /* ---- Sections ---- */
-.ab-section { padding-block: clamp(56px, 10vh, 120px); scroll-margin-top: 72px; }
+.ab-section { padding-block: clamp(56px, 10vh, 120px); }
 .ab-section__head { display: grid; gap: 16px; max-width: 760px; margin-bottom: clamp(28px, 5vh, 48px); }
 .ab-section__head h2 { font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.08; letter-spacing: -.045em; }
 .ab-section__head > p:not(.ab-eyebrow) { color: var(--ink-2); font-size: 1.125rem; line-height: 1.7; max-width: 60ch; }
@@ -401,7 +409,7 @@
 .ab-privacy { align-items: center; }
 @media (min-width: 900px) { .ab-privacy { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; } }
 .ab-privacy__copy { display: grid; gap: 14px; }
-.ab-privacy { scroll-margin-top: 88px; }
+.ab-privacy { scroll-margin-top: 16px; }
 .ab-privacy__copy > p:not(.ab-card__kicker, .ab-privacy__proof) { color: var(--ink-2); line-height: 1.7; }
 .ab-privacy__proof { display: flex; flex-wrap: wrap; gap: 0 24px; }
 /* The promise line links to its proof, the privacy card (charter rule 8).
