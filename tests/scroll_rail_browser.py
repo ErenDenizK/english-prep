@@ -292,7 +292,9 @@ class ScrollRailTests(unittest.TestCase):
                 self.page.mouse.up()
                 self.page.wait_for_timeout(35)
                 early_return = float(self.page.locator('.scroll-rail').evaluate("el=>el.style.getPropertyValue('--rail-pull')"))
-                self.assertLess(early_return, early + .2)
+                # One more press frame may paint between the read and the
+                # release, so allow a frame's growth; a full bow is 14.
+                self.assertLess(early_return, min(early + 1, 7))
                 self.page.wait_for_function("!document.querySelector('.scroll-rail').dataset.deforming")
                 self.page.emulate_media(reduced_motion='reduce')
                 box = grip.bounding_box()

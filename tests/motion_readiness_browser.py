@@ -169,8 +169,10 @@ class VisibleMotionTests(unittest.TestCase):
                 self.assertLessEqual(max(heights)-min(heights), 1, heights)
 
     def test_high_density_captures_are_real_pixels_and_browser_uses_matching_family(self):
-        for family, minimum in [('phone',(780,1688)),('wide',(2880,2000))]:
-            for name in ['education','article','test','results']:
+        # About ships only the three phone captures (the wide and education
+        # captures were unused and removed in v0.80).
+        for family, minimum in [('phone',(780,1688))]:
+            for name in ['article','test','results']:
                 with self.subTest(capture=name+'-'+family):
                     with Image.open(ROOT/'about/assets'/f'{name}-{family}.webp') as image:
                         self.assertGreaterEqual(image.width, minimum[0])

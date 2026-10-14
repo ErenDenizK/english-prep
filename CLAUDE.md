@@ -46,8 +46,9 @@ Whether the product is an exam app, a general English app or two apps is open an
 
 - **`test`** is the only development branch and the live site. Work here, commit here, push here
   after the checks below pass. A push is a deploy: there is no staging.
-- **`main`** is the owner's release branch, moved by the owner's hand at V1 and later. Never push,
-  merge or open a pull request into `main`.
+- **`main`** is the owner's release branch: it holds the last release the owner accepted (v0.80,
+  placed there at the owner's request on 2026-10-14). Never push, merge or open a pull request into
+  `main` unless the owner asks in so many words.
 - No other branches. If the session was given another branch name, ignore it for this repo and
   use `test`.
 - Bump `VERSION` in `sw.js` with every release, or phones keep the old cache. It must equal the
