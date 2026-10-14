@@ -1,5 +1,9 @@
 # English Prep in the family
 
+> **Moved to history 2026-10-14.** Reference only: the portfolio owns its presentation, and the
+> `world.json`, captures tooling and outbox this page mentions were removed. The kit beside it is
+> the 2026-10-09 copy; the living kit is in the portfolio repo (`docs/family-kit/`).
+
 **Status:** documentation and tooling only, 2026-10-09; corrected 2026-10-10 for v0.77 and the owner's decisions (glass gated, About free to change). The work on these moves is in `docs/ROADMAP.md` phase 3. Nothing here changes the app, and
 nothing here is binding on English Prep. Every move in §3 needs the owner's yes, one at a time,
 in an English Prep session of their own.

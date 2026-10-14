@@ -7,8 +7,8 @@ signs off. Each phase lists what it delivers and how it is checked. Owner decisi
 
 > **Özet.** Beş faz: (0) dokümanları tek doğruluk kaynağına indirmek, (1) teknik temel: testleri
 > CI'a almak, ölü kodu ve eski görünüm katmanını silmek, fontu küçültmek, (2) ürün cilası:
-> bilinen görsel kusurlar, (3) aile ve sunum: tüzüğün sekiz kuralı, gerçek ekran görüntüleri,
-> klip, world.json, hikâye, (4) laboratuvar: cam ve yeni teknikler, ölçülerek ve senin onayınla.
+> bilinen görsel kusurlar, (3) aile ve sunum: tüzüğün sekiz kuralı, hikâye (portföy sunumu
+> 2026-10-14'te bırakıldı), (4) laboratuvar: cam ve yeni teknikler, ölçülerek ve senin onayınla.
 > Sonra sen V1 dersin. V1'den sonra ürün yönü kararı ve içerik gelir.
 
 ## Phase 0 · One source of truth (docs and agents)
@@ -22,11 +22,12 @@ Goal: a new session reads three short documents and acts correctly.
       `docs/history/handover/CURRENT.md` and `docs/history/handoff-v1.md`.
 - [x] `docs/PRINCIPLES.md`, this roadmap, `docs/PRODUCT-DIRECTION.md`.
 - [x] Superseded plans, specs, audits and round notes move to `docs/history/`.
-- [ ] Remaining live docs that still describe the folio About or old motion (EXPERIENCE,
-      Margin, development) get rewritten sections, not just banners.
+- [x] Remaining live docs that still describe the folio About or old motion: EXPERIENCE and
+      development moved to `docs/history/` on 2026-10-14 (project parked); Margin keeps its banner.
 - [x] Agent briefs: fix the delivery paths in `docs/agents/`; the family `README.md` drops "no glass" for
       the material contract; the old session prompt moves to history.
-- [ ] `docs/family/OUTBOX.md` for findings to the portfolio **[owner: approve the outbox idea]**.
+- [-] ~~Family outbox for findings to the portfolio.~~ Dropped 2026-10-14: the portfolio owns
+      its presentation.
 - [ ] Old branches deleted on GitHub, leaving `main` and `test` **[owner: the session cannot
       delete remote branches]**.
 
@@ -88,18 +89,17 @@ light, motion on/reduced/off, forced colours, reviewed by the owner.
    `docs/design/motion-v076.md` and beside `MOTION_DURATIONS`. No timing changes.
 3. **Story.** One story across About, README, manifest, page metadata, onboarding: the thesis
    first ("İkisi de doğru. Fark, anlamda."), the exam as context. **[owner]** headline and copy.
-4. **Captures and clip.** Rewrite `tools/capture-portfolio.mjs` for v0.77 and the kit's
-   `presentation.md` (names, sizes including 1180×820, CDP frames, AV1/HEVC/H.264 with poster,
-   6–10 s, rest to rest). Re-shoot About's loop captures, `docs/github/` media and the social card;
-   every image names its build. Remove About's drawn device frame.
-5. **`world.json` on the kit's schema** (version, slug, source commit, light, motion roles, fonts,
-   links, captures); `npm test` keeps it in sync.
-6. **Credits line** on About's footer, in English Prep's own type, the `edk.` dot in Sakura
-   **[owner: wording, e.g. "Yapan: edk."]**.
+4. ~~**Captures and clip** for the portfolio (`tools/capture-portfolio.mjs`, the kit's
+   `presentation.md`).~~
+5. ~~**`world.json` on the kit's schema.**~~
+6. ~~**Credits line** on About's footer.~~
+
+   Items 4–6 dropped 2026-10-14: the portfolio owns its presentation. The tools, `world.json`
+   and the outbox were removed; About's own captures stay under charter rule 3 (`PRINCIPLES.md`
+   §6, `tools/capture-about.py`).
 7. README rewritten around the same story, with the new media.
 
-Check: the charter table in `PRINCIPLES.md` §6 is all "passes"; the portfolio session can build
-the embassy from this repo alone.
+Check: the charter table in `PRINCIPLES.md` §6 is all "passes".
 
 ## Phase 4 · Lab (modern techniques, under control)
 
@@ -117,8 +117,7 @@ Check: nothing from the lab is reachable from the app until its ADR records the 
 ## V1
 
 The owner reviews the four bars (`PRINCIPLES.md` §1) on the live `test` build and says V1. Then:
-`CHANGELOG` becomes `v1.0`, the owner moves `main` to that build by hand, and the portfolio's
-embassy points at it.
+`CHANGELOG` becomes `v1.0`, the owner moves `main` to that build by hand.
 
 ## After V1
 

@@ -85,5 +85,5 @@ Image decode joins scene readiness so higher density cannot consume its motion.
 Validate slow fonts/assets, rapid replacements, off/reduced/hidden modes, native
 menus, keyboard/drag rails, short/wide/mobile geometry, 200% text, image density,
 color calculations, unchanged material and the normal study→test→result journey.
-[Validation](../VALIDATION.md) records executed checks and honest limits; desktop
+[Validation](../history/VALIDATION.md) records executed checks and honest limits; desktop
 Chromium emulation is not a physical iPhone or battery certification.

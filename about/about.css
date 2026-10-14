@@ -405,7 +405,7 @@
 .ab-privacy__copy > p:not(.ab-card__kicker, .ab-privacy__proof) { color: var(--ink-2); line-height: 1.7; }
 .ab-privacy__proof { display: flex; flex-wrap: wrap; gap: 0 24px; }
 /* The promise line links to its proof, the privacy card (charter rule 8).
-   The whole line is the link (tools/make-world.mjs reads the line's text
+   The whole line is the link (one target, its text taken whole
    from the <p>), quiet: the line's size and colour, a hairline underline. */
 .ab-promise { justify-self: start; padding-block: 10px; margin-block: -10px; text-decoration: underline; text-decoration-color: var(--edge); text-decoration-thickness: 1px; text-underline-offset: 4px; transition: text-decoration-color 200ms var(--ab-ease), color 200ms var(--ab-ease); }
 .ab-promise:hover, .ab-promise:hover .ab-quiet { color: var(--accent-text); text-decoration-color: var(--accent-text); }

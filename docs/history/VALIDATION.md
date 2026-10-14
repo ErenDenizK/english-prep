@@ -1,5 +1,8 @@
 # Validation — v0.75
 
+> **History (moved 2026-10-14, project parked at v0.79).** Describes an earlier build; it never
+> binds. Current guidance: `CLAUDE.md`, `docs/STATE.md`.
+
 4 October 2026. The owner clarified the Safari target as the flat backing band,
 then reported overlapping labels/headings in About’s feature disclosures.
 
@@ -55,7 +58,7 @@ The first browser run hit a stale local server returning empty responses.
 A fresh server on port 8184 was verified against source bytes before rerunning;
 the results above are from the successful rerun. Physical Safari toolbar
 collapse and Add to Home Screen were not tested on a device. The app does not
-claim it can remove browser-owned URL controls. See [ADR 013](adr/013-restore-page-entry-and-browser-space.md).
+claim it can remove browser-owned URL controls. See [ADR 013](../adr/013-restore-page-entry-and-browser-space.md).
 
 ## Earlier release evidence
 
@@ -112,8 +115,8 @@ Actual timed captures exposed defects that endpoint-only tests missed:
   a button's last child after wrapping erased its icon; scoped label updates
   preserve both animation and content.
 
-The [independent audit](history/audit/motion-v073.md), [rail design](design/scroll-rail-v073.md),
-[motion language](history/design/motion-v073.md) and [ADR012](adr/012-elastic-edge-and-expressive-arrivals.md)
+The [independent audit](audit/motion-v073.md), [rail design](../design/scroll-rail-v073.md),
+[motion language](design/motion-v073.md) and [ADR012](../adr/012-elastic-edge-and-expressive-arrivals.md)
 distinguish the chosen visual direction from functional acceptance. Previous
 restrained-motion decisions are not treated as restrictions on the owner's new
 request.
