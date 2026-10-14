@@ -42,9 +42,11 @@ Python 3 serves the files and Node.js runs the tooling; there is no `npm install
 
 - [`CLAUDE.md`](CLAUDE.md): rules and how to verify a change.
 - [`docs/STATE.md`](docs/STATE.md): what the code does today and its weak spots.
-- [`docs/ROADMAP.md`](docs/ROADMAP.md): the work left before V1, in order.
+- [`docs/ROADMAP.md`](docs/ROADMAP.md): parked status and what would justify resuming.
 - [`docs/PRODUCT-DIRECTION.md`](docs/PRODUCT-DIRECTION.md): the open question of what the product becomes.
 - [`docs/adr/`](docs/adr/): design decisions.
 - [`docs/history/`](docs/history/): earlier plans, rounds and records; they explain, never bind.
 
-All rights reserved unless a license is added.
+## License
+
+[MIT](LICENSE) — code, content and design alike. Built by ErenDenizK with Claude as co-author.
