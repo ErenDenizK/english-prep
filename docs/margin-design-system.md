@@ -26,7 +26,7 @@ New visits start dark. Profil retains **Koyu, Açık and Sistem**, including exi
 | Sakura text / selected tint | `#efb1cb` / `#30222d` | `#922e55` / `#f6e7ed` |
 | Focus `--focus` | `#d4b5f8` | `#7848af` |
 | Secondary accent `--secondary` | `#c8b4e9` | `#7652a0` |
-| Cool context `--cool` / `--cool-tint` | `#a4d3db` / `#1e3038` | `#28677a` / `#e5f1f5` |
+| Cool context `--cool` | `#a4d3db` | `#28677a` |
 | Attention accent `--tertiary` | `#e9bb95` | `#92501f` |
 | Correct `--ok` / `--ok-tint` | `#eeb4d1` / `#392532` | `#953b67` / `#fae5ef` |
 | Incorrect `--no` / `--no-tint` | `#b6c6ed` / `#252d42` | `#405f94` / `#eaf0ff` |
